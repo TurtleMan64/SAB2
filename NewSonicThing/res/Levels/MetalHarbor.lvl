@@ -1,0 +1,42 @@
+Levels/MetalHarbor
+MetalHarbor
+Levels/MetalHarbor/Collision
+14
+Chunk1 4
+Chunk2 4
+Chunk3 4
+Chunk4 4
+Chunk5 4
+Chunk6 5
+Chunk7 4
+Chunk8 4
+Chunk9 6
+Chunk10 5
+Chunk11 3
+Chunk12 5
+Chunk13 6
+Chunk14 4
+1.0 1.0 1.0
+0.0 0.0 0.0
+0.0 0.0 0.0
+0.3 0.3 0.45
+0.1922 0.3961 0.9059
+0.05 0.05 0.075
+0.00005 2.0
+60
+0 80
+1
+4
+res/Audio/BGM/m_harb1_intro.ogg
+res/Audio/BGM/m_harb1_loop.ogg
+res/Audio/BGM/m_harb2_intro.ogg
+res/Audio/BGM/m_harb2_loop.ogg
+11069 199 -12867
+16 5
+-100
+
+
+######## Human placed objects #######
+
+# Player
+6 0 1100 64

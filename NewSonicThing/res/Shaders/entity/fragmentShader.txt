@@ -1,0 +1,63 @@
+#version 400 core
+
+in vec2 pass_textureCoords;
+in vec3 surfaceNormal;
+in vec3 toLightVector;
+in vec3 toCameraVector;
+in float visibility;
+
+out vec4 out_Color;
+
+uniform sampler2D textureSampler;
+uniform vec3 lightColour;
+uniform float shineDamper;
+uniform float reflectivity;
+uniform vec3 skyColour;
+uniform float hasTransparency;
+uniform float glowAmount;
+
+void main(void)
+{
+	vec4 rawTextureColour = texture(textureSampler, pass_textureCoords);
+	if (hasTransparency == 0) //&& glowAmount == 0
+	{
+		if (rawTextureColour.a < 0.9)
+		{
+			discard;
+		}
+		rawTextureColour.a = 1;
+	}
+	
+	vec3 unitNormal = normalize(surfaceNormal);
+	vec3 unitLightVector = normalize(toLightVector);
+	
+	float nDotl = dot(unitNormal, unitLightVector);
+	float brightness = nDotl*0.5+0.5;  //two different types of lighting options
+	//float brightness = max(nDotl, 0.5);  //two different types of lighting options
+	
+	//make more ambient light happen during the daytime, less at night
+	float ambientLight = 0.5+0.5*dot(vec3(0, 1, 0), unitLightVector);
+	ambientLight = (0.02+ambientLight*0.3);
+	
+	
+	vec3 diffuse = max(brightness * lightColour, ambientLight * lightColour);
+	
+	vec3 unitVectorToCamera = normalize(toCameraVector);
+	vec3 lightDirection = -unitLightVector;
+	vec3 reflectedLightDirection = reflect(lightDirection, unitNormal);
+	
+	float specularFactor = dot(reflectedLightDirection, unitVectorToCamera);
+	specularFactor = max(specularFactor, 0.0);
+	float dampedFactor = pow(specularFactor, shineDamper);
+	vec3 finalSpecular = dampedFactor * reflectivity * lightColour;
+	
+	//if (glowAmount > 0.0)
+	//{
+		//diffuse = vec3(glowAmount);
+	//}
+	//same as above, but no branching
+	diffuse = diffuse*((floatBitsToInt(glowAmount-0.001) >> 31) & 1) + vec3(glowAmount)*((floatBitsToInt(0.001-glowAmount) >> 31) & 1);
+	
+	out_Color = vec4(diffuse, rawTextureColour.a) * rawTextureColour + vec4(finalSpecular, rawTextureColour.a);
+	out_Color = mix(vec4(skyColour, 1.0), out_Color, visibility);
+}

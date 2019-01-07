@@ -1,0 +1,416 @@
+# Material Count: 46
+
+newmtl miu64_mh008
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd miu64_mh008.png
+
+newmtl miu256_mh001
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd miu256_mh001.png
+
+newmtl pr128_17
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr128_17.png
+
+newmtl pr128_12
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr128_12.png
+
+newmtl pr128_7
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr128_7.png
+
+newmtl pr128_26
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr128_26.png
+
+newmtl pr128_25
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr128_25.png
+
+newmtl miu64_mh007
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd miu64_mh007.png
+
+newmtl pr128_21
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr128_21.png
+
+newmtl pr256_7
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr256_7.png
+
+newmtl pr128_34_pr128_34.png
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr128_34.png
+
+newmtl pr64_10
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr64_10.png
+
+newmtl pr64_3
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr64_3.png
+
+newmtl miu256_mh002
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd miu256_mh002.png
+
+newmtl pr128_35
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr128_35.png
+
+newmtl pr64_14
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr64_14.png
+
+newmtl pr128_22
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr128_22.png
+
+newmtl pr128_27
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr128_27.png
+
+newmtl pr128_14
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr128_14.png
+
+newmtl pr128_18
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr128_18.png
+
+newmtl pr32_1
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr32_1.png
+
+newmtl pr32_3
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr32_3.png
+
+newmtl pr64_21
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr64_21.png
+
+newmtl pr128_15
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr128_15.png
+
+newmtl miu64_mh001
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd miu64_mh001.png
+
+newmtl pr128_28
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr128_28.png
+
+newmtl pr64_12
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr64_12.png
+
+newmtl pr128_32
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr128_32.png
+
+newmtl pr64_18
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr64_18.png
+
+newmtl miu64_mh005
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd miu64_mh005.png
+
+newmtl pr32_2
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr32_2.png
+
+newmtl pr64_1
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr64_1.png
+
+newmtl pr32_4
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr32_4.png
+
+newmtl miu128_mh001
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd miu128_mh001.png
+
+newmtl pr128_16
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr128_16.png
+
+newmtl pr64_19
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr64_19.png
+
+newmtl pr64_20
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr64_20.png
+
+newmtl pr128_24
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr128_24.png
+
+newmtl pr128_29
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr128_29.png
+
+newmtl miu64_mh002
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd miu64_mh002.png
+
+newmtl pr128_6
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr128_6.png
+
+newmtl pr128_20
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr128_20.png
+
+newmtl miu32_mh001
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd miu32_mh001.png
+
+newmtl pr256_2
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr256_2.png
+
+newmtl pr128_33
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr128_33.png
+
+newmtl pr64_11
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd pr64_11.png
+

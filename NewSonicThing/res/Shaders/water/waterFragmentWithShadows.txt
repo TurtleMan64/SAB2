@@ -1,0 +1,169 @@
+#version 400 core
+
+in vec4 clipSpace;
+in vec2 textureCoords;
+in vec3 toCameraVector;
+in vec3 passCameraPosition;
+in vec3 fromLightVector;
+in vec4 shadowCoords;
+
+in vec3 worldposition;
+
+out vec4 out_Color;
+out vec4 out_BrightColour;
+
+uniform sampler2D reflectionTexture;
+uniform sampler2D refractionTexture;
+uniform sampler2D dudvMap;
+uniform sampler2D normalMap;
+uniform sampler2D depthMap;
+uniform sampler2D shadowMap;
+uniform vec3 lightColour;
+
+uniform float moveFactor;
+
+const float waveStrength = 0.025;
+const float shineDamper = 80.0;
+const float reflectivity = 0.80;
+
+const float NEAR = 0.5;
+const float FAR = 15000.0;
+
+
+void main(void)
+{
+	vec2 ndc = (clipSpace.xy/clipSpace.w)/2.0 + 0.5;
+	vec2 refractTexCoords = vec2(ndc.x, ndc.y);
+	vec2 reflectTexCoords = vec2(ndc.x, -ndc.y);
+	
+	
+	float depth = texture(depthMap, refractTexCoords).r;
+
+	//converts raw un-linear data from depthMap to the actual distance that it truly is 
+	float floorDistance = 2.0 * NEAR * FAR / (FAR + NEAR - (2.0 * depth - 1.0) * (FAR - NEAR));
+	
+	depth = gl_FragCoord.z;
+	float waterDistance = 2.0 * NEAR * FAR / (FAR + NEAR - (2.0 * depth - 1.0) * (FAR - NEAR));
+	float waterDepth = floorDistance - waterDistance;
+	
+	//old
+	//vec2 distortion1 = (texture(dudvMap, vec2(textureCoords.x + moveFactor, textureCoords.y)).rg * 2.0 -1.0) * waveStrength;
+	//vec2 distortion2 = (texture(dudvMap, vec2(-textureCoords.x + moveFactor, textureCoords.y + moveFactor)).rg * 2.0 -1.0) * waveStrength;
+	//vec2 totalDistortion = distortion1 + distortion2;
+	
+	vec2 distortedTexCoords = texture(dudvMap, vec2(textureCoords.x + moveFactor, textureCoords.y)).rg*0.1;
+	distortedTexCoords = textureCoords + vec2(distortedTexCoords.x, distortedTexCoords.y+moveFactor);
+	vec2 totalDistortion = (texture(dudvMap, distortedTexCoords).rg * 2.0 - 1.0) * waveStrength ;//* clamp(waterDepth/20.0, 0.0, 1.0);
+	
+	refractTexCoords += totalDistortion;
+	refractTexCoords = clamp(refractTexCoords, 0.001, 0.999);
+	
+	reflectTexCoords += totalDistortion;
+	reflectTexCoords.x = clamp(reflectTexCoords.x, 0.001, 0.999);
+	reflectTexCoords.y = clamp(reflectTexCoords.y, -0.999, -0.001);
+	
+	vec4 reflectColour = texture(reflectionTexture, reflectTexCoords);
+	vec4 refractColour = texture(refractionTexture, refractTexCoords);
+	//refractColour*=0.85;
+	
+	vec4 normalMapColour = texture(normalMap, distortedTexCoords);
+	
+	vec3 normal = vec3(normalMapColour.r * 2.0 - 1.0, normalMapColour.b, normalMapColour.g * 2.0 - 1.0);
+	
+	//simulate a non-smooth surface
+	//float offsetX = (rand(vec2(worldposition.x+random1, worldposition.z+random2))-0.5)/6.0;
+	//float offsetY = (rand(vec2(worldposition.x+random2, worldposition.z+random3))-0.5)/6.0;
+	//float offsetZ = (rand(vec2(worldposition.x+random3, worldposition.z+random1))-0.5)/6.0;
+	//normal = vec3(random1+offsetX, random2+1+offsetY, random3+offsetZ);
+	
+	
+	normal = normalize(normal);
+	
+	vec3 viewVector = normalize(toCameraVector);
+	float refractiveFactor = dot(viewVector, vec3(0, 1, 0));
+	
+	//if (passCameraPosition.y <= waterHeight)
+	//{
+		//refractiveFactor = -refractiveFactor*2;
+	//}
+	//same as above, but no branching. assumes water is at y = 0
+	refractiveFactor -= 3*refractiveFactor*((floatBitsToInt(passCameraPosition.y) >> 31) & 1);
+	
+	
+	//refractiveFactor = pow(refractiveFactor, 1.0);
+	
+	//switch(renderMode)
+	//{
+		//case 0: 
+			refractiveFactor*=0.75;
+		//	break;
+			
+		//case 1: 
+		//	refractiveFactor*=2;
+		//	refractiveFactor = clamp(refractiveFactor, 0.1, 0.9);
+		//	break;
+			
+		//case 2:
+		//	refractiveFactor*=0.2;
+		//	break;
+			
+		//default:
+		//	break;
+	//}
+	
+	refractiveFactor*=2;
+	refractiveFactor = clamp(refractiveFactor, 0.0, 0.8); //possible post fx
+	
+	
+	
+	vec3 reflectedLight = reflect(normalize(fromLightVector), normal);
+	float specular = max(dot(reflectedLight, viewVector), 0.0);
+	specular = pow(specular, shineDamper);
+	
+	//if (shadowCoords.z > texture(shadowMap, shadowCoords.xy).r+0.00125)
+	specular *= (floatBitsToInt(shadowCoords.z - (texture(shadowMap, shadowCoords.xy)).r+0.00125) >> 31) & 1;
+	//{
+		//specular = 0;
+	//}
+	
+	out_Color = mix(reflectColour, refractColour, refractiveFactor);
+	
+
+
+	
+	//out_Color = mix(out_Color, vec4(0.0, 0.3, 0.5, 1.0), 0.2);
+	vec3 specularHighlights;
+	//switch(renderMode)
+	//{
+		//case 0:
+			specularHighlights = lightColour * specular * reflectivity * clamp(waterDepth/25.0, 0.0, 1.0);
+			out_Color = out_Color + vec4(specularHighlights, 0.0);
+			out_Color.a = clamp((waterDepth/25.0), 0.0, 1.0);
+		//	break;
+			
+		//case 1:
+		//	specularHighlights = lightColour * specular * reflectivity * clamp(waterDepth/20.0, 0.0, 1.0);
+		//	out_Color = mix(out_Color, vec4(81/255.0, 253/255.0, 253/255.0, 1.0), 0.4) + vec4(specularHighlights, 0.0);
+		//	out_Color.a = clamp(waterDepth/5.0, 0.0, 1.0);
+		//	break;
+			
+		//case 2:
+		//	specularHighlights = lightColour * specular * reflectivity;
+		//	out_Color = mix(out_Color, vec4(9/255.0, 99/255.0, 224/255.0, 1.0), 0.8) + vec4(specularHighlights, 0.0);
+		//	out_Color.a = clamp(waterDepth/0.1, 0.0, 1.0);
+		//	break;
+			
+		//case 3:
+		//	out_Color = mix(reflectColour, vec4(56/255.0,170/255.0,224/255.0,1), refractiveFactor);
+		//	specularHighlights = lightColour * specular * reflectivity * clamp(waterDepth/20.0, 0.0, 1.0);
+		//	out_Color = out_Color + vec4(specularHighlights, 0.0);
+		//	out_Color.a = 1;
+		//	break;
+			
+		//default:
+		//	break;
+	//}
+	
+	float brightness = (out_Color.r * 0.2126) + (out_Color.g * 0.7152) + (out_Color.b * 0.0722);
+	out_BrightColour = vec4((out_Color * brightness * brightness * brightness * brightness).rgb, 1.0);
+}

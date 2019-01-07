@@ -1,0 +1,10 @@
+# Blender MTL File: 'None'
+# Material Count: 1
+
+newmtl Water
+	Ns 20
+	Ni 0.04
+	Tr 0.0
+	d 1
+	scrollX 4.28571428571
+	map_Kd WaterStripClear.png

@@ -1,0 +1,24 @@
+# Blender MTL File: 'None'
+# Material Count: 2
+
+newmtl object_0227DC14_material_118
+	Ns 20
+	Ka 1.000000 1.000000 1.000000
+	Kd 1.000000 1.000000 1.000000
+	Ks 0.000000 0.000000 0.000000
+	Ke 0.000000 0.000000 0.000000
+	Ni 0.1
+	d 1.000000
+	illum 2
+	map_Kd sh_gakon_01.png
+
+newmtl object_0227DC14_material_119
+	Ns 20
+	Ka 1.000000 1.000000 1.000000
+	Kd 1.000000 1.000000 1.000000
+	Ks 0.000000 0.000000 0.000000
+	Ke 0.000000 0.000000 0.000000
+	Ni 0.1
+	d 1.000000
+	illum 2
+	map_Kd sh_gakon_02.png

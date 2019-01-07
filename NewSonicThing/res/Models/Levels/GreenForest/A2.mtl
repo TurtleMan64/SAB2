@@ -1,0 +1,218 @@
+# Material Count: 24
+
+newmtl Material.030
+Ns 20.000000
+Ni 0.02
+Tr 1
+map_d jungle128_11.png
+scrollX 0
+scrollY 0
+map_Kd jungle128_11.png
+
+newmtl Material.068
+Ns 20.000000
+Ni 0.02
+Tr 1
+map_d jungle256_6.png
+scrollX 0
+scrollY 0
+map_Kd jungle256_6.png
+
+newmtl Material.011
+Ns 20.000000
+Ni 0.02
+Tr 1
+map_d jungle128_6.png
+scrollX 0
+scrollY 0
+map_Kd jungle128_6.png
+
+newmtl Material.069
+Ns 20.000000
+Ni 0.02
+Tr 1
+map_d jungle128_8.png
+scrollX 0
+scrollY 0
+map_Kd jungle128_8.png
+
+newmtl Material
+Ns 20.000000
+Ni 0.02
+Tr 1
+map_d jungle256_1.png
+scrollX 0
+scrollY 0
+map_Kd jungle256_1.png
+
+newmtl Material.067
+Ns 20.000000
+Ni 0.02
+Tr 1
+map_d jungle256_4.png
+scrollX 0
+scrollY 0
+map_Kd jungle256_4.png
+
+newmtl Material.066
+Ns 20.000000
+Ni 0.02
+Tr 1
+map_d jungle64_2.png
+scrollX 0
+scrollY 0
+map_Kd jungle64_2.png
+
+newmtl Material.098
+Ns 20.000000
+Ni 0.02
+Tr 1
+map_d jungle128_5.png
+scrollX 0
+scrollY 0
+map_Kd jungle128_5.png
+
+newmtl Material.036
+Ns 20.000000
+Ni 0.02
+Tr 1
+map_d jungle128_10.png
+scrollX 0
+scrollY 0
+map_Kd jungle128_10.png
+
+newmtl Material.019
+Ns 20.000000
+Ni 0.02
+Tr 1
+map_d jungle128_3.png
+scrollX 0
+scrollY 0
+map_Kd jungle128_3.png
+
+newmtl Material.050
+Ns 20.000000
+Ni 0.02
+Tr 1
+map_d jungle128_14.png
+scrollX 0
+scrollY 0
+map_Kd jungle128_14.png
+
+newmtl Material.264
+Ns 20.000000
+Ni 0.02
+Tr 1
+map_d jungle128_1.png
+scrollX 0
+scrollY 0
+map_Kd jungle128_1.png
+
+newmtl Material.117
+Ns 20.000000
+Ni 0.02
+Tr 1
+map_d jungle128_7.png
+scrollX 0
+scrollY 0
+map_Kd jungle128_7.png
+
+newmtl Material.049
+Ns 20.000000
+Ni 0.02
+Tr 1
+map_d jungle128_12.png
+scrollX 0
+scrollY 0
+map_Kd jungle128_12.png
+
+newmtl Material.665
+Ns 20.000000
+Ni 0.02
+Tr 1
+map_d jungle64_4.png
+scrollX 0
+scrollY 0
+map_Kd jungle64_4.png
+
+newmtl Material.031
+Ns 20.000000
+Ni 0.02
+Tr 1
+map_d jungle128_9.png
+scrollX 0
+scrollY 0
+map_Kd jungle128_9.png
+
+newmtl Material.044
+Ns 20.000000
+Ni 0.02
+Tr 1
+map_d jungle256_2.png
+scrollX 0
+scrollY 0
+map_Kd jungle256_2.png
+
+newmtl Material.001
+Ns 20.000000
+Ni 0.02
+Tr 1
+map_d jungle128_4.png
+scrollX 0
+scrollY 0
+map_Kd jungle128_4.png
+
+newmtl Material.048
+Ns 20.000000
+Ni 0.02
+Tr 1
+map_d jungle64_3.png
+scrollX 0
+scrollY 0
+map_Kd jungle64_3.png
+
+newmtl Material.075
+Ns 20.000000
+Ni 0.02
+Tr 1
+map_d jungle256_5.png
+scrollX 0
+scrollY 0
+map_Kd jungle256_5.png
+
+newmtl Material.038
+Ns 20.000000
+Ni 0.02
+Tr 1
+map_d jungle64_1.png
+scrollX 0
+scrollY 0
+map_Kd jungle64_1.png
+
+newmtl Material.129
+Ns 20.000000
+Ni 0.02
+Tr 1
+map_d jungle128_13.png
+scrollX 0
+scrollY 0
+map_Kd jungle128_13.png
+
+newmtl Material.266
+Ns 20.000000
+Ni 0.02
+Tr 1
+map_d jungle256_9.png
+scrollX 0
+scrollY 0
+map_Kd jungle256_9.png
+
+newmtl Material.509
+Ns 20.000000
+Ni 0.02
+Tr 1
+map_d jungle128_15.png
+scrollX 0
+scrollY 0
+map_Kd jungle128_15.png
+

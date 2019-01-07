@@ -1,0 +1,26 @@
+Levels/RadicalHighway
+RH
+Levels/RadicalHighway
+1
+Collision 9
+1.0 1.0 1.0 #1.0 0.95 0.8 
+0.0 0.0 0.0
+0.0 0.0 0.0
+0.0 0.0 0.0 #0.3 0.3 0.45
+0.0 0.0 0.0 #0.03 0.02 0.0
+0.0 0.0 0.0
+0.00000001 2.0
+112.0
+0 18
+1
+2
+res/Audio/BGM/r_hwy_intro.ogg
+res/Audio/BGM/r_hwy_loop.ogg
+-8469.615234 4925.948242 -11993.351563
+-71 14
+1000
+
+
+
+# Player
+6 0 0 0

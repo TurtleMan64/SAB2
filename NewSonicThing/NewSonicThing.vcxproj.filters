@@ -1,0 +1,651 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\animation">
+      <UniqueIdentifier>{731ce282-0f9c-4c63-bb9a-23915789f2d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\audio">
+      <UniqueIdentifier>{a8bdbe92-6a65-4f4c-a0eb-fc08d301f9c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\bloom">
+      <UniqueIdentifier>{9e234dab-0372-45b2-b609-aa7833299729}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\collision">
+      <UniqueIdentifier>{83e94b86-9e43-4fd9-9d4e-8b46c2347b1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\engineTester">
+      <UniqueIdentifier>{b8916c16-9be1-4684-8ea1-a03838a254a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entities">
+      <UniqueIdentifier>{05128fd9-c7c6-48aa-b11e-23df6a761bf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\fontMeshCreator">
+      <UniqueIdentifier>{5be566ea-069b-4a55-9d6d-fed70ada36d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\fontRendering">
+      <UniqueIdentifier>{490f44da-5178-4603-bd40-c48566498aca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\guassianBlur">
+      <UniqueIdentifier>{bf4c1790-03b4-4341-89b5-4dd646bc2351}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\guis">
+      <UniqueIdentifier>{173ff387-37c0-447f-93ac-a8b240625d2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\models">
+      <UniqueIdentifier>{63fdb333-8eac-470f-9963-e6d0cad1eeaf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\objLoader">
+      <UniqueIdentifier>{eac1cc2b-3fac-4edb-9c67-e3193881bcb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\particles">
+      <UniqueIdentifier>{5c48bf20-ad26-473e-b60a-a1340cf3275d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\postProcessing">
+      <UniqueIdentifier>{5f44a07f-38ab-4dab-9bbf-21e8fba02d9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\renderEngine">
+      <UniqueIdentifier>{75f5cd3f-99c1-49bb-b84b-0cff802e0d46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\shaders">
+      <UniqueIdentifier>{59645955-9b37-4cd2-9150-837c22211f80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\shadows">
+      <UniqueIdentifier>{d4a9f951-8370-433f-a11c-416763efbefc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\shadows2">
+      <UniqueIdentifier>{8378c840-783a-452a-9f49-4648e0a7b312}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\textures">
+      <UniqueIdentifier>{8d6e4f6c-b763-4949-8acc-8a6222d05b96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\toolbox">
+      <UniqueIdentifier>{9e20c8c3-0184-455f-98a3-f283734f3b2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\water">
+      <UniqueIdentifier>{d065fb6b-af8f-49a6-9326-dc82e4cffa17}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\glad.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\animation\Animation.cpp">
+      <Filter>Source Files\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\animation\AnimationResources.cpp">
+      <Filter>Source Files\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\animation\Body.cpp">
+      <Filter>Source Files\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\animation\Keyframe.cpp">
+      <Filter>Source Files\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\animation\Limb.cpp">
+      <Filter>Source Files\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\audio\AudioMaster.cpp">
+      <Filter>Source Files\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="src\audio\AudioPlayer.cpp">
+      <Filter>Source Files\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="src\audio\Source.cpp">
+      <Filter>Source Files\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bloom\CombineFilter.cpp">
+      <Filter>Source Files\bloom</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bloom\CombineShader.cpp">
+      <Filter>Source Files\bloom</Filter>
+    </ClCompile>
+    <ClCompile Include="src\collision\CollisionChecker.cpp">
+      <Filter>Source Files\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="src\collision\CollisionModel.cpp">
+      <Filter>Source Files\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="src\collision\QuadTreeNode.cpp">
+      <Filter>Source Files\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="src\collision\Triangle3D.cpp">
+      <Filter>Source Files\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engineTester\MainGameLoop.cpp">
+      <Filter>Source Files\engineTester</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\Boostpad.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\Camera.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\Car.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\Checkpoint.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\CollideableObject.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\Dummy.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\Entity.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\JumpRamp.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\Light.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\SkySphere.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\Stage.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\StagePass2.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\StagePass3.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\StageTransparent.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fontMeshCreator\Character.cpp">
+      <Filter>Source Files\fontMeshCreator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fontMeshCreator\FontType.cpp">
+      <Filter>Source Files\fontMeshCreator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fontMeshCreator\GUINumber.cpp">
+      <Filter>Source Files\fontMeshCreator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fontMeshCreator\GUIText.cpp">
+      <Filter>Source Files\fontMeshCreator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fontMeshCreator\Line.cpp">
+      <Filter>Source Files\fontMeshCreator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fontMeshCreator\MetaFile.cpp">
+      <Filter>Source Files\fontMeshCreator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fontMeshCreator\TextMeshCreator.cpp">
+      <Filter>Source Files\fontMeshCreator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fontMeshCreator\TextMeshData.cpp">
+      <Filter>Source Files\fontMeshCreator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fontMeshCreator\Word.cpp">
+      <Filter>Source Files\fontMeshCreator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fontRendering\FontRenderer.cpp">
+      <Filter>Source Files\fontRendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fontRendering\FontShader.cpp">
+      <Filter>Source Files\fontRendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fontRendering\TextMaster.cpp">
+      <Filter>Source Files\fontRendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gaussianBlur\HorizontalBlur.cpp">
+      <Filter>Source Files\guassianBlur</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gaussianBlur\HorizontalBlurShader.cpp">
+      <Filter>Source Files\guassianBlur</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gaussianBlur\VerticalBlur.cpp">
+      <Filter>Source Files\guassianBlur</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gaussianBlur\VerticalBlurShader.cpp">
+      <Filter>Source Files\guassianBlur</Filter>
+    </ClCompile>
+    <ClCompile Include="src\guis\GuiManager.cpp">
+      <Filter>Source Files\guis</Filter>
+    </ClCompile>
+    <ClCompile Include="src\guis\GuiRenderer.cpp">
+      <Filter>Source Files\guis</Filter>
+    </ClCompile>
+    <ClCompile Include="src\guis\GuiShader.cpp">
+      <Filter>Source Files\guis</Filter>
+    </ClCompile>
+    <ClCompile Include="src\guis\GuiTexture.cpp">
+      <Filter>Source Files\guis</Filter>
+    </ClCompile>
+    <ClCompile Include="src\guis\GuiTextureResources.cpp">
+      <Filter>Source Files\guis</Filter>
+    </ClCompile>
+    <ClCompile Include="src\models\RawModel.cpp">
+      <Filter>Source Files\models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\models\TexturedModel.cpp">
+      <Filter>Source Files\models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\objLoader\FakeTexture.cpp">
+      <Filter>Source Files\objLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\objLoader\objLoader.cpp">
+      <Filter>Source Files\objLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\objLoader\Vertex.cpp">
+      <Filter>Source Files\objLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\particles\InsertionSort.cpp">
+      <Filter>Source Files\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\particles\Particle.cpp">
+      <Filter>Source Files\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\particles\ParticleMaster.cpp">
+      <Filter>Source Files\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\particles\ParticleRenderer.cpp">
+      <Filter>Source Files\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\particles\ParticleResources.cpp">
+      <Filter>Source Files\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\particles\ParticleShader.cpp">
+      <Filter>Source Files\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\particles\ParticleTexture.cpp">
+      <Filter>Source Files\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\postProcessing\Fbo.cpp">
+      <Filter>Source Files\postProcessing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\postProcessing\ImageRenderer.cpp">
+      <Filter>Source Files\postProcessing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\postProcessing\PostProcessing.cpp">
+      <Filter>Source Files\postProcessing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderEngine\DisplayManager.cpp">
+      <Filter>Source Files\renderEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderEngine\Loader.cpp">
+      <Filter>Source Files\renderEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderEngine\MasterRenderer.cpp">
+      <Filter>Source Files\renderEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderEngine\Renderer.cpp">
+      <Filter>Source Files\renderEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderEngine\SkyManager.cpp">
+      <Filter>Source Files\renderEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shaders\ShaderProgram.cpp">
+      <Filter>Source Files\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shadows\ShadowBox.cpp">
+      <Filter>Source Files\shadows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shadows\ShadowFrameBuffer.cpp">
+      <Filter>Source Files\shadows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shadows\ShadowMapEntityRenderer.cpp">
+      <Filter>Source Files\shadows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shadows\ShadowMapMasterRenderer.cpp">
+      <Filter>Source Files\shadows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shadows\ShadowShader.cpp">
+      <Filter>Source Files\shadows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shadows2\ShadowBox2.cpp">
+      <Filter>Source Files\shadows2</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shadows2\ShadowFrameBuffer2.cpp">
+      <Filter>Source Files\shadows2</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shadows2\ShadowMapEntityRenderer2.cpp">
+      <Filter>Source Files\shadows2</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shadows2\ShadowMapMasterRenderer2.cpp">
+      <Filter>Source Files\shadows2</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shadows2\ShadowShader2.cpp">
+      <Filter>Source Files\shadows2</Filter>
+    </ClCompile>
+    <ClCompile Include="src\textures\ModelTexture.cpp">
+      <Filter>Source Files\textures</Filter>
+    </ClCompile>
+    <ClCompile Include="src\toolbox\Input.cpp">
+      <Filter>Source Files\toolbox</Filter>
+    </ClCompile>
+    <ClCompile Include="src\toolbox\Level.cpp">
+      <Filter>Source Files\toolbox</Filter>
+    </ClCompile>
+    <ClCompile Include="src\toolbox\LevelLoader.cpp">
+      <Filter>Source Files\toolbox</Filter>
+    </ClCompile>
+    <ClCompile Include="src\toolbox\MainMenu.cpp">
+      <Filter>Source Files\toolbox</Filter>
+    </ClCompile>
+    <ClCompile Include="src\toolbox\maths.cpp">
+      <Filter>Source Files\toolbox</Filter>
+    </ClCompile>
+    <ClCompile Include="src\toolbox\matrix.cpp">
+      <Filter>Source Files\toolbox</Filter>
+    </ClCompile>
+    <ClCompile Include="src\toolbox\PauseScreen.cpp">
+      <Filter>Source Files\toolbox</Filter>
+    </ClCompile>
+    <ClCompile Include="src\toolbox\Split.cpp">
+      <Filter>Source Files\toolbox</Filter>
+    </ClCompile>
+    <ClCompile Include="src\toolbox\vector.cpp">
+      <Filter>Source Files\toolbox</Filter>
+    </ClCompile>
+    <ClCompile Include="src\water\WaterFrameBuffers.cpp">
+      <Filter>Source Files\water</Filter>
+    </ClCompile>
+    <ClCompile Include="src\water\WaterRenderer.cpp">
+      <Filter>Source Files\water</Filter>
+    </ClCompile>
+    <ClCompile Include="src\water\WaterShader.cpp">
+      <Filter>Source Files\water</Filter>
+    </ClCompile>
+    <ClCompile Include="src\water\WaterTile.cpp">
+      <Filter>Source Files\water</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\ManiaSonicModel.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\animation\animation.h">
+      <Filter>Source Files\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\animation\animationresources.h">
+      <Filter>Source Files\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\animation\body.h">
+      <Filter>Source Files\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\animation\keyframe.h">
+      <Filter>Source Files\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\animation\limb.h">
+      <Filter>Source Files\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\audio\audiomaster.h">
+      <Filter>Source Files\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\audio\audioplayer.h">
+      <Filter>Source Files\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\audio\source.h">
+      <Filter>Source Files\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bloom\combinefilter.h">
+      <Filter>Source Files\bloom</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bloom\combineshader.h">
+      <Filter>Source Files\bloom</Filter>
+    </ClInclude>
+    <ClInclude Include="src\collision\collisionchecker.h">
+      <Filter>Source Files\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="src\collision\collisionmodel.h">
+      <Filter>Source Files\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="src\collision\quadtreenode.h">
+      <Filter>Source Files\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="src\collision\triangle3d.h">
+      <Filter>Source Files\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engineTester\main.h">
+      <Filter>Source Files\engineTester</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\boostpad.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\camera.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\car.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\checkpoint.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\collideableobject.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\dummy.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\entity.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\jumpramp.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\light.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\skysphere.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\stage.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\stagepass2.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\stagepass3.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\stagetransparent.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\fontMeshCreator\character.h">
+      <Filter>Source Files\fontMeshCreator</Filter>
+    </ClInclude>
+    <ClInclude Include="src\fontMeshCreator\fonttype.h">
+      <Filter>Source Files\fontMeshCreator</Filter>
+    </ClInclude>
+    <ClInclude Include="src\fontMeshCreator\guinumber.h">
+      <Filter>Source Files\fontMeshCreator</Filter>
+    </ClInclude>
+    <ClInclude Include="src\fontMeshCreator\guitext.h">
+      <Filter>Source Files\fontMeshCreator</Filter>
+    </ClInclude>
+    <ClInclude Include="src\fontMeshCreator\line.h">
+      <Filter>Source Files\fontMeshCreator</Filter>
+    </ClInclude>
+    <ClInclude Include="src\fontMeshCreator\metafile.h">
+      <Filter>Source Files\fontMeshCreator</Filter>
+    </ClInclude>
+    <ClInclude Include="src\fontMeshCreator\textmeshcreator.h">
+      <Filter>Source Files\fontMeshCreator</Filter>
+    </ClInclude>
+    <ClInclude Include="src\fontMeshCreator\textmeshdata.h">
+      <Filter>Source Files\fontMeshCreator</Filter>
+    </ClInclude>
+    <ClInclude Include="src\fontMeshCreator\word.h">
+      <Filter>Source Files\fontMeshCreator</Filter>
+    </ClInclude>
+    <ClInclude Include="src\fontRendering\fontrenderer.h">
+      <Filter>Source Files\fontRendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\fontRendering\fontshader.h">
+      <Filter>Source Files\fontRendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\fontRendering\textmaster.h">
+      <Filter>Source Files\fontRendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gaussianBlur\horizontalblur.h">
+      <Filter>Source Files\guassianBlur</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gaussianBlur\horizontalblurshader.h">
+      <Filter>Source Files\guassianBlur</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gaussianBlur\verticalblur.h">
+      <Filter>Source Files\guassianBlur</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gaussianBlur\verticalblurshader.h">
+      <Filter>Source Files\guassianBlur</Filter>
+    </ClInclude>
+    <ClInclude Include="src\guis\guimanager.h">
+      <Filter>Source Files\guis</Filter>
+    </ClInclude>
+    <ClInclude Include="src\guis\guirenderer.h">
+      <Filter>Source Files\guis</Filter>
+    </ClInclude>
+    <ClInclude Include="src\guis\guishader.h">
+      <Filter>Source Files\guis</Filter>
+    </ClInclude>
+    <ClInclude Include="src\guis\guitexture.h">
+      <Filter>Source Files\guis</Filter>
+    </ClInclude>
+    <ClInclude Include="src\guis\guitextureresources.h">
+      <Filter>Source Files\guis</Filter>
+    </ClInclude>
+    <ClInclude Include="src\models\models.h">
+      <Filter>Source Files\models</Filter>
+    </ClInclude>
+    <ClInclude Include="src\objLoader\fakeTexture.h">
+      <Filter>Source Files\objLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\objLoader\objLoader.h">
+      <Filter>Source Files\objLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\objLoader\vertex.h">
+      <Filter>Source Files\objLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\particles\insertionsort.h">
+      <Filter>Source Files\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\particles\particle.h">
+      <Filter>Source Files\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\particles\particlemaster.h">
+      <Filter>Source Files\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\particles\particlerenderer.h">
+      <Filter>Source Files\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\particles\particleresources.h">
+      <Filter>Source Files\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\particles\particleshader.h">
+      <Filter>Source Files\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\particles\particletexture.h">
+      <Filter>Source Files\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\postProcessing\fbo.h">
+      <Filter>Source Files\postProcessing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\postProcessing\imagerenderer.h">
+      <Filter>Source Files\postProcessing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\postProcessing\postprocessing.h">
+      <Filter>Source Files\postProcessing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderEngine\renderEngine.h">
+      <Filter>Source Files\renderEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderEngine\skymanager.h">
+      <Filter>Source Files\renderEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shaders\shaderprogram.h">
+      <Filter>Source Files\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shadows\shadowbox.h">
+      <Filter>Source Files\shadows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shadows\shadowframebuffer.h">
+      <Filter>Source Files\shadows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shadows\shadowmapentityrenderer.h">
+      <Filter>Source Files\shadows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shadows\shadowmapmasterrenderer.h">
+      <Filter>Source Files\shadows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shadows\shadowshader.h">
+      <Filter>Source Files\shadows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shadows2\shadowbox2.h">
+      <Filter>Source Files\shadows2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shadows2\shadowframebuffer2.h">
+      <Filter>Source Files\shadows2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shadows2\shadowmapentityrenderer2.h">
+      <Filter>Source Files\shadows2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shadows2\shadowmapmasterrenderer2.h">
+      <Filter>Source Files\shadows2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shadows2\shadowshader2.h">
+      <Filter>Source Files\shadows2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\textures\modeltexture.h">
+      <Filter>Source Files\textures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\toolbox\input.h">
+      <Filter>Source Files\toolbox</Filter>
+    </ClInclude>
+    <ClInclude Include="src\toolbox\level.h">
+      <Filter>Source Files\toolbox</Filter>
+    </ClInclude>
+    <ClInclude Include="src\toolbox\levelloader.h">
+      <Filter>Source Files\toolbox</Filter>
+    </ClInclude>
+    <ClInclude Include="src\toolbox\mainmenu.h">
+      <Filter>Source Files\toolbox</Filter>
+    </ClInclude>
+    <ClInclude Include="src\toolbox\maths.h">
+      <Filter>Source Files\toolbox</Filter>
+    </ClInclude>
+    <ClInclude Include="src\toolbox\matrix.h">
+      <Filter>Source Files\toolbox</Filter>
+    </ClInclude>
+    <ClInclude Include="src\toolbox\pausescreen.h">
+      <Filter>Source Files\toolbox</Filter>
+    </ClInclude>
+    <ClInclude Include="src\toolbox\split.h">
+      <Filter>Source Files\toolbox</Filter>
+    </ClInclude>
+    <ClInclude Include="src\toolbox\vector.h">
+      <Filter>Source Files\toolbox</Filter>
+    </ClInclude>
+    <ClInclude Include="src\water\waterframebuffers.h">
+      <Filter>Source Files\water</Filter>
+    </ClInclude>
+    <ClInclude Include="src\water\waterrenderer.h">
+      <Filter>Source Files\water</Filter>
+    </ClInclude>
+    <ClInclude Include="src\water\watershader.h">
+      <Filter>Source Files\water</Filter>
+    </ClInclude>
+    <ClInclude Include="src\water\watertile.h">
+      <Filter>Source Files\water</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\maniasonicmodel.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

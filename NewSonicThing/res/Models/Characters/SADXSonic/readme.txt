@@ -1,0 +1,1 @@
+Sonic ripped from SADX by josh98. Credit is not needed but appreciated.

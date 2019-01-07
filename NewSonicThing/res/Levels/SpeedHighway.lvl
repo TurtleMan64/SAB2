@@ -1,0 +1,26 @@
+Levels/SpeedHighway
+SpeedHighway
+Levels/SpeedHighway
+1
+Collision 8
+0.75 0.9 1.0 #0.5 0.7 1.0
+0.0 0.0 0.0
+0.0 0.0 0.0
+0.3 0.3 0.45
+0.0 0.01 0.03 #blue tint: 0.0 0.0 0.055
+0.0 0.0 0.0
+0.00000001 2.0
+109.0
+90 18
+1
+2
+res/Audio/BGM/highway1_intro.ogg
+res/Audio/BGM/highway1_loop.ogg
+14129.78 2700.98 14168.37
+166 6
+-1000
+
+
+
+# Player
+6 -911 5486 7

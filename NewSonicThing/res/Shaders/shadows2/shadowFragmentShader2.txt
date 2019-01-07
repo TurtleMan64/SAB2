@@ -1,0 +1,17 @@
+#version 330
+
+in vec2 textureCoords;//only needed for transparency
+
+out vec4 out_colour;
+
+uniform sampler2D modelTexture;//will use this next week
+
+void main(void)
+{
+	float alpha = texture(modelTexture, textureCoords).a;//only needed for transparency
+	if(alpha < 0.9)//only needed for transparency, make sure its same as main frag
+	{
+		discard;//only needed for transparency
+	}
+	out_colour = vec4(1.0);
+}

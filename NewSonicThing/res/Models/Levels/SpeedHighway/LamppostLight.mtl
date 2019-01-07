@@ -1,0 +1,15 @@
+# Blender MTL File: 'None'
+# Material Count: 1
+
+newmtl object_02288C64_material_14
+	Ns 19.607843
+	Ka 1.000000 1.000000 1.000000
+	Kd 1.000000 1.000000 1.000000
+	Ks 0.000000 0.000000 0.000000
+	Ke 0.000000 0.000000 0.000000
+	Ni 0
+	Tr 0
+	d 0.000000
+	glow 1.0
+	illum 2
+	map_Kd ama_hw003_edit.png

@@ -1,0 +1,35 @@
+# Blender MTL File: 'None'
+# Material Count: 3
+
+newmtl pr128_12
+Ns 17.647059
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd E:\CWorkspace\SonicGame3Dv3\SonicGame3Dv3\res\Models\MetalHarbor\pr128_12.png
+
+newmtl pr128_27
+Ns 17.647059
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd E:\CWorkspace\SonicGame3Dv3\SonicGame3Dv3\res\Models\MetalHarbor\pr128_27.png
+
+newmtl pr128_34_pr128_34.png
+Ns 17.647059
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd E:\CWorkspace\SonicGame3Dv3\SonicGame3Dv3\res\Models\MetalHarbor\pr128_34.png

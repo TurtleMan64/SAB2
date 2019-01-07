@@ -1,0 +1,1114 @@
+#include <glad/glad.h>
+
+#include "entity.h"
+#include "../models/models.h"
+#include "../toolbox/vector.h"
+#include "car.h"
+#include "../renderEngine/renderEngine.h"
+#include "../objLoader/objLoader.h"
+#include "../engineTester/main.h"
+#include "../entities/camera.h"
+#include "../collision/collisionchecker.h"
+#include "../collision/triangle3d.h"
+#include "../toolbox/maths.h"
+#include "../audio/audioplayer.h"
+#include "../particles/particle.h"
+#include "../particles/particleresources.h"
+#include "../toolbox/input.h"
+#include "../fontMeshCreator/guinumber.h"
+#include "../toolbox/split.h"
+#include "../audio/source.h"
+#include "checkpoint.h"
+#include "../guis/guimanager.h"
+#include "maniasonicmodel.h"
+
+#include <list>
+#include <iostream>
+#include <algorithm>
+#include <fstream>
+
+
+extern float dt;
+
+Car::Car()
+{
+
+}
+
+Car::Car(float x, float y, float z)
+{
+	position.set(x, y, z);
+	vel.set(0, 0, 0);
+	relativeUp.set(0, 1, 0);
+	relativeUpSmooth.set(0, 1, 0);
+	onGround = false;
+	camDir.set(0, 0, -1);
+	camDirSmooth.set(0, 0, -1);
+
+	maniaSonicModel = new ManiaSonicModel; INCR_NEW
+	Main_addEntity(maniaSonicModel);
+	maniaSonicModel->setVisible(true);
+
+	visible = false;
+	loadVehicleInfo();
+}
+
+Car::~Car()
+{
+
+}
+
+void Car::step()
+{
+	canMoveTimer = std::fmaxf(0.0f, canMoveTimer - dt);
+	hoverTimer   = std::fmaxf(0.0f, hoverTimer   - dt);
+
+	setInputs();
+
+	//Homing attack
+	if (!onGround && (isBall || isJumping) && !justHomingAttacked && inputJump && !inputJumpPrevious)
+	{
+		isJumping = false;
+		isBall = true;
+		justHomingAttacked = true;
+		//vel.setLength(vel.length()+250);
+
+		float storedVelY = vel.y;
+		vel.y = 0;
+
+		if (vel.length() < 300.0f)
+		{
+			vel.setLength(300.0f);
+		}
+
+		vel.y = storedVelY;
+
+		//float speed = sqrtf(vel.x*vel.x + vel.z*vel.z);
+		//float homingPower = std::max(speed, 250.0f);
+		//
+		//float stickAngle = -atan2f(inputY, inputX) - M_PI/2; //angle you are holding on the stick, with 0 being up
+		//float stickRadius = sqrtf(inputX*inputX + inputY*inputY);
+		//Vector3f dirForward = Maths::projectOntoPlane(&camDir, &relativeUp);
+		//dirForward.setLength(stickRadius);
+		//Vector3f newVel = Maths::rotatePoint(&dirForward, &relativeUp, stickAngle);
+		//newVel.y = 0;
+
+		//if (stickRadius > 0.1f)
+		{
+			//vel = vel + newVel.scaleCopy(airRunPush*dt); //Add vel from player stick input
+		}
+		//else
+		{
+			
+		}
+	}
+
+	//Jump
+	if (onGround && inputJump && !inputJumpPrevious)
+	{
+		vel = vel + relativeUp.scaleCopy(jumpPower);
+		hoverTimer = hoverTimerThreshold;
+		onGround = false;
+		isJumping = true;
+	}
+	if (!onGround && inputJump && hoverTimer > 0.0f && isJumping) //Add vel from hover
+	{
+		vel = vel + relativeUpSmooth.scaleCopy(hoverPower*dt);
+	}
+
+	//Ball
+	if (onGround)
+	{
+		isJumping = false;
+		justHomingAttacked = false;
+
+		if (isBall)
+		{
+			float speed = vel.lengthSquared();
+			if (speed < autoUnrollThreshold*autoUnrollThreshold)
+			{
+				isBall = false;
+				spindashReleaseTimer = spindashReleaseTimerMax;
+				spindashRestartDelay = spindashRestartDelayMax;
+			}
+		}
+	}
+
+	//Spindash stuff
+	if (onGround)
+	{
+		//if (Input::inputs.INPUT_ACTION3 && !Input::inputs.INPUT_PREVIOUS_ACTION3 && !isBall)
+		{
+			//vel.setLength(storedSpindashSpeed);
+			//isBall = true;
+		}
+
+		if (isBall == false && spindashRestartDelay == 0)
+		{
+			canStartSpindash = true;
+		}
+		else
+		{
+			canStartSpindash = false;
+		}
+
+		if (spindashRestartDelay > 0)
+		{
+			if ((inputAction  && !inputActionPrevious) || 
+				(inputAction2 && !inputAction2Previous))
+			{
+				bufferedSpindashInput = true;
+			}
+		}
+
+		if ((((inputAction && !inputActionPrevious) || (inputAction2 && !inputAction2Previous)) && canStartSpindash) || 
+			(bufferedSpindashInput && (inputAction || inputAction2) && canStartSpindash))
+		{
+			if (!isSpindashing)
+			{
+				storedSpindashSpeed = vel.length();
+			}
+			isSpindashing = true;
+		}
+
+		if (!inputAction && !inputAction2)
+		{
+			isSpindashing = false;
+			bufferedSpindashInput = false;
+		}
+
+		if (isSpindashing)
+		{
+			spindashTimer = std::min(spindashTimer + 1, spindashTimerMax);
+			storedSpindashSpeed = std::fminf(storedSpindashSpeed + 0.4f*60*60*dt, spindashPowerMax);
+			std::fprintf(stdout, "sss = %f\n", storedSpindashSpeed);
+			if (spindashTimer == 1)
+			{
+				AudioPlayer::play(14, getPosition());
+			}
+			isSpindashing = true;
+			calcSpindashDirection();
+			if (spindashTimer > spindashDelay)
+			{
+				vel = Maths::applyDrag(&vel, -spindashFriction, dt);
+			}
+		}
+		else
+		{
+			if (spindashTimer > 0)
+			{
+				spindash();
+
+				//float inputX2 = xVelGround;
+				//float inputY2 = zVelGround;
+				//float mag2 = sqrtf(inputX2*inputX2 + inputY2*inputY2);
+				//
+				//float inputDir2 = (atan2f(inputY2, inputX2));
+				//Vector3f negNorm2;
+				//negNorm2.set(-currNorm.x, -currNorm.y, -currNorm.z);
+				//Vector3f mapped2 = mapInputs3(inputDir2, mag2, &negNorm2);
+				//xVel = mapped2.x;
+				//yVel = mapped2.y;
+				//zVel = mapped2.z;
+			}
+			spindashTimer = 0;
+			storedSpindashSpeed = 0;
+		}
+
+		if (((inputAction  && !inputActionPrevious) ||
+			 (inputAction2 && !inputAction2Previous)))
+		{
+			if (isBall)
+			{
+				spindashReleaseTimer = spindashReleaseTimerMax;
+				spindashRestartDelay = spindashRestartDelayMax;
+			}
+
+			isBall = false;
+		}
+	}
+	spindashReleaseTimer = std::max(spindashReleaseTimer - 1, 0);
+	spindashRestartDelay = std::max(spindashRestartDelay - 1, 0);
+
+	if (onGround)
+	{
+		moveMeGround();
+	}
+	else
+	{
+		moveMeAir();
+	}
+
+	//Add to velocity based on the slope you are on
+	if (onGround)
+	{
+		//std::fprintf(stdout, "relativeU.y = %f\n", relativeUp.y);
+		if (relativeUp.y < 0.99f)
+		{
+			if (isBall)
+			{
+				//version 2
+				float slopePower = slopeBallAccel; //TODO: this might not work perfectly with arbitrary framerate
+				Vector3f slopeVel(0, -slopePower*dt, 0); //slopeAccel
+				slopeVel = Maths::projectOntoPlane(&slopeVel, &relativeUp);
+				vel = vel + slopeVel;
+
+				//version 1
+				//float slopePower = slopeBallAccel/(vel.length()+1); //TODO: this might not work perfectly with arbitrary framerate
+				//Vector3f slopeVel(0, -slopePower*dt, 0); //slopeAccel
+				//slopeVel = Maths::projectOntoPlane(&slopeVel, &relativeUp);
+				//vel = vel + slopeVel;
+			}
+			else
+			{
+				float slopePower = slopeRunAccel/(vel.length()+1); //TODO: this might not work perfectly with arbitrary framerate
+				//float slopePower = 300.0f; //80
+				Vector3f slopeVel(0, -slopePower*dt, 0); //slopeAccel
+				slopeVel = Maths::projectOntoPlane(&slopeVel, &relativeUp);
+				vel = vel + slopeVel;
+			}
+		}
+	}
+
+
+
+
+	//std::fprintf(stdout, "camDir = [%f %f %f]\n", camDir.x, camDir.y, camDir.z);
+
+	//Twisting camera from user input
+	camDir = Maths::rotatePoint(&camDir, &relativeUp, -inputX2*dt);
+	//std::fprintf(stdout, "camDir = [%f %f %f]\n", camDir.x, camDir.y, camDir.z);
+	//std::fprintf(stdout, "vel    = [%f %f %f]\n", vel.x, vel.y, vel.z);
+
+	//camera adjust to direction you are heading in
+	if (onGround)
+	{
+		//std::fprintf(stdout, "vel.length()*0.014f = %f\n", vel.length()*0.014f);
+		if (Global::isAutoCam)
+		{
+			camDir = Maths::interpolateVector(&camDir, &vel, fminf(vel.length()*0.014f*dt, 45.0f*dt));
+		}
+		else
+		{
+			//camDir = Maths::interpolateVector(&camDir, &vel, fminf(vel.length()*0.004f*dt, 0.5f*dt));
+		}
+	}
+	else
+	{
+		Vector3f noY(vel);
+		if (noY.y > 0)
+		{
+			noY.y = 0;
+		}
+
+		if (Global::isAutoCam)
+		{
+			//std::fprintf(stdout, "camDir = [%f %f %f]\n", camDir.x, camDir.y, camDir.z);
+			camDir = Maths::interpolateVector(&camDir, &noY, fminf(noY.length()*0.01f*dt, 30.0f*dt));
+			//std::fprintf(stdout, "camDir = [%f %f %f]\n\n\n", camDir.x, camDir.y, camDir.z);
+		}
+		else
+		{
+			//camDir = Maths::interpolateVector(&camDir, &vel, fminf(vel.length()*0.004f*dt, 0.5f*dt));
+		}
+	}
+	//std::fprintf(stdout, "camDir = [%f %f %f]\n\n\n", camDir.x, camDir.y, camDir.z);
+
+
+
+	//vertical adjusting camera
+	if (onGround)
+	{
+		//player input
+		Vector3f perpen = camDir.cross(&relativeUp);
+		camDir = Maths::rotatePoint(&camDir, &perpen, -inputY2*dt);
+
+		//vertical check - rotate down if too high or too low
+		float dot = camDir.dot(&relativeUp);
+		//std::fprintf(stdout, "dot = %f\n", dot);
+		if (dot < -0.325f)
+		{
+			camDir = Maths::rotatePoint(&camDir, &perpen, -((dot+0.325f)*12)*dt);
+		}
+		else if (dot > -0.2f)
+		{
+			camDir = Maths::rotatePoint(&camDir, &perpen, -((dot+0.2f)*20)*dt);
+		}
+	}
+	else
+	{
+		//player input
+		Vector3f perpen = camDir.cross(&relativeUp);
+		camDir = Maths::rotatePoint(&camDir, &perpen, -inputY2*dt);
+
+		//vertical check - rotate down if too high or too low
+		float dot = camDir.dot(&relativeUp);
+		//std::fprintf(stdout, "dot = %f\n", dot);
+		if (dot < -0.75f)
+		{
+			camDir = Maths::rotatePoint(&camDir, &perpen, -((dot+0.75f)*12)*dt);
+		}
+		else if (dot > -0.2f)
+		{
+			camDir = Maths::rotatePoint(&camDir, &perpen, -((dot+0.2f)*20)*dt);
+		}
+	}
+
+	//smoothing
+	camDirSmooth = Maths::interpolateVector(&camDirSmooth, &camDir, 10*dt);
+	relativeUpSmooth = Maths::interpolateVector(&relativeUpSmooth, &relativeUp, 3*dt);
+
+	//speed before adjusting
+	float originalSpeed = vel.length();
+
+	CollisionChecker::setCheckPlayer();
+	if (CollisionChecker::checkCollision(getX(), getY(), getZ(), getX()+vel.x*dt, getY()+vel.y*dt, getZ()+vel.z*dt))
+	{
+		Vector3f* colNormal = &CollisionChecker::getCollideTriangle()->normal;
+
+		if (onGround  == false) //Air to ground
+		{
+			if (CollisionChecker::getCollideTriangle()->isWall() || colNormal->y < wallStickThreshold)
+			{
+				Vector3f newDirection = Maths::projectOntoPlane(&vel, colNormal);
+				newDirection.scale(0.925f);
+				Vector3f posAfterMoveToWall = Vector3f(CollisionChecker::getCollidePosition());
+				Vector3f posDelta = posAfterMoveToWall - position;
+				posAfterMoveToWall = posAfterMoveToWall + colNormal->scaleCopy(FLOOR_OFFSET);
+				float distLeftToMove = vel.scaleCopy(dt).length();
+				float distMoved = posDelta.length();
+				distLeftToMove -= distMoved;
+
+				vel.set(&newDirection);
+				setPosition(&posAfterMoveToWall);
+
+				Vector3f velToMove = Vector3f(&vel);
+				velToMove.setLength(distLeftToMove);
+
+				//move additional distance
+				if (distLeftToMove > 0)
+				{
+					if (CollisionChecker::checkCollision(getX(), getY(), getZ(), getX()+velToMove.x, getY()+velToMove.y, getZ()+velToMove.z) == false)
+					{
+						increasePosition(velToMove.x, velToMove.y, velToMove.z);
+					}
+				}
+			}
+			else
+			{
+				currentTriangle = CollisionChecker::getCollideTriangle();
+				Vector3f newDirection = Maths::projectOntoPlane(&vel, colNormal);
+				vel.set(&newDirection);
+
+				setPosition(CollisionChecker::getCollidePosition());
+				increasePosition(colNormal->x*FLOOR_OFFSET, colNormal->y*FLOOR_OFFSET, colNormal->z*FLOOR_OFFSET);
+
+				relativeUp.set(colNormal);
+				onGround = true;
+				isBall = false;
+			}
+		}
+		else //Ground to a different triangle
+		{
+			//check if you can smoothly transition from previous triangle to this triangle
+			float dotProduct = relativeUp.dot(colNormal);
+			if (dotProduct < smoothTransitionThreshold || CollisionChecker::getCollideTriangle()->isWall())
+			{
+				float len = vel.length();
+				float dot = vel.dot(colNormal)/len;
+				float fact = sqrtf(1 - dot*dot);
+				Vector3f bounce   = Maths::bounceVector(&vel, colNormal, 1.0f);
+				Vector3f parallel = Maths::projectOntoPlane(&vel, colNormal);
+				bounce   = Maths::projectOntoPlane(&bounce,   &relativeUp);
+				parallel = Maths::projectOntoPlane(&parallel, &relativeUp);
+				Vector3f rotate1 = Maths::rotatePoint(&parallel, &relativeUp, 0.1f);
+				Vector3f rotate2 = Maths::rotatePoint(&parallel, &relativeUp, -0.1f);
+				vel = Maths::getCloserPoint(&rotate1, &rotate2, &bounce);
+				vel.setLength(len*fact);
+
+				canMoveTimer = hitWallTimePunish;
+				AudioPlayer::play(4, getPosition());
+
+				increasePosition(colNormal->x*FLOOR_OFFSET*2, colNormal->y*FLOOR_OFFSET*2, colNormal->z*FLOOR_OFFSET*2);
+			}
+			else
+			{
+				currentTriangle = CollisionChecker::getCollideTriangle();
+				Vector3f newDirection = Maths::projectOntoPlane(&vel, colNormal);
+				if (newDirection.lengthSquared() != 0)
+				{
+					newDirection.normalize();
+					newDirection.x*=originalSpeed;
+					newDirection.y*=originalSpeed;
+					newDirection.z*=originalSpeed;
+					vel.set(&newDirection);
+				}
+
+				relativeUp.set(colNormal);
+				onGround = true;
+
+				Vector3f newPosition(CollisionChecker::getCollidePosition());
+				//newPosition.add(colNormal->x*FLOOR_OFFSET, colNormal->y*FLOOR_OFFSET, colNormal->z*FLOOR_OFFSET); //not sure if it would be better to calculate new positoin like this instead
+				Vector3f travelDelta = newPosition - position;
+
+				setPosition(CollisionChecker::getCollidePosition());
+				increasePosition(colNormal->x*FLOOR_OFFSET, colNormal->y*FLOOR_OFFSET, colNormal->z*FLOOR_OFFSET);
+
+				float distanceTraveled = travelDelta.length();
+				float distanceRemaining = (vel.length()*dt)-distanceTraveled;
+
+				Vector3f nextVel(&vel);
+				nextVel.normalize();
+				nextVel.scale(distanceRemaining);
+
+				while (distanceRemaining > 0.0f)
+				{
+					CollisionChecker::setCheckPlayer();
+					if (CollisionChecker::checkCollision(getX(), getY(), getZ(), getX()+nextVel.x, getY()+nextVel.y, getZ()+nextVel.z))
+					{
+						colNormal = &CollisionChecker::getCollideTriangle()->normal;
+
+						//check if you can smoothly transition from previous triangle to this triangle
+						dotProduct = relativeUp.dot(colNormal);
+						if (dotProduct < smoothTransitionThreshold || CollisionChecker::getCollideTriangle()->isWall())
+						{
+							float len = vel.length();
+							float dot = vel.dot(colNormal)/len;
+							float fact = sqrtf(1 - dot*dot);
+							Vector3f bounce   = Maths::bounceVector(&vel, colNormal, 1.0f);
+							Vector3f parallel = Maths::projectOntoPlane(&vel, colNormal);
+							bounce   = Maths::projectOntoPlane(&bounce,   &relativeUp);
+							parallel = Maths::projectOntoPlane(&parallel, &relativeUp);
+							Vector3f rotate1 = Maths::rotatePoint(&parallel, &relativeUp, 0.1f);
+							Vector3f rotate2 = Maths::rotatePoint(&parallel, &relativeUp, -0.1f);
+							vel = Maths::getCloserPoint(&rotate1, &rotate2, &bounce);
+							vel.setLength(len*fact);
+
+							canMoveTimer = hitWallTimePunish;
+							AudioPlayer::play(4, getPosition());
+
+							increasePosition(colNormal->x*FLOOR_OFFSET*2, colNormal->y*FLOOR_OFFSET*2, colNormal->z*FLOOR_OFFSET*2);
+
+							distanceRemaining = 0.0f;
+						}
+						else
+						{
+							currentTriangle = CollisionChecker::getCollideTriangle();
+							newDirection = Maths::projectOntoPlane(&nextVel, colNormal);
+							if (newDirection.lengthSquared() != 0)
+							{
+								newDirection.normalize();
+								newDirection.x*=originalSpeed;
+								newDirection.y*=originalSpeed;
+								newDirection.z*=originalSpeed;
+								vel.set(&newDirection);
+							}
+
+							relativeUp.set(colNormal);
+							onGround = true;
+
+							newPosition.set(CollisionChecker::getCollidePosition());
+							travelDelta = newPosition - position;
+
+
+							setPosition(CollisionChecker::getCollidePosition());
+							increasePosition(colNormal->x*FLOOR_OFFSET, colNormal->y*FLOOR_OFFSET, colNormal->z*FLOOR_OFFSET);
+
+							distanceTraveled = travelDelta.length();
+							distanceRemaining = distanceRemaining-distanceTraveled;
+
+							nextVel.set(&vel);
+							nextVel.normalize();
+							nextVel.scale(distanceRemaining);
+						}
+					}
+					else //no more collisions, travel the remaining distance
+					{
+						increasePosition(nextVel.x, nextVel.y, nextVel.z);
+						distanceRemaining = 0.0f;
+					}
+				}
+			}
+		}
+	}
+	else //No initial collision
+	{
+		increasePosition(vel.x*dt, vel.y*dt, vel.z*dt);
+
+		bool checkPassed = false;
+		CollisionChecker::setCheckPlayer();
+		if (onGround)
+		{
+			checkPassed = CollisionChecker::checkCollision(getX(), getY(), getZ(), getX() - relativeUp.x*surfaceTension, getY() - relativeUp.y*surfaceTension, getZ() - relativeUp.z*surfaceTension);
+		}
+		if (checkPassed)
+		{
+			float dotProduct = relativeUp.dot(&(CollisionChecker::getCollideTriangle()->normal));
+
+			if (dotProduct < smoothTransitionThreshold || CollisionChecker::getCollideTriangle()->isWall()) //It's a wall, pretend the collision check didn't see it
+			{
+				Vector3f perpen = Maths::calcThirdAxis(&vel, &relativeUp);
+				Vector3f coordsFlat = Maths::coordinatesRelativeToBasis(&vel, &relativeUp, &perpen, &(CollisionChecker::getCollideTriangle()->normal));
+
+				if (coordsFlat.x > 0) //Only ignore walls that are cliffs, not walls
+				{
+					checkPassed = false;
+				}
+			}
+		}
+			
+		if (checkPassed)
+		{
+			Vector3f* colNormal = &CollisionChecker::getCollideTriangle()->normal;
+
+			float dotProduct = relativeUp.dot(&(CollisionChecker::getCollideTriangle()->normal));
+			if (dotProduct < smoothTransitionThreshold || CollisionChecker::getCollideTriangle()->isWall())
+			{
+				CollisionChecker::falseAlarm();
+
+				float len = vel.length();
+				float dot = fabsf(vel.dot(colNormal)/len);
+				float fact = sqrtf(1 - dot*dot);
+				Vector3f bounce   = Maths::bounceVector(&vel, colNormal, 1.0f);
+				Vector3f parallel = Maths::projectOntoPlane(&vel, colNormal);
+				bounce   = Maths::projectOntoPlane(&bounce,   &relativeUp);
+				parallel = Maths::projectOntoPlane(&parallel, &relativeUp);
+				Vector3f rotate1 = Maths::rotatePoint(&parallel, &relativeUp, 0.1f);
+				Vector3f rotate2 = Maths::rotatePoint(&parallel, &relativeUp, -0.1f);
+				vel = Maths::getCloserPoint(&rotate1, &rotate2, &bounce);
+				vel.setLength(len*fact);
+
+				canMoveTimer = hitWallTimePunish;
+				AudioPlayer::play(4, getPosition());
+
+				increasePosition(colNormal->x*FLOOR_OFFSET*2, colNormal->y*FLOOR_OFFSET*2, colNormal->z*FLOOR_OFFSET*2);
+			}
+			else
+			{
+				currentTriangle = CollisionChecker::getCollideTriangle();
+				Vector3f* normal = &CollisionChecker::getCollideTriangle()->normal;
+
+				setPosition(CollisionChecker::getCollidePosition());
+				increasePosition(normal->x*FLOOR_OFFSET, normal->y*FLOOR_OFFSET, normal->z*FLOOR_OFFSET);
+				
+				//speed before adjusting
+				float speed = vel.length();
+				
+				Vector3f newDirection = Maths::projectOntoPlane(&vel, normal);
+
+				newDirection.normalize();
+				newDirection.x*=speed;
+				newDirection.y*=speed;
+				newDirection.z*=speed;
+				vel.set(&newDirection);
+				
+				relativeUp.set(normal);
+				onGround = true;
+			}
+		}
+		else
+		{
+			CollisionChecker::falseAlarm();
+			onGround = false;
+
+			relativeUp.set(0, 1, 0);
+
+			vel.y = Maths::approach(vel.y, gravityTerminal, gravityApproach, dt);
+
+			Vector3f velToAddFromGravity(relativeUp);
+			velToAddFromGravity.setLength(-gravityForce*dt);
+			if (Input::inputs.INPUT_RB)
+			{
+				vel = vel - velToAddFromGravity.scaleCopy(4);
+			}
+			else
+			{
+				//vel = vel + velToAddFromGravity;
+			}
+		}
+	}
+
+	camDir.normalize();
+
+	//animating us
+	animate();
+
+	//Animating the camera
+
+	Master_makeProjectionMatrix();
+
+	Vector3f camOffset(&camDirSmooth);
+	camOffset.normalize();
+	camOffset.scale(camRadius);
+
+	float rotationVector[3];
+	Maths::rotatePoint(rotationVector, 0, 0, 0, camDirSmooth.x, camDirSmooth.y, camDirSmooth.z, relativeUpSmooth.x, relativeUpSmooth.y, relativeUpSmooth.z, -(float)(M_PI/2));
+
+	float newCameraOffset[3];
+	Maths::rotatePoint(newCameraOffset, 0, 0, 0, rotationVector[0], rotationVector[1], rotationVector[2], camOffset.x, camOffset.y, camOffset.z, 0);
+	camOffset.set(newCameraOffset[0], newCameraOffset[1], newCameraOffset[2]);
+
+	Vector3f camHeight(&relativeUpSmooth);
+	camHeight.normalize();
+	camHeight.scale(camHeightOffset);
+
+	Vector3f eye(getPosition());
+	eye = eye - camOffset;
+	eye = eye + camHeight;
+
+	Vector3f target(getPosition());
+	target = target + camHeight;
+
+	Vector3f up(&relativeUpSmooth);
+	up.normalize();
+
+	float newUp[3];
+	Maths::rotatePoint(newUp, 0, 0, 0, rotationVector[0], rotationVector[1], rotationVector[2], up.x, up.y, up.z, 0);
+	up.set(newUp[0], newUp[1], newUp[2]);
+
+	if (CollisionChecker::checkCollision(eye.x, eye.y, eye.z, target.x, target.y, target.z))
+	{
+		Vector3f delta = eye - target;
+		delta.normalize();
+		Vector3f newPos(CollisionChecker::getCollidePosition());
+		newPos = newPos - delta;
+		eye.set(&newPos);
+	}
+
+	Global::gameCamera->setViewMatrixValues(&eye, &target, &up);
+
+	Global::gameMainVehicleSpeed = (int)(vel.length());
+
+	//Vector3f posDiffDelta = position - prevPos;
+	//std::fprintf(stdout, "delta pos = %f\n\n", posDiffDelta.length()/dt);
+
+
+
+	//std::fprintf(stdout, "%f\n\n\n\n", vel.length());
+
+	Vector3f vnorm(&vel);
+	vnorm.normalize();
+	//std::fprintf(stdout, "pos  = [%f, %f, %f]\n", position.x, position.y, position.z);
+	//std::fprintf(stdout, "norm = [%f, %f, %f]\n", currNorm.x, currNorm.y, currNorm.z);
+	//std::fprintf(stdout, "dir  = [%f, %f, %f]\n", vnorm   .x, vnorm   .y, vnorm   .z);
+	//std::fprintf(stdout, "%f %f %f   %f %f %f   %f %f %f\n", position.x, position.y, position.z, currNorm.x, currNorm.y, currNorm.z, vnorm.x, vnorm.y, vnorm.z);
+}
+
+void Car::spindash()
+{
+	Vector3f newDir = Maths::projectOntoPlane(&spindashDirection, &relativeUp);
+	newDir.setLength(storedSpindashSpeed);
+	vel.set(&newDir);
+	std::fprintf(stdout, "spindash at %f speed\n", storedSpindashSpeed);
+	isBall = true;
+	AudioPlayer::play(15, getPosition());
+	storedSpindashSpeed = 0;
+}
+
+void Car::calcSpindashDirection()
+{
+	float stickAngle = -atan2f(inputY, inputX) - M_PI/2; //angle you are holding on the stick, with 0 being up
+	float stickRadius = sqrtf(inputX*inputX + inputY*inputY);
+	Vector3f dirForward = Maths::projectOntoPlane(&camDir, &relativeUp);
+	dirForward.setLength(stickRadius);
+	Vector3f newDir = Maths::rotatePoint(&dirForward, &relativeUp, stickAngle);
+
+	if (stickRadius >= 0.5f)
+	{
+		spindashDirection.set(&newDir);
+	}
+	else if (vel.length() > 0.0001f)
+	{
+		spindashDirection.set(&vel);
+	}
+}
+
+void Car::moveMeGround()
+{
+	float stickAngle = -atan2f(inputY, inputX) - M_PI/2; //angle you are holding on the stick, with 0 being up
+	float stickRadius = sqrtf(inputX*inputX + inputY*inputY);
+	Vector3f dirForward = Maths::projectOntoPlane(&camDir, &relativeUp);
+	dirForward.setLength(stickRadius);
+	Vector3f velToAdd = Maths::rotatePoint(&dirForward, &relativeUp, stickAngle);
+
+	if (stickRadius > 0.1f)
+	{
+		if (isBall)
+		{
+			Vector3f fr(0, -0.001f, 0);
+			fr = Maths::projectOntoPlane(&fr, &relativeUp);
+			float frictionPower = groundBallFriction*(1 - fr.length());
+			vel = Maths::applyDrag(&vel, -frictionPower, dt); //Slow vel down due to friction
+
+			//rotate vel to where the stick is going
+			float spd = vel.length();
+			vel = Maths::interpolateVector(&vel, &velToAdd, dt*(60.0f/12.0f));
+			vel.setLength(spd);
+		}
+		else
+		{
+			vel = vel + velToAdd.scaleCopy(groundRunPush*dt); //Add vel from player stick input
+
+			Vector3f fr(0, -0.001f, 0); //-.25
+			fr = Maths::projectOntoPlane(&fr, &relativeUp);
+			float frictionPower = groundRunFriction*(1 - fr.length());
+			vel = Maths::applyDrag(&vel, -frictionPower, dt); //Slow vel down due to friction
+
+			//rotate vel to where the stick is going
+			float ang = Maths::angleBetweenVectors(&vel, &velToAdd);
+			if (ang > Maths::toRadians(135.0f) && vel.length() > 30) //skid
+			{
+				vel = Maths::applyDrag(&vel, skidPower, dt);
+			}
+			else
+			{
+				float spd = vel.length();
+				vel = Maths::interpolateVector(&vel, &velToAdd, dt*(60.0f/12.0f));
+				vel.setLength(spd);
+			}
+		}
+	}
+	else
+	{
+		if (vel.lengthSquared() > 0.00001f)
+		{
+			if (isBall)
+			{
+				//version 2
+				Vector3f fr(0, -0.95f, 0);
+				fr = Maths::projectOntoPlane(&fr, &relativeUp);
+				float frictionPower = groundBallFriction*(1 - fr.length());
+				vel = Maths::applyDrag(&vel, -frictionPower, dt); //Slow vel down due to friction
+
+				//version 1
+				//float frictionPower = groundBallFriction;
+				//vel = Maths::applyDrag(&vel, -frictionPower, dt); //Slow vel down due to friction
+			}
+			else
+			{
+				Vector3f fr(0, -0.95f, 0); //0.75
+				fr = Maths::projectOntoPlane(&fr, &relativeUp);
+				float frictionPower = groundNeutralFriction*(1 - fr.length());
+				vel = Maths::applyDrag(&vel, -frictionPower, dt); //Slow vel down due to friction
+			}
+		}
+	}
+}
+
+void Car::moveMeAir()
+{
+	float stickAngle = -atan2f(inputY, inputX) - M_PI/2; //angle you are holding on the stick, with 0 being up
+	float stickRadius = sqrtf(inputX*inputX + inputY*inputY);
+	Vector3f dirForward = Maths::projectOntoPlane(&camDir, &relativeUp);
+	dirForward.setLength(stickRadius);
+	Vector3f velToAdd = Maths::rotatePoint(&dirForward, &relativeUp, stickAngle);
+	velToAdd.y = 0;
+
+	if (stickRadius > 0.1f)
+	{
+		vel = vel + velToAdd.scaleCopy(airRunPush*dt); //Add vel from player stick input
+
+		if (vel.lengthSquared() > 0.00001f)
+		{
+			float storedVelY = vel.y;
+			vel.y = 0;
+			vel = Maths::applyDrag(&vel, -airRunFriction, dt); //Slow vel down due to friction (but no slowdown in y direction)
+			vel.y = storedVelY;
+		}
+
+		//rotate vel to where the stick is going
+		float storedVelY = vel.y;
+		vel.y = 0;
+		float ang = Maths::angleBetweenVectors(&vel, &velToAdd);
+		if (ang > 0.001f)
+		{
+			float spd = vel.length();
+			vel = Maths::interpolateVector(&vel, &velToAdd, dt*(60.0f/12.0f));
+			vel.setLength(spd);
+			vel.scale(1 - 3.5f*ang*dt*(1/M_PI)); //slow down from turning in the air
+		}
+		vel.y = storedVelY;
+	}
+	else
+	{
+		if (vel.lengthSquared() > 0.00001f)
+		{
+			float storedVelY = vel.y;
+			vel.y = 0;
+			vel = Maths::applyDrag(&vel, -airNeutralFriction, dt); //Slow vel down due to friction (but no slowdown in y direction)
+			vel.y = storedVelY;
+		}
+	}
+}
+
+void Car::setVelocity(float xVel, float yVel, float zVel)
+{
+	vel.x = xVel;
+	vel.y = yVel;
+	vel.z = zVel;
+}
+
+void Car::setCanMoveTimer(float newTimer)
+{
+	canMoveTimer = newTimer;
+}
+
+void Car::animate()
+{
+	//idea: relativeUpSmooth works pretty well here but its a bit too smooth. maybe make a new relativeUpSmoothAnim just for this animation?
+	Vector3f groundSpeeds = Maths::calculatePlaneSpeed(vel.x, vel.y, vel.z, &relativeUp);
+	float twistAngleGround = Maths::toDegrees(atan2f(-groundSpeeds.z, groundSpeeds.x));
+	float nXGround = relativeUp.x;
+	float nYGround = relativeUp.y;
+	float nZGround = relativeUp.z;
+	float normHLengthGround = sqrtf(nXGround*nXGround + nZGround*nZGround);
+	float pitchAngleGround = Maths::toDegrees(atan2f(nYGround, normHLengthGround));
+	float yawAngleGround = Maths::toDegrees(atan2f(-nZGround, nXGround));
+	float diffGround = Maths::compareTwoAngles(twistAngleGround, yawAngleGround);
+
+	float twistAngleAir = Maths::toDegrees(atan2f(-vel.z, vel.x));
+	float nXAir = relativeUpSmooth.x;
+	float nYAir = relativeUpSmooth.y;
+	float nZAir = relativeUpSmooth.z;
+	float normHLengthAir = sqrtf(nXAir*nXAir + nZAir*nZAir);
+	float pitchAngleAir = Maths::toDegrees(atan2f(nYAir, normHLengthAir));
+	float yawAngleAir = Maths::toDegrees(atan2f(-nZAir, nXAir));
+	float diffAir = Maths::compareTwoAngles(twistAngleAir, yawAngleAir);
+
+	//float diffX = vel.x;
+	//float diffY = vel.y;
+	//float diffZ = vel.z;
+	//float normHLength = sqrtf(diffX*diffX + diffZ*diffZ);
+	//float pitchAngle  = Maths::toDegrees(atan2f(diffY, normHLength));
+	//float yawAngle = Maths::toDegrees(atan2f(-diffZ, diffX));
+	//rotX = 0;
+	//rotY = yawAngle;
+	//rotZ = pitchAngle+90;
+	//rotRoll = 0;
+
+	float currSpeed = vel.length();
+
+	Vector3f displayOffset = relativeUp.scaleCopy(displayHeightOffset);
+	float dspX = position.x;
+	float dspY = position.y;
+	float dspZ = position.z;
+	if (onGround)
+	{
+		dspX += displayOffset.x;
+		dspY += displayOffset.y;
+		dspZ += displayOffset.z;
+	}
+
+	if (isJumping)
+	{
+		runAnimationCycle -= 3000*dt;
+		maniaSonicModel->setOrientation(dspX, dspY, dspZ, diffAir, yawAngleAir, pitchAngleAir, runAnimationCycle);
+		maniaSonicModel->animate(12, 0);
+	}
+	else if (isBall)
+	{
+		if (onGround)
+		{
+			runAnimationCycle -= (8.0f*currSpeed + 300)*dt;
+			maniaSonicModel->setOrientation(dspX, dspY, dspZ, diffGround, yawAngleGround, pitchAngleGround, runAnimationCycle);
+		}
+		else
+		{
+			//runAnimationCycle -= 300*dt;
+			maniaSonicModel->setOrientation(dspX, dspY, dspZ, diffAir, yawAngleAir, pitchAngleAir, runAnimationCycle);
+		}
+		maniaSonicModel->animate(12, 0);
+	}
+	else if (isSpindashing)
+	{
+		
+	}
+	else if (spindashReleaseTimer > 0)
+	{
+		
+	}
+	else if (onGround && currSpeed < 0.6f) //stand
+	{
+		rotX = diffGround;
+		rotY = yawAngleGround;
+		rotZ = pitchAngleGround;
+		rotRoll = 0;
+		//runAnimationCycle += (1.5f*currSpeed)*dt;
+		//runAnimationCycle = fmodf(runAnimationCycle, 100.0f);
+		maniaSonicModel->setOrientation(getX(), getY(), getZ(), rotX, rotY, rotZ, rotRoll);
+		maniaSonicModel->animate(15, 0);
+	}
+	else if (!onGround) //freefall
+	{
+		rotX = diffAir;
+		rotY = yawAngleAir;
+		rotZ = pitchAngleAir;
+		rotRoll = 0;
+
+		maniaSonicModel->setOrientation(getX(), getY(), getZ(), rotX, rotY, pitchAngleAir, rotRoll);
+		maniaSonicModel->animate(12, 0);
+	}
+	else //running animation
+	{
+		rotX = diffGround;
+		rotY = yawAngleGround;
+		rotZ = pitchAngleGround;
+		rotRoll = 0;
+
+		runAnimationCycle += (1.5f*currSpeed)*dt;
+		runAnimationCycle = fmodf(runAnimationCycle, 100.0f);
+
+		maniaSonicModel->setOrientation(getX(), getY(), getZ(), rotX, rotY, rotZ, rotRoll);
+
+		if (currSpeed < 200)
+		{
+			maniaSonicModel->animate(15, runAnimationCycle);
+		}
+		else
+		{
+			maniaSonicModel->animate(1, runAnimationCycle);
+		}
+	}
+
+	if (isBall)
+	{
+		//float velLength = vel.length();
+		//runAnimationCycle -= (8.0f*velLength + 300)*dt;
+		//
+		//if (onGround)
+		//{
+		//	maniaSonicModel->setOrientation(getX(), getY(), getZ(), diffGround, yawAngleGround, pitchAngleGround, runAnimationCycle);
+		//	maniaSonicModel->animate(12, 0);
+		//}
+		//else
+		//{
+		//	maniaSonicModel->setOrientation(getX(), getY(), getZ(), diffAir, yawAngleAir, pitchAngleAir, runAnimationCycle);
+		//	maniaSonicModel->animate(12, 0);
+		//}
+	}
+	else
+	{
+		if (onGround)
+		{
+			//rotX = diffGround;
+			//rotY = yawAngleGround;
+			//rotZ = pitchAngleGround;
+			//rotRoll = 0;
+			//
+			//float velLength = vel.length();
+			//runAnimationCycle += (1.5f*velLength)*dt;
+			//runAnimationCycle = fmodf(runAnimationCycle, 100.0f);
+			//
+			//maniaSonicModel->setOrientation(getX(), getY(), getZ(), rotX, rotY, rotZ, rotRoll);
+			//
+			//if (velLength < 2)
+			//{
+			//	maniaSonicModel->animate(15, 0);
+			//}
+			//else if (velLength < 200)
+			//{
+			//	maniaSonicModel->animate(15, runAnimationCycle);
+			//}
+			//else
+			//{
+			//	maniaSonicModel->animate(1, runAnimationCycle);
+			//}
+		}
+		else
+		{
+			//rotX = diffAir;
+			//rotY = yawAngleAir;
+			//rotZ = pitchAngleAir;
+			//rotRoll = 0;
+			//
+			//maniaSonicModel->setOrientation(getX(), getY(), getZ(), rotX, rotY, pitchAngleAir, rotRoll);
+			//maniaSonicModel->animate(12, 0);
+		}
+	}
+}
+
+void Car::setInputs()
+{
+	inputJump    = Input::inputs.INPUT_ACTION1;
+	inputAction  = Input::inputs.INPUT_ACTION2;
+	inputAction2 = Input::inputs.INPUT_ACTION3;
+	inputX       = Input::inputs.INPUT_X;
+	inputY       = Input::inputs.INPUT_Y;
+	inputX2      = Input::inputs.INPUT_X2;
+	inputY2      = Input::inputs.INPUT_Y2;
+
+	inputJumpPrevious    = Input::inputs.INPUT_PREVIOUS_ACTION1;
+	inputActionPrevious  = Input::inputs.INPUT_PREVIOUS_ACTION2;
+	inputAction2Previous = Input::inputs.INPUT_PREVIOUS_ACTION3;
+
+	if (canMoveTimer > 0.0f)
+	{
+		inputJump    = false;
+		inputAction  = false;
+		inputAction2 = false;
+		inputX    = 0;
+		inputY    = 0;
+		inputX2   = 0;
+		inputY2   = 0;
+
+		inputJumpPrevious    = false;
+		inputActionPrevious  = false;
+		inputAction2Previous = false;
+	}
+}
+
+std::list<TexturedModel*>* Car::getModels()
+{
+	return nullptr;
+}
+
+void Car::loadVehicleInfo()
+{
+	//if (Car::models[vehicleID].size() > 0)
+	{
+		//return;
+	}
+
+	#ifdef DEV_MODE
+	std::fprintf(stdout, "Loading Car static models...\n");
+	#endif
+	
+	ManiaSonicModel::loadStaticModels();
+	
+	//std::string modelFolder = "";
+	//std::string modelName = "";
+	//switch (vehicleID)
+	//{
+	//	case 0: modelFolder = "res/Models/Characters/SADXSonic/";   modelName = "TPose";           break;
+	//	case 4: modelFolder = "res/Models/Machines/Arwing/";       modelName = "Arwing";       break;
+	//	case 5: modelFolder = "res/Models/Machines/RedGazelle/";   modelName = "RedGazelle";   break;
+	//	case 1: modelFolder = "res/Models/Machines/TwinNorita/";   modelName = "TwinNorita";   break;
+	//	case 3: modelFolder = "res/Models/Machines/BlackBull/";    modelName = "BlackBull";    break;
+	//	case 2: modelFolder = "res/Models/Machines/SonicPhantom/"; modelName = "SonicPhantom"; break;
+	//	default: break;
+	//}
+	//loadModel(&Car::models[vehicleID], modelFolder, modelName);
+}
+
+void Car::deleteStaticModels()
+{
+	#ifdef DEV_MODE
+	std::fprintf(stdout, "Deleting Car static models...\n");
+	#endif
+	
+	ManiaSonicModel::deleteStaticModels();
+	//
+	//for (int i = 0; i < 30; i++)
+	//{
+	//	std::list<TexturedModel*>* e = &Car::models[i];
+	//	if (e->size() > 0)
+	//	{
+	//		Entity::deleteModels(e);
+	//	}
+	//}
+}
+
+bool Car::isVehicle()
+{
+	return true;
+}

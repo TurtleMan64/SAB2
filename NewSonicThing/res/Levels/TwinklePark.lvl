@@ -1,0 +1,28 @@
+Levels/TwinklePark
+TwinklePark
+Levels/TwinklePark
+2
+TPCollision1 7
+TPCollision2 7
+1.0 1.0 1.0
+0.0 0.0 0.0
+0.0 0.0 0.0
+0.3 0.3 0.45
+0.0 0.0 0.0
+0.0 0.0 0.0
+0.000005 20.0
+111
+540 9
+1
+4
+res/Audio/BGM/twnklpk1_intro.ogg
+res/Audio/BGM/twnklpk1_loop.ogg
+res/Audio/BGM/twnklpk2_intro.ogg
+res/Audio/BGM/twnklpk2_loop.ogg
+570.378357 1664.028809 -18208.943359
+-80 25
+-100
+
+# Objects
+6 -2000 8751 -1042    original: -2000 8751 -1042       part 2 warp: -187 265 -21100 
+

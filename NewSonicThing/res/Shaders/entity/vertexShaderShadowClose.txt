@@ -1,0 +1,68 @@
+#version 400 core
+
+in vec3 position;
+in vec2 textureCoords;
+in vec3 normal;
+
+out vec2 pass_textureCoords;
+out vec3 surfaceNormal;
+out vec3 toLightVector;
+out vec3 toCameraVector;
+out float visibility;
+out vec3 worldposition;
+out vec4 shadowCoordsClose;
+
+uniform mat4 transformationMatrix;
+uniform mat4 projectionMatrix;
+uniform mat4 viewMatrix;
+uniform vec3 lightPosition;
+
+uniform float useFakeLighting;
+
+uniform mat4 toShadowMapSpaceClose;
+
+//for use in animation of the texture coordinates
+uniform float texOffX;
+uniform float texOffY;
+
+uniform float fogDensity;
+uniform float fogGradient;
+
+uniform vec4 clipPlane;
+
+//constants must be kept in sync with ShadowBox2 constants
+const float shadowDistanceClose = 180.0;
+const float transitionDistanceClose = 35.0;
+
+void main(void)
+{
+	vec4 worldPosition = transformationMatrix * vec4(position, 1.0);
+	
+	vec4 positionRelativeToCam = viewMatrix * worldPosition;
+	gl_Position = projectionMatrix * positionRelativeToCam;
+	shadowCoordsClose = toShadowMapSpaceClose * worldPosition;
+	
+	gl_ClipDistance[0] = dot(worldPosition, clipPlane);
+	
+	pass_textureCoords.x = textureCoords.x+texOffX;
+	pass_textureCoords.y = textureCoords.y+texOffY;
+	
+
+	surfaceNormal = (transformationMatrix * vec4(normal, 0.0)).xyz;
+	
+	if (useFakeLighting > 0.5)
+	{
+		surfaceNormal = vec3(0.0, 1.0, 0.0);
+	}
+	
+	toLightVector = lightPosition - worldPosition.xyz;
+	toCameraVector = (inverse(viewMatrix) * vec4(0.0, 0.0, 0.0, 1.0)).xyz - worldPosition.xyz;
+	
+	float distance = length(positionRelativeToCam.xyz);
+	visibility = exp(-pow((distance*fogDensity), fogGradient));
+	visibility = clamp(visibility, 0.0, 1.0);
+	
+	distance = distance - (shadowDistanceClose - transitionDistanceClose);
+	distance = distance / transitionDistanceClose;
+	shadowCoordsClose.w = clamp(1.0-distance, 0.0, 1.0);
+}

@@ -1,0 +1,171 @@
+#version 400 core
+
+in vec2 pass_textureCoords;
+in vec3 surfaceNormal;
+in vec3 toLightVector;
+in vec3 toCameraVector;
+in float visibility;
+in vec3 worldposition;
+in vec4 shadowCoordsClose;
+in vec4 shadowCoordsFar;
+
+out vec4 out_Color;
+out vec4 out_BrightColour;
+
+uniform sampler2D textureSampler;
+uniform vec3 lightColour;
+uniform float shineDamper;
+uniform float reflectivity;
+uniform vec3 skyColour;
+uniform sampler2D shadowMapClose;
+uniform sampler2D shadowMapFar;
+uniform float hasTransparency;
+uniform float glowAmount;
+uniform sampler2D randomMap;
+
+//const int pcfCount = 2;
+const float totalTexelsClose = 25;//(pcfCount * 2.0 + 1.0) * (pcfCount * 2.0 + 1.0); //25
+
+//const float mapSizeClose = 4096; //2048*2    Must be kept in sync with constants in c++ code
+//const float texelSizeClose = 0.000244140625;  //1.0 / mapSizeClose
+
+const vec2 it1  = vec2(-2, -2) * 0.000244140625;
+const vec2 it2  = vec2(-2, -1) * 0.000244140625;
+const vec2 it3  = vec2(-2,  0) * 0.000244140625;
+const vec2 it4  = vec2(-2,  1) * 0.000244140625;
+const vec2 it5  = vec2(-2,  2) * 0.000244140625;
+const vec2 it6  = vec2(-1, -2) * 0.000244140625;
+const vec2 it7  = vec2(-1, -1) * 0.000244140625;
+const vec2 it8  = vec2(-1,  0) * 0.000244140625;
+const vec2 it9  = vec2(-1,  1) * 0.000244140625;
+const vec2 it10 = vec2(-1,  2) * 0.000244140625;
+const vec2 it11 = vec2( 0, -2) * 0.000244140625;
+const vec2 it12 = vec2( 0, -1) * 0.000244140625;
+//const vec2 it13 = vec2( 0,  0) * 0.000244140625;
+const vec2 it14 = vec2( 0,  1) * 0.000244140625;
+const vec2 it15 = vec2( 0,  2) * 0.000244140625;
+const vec2 it16 = vec2( 1, -2) * 0.000244140625;
+const vec2 it17 = vec2( 1, -1) * 0.000244140625;
+const vec2 it18 = vec2( 1,  0) * 0.000244140625;
+const vec2 it19 = vec2( 1,  1) * 0.000244140625;
+const vec2 it20 = vec2( 1,  2) * 0.000244140625;
+const vec2 it21 = vec2( 2, -2) * 0.000244140625;
+const vec2 it22 = vec2( 2, -1) * 0.000244140625;
+const vec2 it23 = vec2( 2,  0) * 0.000244140625;
+const vec2 it24 = vec2( 2,  1) * 0.000244140625;
+const vec2 it25 = vec2( 2,  2) * 0.000244140625;
+
+const float totalTexelsFar = 5;
+
+const vec2 fit1 = vec2(-1, -1) * 0.00012207031;
+const vec2 fit2 = vec2(-1,  1) * 0.00012207031;
+const vec2 fit3 = vec2( 1,  1) * 0.00012207031;
+const vec2 fit4 = vec2( 1, -1) * 0.00012207031;
+
+void main(void)
+{
+	vec4 rawTextureColour = texture(textureSampler, pass_textureCoords);
+	if (hasTransparency == 0) //&& glowAmount == 0
+	{
+		if (rawTextureColour.a < 0.9)
+		{
+			discard;
+		}
+		rawTextureColour.a = 1;
+	}
+	
+	
+	vec2 fragCoordNormalized = gl_FragCoord.xy / 128.0; //128 is size of the randomMap.png
+	
+	int countClose = 0;
+	
+	//cheap test samples
+	vec4 randomSample = texture(randomMap, vec2(0.0 , 0.0) + fragCoordNormalized);
+	countClose += ( floatBitsToInt((texture(shadowMapClose, shadowCoordsClose.xy +  it1 + 0.000244140625*(randomSample).rg).r+0.0025) - shadowCoordsClose.z) >> 31) & 1;
+	countClose += ( floatBitsToInt((texture(shadowMapClose, shadowCoordsClose.xy +  it5 + 0.000244140625*(randomSample).ba).r+0.0025) - shadowCoordsClose.z) >> 31) & 1; randomSample = texture(randomMap, vec2(0.0 , 0.1) + fragCoordNormalized);
+	countClose += ( floatBitsToInt((texture(shadowMapClose, shadowCoordsClose.xy +        0.000244140625*(randomSample).rg).r+0.0025) - shadowCoordsClose.z) >> 31) & 1;
+	countClose += ( floatBitsToInt((texture(shadowMapClose, shadowCoordsClose.xy + it21 + 0.000244140625*(randomSample).ba).r+0.0025) - shadowCoordsClose.z) >> 31) & 1; randomSample = texture(randomMap, vec2(0.0 , 0.2) + fragCoordNormalized);
+	countClose += ( floatBitsToInt((texture(shadowMapClose, shadowCoordsClose.xy + it25 + 0.000244140625*(randomSample).rg).r+0.0025) - shadowCoordsClose.z) >> 31) & 1;
+	
+	float totalClose = (float(countClose)/5);
+	
+	if ((totalClose - 1)*totalClose != 0)
+	{
+		countClose += ( floatBitsToInt((texture(shadowMapClose, shadowCoordsClose.xy +  it2 + 0.000244140625*(randomSample).ba).r+0.0025) - shadowCoordsClose.z) >> 31) & 1; randomSample = texture(randomMap, vec2(0.0 , 0.3) + fragCoordNormalized);
+		countClose += ( floatBitsToInt((texture(shadowMapClose, shadowCoordsClose.xy +  it3 + 0.000244140625*(randomSample).rg).r+0.0025) - shadowCoordsClose.z) >> 31) & 1;
+		countClose += ( floatBitsToInt((texture(shadowMapClose, shadowCoordsClose.xy +  it4 + 0.000244140625*(randomSample).ba).r+0.0025) - shadowCoordsClose.z) >> 31) & 1; randomSample = texture(randomMap, vec2(0.0 , 0.4) + fragCoordNormalized);
+		countClose += ( floatBitsToInt((texture(shadowMapClose, shadowCoordsClose.xy +  it6 + 0.000244140625*(randomSample).rg).r+0.0025) - shadowCoordsClose.z) >> 31) & 1;
+		countClose += ( floatBitsToInt((texture(shadowMapClose, shadowCoordsClose.xy +  it7 + 0.000244140625*(randomSample).ba).r+0.0025) - shadowCoordsClose.z) >> 31) & 1; randomSample = texture(randomMap, vec2(0.1 , 0.0) + fragCoordNormalized);
+		countClose += ( floatBitsToInt((texture(shadowMapClose, shadowCoordsClose.xy +  it8 + 0.000244140625*(randomSample).rg).r+0.0025) - shadowCoordsClose.z) >> 31) & 1;
+		countClose += ( floatBitsToInt((texture(shadowMapClose, shadowCoordsClose.xy +  it9 + 0.000244140625*(randomSample).ba).r+0.0025) - shadowCoordsClose.z) >> 31) & 1; randomSample = texture(randomMap, vec2(0.1 , 0.1) + fragCoordNormalized);
+		countClose += ( floatBitsToInt((texture(shadowMapClose, shadowCoordsClose.xy + it10 + 0.000244140625*(randomSample).rg).r+0.0025) - shadowCoordsClose.z) >> 31) & 1;
+		countClose += ( floatBitsToInt((texture(shadowMapClose, shadowCoordsClose.xy + it11 + 0.000244140625*(randomSample).ba).r+0.0025) - shadowCoordsClose.z) >> 31) & 1; randomSample = texture(randomMap, vec2(0.1 , 0.2) + fragCoordNormalized);
+		countClose += ( floatBitsToInt((texture(shadowMapClose, shadowCoordsClose.xy + it12 + 0.000244140625*(randomSample).rg).r+0.0025) - shadowCoordsClose.z) >> 31) & 1;
+		countClose += ( floatBitsToInt((texture(shadowMapClose, shadowCoordsClose.xy + it14 + 0.000244140625*(randomSample).ba).r+0.0025) - shadowCoordsClose.z) >> 31) & 1; randomSample = texture(randomMap, vec2(0.1 , 0.3) + fragCoordNormalized);
+		countClose += ( floatBitsToInt((texture(shadowMapClose, shadowCoordsClose.xy + it15 + 0.000244140625*(randomSample).rg).r+0.0025) - shadowCoordsClose.z) >> 31) & 1;
+		countClose += ( floatBitsToInt((texture(shadowMapClose, shadowCoordsClose.xy + it16 + 0.000244140625*(randomSample).ba).r+0.0025) - shadowCoordsClose.z) >> 31) & 1; randomSample = texture(randomMap, vec2(0.1 , 0.4) + fragCoordNormalized);
+		countClose += ( floatBitsToInt((texture(shadowMapClose, shadowCoordsClose.xy + it17 + 0.000244140625*(randomSample).rg).r+0.0025) - shadowCoordsClose.z) >> 31) & 1;
+		countClose += ( floatBitsToInt((texture(shadowMapClose, shadowCoordsClose.xy + it18 + 0.000244140625*(randomSample).ba).r+0.0025) - shadowCoordsClose.z) >> 31) & 1; randomSample = texture(randomMap, vec2(0.2 , 0.0) + fragCoordNormalized);
+		countClose += ( floatBitsToInt((texture(shadowMapClose, shadowCoordsClose.xy + it19 + 0.000244140625*(randomSample).rg).r+0.0025) - shadowCoordsClose.z) >> 31) & 1;
+		countClose += ( floatBitsToInt((texture(shadowMapClose, shadowCoordsClose.xy + it20 + 0.000244140625*(randomSample).ba).r+0.0025) - shadowCoordsClose.z) >> 31) & 1; randomSample = texture(randomMap, vec2(0.2 , 0.1) + fragCoordNormalized);
+		countClose += ( floatBitsToInt((texture(shadowMapClose, shadowCoordsClose.xy + it22 + 0.000244140625*(randomSample).rg).r+0.0025) - shadowCoordsClose.z) >> 31) & 1;
+		countClose += ( floatBitsToInt((texture(shadowMapClose, shadowCoordsClose.xy + it23 + 0.000244140625*(randomSample).ba).r+0.0025) - shadowCoordsClose.z) >> 31) & 1; randomSample = texture(randomMap, vec2(0.2 , 0.2) + fragCoordNormalized);
+		countClose += ( floatBitsToInt((texture(shadowMapClose, shadowCoordsClose.xy + it24 + 0.000244140625*(randomSample).rg).r+0.0025) - shadowCoordsClose.z) >> 31) & 1;
+	
+		totalClose = (float(countClose)/totalTexelsClose);
+	}
+	
+	
+	int countFar = 0;
+	
+	countFar += (floatBitsToInt((texture(shadowMapFar, shadowCoordsFar.xy + fit1 + 0.00012207031*(randomSample.ba)).r+0.00125) - shadowCoordsFar.z) >> 31) & 1; randomSample = texture(randomMap, vec2(0.2 , 0.3) + fragCoordNormalized);
+	countFar += (floatBitsToInt((texture(shadowMapFar, shadowCoordsFar.xy + fit2 + 0.00012207031*(randomSample.rg)).r+0.00125) - shadowCoordsFar.z) >> 31) & 1;
+	countFar += (floatBitsToInt((texture(shadowMapFar, shadowCoordsFar.xy + fit3 + 0.00012207031*(randomSample.ba)).r+0.00125) - shadowCoordsFar.z) >> 31) & 1; randomSample = texture(randomMap, vec2(0.2 , 0.4) + fragCoordNormalized);
+	countFar += (floatBitsToInt((texture(shadowMapFar, shadowCoordsFar.xy + fit4 + 0.00012207031*(randomSample.rg)).r+0.00125) - shadowCoordsFar.z) >> 31) & 1; 
+	countFar += (floatBitsToInt((texture(shadowMapFar, shadowCoordsFar.xy +        0.00012207031*(randomSample.ba)).r+0.00125) - shadowCoordsFar.z) >> 31) & 1;
+	
+	float totalFar = (float(countFar)/totalTexelsFar);
+	
+	
+	float lightFactor = 1.0 - (max(totalClose * shadowCoordsClose.w, totalFar * shadowCoordsFar.w) * 0.4); //0.4 being how dark the shadows are
+	
+	
+	
+	vec3 unitNormal = normalize(surfaceNormal);
+	vec3 unitLightVector = normalize(toLightVector);
+	
+	float nDotl = dot(unitNormal, unitLightVector);
+	float brightness = nDotl*0.5+0.5;  //two different types of lighting options
+	//float brightness = max(nDotl, 0.5);  //two different types of lighting options
+	
+	//make more ambient light happen during the daytime, less at night
+	float ambientLight = 0.5+0.5*dot(vec3(0, 1, 0), unitLightVector);
+	ambientLight = (0.02+ambientLight*0.3);
+	
+	
+	vec3 diffuse = max(brightness * lightColour * lightFactor, ambientLight * lightColour);
+	
+	vec3 unitVectorToCamera = normalize(toCameraVector);
+	vec3 lightDirection = -unitLightVector;
+	vec3 reflectedLightDirection = reflect(lightDirection, unitNormal);
+	
+	float specularFactor = dot(reflectedLightDirection, unitVectorToCamera);
+	specularFactor = max(specularFactor, 0.0);
+	float dampedFactor = pow(specularFactor, shineDamper);
+	vec3 finalSpecular = dampedFactor * reflectivity * lightColour;
+	
+	finalSpecular = finalSpecular * (lightFactor - 0.6) * 2.5; //Make no specular lighting happen it the shadow
+	
+	vec3 toBeOutput = (diffuse)*rawTextureColour.rgb+finalSpecular;
+	toBeOutput = mix(skyColour, toBeOutput, visibility);
+	float bloomness = (toBeOutput.r * 0.2126) + (toBeOutput.g * 0.7152) + (toBeOutput.b * 0.0722);
+	out_BrightColour = vec4((toBeOutput * bloomness * bloomness * bloomness * bloomness).rgb, 1.0);
+	
+	float zeroIfGlow = ((floatBitsToInt(glowAmount-0.001) >> 31) & 1);
+	float oneIfGlow  = ((floatBitsToInt(0.001-glowAmount) >> 31) & 1);
+	out_BrightColour = out_BrightColour*zeroIfGlow + vec4((rawTextureColour.rgb+finalSpecular)*glowAmount, rawTextureColour.a)*oneIfGlow;
+	diffuse          = diffuse*zeroIfGlow + vec3(glowAmount)*oneIfGlow;
+	
+	out_Color = vec4(diffuse, rawTextureColour.a) * rawTextureColour + vec4(finalSpecular, rawTextureColour.a);
+	out_Color = mix(vec4(skyColour, 1.0), out_Color, visibility);
+}

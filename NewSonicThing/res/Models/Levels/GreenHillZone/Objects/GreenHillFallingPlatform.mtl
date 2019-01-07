@@ -1,0 +1,26 @@
+# Blender MTL File: 'None'
+# Material Count: 2
+
+newmtl jimenKusa02
+	Ns 19.607843
+	Ka 0.200000 0.200000 0.200000
+	Kd 0.800000 0.800000 0.800000
+	Ks 0.200000 0.200000 0.200000
+	Ke 0.000000 0.000000 0.000000
+	Ni 0.02
+	d 1.000000
+	illum 2
+	map_Kd ../greenhill128_4.png
+	map_Ka ../greenhill128_4.png
+
+newmtl kabe02
+	Ns 19.607843
+	Ka 0.200000 0.200000 0.200000
+	Kd 0.800000 0.800000 0.800000
+	Ks 0.200000 0.200000 0.200000
+	Ke 0.000000 0.000000 0.000000
+	Ni 0.02
+	d 1.000000
+	illum 2
+	map_Kd ../greenhill128_1.png
+	map_Ka ../greenhill128_1.png

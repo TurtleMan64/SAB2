@@ -1,0 +1,171 @@
+# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
+# File Created: 15.01.2017 02:16:08
+
+newmtl LANDTX31_material_6
+	Ns 30.0000
+	Ni 0.0
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 1.0000 1.0000 1.0000
+	Kd 1.0000 1.0000 1.0000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka greenhill64_3.png
+	map_Kd greenhill64_3.png
+
+newmtl LANDTX31_material_11
+	Ns 30.0000
+	Ni 0.0
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 1.0000 1.0000 1.0000
+	Kd 1.0000 1.0000 1.0000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka greenhill128_6.png
+	map_Kd greenhill128_6.png
+
+newmtl LANDTX31_material_7
+	Ns 30.0000
+	Ni 0.0
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 1.0000 1.0000 1.0000
+	Kd 1.0000 1.0000 1.0000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka greenhill64_4.png
+	map_Kd greenhill64_4.png
+
+newmtl LANDTX31_material_8
+	Ns 30.0000
+	Ni 0.0
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 1.0000 1.0000 1.0000
+	Kd 1.0000 1.0000 1.0000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka greenhill64_5.png
+	map_Kd greenhill64_5.png
+
+newmtl LANDTX31_material_10
+	Ns 30.0000
+	Ni 0.0
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 1.0000 1.0000 1.0000
+	Kd 1.0000 1.0000 1.0000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka hasi.png
+	map_Kd hasi.png
+
+newmtl LANDTX31_material_9
+	Ns 30.0000
+	Ni 0.0
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 1.0000 1.0000 1.0000
+	Kd 1.0000 1.0000 1.0000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka greenhill64_7.png
+	map_Kd greenhill64_7.png
+
+newmtl LANDTX31_material_2
+	Ns 30.0000
+	Ni 0.0
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 1.0000 1.0000 1.0000
+	Kd 1.0000 1.0000 1.0000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka greenhill128_3.png
+	map_Kd greenhill128_3.png
+
+newmtl LANDTX31_material_3
+	Ns 30.0000
+	Ni 0.0
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	sound 2
+	Ka 1.0000 1.0000 1.0000
+	Kd 1.0000 1.0000 1.0000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka greenhill128_4.png
+	map_Kd greenhill128_4.png
+
+newmtl LANDTX31_material_4
+	Ns 30.0000
+	Ni 0.0
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 1.0000 1.0000 1.0000
+	Kd 1.0000 1.0000 1.0000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka greenhill128_7.png
+	map_Kd greenhill128_7.png
+
+newmtl LANDTX31_material_5
+	Ns 30.0000
+	Ni 0.0
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 1.0000 1.0000 1.0000
+	Kd 1.0000 1.0000 1.0000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka greenhill64_1.png
+	map_Kd greenhill64_1.png
+
+newmtl LANDTX31_material_0
+	Ns 30.0000
+	Ni 0.0
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 1.0000 1.0000 1.0000
+	Kd 1.0000 1.0000 1.0000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka greenhill128_1.png
+	map_Kd greenhill128_1.png
+
+newmtl LANDTX31_material_1
+	Ns 30.0000
+	Ni 0.0
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 1.0000 1.0000 1.0000
+	Kd 1.0000 1.0000 1.0000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka greenhill128_2.png
+	map_Kd greenhill128_2.png

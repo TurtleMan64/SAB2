@@ -1,0 +1,126 @@
+newmtl 21_128_224
+	Ns 20.0
+	Ni 0.02
+	d 1
+	Tr 0
+	Tf 1 1 1
+	illum 2
+	Ka 0 0 0
+	Kd 0.8 0.8 0.8
+	Ks 0 0 0
+	Ke 0 0 0
+	map_Ka 21_128_224.png
+	map_Kd 21_128_224.png
+
+newmtl 250_251_254
+	Ns 20.0
+	Ni 0.02
+	d 1
+	Tr 0
+	Tf 1 1 1
+	illum 2
+	Ka 0 0 0
+	Kd 0.8 0.8 0.8
+	Ks 0 0 0
+	Ke 0 0 0
+	map_Ka 250_251_254.png
+	map_Kd 250_251_254.png
+
+newmtl 252_193_150
+	Ns 20.0
+	Ni 0.02
+	d 1
+	Tr 0
+	Tf 1 1 1
+	illum 2
+	Ka 0 0 0
+	Kd 0.8 0.8 0.8
+	Ks 0 0 0
+	Ke 0 0 0
+	map_Ka 252_193_150.png
+	map_Kd 252_193_150.png
+
+newmtl 56_56_56
+	Ns 20.0
+	Ni 0.02
+	d 1
+	Tr 0
+	Tf 1 1 1
+	illum 2
+	Ka 0 0 0
+	Kd 0.8 0.8 0.8
+	Ks 0 0 0
+	Ke 0 0 0
+	map_Ka 56_56_56.png
+	map_Kd 56_56_56.png
+
+newmtl 21_87_203
+	Ns 20.0
+	Ni 0.02
+	d 1
+	Tr 0
+	Tf 1 1 1
+	illum 2
+	Ka 0 0 0
+	Kd 0.8 0.8 0.8
+	Ks 0 0 0
+	Ke 0 0 0
+	map_Ka 21_87_203.png
+	map_Kd 21_87_203.png
+
+newmtl 170_21_21
+	Ns 20.0
+	Ni 0.02
+	d 1
+	Tr 0
+	Tf 1 1 1
+	illum 2
+	Ka 0 0 0
+	Kd 0.8 0.8 0.8
+	Ks 0 0 0
+	Ke 0 0 0
+	map_Ka 170_21_21.png
+	map_Kd 170_21_21.png
+
+newmtl 250_21_21
+	Ns 20.0
+	Ni 0.02
+	d 1
+	Tr 0
+	Tf 1 1 1
+	illum 2
+	Ka 0 0 0
+	Kd 0.8 0.8 0.8
+	Ks 0 0 0
+	Ke 0 0 0
+	map_Ka 250_21_21.png
+	map_Kd 250_21_21.png
+
+newmtl 255_217_0
+	Ns 20.0
+	Ni 0.02
+	d 1
+	Tr 0
+	Tf 1 1 1
+	illum 2
+	Ka 0 0 0
+	Kd 0.8 0.8 0.8
+	Ks 0 0 0
+	Ke 0 0 0
+	map_Ka 255_217_0.png
+	map_Kd 255_217_0.png
+
+newmtl 43_43_43
+	Ns 20.0
+	Ni 0.02
+	d 1
+	Tr 0
+	Tf 1 1 1
+	illum 2
+	Ka 0 0 0
+	Kd 0.8 0.8 0.8
+	Ks 0 0 0
+	Ke 0 0 0
+	map_Ka 43_43_43.png
+	map_Kd 43_43_43.png
+
