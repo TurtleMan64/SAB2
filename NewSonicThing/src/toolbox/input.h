@@ -20,6 +20,7 @@ struct InputStruct
 	volatile bool INPUT_LB;
 	volatile bool INPUT_SELECT;
 	volatile bool INPUT_START;
+	volatile bool INPUT_TAB;
 
 	volatile float INPUT_PREVIOUS_X;
 	volatile float INPUT_PREVIOUS_Y;
@@ -35,6 +36,7 @@ struct InputStruct
 	volatile bool INPUT_PREVIOUS_RB;
 	volatile bool INPUT_PREVIOUS_LB;
 	volatile bool INPUT_PREVIOUS_START;
+	volatile bool INPUT_PREVIOUS_TAB;
 
 	volatile int MENU_X;
 	volatile int MENU_Y;

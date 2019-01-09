@@ -96,13 +96,15 @@ private:
 	bool bufferedSpindashInput = false;
 	const float spindashPowerMax = 425.0f;
 	const float spindashFriction = 2.0f;
-	int spindashDelay = 0;
-	int spindashTimer = 0;
-	const int spindashTimerMax = 30;
-	int spindashReleaseTimer = 0;
-	const int spindashReleaseTimerMax = 30;
-	int spindashRestartDelay = 0;
-	const int spindashRestartDelayMax = 8;
+	const float spindashPowerfulFriction = 8.0f;
+	const float spindashPowerfulFrictionThreshold = 100.0f;
+	const float spindashDelay = 0;
+	float spindashTimer = 0;
+	const float spindashTimerMax = 30.0f/60.0f;
+	float spindashReleaseTimer = 0;
+	const float spindashReleaseTimerMax = 30.0f/60.0f;
+	float spindashRestartDelay = 0;
+	const float spindashRestartDelayMax = 8.0f/60.0f;
 	float storedSpindashSpeed = 0;
 
 	bool isSkidding = false;
@@ -230,6 +232,7 @@ private:
 	float runAnimationCycle = 0.0f;
 
 	const float displayHeightOffset = 0.6f;
+	const float displayBallOffset = 3.0f;
 
 	bool  inputJump;
 	bool  inputJumpPrevious;

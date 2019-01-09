@@ -23,26 +23,63 @@ ALuint AudioPlayer::bgmLoop;
 
 void AudioPlayer::loadSoundEffects()
 {
-	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Boostpad.ogg"));           //0
-	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Healpad.ogg"));            //1
-	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Boost/boost_falcon.ogg")); //2
-	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Intro321GO.ogg"));         //3
-	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/HitWall.ogg"));            //4
-	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Engine.ogg"));             //5
-	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Strafe.ogg"));             //6
-	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/SlipSlowdown.ogg"));       //7
-	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Danger.ogg"));             //8
-	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/AnnounceBoostPower.ogg")); //9
-	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/AnnounceFinalLap.ogg"));   //10
-	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/FallFemale.ogg"));         //11
-	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/FallMale.ogg"));           //12
-	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Boost/boost_bull.ogg"));   //13
-	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Boost/boost_falcon.ogg")); //14
-	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Boost/boost_norita.ogg")); //15
-	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Boost/boost_phantom.ogg"));//16
-	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Boost/boost_wyvern.ogg")); //17
-	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/ExplosionBig.ogg"));       //18
-	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/ExplosionSmall.ogg"));     //19
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/BigDestroy.ogg"));           //0
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/Dashpad.ogg"));              //1
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/Goal.ogg"));                 //2
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/ItemCapsule.ogg"));          //3
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/Ring.ogg"));                 //4
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/Splash.ogg"));               //5
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/Spring.ogg"));               //6
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/UnlockSomething.ogg"));      //7
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Player/Bounce.ogg"));                //8
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Player/Death.ogg"));                 //9
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Player/GetHit.ogg"));                //10
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Player/HomingAttack.ogg"));          //11
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Player/Jump.ogg"));                  //12
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Player/Skid.ogg"));                  //13
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Player/SpindashCharge.ogg"));        //14
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Player/SpindashRelease.ogg"));       //15
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Player/StompInit.ogg"));             //16
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Player/StompLand.ogg"));             //17
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Player/CantStick.ogg"));             //18
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/DockBreak.ogg"));            //19
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/Seagull.ogg"));              //20
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/SpeedRamp.ogg"));            //21
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/SpeedHighway/CranePlatform.ogg"));   //22
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/SpeedHighway/ElevatorPlatform.ogg"));//23
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/ActClear.ogg"));             //24
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/ExitStage.ogg"));            //25
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/CapsuleClick.ogg"));         //26
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Player/Fly.ogg"));                   //27
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Player/FlyTired.ogg"));              //28
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Player/Climb.ogg"));                 //29
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Player/Dig.ogg"));                   //30
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Player/DrillDive.ogg"));             //31
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Player/Glide.ogg"));                 //32
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Player/Punch.ogg"));                 //33
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/RadarPing.ogg"));            //34
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/1Up.ogg"));                  //35
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/MenuBleep.ogg"));            //36
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/MenuWoosh.ogg"));            //37
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/MenuAccept.ogg"));           //38
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Snowhead/BabyGoron_Cry1.ogg"));      //39
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Snowhead/BabyGoron_Cry2.ogg"));      //40
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Snowhead/BabyGoron_Cry3.ogg"));      //41
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Snowhead/BabyGoron_Doze.ogg"));      //42
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/Dig.ogg"));                  //43
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/RankShow.ogg"));             //44
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/Checkpoint.ogg"));           //45
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Boss/BreakDamage.ogg"));             //46
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Boss/ChaosSpear.ogg"));              //47
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Boss/Damage.ogg"));                  //48
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Boss/Electric.ogg"));                //49
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Boss/MetallicExplode.ogg"));         //50
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Boss/RunFastLoop.ogg"));             //51
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Boss/ChargeShot.ogg"));              //52
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Boss/LaserLoop.ogg"));               //53
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/RocketAppear.ogg"));         //54
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/RocketTakeOffStart.ogg"));   //55
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/RocketTakeOffLoop.ogg"));    //56
 }
 
 void AudioPlayer::loadBGM(char* fileName)

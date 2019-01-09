@@ -137,11 +137,10 @@ void Car::step()
 	//Spindash stuff
 	if (onGround)
 	{
-		//if (Input::inputs.INPUT_ACTION3 && !Input::inputs.INPUT_PREVIOUS_ACTION3 && !isBall)
-		{
-			//vel.setLength(storedSpindashSpeed);
-			//isBall = true;
-		}
+		isBouncing = false;
+		isStomping = false;
+		justBounced = false;
+		homingAttackTimer = -1;
 
 		if (isBall == false && spindashRestartDelay == 0)
 		{
@@ -179,18 +178,23 @@ void Car::step()
 
 		if (isSpindashing)
 		{
-			spindashTimer = std::min(spindashTimer + 1, spindashTimerMax);
-			storedSpindashSpeed = std::fminf(storedSpindashSpeed + 0.4f*60*60*dt, spindashPowerMax);
-			std::fprintf(stdout, "sss = %f\n", storedSpindashSpeed);
-			if (spindashTimer == 1)
+			if (spindashTimer == 0)
 			{
 				AudioPlayer::play(14, getPosition());
 			}
+
+			spindashTimer = std::fminf(spindashTimer + dt, spindashTimerMax);
+			storedSpindashSpeed = std::fminf(storedSpindashSpeed + 0.4f*60*60*dt, spindashPowerMax);
+
 			isSpindashing = true;
 			calcSpindashDirection();
-			if (spindashTimer > spindashDelay)
+			if (spindashTimer >= spindashDelay)
 			{
 				vel = Maths::applyDrag(&vel, -spindashFriction, dt);
+				if (vel.lengthSquared() < spindashPowerfulFrictionThreshold*spindashPowerfulFrictionThreshold)
+				{
+					vel = Maths::applyDrag(&vel, -spindashPowerfulFriction, dt);
+				}
 			}
 		}
 		else
@@ -227,8 +231,17 @@ void Car::step()
 			isBall = false;
 		}
 	}
-	spindashReleaseTimer = std::max(spindashReleaseTimer - 1, 0);
-	spindashRestartDelay = std::max(spindashRestartDelay - 1, 0);
+	else
+	{
+		isSpindashing = false;
+		canStartSpindash = false;
+		bufferedSpindashInput = false;
+		spindashReleaseTimer = 0;
+		spindashRestartDelay = 0;
+		spindashTimer = 0;
+	}
+	spindashReleaseTimer = std::fmaxf(spindashReleaseTimer - dt, 0);
+	spindashRestartDelay = std::fmaxf(spindashRestartDelay - dt, 0);
 
 	if (onGround)
 	{
@@ -245,27 +258,30 @@ void Car::step()
 		//std::fprintf(stdout, "relativeU.y = %f\n", relativeUp.y);
 		if (relativeUp.y < 0.99f)
 		{
-			if (isBall)
+			if (!isSpindashing || vel.lengthSquared() > spindashPowerfulFrictionThreshold*spindashPowerfulFrictionThreshold) //if you are stopped and charging a spindash, dont move sonic
 			{
-				//version 2
-				float slopePower = slopeBallAccel; //TODO: this might not work perfectly with arbitrary framerate
-				Vector3f slopeVel(0, -slopePower*dt, 0); //slopeAccel
-				slopeVel = Maths::projectOntoPlane(&slopeVel, &relativeUp);
-				vel = vel + slopeVel;
+				if (isBall)
+				{
+					//version 2
+					float slopePower = slopeBallAccel; //TODO: this might not work perfectly with arbitrary framerate
+					Vector3f slopeVel(0, -slopePower*dt, 0); //slopeAccel
+					slopeVel = Maths::projectOntoPlane(&slopeVel, &relativeUp);
+					vel = vel + slopeVel;
 
-				//version 1
-				//float slopePower = slopeBallAccel/(vel.length()+1); //TODO: this might not work perfectly with arbitrary framerate
-				//Vector3f slopeVel(0, -slopePower*dt, 0); //slopeAccel
-				//slopeVel = Maths::projectOntoPlane(&slopeVel, &relativeUp);
-				//vel = vel + slopeVel;
-			}
-			else
-			{
-				float slopePower = slopeRunAccel/(vel.length()+1); //TODO: this might not work perfectly with arbitrary framerate
-				//float slopePower = 300.0f; //80
-				Vector3f slopeVel(0, -slopePower*dt, 0); //slopeAccel
-				slopeVel = Maths::projectOntoPlane(&slopeVel, &relativeUp);
-				vel = vel + slopeVel;
+					//version 1
+					//float slopePower = slopeBallAccel/(vel.length()+1); //TODO: this might not work perfectly with arbitrary framerate
+					//Vector3f slopeVel(0, -slopePower*dt, 0); //slopeAccel
+					//slopeVel = Maths::projectOntoPlane(&slopeVel, &relativeUp);
+					//vel = vel + slopeVel;
+				}
+				else
+				{
+					float slopePower = slopeRunAccel/(vel.length()+1); //TODO: this might not work perfectly with arbitrary framerate
+					//float slopePower = 300.0f; //80
+					Vector3f slopeVel(0, -slopePower*dt, 0); //slopeAccel
+					slopeVel = Maths::projectOntoPlane(&slopeVel, &relativeUp);
+					vel = vel + slopeVel;
+				}
 			}
 		}
 	}
@@ -713,7 +729,7 @@ void Car::calcSpindashDirection()
 	dirForward.setLength(stickRadius);
 	Vector3f newDir = Maths::rotatePoint(&dirForward, &relativeUp, stickAngle);
 
-	if (stickRadius >= 0.5f)
+	if (stickRadius >= 0.8f)
 	{
 		spindashDirection.set(&newDir);
 	}
@@ -725,6 +741,11 @@ void Car::calcSpindashDirection()
 
 void Car::moveMeGround()
 {
+	if (isSpindashing && vel.lengthSquared() < spindashPowerfulFrictionThreshold*spindashPowerfulFrictionThreshold) //if you are stopped and charging a spindash, dont move sonic
+	{
+		return;
+	}
+
 	float stickAngle = -atan2f(inputY, inputX) - M_PI/2; //angle you are holding on the stick, with 0 being up
 	float stickRadius = sqrtf(inputX*inputX + inputY*inputY);
 	Vector3f dirForward = Maths::projectOntoPlane(&camDir, &relativeUp);
@@ -888,15 +909,25 @@ void Car::animate()
 
 	float currSpeed = vel.length();
 
-	Vector3f displayOffset = relativeUp.scaleCopy(displayHeightOffset);
 	float dspX = position.x;
 	float dspY = position.y;
 	float dspZ = position.z;
 	if (onGround)
 	{
-		dspX += displayOffset.x;
-		dspY += displayOffset.y;
-		dspZ += displayOffset.z;
+		if (isBall || isSpindashing || spindashReleaseTimer > 0)
+		{
+			Vector3f ballOffset = relativeUp.scaleCopy(displayBallOffset);
+			dspX += ballOffset.x;
+			dspY += ballOffset.y;
+			dspZ += ballOffset.z;
+		}
+		else
+		{
+			Vector3f displayOffset = relativeUp.scaleCopy(displayHeightOffset);
+			dspX += displayOffset.x;
+			dspY += displayOffset.y;
+			dspZ += displayOffset.z;
+		}
 	}
 
 	if (isJumping)
@@ -921,11 +952,34 @@ void Car::animate()
 	}
 	else if (isSpindashing)
 	{
-		
+		Vector3f groundSpeedsSpnd = Maths::calculatePlaneSpeed(spindashDirection.x, spindashDirection.y, spindashDirection.z, &relativeUp);
+		float twistAngleGroundSpnd = Maths::toDegrees(atan2f(-groundSpeedsSpnd.z, groundSpeedsSpnd.x));
+		float nXGroundSpnd = relativeUp.x;
+		float nYGroundSpnd = relativeUp.y;
+		float nZGroundSpnd = relativeUp.z;
+		float normHLengthGroundSpnd = sqrtf(nXGroundSpnd*nXGroundSpnd + nZGroundSpnd*nZGroundSpnd);
+		float pitchAngleGroundSpnd = Maths::toDegrees(atan2f(nYGroundSpnd, normHLengthGroundSpnd));
+		float yawAngleGroundSpnd = Maths::toDegrees(atan2f(-nZGroundSpnd, nXGroundSpnd));
+		float diffGroundSpnd = Maths::compareTwoAngles(twistAngleGroundSpnd, yawAngleGroundSpnd);
+
+		if (spindashTimer >= spindashTimerMax)
+		{
+			runAnimationCycle -= 2500*dt;
+		}
+		else
+		{
+			runAnimationCycle = -(spindashTimer*spindashTimer*0.8f*60*60);
+		}
+
+		maniaSonicModel->setOrientation(dspX, dspY, dspZ, diffGroundSpnd, yawAngleGroundSpnd, pitchAngleGroundSpnd, runAnimationCycle);
+		maniaSonicModel->animate(12, 0);
 	}
 	else if (spindashReleaseTimer > 0)
 	{
-		
+		//std::fprintf(stdout, "3\n");
+		runAnimationCycle = (spindashReleaseTimer*spindashReleaseTimer*0.4f*60*60);
+		maniaSonicModel->setOrientation(dspX, dspY, dspZ, diffGround, yawAngleGround, pitchAngleGround, runAnimationCycle);
+		maniaSonicModel->animate(12, 0);
 	}
 	else if (onGround && currSpeed < 0.6f) //stand
 	{
@@ -936,7 +990,7 @@ void Car::animate()
 		//runAnimationCycle += (1.5f*currSpeed)*dt;
 		//runAnimationCycle = fmodf(runAnimationCycle, 100.0f);
 		maniaSonicModel->setOrientation(getX(), getY(), getZ(), rotX, rotY, rotZ, rotRoll);
-		maniaSonicModel->animate(15, 0);
+		maniaSonicModel->animate(3, 0);
 	}
 	else if (!onGround) //freefall
 	{
@@ -946,7 +1000,7 @@ void Car::animate()
 		rotRoll = 0;
 
 		maniaSonicModel->setOrientation(getX(), getY(), getZ(), rotX, rotY, pitchAngleAir, rotRoll);
-		maniaSonicModel->animate(12, 0);
+		maniaSonicModel->animate(2, 0);
 	}
 	else //running animation
 	{

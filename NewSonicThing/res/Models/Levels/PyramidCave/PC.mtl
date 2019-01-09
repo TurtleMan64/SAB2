@@ -1,0 +1,299 @@
+# Material Count: 33
+
+newmtl kd_pc_ami1.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd kd_pc_ami1.png
+
+newmtl kd_pc_hasira3.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd kd_pc_hasira3.png
+
+newmtl kd_pc_fkabe3.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd kd_pc_fkabe3.png
+
+newmtl kd_pc_entotu2.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd kd_pc_entotu2.png
+
+newmtl kd_pc_kabe6.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd kd_pc_kabe6.png
+
+newmtl kd_pc_hasira2.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd kd_pc_hasira2.png
+
+newmtl kd_pc_yuka4.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd kd_pc_yuka4.png
+
+newmtl kd_pc_ehasira1.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd kd_pc_ehasira1.png
+
+newmtl kd_pc_fkabe2.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd kd_pc_fkabe2.png
+
+newmtl kd_pc_hasira4.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd kd_pc_hasira4.png
+
+newmtl kd_pc_other1.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd kd_pc_other1.png
+
+newmtl kd_pc_yuka3.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd kd_pc_yuka3.png
+
+newmtl kd_pc_mon1.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd kd_pc_mon1.png
+
+newmtl kd_pc_hebi1.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd kd_pc_hebi1.png
+
+newmtl kd_pc_kabe5.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd kd_pc_kabe5.png
+
+newmtl kd_pc_kabe1.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd kd_pc_kabe1.png
+
+newmtl kd_pc_kabe3.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd kd_pc_kabe3.png
+
+newmtl kd_pc_fkabe1.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd kd_pc_fkabe1.png
+
+newmtl kd_pc_hasira5.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd kd_pc_hasira5.png
+
+newmtl kd_pc_yuka2.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd kd_pc_yuka2.png
+
+newmtl kd_pc_hebikabe1.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd kd_pc_hebikabe1.png
+
+newmtl kd_pc_kabe4.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd kd_pc_kabe4.png
+
+newmtl kd_pc_kabe2.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd kd_pc_kabe2.png
+
+newmtl kd_pc_mon2.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd kd_pc_mon2.png
+
+newmtl kd_pc_hebi2.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd kd_pc_hebi2.png
+
+newmtl kd_pc_ami2.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd kd_pc_ami2.png
+
+newmtl kd_pc_eggentotu1.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd kd_pc_eggentotu1.png
+
+newmtl kd_pc_entotu1.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd kd_pc_entotu1.png
+
+newmtl kd_pc_yuka1.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd kd_pc_yuka1.png
+
+newmtl kd_pc_hasira1.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd kd_pc_hasira1.png
+
+newmtl kd_pc_slope1.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd kd_pc_slope1.png
+
+newmtl kd_pc_door1.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd kd_pc_door1.png
+
+newmtl kd_pc_yuka5.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd kd_pc_yuka5.png
+

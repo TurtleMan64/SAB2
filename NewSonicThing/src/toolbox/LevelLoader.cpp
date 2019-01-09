@@ -31,6 +31,8 @@
 #include "../entities/camera.h"
 #include "../entities/checkpoint.h"
 #include "../entities/jumpramp.h"
+#include "../particles/particleresources.h"
+#include "../particles/particle.h"
 
 void LevelLoader::loadTitle()
 {
@@ -479,7 +481,8 @@ void LevelLoader::loadLevel(std::string levelFilename)
 
 	if (Global::gameMainVehicle != nullptr)
 	{
-		//Global::gamePlayer->setCanMoveTimer(60);
+		Global::gameMainVehicle->setCanMoveTimer(1.0f);
+		//Global::bufferTime = 60;
 	}
 
 	Global::raceStartTimer = -1.0f;
@@ -489,6 +492,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
 	Global::gameScore = 0;
 	GuiManager::setTimer(0);
 	GuiManager::stopTimer();
+	GuiManager::startTimer();
 
 	int maxNumber = -1;
 	for (Checkpoint* check : Global::gameCheckpointList)
@@ -500,18 +504,6 @@ void LevelLoader::loadLevel(std::string levelFilename)
 	}
 	Global::gameCheckpointLast = maxNumber;
 
-
-	extern std::unordered_map<Entity*, Entity*> gameEntities;
-
-	for (auto e : gameEntities)
-	{
-		if (e.first->isVehicle())
-		{
-			//((Car*)e.first)->setLapDistance(maxNumber);
-		}
-	}
-		
-
 	if (Global::spawnAtCheckpoint)
 	{
 		//GuiManager::setTimer(Global::checkpointTimeMin, Global::checkpointTimeSec, Global::checkpointTimeCen);
@@ -521,21 +513,20 @@ void LevelLoader::loadLevel(std::string levelFilename)
 		if (bgmHasLoop != 0)
 		{
 			//By default, first 2 buffers are the intro and loop, respectively
-			//AudioPlayer::playBGMWithIntro(0, 1);
+			AudioPlayer::playBGMWithIntro(0, 1);
 		}
 		else
 		{
-			//AudioPlayer::playBGM(0);
+			AudioPlayer::playBGM(0);
 		}
 	}
-	AudioPlayer::play(3, &Global::gameCamera->fadePosition1);
 
 	//GuiManager::addGuiToRender(GuiTextureResources::textureRing);
 
 	Global::finishStageTimer = -1;
 
 	Vector3f partVel(0, 0, 0);
-	//new Particle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &partVel, 0, 60, 0, 400, 0, true);
+	new Particle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), 1.0f, 400.0f, false);
 
 	Global::gameState = STATE_RUNNING;
 

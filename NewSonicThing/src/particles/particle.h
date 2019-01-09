@@ -32,7 +32,7 @@ private:
 	void setTextureOffset(Vector2f* offset, int index);
 
 public:
-	Particle(int textureIndex, Vector3f* position, float lifeLength, float scale, bool onlyRendersOnce);
+	Particle(ParticleTexture* texture, Vector3f* position, float lifeLength, float scale, bool onlyRendersOnce);
 
 	Particle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float lifeLength, float scale, bool onlyRendersOnce);
 

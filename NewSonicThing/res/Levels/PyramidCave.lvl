@@ -1,5 +1,5 @@
 Levels/PyramidCave
-PyramidCave
+PC
 Levels/PyramidCave
 1
 Collision 7
@@ -18,4 +18,4 @@ Collision 7
 88 6
 -200
 
-6 0 8000 0
+6 0 0 0

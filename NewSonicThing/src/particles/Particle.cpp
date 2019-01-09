@@ -8,9 +8,9 @@
 
 extern float dt;
 
-Particle::Particle(int textureIndex, Vector3f* position, float lifeLength, float scale, bool onlyRendersOnce)
+Particle::Particle(ParticleTexture* texture, Vector3f* position, float lifeLength, float scale, bool onlyRendersOnce)
 {
-	this->texture = ParticleResources::exhaustTextures[textureIndex];
+	this->texture = texture;
 	this->positionRef = &this->position;
 	this->position.x = position->x;
 	this->position.y = position->y;

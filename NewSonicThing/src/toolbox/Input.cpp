@@ -22,6 +22,10 @@ extern GLFWwindow* window;
 
 InputStruct Input::inputs{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
+//vars for use by us
+double mousePreviousX = 0;
+double mousePreviousY = 0;
+
 //settings
 
 bool freeMouse = true;
@@ -83,6 +87,7 @@ void Input::pollInputs()
 	Input::inputs.INPUT_PREVIOUS_LB      = Input::inputs.INPUT_LB;
 	Input::inputs.INPUT_PREVIOUS_RB      = Input::inputs.INPUT_RB;
 	Input::inputs.INPUT_PREVIOUS_START   = Input::inputs.INPUT_START;
+	Input::inputs.INPUT_PREVIOUS_TAB     = Input::inputs.INPUT_TAB;
 
 	Input::inputs.INPUT_PREVIOUS_X  = Input::inputs.INPUT_X;
 	Input::inputs.INPUT_PREVIOUS_Y  = Input::inputs.INPUT_Y;
@@ -100,6 +105,7 @@ void Input::pollInputs()
 	Input::inputs.INPUT_RB      = false;
 	Input::inputs.INPUT_SELECT  = false;
 	Input::inputs.INPUT_START   = false;
+	Input::inputs.INPUT_TAB     = false;
 
 	Input::inputs.INPUT_X  = 0;
 	Input::inputs.INPUT_Y  = 0;
@@ -165,6 +171,17 @@ void Input::pollInputs()
 		//std::fprintf(stdout, "joystick name: %s\n", name);
 	}
 
+	double xpos, ypos;
+	glfwGetCursorPos(window, &xpos, &ypos);
+
+	if (freeMouse == false)
+	{
+		Input::inputs.INPUT_X2 += (float)(mouseSensitivityX*(xpos - mousePreviousX));
+		Input::inputs.INPUT_Y2 += (float)(mouseSensitivityY*(ypos - mousePreviousY));
+	}
+	mousePreviousX = xpos;
+	mousePreviousY = ypos;
+
 
 
 
@@ -196,6 +213,10 @@ void Input::pollInputs()
 	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
 	{
 		Input::inputs.INPUT_LB = true;
+	}
+	if (glfwGetKey(window, GLFW_KEY_TAB) == GLFW_PRESS)
+	{
+		Input::inputs.INPUT_TAB = true;
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
@@ -251,6 +272,21 @@ void Input::pollInputs()
 		}
 	}
 	#endif
+
+
+	if (Input::inputs.INPUT_TAB && !Input::inputs.INPUT_PREVIOUS_TAB)
+	{
+		if (freeMouse)
+		{
+			freeMouse = false;
+			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		}
+		else
+		{
+			freeMouse = true;
+			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		}
+	}
 
 
 	float mag = sqrtf(Input::inputs.INPUT_X*Input::inputs.INPUT_X + Input::inputs.INPUT_Y*Input::inputs.INPUT_Y);
