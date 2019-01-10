@@ -60,60 +60,60 @@ Car::~Car()
 
 void Car::step()
 {
-	canMoveTimer = std::fmaxf(0.0f, canMoveTimer - dt);
-	hoverTimer   = std::fmaxf(0.0f, hoverTimer   - dt);
+	canMoveTimer      = std::fmaxf(0.0f, canMoveTimer      - dt);
+	hoverTimer        = std::fmaxf(0.0f, hoverTimer        - dt);
+	homingAttackTimer = std::fmaxf(0.0f, homingAttackTimer - dt);
 
 	setInputs();
 
 	//Homing attack
-	if (!onGround && (isBall || isJumping) && !justHomingAttacked && inputJump && !inputJumpPrevious)
+	if (onGround)
 	{
-		isJumping = false;
-		isBall = true;
-		justHomingAttacked = true;
-		//vel.setLength(vel.length()+250);
-
-		float storedVelY = vel.y;
-		vel.y = 0;
-
-		if (vel.length() < 300.0f)
+		homingAttackTimer = 0.0f;
+		justHomingAttacked = false;
+	}
+	else
+	{
+		if (inputJump && !inputJumpPrevious && (isBall || isJumping) && !justHomingAttacked)
 		{
-			vel.setLength(300.0f);
-		}
+			isJumping = false;
+			isBall = true;
+			isBouncing = false;
+			justBounced = false;
+			homingAttackTimer = homingAttackTimerMax;
+			justHomingAttacked = true;
 
-		vel.y = storedVelY;
+			float storedVelY = vel.y;
+			vel.y = 0;
 
-		//float speed = sqrtf(vel.x*vel.x + vel.z*vel.z);
-		//float homingPower = std::max(speed, 250.0f);
-		//
-		//float stickAngle = -atan2f(inputY, inputX) - M_PI/2; //angle you are holding on the stick, with 0 being up
-		//float stickRadius = sqrtf(inputX*inputX + inputY*inputY);
-		//Vector3f dirForward = Maths::projectOntoPlane(&camDir, &relativeUp);
-		//dirForward.setLength(stickRadius);
-		//Vector3f newVel = Maths::rotatePoint(&dirForward, &relativeUp, stickAngle);
-		//newVel.y = 0;
+			if (vel.length() < 300.0f)
+			{
+				vel.setLength(300.0f);
+			}
 
-		//if (stickRadius > 0.1f)
-		{
-			//vel = vel + newVel.scaleCopy(airRunPush*dt); //Add vel from player stick input
-		}
-		//else
-		{
-			
+			vel.y = storedVelY;
+			AudioPlayer::play(11, getPosition());
 		}
 	}
 
 	//Jump
-	if (onGround && inputJump && !inputJumpPrevious)
+	if (onGround)
 	{
-		vel = vel + relativeUp.scaleCopy(jumpPower);
-		hoverTimer = hoverTimerThreshold;
-		onGround = false;
-		isJumping = true;
+		if (inputJump && !inputJumpPrevious)
+		{
+			vel = vel + relativeUp.scaleCopy(jumpPower);
+			hoverTimer = hoverTimerThreshold;
+			onGround = false;
+			isJumping = true;
+			AudioPlayer::play(12, getPosition());
+		}
 	}
-	if (!onGround && inputJump && hoverTimer > 0.0f && isJumping) //Add vel from hover
+	else
 	{
-		vel = vel + relativeUpSmooth.scaleCopy(hoverPower*dt);
+		if (inputJump && hoverTimer > 0.0f && isJumping) //Add vel from hover
+		{
+			vel = vel + relativeUpSmooth.scaleCopy(hoverPower*dt);
+		}
 	}
 
 	//Ball
@@ -137,12 +137,9 @@ void Car::step()
 	//Spindash stuff
 	if (onGround)
 	{
-		isBouncing = false;
 		isStomping = false;
-		justBounced = false;
-		homingAttackTimer = -1;
 
-		if (isBall == false && spindashRestartDelay == 0)
+		if (!isBall && spindashRestartDelay == 0)
 		{
 			canStartSpindash = true;
 		}
@@ -202,18 +199,6 @@ void Car::step()
 			if (spindashTimer > 0)
 			{
 				spindash();
-
-				//float inputX2 = xVelGround;
-				//float inputY2 = zVelGround;
-				//float mag2 = sqrtf(inputX2*inputX2 + inputY2*inputY2);
-				//
-				//float inputDir2 = (atan2f(inputY2, inputX2));
-				//Vector3f negNorm2;
-				//negNorm2.set(-currNorm.x, -currNorm.y, -currNorm.z);
-				//Vector3f mapped2 = mapInputs3(inputDir2, mag2, &negNorm2);
-				//xVel = mapped2.x;
-				//yVel = mapped2.y;
-				//zVel = mapped2.z;
 			}
 			spindashTimer = 0;
 			storedSpindashSpeed = 0;
@@ -242,6 +227,21 @@ void Car::step()
 	}
 	spindashReleaseTimer = std::fmaxf(spindashReleaseTimer - dt, 0);
 	spindashRestartDelay = std::fmaxf(spindashRestartDelay - dt, 0);
+
+	//Bouncing
+	if (onGround)
+	{
+		isBouncing = false;
+		justBounced = false;
+	}
+	else
+	{
+		if (inputAction && !inputActionPrevious && (isJumping || isBall) && !isBouncing && !justHomingAttacked && !isStomping)
+		{
+			vel.y = bounceVel;
+			isBouncing = true;
+		}
+	}
 
 	if (onGround)
 	{
@@ -384,44 +384,74 @@ void Car::step()
 
 		if (onGround  == false) //Air to ground
 		{
-			if (CollisionChecker::getCollideTriangle()->isWall() || colNormal->y < wallStickThreshold)
+			if (isBouncing)
 			{
-				Vector3f newDirection = Maths::projectOntoPlane(&vel, colNormal);
-				newDirection.scale(0.925f);
-				Vector3f posAfterMoveToWall = Vector3f(CollisionChecker::getCollidePosition());
-				Vector3f posDelta = posAfterMoveToWall - position;
-				posAfterMoveToWall = posAfterMoveToWall + colNormal->scaleCopy(FLOOR_OFFSET);
-				float distLeftToMove = vel.scaleCopy(dt).length();
-				float distMoved = posDelta.length();
-				distLeftToMove -= distMoved;
-
-				vel.set(&newDirection);
-				setPosition(&posAfterMoveToWall);
-
-				Vector3f velToMove = Vector3f(&vel);
-				velToMove.setLength(distLeftToMove);
-
-				//move additional distance
-				if (distLeftToMove > 0)
-				{
-					if (CollisionChecker::checkCollision(getX(), getY(), getZ(), getX()+velToMove.x, getY()+velToMove.y, getZ()+velToMove.z) == false)
-					{
-						increasePosition(velToMove.x, velToMove.y, velToMove.z);
-					}
-				}
+				vel = Maths::bounceVector(&vel, colNormal, bounceFactor);
+				isBall = true;
+				isBouncing = false;
+				justBounced = true;
+				isStomping = false;
+				justHomingAttacked = false;
+				homingAttackTimer = 0.0f;
+				hoverTimer = 0.0f;
+				AudioPlayer::play(8, getPosition());
 			}
 			else
 			{
-				currentTriangle = CollisionChecker::getCollideTriangle();
-				Vector3f newDirection = Maths::projectOntoPlane(&vel, colNormal);
-				vel.set(&newDirection);
+				if (CollisionChecker::getCollideTriangle()->isWall() || colNormal->y < wallStickThreshold)
+				{
+					if (justBounced)
+					{
+						float spdBefore = vel.length();
+						Vector3f newDirection = Maths::projectOntoPlane(&vel, colNormal);
+						newDirection.setLength(spdBefore);
+						vel.set(&newDirection);
 
-				setPosition(CollisionChecker::getCollidePosition());
-				increasePosition(colNormal->x*FLOOR_OFFSET, colNormal->y*FLOOR_OFFSET, colNormal->z*FLOOR_OFFSET);
+						justBounced = false;
 
-				relativeUp.set(colNormal);
-				onGround = true;
-				isBall = false;
+						setPosition(CollisionChecker::getCollidePosition());
+						increasePosition(colNormal->x*FLOOR_OFFSET, colNormal->y*FLOOR_OFFSET, colNormal->z*FLOOR_OFFSET);
+					}
+					else
+					{
+						Vector3f newDirection = Maths::projectOntoPlane(&vel, colNormal);
+						newDirection.scale(0.925f);
+						Vector3f posAfterMoveToWall = Vector3f(CollisionChecker::getCollidePosition());
+						Vector3f posDelta = posAfterMoveToWall - position;
+						posAfterMoveToWall = posAfterMoveToWall + colNormal->scaleCopy(FLOOR_OFFSET);
+						float distLeftToMove = vel.scaleCopy(dt).length();
+						float distMoved = posDelta.length();
+						distLeftToMove -= distMoved;
+
+						vel.set(&newDirection);
+						setPosition(&posAfterMoveToWall);
+
+						Vector3f velToMove = Vector3f(&vel);
+						velToMove.setLength(distLeftToMove);
+
+						//move additional distance
+						if (distLeftToMove > 0)
+						{
+							if (CollisionChecker::checkCollision(getX(), getY(), getZ(), getX()+velToMove.x, getY()+velToMove.y, getZ()+velToMove.z) == false)
+							{
+								increasePosition(velToMove.x, velToMove.y, velToMove.z);
+							}
+						}
+					}
+				}
+				else
+				{
+					currentTriangle = CollisionChecker::getCollideTriangle();
+					Vector3f newDirection = Maths::projectOntoPlane(&vel, colNormal);
+					vel.set(&newDirection);
+
+					setPosition(CollisionChecker::getCollidePosition());
+					increasePosition(colNormal->x*FLOOR_OFFSET, colNormal->y*FLOOR_OFFSET, colNormal->z*FLOOR_OFFSET);
+
+					relativeUp.set(colNormal);
+					onGround = true;
+					isBall = false;
+				}
 			}
 		}
 		else //Ground to a different triangle
@@ -846,7 +876,7 @@ void Car::moveMeAir()
 			float spd = vel.length();
 			vel = Maths::interpolateVector(&vel, &velToAdd, dt*(60.0f/12.0f));
 			vel.setLength(spd);
-			vel.scale(1 - 3.5f*ang*dt*(1/M_PI)); //slow down from turning in the air
+			vel.scale(1 - 4.5f*ang*dt*(1/M_PI)); //slow down from turning in the air
 		}
 		vel.y = storedVelY;
 	}
@@ -936,11 +966,18 @@ void Car::animate()
 		maniaSonicModel->setOrientation(dspX, dspY, dspZ, diffAir, yawAngleAir, pitchAngleAir, runAnimationCycle);
 		maniaSonicModel->animate(12, 0);
 	}
+	else if (isBouncing)
+	{
+		runAnimationCycle -= 3500*dt;
+		maniaSonicModel->setOrientation(dspX, dspY, dspZ, diffAir, yawAngleAir, pitchAngleAir, runAnimationCycle);
+		maniaSonicModel->animate(12, 0);
+	}
 	else if (isBall)
 	{
+		runAnimationCycle -= (8.0f*currSpeed + 300)*dt;
 		if (onGround)
 		{
-			runAnimationCycle -= (8.0f*currSpeed + 300)*dt;
+			//runAnimationCycle -= (8.0f*currSpeed + 300)*dt;
 			maniaSonicModel->setOrientation(dspX, dspY, dspZ, diffGround, yawAngleGround, pitchAngleGround, runAnimationCycle);
 		}
 		else

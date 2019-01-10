@@ -104,14 +104,16 @@ private:
 	float spindashReleaseTimer = 0;
 	const float spindashReleaseTimerMax = 30.0f/60.0f;
 	float spindashRestartDelay = 0;
-	const float spindashRestartDelayMax = 8.0f/60.0f;
+	const float spindashRestartDelayMax = 3.0f/60.0f;
 	float storedSpindashSpeed = 0;
 
 	bool isSkidding = false;
-	bool isBouncing = false;
 	bool isStomping = false;
 	bool isLightdashing = false;
 
+	const float bounceVel = -300.0f;
+	const float bounceFactor = 0.7f;
+	bool isBouncing = false;
 	bool justBounced = false; //Are we in the air after doing a bounce?
 
 	bool justHomingAttacked = false; //Are we in the air after doing a homing attack?
