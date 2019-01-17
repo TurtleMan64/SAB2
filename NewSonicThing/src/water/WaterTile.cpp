@@ -2,16 +2,10 @@
 
 const float WaterTile::TILE_SIZE = 1500;
 
-WaterTile::WaterTile(float centerX, float centerZ, float height)
+WaterTile::WaterTile(float centerX, float centerZ)
 {
 	this->x = centerX;
 	this->z = centerZ;
-	this->height = height;
-}
-
-float WaterTile::getHeight()
-{
-	return height;
 }
 
 float WaterTile::getX()

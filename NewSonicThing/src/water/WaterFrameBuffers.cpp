@@ -2,13 +2,11 @@
 #include "waterframebuffers.h"
 #include "../engineTester/main.h"
 
-
 WaterFrameBuffers::WaterFrameBuffers()
 {
 	initialiseReflectionFrameBuffer();
 	initialiseRefractionFrameBuffer();
 }
-
 
 void WaterFrameBuffers::initialiseReflectionFrameBuffer()
 {

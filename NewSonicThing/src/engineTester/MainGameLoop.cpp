@@ -65,6 +65,10 @@
 #include "../fontMeshCreator/guinumber.h"
 #include "../entities/car.h"
 #include "../entities/checkpoint.h"
+#include "../water/waterframebuffers.h"
+#include "../water/watershader.h"
+#include "../water/waterrenderer.h"
+#include "../water/watertile.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -87,6 +91,11 @@ std::list<Entity*> gameEntitiesPass3ToDelete;
 std::unordered_map<Entity*, Entity*> gameTransparentEntities;
 std::list<Entity*> gameTransparentEntitiesToAdd;
 std::list<Entity*> gameTransparentEntitiesToDelete;
+
+float Global::waterHeight = 0.0f;
+WaterRenderer* Global::gameWaterRenderer = nullptr;
+WaterFrameBuffers* Global::gameWaterFBOs = nullptr;
+std::list<WaterTile*>* Global::gameWaterTiles = nullptr;
 
 float dt = 0;
 double timeOld = 0;
@@ -269,6 +278,21 @@ int main()
 	lightSun.getPosition()->y = 0;
 	lightSun.getPosition()->z = 0;
 	lightMoon.getPosition()->y = -100000;
+
+	if (Global::useHighQualityWater)
+	{
+		Global::gameWaterFBOs     = new WaterFrameBuffers; INCR_NEW
+		WaterShader* waterShader  = new WaterShader; INCR_NEW
+		Global::gameWaterRenderer = new WaterRenderer(waterShader, Master_getProjectionMatrix(), Global::gameWaterFBOs, Master_getShadowRenderer()); INCR_NEW
+		Global::gameWaterTiles    = new std::list<WaterTile*>; INCR_NEW
+		for (int r = -6; r < 6; r++) //-9 , 9
+		{
+			for (int c = -8; c < 8; c++) //-12  12
+			{
+				Global::gameWaterTiles->push_back(new WaterTile(r*WaterTile::TILE_SIZE*2, c*WaterTile::TILE_SIZE*2)); INCR_NEW
+			}
+		}
+	}
 
 	if (Global::renderBloom)
 	{
@@ -533,22 +557,70 @@ int main()
 		Master_renderShadowMaps(&lightSun);
 		Master_processEntity(&skySphere);
 
+		if (Global::useHighQualityWater && Global::stageUsesWater)
+		{
+			glEnable(GL_CLIP_DISTANCE0);
+			bool aboveWater = (cam.eye.y > Global::waterHeight);
+
+			const float offsetWater = 0.3f;
+
+			//reflection render
+			Global::gameWaterFBOs->bindReflectionFrameBuffer();
+			cam.mirrorForWater();
+			if (aboveWater)
+			{
+				Master_render(&cam, 0, 1, 0, offsetWater - Global::waterHeight);
+				if (Global::renderParticles)
+				{
+					ParticleMaster::renderParticles(&cam, SkyManager::getOverallBrightness(), 1);
+				}
+			}
+			else
+			{
+				Master_render(&cam, 0, -1, 0, offsetWater + Global::waterHeight);
+				if (Global::renderParticles)
+				{
+					ParticleMaster::renderParticles(&cam, SkyManager::getOverallBrightness(), -1);
+				}
+			}
+			cam.mirrorForWater();
+			Global::gameWaterFBOs->unbindCurrentFrameBuffer();
+
+			//refraction render
+			Global::gameWaterFBOs->bindRefractionFrameBuffer();
+			if (aboveWater)
+			{
+				Master_render(&cam, 0, -1, 0, offsetWater + Global::waterHeight);
+				if (Global::renderParticles)
+				{
+					ParticleMaster::renderParticles(&cam, SkyManager::getOverallBrightness(), -1);
+				}
+			}
+			else
+			{
+				Master_render(&cam, 0, 1, 0, offsetWater - Global::waterHeight);
+				if (Global::renderParticles)
+				{
+					ParticleMaster::renderParticles(&cam, SkyManager::getOverallBrightness(), 1);
+				}
+			}
+			Global::gameWaterFBOs->unbindCurrentFrameBuffer();
+
+			glDisable(GL_CLIP_DISTANCE0);
+		}
+
+		AudioMaster::updateListenerData(&cam.eye, &cam.target, &cam.up, &cam.vel);
 
 		if (Global::renderBloom)
 		{
 			Global::gameMultisampleFbo->bindFrameBuffer();
 		}
-
-		Vector3f camVel = cam.calcVelocity();
-		if (Global::gameMainVehicle != nullptr)
-		{
-			//Vector3f newVel = Global::gamePlayer->getOverallVel();
-			//camVel.set(&newVel);
-		}
-		AudioMaster::updateListenerData(&cam.eye, &cam.target, &cam.up, &camVel);
-
-
 		Master_render(&cam, 0, 1, 0, 1000);
+
+		if (Global::useHighQualityWater && Global::stageUsesWater)
+		{
+			Global::gameWaterRenderer->render(Global::gameWaterTiles, &cam, &lightSun);
+		}
 
 		if (Global::renderParticles)
 		{
@@ -1168,11 +1240,16 @@ void listen()
 		}
 		else if (input.size() > 1)
 		{
-			//fprintf(stdout, "input = '%s'\n", input.c_str());
+			fprintf(stdout, "input = '%s'\n", input.c_str());
 			//Global::gamePlayer->setGroundSpeed(0, 0);
 			//Global::gamePlayer->setxVelAir(0);
 			//Global::gamePlayer->setxVelAir(0);
 			//Global::gamePlayer->setyVel(0);
+			if (input.c_str()[0] == 'w')
+			{
+				const char* data = &input.c_str()[1];
+				Global::waterHeight = std::stof(data);
+			}
 			//if (input == "goff")
 			//{
 			//	Global::gamePlayer->setGravity(0);

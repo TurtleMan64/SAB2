@@ -39,6 +39,7 @@ void WaterRenderer::prepareRender(Camera* camera, Light* sun)
 	moveFactor = fmodf(moveFactor, 1);
 	shader->loadMoveFactor(moveFactor);
 	shader->loadLight(sun);
+	shader->loadWaterHeight(Global::waterHeight);
 	glBindVertexArray(quad->getVaoID());
 	glEnableVertexAttribArray(0);
 	glActiveTexture(GL_TEXTURE0);
@@ -88,7 +89,7 @@ void WaterRenderer::render(std::list<WaterTile*>* water, Camera* camera, Light* 
 	for (WaterTile* tile : (*water))
 	{
 		Matrix4f modelMatrix;
-		Vector3f tilePosition(tile->getX(), tile->getHeight(), tile->getZ());
+		Vector3f tilePosition(tile->getX(), Global::waterHeight, tile->getZ());
 		Maths::createTransformationMatrix(&modelMatrix, &tilePosition, 0, 0, 0, 0, WaterTile::TILE_SIZE);
 		shader->loadModelMatrix(&modelMatrix);
 		glDrawArrays(GL_TRIANGLES, 0, quad->getVertexCount());

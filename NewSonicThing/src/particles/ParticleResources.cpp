@@ -40,6 +40,7 @@ ParticleTexture* ParticleResources::textureWhiteFadeOutAndIn = nullptr;
 ParticleTexture* ParticleResources::textureBlackFadeOutAndIn = nullptr;
 ParticleTexture* ParticleResources::textureInWater = nullptr;
 ParticleTexture* ParticleResources::textureBlueLine = nullptr;
+ParticleTexture* ParticleResources::texturePollen = nullptr;
 
 void ParticleResources::loadParticles()
 {
@@ -81,4 +82,5 @@ void ParticleResources::loadParticles()
 	INCR_NEW textureBlackFadeOutAndIn = new ParticleTexture(Loader::loadTexture("res/Images/Particles/BlackFadeOutAndInAtlas.png"), 2, 1.0f, 0);
 	INCR_NEW textureInWater           = new ParticleTexture(Loader::loadTexture("res/Images/Particles/InWater.png"), 1, 0.1f, 1);
 	INCR_NEW textureBlueLine          = new ParticleTexture(Loader::loadTexture("res/Images/Particles/BlueLine.png"), 1, 1.0f, 1);
+	INCR_NEW texturePollen            = new ParticleTexture(Loader::loadTexture("res/Images/Particles/Pollen.png"), 1, 0.9f, 0);
 }

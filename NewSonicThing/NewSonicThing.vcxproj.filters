@@ -76,6 +76,9 @@
     <Filter Include="Source Files\water">
       <UniqueIdentifier>{d065fb6b-af8f-49a6-9326-dc82e4cffa17}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\entities\GreenForest">
+      <UniqueIdentifier>{254fdfe4-326a-43a8-98c2-e3aa365a2b27}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\glad.c">
@@ -369,6 +372,9 @@
     <ClCompile Include="src\entities\ManiaSonicModel.cpp">
       <Filter>Source Files\entities</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\GreenForest\GF_StageManager.cpp">
+      <Filter>Source Files\entities\GreenForest</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.h">
@@ -646,6 +652,9 @@
     </ClInclude>
     <ClInclude Include="src\entities\maniasonicmodel.h">
       <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\GreenForest\gfstagemanager.h">
+      <Filter>Source Files\entities\GreenForest</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -30,6 +30,7 @@ private:
 	int location_depthMap;
 	int location_shadowMap;
 	int location_toShadowMapSpace;
+	int location_waterHeight;
 
 	float matrixBuffer[16];
 
@@ -45,6 +46,8 @@ public:
 	void connectTextureUnits();
 
 	void loadLight(Light* sun);
+
+	void loadWaterHeight(float waterHeight);
 
 	void loadMoveFactor(float factor);
 

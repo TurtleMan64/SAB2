@@ -13,12 +13,18 @@ public:
 	Vector3f target;
 	Vector3f up;
 
+	Vector3f eyePrevious;
+	Vector3f vel;
+
 public:
 	Camera();
 
+	//Call this ONCE per frame, it calculates velocity and other things
 	void refresh();
 
-	Vector3f calcVelocity();
+	//changes the camera so that it becomes a mirror image of itself, with
+	//the mirror plane being the water
+	void mirrorForWater();
 
 	Vector3f* getFadePosition1();
 

@@ -71,6 +71,11 @@ void WaterShader::loadLight(Light* sun)
 	loadVector(location_lightPosition, sun->getPosition());
 }
 
+void WaterShader::loadWaterHeight(float waterHeight)
+{
+	loadFloat(location_waterHeight, waterHeight);
+}
+
 void WaterShader::loadMoveFactor(float factor)
 {
 	loadFloat(location_moveFactor, factor);
@@ -132,6 +137,7 @@ void WaterShader::getAllUniformLocations()
 	location_depthMap          = getUniformLocation("depthMap");
 	location_shadowMap         = getUniformLocation("shadowMap");
 	location_toShadowMapSpace  = getUniformLocation("toShadowMapSpace");
+	location_waterHeight       = getUniformLocation("waterHeight");
 }
 
 int WaterShader::getUniformLocation(const char* uniformName)

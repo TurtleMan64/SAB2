@@ -7,6 +7,7 @@
 #include "../toolbox/maths.h"
 #include "../particles/particleresources.h"
 #include "../particles/particle.h"
+#include "../engineTester/main.h"
 
 #include <cmath>
 
@@ -16,6 +17,20 @@ Camera::Camera()
 	eye.set(0,20,0);
 	target.set(1,20,0);
 	up.set(0,1,0);
+}
+
+void Camera::mirrorForWater()
+{
+	Vector3f waterNormal(0, 1, 0);
+	Vector3f view = target - eye;
+	view = Maths::bounceVector(&view, &waterNormal, 1.0f);
+	Vector3f newUp = Maths::bounceVector(&up, &waterNormal, 1.0f);
+	newUp.neg();
+	up = newUp;
+
+	float yDiff = eye.y - Global::waterHeight;
+	eye.y -= yDiff*2;
+	target = eye+view;
 }
 
 void Camera::refresh()
@@ -57,17 +72,11 @@ void Camera::refresh()
 	off.normalize();
 	off.scale(0.55f);
 	fadePosition2.set(eye.x + off.x, eye.y + off.y, eye.z + off.z);
-}
 
-Vector3f Camera::calcVelocity()
-{
-	//Vector3f diff(getPosition());
-
-	//diff = diff-prevPos;
-
-	//prevPos.set(getPosition());
-
-	return Vector3f(0,0,0);
+	extern float dt;
+	vel = (eye-eyePrevious);
+	vel.scale(1/dt);
+	eyePrevious.set(&eyePrevious);
 }
 
 Vector3f* Camera::getFadePosition1()

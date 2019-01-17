@@ -268,6 +268,8 @@ public:
 
 	void setVelocity(float xVel, float yVel, float zVel);
 
+	Vector3f* getVelocity();
+
 	void setCanMoveTimer(float newTimer);
 
 	std::list<TexturedModel*>* getModels();

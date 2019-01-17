@@ -33,6 +33,7 @@
 #include "../entities/jumpramp.h"
 #include "../particles/particleresources.h"
 #include "../particles/particle.h"
+#include "../entities/GreenForest/gfstagemanager.h"
 
 void LevelLoader::loadTitle()
 {
@@ -182,7 +183,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
 		AudioPlayer::deleteBuffersBGM();
 	}
 
-	Global::stageUsesWater = false;
+	//Global::stageUsesWater = false;
 
 	//Run through the header content
 
@@ -427,8 +428,21 @@ void LevelLoader::loadLevel(std::string levelFilename)
 	//Global death height
 	std::string deathHeightLine;
 	getline(file, deathHeightLine);
-
 	Global::deathHeight = stof(deathHeightLine);
+
+	//Does the stage have water?
+	std::string waterEnabledLine;
+	getline(file, waterEnabledLine);
+	Global::stageUsesWater = false;
+	if (waterEnabledLine == "water")
+	{
+		Global::stageUsesWater = true;
+	}
+
+	//Global water height
+	std::string waterHeightLine;
+	getline(file, waterHeightLine);
+	Global::waterHeight = stof(waterHeightLine);
 
 	GuiManager::clearGuisToRender();
 
@@ -525,8 +539,8 @@ void LevelLoader::loadLevel(std::string levelFilename)
 
 	Global::finishStageTimer = -1;
 
-	Vector3f partVel(0, 0, 0);
-	new Particle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), 1.0f, 400.0f, false);
+	//Vector3f partVel(0, 0, 0);
+	//new Particle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), 1.0f, 400.0f, false);
 
 	Global::gameState = STATE_RUNNING;
 
@@ -616,6 +630,37 @@ void LevelLoader::processLine(char** dat, int /*datLength*/)
 			Main_addTransparentEntity(ramp);
 			return;
 		}
+
+		case 91: //General Purpose Stage Manager
+		{
+			int id2 = std::stoi(dat[1]);
+			switch (id2)
+			{
+				case 0:
+				{
+					GFStageManager::loadStaticModels();
+					GFStageManager* gf = new GFStageManager; INCR_NEW
+					Main_addEntity(gf);
+					break;
+				}
+
+				//case 1:
+				//	G* mh = new MH_Manager; INCR_NEW
+				//	Main_addEntity(mh);
+				//	break;
+
+				default: break;
+			}
+			return;
+		}
+
+		//case 91: //Metal Harbor
+		//{
+		//	MH_Manager* mh = new MH_Manager;
+		//	INCR_NEW
+		//	Main_addEntity(mh);
+		//	return;
+		//}
 
 		default:
 		{
@@ -708,4 +753,5 @@ void LevelLoader::freeAllStaticModels()
 	Car::deleteStaticModels();
 	Checkpoint::deleteStaticModels();
 	JumpRamp::deleteStaticModels();
+	GFStageManager::deleteStaticModels();
 }

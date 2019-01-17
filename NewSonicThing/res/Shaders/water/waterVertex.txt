@@ -25,7 +25,7 @@ const float tiling = 6.0;   //4.0
 
 void main(void) 
 {
-	vec4 worldPosition = modelMatrix * vec4(position.x, 0.0, position.y, 1.0);
+	vec4 worldPosition = modelMatrix * vec4(position.x, 0.0f, position.y, 1.0);
 	worldposition = worldPosition.xyz;
 	//shadowCoords = toShadowMapSpace * worldPosition;
 	clipSpace = projectionMatrix * viewMatrix * worldPosition;

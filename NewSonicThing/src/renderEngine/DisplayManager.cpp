@@ -85,7 +85,7 @@ int createDisplay()
 
 	// glfw window creation
 	// --------------------
-	window = glfwCreateWindow(screenWidth, screenHeight, "Bad F-ZERO Fangame", monitor, nullptr);
+	window = glfwCreateWindow(screenWidth, screenHeight, "Sonic thing", monitor, nullptr);
 	if (window == nullptr)
 	{
 		std::cout << "Failed to create GLFW window" << std::endl;

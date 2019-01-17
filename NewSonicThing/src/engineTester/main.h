@@ -10,6 +10,9 @@ class Light;
 class ShadowMapMasterRenderer;
 class Fbo;
 class Checkpoint;
+class WaterRenderer;
+class WaterFrameBuffers;
+class WaterTile;
 
 #include <string>
 #include <random>
@@ -85,12 +88,16 @@ public:
 	static int gameScore;
 	static int gameLives;
 	static int gameClock;
+	static WaterRenderer* gameWaterRenderer;
+	static WaterFrameBuffers* gameWaterFBOs;
+	static std::list<WaterTile*>* gameWaterTiles;
 	static int gameMainVehicleSpeed;
 	static float finishStageTimer;
 	static Fbo* gameMultisampleFbo;
 	static Fbo* gameOutputFbo;
 	static Fbo* gameOutputFbo2;
 	static float deathHeight;
+	static float waterHeight;
 	static int gameMissionNumber;
 	static bool gameIsNormalMode;
 	static bool gameIsHardMode;

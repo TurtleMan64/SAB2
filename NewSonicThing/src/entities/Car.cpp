@@ -376,7 +376,6 @@ void Car::step()
 
 	//speed before adjusting
 	float originalSpeed = vel.length();
-
 	CollisionChecker::setCheckPlayer();
 	if (CollisionChecker::checkCollision(getX(), getY(), getZ(), getX()+vel.x*dt, getY()+vel.y*dt, getZ()+vel.z*dt))
 	{
@@ -415,20 +414,20 @@ void Car::step()
 					else
 					{
 						Vector3f newDirection = Maths::projectOntoPlane(&vel, colNormal);
-						newDirection.scale(0.925f);
+						//newDirection.scale(0.925f);
 						Vector3f posAfterMoveToWall = Vector3f(CollisionChecker::getCollidePosition());
 						Vector3f posDelta = posAfterMoveToWall - position;
 						posAfterMoveToWall = posAfterMoveToWall + colNormal->scaleCopy(FLOOR_OFFSET);
 						float distLeftToMove = vel.scaleCopy(dt).length();
 						float distMoved = posDelta.length();
 						distLeftToMove -= distMoved;
-
+						
 						vel.set(&newDirection);
 						setPosition(&posAfterMoveToWall);
-
+						
 						Vector3f velToMove = Vector3f(&vel);
 						velToMove.setLength(distLeftToMove);
-
+						
 						//move additional distance
 						if (distLeftToMove > 0)
 						{
@@ -437,6 +436,36 @@ void Car::step()
 								increasePosition(velToMove.x, velToMove.y, velToMove.z);
 							}
 						}
+
+						onGround = false;
+						relativeUp.set(0, 1, 0);
+						vel.y = Maths::approach(vel.y, gravityTerminal, gravityApproach, dt);
+						Vector3f velToAddFromGravity(relativeUp);
+						velToAddFromGravity.setLength(-gravityForce*dt);
+
+
+
+
+						//Vector3f velFrame = vel.scaleCopy(dt);
+						//Vector3f newDirection = Maths::projectOntoPlane(&velFrame, colNormal);
+						//Vector3f posAfterMoveToWall = Vector3f(CollisionChecker::getCollidePosition());
+						//Vector3f posDelta = posAfterMoveToWall - position;
+						//posAfterMoveToWall = posAfterMoveToWall + colNormal->scaleCopy(FLOOR_OFFSET);
+						//
+						//if (CollisionChecker::checkCollision(getX(), getY(), getZ(), posAfterMoveToWall.x, posAfterMoveToWall.y, posAfterMoveToWall.z) == false)
+						//{
+						//	setPosition(&posAfterMoveToWall);
+						//}
+						//if (CollisionChecker::checkCollision(getX(), getY(), getZ(), getX() + newDirection.x, getY() + newDirection.y, getZ() + newDirection.z) == false)
+						//{
+						//	increasePosition(newDirection.x, newDirection.y, newDirection.z);
+						//}
+						//
+						//onGround = false;
+						//relativeUp.set(0, 1, 0);
+						//vel.y = Maths::approach(vel.y, gravityTerminal, gravityApproach, dt);
+						//Vector3f velToAddFromGravity(relativeUp);
+						//velToAddFromGravity.setLength(-gravityForce*dt);
 					}
 				}
 				else
@@ -667,10 +696,6 @@ void Car::step()
 			{
 				vel = vel - velToAddFromGravity.scaleCopy(4);
 			}
-			else
-			{
-				//vel = vel + velToAddFromGravity;
-			}
 		}
 	}
 
@@ -712,10 +737,13 @@ void Car::step()
 	Maths::rotatePoint(newUp, 0, 0, 0, rotationVector[0], rotationVector[1], rotationVector[2], up.x, up.y, up.z, 0);
 	up.set(newUp[0], newUp[1], newUp[2]);
 
-	if (CollisionChecker::checkCollision(eye.x, eye.y, eye.z, target.x, target.y, target.z))
+	Vector3f camDelta = eye - target;
+	camDelta.setLength(10);
+	Vector3f camStart = target + camDelta;
+	if (CollisionChecker::checkCollision(camStart.x, camStart.y, camStart.z, eye.x, eye.y, eye.z))
 	{
 		Vector3f delta = eye - target;
-		delta.normalize();
+		delta.setLength(2);
 		Vector3f newPos(CollisionChecker::getCollidePosition());
 		newPos = newPos - delta;
 		eye.set(&newPos);
@@ -763,7 +791,7 @@ void Car::calcSpindashDirection()
 	{
 		spindashDirection.set(&newDir);
 	}
-	else if (vel.length() > 0.0001f)
+	else if (vel.length() > 50.0f)
 	{
 		spindashDirection.set(&vel);
 	}
@@ -897,6 +925,11 @@ void Car::setVelocity(float xVel, float yVel, float zVel)
 	vel.x = xVel;
 	vel.y = yVel;
 	vel.z = zVel;
+}
+
+Vector3f* Car::getVelocity()
+{
+	return &vel;
 }
 
 void Car::setCanMoveTimer(float newTimer)
