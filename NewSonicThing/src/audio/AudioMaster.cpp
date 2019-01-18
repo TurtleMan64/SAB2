@@ -9,6 +9,9 @@
 
 #ifdef _WIN32
 #include <windows.h>
+#else
+#include <stdio.h>
+#include <errno.h>
 #endif
 
 #include <vorbis/vorbisfile.h>
@@ -81,8 +84,10 @@ void AudioMaster::updateListenerData(Vector3f* eye, Vector3f* target, Vector3f* 
 ALuint AudioMaster::loadOGG(const char* fileName)
 {
 	FILE* fp = nullptr;
-	int er = fopen_s(&fp, fileName, "rb");
+	int er = 0;
 
+	#ifdef _WIN32
+	er = fopen_s(&fp, fileName, "rb");
 	if (fp == nullptr || er != 0)
 	{
 		fprintf(stderr, "Error when trying to open '%s'\n", fileName);
@@ -92,6 +97,15 @@ ALuint AudioMaster::loadOGG(const char* fileName)
 		}
 		return AL_NONE;
 	}
+	#else
+	fp = fopen(fileName, "rb");
+	if (fp == nullptr)
+	{
+		fprintf(stderr, "Error when trying to open '%s'\n", fileName);
+		fprintf(stderr, "errno = %s\n", strerror(errno));
+		return AL_NONE;
+	}
+	#endif
 
 	int endian = 0; //0 = little
 	int bitStream;

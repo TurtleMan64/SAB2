@@ -609,7 +609,8 @@ int main()
 			glDisable(GL_CLIP_DISTANCE0);
 		}
 
-		AudioMaster::updateListenerData(&cam.eye, &cam.target, &cam.up, &cam.vel);
+		Vector3f camVel = cam.vel.scaleCopy(0.016666f);
+		AudioMaster::updateListenerData(&cam.eye, &cam.target, &cam.up, &camVel);
 
 		if (Global::renderBloom)
 		{

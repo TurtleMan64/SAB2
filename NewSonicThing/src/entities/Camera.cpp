@@ -76,7 +76,7 @@ void Camera::refresh()
 	extern float dt;
 	vel = (eye-eyePrevious);
 	vel.scale(1/dt);
-	eyePrevious.set(&eyePrevious);
+	eyePrevious.set(&eye);
 }
 
 Vector3f* Camera::getFadePosition1()

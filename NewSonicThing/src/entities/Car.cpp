@@ -181,7 +181,16 @@ void Car::step()
 			}
 
 			spindashTimer = std::fminf(spindashTimer + dt, spindashTimerMax);
-			storedSpindashSpeed = std::fminf(storedSpindashSpeed + 0.4f*60*60*dt, spindashPowerMax);
+			float sssToAdd = 0.4f*60*60*dt;
+			if (storedSpindashSpeed+sssToAdd < spindashPowerMax)
+			{
+				storedSpindashSpeed+=sssToAdd;
+			}
+			else if (storedSpindashSpeed < spindashPowerMax && 
+				storedSpindashSpeed+sssToAdd > spindashPowerMax)
+			{
+				storedSpindashSpeed = spindashPowerMax;
+			}
 
 			isSpindashing = true;
 			calcSpindashDirection();
@@ -854,7 +863,8 @@ void Car::moveMeGround()
 			if (isBall)
 			{
 				//version 2
-				Vector3f fr(0, -0.95f, 0);
+				//Vector3f fr(0, -0.95f, 0);
+				Vector3f fr(0, -0.001f, 0);
 				fr = Maths::projectOntoPlane(&fr, &relativeUp);
 				float frictionPower = groundBallFriction*(1 - fr.length());
 				vel = Maths::applyDrag(&vel, -frictionPower, dt); //Slow vel down due to friction
