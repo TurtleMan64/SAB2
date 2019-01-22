@@ -12,6 +12,7 @@
 #else
 #include <stdio.h>
 #include <errno.h>
+#include <cstdio>
 #endif
 
 #include <vorbis/vorbisfile.h>
@@ -102,7 +103,7 @@ ALuint AudioMaster::loadOGG(const char* fileName)
 	if (fp == nullptr)
 	{
 		fprintf(stderr, "Error when trying to open '%s'\n", fileName);
-		fprintf(stderr, "errno = %s\n", strerror(errno));
+		perror("error");
 		return AL_NONE;
 	}
 	#endif

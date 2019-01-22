@@ -457,6 +457,36 @@ Vector3f Maths::getCloserPoint(Vector3f* A, Vector3f* B, Vector3f* testPoint)
 	return Vector3f(B);
 }
 
+//https://stackoverflow.com/questions/11132681/what-is-a-formula-to-get-a-vector-perpendicular-to-another-vector
+Vector3f Maths::calculatePerpendicular(Vector3f* vec)
+{
+	bool b0 = (vec->x <  vec->y) && (vec->x <  vec->z);
+	bool b1 = (vec->y <= vec->x) && (vec->y <  vec->z);
+	bool b2 = (vec->z <= vec->x) && (vec->z <= vec->y);
+	Vector3f differentVec((float)(b0), (float)(b1), (float)(b2));
+	differentVec.setLength(1);
+	Vector3f perpen = vec->cross(&differentVec);
+	perpen.setLength(1);
+	return perpen;
+}
+
+Vector3f Maths::projectAlongLine(Vector3f* A, Vector3f* line)
+{
+	Vector3f master(A);
+	//std::fprintf(stdout, "master = %f %f %f\n", master.x, master.y, master.z);
+	Vector3f perpen1 = Maths::calculatePerpendicular(line);
+	perpen1.normalize();
+	//std::fprintf(stdout, "perpen1 = %f %f %f\n", perpen1.x, perpen1.y, perpen1.z);
+	Vector3f perpen2 = perpen1.cross(line);
+	perpen2.normalize();
+	//std::fprintf(stdout, "perpen2 = %f %f %f\n", perpen2.x, perpen2.y, perpen2.z);
+	master = Maths::projectOntoPlane(&master, &perpen1);
+	//std::fprintf(stdout, "master = %f %f %f\n", master.x, master.y, master.z);
+	master = Maths::projectOntoPlane(&master, &perpen2);
+	//std::fprintf(stdout, "master = %f %f %f\n", master.x, master.y, master.z);
+	return master;
+}
+
 /**
 * @param initialVelocity
 * @param surfaceNormal
@@ -474,12 +504,13 @@ Vector3f Maths::bounceVector(Vector3f* initialVelocity, Vector3f* surfaceNormal,
 }
 
 
-//Projects vector A to be parallel to vector normal
+//Projects vector A to be perpendicular to vector normal
 Vector3f Maths::projectOntoPlane(Vector3f* A, Vector3f* normal)
 {
 	Vector3f B(0, 0, 0);
 	Vector3f C(A);
 	Vector3f N(normal->x, normal->y, normal->z);
+	N.normalize();
 
 	N.scale(C.dot(&N));
 	B = C - N;

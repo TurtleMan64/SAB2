@@ -24,6 +24,7 @@
 #include "../guis/guimanager.h"
 #include "../renderEngine/skymanager.h"
 #include "../toolbox/mainmenu.h"
+#include "../toolbox/getline.h"
 #include "split.h"
 #include "input.h"
 #include "../entities/car.h"
@@ -34,6 +35,8 @@
 #include "../particles/particleresources.h"
 #include "../particles/particle.h"
 #include "../entities/GreenForest/gfstagemanager.h"
+#include "../entities/rail.h"
+#include "../entities/ring.h"
 
 void LevelLoader::loadTitle()
 {
@@ -188,16 +191,16 @@ void LevelLoader::loadLevel(std::string levelFilename)
 	//Run through the header content
 
 	std::string modelFLoc;
-	getline(file, modelFLoc);
+	getlineSafe(file, modelFLoc);
 
 	std::string modelFName;
-	getline(file, modelFName);
+	getlineSafe(file, modelFName);
 
 	std::string colFLoc;
-	getline(file, colFLoc);
+	getlineSafe(file, colFLoc);
 
 	std::string numChunksLine;
-	getline(file, numChunksLine);
+	getlineSafe(file, numChunksLine);
 
 	int numChunks = stoi(numChunksLine);
 
@@ -208,7 +211,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
 		while (numChunks > 0)
 		{
 			std::string line;
-			getline(file, line);
+			getlineSafe(file, line);
 
 			char lineBuf[128];
 			memcpy(lineBuf, line.c_str(), line.size()+1);
@@ -234,14 +237,14 @@ void LevelLoader::loadLevel(std::string levelFilename)
 		while (numChunks > 0)
 		{
 			std::string line;
-			getline(file, line);
+			getlineSafe(file, line);
 
 			numChunks--;
 		}
 	}
 
 	std::string sunColorDay;
-	getline(file, sunColorDay);
+	getlineSafe(file, sunColorDay);
 	{
 		char lineBuf[128];
 		memcpy(lineBuf, sunColorDay.c_str(), sunColorDay.size()+1);
@@ -255,7 +258,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
 	}
 
 	std::string sunColorNight;
-	getline(file, sunColorNight);
+	getlineSafe(file, sunColorNight);
 	{
 		char lineBuf[128];
 		memcpy(lineBuf, sunColorNight.c_str(), sunColorNight.size()+1);
@@ -269,7 +272,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
 	}
 
 	std::string moonColorDay;
-	getline(file, moonColorDay);
+	getlineSafe(file, moonColorDay);
 	{
 		char lineBuf[128];
 		memcpy(lineBuf, moonColorDay.c_str(), moonColorDay.size()+1);
@@ -283,7 +286,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
 	}
 
 	std::string moonColorNight;
-	getline(file, moonColorNight);
+	getlineSafe(file, moonColorNight);
 	{
 		char lineBuf[128];
 		memcpy(lineBuf, moonColorNight.c_str(), moonColorNight.size()+1);
@@ -301,7 +304,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
 	Vector3f fogNight;
 
 	std::string fogColorDay;
-	getline(file, fogColorDay);
+	getlineSafe(file, fogColorDay);
 	{
 		char lineBuf[128];
 		memcpy(lineBuf, fogColorDay.c_str(), fogColorDay.size()+1);
@@ -314,7 +317,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
 	}
 
 	std::string fogColorNight;
-	getline(file, fogColorNight);
+	getlineSafe(file, fogColorNight);
 	{
 		char lineBuf[128];
 		memcpy(lineBuf, fogColorNight.c_str(), fogColorNight.size()+1);
@@ -329,7 +332,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
 	SkyManager::setFogColours(&fogDay, &fogNight);
 
 	std::string fogVars;
-	getline(file, fogVars);
+	getlineSafe(file, fogVars);
 	{
 		char lineBuf[128];
 		memcpy(lineBuf, fogVars.c_str(), fogVars.size()+1);
@@ -342,7 +345,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
 	}
 
 	std::string timeOfDay;
-	getline(file, timeOfDay);
+	getlineSafe(file, timeOfDay);
 	if (stageFault == 1)
 	{
 		char lineBuf[128];
@@ -359,7 +362,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
 
 
 	std::string camOrientation;
-	getline(file, camOrientation);
+	getlineSafe(file, camOrientation);
 	{
 		char lineBuf[128];
 		memcpy(lineBuf, camOrientation.c_str(), camOrientation.size()+1);
@@ -378,20 +381,20 @@ void LevelLoader::loadLevel(std::string levelFilename)
 	//Read in BGM
 
 	std::string bgmHasLoopLine;
-	getline(file, bgmHasLoopLine);
+	getlineSafe(file, bgmHasLoopLine);
 
 	int bgmHasLoop = stoi(bgmHasLoopLine);
 
 
 	std::string numBGMLine;
-	getline(file, numBGMLine);
+	getlineSafe(file, numBGMLine);
 
 	int numBGM = stoi(numBGMLine);
 
 	while (numBGM > 0)
 	{
 		std::string line;
-		getline(file, line);
+		getlineSafe(file, line);
 
 		char* bgmFileName = (char*)line.c_str();
 
@@ -408,7 +411,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
 	char finishBuf[512];
 
 	std::string finishPosition;
-	getline(file, finishPosition);
+	getlineSafe(file, finishPosition);
 	memcpy(finishBuf, finishPosition.c_str(), finishPosition.size()+1);
 	int finishLength = 0;
 	char** finishSplit = split(finishBuf, ' ', &finishLength);
@@ -418,7 +421,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
 	free(finishSplit);
 
 	std::string finishCamVars;
-	getline(file, finishCamVars);
+	getlineSafe(file, finishCamVars);
 	memcpy(finishBuf, finishCamVars.c_str(), finishCamVars.size()+1);
 	finishSplit = split(finishBuf, ' ', &finishLength);
 	Global::gameStage->finishPlayerRotY  = toFloat(finishSplit[0]);
@@ -427,12 +430,12 @@ void LevelLoader::loadLevel(std::string levelFilename)
 
 	//Global death height
 	std::string deathHeightLine;
-	getline(file, deathHeightLine);
+	getlineSafe(file, deathHeightLine);
 	Global::deathHeight = stof(deathHeightLine);
 
 	//Does the stage have water?
 	std::string waterEnabledLine;
-	getline(file, waterEnabledLine);
+	getlineSafe(file, waterEnabledLine);
 	Global::stageUsesWater = false;
 	if (waterEnabledLine == "water")
 	{
@@ -441,7 +444,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
 
 	//Global water height
 	std::string waterHeightLine;
-	getline(file, waterHeightLine);
+	getlineSafe(file, waterHeightLine);
 	Global::waterHeight = stof(waterHeightLine);
 
 	GuiManager::clearGuisToRender();
@@ -470,7 +473,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
 
 	while (!file.eof())
 	{
-		getline(file, line);
+		getlineSafe(file, line);
 
 		char lineBuf[512]; //Buffer to copy line into
 		memcpy(lineBuf, line.c_str(), line.size()+1);
@@ -561,6 +564,14 @@ void LevelLoader::processLine(char** dat, int /*datLength*/)
 
 	switch (id)
 	{
+		case 0: //Ring
+		{
+			Ring::loadStaticModels();
+			Ring* ring = new Ring(toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3])); INCR_NEW
+			Main_addEntity(ring);
+			return;
+		}
+
 		case 2: //Stage Pass 2
 		{
 			StagePass2* pass2 = new StagePass2(dat[1], dat[2]); INCR_NEW
@@ -654,6 +665,13 @@ void LevelLoader::processLine(char** dat, int /*datLength*/)
 			return;
 		}
 
+		case 92: //Rail
+		{
+			Rail* rail = new Rail(dat[1]); INCR_NEW
+			Main_addEntity(rail);
+			return;
+		}
+
 		//case 91: //Metal Harbor
 		//{
 		//	MH_Manager* mh = new MH_Manager;
@@ -682,22 +700,22 @@ void LevelLoader::loadLevelData()
 	else
 	{
 		std::string line;
-		getline(file, line);
+		getlineSafe(file, line);
 
 		int levelCount = std::stoi(line.c_str());
-		getline(file, line);
+		getlineSafe(file, line);
 
 		while (levelCount > 0)
 		{
 			Level newLevel;
 
-			getline(file, line);
+			getlineSafe(file, line);
 			newLevel.fileName = line;
 
-			getline(file, line);
+			getlineSafe(file, line);
 			newLevel.displayName = line;
 
-			getline(file, line);
+			getlineSafe(file, line);
 			int missionCount = std::stoi(line);
 			newLevel.numMissions = missionCount;
 
@@ -705,7 +723,7 @@ void LevelLoader::loadLevelData()
 			{
 				std::vector<std::string> missionData;
 
-				getline(file, line);
+				getlineSafe(file, line);
 
 				char lineBuf[256];
 				memcpy(lineBuf, line.c_str(), line.size()+1);
@@ -727,7 +745,7 @@ void LevelLoader::loadLevelData()
 
 			Global::gameLevelData.push_back(newLevel);
 
-			getline(file, line);
+			getlineSafe(file, line);
 
 			levelCount--;
 		}
@@ -754,4 +772,5 @@ void LevelLoader::freeAllStaticModels()
 	Checkpoint::deleteStaticModels();
 	JumpRamp::deleteStaticModels();
 	GFStageManager::deleteStaticModels();
+	Ring::deleteStaticModels();
 }

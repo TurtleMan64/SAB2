@@ -118,6 +118,12 @@ public:
 
 	static Vector3f projectOntoPlane(Vector3f* A, Vector3f* normal);
 
+	//projects a vector along a line
+	static Vector3f projectAlongLine(Vector3f* A, Vector3f* line);
+
+	//calculates an arbitrary vector that is perpendicular to the given vector vec
+	static Vector3f calculatePerpendicular(Vector3f* vec);
+
 	//returns uniform random float >= 0 and < 1
 	static float random();
 

@@ -9,6 +9,7 @@
 #include "../engineTester/main.h"
 #include "../toolbox/vector.h"
 #include "../toolbox/split.h"
+#include "../toolbox/getline.h"
 
 
 
@@ -319,7 +320,7 @@ void AudioPlayer::loadSettings()
 
 		while (!file.eof())
 		{
-			getline(file, line);
+			getlineSafe(file, line);
 
 			char lineBuf[512];
 			memcpy(lineBuf, line.c_str(), line.size()+1);

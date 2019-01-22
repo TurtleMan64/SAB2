@@ -375,6 +375,15 @@
     <ClCompile Include="src\entities\GreenForest\GF_StageManager.cpp">
       <Filter>Source Files\entities\GreenForest</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\Rail.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\toolbox\Getline.cpp">
+      <Filter>Source Files\toolbox</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\Ring.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.h">
@@ -655,6 +664,15 @@
     </ClInclude>
     <ClInclude Include="src\entities\GreenForest\gfstagemanager.h">
       <Filter>Source Files\entities\GreenForest</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\rail.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\toolbox\getline.h">
+      <Filter>Source Files\toolbox</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\ring.h">
+      <Filter>Source Files\entities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

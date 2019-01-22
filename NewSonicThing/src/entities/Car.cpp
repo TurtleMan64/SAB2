@@ -181,13 +181,13 @@ void Car::step()
 			}
 
 			spindashTimer = std::fminf(spindashTimer + dt, spindashTimerMax);
-			float sssToAdd = 0.4f*60*60*dt;
-			if (storedSpindashSpeed+sssToAdd < spindashPowerMax)
+			float sssToAdd = spindashChargeRate*dt;
+			if (storedSpindashSpeed + sssToAdd < spindashPowerMax)
 			{
-				storedSpindashSpeed+=sssToAdd;
+				storedSpindashSpeed += sssToAdd;
 			}
 			else if (storedSpindashSpeed < spindashPowerMax && 
-				storedSpindashSpeed+sssToAdd > spindashPowerMax)
+				     storedSpindashSpeed + sssToAdd > spindashPowerMax)
 			{
 				storedSpindashSpeed = spindashPowerMax;
 			}
@@ -252,6 +252,12 @@ void Car::step()
 		}
 	}
 
+	//Grinding
+	if (onGround)
+	{
+		isGrinding = false;
+	}
+
 	if (onGround)
 	{
 		moveMeGround();
@@ -297,413 +303,409 @@ void Car::step()
 
 
 
-
-	//std::fprintf(stdout, "camDir = [%f %f %f]\n", camDir.x, camDir.y, camDir.z);
-
-	//Twisting camera from user input
-	camDir = Maths::rotatePoint(&camDir, &relativeUp, -inputX2*dt);
-	//std::fprintf(stdout, "camDir = [%f %f %f]\n", camDir.x, camDir.y, camDir.z);
-	//std::fprintf(stdout, "vel    = [%f %f %f]\n", vel.x, vel.y, vel.z);
-
-	//camera adjust to direction you are heading in
-	if (onGround)
+	if (!isGrinding)
 	{
-		//std::fprintf(stdout, "vel.length()*0.014f = %f\n", vel.length()*0.014f);
-		if (Global::isAutoCam)
+		//Twisting camera from user input
+		camDir = Maths::rotatePoint(&camDir, &relativeUp, -inputX2*dt);
+
+		//camera adjust to direction you are heading in
+		if (onGround)
 		{
-			camDir = Maths::interpolateVector(&camDir, &vel, fminf(vel.length()*0.014f*dt, 45.0f*dt));
+			if (Global::isAutoCam)
+			{
+				camDir = Maths::interpolateVector(&camDir, &vel, fminf(vel.length()*0.014f*dt, 45.0f*dt));
+			}
+			else
+			{
+				//camDir = Maths::interpolateVector(&camDir, &vel, fminf(vel.length()*0.004f*dt, 0.5f*dt));
+			}
 		}
 		else
 		{
-			//camDir = Maths::interpolateVector(&camDir, &vel, fminf(vel.length()*0.004f*dt, 0.5f*dt));
+			Vector3f noY(vel);
+			if (noY.y > 0)
+			{
+				noY.y = 0;
+			}
+
+			if (Global::isAutoCam)
+			{
+				camDir = Maths::interpolateVector(&camDir, &noY, fminf(noY.length()*0.01f*dt, 30.0f*dt));
+			}
+			else
+			{
+				//camDir = Maths::interpolateVector(&camDir, &vel, fminf(vel.length()*0.004f*dt, 0.5f*dt));
+			}
+		}
+
+		//vertical adjusting camera
+		if (onGround)
+		{
+			//player input
+			Vector3f perpen = camDir.cross(&relativeUp);
+			camDir = Maths::rotatePoint(&camDir, &perpen, -inputY2*dt);
+
+			//vertical check - rotate down if too high or too low
+			float dot = camDir.dot(&relativeUp);
+			if (dot < -0.325f)
+			{
+				camDir = Maths::rotatePoint(&camDir, &perpen, -((dot+0.325f)*12)*dt);
+			}
+			else if (dot > -0.2f)
+			{
+				camDir = Maths::rotatePoint(&camDir, &perpen, -((dot+0.2f)*20)*dt);
+			}
+		}
+		else
+		{
+			//player input
+			Vector3f perpen = camDir.cross(&relativeUp);
+			camDir = Maths::rotatePoint(&camDir, &perpen, -inputY2*dt);
+
+			//vertical check - rotate down if too high or too low
+			float dot = camDir.dot(&relativeUp);
+			if (dot < -0.75f)
+			{
+				camDir = Maths::rotatePoint(&camDir, &perpen, -((dot+0.75f)*12)*dt);
+			}
+			else if (dot > -0.2f)
+			{
+				camDir = Maths::rotatePoint(&camDir, &perpen, -((dot+0.2f)*20)*dt);
+			}
 		}
 	}
 	else
 	{
-		Vector3f noY(vel);
-		if (noY.y > 0)
-		{
-			noY.y = 0;
-		}
-
-		if (Global::isAutoCam)
-		{
-			//std::fprintf(stdout, "camDir = [%f %f %f]\n", camDir.x, camDir.y, camDir.z);
-			camDir = Maths::interpolateVector(&camDir, &noY, fminf(noY.length()*0.01f*dt, 30.0f*dt));
-			//std::fprintf(stdout, "camDir = [%f %f %f]\n\n\n", camDir.x, camDir.y, camDir.z);
-		}
-		else
-		{
-			//camDir = Maths::interpolateVector(&camDir, &vel, fminf(vel.length()*0.004f*dt, 0.5f*dt));
-		}
-	}
-	//std::fprintf(stdout, "camDir = [%f %f %f]\n\n\n", camDir.x, camDir.y, camDir.z);
-
-
-
-	//vertical adjusting camera
-	if (onGround)
-	{
-		//player input
-		Vector3f perpen = camDir.cross(&relativeUp);
-		camDir = Maths::rotatePoint(&camDir, &perpen, -inputY2*dt);
-
-		//vertical check - rotate down if too high or too low
-		float dot = camDir.dot(&relativeUp);
-		//std::fprintf(stdout, "dot = %f\n", dot);
-		if (dot < -0.325f)
-		{
-			camDir = Maths::rotatePoint(&camDir, &perpen, -((dot+0.325f)*12)*dt);
-		}
-		else if (dot > -0.2f)
-		{
-			camDir = Maths::rotatePoint(&camDir, &perpen, -((dot+0.2f)*20)*dt);
-		}
-	}
-	else
-	{
-		//player input
-		Vector3f perpen = camDir.cross(&relativeUp);
-		camDir = Maths::rotatePoint(&camDir, &perpen, -inputY2*dt);
-
-		//vertical check - rotate down if too high or too low
-		float dot = camDir.dot(&relativeUp);
-		//std::fprintf(stdout, "dot = %f\n", dot);
-		if (dot < -0.75f)
-		{
-			camDir = Maths::rotatePoint(&camDir, &perpen, -((dot+0.75f)*12)*dt);
-		}
-		else if (dot > -0.2f)
-		{
-			camDir = Maths::rotatePoint(&camDir, &perpen, -((dot+0.2f)*20)*dt);
-		}
+		camDir = Maths::interpolateVector(&camDir, &vel, vel.length()*0.05f*dt);
 	}
 
 	//smoothing
 	camDirSmooth = Maths::interpolateVector(&camDirSmooth, &camDir, 10*dt);
 	relativeUpSmooth = Maths::interpolateVector(&relativeUpSmooth, &relativeUp, 3*dt);
 
-	//speed before adjusting
-	float originalSpeed = vel.length();
-	CollisionChecker::setCheckPlayer();
-	if (CollisionChecker::checkCollision(getX(), getY(), getZ(), getX()+vel.x*dt, getY()+vel.y*dt, getZ()+vel.z*dt))
+	if (!isGrinding)
 	{
-		Vector3f* colNormal = &CollisionChecker::getCollideTriangle()->normal;
-
-		if (onGround  == false) //Air to ground
+		//speed before adjusting
+		float originalSpeed = vel.length();
+		CollisionChecker::setCheckPlayer();
+		if (CollisionChecker::checkCollision(getX(), getY(), getZ(), getX()+vel.x*dt, getY()+vel.y*dt, getZ()+vel.z*dt))
 		{
-			if (isBouncing)
+			Vector3f* colNormal = &CollisionChecker::getCollideTriangle()->normal;
+
+			if (onGround  == false) //Air to ground
 			{
-				vel = Maths::bounceVector(&vel, colNormal, bounceFactor);
-				isBall = true;
-				isBouncing = false;
-				justBounced = true;
-				isStomping = false;
-				justHomingAttacked = false;
-				homingAttackTimer = 0.0f;
-				hoverTimer = 0.0f;
-				AudioPlayer::play(8, getPosition());
-			}
-			else
-			{
-				if (CollisionChecker::getCollideTriangle()->isWall() || colNormal->y < wallStickThreshold)
+				if (isBouncing)
 				{
-					if (justBounced)
+					vel = Maths::bounceVector(&vel, colNormal, bounceFactor);
+					isBall = true;
+					isBouncing = false;
+					justBounced = true;
+					isStomping = false;
+					justHomingAttacked = false;
+					homingAttackTimer = 0.0f;
+					hoverTimer = 0.0f;
+					AudioPlayer::play(8, getPosition());
+				}
+				else
+				{
+					if (CollisionChecker::getCollideTriangle()->isWall() || colNormal->y < wallStickThreshold)
 					{
-						float spdBefore = vel.length();
-						Vector3f newDirection = Maths::projectOntoPlane(&vel, colNormal);
-						newDirection.setLength(spdBefore);
-						vel.set(&newDirection);
+						if (justBounced)
+						{
+							float spdBefore = vel.length();
+							Vector3f newDirection = Maths::projectOntoPlane(&vel, colNormal);
+							newDirection.setLength(spdBefore);
+							vel.set(&newDirection);
 
-						justBounced = false;
+							justBounced = false;
 
-						setPosition(CollisionChecker::getCollidePosition());
-						increasePosition(colNormal->x*FLOOR_OFFSET, colNormal->y*FLOOR_OFFSET, colNormal->z*FLOOR_OFFSET);
+							setPosition(CollisionChecker::getCollidePosition());
+							increasePosition(colNormal->x*FLOOR_OFFSET, colNormal->y*FLOOR_OFFSET, colNormal->z*FLOOR_OFFSET);
+						}
+						else
+						{
+							Vector3f newDirection = Maths::projectOntoPlane(&vel, colNormal);
+							Vector3f posAfterMoveToWall = Vector3f(CollisionChecker::getCollidePosition());
+							Vector3f posDelta = posAfterMoveToWall - position;
+							posAfterMoveToWall = posAfterMoveToWall + colNormal->scaleCopy(FLOOR_OFFSET);
+							float distLeftToMove = vel.scaleCopy(dt).length();
+							float distMoved = posDelta.length();
+							distLeftToMove -= distMoved;
+						
+							vel.set(&newDirection);
+							setPosition(&posAfterMoveToWall);
+						
+							Vector3f velToMove = Vector3f(&vel);
+							velToMove.setLength(distLeftToMove);
+						
+							//move additional distance
+							if (distLeftToMove > 0)
+							{
+								if (CollisionChecker::checkCollision(getX(), getY(), getZ(), getX()+velToMove.x, getY()+velToMove.y, getZ()+velToMove.z) == false)
+								{
+									increasePosition(velToMove.x, velToMove.y, velToMove.z);
+								}
+							}
+
+							onGround = false;
+							relativeUp.set(0, 1, 0);
+							vel.y = Maths::approach(vel.y, gravityTerminal, gravityApproach, dt);
+							Vector3f velToAddFromGravity(relativeUp);
+							velToAddFromGravity.setLength(-gravityForce*dt);
+
+
+
+
+							//Vector3f velFrame = vel.scaleCopy(dt);
+							//Vector3f newDirection = Maths::projectOntoPlane(&velFrame, colNormal);
+							//Vector3f posAfterMoveToWall = Vector3f(CollisionChecker::getCollidePosition());
+							//Vector3f posDelta = posAfterMoveToWall - position;
+							//posAfterMoveToWall = posAfterMoveToWall + colNormal->scaleCopy(FLOOR_OFFSET);
+							//
+							//if (CollisionChecker::checkCollision(getX(), getY(), getZ(), posAfterMoveToWall.x, posAfterMoveToWall.y, posAfterMoveToWall.z) == false)
+							//{
+							//	setPosition(&posAfterMoveToWall);
+							//}
+							//if (CollisionChecker::checkCollision(getX(), getY(), getZ(), getX() + newDirection.x, getY() + newDirection.y, getZ() + newDirection.z) == false)
+							//{
+							//	increasePosition(newDirection.x, newDirection.y, newDirection.z);
+							//}
+							//
+							//onGround = false;
+							//relativeUp.set(0, 1, 0);
+							//vel.y = Maths::approach(vel.y, gravityTerminal, gravityApproach, dt);
+							//Vector3f velToAddFromGravity(relativeUp);
+							//velToAddFromGravity.setLength(-gravityForce*dt);
+						}
 					}
 					else
 					{
+						currentTriangle = CollisionChecker::getCollideTriangle();
 						Vector3f newDirection = Maths::projectOntoPlane(&vel, colNormal);
-						//newDirection.scale(0.925f);
-						Vector3f posAfterMoveToWall = Vector3f(CollisionChecker::getCollidePosition());
-						Vector3f posDelta = posAfterMoveToWall - position;
-						posAfterMoveToWall = posAfterMoveToWall + colNormal->scaleCopy(FLOOR_OFFSET);
-						float distLeftToMove = vel.scaleCopy(dt).length();
-						float distMoved = posDelta.length();
-						distLeftToMove -= distMoved;
-						
 						vel.set(&newDirection);
-						setPosition(&posAfterMoveToWall);
-						
-						Vector3f velToMove = Vector3f(&vel);
-						velToMove.setLength(distLeftToMove);
-						
-						//move additional distance
-						if (distLeftToMove > 0)
-						{
-							if (CollisionChecker::checkCollision(getX(), getY(), getZ(), getX()+velToMove.x, getY()+velToMove.y, getZ()+velToMove.z) == false)
-							{
-								increasePosition(velToMove.x, velToMove.y, velToMove.z);
-							}
-						}
 
-						onGround = false;
-						relativeUp.set(0, 1, 0);
-						vel.y = Maths::approach(vel.y, gravityTerminal, gravityApproach, dt);
-						Vector3f velToAddFromGravity(relativeUp);
-						velToAddFromGravity.setLength(-gravityForce*dt);
+						setPosition(CollisionChecker::getCollidePosition());
+						increasePosition(colNormal->x*FLOOR_OFFSET, colNormal->y*FLOOR_OFFSET, colNormal->z*FLOOR_OFFSET);
 
-
-
-
-						//Vector3f velFrame = vel.scaleCopy(dt);
-						//Vector3f newDirection = Maths::projectOntoPlane(&velFrame, colNormal);
-						//Vector3f posAfterMoveToWall = Vector3f(CollisionChecker::getCollidePosition());
-						//Vector3f posDelta = posAfterMoveToWall - position;
-						//posAfterMoveToWall = posAfterMoveToWall + colNormal->scaleCopy(FLOOR_OFFSET);
-						//
-						//if (CollisionChecker::checkCollision(getX(), getY(), getZ(), posAfterMoveToWall.x, posAfterMoveToWall.y, posAfterMoveToWall.z) == false)
-						//{
-						//	setPosition(&posAfterMoveToWall);
-						//}
-						//if (CollisionChecker::checkCollision(getX(), getY(), getZ(), getX() + newDirection.x, getY() + newDirection.y, getZ() + newDirection.z) == false)
-						//{
-						//	increasePosition(newDirection.x, newDirection.y, newDirection.z);
-						//}
-						//
-						//onGround = false;
-						//relativeUp.set(0, 1, 0);
-						//vel.y = Maths::approach(vel.y, gravityTerminal, gravityApproach, dt);
-						//Vector3f velToAddFromGravity(relativeUp);
-						//velToAddFromGravity.setLength(-gravityForce*dt);
+						relativeUp.set(colNormal);
+						onGround = true;
+						isBall = false;
 					}
+				}
+			}
+			else //Ground to a different triangle
+			{
+				//check if you can smoothly transition from previous triangle to this triangle
+				float dotProduct = relativeUp.dot(colNormal);
+				if (dotProduct < smoothTransitionThreshold || CollisionChecker::getCollideTriangle()->isWall())
+				{
+					float len = vel.length();
+					float dot = vel.dot(colNormal)/len;
+					float fact = sqrtf(1 - dot*dot);
+					Vector3f bounce   = Maths::bounceVector(&vel, colNormal, 1.0f);
+					Vector3f parallel = Maths::projectOntoPlane(&vel, colNormal);
+					bounce   = Maths::projectOntoPlane(&bounce,   &relativeUp);
+					parallel = Maths::projectOntoPlane(&parallel, &relativeUp);
+					Vector3f rotate1 = Maths::rotatePoint(&parallel, &relativeUp, 0.1f);
+					Vector3f rotate2 = Maths::rotatePoint(&parallel, &relativeUp, -0.1f);
+					vel = Maths::getCloserPoint(&rotate1, &rotate2, &bounce);
+					vel.setLength(len*fact);
+
+					canMoveTimer = hitWallTimePunish;
+					AudioPlayer::play(4, getPosition());
+
+					increasePosition(colNormal->x*FLOOR_OFFSET*2, colNormal->y*FLOOR_OFFSET*2, colNormal->z*FLOOR_OFFSET*2);
 				}
 				else
 				{
 					currentTriangle = CollisionChecker::getCollideTriangle();
 					Vector3f newDirection = Maths::projectOntoPlane(&vel, colNormal);
-					vel.set(&newDirection);
+					if (newDirection.lengthSquared() != 0)
+					{
+						newDirection.normalize();
+						newDirection.x*=originalSpeed;
+						newDirection.y*=originalSpeed;
+						newDirection.z*=originalSpeed;
+						vel.set(&newDirection);
+					}
+
+					relativeUp.set(colNormal);
+					onGround = true;
+
+					Vector3f newPosition(CollisionChecker::getCollidePosition());
+					//newPosition.add(colNormal->x*FLOOR_OFFSET, colNormal->y*FLOOR_OFFSET, colNormal->z*FLOOR_OFFSET); //not sure if it would be better to calculate new positoin like this instead
+					Vector3f travelDelta = newPosition - position;
 
 					setPosition(CollisionChecker::getCollidePosition());
 					increasePosition(colNormal->x*FLOOR_OFFSET, colNormal->y*FLOOR_OFFSET, colNormal->z*FLOOR_OFFSET);
 
-					relativeUp.set(colNormal);
-					onGround = true;
-					isBall = false;
-				}
-			}
-		}
-		else //Ground to a different triangle
-		{
-			//check if you can smoothly transition from previous triangle to this triangle
-			float dotProduct = relativeUp.dot(colNormal);
-			if (dotProduct < smoothTransitionThreshold || CollisionChecker::getCollideTriangle()->isWall())
-			{
-				float len = vel.length();
-				float dot = vel.dot(colNormal)/len;
-				float fact = sqrtf(1 - dot*dot);
-				Vector3f bounce   = Maths::bounceVector(&vel, colNormal, 1.0f);
-				Vector3f parallel = Maths::projectOntoPlane(&vel, colNormal);
-				bounce   = Maths::projectOntoPlane(&bounce,   &relativeUp);
-				parallel = Maths::projectOntoPlane(&parallel, &relativeUp);
-				Vector3f rotate1 = Maths::rotatePoint(&parallel, &relativeUp, 0.1f);
-				Vector3f rotate2 = Maths::rotatePoint(&parallel, &relativeUp, -0.1f);
-				vel = Maths::getCloserPoint(&rotate1, &rotate2, &bounce);
-				vel.setLength(len*fact);
+					float distanceTraveled = travelDelta.length();
+					float distanceRemaining = (vel.length()*dt)-distanceTraveled;
 
-				canMoveTimer = hitWallTimePunish;
-				AudioPlayer::play(4, getPosition());
+					Vector3f nextVel(&vel);
+					nextVel.normalize();
+					nextVel.scale(distanceRemaining);
 
-				increasePosition(colNormal->x*FLOOR_OFFSET*2, colNormal->y*FLOOR_OFFSET*2, colNormal->z*FLOOR_OFFSET*2);
-			}
-			else
-			{
-				currentTriangle = CollisionChecker::getCollideTriangle();
-				Vector3f newDirection = Maths::projectOntoPlane(&vel, colNormal);
-				if (newDirection.lengthSquared() != 0)
-				{
-					newDirection.normalize();
-					newDirection.x*=originalSpeed;
-					newDirection.y*=originalSpeed;
-					newDirection.z*=originalSpeed;
-					vel.set(&newDirection);
-				}
-
-				relativeUp.set(colNormal);
-				onGround = true;
-
-				Vector3f newPosition(CollisionChecker::getCollidePosition());
-				//newPosition.add(colNormal->x*FLOOR_OFFSET, colNormal->y*FLOOR_OFFSET, colNormal->z*FLOOR_OFFSET); //not sure if it would be better to calculate new positoin like this instead
-				Vector3f travelDelta = newPosition - position;
-
-				setPosition(CollisionChecker::getCollidePosition());
-				increasePosition(colNormal->x*FLOOR_OFFSET, colNormal->y*FLOOR_OFFSET, colNormal->z*FLOOR_OFFSET);
-
-				float distanceTraveled = travelDelta.length();
-				float distanceRemaining = (vel.length()*dt)-distanceTraveled;
-
-				Vector3f nextVel(&vel);
-				nextVel.normalize();
-				nextVel.scale(distanceRemaining);
-
-				while (distanceRemaining > 0.0f)
-				{
-					CollisionChecker::setCheckPlayer();
-					if (CollisionChecker::checkCollision(getX(), getY(), getZ(), getX()+nextVel.x, getY()+nextVel.y, getZ()+nextVel.z))
+					while (distanceRemaining > 0.0f)
 					{
-						colNormal = &CollisionChecker::getCollideTriangle()->normal;
-
-						//check if you can smoothly transition from previous triangle to this triangle
-						dotProduct = relativeUp.dot(colNormal);
-						if (dotProduct < smoothTransitionThreshold || CollisionChecker::getCollideTriangle()->isWall())
+						CollisionChecker::setCheckPlayer();
+						if (CollisionChecker::checkCollision(getX(), getY(), getZ(), getX()+nextVel.x, getY()+nextVel.y, getZ()+nextVel.z))
 						{
-							float len = vel.length();
-							float dot = vel.dot(colNormal)/len;
-							float fact = sqrtf(1 - dot*dot);
-							Vector3f bounce   = Maths::bounceVector(&vel, colNormal, 1.0f);
-							Vector3f parallel = Maths::projectOntoPlane(&vel, colNormal);
-							bounce   = Maths::projectOntoPlane(&bounce,   &relativeUp);
-							parallel = Maths::projectOntoPlane(&parallel, &relativeUp);
-							Vector3f rotate1 = Maths::rotatePoint(&parallel, &relativeUp, 0.1f);
-							Vector3f rotate2 = Maths::rotatePoint(&parallel, &relativeUp, -0.1f);
-							vel = Maths::getCloserPoint(&rotate1, &rotate2, &bounce);
-							vel.setLength(len*fact);
+							colNormal = &CollisionChecker::getCollideTriangle()->normal;
 
-							canMoveTimer = hitWallTimePunish;
-							AudioPlayer::play(4, getPosition());
+							//check if you can smoothly transition from previous triangle to this triangle
+							dotProduct = relativeUp.dot(colNormal);
+							if (dotProduct < smoothTransitionThreshold || CollisionChecker::getCollideTriangle()->isWall())
+							{
+								float len = vel.length();
+								float dot = vel.dot(colNormal)/len;
+								float fact = sqrtf(1 - dot*dot);
+								Vector3f bounce   = Maths::bounceVector(&vel, colNormal, 1.0f);
+								Vector3f parallel = Maths::projectOntoPlane(&vel, colNormal);
+								bounce   = Maths::projectOntoPlane(&bounce,   &relativeUp);
+								parallel = Maths::projectOntoPlane(&parallel, &relativeUp);
+								Vector3f rotate1 = Maths::rotatePoint(&parallel, &relativeUp, 0.1f);
+								Vector3f rotate2 = Maths::rotatePoint(&parallel, &relativeUp, -0.1f);
+								vel = Maths::getCloserPoint(&rotate1, &rotate2, &bounce);
+								vel.setLength(len*fact);
 
-							increasePosition(colNormal->x*FLOOR_OFFSET*2, colNormal->y*FLOOR_OFFSET*2, colNormal->z*FLOOR_OFFSET*2);
+								canMoveTimer = hitWallTimePunish;
+								AudioPlayer::play(4, getPosition());
 
+								increasePosition(colNormal->x*FLOOR_OFFSET*2, colNormal->y*FLOOR_OFFSET*2, colNormal->z*FLOOR_OFFSET*2);
+
+								distanceRemaining = 0.0f;
+							}
+							else
+							{
+								currentTriangle = CollisionChecker::getCollideTriangle();
+								newDirection = Maths::projectOntoPlane(&nextVel, colNormal);
+								if (newDirection.lengthSquared() != 0)
+								{
+									newDirection.normalize();
+									newDirection.x*=originalSpeed;
+									newDirection.y*=originalSpeed;
+									newDirection.z*=originalSpeed;
+									vel.set(&newDirection);
+								}
+
+								relativeUp.set(colNormal);
+								onGround = true;
+
+								newPosition.set(CollisionChecker::getCollidePosition());
+								travelDelta = newPosition - position;
+
+
+								setPosition(CollisionChecker::getCollidePosition());
+								increasePosition(colNormal->x*FLOOR_OFFSET, colNormal->y*FLOOR_OFFSET, colNormal->z*FLOOR_OFFSET);
+
+								distanceTraveled = travelDelta.length();
+								distanceRemaining = distanceRemaining-distanceTraveled;
+
+								nextVel.set(&vel);
+								nextVel.normalize();
+								nextVel.scale(distanceRemaining);
+							}
+						}
+						else //no more collisions, travel the remaining distance
+						{
+							increasePosition(nextVel.x, nextVel.y, nextVel.z);
 							distanceRemaining = 0.0f;
 						}
-						else
-						{
-							currentTriangle = CollisionChecker::getCollideTriangle();
-							newDirection = Maths::projectOntoPlane(&nextVel, colNormal);
-							if (newDirection.lengthSquared() != 0)
-							{
-								newDirection.normalize();
-								newDirection.x*=originalSpeed;
-								newDirection.y*=originalSpeed;
-								newDirection.z*=originalSpeed;
-								vel.set(&newDirection);
-							}
-
-							relativeUp.set(colNormal);
-							onGround = true;
-
-							newPosition.set(CollisionChecker::getCollidePosition());
-							travelDelta = newPosition - position;
-
-
-							setPosition(CollisionChecker::getCollidePosition());
-							increasePosition(colNormal->x*FLOOR_OFFSET, colNormal->y*FLOOR_OFFSET, colNormal->z*FLOOR_OFFSET);
-
-							distanceTraveled = travelDelta.length();
-							distanceRemaining = distanceRemaining-distanceTraveled;
-
-							nextVel.set(&vel);
-							nextVel.normalize();
-							nextVel.scale(distanceRemaining);
-						}
-					}
-					else //no more collisions, travel the remaining distance
-					{
-						increasePosition(nextVel.x, nextVel.y, nextVel.z);
-						distanceRemaining = 0.0f;
 					}
 				}
 			}
 		}
-	}
-	else //No initial collision
-	{
-		increasePosition(vel.x*dt, vel.y*dt, vel.z*dt);
-
-		bool checkPassed = false;
-		CollisionChecker::setCheckPlayer();
-		if (onGround)
+		else //No initial collision
 		{
-			checkPassed = CollisionChecker::checkCollision(getX(), getY(), getZ(), getX() - relativeUp.x*surfaceTension, getY() - relativeUp.y*surfaceTension, getZ() - relativeUp.z*surfaceTension);
-		}
-		if (checkPassed)
-		{
-			float dotProduct = relativeUp.dot(&(CollisionChecker::getCollideTriangle()->normal));
+			increasePosition(vel.x*dt, vel.y*dt, vel.z*dt);
 
-			if (dotProduct < smoothTransitionThreshold || CollisionChecker::getCollideTriangle()->isWall()) //It's a wall, pretend the collision check didn't see it
+			bool checkPassed = false;
+			CollisionChecker::setCheckPlayer();
+			if (onGround)
 			{
-				Vector3f perpen = Maths::calcThirdAxis(&vel, &relativeUp);
-				Vector3f coordsFlat = Maths::coordinatesRelativeToBasis(&vel, &relativeUp, &perpen, &(CollisionChecker::getCollideTriangle()->normal));
+				checkPassed = CollisionChecker::checkCollision(getX(), getY(), getZ(), getX() - relativeUp.x*surfaceTension, getY() - relativeUp.y*surfaceTension, getZ() - relativeUp.z*surfaceTension);
+			}
+			if (checkPassed)
+			{
+				float dotProduct = relativeUp.dot(&(CollisionChecker::getCollideTriangle()->normal));
 
-				if (coordsFlat.x > 0) //Only ignore walls that are cliffs, not walls
+				if (dotProduct < smoothTransitionThreshold || CollisionChecker::getCollideTriangle()->isWall()) //It's a wall, pretend the collision check didn't see it
 				{
-					checkPassed = false;
+					Vector3f perpen = Maths::calcThirdAxis(&vel, &relativeUp);
+					Vector3f coordsFlat = Maths::coordinatesRelativeToBasis(&vel, &relativeUp, &perpen, &(CollisionChecker::getCollideTriangle()->normal));
+
+					if (coordsFlat.x > 0) //Only ignore walls that are cliffs, not walls
+					{
+						checkPassed = false;
+					}
 				}
 			}
-		}
 			
-		if (checkPassed)
-		{
-			Vector3f* colNormal = &CollisionChecker::getCollideTriangle()->normal;
-
-			float dotProduct = relativeUp.dot(&(CollisionChecker::getCollideTriangle()->normal));
-			if (dotProduct < smoothTransitionThreshold || CollisionChecker::getCollideTriangle()->isWall())
+			if (checkPassed)
 			{
-				CollisionChecker::falseAlarm();
+				Vector3f* colNormal = &CollisionChecker::getCollideTriangle()->normal;
 
-				float len = vel.length();
-				float dot = fabsf(vel.dot(colNormal)/len);
-				float fact = sqrtf(1 - dot*dot);
-				Vector3f bounce   = Maths::bounceVector(&vel, colNormal, 1.0f);
-				Vector3f parallel = Maths::projectOntoPlane(&vel, colNormal);
-				bounce   = Maths::projectOntoPlane(&bounce,   &relativeUp);
-				parallel = Maths::projectOntoPlane(&parallel, &relativeUp);
-				Vector3f rotate1 = Maths::rotatePoint(&parallel, &relativeUp, 0.1f);
-				Vector3f rotate2 = Maths::rotatePoint(&parallel, &relativeUp, -0.1f);
-				vel = Maths::getCloserPoint(&rotate1, &rotate2, &bounce);
-				vel.setLength(len*fact);
+				float dotProduct = relativeUp.dot(&(CollisionChecker::getCollideTriangle()->normal));
+				if (dotProduct < smoothTransitionThreshold || CollisionChecker::getCollideTriangle()->isWall())
+				{
+					CollisionChecker::falseAlarm();
 
-				canMoveTimer = hitWallTimePunish;
-				AudioPlayer::play(4, getPosition());
+					float len = vel.length();
+					float dot = fabsf(vel.dot(colNormal)/len);
+					float fact = sqrtf(1 - dot*dot);
+					Vector3f bounce   = Maths::bounceVector(&vel, colNormal, 1.0f);
+					Vector3f parallel = Maths::projectOntoPlane(&vel, colNormal);
+					bounce   = Maths::projectOntoPlane(&bounce,   &relativeUp);
+					parallel = Maths::projectOntoPlane(&parallel, &relativeUp);
+					Vector3f rotate1 = Maths::rotatePoint(&parallel, &relativeUp, 0.1f);
+					Vector3f rotate2 = Maths::rotatePoint(&parallel, &relativeUp, -0.1f);
+					vel = Maths::getCloserPoint(&rotate1, &rotate2, &bounce);
+					vel.setLength(len*fact);
 
-				increasePosition(colNormal->x*FLOOR_OFFSET*2, colNormal->y*FLOOR_OFFSET*2, colNormal->z*FLOOR_OFFSET*2);
+					canMoveTimer = hitWallTimePunish;
+					AudioPlayer::play(4, getPosition());
+
+					increasePosition(colNormal->x*FLOOR_OFFSET*2, colNormal->y*FLOOR_OFFSET*2, colNormal->z*FLOOR_OFFSET*2);
+				}
+				else
+				{
+					currentTriangle = CollisionChecker::getCollideTriangle();
+					Vector3f* normal = &CollisionChecker::getCollideTriangle()->normal;
+
+					setPosition(CollisionChecker::getCollidePosition());
+					increasePosition(normal->x*FLOOR_OFFSET, normal->y*FLOOR_OFFSET, normal->z*FLOOR_OFFSET);
+				
+					//speed before adjusting
+					float speed = vel.length();
+				
+					Vector3f newDirection = Maths::projectOntoPlane(&vel, normal);
+
+					newDirection.normalize();
+					newDirection.x*=speed;
+					newDirection.y*=speed;
+					newDirection.z*=speed;
+					vel.set(&newDirection);
+				
+					relativeUp.set(normal);
+					onGround = true;
+				}
 			}
 			else
 			{
-				currentTriangle = CollisionChecker::getCollideTriangle();
-				Vector3f* normal = &CollisionChecker::getCollideTriangle()->normal;
+				CollisionChecker::falseAlarm();
+				onGround = false;
 
-				setPosition(CollisionChecker::getCollidePosition());
-				increasePosition(normal->x*FLOOR_OFFSET, normal->y*FLOOR_OFFSET, normal->z*FLOOR_OFFSET);
-				
-				//speed before adjusting
-				float speed = vel.length();
-				
-				Vector3f newDirection = Maths::projectOntoPlane(&vel, normal);
+				relativeUp.set(0, 1, 0);
 
-				newDirection.normalize();
-				newDirection.x*=speed;
-				newDirection.y*=speed;
-				newDirection.z*=speed;
-				vel.set(&newDirection);
-				
-				relativeUp.set(normal);
-				onGround = true;
-			}
-		}
-		else
-		{
-			CollisionChecker::falseAlarm();
-			onGround = false;
+				vel.y = Maths::approach(vel.y, gravityTerminal, gravityApproach, dt);
 
-			relativeUp.set(0, 1, 0);
-
-			vel.y = Maths::approach(vel.y, gravityTerminal, gravityApproach, dt);
-
-			Vector3f velToAddFromGravity(relativeUp);
-			velToAddFromGravity.setLength(-gravityForce*dt);
-			if (Input::inputs.INPUT_RB)
-			{
-				vel = vel - velToAddFromGravity.scaleCopy(4);
+				Vector3f velToAddFromGravity(relativeUp);
+				velToAddFromGravity.setLength(-gravityForce*dt);
+				if (Input::inputs.INPUT_RB)
+				{
+					vel = vel - velToAddFromGravity.scaleCopy(4);
+				}
 			}
 		}
 	}
@@ -886,6 +888,11 @@ void Car::moveMeGround()
 
 void Car::moveMeAir()
 {
+	if (isGrinding)
+	{
+		return;
+	}
+
 	float stickAngle = -atan2f(inputY, inputX) - M_PI/2; //angle you are holding on the stick, with 0 being up
 	float stickRadius = sqrtf(inputX*inputX + inputY*inputY);
 	Vector3f dirForward = Maths::projectOntoPlane(&camDir, &relativeUp);
@@ -945,6 +952,23 @@ Vector3f* Car::getVelocity()
 void Car::setCanMoveTimer(float newTimer)
 {
 	canMoveTimer = newTimer;
+}
+
+void Car::startGrinding()
+{
+	isGrinding = true;
+	isJumping = false;
+	isBouncing = false;
+	isBall = false;
+	isLightdashing = false;
+	isSkidding = false;
+	isSpindashing = false;
+	isStomping = false;
+}
+
+void Car::stopGrinding()
+{
+	isGrinding = false;
 }
 
 void Car::animate()
