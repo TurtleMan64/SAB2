@@ -5,12 +5,9 @@ class Vector3f;
 class Vector2f;
 class Camera;
 
-#include <math.h>
 #include <random>
 #include <chrono>
 #include "matrix.h"
-
-#define M_PI 3.14159265358979323846f
 
 class Maths
 {
@@ -22,6 +19,8 @@ private:
 	static std::normal_distribution<float>* distributionNormal;
 
 public:
+	static const float PI;
+
 	static float toRadians(float deg);
 
 	static float toDegrees(float rad);

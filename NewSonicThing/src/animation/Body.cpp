@@ -68,7 +68,7 @@ void Body::update(float newTime)
 		float t = (newTime - key1->time) / (key2->time - key1->time);
 
 		//sinusoidal interpolation
-		t = 1 - (((float)cos(M_PI*t) + 1)*0.5f);
+		t = 1 - (((float)cos(Maths::PI*t) + 1)*0.5f);
 
 		float ratio = t;
 

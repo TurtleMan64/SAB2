@@ -1,5 +1,6 @@
 #include <list>
 #include <fstream>
+#include <cstring>
 
 #include "../toolbox/vector.h"
 #include "rail.h"
@@ -12,14 +13,13 @@
 
 #include "ring.h"
 
-#include <chrono>
-#include <thread>
-
-RailSegment::RailSegment(Vector3f* begin, Vector3f* end, std::vector<RailSegment>* rails, int index)
+RailSegment::RailSegment(Vector3f* begin, Vector3f* end, Vector3f* beginNormal, Vector3f* endNormal, std::vector<RailSegment>* rails, int index)
 {
 	pointBegin.set(begin);
 	pointEnd.set(end);
 	pointsDiff = pointEnd - pointBegin;
+	normalBegin.set(beginNormal);
+	normalEnd.set(endNormal);
 	length = pointsDiff.length();
 	if (length < 1.0f)
 	{
@@ -36,8 +36,9 @@ RailSegment::RailSegment(Vector3f* begin, Vector3f* end, std::vector<RailSegment
 	this->rails = rails;
 	this->index = index;
 
-
-	speedToAdd = -pointsDiff.y*(5.0f); //speed constant
+	Vector3f toAdd(&pointsDiff);
+	toAdd.normalize();
+	speedToAdd = -toAdd.y*(70.0f); //speed constant
 }
 
 //I want to optimize this as much as I can
@@ -101,6 +102,7 @@ float RailSegment::calcProgress(Vector3f* point)
 Rail::Rail(const char* railPath)
 {
 	std::vector<Vector3f> pointsList;
+	std::vector<Vector3f> normalList;
 
 	std::ifstream file(railPath);
 	if (!file.is_open())
@@ -122,10 +124,13 @@ Rail::Rail(const char* railPath)
 			int splitLength = 0;
 			char** lineSplit = split(lineBuf, ' ', &splitLength);
 
-			if (splitLength == 3)
+			if (splitLength == 6)
 			{
 				Vector3f p(std::stof(lineSplit[0]), std::stof(lineSplit[1]), std::stof(lineSplit[2]));
 				pointsList.push_back(p);
+
+				Vector3f n(std::stof(lineSplit[3]), std::stof(lineSplit[4]), std::stof(lineSplit[5]));
+				normalList.push_back(n);
 			}
 			free(lineSplit);
 		}
@@ -135,11 +140,11 @@ Rail::Rail(const char* railPath)
 	int n = ((int)pointsList.size())-1;
 	for (int i = 0; i < n; i++)
 	{
-		rails.push_back(RailSegment(&pointsList[i], &pointsList[i+1], &rails, i));
+		rails.push_back(RailSegment(&pointsList[i], &pointsList[i+1], &normalList[i], &normalList[i+1], &rails, i));
 	}
 
 	setVisible(false);
-	currentSegment = false;
+	currentSegment = nullptr;
 	currentSegmentIndex = -1;
 	timer = 0;
 }
@@ -160,18 +165,23 @@ void Rail::step()
 				{
 					Vector3f landingPoint = r.closestPoint(Global::gameMainVehicle->getPosition());
 					Global::gameMainVehicle->setPosition(&landingPoint);
+					Global::gameMainVehicle->increasePosition(r.normalBegin.x*1.0f, r.normalBegin.y*1.0f, r.normalBegin.z*1.0f);
 					currentSegment = &rails[r.index];
 					currentSegmentIndex = r.index;
 					Global::gameMainVehicle->startGrinding();
 					Vector3f newVel(Global::gameMainVehicle->getVelocity());
 					newVel = Maths::projectAlongLine(&newVel, &r.pointsDiff);
 					Global::gameMainVehicle->setVelocity(newVel.x, newVel.y, newVel.z);
+
 					//sound effect start
-					r.playerProgress = r.calcProgress(&landingPoint);
-					r.playerIsOn = true;
-					//playerSpeed = newVel.length(); //TODO calculate initial speed
-					playerSpeed = 0;
-					timer = 1.0f;
+
+					currentSegment->playerProgress = r.calcProgress(&landingPoint);
+					currentSegment->playerIsOn = true;
+
+					float dot = currentSegment->pointsDiff.dot(&newVel);
+					playerSpeed = Maths::sign(dot)*newVel.length();
+
+					timer = 0.2f; //0.2 seconds before we can land on the rail again
 				}
 			}
 		}
@@ -191,8 +201,12 @@ void Rail::step()
 		//playerVel->y += currentSegment->velToAdd.y*dt;
 		//playerVel->z += currentSegment->velToAdd.z*dt;
 		//Global::gameMainVehicle->setVelocity(playerVel->x, playerVel->y, playerVel->z);
-		playerSpeed += currentSegment->speedToAdd*dt;
 
+		playerSpeed += currentSegment->speedToAdd*dt;
+		if (Input::inputs.INPUT_ACTION2)
+		{
+			playerSpeed += Maths::sign(playerSpeed)*crouchPush*dt;
+		}
 
 		float newProgress = currentSegment->playerProgress + (playerSpeed/currentSegment->length)*dt;
 
@@ -217,7 +231,11 @@ void Rail::step()
 				Vector3f progessVec = currentSegment->pointsDiff.scaleCopy(newSegmentProgress);
 				Vector3f nP = currentSegment->pointBegin + progessVec;
 				Global::gameMainVehicle->setPosition(&nP);
+				Global::gameMainVehicle->increasePosition(currentSegment->normalBegin.x*1.0f, 
+														  currentSegment->normalBegin.y*1.0f, 
+														  currentSegment->normalBegin.z*1.0f);
 				Global::gameMainVehicle->updateTransformationMatrix();
+				Global::gameMainVehicle->setRelativeUp(&currentSegment->normalBegin);
 			}
 			else
 			{
@@ -233,16 +251,20 @@ void Rail::step()
 			Vector3f progessVec = currentSegment->pointsDiff.scaleCopy(newProgress);
 			Vector3f nP = currentSegment->pointBegin + progessVec;
 			Global::gameMainVehicle->setPosition(&nP);
+			Global::gameMainVehicle->increasePosition(currentSegment->normalBegin.x*1.0f, 
+													  currentSegment->normalBegin.y*1.0f, 
+													  currentSegment->normalBegin.z*1.0f);
 			Global::gameMainVehicle->updateTransformationMatrix();
 
 			Vector3f newVel(currentSegment->pointsDiff);
 			newVel.normalize();
 			newVel.scale(playerSpeed);
 			Global::gameMainVehicle->setVelocity(newVel.x, newVel.y, newVel.z);
+			Global::gameMainVehicle->setRelativeUp(&currentSegment->normalBegin);
 		}
 		else //go to next rail segment
 		{
-			if (currentSegmentIndex < rails.size()-1)
+			if (currentSegmentIndex < ((int)rails.size())-1)
 			{
 				float totalDistance = (newProgress - currentSegment->playerProgress)/currentSegment->length;
 				float distanceAlreadyUsed = (1.0f - currentSegment->playerProgress)/currentSegment->length;
@@ -261,7 +283,11 @@ void Rail::step()
 				Vector3f progessVec = currentSegment->pointsDiff.scaleCopy(newSegmentProgress);
 				Vector3f nP = currentSegment->pointBegin + progessVec;
 				Global::gameMainVehicle->setPosition(&nP);
+				Global::gameMainVehicle->increasePosition(currentSegment->normalBegin.x*1.0f, 
+														  currentSegment->normalBegin.y*1.0f, 
+														  currentSegment->normalBegin.z*1.0f);
 				Global::gameMainVehicle->updateTransformationMatrix();
+				Global::gameMainVehicle->setRelativeUp(&currentSegment->normalBegin);
 			}
 			else
 			{
@@ -271,12 +297,12 @@ void Rail::step()
 			}
 		}
 
-		if (Input::inputs.INPUT_ACTION1 && Input::inputs.INPUT_PREVIOUS_ACTION1)
+		if (Input::inputs.INPUT_ACTION1 && !Input::inputs.INPUT_PREVIOUS_ACTION1)
 		{
 			Global::gameMainVehicle->stopGrinding();
-			Vector3f* playerVel = Global::gameMainVehicle->getVelocity();
-			Global::gameMainVehicle->setVelocity(playerVel->x, playerVel->y+200, playerVel->z);
-			//Global::gameMainVehicle->Jump();
+			//Vector3f* playerVel = Global::gameMainVehicle->getVelocity();
+			//Global::gameMainVehicle->setVelocity(playerVel->x, playerVel->y+200, playerVel->z);
+			Global::gameMainVehicle->doJump();
 			currentSegment = nullptr;
 			currentSegmentIndex = -1;
 		}

@@ -166,7 +166,7 @@ void GuiManager::refresh()
 	float px = 1.0f/(SCR_WIDTH);  //1 pixel in x dimension
 	float py = 1.0f/(SCR_HEIGHT); //1 pixel in y dimension
 
-	const float w = 0.02f;   //width of a single text character
+	//const float w = 0.02f;   //width of a single text character
 	const float o = 0.0008f; //horizontal offset to adjust for centered vs non centered
 	//const float s = 1.5f;    //size of timer text
 

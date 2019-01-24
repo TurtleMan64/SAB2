@@ -72,7 +72,7 @@ void SkyManager::calculateValues()
 	float sunPeakAngle = 60;
 	float sunVangle  = Maths::toRadians(sunPeakAngle*sinf(sunAngle));
 	float sunHangle  = Maths::toRadians(90 * cosf(sunAngle));
-	float moonVangle = Maths::toRadians(sunPeakAngle*sinf(sunAngle - M_PI));
+	float moonVangle = Maths::toRadians(sunPeakAngle*sinf(sunAngle - Maths::PI));
 	float moonHangle = Maths::toRadians(90 * cosf(sunAngle));
 
 	Vector3f dummy;

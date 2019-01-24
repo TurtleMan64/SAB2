@@ -85,10 +85,9 @@ void AudioMaster::updateListenerData(Vector3f* eye, Vector3f* target, Vector3f* 
 ALuint AudioMaster::loadOGG(const char* fileName)
 {
 	FILE* fp = nullptr;
-	int er = 0;
 
 	#ifdef _WIN32
-	er = fopen_s(&fp, fileName, "rb");
+	int er = fopen_s(&fp, fileName, "rb");
 	if (fp == nullptr || er != 0)
 	{
 		fprintf(stderr, "Error when trying to open '%s'\n", fileName);

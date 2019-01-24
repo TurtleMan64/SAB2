@@ -376,7 +376,26 @@ void Car::step()
 	}
 	else
 	{
+		//Twisting camera from user input
+		camDir = Maths::rotatePoint(&camDir, &relativeUp, -inputX2*dt);
+
 		camDir = Maths::interpolateVector(&camDir, &vel, vel.length()*0.05f*dt);
+
+
+		//player input
+		Vector3f perpen = camDir.cross(&relativeUp);
+		camDir = Maths::rotatePoint(&camDir, &perpen, -inputY2*dt);
+
+		//vertical check - rotate down if too high or too low
+		float dot = camDir.dot(&relativeUp);
+		if (dot < -0.325f)
+		{
+			camDir = Maths::rotatePoint(&camDir, &perpen, -((dot+0.325f)*12)*dt);
+		}
+		else if (dot > -0.2f)
+		{
+			camDir = Maths::rotatePoint(&camDir, &perpen, -((dot+0.2f)*20)*dt);
+		}
 	}
 
 	//smoothing
@@ -724,7 +743,7 @@ void Car::step()
 	camOffset.scale(camRadius);
 
 	float rotationVector[3];
-	Maths::rotatePoint(rotationVector, 0, 0, 0, camDirSmooth.x, camDirSmooth.y, camDirSmooth.z, relativeUpSmooth.x, relativeUpSmooth.y, relativeUpSmooth.z, -(float)(M_PI/2));
+	Maths::rotatePoint(rotationVector, 0, 0, 0, camDirSmooth.x, camDirSmooth.y, camDirSmooth.z, relativeUpSmooth.x, relativeUpSmooth.y, relativeUpSmooth.z, -(float)(Maths::PI/2));
 
 	float newCameraOffset[3];
 	Maths::rotatePoint(newCameraOffset, 0, 0, 0, rotationVector[0], rotationVector[1], rotationVector[2], camOffset.x, camOffset.y, camOffset.z, 0);
@@ -792,7 +811,7 @@ void Car::spindash()
 
 void Car::calcSpindashDirection()
 {
-	float stickAngle = -atan2f(inputY, inputX) - M_PI/2; //angle you are holding on the stick, with 0 being up
+	float stickAngle = -atan2f(inputY, inputX) - Maths::PI/2; //angle you are holding on the stick, with 0 being up
 	float stickRadius = sqrtf(inputX*inputX + inputY*inputY);
 	Vector3f dirForward = Maths::projectOntoPlane(&camDir, &relativeUp);
 	dirForward.setLength(stickRadius);
@@ -815,7 +834,7 @@ void Car::moveMeGround()
 		return;
 	}
 
-	float stickAngle = -atan2f(inputY, inputX) - M_PI/2; //angle you are holding on the stick, with 0 being up
+	float stickAngle = -atan2f(inputY, inputX) - Maths::PI/2; //angle you are holding on the stick, with 0 being up
 	float stickRadius = sqrtf(inputX*inputX + inputY*inputY);
 	Vector3f dirForward = Maths::projectOntoPlane(&camDir, &relativeUp);
 	dirForward.setLength(stickRadius);
@@ -893,7 +912,7 @@ void Car::moveMeAir()
 		return;
 	}
 
-	float stickAngle = -atan2f(inputY, inputX) - M_PI/2; //angle you are holding on the stick, with 0 being up
+	float stickAngle = -atan2f(inputY, inputX) - Maths::PI/2; //angle you are holding on the stick, with 0 being up
 	float stickRadius = sqrtf(inputX*inputX + inputY*inputY);
 	Vector3f dirForward = Maths::projectOntoPlane(&camDir, &relativeUp);
 	dirForward.setLength(stickRadius);
@@ -921,7 +940,7 @@ void Car::moveMeAir()
 			float spd = vel.length();
 			vel = Maths::interpolateVector(&vel, &velToAdd, dt*(60.0f/12.0f));
 			vel.setLength(spd);
-			vel.scale(1 - 4.5f*ang*dt*(1/M_PI)); //slow down from turning in the air
+			vel.scale(1 - 4.5f*ang*dt*(1/Maths::PI)); //slow down from turning in the air
 		}
 		vel.y = storedVelY;
 	}
@@ -969,6 +988,30 @@ void Car::startGrinding()
 void Car::stopGrinding()
 {
 	isGrinding = false;
+}
+
+void Car::doJump()
+{
+	isGrinding = false;
+	isBouncing = false;
+	isBall = false;
+	isLightdashing = false;
+	isSkidding = false;
+	isSpindashing = false;
+	isStomping = false;
+	justBounced = false;
+	justHomingAttacked = false;
+	homingAttackTimer = -1.0f;
+	vel = vel + relativeUp.scaleCopy(jumpPower);
+	hoverTimer = hoverTimerThreshold;
+	onGround = false;
+	isJumping = true;
+	AudioPlayer::play(12, getPosition());
+}
+
+void Car::setRelativeUp(Vector3f* newUp)
+{
+	relativeUp.set(newUp);
 }
 
 void Car::animate()
@@ -1080,7 +1123,6 @@ void Car::animate()
 	}
 	else if (spindashReleaseTimer > 0)
 	{
-		//std::fprintf(stdout, "3\n");
 		runAnimationCycle = (spindashReleaseTimer*spindashReleaseTimer*0.4f*60*60);
 		maniaSonicModel->setOrientation(dspX, dspY, dspZ, diffGround, yawAngleGround, pitchAngleGround, runAnimationCycle);
 		maniaSonicModel->animate(12, 0);
@@ -1094,7 +1136,7 @@ void Car::animate()
 		//runAnimationCycle += (1.5f*currSpeed)*dt;
 		//runAnimationCycle = fmodf(runAnimationCycle, 100.0f);
 		maniaSonicModel->setOrientation(getX(), getY(), getZ(), rotX, rotY, rotZ, rotRoll);
-		maniaSonicModel->animate(3, 0);
+		maniaSonicModel->animate(15, 0);
 	}
 	else if (!onGround) //freefall
 	{
@@ -1115,6 +1157,10 @@ void Car::animate()
 
 		runAnimationCycle += (1.5f*currSpeed)*dt;
 		runAnimationCycle = fmodf(runAnimationCycle, 100.0f);
+		if (runAnimationCycle < 0.0f)
+		{
+			runAnimationCycle += 100.0f; //fmodf returns negative numbers if the number is negative
+		}
 
 		maniaSonicModel->setOrientation(getX(), getY(), getZ(), rotX, rotY, rotZ, rotRoll);
 

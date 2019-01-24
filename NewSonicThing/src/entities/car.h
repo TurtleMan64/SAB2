@@ -76,8 +76,8 @@ private:
 	const float groundRunFriction = 0.5f;
 	const float groundNeutralFriction = 5.5f;
 	const float skidPower = -5.0f;
-	const float airRunPush = 30.0f;
-	const float airRunFriction = 0.25f;
+	const float airRunPush = 25.0f; //30.0
+	const float airRunFriction = 0.75f; //0.25
 	const float airNeutralFriction = 1.25f;
 	const float slopeRunAccel = 9000.0f;
 
@@ -277,6 +277,11 @@ public:
 	void startGrinding();
 
 	void stopGrinding();
+
+	//called by Rail when sonic jumps off
+	void doJump();
+
+	void setRelativeUp(Vector3f* newUp);
 
 	std::list<TexturedModel*>* getModels();
 
