@@ -1,0 +1,12 @@
+On Ubuntu:
+
+Install Dependancies:
+sudo apt install libglfw3-dev
+sudo apt install libogg-dev
+sudo apt install libvorbis-dev
+sudo apt install libopenal-dev
+sudo apt install libsoil-dev
+
+Then:
+make
+In the directory where the makefile is
