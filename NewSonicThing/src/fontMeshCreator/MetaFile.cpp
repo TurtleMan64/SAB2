@@ -1,5 +1,6 @@
 #include "metafile.h"
 #include "../toolbox/split.h"
+#include "../toolbox/getline.h"
 #include "textmeshcreator.h"
 
 #include <iostream>
@@ -43,7 +44,8 @@ bool MetaFile::processNextLine()
 	}
 	values.clear();
 
-	getline((*reader), line);
+	getlineSafe((*reader), line);
+	//std::fprintf(stdout, "line = '%s'\n", line.c_str());
 
 	char lineBuf[1024];
 	memcpy(lineBuf, line.c_str(), line.size()+1);

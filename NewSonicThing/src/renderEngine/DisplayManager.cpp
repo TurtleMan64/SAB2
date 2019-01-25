@@ -12,6 +12,7 @@
 #include "../toolbox/input.h"
 #include "../engineTester/main.h"
 #include "../toolbox/split.h"
+#include "../toolbox/getline.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void window_close_callback(GLFWwindow* window);
@@ -215,7 +216,7 @@ void loadDisplaySettings()
 
 		while (!file.eof())
 		{
-			getline(file, line);
+			getlineSafe(file, line);
 
 			char lineBuf[512];
 			memcpy(lineBuf, line.c_str(), line.size()+1);
@@ -282,7 +283,7 @@ void loadGraphicsSettings()
 
 		while (!file.eof())
 		{
-			getline(file, line);
+			getlineSafe(file, line);
 
 			char lineBuf[512];
 			memcpy(lineBuf, line.c_str(), line.size()+1);

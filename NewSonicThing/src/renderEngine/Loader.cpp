@@ -12,6 +12,7 @@
 #include "renderEngine.h"
 
 #include "../models/models.h"
+#include "../toolbox/getline.h"
 
 std::list<GLuint> Loader::vaos;
 std::list<GLuint> Loader::vbos;
@@ -282,7 +283,7 @@ GLuint Loader::loadShader(const char* file, int shaderType)
 		while (!sourceFile.eof())
 		{
 			std::string line;
-			getline(sourceFile, line);
+			getlineSafe(sourceFile, line);
 			filetext.append(line + "\n");
 		}
 

@@ -69,6 +69,7 @@
 #include "../water/watershader.h"
 #include "../water/waterrenderer.h"
 #include "../water/watertile.h"
+#include "../toolbox/getline.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -977,7 +978,7 @@ void Global::loadSaveData()
 	else
 	{
 		std::string line;
-		getline(file, line);
+		getlineSafe(file, line);
 
 		while (!file.eof())
 		{
@@ -994,7 +995,7 @@ void Global::loadSaveData()
 
 			free(lineSplit);
 
-			getline(file, line);
+			getlineSafe(file, line);
 		}
 
 		file.close();
@@ -1233,7 +1234,7 @@ void listen()
 
 	while (loop == 1)
 	{
-		std::getline(std::cin, input);
+		getlineSafe(std::cin, input);
 
 		if (input == "exit")
 		{

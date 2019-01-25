@@ -10,6 +10,7 @@
 #include "../toolbox/maths.h"
 #include "fontshader.h"
 #include "../engineTester/main.h"
+#include "../toolbox/getline.h"
 
 FontShader::FontShader(const char* vertexFile, const char* fragmentFile)
 {
@@ -114,7 +115,7 @@ GLuint FontShader::loadShader(const char* fileName, int type)
 		while (!sourceFile.eof())
 		{
 			std::string line;
-			getline(sourceFile, line);
+			getlineSafe(sourceFile, line);
 			filetext.append(line + "\n");
 		}
 

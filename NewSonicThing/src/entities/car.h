@@ -60,7 +60,7 @@ private:
 	const float smoothTransitionThreshold = 0.6f; //Dot product threshold for running between triangles
 	const float surfaceTension = 10.0f;     //To not fly off the ground
 	const float hitWallTimePunish = 0.0f;   //How long you can't move after hitting a wall 0.125
-	const float wallStickThreshold = 0.3f;  //How steep a slope must be to be considered a wall
+	const float wallStickThreshold = 0.45f;  //How steep a slope must be to be considered a wall 0.3
 
 	const float gravityForce = 280.0f;
 	const float gravityTerminal = -550.0f;
@@ -76,8 +76,8 @@ private:
 	const float groundRunFriction = 0.5f;
 	const float groundNeutralFriction = 5.5f;
 	const float skidPower = -5.0f;
-	const float airRunPush = 30.0f;
-	const float airRunFriction = 0.25f;
+	const float airRunPush = 25.0f; //30.0
+	const float airRunFriction = 0.75f; //0.25
 	const float airNeutralFriction = 1.25f;
 	const float slopeRunAccel = 9000.0f;
 
@@ -94,13 +94,14 @@ private:
 	Vector3f spindashDirection;
 	bool canStartSpindash = false;
 	bool bufferedSpindashInput = false;
-	const float spindashPowerMax = 425.0f;
+	const float spindashPowerMax = 475.0f;
+	const float spindashChargeRate = 0.4f*60*60;
 	const float spindashFriction = 2.0f;
 	const float spindashPowerfulFriction = 8.0f;
 	const float spindashPowerfulFrictionThreshold = 100.0f;
 	const float spindashDelay = 0;
 	float spindashTimer = 0;
-	const float spindashTimerMax = 30.0f/60.0f;
+	const float spindashTimerMax = 35.0f/60.0f;
 	float spindashReleaseTimer = 0;
 	const float spindashReleaseTimerMax = 30.0f/60.0f;
 	float spindashRestartDelay = 0;
@@ -110,6 +111,7 @@ private:
 	bool isSkidding = false;
 	bool isStomping = false;
 	bool isLightdashing = false;
+	bool isGrinding = false;
 
 	const float bounceVel = -300.0f;
 	const float bounceFactor = 0.7f;
@@ -271,6 +273,15 @@ public:
 	Vector3f* getVelocity();
 
 	void setCanMoveTimer(float newTimer);
+
+	void startGrinding();
+
+	void stopGrinding();
+
+	//called by Rail when sonic jumps off
+	void doJump();
+
+	void setRelativeUp(Vector3f* newUp);
 
 	std::list<TexturedModel*>* getModels();
 

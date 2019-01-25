@@ -15,6 +15,7 @@
 #include "vertex.h"
 #include "../engineTester/main.h"
 #include "../toolbox/split.h"
+#include "../toolbox/getline.h"
 #include "../collision/collisionmodel.h"
 #include "../collision/triangle3d.h"
 #include "fakeTexture.h"
@@ -262,7 +263,8 @@ int loadObjModel(std::list<TexturedModel*>* models, std::string filePath, std::s
 
 	while (!file.eof())
 	{
-		getline(file, line);
+		getlineSafe(file, line);
+		//std::fprintf(stdout, "line = '%s'\n", line.c_str());
 
 		char lineBuf[256];
 		memcpy(lineBuf, line.c_str(), line.size()+1);
@@ -448,7 +450,7 @@ void parseMtl(std::string filePath, std::string fileName)
 
 	while (!file.eof())
 	{
-		getline(file, line);
+		getlineSafe(file, line);
 
 		char lineBuf[256];
 		memcpy(lineBuf, line.c_str(), line.size()+1);
@@ -562,7 +564,7 @@ int loadObjModelWithMTL(std::list<TexturedModel*>* models, std::string filePath,
 
 	while (!file.eof())
 	{
-		getline(file, line);
+		getlineSafe(file, line);
 
 		char lineBuf[256];
 		memcpy(lineBuf, line.c_str(), line.size()+1);
@@ -1000,7 +1002,7 @@ CollisionModel* loadCollisionModel(std::string filePath, std::string fileName)
 
 	while (!file.eof())
 	{
-		getline(file, line);
+		getlineSafe(file, line);
 
 		char lineBuf[256];
 		memcpy(lineBuf, line.c_str(), line.size()+1);
@@ -1068,7 +1070,7 @@ CollisionModel* loadCollisionModel(std::string filePath, std::string fileName)
 
 				while (!fileMTL.eof())
 				{
-					getline(fileMTL, lineMTL);
+					getlineSafe(fileMTL, lineMTL);
 
 					char lineBufMTL[256];
 					memcpy(lineBufMTL, lineMTL.c_str(), lineMTL.size()+1);
@@ -1188,7 +1190,7 @@ CollisionModel* loadBinaryCollisionModel(std::string filePath, std::string fileN
 
 		while (!fileMTL.eof())
 		{
-			getline(fileMTL, lineMTL);
+			getlineSafe(fileMTL, lineMTL);
 
 			char lineBufMTL[256];
 			memcpy(lineBufMTL, lineMTL.c_str(), lineMTL.size()+1);

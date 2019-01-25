@@ -1,0 +1,11 @@
+
+newmtl _f6b0ad3_dds
+	Ns 20.0000
+	Ni 0.600
+	d 1.0000
+	Tr 0.0000
+	glow 0.95
+	scrollX 1
+	scrollY 0
+	map_Ka Ring.png
+	map_Kd Ring.png

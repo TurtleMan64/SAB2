@@ -14,6 +14,8 @@ std::uniform_real_distribution<float>* Maths::distributionUniform = new std::uni
 std::default_random_engine* Maths::generatorNormal = new std::default_random_engine(0);
 std::normal_distribution<float>* Maths::distributionNormal = new std::normal_distribution<float>(0.0f, 1.0f);
 
+const float Maths::PI = 3.14159265358979323846f;
+
 float Maths::toRadians(float degrees)
 {
 	return (degrees*0.01745329251f);
@@ -251,17 +253,17 @@ Vector3f Maths::applyDrag(Vector3f* velocity, float drag, float deltaTime)
 //angle in radians
 Vector3f Maths::mapInputs3(float angle, float mag, Vector3f* VecC)
 {
-	angle = fmod(angle, (M_PI * 2));
+	angle = fmod(angle, (Maths::PI * 2));
 	float tempx = cosf(angle)*mag;
 	float tempz = sinf(angle)*mag;
 
 	float CDir = atan2f(VecC->z, VecC->x);
-	CDir += (M_PI / 2);
+	CDir += (Maths::PI / 2);
 	float Cx = cosf(CDir);
 	float Cz = sinf(CDir);
 
 	float CDist = sqrtf(VecC->x*VecC->x + VecC->z*VecC->z);
-	float CPitch = (M_PI / 2 + atan2f(VecC->y, CDist));
+	float CPitch = (Maths::PI / 2 + atan2f(VecC->y, CDist));
 
 	float result[3] = { 0, 0, 0 }; //storage for the answer
 	rotatePoint(result, 0, 0, 0, Cx, 0, Cz, tempx, 0, tempz, CPitch);
@@ -274,15 +276,15 @@ Vector3f Maths::mapInputs3(float angle, float mag, Vector3f* VecC)
 //angle in radians
 Vector3f Maths::mapCamera(float yaw, float pitch, float mag, Vector3f* VecC)
 {
-	yaw = fmod(yaw, (M_PI * 2));
+	yaw = fmod(yaw, (Maths::PI * 2));
 	float tempx = cosf(yaw)*mag;
 	float tempz = sinf(yaw)*mag;
 	float tempy = 0;
 
-	float rotAxisX = cosf(yaw + (M_PI / 2.0f));
-	float rotAxisZ = sinf(yaw + (M_PI / 2.0f));
+	float rotAxisX = cosf(yaw + (Maths::PI / 2.0f));
+	float rotAxisZ = sinf(yaw + (Maths::PI / 2.0f));
 
-	pitch = fmod(pitch, (M_PI * 2));
+	pitch = fmod(pitch, (Maths::PI * 2));
 
 	float result2[3] = { 0, 0, 0 };
 	rotatePoint(result2, 0, 0, 0, rotAxisX, 0, rotAxisZ, tempx, tempy, tempz, pitch);
@@ -292,12 +294,12 @@ Vector3f Maths::mapCamera(float yaw, float pitch, float mag, Vector3f* VecC)
 
 
 	float CDir = atan2f(VecC->z, VecC->x);
-	CDir += (M_PI / 2);
+	CDir += (Maths::PI / 2);
 	float Cx = cosf(CDir);
 	float Cz = sinf(CDir);
 
 	float CDist = sqrtf(VecC->x*VecC->x + VecC->z*VecC->z);
-	float CPitch = (M_PI / 2 + atan2f(VecC->y, CDist));
+	float CPitch = (Maths::PI / 2 + atan2f(VecC->y, CDist));
 
 	float result[3] = { 0, 0, 0 }; //storage for the answer
 	rotatePoint(result, 0, 0, 0, Cx, 0, Cz, tempx, tempy, tempz, CPitch);
@@ -324,12 +326,12 @@ Vector3f Maths::calculatePlaneSpeed(float xspd, float yspd, float zspd, Vector3f
 
 	//Rotate normal along y axis 90 degrees
 	float CDir = atan2f(-normal->z, -normal->x);
-	CDir += (M_PI / 2);
+	CDir += (Maths::PI / 2);
 	float Cx = cosf(CDir);
 	float Cz = sinf(CDir);
 
 	float CDist = sqrtf(normal->x*normal->x + normal->z*normal->z);
-	float CPitch = ((M_PI / 2) + atan2f(-normal->y, CDist));
+	float CPitch = ((Maths::PI / 2) + atan2f(-normal->y, CDist));
 
 	float result[3] = { 0, 0, 0 }; //storage for the answer
 	rotatePoint(result, 0, 0, 0, Cx, 0, Cz, Blue.x, Blue.y, Blue.z, -CPitch);
@@ -457,6 +459,36 @@ Vector3f Maths::getCloserPoint(Vector3f* A, Vector3f* B, Vector3f* testPoint)
 	return Vector3f(B);
 }
 
+//https://stackoverflow.com/questions/11132681/what-is-a-formula-to-get-a-vector-perpendicular-to-another-vector
+Vector3f Maths::calculatePerpendicular(Vector3f* vec)
+{
+	bool b0 = (vec->x <  vec->y) && (vec->x <  vec->z);
+	bool b1 = (vec->y <= vec->x) && (vec->y <  vec->z);
+	bool b2 = (vec->z <= vec->x) && (vec->z <= vec->y);
+	Vector3f differentVec((float)(b0), (float)(b1), (float)(b2));
+	differentVec.setLength(1);
+	Vector3f perpen = vec->cross(&differentVec);
+	perpen.setLength(1);
+	return perpen;
+}
+
+Vector3f Maths::projectAlongLine(Vector3f* A, Vector3f* line)
+{
+	Vector3f master(A);
+	//std::fprintf(stdout, "master = %f %f %f\n", master.x, master.y, master.z);
+	Vector3f perpen1 = Maths::calculatePerpendicular(line);
+	perpen1.normalize();
+	//std::fprintf(stdout, "perpen1 = %f %f %f\n", perpen1.x, perpen1.y, perpen1.z);
+	Vector3f perpen2 = perpen1.cross(line);
+	perpen2.normalize();
+	//std::fprintf(stdout, "perpen2 = %f %f %f\n", perpen2.x, perpen2.y, perpen2.z);
+	master = Maths::projectOntoPlane(&master, &perpen1);
+	//std::fprintf(stdout, "master = %f %f %f\n", master.x, master.y, master.z);
+	master = Maths::projectOntoPlane(&master, &perpen2);
+	//std::fprintf(stdout, "master = %f %f %f\n", master.x, master.y, master.z);
+	return master;
+}
+
 /**
 * @param initialVelocity
 * @param surfaceNormal
@@ -474,12 +506,13 @@ Vector3f Maths::bounceVector(Vector3f* initialVelocity, Vector3f* surfaceNormal,
 }
 
 
-//Projects vector A to be parallel to vector normal
+//Projects vector A to be perpendicular to vector normal
 Vector3f Maths::projectOntoPlane(Vector3f* A, Vector3f* normal)
 {
 	Vector3f B(0, 0, 0);
 	Vector3f C(A);
 	Vector3f N(normal->x, normal->y, normal->z);
+	N.normalize();
 
 	N.scale(C.dot(&N));
 	B = C - N;
@@ -507,7 +540,7 @@ Vector3f Maths::spherePositionFromAngles(float angH, float angV, float radius)
 Vector3f Maths::randomPointOnSphere()
 {
 	float z   = Maths::nextUniform()*2 - 1;
-	float lng = Maths::nextUniform()*2*M_PI;
+	float lng = Maths::nextUniform()*2*Maths::PI;
 
 	float radius = sqrtf(1-(z)*(z));
 

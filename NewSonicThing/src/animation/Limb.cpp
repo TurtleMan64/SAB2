@@ -110,7 +110,7 @@ void Limb::update(float time)
 		float t = (time - key1->time) / (key2->time - key1->time);
 
 		//sinusoidal interpolation
-		t = 1 - ((float)(cos(M_PI*t) + 1)*0.5f);
+		t = 1 - ((float)(cos(Maths::PI*t) + 1)*0.5f);
 
 		float ratio = t;
 

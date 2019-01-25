@@ -15,6 +15,7 @@
 #include "../entities/car.h"
 #include "maths.h"
 #include "../toolbox/split.h"
+#include "../toolbox/getline.h"
 #include <random>
 #include <chrono>
 
@@ -252,7 +253,9 @@ void Input::pollInputs()
 		if (Global::gameMainVehicle != nullptr)
 		{
 			extern float dt;
-			Global::gameMainVehicle->getPosition()->y = Global::gameMainVehicle->getY()+600*dt;
+			//Global::gameMainVehicle->getPosition()->y = Global::gameMainVehicle->getY()+600*dt;
+			Vector3f* v = Global::gameMainVehicle->getVelocity();
+			Global::gameMainVehicle->setVelocity(v->x, v->y+600*dt, v->z);
 		}
 	}
 	#endif
@@ -331,7 +334,7 @@ void Input::init()
 
 		while (!file.eof())
 		{
-			getline(file, line);
+			getlineSafe(file, line);
 
 			char lineBuf[512];
 			memcpy(lineBuf, line.c_str(), line.size()+1);
@@ -381,7 +384,7 @@ void Input::init()
 
 		while (!file2.eof())
 		{
-			getline(file2, line);
+			getlineSafe(file2, line);
 
 			char lineBuf[512];
 			memcpy(lineBuf, line.c_str(), line.size()+1);
