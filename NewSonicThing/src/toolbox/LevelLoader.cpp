@@ -34,6 +34,7 @@
 #include "../particles/particleresources.h"
 #include "../particles/particle.h"
 #include "../entities/GreenForest/gfstagemanager.h"
+#include "../entities/MetalHarbor/mhtank.h"
 
 void LevelLoader::loadTitle()
 {
@@ -649,6 +650,22 @@ void LevelLoader::processLine(char** dat, int /*datLength*/)
 				//	Main_addEntity(mh);
 				//	break;
 
+				default: break;
+			}
+			return;
+		}
+		case 92: //Metal Harbor Objects
+		{
+			int id2 = std::stoi(dat[1]);
+			switch (id2)
+			{
+				case 0: //Tank
+				{
+					MH_Tank::loadStaticModels();
+					MH_Tank* tank = new MH_Tank(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4])); INCR_NEW
+					Main_addEntity(tank);
+					break;
+				}
 				default: break;
 			}
 			return;

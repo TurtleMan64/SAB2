@@ -102,7 +102,7 @@ ALuint AudioMaster::loadOGG(const char* fileName)
 	if (fp == nullptr)
 	{
 		fprintf(stderr, "Error when trying to open '%s'\n", fileName);
-		fprintf(stderr, "errno = %s\n", strerror(errno));
+		//fprintf(stderr, "errno = %s\n", strerror(errno));
 		return AL_NONE;
 	}
 	#endif
