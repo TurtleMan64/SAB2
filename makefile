@@ -3,14 +3,14 @@ TARGET_EXEC ?= a.out
 BUILD_DIR ?= makebuild
 SRC_DIRS ?= NewSonicThing/src
 
-SRCS := $(shell find $(SRC_DIRS) -name *.cpp -or -name *.c -or -name *.s)
+SRCS := $(shell find $(SRC_DIRS) -name *.cpp -or -name *.c)
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 DEPS := $(OBJS:.o=.d)
 
-INC_DIRS := $(shell find $(SRC_DIRS) -type d) Libraries/Include/
+INC_DIRS := $(shell find $(SRC_DIRS) -type d) ./Libraries/Include/
 INC_FLAGS := $(addprefix -I,$(INC_DIRS)) `pkg-config --cflags glfw3 ogg vorbis vorbisfile openal gl`
 
-CPPFLAGS ?= -Wall $(INC_FLAGS) -MMD -MP# -D_GLIBCXX_USE_CXX11_ABI=0
+CPPFLAGS ?= -g -Wall $(INC_FLAGS) -MMD -MP# -D_GLIBCXX_USE_CXX11_ABI=0
 LDFLAGS := -lSOIL -lm -lpthread -ldl `pkg-config --static --libs glfw3 ogg vorbis vorbisfile openal gl`
 CPPFLAGS += -D'fopen_s(pFile,filename,mode)=((*(pFile))=fopen((filename),(mode)))==NULL'
 
