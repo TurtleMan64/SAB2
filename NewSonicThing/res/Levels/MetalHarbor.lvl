@@ -28,8 +28,7 @@ water
 ######## Human placed objects #######
 
 # Player
-#6 0 500 32
-6 4786.705566, -30.858261, -10370.325195
+6 0 500 32
 0 0 0 0
 
 92 res/Models/Levels/MetalHarbor/Rails/Rail0.txt
