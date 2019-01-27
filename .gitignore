@@ -1,5 +1,5 @@
 *.sav
 NewSonicThing/a.out
 makebuild
-#buildSAB2.sh
-#.vscode
+buildSAB2.sh
+.vscode
