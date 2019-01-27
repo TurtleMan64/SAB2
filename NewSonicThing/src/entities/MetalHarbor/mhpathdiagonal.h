@@ -15,7 +15,7 @@ private:
 
 public:
 	MH_PathDiagonal();
-	MH_PathDiagonal(float x, float y, float z);
+	MH_PathDiagonal(float x, float y, float z, float rotY);
 
 	void step();
 

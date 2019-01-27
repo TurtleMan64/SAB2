@@ -686,41 +686,41 @@ void LevelLoader::processLine(char** dat, int /*datLength*/)
 				case 0: //Tank
 				{
 					MH_Tank::loadStaticModels();
-					MH_Tank* tank = new MH_Tank(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4])); INCR_NEW
+					MH_Tank* tank = new MH_Tank(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4])); INCR_NEW //x, y, z
 					Main_addEntity(tank);
 					break;
 				}
 				case 1: //RocketBase
 				{
 					MH_RocketBase::loadStaticModels();
-					MH_RocketBase* rocketBase = new MH_RocketBase(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4])); INCR_NEW
+					MH_RocketBase* rocketBase = new MH_RocketBase(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4])); INCR_NEW //x, y, z
 					Main_addEntity(rocketBase);
 					break;
 				}
 				case 2: //GiantRocket
 				{
 					MH_GiantRocket::loadStaticModels();
-					MH_GiantRocket* giantRocket = new MH_GiantRocket(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4])); INCR_NEW
+					MH_GiantRocket* giantRocket = new MH_GiantRocket(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4])); INCR_NEW //x, y, z
 					Main_addEntity(giantRocket);
 					break;
 				}
 				case 3: //PathFlat
 				{
 					MH_PathFlat::loadStaticModels();
-					MH_PathFlat* pathFlat = new MH_PathFlat(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4])); INCR_NEW
+					MH_PathFlat* pathFlat = new MH_PathFlat(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]), toFloat(dat[5])); INCR_NEW //x, y, z, rotY
 					Main_addEntity(pathFlat);
 					break;
 				}case 4: //PathDiagonal
 				{
 					MH_PathDiagonal::loadStaticModels();
-					MH_PathDiagonal* pathDiagonal = new MH_PathDiagonal(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4])); INCR_NEW
+					MH_PathDiagonal* pathDiagonal = new MH_PathDiagonal(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]), toFloat(dat[5])); INCR_NEW //x, y, z, rotY
 					Main_addEntity(pathDiagonal);
 					break;
 				}
 				case 5: //PathFlatSmall
 				{
 					MH_PathFlatSmall::loadStaticModels();
-					MH_PathFlatSmall* pathFlatSmall = new MH_PathFlatSmall(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4])); INCR_NEW
+					MH_PathFlatSmall* pathFlatSmall = new MH_PathFlatSmall(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]), toFloat(dat[5])); INCR_NEW //x, y, z, rotY
 					Main_addEntity(pathFlatSmall);
 					break;
 				}

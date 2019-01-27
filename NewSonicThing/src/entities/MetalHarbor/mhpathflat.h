@@ -15,7 +15,7 @@ private:
 
 public:
 	MH_PathFlat();
-	MH_PathFlat(float x, float y, float z);
+	MH_PathFlat(float x, float y, float z, float rotY);
 
 	void step();
 

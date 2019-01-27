@@ -19,13 +19,13 @@ MH_PathDiagonal::MH_PathDiagonal()
 
 }
 
-MH_PathDiagonal::MH_PathDiagonal(float x, float y, float z)
+MH_PathDiagonal::MH_PathDiagonal(float x, float y, float z, float rotY)
 {
 	position.x = x;
 	position.y = y;
 	position.z = z;
 	rotX = 0;
-	rotY = 0;
+	this->rotY = rotY;
 	rotZ = 0;
 
 	scale = 1;
@@ -34,7 +34,7 @@ MH_PathDiagonal::MH_PathDiagonal(float x, float y, float z)
 	updateTransformationMatrix();
 
 	collideModelOriginal = MH_PathDiagonal::cmOriginal;
-	collideModelTransformed = loadCollisionModel("Models/Levels/MetalHarbor/", "PathDiagonalRescaled");
+	collideModelTransformed = loadCollisionModel("Models/Levels/MetalHarbor/", "PathDiagonalCollision");
 
 	CollisionChecker::addCollideModel(collideModelTransformed);
 
@@ -76,11 +76,11 @@ void MH_PathDiagonal::loadStaticModels()
 	std::fprintf(stdout, "Loading MH_PathDiagonal static models...\n");
 	#endif
 
-	loadModel(&MH_PathDiagonal::models, "res/Models/Levels/MetalHarbor/", "PathDiagonalRescaled");
+	loadModel(&MH_PathDiagonal::models, "res/Models/Levels/MetalHarbor/", "PathDiagonal");
 
 	if (MH_PathDiagonal::cmOriginal == nullptr)
 	{
-		MH_PathDiagonal::cmOriginal = loadCollisionModel("Models/Levels/MetalHarbor/", "PathDiagonalRescaled");
+		MH_PathDiagonal::cmOriginal = loadCollisionModel("Models/Levels/MetalHarbor/", "PathDiagonalCollision");
 	}
 }
 

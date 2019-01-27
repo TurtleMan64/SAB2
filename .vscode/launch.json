@@ -8,7 +8,7 @@
             "program": "${workspaceFolder}/NewSonicThing/a.out",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/NewSonicThing/",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",

@@ -19,13 +19,13 @@ MH_PathFlatSmall::MH_PathFlatSmall()
 
 }
 
-MH_PathFlatSmall::MH_PathFlatSmall(float x, float y, float z)
+MH_PathFlatSmall::MH_PathFlatSmall(float x, float y, float z, float rotY)
 {
 	position.x = x;
 	position.y = y;
 	position.z = z;
 	rotX = 0;
-	rotY = 0;
+	this->rotY = rotY;
 	rotZ = 0;
 
 	scale = 1;
@@ -34,7 +34,7 @@ MH_PathFlatSmall::MH_PathFlatSmall(float x, float y, float z)
 	updateTransformationMatrix();
 
 	collideModelOriginal = MH_PathFlatSmall::cmOriginal;
-	collideModelTransformed = loadCollisionModel("Models/Levels/MetalHarbor/", "PathFlatSmallCollision");
+	collideModelTransformed = loadCollisionModel("Models/Levels/MetalHarbor/", "PathFlatSmall");
 
 	CollisionChecker::addCollideModel(collideModelTransformed);
 
@@ -80,7 +80,7 @@ void MH_PathFlatSmall::loadStaticModels()
 
 	if (MH_PathFlatSmall::cmOriginal == nullptr)
 	{
-		MH_PathFlatSmall::cmOriginal = loadCollisionModel("Models/Levels/MetalHarbor/", "PathFlatSmallCollisionRescaled");
+		MH_PathFlatSmall::cmOriginal = loadCollisionModel("Models/Levels/MetalHarbor/", "PathFlatSmallCollision");
 	}
 }
 

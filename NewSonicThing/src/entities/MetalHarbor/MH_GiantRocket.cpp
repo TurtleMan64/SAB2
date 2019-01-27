@@ -34,7 +34,7 @@ MH_GiantRocket::MH_GiantRocket(float x, float y, float z)
 	updateTransformationMatrix();
 
 	collideModelOriginal = MH_GiantRocket::cmOriginal;
-	collideModelTransformed = loadCollisionModel("Models/Levels/MetalHarbor/", "GiantRocketRescaled");
+	collideModelTransformed = loadCollisionModel("Models/Levels/MetalHarbor/", "GiantRocket");
 
 	CollisionChecker::addCollideModel(collideModelTransformed);
 
@@ -76,11 +76,11 @@ void MH_GiantRocket::loadStaticModels()
 	std::fprintf(stdout, "Loading MH_GiantRocket static models...\n");
 	#endif
 
-	loadModel(&MH_GiantRocket::models, "res/Models/Levels/MetalHarbor/", "GiantRocketRescaled");
+	loadModel(&MH_GiantRocket::models, "res/Models/Levels/MetalHarbor/", "GiantRocket");
 
 	if (MH_GiantRocket::cmOriginal == nullptr)
 	{
-		MH_GiantRocket::cmOriginal = loadCollisionModel("Models/Levels/MetalHarbor/", "GiantRocketCollisionRescaled");
+		MH_GiantRocket::cmOriginal = loadCollisionModel("Models/Levels/MetalHarbor/", "GiantRocketCollision");
 	}
 }
 
