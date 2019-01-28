@@ -290,5 +290,21 @@ public:
 	static void deleteStaticModels();
 
 	bool isVehicle();
+
+	bool isChargingSpindash();
+	
+	bool isOnGround();
+
+	void setOnGround(bool newOnGround);
+
+	void setHoverTimer(float newTimer);
+	
+	void setIsBall(bool newIsBall);
+
+	void setSpindashTimer(float newSpindashTimer);
+
+	float getHitboxHorizontal();
+
+	float getHitboxVertical();
 };
 #endif

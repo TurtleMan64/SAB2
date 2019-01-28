@@ -28,18 +28,43 @@ water
 ######## Human placed objects #######
 
 # Player
-#6 0 500 32
-6 4786.705566, -30.858261, -10370.325195
+6 0 500 32
+#6 3568.764893, -222.860779, -7794.312012
 0 0 0 0
 
-92 res/Models/Levels/MetalHarbor/Rails/Rail0.txt
-92 res/Models/Levels/MetalHarbor/Rails/Rail1.txt
-92 res/Models/Levels/MetalHarbor/Rails/Rail2.txt
-92 res/Models/Levels/MetalHarbor/Rails/Rail3.txt
+#92 res/Models/Levels/MetalHarbor/Rails/Rail0.txt
+#92 res/Models/Levels/MetalHarbor/Rails/Rail1.txt
+#92 res/Models/Levels/MetalHarbor/Rails/Rail2.txt
+#92 res/Models/Levels/MetalHarbor/Rails/Rail3.txt
 92 res/Models/Levels/MetalHarbor/Rails/Rail4.txt
 92 res/Models/Levels/MetalHarbor/Rails/Rail5.txt
 92 res/Models/Levels/MetalHarbor/Rails/Rail6.txt
 92 res/Models/Levels/MetalHarbor/Rails/Rail7.txt
+
+# Dashpads (from SAB1)
+94 3554.4 -222.66 -7824 0 83.7 0 15 83.7 30
+94 3574.4 -222.66 -7824 0 83.7 0 15 83.7 30
+94 3594.4 -222.66 -7824 0 83.7 0 15 83.7 30
+94 3560 -222.66 -7867.92 0 83.7 0 15 83.7 30
+94 3580 -222.66 -7867.92 0 83.7 0 15 83.7 30
+94 3600 -222.66 -7867.92 0 83.7 0 15 83.7 30
+
+94 3702.4 -72.82 -8041.6 0 90 0 10 90 30
+94 3721.6 -72.82 -8041.6 0 90 0 10 90 30
+94 3740.8 -72.82 -8041.6 0 90 0 10 90 30
+94 3702.4 -72.82 -8080 0 90 0 10 90 30
+94 3721.6 -72.82 -8080 0 90 0 10 90 30
+94 3740.8 -72.82 -8080 0 90 0 10 90 30
+
+94 3701.6 -200.38 -8725.29 45 90 0 8 90 15
+94 3720.8 -200.38 -8725.29 45 90 0 8 90 15
+94 3740 -200.38 -8725.29 45 90 0 8 90 15
+
+#Speedramps (from SAB1)
+95 0 -13.7 -570.57 90 8.3 10.0 90
+95 554.72 -269.86 -2153.52 0 20 10.3 80
+95 2868.55 -208.9 -7094.21 0 10 6 60
+95 8407.2 -80.89 -10272.5 -0.93 10 7.5 80
 
 ####### Generated Objects ###########
 

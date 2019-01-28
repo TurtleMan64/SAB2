@@ -43,6 +43,8 @@
 #include "../entities/MetalHarbor/mhpathflatsmall.h"
 #include "../entities/rail.h"
 #include "../entities/ring.h"
+#include "../entities/dashpad.h"
+#include "../entities/speedramp.h"
 
 void LevelLoader::loadTitle()
 {
@@ -729,6 +731,29 @@ void LevelLoader::processLine(char** dat, int /*datLength*/)
 			return;
 		}
 		
+		case 94: //Dashpad
+		{
+			Dashpad::loadStaticModels();
+			Dashpad* dashpad = new Dashpad(
+				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), 			//position
+				toFloat(dat[4]), toFloat(dat[5]), toFloat(dat[6]), 			//rotation
+				toFloat(dat[7]), toFloat(dat[8]), toInt(dat[9])); INCR_NEW  //power, camYaw, time 
+			
+			Main_addEntity(dashpad);
+			return;
+		}
+
+		case 95: //Speed Ramp
+		{
+			SpeedRamp::loadStaticModels();
+			SpeedRamp* ramp = new SpeedRamp(
+				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
+				toFloat(dat[4]), toFloat(dat[5]),                  //rotation
+				toFloat(dat[6]), toInt(dat[7])); INCR_NEW          //power, time
+			Main_addEntity(ramp);
+			return;
+		}
+
 		//case 91: //Metal Harbor
 		//{
 		//	MH_Manager* mh = new MH_Manager;

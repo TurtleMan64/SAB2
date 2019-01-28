@@ -1316,3 +1316,43 @@ bool Car::isVehicle()
 {
 	return true;
 }
+
+bool Car::isChargingSpindash()
+{
+	return isSpindashing;
+}
+
+bool Car::isOnGround()
+{
+	return onGround;
+}
+
+void Car::setOnGround(bool newOnGround)
+{
+	onGround = newOnGround;
+}
+
+void Car::setHoverTimer(float newTimer)
+{
+	hoverTimer = newTimer;
+}
+
+void Car::setIsBall(bool newIsBall)
+{
+	isBall = newIsBall;
+}
+
+void Car::setSpindashTimer(float newSpindashTimer)
+{
+	spindashTimer = newSpindashTimer;
+}
+
+float Car::getHitboxHorizontal()
+{
+	return 6;
+}
+
+float Car::getHitboxVertical()
+{
+	return 12;
+}
