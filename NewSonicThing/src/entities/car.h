@@ -77,7 +77,8 @@ private:
 	const float groundNeutralFriction = 5.5f;
 	const float skidPower = -5.0f;
 	const float airRunPush = 25.0f; //30.0
-	const float airRunFriction = 0.75f; //0.25
+	const float airRunFrictionUp = 0.75f; //0.25    //maybe make another variable for this to use when vel.y < 0?
+	const float airRunFrictionDown = 0.25f; //For when sonic is falling down
 	const float airNeutralFriction = 1.25f;
 	const float slopeRunAccel = 9000.0f;
 

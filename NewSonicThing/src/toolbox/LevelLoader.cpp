@@ -728,14 +728,6 @@ void LevelLoader::processLine(char** dat, int /*datLength*/)
 			}
 			return;
 		}
-		
-		//case 91: //Metal Harbor
-		//{
-		//	MH_Manager* mh = new MH_Manager;
-		//	INCR_NEW
-		//	Main_addEntity(mh);
-		//	return;
-		//}
 
 		default:
 		{
@@ -830,4 +822,10 @@ void LevelLoader::freeAllStaticModels()
 	JumpRamp::deleteStaticModels();
 	GFStageManager::deleteStaticModels();
 	Ring::deleteStaticModels();
+	MH_GiantRocket::deleteStaticModels();
+	MH_PathDiagonal::deleteStaticModels();
+	MH_PathFlat::deleteStaticModels();
+	MH_PathFlatSmall::deleteStaticModels();
+	MH_RocketBase::deleteStaticModels();
+	MH_Tank::deleteStaticModels();
 }
