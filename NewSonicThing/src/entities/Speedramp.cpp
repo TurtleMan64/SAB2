@@ -27,7 +27,7 @@ SpeedRamp::SpeedRamp()
 
 }
 
-SpeedRamp::SpeedRamp(float x, float y, float z, float rotY, float rotZ, float myPower, int inputLockDuration)
+SpeedRamp::SpeedRamp(float x, float y, float z, float rotY, float rotZ, float myPower, float inputLockDuration)
 {
 	this->position.x = x;
 	this->position.y = y;
@@ -37,8 +37,8 @@ SpeedRamp::SpeedRamp(float x, float y, float z, float rotY, float rotZ, float my
 	this->rotZ = rotZ;
 	this->scale = 1;
 	this->visible = true;
-	this->power = myPower * 60;
-	this->inputLockDuration = inputLockDuration;
+	this->power = myPower;
+	this->inputLockDuration = inputLockDuration / 60; //number in lvl file is frames at 60fps, convert to seconds by dividing by 60
 	updateTransformationMatrix();
 
 	collideModelOriginal = SpeedRamp::cmOriginal;
@@ -83,7 +83,7 @@ void SpeedRamp::step()
 				//Global::gameMainVehicle->setxVel(0);
 				//Global::gameMainVehicle->setzVel(0);
 				
-                //Global::gameMainVehicle->setCanMoveTimer(inputLockDuration);
+                Global::gameMainVehicle->setCanMoveTimer(inputLockDuration);
 				//Global::gameMainVehicle->setGroundSpeed(0, 0);
 
 				AudioPlayer::play(21, getPosition());

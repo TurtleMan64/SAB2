@@ -18,6 +18,8 @@
 #include <algorithm>
 #include <cmath>
 
+extern float dt;
+
 std::list<TexturedModel*> Dashpad::models;
 
 Dashpad::Dashpad()
@@ -25,7 +27,7 @@ Dashpad::Dashpad()
 
 }
 
-Dashpad::Dashpad(float x, float y, float z, float rotX, float rotY, float rotZ, float myPower, float myCamYawTarget, int time)
+Dashpad::Dashpad(float x, float y, float z, float rotX, float rotY, float rotZ, float myPower, float myCamYawTarget, float time)
 {
 	this->position.x = x;
 	this->position.y = y;
@@ -34,9 +36,9 @@ Dashpad::Dashpad(float x, float y, float z, float rotX, float rotY, float rotZ, 
 	this->rotY = rotY;
 	this->rotZ = rotZ;
 	this->hitRadius = 6.5f;
-	this->power = myPower * 40; //* 40 roughly gives the dashpads enough power, ideally this would just be done in the lvl file probably
+	this->power = myPower;
 	this->cooldownTimer = 0;
-	this->cooldownTimerMax = time;
+	this->cooldownTimerMax = time / 60;
 	this->scale = 1;
 	this->visible = true;
 	this->camYawTarget = myCamYawTarget;
@@ -45,7 +47,7 @@ Dashpad::Dashpad(float x, float y, float z, float rotX, float rotY, float rotZ, 
 
 void Dashpad::step()
 {
-	cooldownTimer = std::max(cooldownTimer - 1, 0);
+	cooldownTimer = std::fmaxf(cooldownTimer - dt, 0);
 
 	if (Global::gameMainVehicle->getX() > getX() - hitRadius - Global::gameMainVehicle->getHitboxHorizontal() && Global::gameMainVehicle->getX() < getX() + hitRadius + Global::gameMainVehicle->getHitboxHorizontal() &&
 		Global::gameMainVehicle->getZ() > getZ() - hitRadius - Global::gameMainVehicle->getHitboxHorizontal() && Global::gameMainVehicle->getZ() < getZ() + hitRadius + Global::gameMainVehicle->getHitboxHorizontal() &&
@@ -70,16 +72,18 @@ void Dashpad::step()
 
 			cooldownTimer = cooldownTimerMax;
 
-			//Global::gameMainVehicle->setCanMoveTimer(cooldownTimerMax);
+			Global::gameMainVehicle->setCanMoveTimer(cooldownTimerMax);
 
-			if (Global::gameMainVehicle->isChargingSpindash())
+			Global::gameMainVehicle->setIsBall(false);
+
+			/*if (Global::gameMainVehicle->isChargingSpindash())
 			{
 				//spindashPower = Global::gameMainVehicle->calculateSpindashSpeed(Global::gameMainVehicle->getSpindashTimer());
 				Global::gameMainVehicle->setIsBall(true);
 				Global::gameMainVehicle->setSpindashTimer(0);
 
 				//TODO: get stored spindash speed and set if < that?
-			}
+			}*/
 
 			//Global::gameMainVehicle->setxVelAir(dx*power + dx*spindashPower);
 			//Global::gameMainVehicle->setzVelAir(dz*power + dz*spindashPower);

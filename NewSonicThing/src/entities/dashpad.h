@@ -15,12 +15,12 @@ private:
 	float power;
 	float hitRadius;
 	float camYawTarget;
-	int cooldownTimer;
-	int cooldownTimerMax;
+	float cooldownTimer;
+	float cooldownTimerMax;
 
 public:
 	Dashpad();
-	Dashpad(float x, float y, float z, float rotX, float rotY, float rotZ, float myPower, float myCamYawTarget, int time);
+	Dashpad(float x, float y, float z, float rotX, float rotY, float rotZ, float myPower, float myCamYawTarget, float time);
 
 	void step();
 

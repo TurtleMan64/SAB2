@@ -14,11 +14,11 @@ private:
 	static CollisionModel* cmOriginal;
 
 	float power;
-	int inputLockDuration;
+	float inputLockDuration;
 
 public:
 	SpeedRamp();
-	SpeedRamp(float x, float y, float z, float rotY, float rotZ, float myPower, int inputLockDuration);
+	SpeedRamp(float x, float y, float z, float rotY, float rotZ, float myPower, float inputLockDuration);
 
 	void step();
 
