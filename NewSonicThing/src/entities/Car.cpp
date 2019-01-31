@@ -1,9 +1,9 @@
 #include <glad/glad.h>
 
 #include "entity.h"
+#include "car.h"
 #include "../models/models.h"
 #include "../toolbox/vector.h"
-#include "car.h"
 #include "../renderEngine/renderEngine.h"
 #include "../objLoader/objLoader.h"
 #include "../engineTester/main.h"
@@ -927,7 +927,14 @@ void Car::moveMeAir()
 		{
 			float storedVelY = vel.y;
 			vel.y = 0;
-			vel = Maths::applyDrag(&vel, -airRunFriction, dt); //Slow vel down due to friction (but no slowdown in y direction)
+			if (storedVelY >= 0)
+			{
+				vel = Maths::applyDrag(&vel, -airRunFrictionUp, dt); //Slow vel down due to friction (but no slowdown in y direction)
+			}
+			else
+			{
+				vel = Maths::applyDrag(&vel, -airRunFrictionDown, dt); //Slow vel down due to friction (but no slowdown in y direction)
+			}
 			vel.y = storedVelY;
 		}
 

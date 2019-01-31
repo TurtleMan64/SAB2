@@ -154,6 +154,12 @@
     <ClCompile Include="src\entities\JumpRamp.cpp" />
     <ClCompile Include="src\entities\Light.cpp" />
     <ClCompile Include="src\entities\ManiaSonicModel.cpp" />
+    <ClCompile Include="src\entities\MetalHarbor\MH_GiantRocket.cpp" />
+    <ClCompile Include="src\entities\MetalHarbor\MH_PathDiagonal.cpp" />
+    <ClCompile Include="src\entities\MetalHarbor\MH_PathFlat.cpp" />
+    <ClCompile Include="src\entities\MetalHarbor\MH_PathFlatSmall.cpp" />
+    <ClCompile Include="src\entities\MetalHarbor\MH_RocketBase.cpp" />
+    <ClCompile Include="src\entities\MetalHarbor\MH_Tank.cpp" />
     <ClCompile Include="src\entities\Rail.cpp" />
     <ClCompile Include="src\entities\Ring.cpp" />
     <ClCompile Include="src\entities\SkySphere.cpp" />
@@ -257,6 +263,12 @@
     <ClInclude Include="src\entities\jumpramp.h" />
     <ClInclude Include="src\entities\light.h" />
     <ClInclude Include="src\entities\maniasonicmodel.h" />
+    <ClInclude Include="src\entities\MetalHarbor\mhgiantrocket.h" />
+    <ClInclude Include="src\entities\MetalHarbor\mhpathdiagonal.h" />
+    <ClInclude Include="src\entities\MetalHarbor\mhpathflat.h" />
+    <ClInclude Include="src\entities\MetalHarbor\mhpathflatsmall.h" />
+    <ClInclude Include="src\entities\MetalHarbor\mhrocketbase.h" />
+    <ClInclude Include="src\entities\MetalHarbor\mhtank.h" />
     <ClInclude Include="src\entities\rail.h" />
     <ClInclude Include="src\entities\ring.h" />
     <ClInclude Include="src\entities\skysphere.h" />

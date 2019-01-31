@@ -866,4 +866,10 @@ void LevelLoader::freeAllStaticModels()
 	JumpRamp::deleteStaticModels();
 	GFStageManager::deleteStaticModels();
 	Ring::deleteStaticModels();
+	MH_GiantRocket::deleteStaticModels();
+	MH_PathDiagonal::deleteStaticModels();
+	MH_PathFlat::deleteStaticModels();
+	MH_PathFlatSmall::deleteStaticModels();
+	MH_RocketBase::deleteStaticModels();
+	MH_Tank::deleteStaticModels();
 }

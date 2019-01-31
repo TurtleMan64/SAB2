@@ -1,5 +1,6 @@
 *.sav
 NewSonicThing/a.out
 makebuild
-#buildSAB2.sh
-#.vscode
+.vs
+NewSonicThing/x64
+x64
