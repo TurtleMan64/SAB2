@@ -46,6 +46,7 @@
 #include "../entities/dashpad.h"
 #include "../entities/speedramp.h"
 #include "../entities/point.h"
+#include "../entities/rocket.h"
 
 void LevelLoader::loadTitle()
 {
@@ -765,6 +766,14 @@ void LevelLoader::processLine(char** dat, int /*datLength*/)
 			Main_addEntity(point);
 			return;
 		}
+
+		case 97: //Rocket
+		{
+			Rocket* rocket = new Rocket(toInt(dat[1]), toInt(dat[2])); //Point IDs 1 and 2
+			INCR_NEW
+			Main_addEntity(rocket);
+			return;
+		}
 		//case 91: //Metal Harbor
 		//{
 		//	MH_Manager* mh = new MH_Manager;
@@ -866,6 +875,9 @@ void LevelLoader::freeAllStaticModels()
 	JumpRamp::deleteStaticModels();
 	GFStageManager::deleteStaticModels();
 	Ring::deleteStaticModels();
+	Dashpad::deleteStaticModels();
+	SpeedRamp::deleteStaticModels();
+	Rocket::deleteStaticModels();
 	MH_GiantRocket::deleteStaticModels();
 	MH_PathDiagonal::deleteStaticModels();
 	MH_PathFlat::deleteStaticModels();

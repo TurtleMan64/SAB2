@@ -1363,3 +1363,8 @@ float Car::getHitboxVertical()
 {
 	return 12;
 }
+
+void Car::setOnRocket(bool newOnRocket) //for animation but that doesn't work atm
+{
+	onRocket = newOnRocket;
+}

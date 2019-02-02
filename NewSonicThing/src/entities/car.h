@@ -250,6 +250,8 @@ private:
 	float inputX2;
 	float inputY2;
 
+	bool onRocket = false;
+
 	void moveMeGround();
 
 	void moveMeAir();
@@ -307,5 +309,7 @@ public:
 	float getHitboxHorizontal();
 
 	float getHitboxVertical();
+
+	void setOnRocket(bool newOnRocket);
 };
 #endif
