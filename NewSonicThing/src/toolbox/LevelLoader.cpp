@@ -199,22 +199,80 @@ void LevelLoader::loadLevel(std::string levelFilename)
 	std::string modelFLoc;
 	getlineSafe(file, modelFLoc);
 
-	std::string modelFName;
-	getlineSafe(file, modelFName);
+	std::string numLevelChunksLine;
+	getlineSafe(file, numLevelChunksLine);
+
+	int numLevelChunks = stoi(numLevelChunksLine);
+
+	if (stageFault == 1) //We need to load in new level chunks
+	{
+		Stage::deleteModels();
+
+		std::vector<std::string> fnames;
+		std::vector<std::vector<Vector3f>> mins;
+		std::vector<std::vector<Vector3f>> maxs;
+
+		while (numLevelChunks > 0)
+		{
+			std::string line;
+			getlineSafe(file, line);
+
+			char lineBuf[256];
+			memcpy(lineBuf, line.c_str(), line.size()+1);
+			int splitLength = 0;
+			char** lineSplit = split(lineBuf, ' ', &splitLength);
+			
+			fnames.push_back(lineSplit[0]);
+
+			std::vector<Vector3f> minList;
+			std::vector<Vector3f> maxList;
+
+			for (int c = 1; c < splitLength; c+=6)
+			{
+				Vector3f min(std::stof(lineSplit[c+0]), std::stof(lineSplit[c+1]), std::stof(lineSplit[c+2]));
+				Vector3f max(std::stof(lineSplit[c+3]), std::stof(lineSplit[c+4]), std::stof(lineSplit[c+5]));
+				minList.push_back(min);
+				maxList.push_back(max);
+			}
+
+			mins.push_back(minList);
+			maxs.push_back(maxList);
+
+			numLevelChunks--;
+
+			free(lineSplit);
+		}
+
+		Stage::loadModels(modelFLoc.c_str(), &fnames, &mins, &maxs);
+	}
+	else //Keep the same level chunks
+	{
+		while (numLevelChunks > 0)
+		{
+			std::string line;
+			getlineSafe(file, line);
+
+			numLevelChunks--;
+		}
+	}
+	Stage::respawnChunks();
+
+	//std::string modelFName;
+	//getlineSafe(file, modelFName);
 
 	std::string colFLoc;
 	getlineSafe(file, colFLoc);
 
-	std::string numChunksLine;
-	getlineSafe(file, numChunksLine);
+	std::string numCollChunksLine;
+	getlineSafe(file, numCollChunksLine);
 
-	int numChunks = stoi(numChunksLine);
+	int numCollChunks = stoi(numCollChunksLine);
 
 	if (stageFault == 1) //We need to load in new collision
 	{
 		CollisionChecker::deleteAllCollideModels();
 
-		while (numChunks > 0)
+		while (numCollChunks > 0)
 		{
 			std::string line;
 			getlineSafe(file, line);
@@ -231,7 +289,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
 			colModel->generateQuadTree(std::stoi(lineSplit[1]));
 			CollisionChecker::addCollideModel(colModel);
 
-			numChunks--;
+			numCollChunks--;
 
 			free(lineSplit);
 		}
@@ -240,12 +298,12 @@ void LevelLoader::loadLevel(std::string levelFilename)
 	{
 		CollisionChecker::deleteAllCollideModelsExceptQuadTrees();
 
-		while (numChunks > 0)
+		while (numCollChunks > 0)
 		{
 			std::string line;
 			getlineSafe(file, line);
 
-			numChunks--;
+			numCollChunks--;
 		}
 	}
 
@@ -499,7 +557,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
 
 	if (stageFault == 1)
 	{
-		Stage::loadModels((char*)modelFLoc.c_str(), (char*)modelFName.c_str());
+		//Stage::loadModels((char*)modelFLoc.c_str(), (char*)modelFName.c_str()); //doing this earlier now
 	}
 
 	if (Global::gameMainVehicle != nullptr)

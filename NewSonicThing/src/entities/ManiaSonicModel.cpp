@@ -46,6 +46,7 @@ std::list<TexturedModel*> ManiaSonicModel::modelJog14;
 std::list<TexturedModel*> ManiaSonicModel::modelJog15;
 std::list<TexturedModel*> ManiaSonicModel::modelJog16;
 std::list<TexturedModel*> ManiaSonicModel::modelJog17;
+std::list<TexturedModel*> ManiaSonicModel::modelGrind;
 
 ManiaSonicModel::ManiaSonicModel()
 {
@@ -55,7 +56,7 @@ ManiaSonicModel::ManiaSonicModel()
 	rotX = 0;
 	rotY = 0;
 	rotZ = 0;
-	scale = 0.33f;
+	scale = 0.27f;
 	visible = false;
 	models = &ManiaSonicModel::modelDash0;
 }
@@ -87,7 +88,7 @@ void ManiaSonicModel::animate(int animIndex, float time)
 				case 9:  models = &ManiaSonicModel::modelDash9;  break;
 				case 10: models = &ManiaSonicModel::modelDash10; break;
 				case 11: models = &ManiaSonicModel::modelDash11; break;
-				default: break;
+				default: std::fprintf(stdout, "dash animation index out of bounds"); break;
 			}
 			break;
 		}
@@ -122,8 +123,14 @@ void ManiaSonicModel::animate(int animIndex, float time)
 				case 15: models = &ManiaSonicModel::modelJog15; break;
 				case 16: models = &ManiaSonicModel::modelJog16; break;
 				case 17: models = &ManiaSonicModel::modelJog17; break;
-				default: break;
+				default: std::fprintf(stdout, "jog animation index out of bounds"); break;
 			}
+			break;
+		}
+
+		case 26: //grind
+		{
+			models = &ManiaSonicModel::modelGrind;
 			break;
 		}
 
@@ -191,6 +198,7 @@ void ManiaSonicModel::loadStaticModels()
 	loadModel(&ManiaSonicModel::modelJog15 , "res/Models/Characters/ManiaSonic/", "Jog15");
 	loadModel(&ManiaSonicModel::modelJog16 , "res/Models/Characters/ManiaSonic/", "Jog16");
 	loadModel(&ManiaSonicModel::modelJog17 , "res/Models/Characters/ManiaSonic/", "Jog17");
+	loadModel(&ManiaSonicModel::modelGrind , "res/Models/Characters/ManiaSonic/", "Grind");
 }
 
 void ManiaSonicModel::deleteStaticModels()
@@ -230,4 +238,5 @@ void ManiaSonicModel::deleteStaticModels()
 	Entity::deleteModels(&ManiaSonicModel::modelJog15);
 	Entity::deleteModels(&ManiaSonicModel::modelJog16);
 	Entity::deleteModels(&ManiaSonicModel::modelJog17);
+	Entity::deleteModels(&ManiaSonicModel::modelGrind);
 }

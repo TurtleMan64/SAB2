@@ -115,6 +115,7 @@ int createDisplay()
 	}
 
 	std::fprintf(stdout, "Renderer:       %s\n", glGetString(GL_RENDERER));
+	std::fprintf(stdout, "Vendor:         %s\n", glGetString(GL_VENDOR));
 	std::fprintf(stdout, "OpenGL version: %s\n", glGetString(GL_VERSION));
 	std::fprintf(stdout, "GLSL version:   %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 

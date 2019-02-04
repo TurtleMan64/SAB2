@@ -52,6 +52,7 @@ private:
 	Vector3f vel; //Direction we are currently going
 	Vector3f relativeUp; //What direction is "up", aka grounds normal
 	Vector3f relativeUpSmooth; //What direction is "up", aka grounds normal
+	Vector3f relativeUpAnim; //relative up to use for animations. smooth less than relativeUpSmooth
 	Vector3f camDir; //Direction the camera wants to be facing
 	Vector3f camDirSmooth; //Direction the camera is facing curerntly
 

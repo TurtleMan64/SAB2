@@ -146,6 +146,9 @@ void AnimationResources::createAnimations()
 	animsHumanBody[25].addKeyframe(0,   4, 0, 0, 0, 0, 0, 0, 1);
 	animsHumanBody[25].addKeyframe(100, 4, 0, 0, 0, 0, 0, 0, 1);
 
+	//grind animation
+	//26
+
 
 
 

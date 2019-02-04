@@ -43,6 +43,7 @@ private:
 	static std::list<TexturedModel*> modelJog15;
 	static std::list<TexturedModel*> modelJog16;
 	static std::list<TexturedModel*> modelJog17;
+	static std::list<TexturedModel*> modelGrind;
 
 public:
 	ManiaSonicModel();

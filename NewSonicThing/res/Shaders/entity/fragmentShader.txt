@@ -5,8 +5,10 @@ in vec3 surfaceNormal;
 in vec3 toLightVector;
 in vec3 toCameraVector;
 in float visibility;
+in vec3 color;
 
 out vec4 out_Color;
+
 
 uniform sampler2D textureSampler;
 uniform vec3 lightColour;
@@ -15,11 +17,15 @@ uniform float reflectivity;
 uniform vec3 skyColour;
 uniform float hasTransparency;
 uniform float glowAmount;
+uniform vec3 baseColour;
 
 void main(void)
 {
 	vec4 rawTextureColour = texture(textureSampler, pass_textureCoords);
-	if (hasTransparency == 0) //&& glowAmount == 0
+    rawTextureColour.rgb *= baseColour*color;
+    
+    
+	if (hasTransparency == 0)
 	{
 		if (rawTextureColour.a < 0.9)
 		{

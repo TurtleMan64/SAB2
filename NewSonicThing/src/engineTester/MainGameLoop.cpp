@@ -530,6 +530,7 @@ int main()
 				break;
 		}
 
+		Stage::updateVisibleChunks();
 		SkyManager::calculateValues();
 
 		//prepare entities to render

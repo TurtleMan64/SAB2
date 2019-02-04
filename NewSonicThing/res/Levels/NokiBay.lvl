@@ -1,5 +1,6 @@
 Levels/NokiBay
-NokiBay
+1
+NokiBay -10000 -10000 -10000 10000 10000 10000
 Levels/NokiBay
 1
 NokiBay 8
@@ -20,7 +21,7 @@ res/Audio/BGM/g_hill_loop.ogg
 103 3
 -100
 water
-150
+198
 
 # Player
 6 0 7 0

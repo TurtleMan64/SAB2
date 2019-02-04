@@ -1,5 +1,6 @@
 Levels/FrogForest
-FF
+1
+FF -10000 -10000 -10000 10000 10000 10000
 Levels/FrogForest
 1
 Collision 8
