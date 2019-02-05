@@ -761,7 +761,6 @@ void LevelLoader::processLine(char** dat, int /*datLength*/)
 			Point* point = new Point(
 				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
 				toInt(dat[4])); //point id
-
 			INCR_NEW
 			Main_addEntity(point);
 			return;
@@ -769,6 +768,7 @@ void LevelLoader::processLine(char** dat, int /*datLength*/)
 
 		case 97: //Rocket
 		{
+			Rocket::loadStaticModels();
 			Rocket* rocket = new Rocket(toInt(dat[1]), toInt(dat[2])); //Point IDs 1 and 2
 			INCR_NEW
 			Main_addEntity(rocket);

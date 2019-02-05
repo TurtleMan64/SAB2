@@ -70,8 +70,7 @@ Rocket::Rocket(int point1ID, int point2ID)
 	base->setY(base->getY() - 1);
 
 	collideModelOriginal = Rocket::cmBase;
-	collideModelTransformed = loadCollisionModel("Models/Objects/SpeedRamp/", "SpeedRamp");
-	//collideModelTransformed = loadCollisionModel("Models/Objects/Rocket/", "RocketPlatformCollision");
+	collideModelTransformed = loadCollisionModel("Models/Objects/Rocket/", "RocketPlatformCollision");
 	CollisionChecker::addCollideModel(collideModelTransformed);
 	updateCollisionModel();
 
@@ -282,16 +281,12 @@ void Rocket::loadStaticModels()
 	std::fprintf(stdout, "Loading Rocket static models...\n");
 	#endif
 
-	loadModel(&Rocket::modelsRocket, "Models/Objects/SpeedRamp/", "SpeedRamp");
-	loadModel(&Rocket::modelsBase,   "Models/Objects/SpeedRamp/", "SpeedRamp");
-
-	//loadModel(&Rocket::modelsRocket, "res/Models/Objects/Rocket/", "Rocket");
-	//loadModel(&Rocket::modelsBase,   "res/Models/Objects/Rocket/", "RocketPlatform");
+	loadModel(&Rocket::modelsRocket, "res/Models/Objects/Rocket/", "Rocket");
+	loadModel(&Rocket::modelsBase,   "res/Models/Objects/Rocket/", "RocketPlatform");
 
 	if (Rocket::cmBase == nullptr)
 	{
-		//Rocket::cmBase = loadCollisionModel("Models/Objects/Rocket/", "RocketPlatformCollision");
-		Rocket::cmBase = loadCollisionModel("Models/Objects/SpeedRamp/", "SpeedRamp");
+		Rocket::cmBase = loadCollisionModel("Models/Objects/Rocket/", "RocketPlatformCollision");
 	}
 }
 
