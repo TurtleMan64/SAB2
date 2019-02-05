@@ -86,6 +86,11 @@ void WaterShader::loadProjectionMatrix(Matrix4f* projection)
 	loadMatrix(location_projectionMatrix, projection);
 }
 
+void WaterShader::loadClipPlaneBehind(Vector4f* plane)
+{
+	loadVector4f(location_clipPlaneBehind, plane);
+}
+
 void WaterShader::loadViewMatrix(Camera* cam)
 {
 	Matrix4f viewMatrix;
@@ -138,6 +143,7 @@ void WaterShader::getAllUniformLocations()
 	location_shadowMap         = getUniformLocation("shadowMap");
 	location_toShadowMapSpace  = getUniformLocation("toShadowMapSpace");
 	location_waterHeight       = getUniformLocation("waterHeight");
+	location_clipPlaneBehind   = getUniformLocation("clipPlaneBehind");
 }
 
 int WaterShader::getUniformLocation(const char* uniformName)
@@ -158,6 +164,11 @@ void WaterShader::loadFloat(int location, float value)
 void WaterShader::loadVector(int location, Vector3f* vect)
 {
 	glUniform3f(location, vect->x, vect->y, vect->z);
+}
+
+void WaterShader::loadVector4f(int location, Vector4f* vect)
+{
+	glUniform4f(location, vect->x, vect->y, vect->z, vect->w);
 }
 
 void WaterShader::loadBoolean(int location, float value)

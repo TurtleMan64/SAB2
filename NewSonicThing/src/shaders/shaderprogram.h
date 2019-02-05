@@ -33,6 +33,7 @@ private:
 	int location_fogDensity;
 	int location_fogGradient;
 	int location_clipPlane;
+	int location_clipPlaneBehind;
 	int location_shadowMapFar;
 	int location_toShadowMapSpaceFar;
 	int location_shadowMapClose;
@@ -75,6 +76,8 @@ public:
 	void loadFogGradient(float gradient);
 
 	void loadClipPlane(float clipX, float clipY, float clipZ, float clipW);
+
+	void loadClipPlaneBehind(float clipX, float clipY, float clipZ, float clipW);
 
 	void loadToShadowSpaceMatrixFar(Matrix4f* matrix);
 

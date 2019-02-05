@@ -10,6 +10,7 @@
 #include "../toolbox/vector.h"
 #include "../toolbox/matrix.h"
 #include "../shadows/shadowmapmasterrenderer.h"
+#include "../entities/camera.h"
 
 const float WaterRenderer::WAVE_SPEED = 0.0002f;
 
@@ -31,6 +32,17 @@ void WaterRenderer::prepareRender(Camera* camera, Light* sun)
 {
 	shader->start();
 	shader->loadViewMatrix(camera);
+
+	//calc behind clipm plane based on camera
+	Vector3f camDir = camera->target - camera->eye;
+	camDir.normalize();
+	camDir.neg();
+	Vector3f startPos(&camera->eye);
+	//startPos = startPos + camDir.scaleCopy(-100);
+	Vector4f plane = Maths::calcPlaneValues(&startPos, &camDir);
+	shader->loadClipPlaneBehind(&plane);
+
+
 	if (Global::renderShadowsFar)
 	{
 		shader->loadToShadowSpaceMatrix(shadowMapRenderer->getToShadowMapSpaceMatrix());
@@ -53,12 +65,14 @@ void WaterRenderer::prepareRender(Camera* camera, Light* sun)
 	glActiveTexture(GL_TEXTURE4);
 	glBindTexture  (GL_TEXTURE_2D, fbos->getRefractionDepthTexture());
 	glDepthMask(true);
+	glEnable(GL_CLIP_DISTANCE1);
 }
 
 void WaterRenderer::unbind()
 {
 	glDisableVertexAttribArray(0);
 	glBindVertexArray(0);
+	glDisable(GL_CLIP_DISTANCE1);
 	shader->stop();
 }
 

@@ -5,6 +5,7 @@ class Matrix4f;
 class Camera;
 class Light;
 class Vector3f;
+class Vector4f;
 
 #include <glad/glad.h>
 
@@ -31,6 +32,7 @@ private:
 	int location_shadowMap;
 	int location_toShadowMapSpace;
 	int location_waterHeight;
+	int location_clipPlaneBehind;
 
 	float matrixBuffer[16];
 
@@ -59,6 +61,8 @@ public:
 
 	void loadToShadowSpaceMatrix(Matrix4f* matrix);
 
+	void loadClipPlaneBehind(Vector4f* plane);
+
 protected:
 	void bindAttributes();
 
@@ -75,6 +79,8 @@ protected:
 	void loadFloat(int, float);
 
 	void loadVector(int, Vector3f*);
+
+	void loadVector4f(int, Vector4f*);
 
 	void loadBoolean(int, float);
 

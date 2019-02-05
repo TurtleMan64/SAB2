@@ -27,6 +27,7 @@ uniform float fogDensity;
 uniform float fogGradient;
 
 uniform vec4 clipPlane;
+uniform vec4 clipPlaneBehind;
 
 void main(void)
 {
@@ -35,6 +36,7 @@ void main(void)
 	gl_Position = projectionMatrix * positionRelativeToCam;
 	
 	gl_ClipDistance[0] = dot(worldPosition, clipPlane);
+    gl_ClipDistance[1] = dot(worldPosition, clipPlaneBehind);
 	
 	pass_textureCoords.x = textureCoords.x+texOffX;
 	pass_textureCoords.y = textureCoords.y+texOffY;
