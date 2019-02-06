@@ -28,6 +28,7 @@ private:
 
 	static bool pausedSounds[14];
 
+
 public:
 	static FontType* font;
 

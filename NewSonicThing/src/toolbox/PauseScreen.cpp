@@ -40,10 +40,16 @@ bool PauseScreen::isPaused = false;
 bool PauseScreen::shouldPause = false;
 bool PauseScreen::pausedSounds[14];
 
+float aspectRatio;
+float size = 0.075f;
+
 void PauseScreen::init()
 {
+	aspectRatio = GuiManager::getAspectRatio();
+
+	printf("PauseScreen::init() running\n");
 	font = new FontType(Loader::loadTexture("res/Fonts/vipnagorgialla.png"), "res/Fonts/vipnagorgialla.fnt"); INCR_NEW
-	textCursor = new GUIText(">", 2.5f, font, 0.47f, 0.25f, 1.0f, false, false, false); INCR_NEW
+	textCursor = new GUIText(">", size, font, 0.5f - (0.1f / aspectRatio), 0.25f, 1.0f, false, false, false); INCR_NEW
 	isPaused = false;
 }
 
@@ -113,12 +119,12 @@ void PauseScreen::step()
 						textCamera->deleteMe(); delete textCamera; INCR_DEL textCamera = nullptr;
 						if (Global::isAutoCam)
 						{
-							textCamera    = new GUIText("Free Cam",  2.5f, font, 0.5f, 0.55f, 1.0f, false, false, true); INCR_NEW
+							textCamera    = new GUIText("Free Cam", size, font, 0.5f, 0.55f, 1.0f, false, false, true); INCR_NEW
 							Global::isAutoCam = false;
 						}
 						else
 						{
-							textCamera    = new GUIText("Auto Cam",  2.5f, font, 0.5f, 0.55f, 1.0f, false, false, true); INCR_NEW
+							textCamera    = new GUIText("Auto Cam",  size, font, 0.5f, 0.55f, 1.0f, false, false, true); INCR_NEW
 							Global::isAutoCam = true;
 						}
 					}
@@ -222,6 +228,11 @@ void PauseScreen::unpause(bool shouldResumeSFX)
 
 void PauseScreen::pause()
 {
+	aspectRatio = GuiManager::getAspectRatio();
+	printf("%f\n", aspectRatio);
+
+	textCursor->getPosition()->x = 0.5f - (0.1f / aspectRatio);
+
 	if (isPaused)
 	{
 		return;
@@ -231,8 +242,6 @@ void PauseScreen::pause()
 	{
 		//return;
 	}
-
-	const float size = 2.5f;
 
 	Global::gameState = STATE_PAUSED;
 	menuSelection = 0;

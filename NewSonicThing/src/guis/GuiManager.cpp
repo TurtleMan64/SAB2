@@ -2,6 +2,7 @@
 #include <GLFW/glfw3.h>
 
 #include "guimanager.h"
+#include "../renderEngine/renderEngine.h"
 #include "../engineTester/main.h"
 #include "../fontMeshCreator/guitext.h"
 #include "../fontMeshCreator/guinumber.h"
@@ -73,7 +74,7 @@ void GuiManager::init()
 	GuiManager::s = 0.05f;
 	GuiManager::w = 0.8f * s / aspectRatio; //width of a single text character
 
-	fontVip = PauseScreen::font;
+	fontVip = new FontType(Loader::loadTexture("res/Fonts/vipnagorgialla.png"), "res/Fonts/vipnagorgialla.fnt"); INCR_NEW
 	textLives = new GUIText("0", 1, fontVip, 0.01f, 0.98f, 1, false, false, false); INCR_NEW
 
 	//Player debug text
@@ -153,7 +154,7 @@ void GuiManager::init()
 
 	float speedometerScale = 1.5f;
 
-	GuiManager::numberSpeed    = new GUINumber(0, 1.0f - safeAreaX - (4 * w), 1.0f - safeAreaY - (speedometerScale * s), speedometerScale * s, 0, true, 4); INCR_NEW
+	GuiManager::numberSpeed    = new GUINumber(0, 1.0f - safeAreaX - (4 * w), 1.0f - safeAreaY - (speedometerScale * s), speedometerScale * s, 0, true, 3); INCR_NEW
 	GuiManager::textSpeedUnits = new GUIText("km/h", s, fontVip, -safeAreaX, 1.0f - safeAreaY - s, 1.0f, false, true, true); INCR_NEW
 
 	GuiManager::setTimerInvisible();
@@ -296,6 +297,11 @@ void GuiManager::refresh()
 
 	//Render images
 	GuiRenderer::render(&GuiManager::guisToRender);
+}
+
+float GuiManager::getAspectRatio()
+{
+	return GuiManager::aspectRatio;
 }
 
 void GuiManager::setTimerInvisible()

@@ -63,6 +63,8 @@ public:
 
 	static void refresh();
 
+	static float getAspectRatio();
+
 	static void increaseTimer(float deltaTime);
 
 	static void setTimer(float newVal);

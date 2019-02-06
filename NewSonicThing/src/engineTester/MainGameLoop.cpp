@@ -234,13 +234,13 @@ int main()
 
 	LevelLoader::loadLevelData();
 
-	PauseScreen::init();
-
 	AudioMaster::init();
 
 	TextMaster::init();
 
 	GuiManager::init();
+
+	PauseScreen::init();
 
 	MainMenu::init();
 
