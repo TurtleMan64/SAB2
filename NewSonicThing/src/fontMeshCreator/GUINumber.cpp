@@ -102,7 +102,7 @@ void GUINumber::refresh()
 	}
 
 	int currentNumber = displayNumber;
-	//size = currentNumber/1000.0f;
+	size = currentNumber/1000.0f;
 
 	extern unsigned int SCR_WIDTH;
 	extern unsigned int SCR_HEIGHT;
@@ -111,7 +111,7 @@ void GUINumber::refresh()
 
 	switch (alignment)
 	{
-		case 0:
+		case 2:
 			for (int i = 0; i < numChars; i++)
 			{
 				meshIDs.push_back         (GUINumber::numberMeshIDs[currentNumber % 10]);
@@ -131,7 +131,7 @@ void GUINumber::refresh()
 			}
 			break;
 
-		default:
+		case 0:
 			for (int i = 0; i < numChars; i++)
 			{
 				meshIDs.push_back         (GUINumber::numberMeshIDs[currentNumber % 10]);
@@ -139,6 +139,70 @@ void GUINumber::refresh()
 				meshPositions.push_back   (Vector2f(position.x - i*distanceBetweenCharacters + numChars*distanceBetweenCharacters - distanceBetweenCharacters/2, position.y + size/2));
 				currentNumber = currentNumber/10;
 			}
+			break;
+
+		case 5:
+			for (int i = 0; i < numChars; i++)
+			{
+				meshIDs.push_back         (GUINumber::numberMeshIDs[currentNumber % 10]);
+				meshVertexCounts.push_back(GUINumber::numberMeshVertexCounts[currentNumber % 10]);
+				meshPositions.push_back   (Vector2f(position.x - i*distanceBetweenCharacters - distanceBetweenCharacters/2, position.y));
+				currentNumber = currentNumber/10;
+			}
+			break;
+
+		case 4:
+			for (int i = 0; i < numChars; i++)
+			{
+				meshIDs.push_back         (GUINumber::numberMeshIDs[currentNumber % 10]);
+				meshVertexCounts.push_back(GUINumber::numberMeshVertexCounts[currentNumber % 10]);
+				meshPositions.push_back   (Vector2f(position.x - i*distanceBetweenCharacters + numChars*distanceBetweenCharacters/2 - distanceBetweenCharacters/2, position.y));
+				currentNumber = currentNumber/10;
+			}
+			break;
+
+		case 3:
+			for (int i = 0; i < numChars; i++)
+			{
+				meshIDs.push_back         (GUINumber::numberMeshIDs[currentNumber % 10]);
+				meshVertexCounts.push_back(GUINumber::numberMeshVertexCounts[currentNumber % 10]);
+				meshPositions.push_back   (Vector2f(position.x - i*distanceBetweenCharacters + numChars*distanceBetweenCharacters - distanceBetweenCharacters/2, position.y));
+				currentNumber = currentNumber/10;
+			}
+			break;
+
+		case 8:
+			for (int i = 0; i < numChars; i++)
+			{
+				meshIDs.push_back         (GUINumber::numberMeshIDs[currentNumber % 10]);
+				meshVertexCounts.push_back(GUINumber::numberMeshVertexCounts[currentNumber % 10]);
+				meshPositions.push_back   (Vector2f(position.x - i*distanceBetweenCharacters - distanceBetweenCharacters/2, position.y - size/2));
+				currentNumber = currentNumber/10;
+			}
+			break;
+
+		case 7:
+			for (int i = 0; i < numChars; i++)
+			{
+				meshIDs.push_back         (GUINumber::numberMeshIDs[currentNumber % 10]);
+				meshVertexCounts.push_back(GUINumber::numberMeshVertexCounts[currentNumber % 10]);
+				meshPositions.push_back   (Vector2f(position.x - i*distanceBetweenCharacters + numChars*distanceBetweenCharacters/2 - distanceBetweenCharacters/2, position.y - size/2));
+				currentNumber = currentNumber/10;
+			}
+			break;
+
+		case 6:
+			for (int i = 0; i < numChars; i++)
+			{
+				meshIDs.push_back         (GUINumber::numberMeshIDs[currentNumber % 10]);
+				meshVertexCounts.push_back(GUINumber::numberMeshVertexCounts[currentNumber % 10]);
+				meshPositions.push_back   (Vector2f(position.x - i*distanceBetweenCharacters + numChars*distanceBetweenCharacters - distanceBetweenCharacters/2, position.y - size/2));
+				currentNumber = currentNumber/10;
+			}
+			break;
+
+		default:
+			std::fprintf(stderr, "GUINumber had wrong alignment value\n");
 			break;
 	}
 }
