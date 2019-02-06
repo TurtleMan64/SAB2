@@ -42,7 +42,7 @@ void FontRenderer::render(
 		glBindTexture(GL_TEXTURE_2D, font->getTextureAtlas());
 		for (GUINumber* number : listOfNumbers)
 		{
-			if (number->isVisible())
+			if (number->visible)
 			{
 				renderNumber(number);
 			}
@@ -69,6 +69,7 @@ void FontRenderer::renderText(GUIText* text)
 	glBindVertexArray(text->getMesh());
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
+	shader->loadScale(1.0f);
 	shader->loadColour(text->getColour());
 	shader->loadTranslation(text->getPosition());
 	glDrawArrays(GL_TRIANGLES, 0, text->getVertexCount());
@@ -80,12 +81,13 @@ void FontRenderer::renderText(GUIText* text)
 void FontRenderer::renderNumber(GUINumber* number)
 {
 	int numChars = (int)number->meshIDs.size();
+	shader->loadScale(number->size);
 	for (int i = 0; i < numChars; i++)
 	{
 		glBindVertexArray(number->meshIDs[i]);
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
-		shader->loadColour(number->getColour());
+		shader->loadColour(&number->colour);
 		shader->loadTranslation(&number->meshPositions[i]);
 		glDrawArrays(GL_TRIANGLES, 0, number->meshVertexCounts[i]);
 	}

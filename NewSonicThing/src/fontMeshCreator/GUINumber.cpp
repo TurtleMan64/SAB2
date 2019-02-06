@@ -11,9 +11,6 @@ FontType* GUINumber::numberFont = nullptr;
 GLuint    GUINumber::numberMeshIDs[10];
 GLuint    GUINumber::numberMeshVertexCounts[10];
 
-const float GUINumber::fontHeight = 0.06f; //height of the text, 1.0 being the entire screen height
-float GUINumber::distanceBetweenCharacters = 0.0f; //Something that should only be read from. Changing this does not actually change the displayed text
-
 void GUINumber::createNumber(int i, float x, float y, float w, float h)
 {
 	extern unsigned int SCR_WIDTH;
@@ -22,24 +19,22 @@ void GUINumber::createNumber(int i, float x, float y, float w, float h)
 	float ratioScreen = ((float)SCR_HEIGHT)/SCR_WIDTH;
 	float ratioText   = w/h;
 
-	GUINumber::distanceBetweenCharacters = GUINumber::fontHeight*ratioScreen;
-
 	std::vector<float> positions;
 	std::vector<float> texCoords;
 
-	positions.push_back(-1*GUINumber::fontHeight*ratioScreen*ratioText); //top left
-	positions.push_back( 1*GUINumber::fontHeight);
-	positions.push_back( 1*GUINumber::fontHeight*ratioScreen*ratioText); //top right
-	positions.push_back( 1*GUINumber::fontHeight);
-	positions.push_back(-1*GUINumber::fontHeight*ratioScreen*ratioText); //bottom left
-	positions.push_back(-1*GUINumber::fontHeight);
+	positions.push_back(-1*ratioScreen*ratioText); //top left
+	positions.push_back( 1);
+	positions.push_back( 1*ratioScreen*ratioText); //top right
+	positions.push_back( 1);
+	positions.push_back(-1*ratioScreen*ratioText); //bottom left
+	positions.push_back(-1);
 
-	positions.push_back( 1*GUINumber::fontHeight*ratioScreen*ratioText); //top right
-	positions.push_back( 1*GUINumber::fontHeight);
-	positions.push_back(-1*GUINumber::fontHeight*ratioScreen*ratioText); //bottom left
-	positions.push_back(-1*GUINumber::fontHeight);
-	positions.push_back( 1*GUINumber::fontHeight*ratioScreen*ratioText); //bottom right
-	positions.push_back(-1*GUINumber::fontHeight);
+	positions.push_back( 1*ratioScreen*ratioText); //top right
+	positions.push_back( 1);
+	positions.push_back(-1*ratioScreen*ratioText); //bottom left
+	positions.push_back(-1);
+	positions.push_back( 1*ratioScreen*ratioText); //bottom right
+	positions.push_back(-1);
 
 
 	texCoords.push_back(x);   //top left
@@ -80,12 +75,14 @@ void GUINumber::loadMeshData()
 }
 
 //x and y are (0,0) being the top left of the screen, (1,1) being bottom right
-GUINumber::GUINumber(int number, float x, float y, int alignment, bool visible)
+GUINumber::GUINumber(int number, float x, float y, float size, int alignment, bool visible, int totalDigits)
 {
 	colour.set(1, 1, 1);
-	this->basePosition.set(x-0.5f, y-0.5f);
+	this->position.set(x-0.5f, y-0.5f);
 	this->visible = visible;
 	this->alignment = alignment;
+	this->size = size;
+	this->totalDigits = totalDigits;
 	displayNumber = number;
 	refresh();
 	TextMaster::loadNumber(this);
@@ -99,8 +96,18 @@ void GUINumber::refresh()
 	meshPositions.clear();
 
 	int numChars = Maths::numDigits(displayNumber);
+	if (totalDigits > 0)
+	{
+		numChars = totalDigits;
+	}
 
 	int currentNumber = displayNumber;
+	//size = currentNumber/1000.0f;
+
+	extern unsigned int SCR_WIDTH;
+	extern unsigned int SCR_HEIGHT;
+	float ratioScreen = ((float)SCR_HEIGHT)/SCR_WIDTH;
+	float distanceBetweenCharacters = size*ratioScreen;
 
 	switch (alignment)
 	{
@@ -109,7 +116,7 @@ void GUINumber::refresh()
 			{
 				meshIDs.push_back         (GUINumber::numberMeshIDs[currentNumber % 10]);
 				meshVertexCounts.push_back(GUINumber::numberMeshVertexCounts[currentNumber % 10]);
-				meshPositions.push_back   (Vector2f(basePosition.x - i*distanceBetweenCharacters - distanceBetweenCharacters/2, basePosition.y + GUINumber::fontHeight/2));
+				meshPositions.push_back   (Vector2f(position.x - i*distanceBetweenCharacters - distanceBetweenCharacters/2, position.y + size/2));
 				currentNumber = currentNumber/10;
 			}
 			break;
@@ -119,7 +126,7 @@ void GUINumber::refresh()
 			{
 				meshIDs.push_back         (GUINumber::numberMeshIDs[currentNumber % 10]);
 				meshVertexCounts.push_back(GUINumber::numberMeshVertexCounts[currentNumber % 10]);
-				meshPositions.push_back   (Vector2f(basePosition.x - i*distanceBetweenCharacters + numChars*distanceBetweenCharacters/2 - distanceBetweenCharacters/2, basePosition.y + GUINumber::fontHeight/2));
+				meshPositions.push_back   (Vector2f(position.x - i*distanceBetweenCharacters + numChars*distanceBetweenCharacters/2 - distanceBetweenCharacters/2, position.y + size/2));
 				currentNumber = currentNumber/10;
 			}
 			break;
@@ -129,7 +136,7 @@ void GUINumber::refresh()
 			{
 				meshIDs.push_back         (GUINumber::numberMeshIDs[currentNumber % 10]);
 				meshVertexCounts.push_back(GUINumber::numberMeshVertexCounts[currentNumber % 10]);
-				meshPositions.push_back   (Vector2f(basePosition.x - i*distanceBetweenCharacters + numChars*distanceBetweenCharacters - distanceBetweenCharacters/2, basePosition.y + GUINumber::fontHeight/2));
+				meshPositions.push_back   (Vector2f(position.x - i*distanceBetweenCharacters + numChars*distanceBetweenCharacters - distanceBetweenCharacters/2, position.y + size/2));
 				currentNumber = currentNumber/10;
 			}
 			break;
@@ -141,32 +148,18 @@ void GUINumber::deleteMe()
 	TextMaster::removeNumber(this);
 }
 
-void GUINumber::setColour(float r, float g, float b)
+FontType* GUINumber::getFont() const
 {
-	colour.set(r, g, b);
-}
-
-Vector3f* GUINumber::getColour()
-{
-	return &colour;
+	return numberFont;
 }
 
 Vector2f* GUINumber::getPosition()
 {
-	return &basePosition;
+	return &position;
 }
 
-void GUINumber::setPosition(Vector2f* newPos)
+//x, y = coords on the screen, (0,0) being the top left of the screen, (1,1) being bottom right
+void GUINumber::setPosition(float x, float y)
 {
-	basePosition.set(newPos);
-}
-
-void GUINumber::setVisibility(bool newVisible)
-{
-	visible = newVisible;
-}
-
-bool GUINumber::isVisible()
-{
-	return visible;
+	position.set(x-0.5f, y-0.5f);
 }

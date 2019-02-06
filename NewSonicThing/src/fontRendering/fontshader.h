@@ -18,6 +18,7 @@ private:
 
 	int location_colour;
 	int location_translation;
+	int location_scale;
 
 	float matrixBuffer[16];
 
@@ -33,6 +34,8 @@ public:
 	void loadColour(Vector3f* colour);
 
 	void loadTranslation(Vector2f* translation);
+
+	void loadScale(float scale);
 
 protected:
 	void bindAttributes();
