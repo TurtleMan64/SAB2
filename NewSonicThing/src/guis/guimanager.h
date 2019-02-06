@@ -50,6 +50,12 @@ private:
 
 	static void setTimerInvisible();
 
+	static float aspectRatio;
+	static float safeAreaY;
+	static float safeAreaX;
+	static float w;
+	static float s;
+
 public:
 	static FontType* fontVip;
 

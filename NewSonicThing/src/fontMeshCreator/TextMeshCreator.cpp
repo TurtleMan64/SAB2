@@ -6,7 +6,7 @@
 #include "../engineTester/main.h"
 
 
-double TextMeshCreator::LINE_HEIGHT = 0.03;
+double TextMeshCreator::LINE_HEIGHT = 1;
 
 
 TextMeshCreator::TextMeshCreator(std::string metaFilename)

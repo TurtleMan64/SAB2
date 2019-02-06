@@ -55,8 +55,24 @@ float GuiManager::totalVel = 0;
 
 std::list<GuiTexture*> GuiManager::guisToRender;
 
+float GuiManager::aspectRatio;
+float GuiManager::safeAreaX;
+float GuiManager::safeAreaY;
+float GuiManager::w;
+float GuiManager::s;
+
 void GuiManager::init()
 {
+	extern unsigned int SCR_WIDTH;
+	extern unsigned int SCR_HEIGHT;
+
+	GuiManager::aspectRatio = (float) SCR_WIDTH / (float) SCR_HEIGHT;
+	GuiManager::safeAreaY = 0.05f;
+	GuiManager::safeAreaX = safeAreaY / aspectRatio;
+
+	GuiManager::s = 0.08f;
+	GuiManager::w = 0.8f * s / aspectRatio; //width of a single text character
+
 	fontVip = PauseScreen::font;
 	textLives = new GUIText("0", 1, fontVip, 0.01f, 0.98f, 1, false, false, false); INCR_NEW
 
@@ -71,81 +87,72 @@ void GuiManager::init()
 	textX = new GUIText("X", 1, fontVip, 0.90f, 0.95f, 1, false, false, Global::debugDisplay); INCR_NEW
 	textY = new GUIText("Y", 1, fontVip, 0.95f, 0.95f, 1, false, false, Global::debugDisplay); INCR_NEW
 
-	const float w = 0.02f; //width of a single text character
-	const float s = 1.5f; //size of timer text
+	GuiManager::timerColon   = new GUIText(":", s, fontVip, 2 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerPeriod  = new GUIText(".", s, fontVip, 5 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
 
-	extern unsigned int SCR_WIDTH;
-	extern unsigned int SCR_HEIGHT;
+	GuiManager::timerMin1[0] = new GUIText("0", s, fontVip, 0 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerMin1[1] = new GUIText("1", s, fontVip, 0 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerMin1[2] = new GUIText("2", s, fontVip, 0 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerMin1[3] = new GUIText("3", s, fontVip, 0 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerMin1[4] = new GUIText("4", s, fontVip, 0 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerMin1[5] = new GUIText("5", s, fontVip, 0 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerMin1[6] = new GUIText("6", s, fontVip, 0 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerMin1[7] = new GUIText("7", s, fontVip, 0 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerMin1[8] = new GUIText("8", s, fontVip, 0 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerMin1[9] = new GUIText("9", s, fontVip, 0 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerMin2[0] = new GUIText("0", s, fontVip, 1 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerMin2[1] = new GUIText("1", s, fontVip, 1 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerMin2[2] = new GUIText("2", s, fontVip, 1 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerMin2[3] = new GUIText("3", s, fontVip, 1 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerMin2[4] = new GUIText("4", s, fontVip, 1 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerMin2[5] = new GUIText("5", s, fontVip, 1 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerMin2[6] = new GUIText("6", s, fontVip, 1 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerMin2[7] = new GUIText("7", s, fontVip, 1 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerMin2[8] = new GUIText("8", s, fontVip, 1 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerMin2[9] = new GUIText("9", s, fontVip, 1 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerSec1[0] = new GUIText("0", s, fontVip, 3 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerSec1[1] = new GUIText("1", s, fontVip, 3 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerSec1[2] = new GUIText("2", s, fontVip, 3 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerSec1[3] = new GUIText("3", s, fontVip, 3 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerSec1[4] = new GUIText("4", s, fontVip, 3 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerSec1[5] = new GUIText("5", s, fontVip, 3 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerSec1[6] = new GUIText("6", s, fontVip, 3 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerSec1[7] = new GUIText("7", s, fontVip, 3 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerSec1[8] = new GUIText("8", s, fontVip, 3 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerSec1[9] = new GUIText("9", s, fontVip, 3 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerSec2[0] = new GUIText("0", s, fontVip, 4 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerSec2[1] = new GUIText("1", s, fontVip, 4 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerSec2[2] = new GUIText("2", s, fontVip, 4 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerSec2[3] = new GUIText("3", s, fontVip, 4 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerSec2[4] = new GUIText("4", s, fontVip, 4 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerSec2[5] = new GUIText("5", s, fontVip, 4 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerSec2[6] = new GUIText("6", s, fontVip, 4 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerSec2[7] = new GUIText("7", s, fontVip, 4 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerSec2[8] = new GUIText("8", s, fontVip, 4 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerSec2[9] = new GUIText("9", s, fontVip, 4 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerCen1[0] = new GUIText("0", s, fontVip, 6 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerCen1[1] = new GUIText("1", s, fontVip, 6 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerCen1[2] = new GUIText("2", s, fontVip, 6 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerCen1[3] = new GUIText("3", s, fontVip, 6 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerCen1[4] = new GUIText("4", s, fontVip, 6 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerCen1[5] = new GUIText("5", s, fontVip, 6 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerCen1[6] = new GUIText("6", s, fontVip, 6 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerCen1[7] = new GUIText("7", s, fontVip, 6 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerCen1[8] = new GUIText("8", s, fontVip, 6 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerCen1[9] = new GUIText("9", s, fontVip, 6 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerCen2[0] = new GUIText("0", s, fontVip, 7 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerCen2[1] = new GUIText("1", s, fontVip, 7 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerCen2[2] = new GUIText("2", s, fontVip, 7 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerCen2[3] = new GUIText("3", s, fontVip, 7 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerCen2[4] = new GUIText("4", s, fontVip, 7 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerCen2[5] = new GUIText("5", s, fontVip, 7 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerCen2[6] = new GUIText("6", s, fontVip, 7 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerCen2[7] = new GUIText("7", s, fontVip, 7 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerCen2[8] = new GUIText("8", s, fontVip, 7 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
+	GuiManager::timerCen2[9] = new GUIText("9", s, fontVip, 7 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
 
-	float px = 1.0f/(SCR_WIDTH);  //1 pixel in x dimension
-	float py = 1.0f/(SCR_HEIGHT); //1 pixel in y dimension
-
-	GuiManager::timerColon   = new GUIText(":", s, fontVip, 2*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerPeriod  = new GUIText(".", s, fontVip, 5*w+16*px, 16*py, w, true, false, true); INCR_NEW
-
-	GuiManager::timerMin1[0] = new GUIText("0", s, fontVip, 0*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerMin1[1] = new GUIText("1", s, fontVip, 0*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerMin1[2] = new GUIText("2", s, fontVip, 0*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerMin1[3] = new GUIText("3", s, fontVip, 0*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerMin1[4] = new GUIText("4", s, fontVip, 0*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerMin1[5] = new GUIText("5", s, fontVip, 0*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerMin1[6] = new GUIText("6", s, fontVip, 0*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerMin1[7] = new GUIText("7", s, fontVip, 0*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerMin1[8] = new GUIText("8", s, fontVip, 0*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerMin1[9] = new GUIText("9", s, fontVip, 0*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerMin2[0] = new GUIText("0", s, fontVip, 1*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerMin2[1] = new GUIText("1", s, fontVip, 1*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerMin2[2] = new GUIText("2", s, fontVip, 1*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerMin2[3] = new GUIText("3", s, fontVip, 1*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerMin2[4] = new GUIText("4", s, fontVip, 1*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerMin2[5] = new GUIText("5", s, fontVip, 1*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerMin2[6] = new GUIText("6", s, fontVip, 1*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerMin2[7] = new GUIText("7", s, fontVip, 1*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerMin2[8] = new GUIText("8", s, fontVip, 1*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerMin2[9] = new GUIText("9", s, fontVip, 1*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerSec1[0] = new GUIText("0", s, fontVip, 3*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerSec1[1] = new GUIText("1", s, fontVip, 3*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerSec1[2] = new GUIText("2", s, fontVip, 3*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerSec1[3] = new GUIText("3", s, fontVip, 3*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerSec1[4] = new GUIText("4", s, fontVip, 3*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerSec1[5] = new GUIText("5", s, fontVip, 3*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerSec1[6] = new GUIText("6", s, fontVip, 3*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerSec1[7] = new GUIText("7", s, fontVip, 3*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerSec1[8] = new GUIText("8", s, fontVip, 3*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerSec1[9] = new GUIText("9", s, fontVip, 3*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerSec2[0] = new GUIText("0", s, fontVip, 4*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerSec2[1] = new GUIText("1", s, fontVip, 4*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerSec2[2] = new GUIText("2", s, fontVip, 4*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerSec2[3] = new GUIText("3", s, fontVip, 4*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerSec2[4] = new GUIText("4", s, fontVip, 4*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerSec2[5] = new GUIText("5", s, fontVip, 4*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerSec2[6] = new GUIText("6", s, fontVip, 4*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerSec2[7] = new GUIText("7", s, fontVip, 4*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerSec2[8] = new GUIText("8", s, fontVip, 4*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerSec2[9] = new GUIText("9", s, fontVip, 4*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerCen1[0] = new GUIText("0", s, fontVip, 6*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerCen1[1] = new GUIText("1", s, fontVip, 6*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerCen1[2] = new GUIText("2", s, fontVip, 6*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerCen1[3] = new GUIText("3", s, fontVip, 6*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerCen1[4] = new GUIText("4", s, fontVip, 6*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerCen1[5] = new GUIText("5", s, fontVip, 6*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerCen1[6] = new GUIText("6", s, fontVip, 6*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerCen1[7] = new GUIText("7", s, fontVip, 6*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerCen1[8] = new GUIText("8", s, fontVip, 6*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerCen1[9] = new GUIText("9", s, fontVip, 6*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerCen2[0] = new GUIText("0", s, fontVip, 7*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerCen2[1] = new GUIText("1", s, fontVip, 7*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerCen2[2] = new GUIText("2", s, fontVip, 7*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerCen2[3] = new GUIText("3", s, fontVip, 7*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerCen2[4] = new GUIText("4", s, fontVip, 7*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerCen2[5] = new GUIText("5", s, fontVip, 7*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerCen2[6] = new GUIText("6", s, fontVip, 7*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerCen2[7] = new GUIText("7", s, fontVip, 7*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerCen2[8] = new GUIText("8", s, fontVip, 7*w+16*px, 16*py, w, true, false, true); INCR_NEW
-	GuiManager::timerCen2[9] = new GUIText("9", s, fontVip, 7*w+16*px, 16*py, w, true, false, true); INCR_NEW
-
-	GuiManager::numberSpeed    = new GUINumber(0, 0.87f, 0.9f, 0, true); INCR_NEW
-	GuiManager::textSpeedUnits = new GUIText("km/h", 1.5f, fontVip, 0.88f, 0.918f, 1.0f, false, false, true); INCR_NEW
+	GuiManager::numberSpeed    = new GUINumber(0, 1.0f - safeAreaX - (4 * w), 1.0f - safeAreaY - 0.06f, 0, true); INCR_NEW
+	GuiManager::textSpeedUnits = new GUIText("km/h", s, fontVip, -safeAreaX, 1.0f - safeAreaY - s, 1.0f, false, true, true); INCR_NEW
 
 	GuiManager::setTimerInvisible();
 
@@ -160,12 +167,6 @@ void GuiManager::refresh()
 
 	//std::fprintf(stdout, "timer chunks = %f   timer stamp = %f\n", timerValue, (float)(GuiManager::timestampEnd-GuiManager::timestampStart));
 
-	extern unsigned int SCR_WIDTH;
-	extern unsigned int SCR_HEIGHT;
-
-	float px = 1.0f/(SCR_WIDTH);  //1 pixel in x dimension
-	float py = 1.0f/(SCR_HEIGHT); //1 pixel in y dimension
-
 	//const float w = 0.02f;   //width of a single text character
 	const float o = 0.0008f; //horizontal offset to adjust for centered vs non centered
 	//const float s = 1.5f;    //size of timer text
@@ -174,7 +175,7 @@ void GuiManager::refresh()
 	{
 		textLives->deleteMe();
 		delete textLives; INCR_DEL
-		textLives = new GUIText(std::to_string(Global::gameLives), 1.5f, fontVip, o+16*px, 1.0f-80*py, 1, false, false, true); INCR_NEW
+		textLives = new GUIText(std::to_string(Global::gameLives), s, fontVip, safeAreaX, 1.0f - safeAreaY - s, 1, false, false, true); INCR_NEW
 		GuiManager::previousLives = Global::gameLives;
 	}
 
