@@ -141,6 +141,16 @@ void Master_render(Camera* camera, float clipX, float clipY, float clipZ, float 
 	prepare();
 	shader->start();
 	shader->loadClipPlane(clipX, clipY, clipZ, clipW);
+
+	//calc behind clipm plane based on camera
+	Vector3f camDir = camera->target - camera->eye;
+	camDir.normalize();
+	camDir.neg();
+	Vector3f startPos(&camera->eye);
+	//startPos = startPos + camDir.scaleCopy(-100);
+	Vector4f plane = Maths::calcPlaneValues(&startPos, &camDir);
+	shader->loadClipPlaneBehind(plane.x, plane.y, plane.z, plane.w);
+
 	RED = SkyManager::getFogRed();
 	GREEN = SkyManager::getFogGreen();
 	BLUE = SkyManager::getFogBlue();

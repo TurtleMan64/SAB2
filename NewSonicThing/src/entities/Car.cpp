@@ -41,6 +41,7 @@ Car::Car(float x, float y, float z)
 	vel.set(0, 0, 0);
 	relativeUp.set(0, 1, 0);
 	relativeUpSmooth.set(0, 1, 0);
+	relativeUpAnim.set(0, 1, 0);
 	onGround = false;
 	camDir.set(0, 0, -1);
 	camDirSmooth.set(0, 0, -1);
@@ -401,6 +402,7 @@ void Car::step()
 	//smoothing
 	camDirSmooth = Maths::interpolateVector(&camDirSmooth, &camDir, 10*dt);
 	relativeUpSmooth = Maths::interpolateVector(&relativeUpSmooth, &relativeUp, 3*dt);
+	relativeUpAnim = Maths::interpolateVector(&relativeUpAnim, &relativeUp, 15*dt);
 
 	if (!isGrinding)
 	{
@@ -1024,20 +1026,20 @@ void Car::setRelativeUp(Vector3f* newUp)
 void Car::animate()
 {
 	//idea: relativeUpSmooth works pretty well here but its a bit too smooth. maybe make a new relativeUpSmoothAnim just for this animation?
-	Vector3f groundSpeeds = Maths::calculatePlaneSpeed(vel.x, vel.y, vel.z, &relativeUp);
+	Vector3f groundSpeeds = Maths::calculatePlaneSpeed(vel.x, vel.y, vel.z, &relativeUpAnim);
 	float twistAngleGround = Maths::toDegrees(atan2f(-groundSpeeds.z, groundSpeeds.x));
-	float nXGround = relativeUp.x;
-	float nYGround = relativeUp.y;
-	float nZGround = relativeUp.z;
+	float nXGround = relativeUpAnim.x;
+	float nYGround = relativeUpAnim.y;
+	float nZGround = relativeUpAnim.z;
 	float normHLengthGround = sqrtf(nXGround*nXGround + nZGround*nZGround);
 	float pitchAngleGround = Maths::toDegrees(atan2f(nYGround, normHLengthGround));
 	float yawAngleGround = Maths::toDegrees(atan2f(-nZGround, nXGround));
 	float diffGround = Maths::compareTwoAngles(twistAngleGround, yawAngleGround);
 
 	float twistAngleAir = Maths::toDegrees(atan2f(-vel.z, vel.x));
-	float nXAir = relativeUpSmooth.x;
-	float nYAir = relativeUpSmooth.y;
-	float nZAir = relativeUpSmooth.z;
+	float nXAir = relativeUpAnim.x;
+	float nYAir = relativeUpAnim.y;
+	float nZAir = relativeUpAnim.z;
 	float normHLengthAir = sqrtf(nXAir*nXAir + nZAir*nZAir);
 	float pitchAngleAir = Maths::toDegrees(atan2f(nYAir, normHLengthAir));
 	float yawAngleAir = Maths::toDegrees(atan2f(-nZAir, nXAir));
@@ -1104,13 +1106,18 @@ void Car::animate()
 		}
 		maniaSonicModel->animate(12, 0);
 	}
+	else if (isGrinding)
+	{
+		maniaSonicModel->setOrientation(getX(), getY(), getZ(), diffGround, yawAngleGround, pitchAngleGround, 0);
+		maniaSonicModel->animate(26, 0);
+	}
 	else if (isSpindashing)
 	{
-		Vector3f groundSpeedsSpnd = Maths::calculatePlaneSpeed(spindashDirection.x, spindashDirection.y, spindashDirection.z, &relativeUp);
+		Vector3f groundSpeedsSpnd = Maths::calculatePlaneSpeed(spindashDirection.x, spindashDirection.y, spindashDirection.z, &relativeUpAnim);
 		float twistAngleGroundSpnd = Maths::toDegrees(atan2f(-groundSpeedsSpnd.z, groundSpeedsSpnd.x));
-		float nXGroundSpnd = relativeUp.x;
-		float nYGroundSpnd = relativeUp.y;
-		float nZGroundSpnd = relativeUp.z;
+		float nXGroundSpnd = relativeUpAnim.x;
+		float nYGroundSpnd = relativeUpAnim.y;
+		float nZGroundSpnd = relativeUpAnim.z;
 		float normHLengthGroundSpnd = sqrtf(nXGroundSpnd*nXGroundSpnd + nZGroundSpnd*nZGroundSpnd);
 		float pitchAngleGroundSpnd = Maths::toDegrees(atan2f(nYGroundSpnd, normHLengthGroundSpnd));
 		float yawAngleGroundSpnd = Maths::toDegrees(atan2f(-nZGroundSpnd, nXGroundSpnd));

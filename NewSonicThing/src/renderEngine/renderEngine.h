@@ -26,6 +26,11 @@ void closeDisplay();
 int displayWantsToClose();
 GLFWwindow* getWindow();
 
+struct TextureEntry
+{
+	GLuint id;
+	int count;
+};
 
 //Loader
 class Loader
@@ -33,11 +38,14 @@ class Loader
 private:
 	static std::list<GLuint> vaos;
 	static std::list<GLuint> vbos;
-	static std::list<GLuint> textures;
+	//static std::list<GLuint> textures;
+
+	static std::unordered_map<std::string, TextureEntry> textures;
+	static std::unordered_map<GLuint, std::string> texIdToFilename;
 
 	static int vaoNumber;
 	static int vboNumber;
-	static int texNumber;
+	//static int texNumber;
 
 	static GLuint createVAO();
 

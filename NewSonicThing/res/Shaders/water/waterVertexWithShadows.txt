@@ -17,6 +17,7 @@ uniform mat4 modelMatrix;
 uniform vec3 cameraPosition;
 uniform vec3 lightPosition;
 uniform mat4 toShadowMapSpace;
+uniform vec4 clipPlaneBehind;
 
 const float tiling = 6.0;
 
@@ -26,6 +27,7 @@ const float transitionDistance = 100.0;
 void main(void) 
 {
 	vec4 worldPosition = modelMatrix * vec4(position.x, 0.0, position.y, 1.0);
+    gl_ClipDistance[1] = dot(worldPosition, clipPlaneBehind);
 	worldposition = worldPosition.xyz;
 	shadowCoords = toShadowMapSpace * worldPosition;
 	clipSpace = projectionMatrix * viewMatrix * worldPosition;

@@ -18,6 +18,7 @@
 #include "../toolbox/getline.h"
 #include <random>
 #include <chrono>
+#include "../renderEngine/renderEngine.h"
 
 extern GLFWwindow* window;
 
@@ -273,6 +274,7 @@ void Input::pollInputs()
 			//std::fprintf(stdout, "cam yaw: %f,   cam pitch: %f\n", Global::gameCamera->getYaw(), Global::gameCamera->getPitch());
 			std::fprintf(stdout, "\n");
 		}
+		Loader::printInfo();
 	}
 	#endif
 

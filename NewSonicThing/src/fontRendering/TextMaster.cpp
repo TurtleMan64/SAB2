@@ -54,7 +54,7 @@ void TextMaster::removeText(GUIText* text)
 
 void TextMaster::loadNumber(GUINumber* number)
 {
-	FontType* font = GUINumber::numberFont;
+	FontType* font = number->getFont();
 
 	std::list<GUINumber*>* numbersBatch = &TextMaster::numbers[font];
 	numbersBatch->push_back(number);
@@ -62,11 +62,11 @@ void TextMaster::loadNumber(GUINumber* number)
 
 void TextMaster::removeNumber(GUINumber* number)
 {
-	std::list<GUINumber*>* numberBatch = &TextMaster::numbers[GUINumber::numberFont];
+	std::list<GUINumber*>* numberBatch = &TextMaster::numbers[number->getFont()];
 	numberBatch->remove(number);
 	if (numberBatch->empty())
 	{
-		TextMaster::numbers.erase(GUINumber::numberFont);
+		TextMaster::numbers.erase(number->getFont());
 	}
 }
 

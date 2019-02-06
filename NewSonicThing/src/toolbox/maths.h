@@ -139,6 +139,12 @@ public:
 	// a third vector that is perpendicular to both
 	static Vector3f calcThirdAxis(Vector3f* A, Vector3f* B);
 
+	//Calculate the A B C and D values for a plane from a normal and a point
+	static Vector4f calcPlaneValues(Vector3f* point, Vector3f* normal);
+
+	//Calculate the A B C and D values for a plane from 3 points
+	static Vector4f calcPlaneValues(Vector3f* p1, Vector3f* p2, Vector3f* p3);
+
 	//Given a basis {v1, v2, v3}, computes the coordinate vector
 	// of a point a in the new basis
 	static Vector3f coordinatesRelativeToBasis(Vector3f* v1, Vector3f* v2, Vector3f* v3, Vector3f* a);

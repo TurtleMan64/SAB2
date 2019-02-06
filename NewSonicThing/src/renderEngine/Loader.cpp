@@ -16,11 +16,14 @@
 
 std::list<GLuint> Loader::vaos;
 std::list<GLuint> Loader::vbos;
-std::list<GLuint> Loader::textures;
+//std::list<GLuint> Loader::textures;
+
+std::unordered_map<std::string, TextureEntry> Loader::textures;
+std::unordered_map<GLuint, std::string> Loader::texIdToFilename;
 
 int Loader::vaoNumber = 0;
 int Loader::vboNumber = 0;
-int Loader::texNumber = 0;
+//int Loader::texNumber = 0;
 
 RawModel Loader::loadToVAO(std::vector<float>* positions, 
 						   std::vector<float>* textureCoords, 
@@ -70,10 +73,13 @@ RawModel Loader::loadToVAO(std::vector<float>* positions, int dimensions)
 
 GLuint Loader::loadTexture(const char* fileName)
 {
-	GLuint textureID = 0;
-	glGenTextures(1, &textureID);
-	texNumber++;
-	textures.push_back(textureID);
+	if (Loader::textures.find(fileName) != Loader::textures.end())
+	{
+		//texture is already loaded, return the GLuint
+		TextureEntry* entry = &Loader::textures[fileName];
+		entry->count = entry->count+1;
+		return entry->id;
+	}
 
 	int width, height, channels;
 	unsigned char* image = SOIL_load_image(fileName, &width, &height, &channels, SOIL_LOAD_RGBA);
@@ -82,8 +88,17 @@ GLuint Loader::loadTexture(const char* fileName)
 	{
 		const char* err = SOIL_last_result();
 		std::fprintf(stdout, "Error loading image '%s', because '%s'\n", fileName, err);
-		return 0;
+		return GL_NONE;
 	}
+
+	GLuint textureID = 0;
+	glGenTextures(1, &textureID);
+
+	TextureEntry entry;
+	entry.count = 1;
+	entry.id = textureID;
+	textures[fileName] = entry;
+	Loader::texIdToFilename[textureID] = fileName;
 
 	glBindTexture(GL_TEXTURE_2D, textureID);
 
@@ -125,10 +140,13 @@ GLuint Loader::loadTexture(const char* fileName)
 
 GLuint Loader::loadTextureNoInterpolation(const char* fileName)
 {
-	GLuint textureID = 0;
-	glGenTextures(1, &textureID);
-	texNumber++;
-	textures.push_back(textureID);
+	if (Loader::textures.find(fileName) != Loader::textures.end())
+	{
+		//texture is already loaded, return the GLuint
+		TextureEntry* entry = &Loader::textures[fileName];
+		entry->count = entry->count+1;
+		return entry->id;
+	}
 
 	int width, height, channels;
 	unsigned char* image = SOIL_load_image(fileName, &width, &height, &channels, SOIL_LOAD_RGBA);
@@ -137,8 +155,17 @@ GLuint Loader::loadTextureNoInterpolation(const char* fileName)
 	{
 		const char* err = SOIL_last_result();
 		std::fprintf(stdout, "Error loading image '%s', because '%s'\n", fileName, err);
-		return 0;
+		return GL_NONE;
 	}
+
+	GLuint textureID = 0;
+	glGenTextures(1, &textureID);
+
+	TextureEntry entry;
+	entry.count = 1;
+	entry.id = textureID;
+	textures[fileName] = entry;
+	Loader::texIdToFilename[textureID] = fileName;
 
 	glBindTexture(GL_TEXTURE_2D, textureID);
 
@@ -220,12 +247,14 @@ void Loader::cleanUp()
 	}
 	vbos.clear();
 
-	for (auto texID : textures)
+	std::unordered_map<std::string, TextureEntry>::iterator it = textures.begin();
+	while (it != textures.end())
 	{
-		glDeleteTextures(1, &texID);
-		texNumber--;
+		glDeleteTextures(1, &it->second.id);
+		it++;
 	}
 	textures.clear();
+	texIdToFilename.clear();
 }
 
 void Loader::deleteVAO(GLuint vaoID)
@@ -244,9 +273,17 @@ void Loader::deleteVBO(GLuint vboID)
 
 void Loader::deleteTexture(GLuint texID)
 {
-	texNumber--;
-	glDeleteTextures(1, &texID);
-	textures.remove(texID);
+	std::string filename = texIdToFilename[texID];
+	TextureEntry* entry = &textures[filename];
+	entry->count = entry->count - 1;
+
+	if (entry->count == 0)
+	{
+		glDeleteTextures(1, &texID);
+
+		texIdToFilename.erase(texID);
+		textures.erase(filename);
+	}
 }
 
 void Loader::deleteTexturedModels(std::list<TexturedModel*>* tm)
@@ -261,14 +298,21 @@ void Loader::printInfo()
 {
 	std::fprintf(stdout, "VAO Count = %d = %d\n", vaoNumber, (int)vaos.size());
 	std::fprintf(stdout, "VBO Count = %d = %d\n", vboNumber, (int)vbos.size());
-	std::fprintf(stdout, "TEX Count = %d = %d\n", texNumber, (int)textures.size());
+	//std::fprintf(stdout, "TEX Count = %d = %d\n", texNumber, (int)textures.size());
 
-	if (textures.size() == 3)
+	//if (textures.size() == 3)
 	{
-		for (GLuint i : textures)
+		//for (GLuint i : textures)
 		{
-			std::fprintf(stdout, "	%d\n", i);
+			//std::fprintf(stdout, "	%d\n", i);
 		}
+	}
+
+	std::unordered_map<std::string, TextureEntry>::iterator it = textures.begin();
+	while (it != textures.end())
+	{
+		std::fprintf(stdout, "%s -> %d, %d\n", it->first.c_str(), it->second.id, it->second.count);
+		it++;
 	}
 }
 

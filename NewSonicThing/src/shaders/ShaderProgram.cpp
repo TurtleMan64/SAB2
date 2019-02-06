@@ -164,6 +164,7 @@ void ShaderProgram::getAllUniformLocations()
 	location_fogDensity            = getUniformLocation("fogDensity");
 	location_fogGradient           = getUniformLocation("fogGradient");
 	location_clipPlane             = getUniformLocation("clipPlane");
+	location_clipPlaneBehind       = getUniformLocation("clipPlaneBehind");
 	location_shadowMapFar          = getUniformLocation("shadowMapFar");
 	location_toShadowMapSpaceFar   = getUniformLocation("toShadowMapSpaceFar");
 	location_shadowMapClose        = getUniformLocation("shadowMapClose");
@@ -205,6 +206,11 @@ void ShaderProgram::loadMatrix(int location, Matrix4f* matrix)
 void ShaderProgram::loadClipPlane(float clipX, float clipY, float clipZ, float clipW)
 {
 	glUniform4f(location_clipPlane, clipX, clipY, clipZ, clipW);
+}
+
+void ShaderProgram::loadClipPlaneBehind(float clipX, float clipY, float clipZ, float clipW)
+{
+	glUniform4f(location_clipPlaneBehind, clipX, clipY, clipZ, clipW);
 }
 
 void ShaderProgram::connectTextureUnits()

@@ -575,3 +575,29 @@ float Maths::nextUniform()
 {
 	return (*Maths::distributionUniform)(*Maths::generatorUniform);
 }
+
+Vector4f Maths::calcPlaneValues(Vector3f* p1, Vector3f* p2, Vector3f* p3)
+{
+	Vector3f vec1(p1->x - p3->x, p1->y - p3->y, p1->z - p3->z);
+	Vector3f vec2(p2->x - p3->x, p2->y - p3->y, p2->z - p3->z);
+
+	Vector3f cross = vec1.cross(&vec2);
+
+	float newD = cross.x*p3->x + cross.y*p3->y + cross.z*p3->z;
+
+	return Vector4f(cross.x, cross.y, cross.z, -newD);
+}
+
+Vector4f Maths::calcPlaneValues(Vector3f* point, Vector3f* normal)
+{
+	Vector3f perp1 = Maths::calculatePerpendicular(normal);
+	Vector3f perp2 = perp1.cross(normal);
+
+	Vector3f p1(point);
+	Vector3f p2(point);
+	Vector3f p3(point);
+	p2 = p2 + perp1;
+	p3 = p3 + perp2;
+
+	return Maths::calcPlaneValues(&p1, &p2, &p3);
+}

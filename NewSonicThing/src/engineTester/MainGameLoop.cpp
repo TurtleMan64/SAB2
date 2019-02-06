@@ -309,6 +309,7 @@ int main()
 	glfwSetTime(0);
 
 	int frameCount = 0;
+	double previousTime = 0;
 
 	//PauseScreen::pause();
 	Global::gameState = STATE_TITLE;
@@ -319,6 +320,7 @@ int main()
 		timeNew = glfwGetTime();
 		dt = (float)(timeNew - timeOld);
 		dt = std::fminf(dt, 0.04f); //Anything lower than 25fps will slow the gameplay down
+
 		timeOld = timeNew;
 
 		Global::gameTotalPlaytime+=dt;
@@ -530,6 +532,7 @@ int main()
 				break;
 		}
 
+		Stage::updateVisibleChunks();
 		SkyManager::calculateValues();
 
 		//prepare entities to render
@@ -558,6 +561,7 @@ int main()
 		Master_renderShadowMaps(&lightSun);
 		Master_processEntity(&skySphere);
 
+		glEnable(GL_CLIP_DISTANCE1);
 		if (Global::useHighQualityWater && Global::stageUsesWater)
 		{
 			glEnable(GL_CLIP_DISTANCE0);
@@ -617,7 +621,8 @@ int main()
 		{
 			Global::gameMultisampleFbo->bindFrameBuffer();
 		}
-		Master_render(&cam, 0, 1, 0, 1000);
+		Master_render(&cam, 0, 0, 0, 0);
+		glDisable(GL_CLIP_DISTANCE1);
 
 		if (Global::useHighQualityWater && Global::stageUsesWater)
 		{
@@ -757,14 +762,14 @@ int main()
 			}
 		}
 
-		//if (seconds - previousTime >= 1.0)
+		if (timeNew - previousTime >= 1.0)
 		{
-			//std::fprintf(stdout, "fps: %f\n", frameCount / (seconds - previousTime));
+			std::fprintf(stdout, "fps: %f\n", frameCount / (timeNew - previousTime));
 			//std::fprintf(stdout, "diff: %d\n", Global::countNew - Global::countDelete);
 			//Loader::printInfo();
 			//std::fprintf(stdout, "entity counts: %d %d %d\n", gameEntities.size(), gameEntitiesPass2.size(), gameTransparentEntities.size());
-			//frameCount = 0;
-			//previousTime = seconds;
+			frameCount = 0;
+			previousTime = timeNew;
 		}
 
 		//std::fprintf(stdout, "dt: %f\n", dt);
