@@ -102,7 +102,6 @@ Rocket::Rocket(int point1ID, int point2ID)
 
 	cmBase->transformModel(collideModelTransformed, base->getPosition());
 	base->updateTransformationMatrix();
-    Global::gameMainVehicle->updateTransformationMatrix(); //fixes a bug where the player's position isn't synced with the rocket
 }
 
 void Rocket::step()
@@ -119,7 +118,7 @@ void Rocket::step()
 			setVisible(false);
 			base->setVisible(false);
 		}
-		else
+		else //is within visible range
 		{
 			setVisible(true);
 			base->setVisible(true);
@@ -212,8 +211,8 @@ void Rocket::step()
 					pos.y += 4*(Maths::random() - 0.5f);
 					pos.z += 4*(Maths::random() - 0.5f);
 
-					//new Particle(ParticleResources::textureDust, &pos, &vel, 0.08f, 60, 0, 4 * Maths::random() + 0.5f, 0, false);
-					//new Particle(ParticleResources::textureDust, &pos, &vel, 0.08f, 60, 0, 4 * Maths::random() + 0.5f, 0, false);
+					new Particle(ParticleResources::textureDust, &pos, &vel, 0.08f, 60, 0, 4 * Maths::random() + 0.5f, 0, false, true);
+					new Particle(ParticleResources::textureDust, &pos, &vel, 0.08f, 60, 0, 4 * Maths::random() + 0.5f, 0, false, true);
 
 					dirtToMake--;
 				}
@@ -224,13 +223,12 @@ void Rocket::step()
 				Global::gameMainVehicle->setRotY(rotY);
 				Global::gameMainVehicle->setCanMoveTimer(1000);
 				Global::gameMainVehicle->setOnGround(false);
-				//Global::gameMainVehicle->setOnPlanePrevious(false);
 
 				if (startupTimer < 30)
 				{
 					Global::gameMainVehicle->setPosition(
 						position.x - 8.75f*pointDifferenceNormalized.x,
-						position.y - 10.65f,
+						position.y - 0,
 						position.z - 8.75f*pointDifferenceNormalized.z);
 
 					if (rotZ > 70)
@@ -248,7 +246,7 @@ void Rocket::step()
 					
 					Global::gameMainVehicle->setPosition(
 						position.x + speed*pointDifferenceNormalized.x - 8.75f*pointDifferenceNormalized.x,
-						position.y - 9.75f,
+						position.y - 0,
 						position.z + speed*pointDifferenceNormalized.z - 8.75f*pointDifferenceNormalized.z);
 
 					if (rotZ > 70)
@@ -261,6 +259,7 @@ void Rocket::step()
 			}
 
 			updateTransformationMatrix();
+			Global::gameMainVehicle->updateTransformationMatrix(); //fixes a bug where the player's position isn't synced with the rocket
 		}
 	}
 }

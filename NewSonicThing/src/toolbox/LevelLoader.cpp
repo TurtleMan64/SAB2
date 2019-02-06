@@ -769,7 +769,7 @@ void LevelLoader::processLine(char** dat, int /*datLength*/)
 		case 97: //Rocket
 		{
 			Rocket::loadStaticModels();
-			Rocket* rocket = new Rocket(toInt(dat[1]), toInt(dat[2])); //Point IDs 1 and 2
+			Rocket* rocket = new Rocket(toInt(dat[1]), toInt(dat[2])); //Point IDs for start and end of path, position of rocket initialized to where point ID 1 is
 			INCR_NEW
 			Main_addEntity(rocket);
 			return;
