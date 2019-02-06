@@ -70,7 +70,7 @@ void GuiManager::init()
 	GuiManager::safeAreaY = 0.05f;
 	GuiManager::safeAreaX = safeAreaY / aspectRatio;
 
-	GuiManager::s = 0.08f;
+	GuiManager::s = 0.05f;
 	GuiManager::w = 0.8f * s / aspectRatio; //width of a single text character
 
 	fontVip = PauseScreen::font;
@@ -151,7 +151,9 @@ void GuiManager::init()
 	GuiManager::timerCen2[8] = new GUIText("8", s, fontVip, 7 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
 	GuiManager::timerCen2[9] = new GUIText("9", s, fontVip, 7 * w + safeAreaX, safeAreaY, w, true, false, true); INCR_NEW
 
-	GuiManager::numberSpeed    = new GUINumber(0, 1.0f - safeAreaX - (4 * w), 1.0f - safeAreaY - 0.06f, 0, true); INCR_NEW
+	float speedometerScale = 1.5f;
+
+	GuiManager::numberSpeed    = new GUINumber(0, 1.0f - safeAreaX - (4 * w), 1.0f - safeAreaY - (speedometerScale * s), speedometerScale * s, 0, true, 4); INCR_NEW
 	GuiManager::textSpeedUnits = new GUIText("km/h", s, fontVip, -safeAreaX, 1.0f - safeAreaY - s, 1.0f, false, true, true); INCR_NEW
 
 	GuiManager::setTimerInvisible();
@@ -276,7 +278,7 @@ void GuiManager::refresh()
 
 		GuiManager::numberSpeed->displayNumber = Global::gameMainVehicleSpeed;
 		GuiManager::numberSpeed->refresh();
-		GuiManager::numberSpeed->setVisibility(true);
+		GuiManager::numberSpeed->visible = true;
 		GuiManager::textSpeedUnits->setVisibility(true);
 	}
 	else
@@ -285,7 +287,7 @@ void GuiManager::refresh()
 
 		GuiManager::setTimerInvisible();
 
-		GuiManager::numberSpeed->setVisibility(false);
+		GuiManager::numberSpeed->visible = false;
 		GuiManager::textSpeedUnits->setVisibility(false);
 	}
 
