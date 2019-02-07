@@ -32,7 +32,7 @@ float  GuiManager::timerValue     = 0;
 double GuiManager::timestampStart = 0;
 double GuiManager::timestampEnd   = 0;
 
-GUIText* GuiManager::textLives = nullptr;
+GUINumber*  GuiManager::numberLives = nullptr;
 
 GUINumber*  GuiManager::numberSpeed    = nullptr;
 GUIText*    GuiManager::textSpeedUnits = nullptr;
@@ -69,13 +69,13 @@ void GuiManager::init()
 
 	GuiManager::aspectRatio = (float) SCR_WIDTH / (float) SCR_HEIGHT;
 	GuiManager::safeAreaY = 0.05f;
-	GuiManager::safeAreaX = safeAreaY / aspectRatio;
+	GuiManager::safeAreaX = safeAreaY / GuiManager::aspectRatio;
 
 	GuiManager::s = 0.05f;
-	GuiManager::w = 0.8f * s / aspectRatio; //width of a single text character
+	GuiManager::w = 0.8f * s / GuiManager::aspectRatio; //width of a single text character
 
 	fontVip = new FontType(Loader::loadTexture("res/Fonts/vipnagorgialla.png"), "res/Fonts/vipnagorgialla.fnt"); INCR_NEW
-	textLives = new GUIText("0", 1, fontVip, 0.01f, 0.98f, 1, false, false, false); INCR_NEW
+	GuiManager::numberLives = new GUINumber(Global::gameLives, safeAreaX, 1.0f - safeAreaY, s, 6, true, 2); INCR_NEW
 
 	//Player debug text
 	textHorVel              = new GUIText("Hor Vel:"     + std::to_string(horVel),              1, fontVip, 0.01f, 0.70f, 1, false, false, Global::debugDisplay); INCR_NEW
@@ -154,7 +154,7 @@ void GuiManager::init()
 
 	float speedometerScale = 1.5f;
 
-	GuiManager::numberSpeed    = new GUINumber(0, 1.0f - safeAreaX - (4 * w), 1.0f - safeAreaY - (speedometerScale * s), speedometerScale * s, 0, true, 3); INCR_NEW
+	GuiManager::numberSpeed    = new GUINumber(0, 1.0f - safeAreaX - (4 * w), 1.0f - safeAreaY, speedometerScale * s, 8, true, 3); INCR_NEW
 	GuiManager::textSpeedUnits = new GUIText("km/h", s, fontVip, -safeAreaX, 1.0f - safeAreaY - s, 1.0f, false, true, true); INCR_NEW
 
 	GuiManager::setTimerInvisible();
@@ -176,10 +176,9 @@ void GuiManager::refresh()
 
 	if (Global::gameLives != GuiManager::previousLives)
 	{
-		textLives->deleteMe();
-		delete textLives; INCR_DEL
-		textLives = new GUIText(std::to_string(Global::gameLives), s, fontVip, safeAreaX, 1.0f - safeAreaY - s, 1, false, false, true); INCR_NEW
+		GuiManager::numberLives->displayNumber = Global::gameLives;
 		GuiManager::previousLives = Global::gameLives;
+		GuiManager::numberLives->refresh();
 	}
 
 	if (Global::debugDisplay)
@@ -255,11 +254,11 @@ void GuiManager::refresh()
 
 	if (Global::gameState != STATE_TITLE)
 	{
-		textLives->setVisibility(false);
+		GuiManager::numberLives->visible = false;
 
 		if (Global::gameIsArcadeMode)
 		{
-			textLives->setVisibility(true);
+			GuiManager::numberLives->visible = true;
 		}
 
 		GuiManager::setTimerInvisible();
@@ -270,6 +269,7 @@ void GuiManager::refresh()
 
 		timerColon ->setVisibility(true);
 		timerPeriod->setVisibility(true);
+
 		timerMin1[minut/10]->setVisibility(true);
 		timerMin2[minut%10]->setVisibility(true);
 		timerSec1[secon/10]->setVisibility(true);
@@ -284,7 +284,7 @@ void GuiManager::refresh()
 	}
 	else
 	{
-		textLives->setVisibility(false);
+		GuiManager::numberLives->visible = false;
 
 		GuiManager::setTimerInvisible();
 
@@ -308,6 +308,7 @@ void GuiManager::setTimerInvisible()
 {
 	GuiManager::timerColon  ->setVisibility(false);
 	GuiManager::timerPeriod ->setVisibility(false);
+
 	GuiManager::timerMin1[0]->setVisibility(false);
 	GuiManager::timerMin1[1]->setVisibility(false);
 	GuiManager::timerMin1[2]->setVisibility(false);

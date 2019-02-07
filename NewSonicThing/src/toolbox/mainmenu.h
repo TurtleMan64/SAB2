@@ -76,6 +76,8 @@ private:
 
 	static GLuint textureNPCicon;
 
+	static float aspectRatio;
+
 public:
 	static GLuint textureRankA;
 	static GLuint textureRankB;

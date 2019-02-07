@@ -26,7 +26,7 @@ private:
 	static double timestampStart;
 	static double timestampEnd;
 
-	static GUIText* textLives;
+	static GUINumber* numberLives;
 
 	static GUINumber* numberSpeed;
 	static GUIText* textSpeedUnits;

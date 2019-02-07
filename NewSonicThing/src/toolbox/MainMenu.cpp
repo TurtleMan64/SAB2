@@ -128,8 +128,14 @@ int MainMenu::holdDownTimer = 0;
 
 FontType* MainMenu::font = nullptr;
 
+float MainMenu::aspectRatio;
+
 void MainMenu::init()
 {
+	printf("Main Menu initializing...\n");
+
+	MainMenu::aspectRatio = GuiManager::getAspectRatio();
+
 	font = new FontType(Loader::loadTexture("res/Fonts/vipnagorgialla.png"), "res/Fonts/vipnagorgialla.fnt"); INCR_NEW
 
 	MainMenu::titleCardTextTimer = 0;
@@ -152,10 +158,13 @@ void MainMenu::init()
 	MainMenu::loadResources();
 
 	MainMenu::selectMenuRoot(ROOT_STORY);
+
+	printf("Main Menu initialized!\n");
 }
 
 void MainMenu::loadResources()
 {
+	printf("Loading resources\n");
 	if (textItem1 != nullptr)
 	{
 		std::fprintf(stdout, "Main Menu trying to load resources when they are already loaded!\n");
@@ -167,26 +176,26 @@ void MainMenu::loadResources()
 	float px = 1.0f/(SCR_WIDTH);  //1 pixel in x dimension
 	float py = 1.0f/(SCR_HEIGHT); //1 pixel in y dimension
 
-	float fontScale = 2.85f;
+	float fontScale = 0.085f;
 
-	if (SCR_HEIGHT > 900)
-	{
-		fontScale = 2.55f;
-	}
+	// Initialize Menu Buttons
+	textItem1 = new GUIText("ARCADE", fontScale, font,
+		-0.25f / MainMenu::aspectRatio, 0.333f - 0.04f, 1.0f, true, false, true); INCR_NEW
+	textItem2 = new GUIText("MISSIONS", fontScale, font,
+		0.25f / MainMenu::aspectRatio,  0.333f - 0.04f, 1.0f, true, false, true); INCR_NEW
+	textItem3 = new GUIText("EXTRAS", fontScale, font,
+		-0.25f / MainMenu::aspectRatio, 0.666f - 0.04f, 1.0f, true, false, true); INCR_NEW
+	textItem4 = new GUIText("EXIT", fontScale, font,
+		0.25f / MainMenu::aspectRatio,  0.666f - 0.04f, 1.0f, true, false, true); INCR_NEW
 
-	textItem1 = new GUIText("GRAND PRIX",fontScale, font, 0.0f,   0.333f-0.04f, 0.666f, true, false, true); INCR_NEW
-	textItem2 = new GUIText("MISSIONS",  fontScale, font, 0.333f, 0.333f-0.04f, 0.666f, true, false, true); INCR_NEW
-	textItem3 = new GUIText("EXTRAS",    fontScale, font, 0.0f,   0.666f-0.04f, 0.666f, true, false, true); INCR_NEW
-	textItem4 = new GUIText("EXIT",      fontScale, font, 0.333f, 0.666f-0.04f, 0.666f, true, false, true); INCR_NEW
-
-	item1 = new GuiTexture(textureParallelogram, 0.333f, 0.333f, 512*px, 64*py, 0); INCR_NEW
-	item2 = new GuiTexture(textureParallelogram, 0.666f, 0.333f, 512*px, 64*py, 0); INCR_NEW
-	item3 = new GuiTexture(textureParallelogram, 0.333f, 0.666f, 512*px, 64*py, 0); INCR_NEW
-	item4 = new GuiTexture(textureParallelogram, 0.666f, 0.666f, 512*px, 64*py, 0); INCR_NEW
-	itemBackdrop1 = new GuiTexture(textureParallelogramBackdrop, 0.333f+8*px, 0.333f+6*py, 512*px, 64*py, 0); INCR_NEW
-	itemBackdrop2 = new GuiTexture(textureParallelogramBackdrop, 0.666f+8*px, 0.333f+6*py, 512*px, 64*py, 0); INCR_NEW
-	itemBackdrop3 = new GuiTexture(textureParallelogramBackdrop, 0.333f+8*px, 0.666f+6*py, 512*px, 64*py, 0); INCR_NEW
-	itemBackdrop4 = new GuiTexture(textureParallelogramBackdrop, 0.666f+8*px, 0.666f+6*py, 512*px, 64*py, 0); INCR_NEW
+	item1 = new GuiTexture(textureParallelogram, 0.5f - (0.25f / MainMenu::aspectRatio), 0.333f, 0.48f / MainMenu::aspectRatio, 0.06f, 0); INCR_NEW
+	item2 = new GuiTexture(textureParallelogram, 0.5f + (0.25f / MainMenu::aspectRatio), 0.333f, 0.48f / MainMenu::aspectRatio, 0.06f, 0); INCR_NEW
+	item3 = new GuiTexture(textureParallelogram, 0.5f - (0.25f / MainMenu::aspectRatio), 0.666f, 0.48f / MainMenu::aspectRatio, 0.06f, 0); INCR_NEW
+	item4 = new GuiTexture(textureParallelogram, 0.5f + (0.25f / MainMenu::aspectRatio), 0.666f, 0.48f / MainMenu::aspectRatio, 0.06f, 0); INCR_NEW
+	itemBackdrop1 = new GuiTexture(textureParallelogramBackdrop, 0.5f - ((0.25f - 0.007f) / MainMenu::aspectRatio), 0.333f + 0.006f, 0.48f / MainMenu::aspectRatio, 0.06f, 0); INCR_NEW
+	itemBackdrop2 = new GuiTexture(textureParallelogramBackdrop, 0.5f + ((0.25f + 0.007f) / MainMenu::aspectRatio), 0.333f + 0.006f, 0.48f / MainMenu::aspectRatio, 0.06f, 0); INCR_NEW
+	itemBackdrop3 = new GuiTexture(textureParallelogramBackdrop, 0.5f - ((0.25f - 0.007f) / MainMenu::aspectRatio), 0.666f + 0.006f, 0.48f / MainMenu::aspectRatio, 0.06f, 0); INCR_NEW
+	itemBackdrop4 = new GuiTexture(textureParallelogramBackdrop, 0.5f + ((0.25f + 0.007f) / MainMenu::aspectRatio), 0.666f + 0.006f, 0.48f / MainMenu::aspectRatio, 0.06f, 0); INCR_NEW
 
 	itemMission1  = new GuiTexture(textureParallelogramHalf, 0.0f, 0.0f, 1024*px, 64*py, 0); INCR_NEW
 	itemMission2  = new GuiTexture(textureParallelogramHalf, 0.0f, 0.0f, 1024*px, 64*py, 0); INCR_NEW
@@ -325,28 +334,28 @@ void MainMenu::loadResources()
 
 	//textExtra1Title = new GUIText("A RANK:",         2, font, 0, (1/divisor)+yoff, 1, true, false, false); INCR_NEW
 	//textExtra2Title = new GUIText("HIDDEN NPC:",     2, font, 0, (2/divisor)+yoff, 1, true, false, false); INCR_NEW
-	textExtra3Title = new GUIText("TOTAL PLAYTIME:", 2, font, 0, (3/4.0f)+yoff , 1, true, false, false); INCR_NEW
+	textExtra3Title = new GUIText("TOTAL PLAYTIME:", 0.06f, font, 0, (3/4.0f)+yoff , 1, true, false, false); INCR_NEW
 
 	//textExtra1Data = new GUIText(std::to_string(rankAs)  +"/"+std::to_string(totalRanks), 2, font, 0, (1/divisor)-yoff, 1, true, false, false); INCR_NEW //Number of A ranks
 	//textExtra2Data = new GUIText(std::to_string(foundNPC)+"/"+std::to_string(totalNPC),   2, font, 0, (2/divisor)-yoff, 1, true, false, false); INCR_NEW //Number of NPC found
-	textExtra3Data = new GUIText(playtime, 2, font, 0, (3/4.0f), 1, true, false, false); INCR_NEW //Total playtime
+	textExtra3Data = new GUIText(playtime, 0.06f, font, 0, (3/4.0f), 1, true, false, false); INCR_NEW //Total playtime
 
 	if (Global::gameSaveData.find("BestArcadeClearTime") == Global::gameSaveData.end())
 	{
-		textExtra4Title = new GUIText("BEST GRAND PRIX CLEAR TIME:", 2, font, 0, (2/4.0f)+yoff, 1, true, false, false); INCR_NEW
-		textExtra4Data  = new GUIText("NONE", 2, font, 0, (2/4.0f), 1, true, false, false); INCR_NEW
+		textExtra4Title = new GUIText("BEST ARCADE CLEAR TIME:", 0.06f, font, 0, (2/4.0f)+yoff, 1, true, false, false); INCR_NEW
+		textExtra4Data  = new GUIText("NONE", 0.06f, font, 0, (2/4.0f), 1, true, false, false); INCR_NEW
 	}
 	else
 	{
-		textExtra4Title = new GUIText("BEST GRAND PRIX CLEAR TIME:", 2, font, 0, (2/4.0f)+yoff, 1, true, false, false); INCR_NEW
-		textExtra4Data  = new GUIText(MainMenu::convertSecondsToTimeString(stof(Global::gameSaveData["BestArcadeClearTime"])), 2, font, 0, (2/4.0f), 1, true, false, false); INCR_NEW
+		textExtra4Title = new GUIText("BEST ARCADE CLEAR TIME:", 0.06f, font, 0, (2/4.0f)+yoff, 1, true, false, false); INCR_NEW
+		textExtra4Data  = new GUIText(MainMenu::convertSecondsToTimeString(stof(Global::gameSaveData["BestArcadeClearTime"])), 0.06f, font, 0, (2/4.0f), 1, true, false, false); INCR_NEW
 	}
 
-	textExtra5Title = new GUIText("PLAY AS:", 2, font, 0, (1/4.0f)+yoff, 1, true, false, false); INCR_NEW
-	textExtra5Data  = new GUIText(unlockedCharacters[Global::gameMissionNumber], 2, font, 0, (1/4.0f), 1, true, false, false); INCR_NEW
+	textExtra5Title = new GUIText("PLAY AS:", 0.06f, font, 0, (1/4.0f)+yoff, 1, true, false, false); INCR_NEW
+	textExtra5Data  = new GUIText(unlockedCharacters[Global::gameMissionNumber], 0.06f, font, 0, (1/4.0f), 1, true, false, false); INCR_NEW
 
-	textArcadeResultTitle = new GUIText("GRAND PRIX CLEAR TIME:", 3, font, 0, 0.5f-0.09f, 1, true, false, false); INCR_NEW
-	textArcadeResultData  = new GUIText(MainMenu::convertSecondsToTimeString(Global::gameArcadePlaytime), 3, font, 0, 0.5f, 1, true, false, false); INCR_NEW
+	textArcadeResultTitle = new GUIText("GRAND PRIX CLEAR TIME:", 0.09f, font, 0, 0.5f-0.09f, 1, true, false, false); INCR_NEW
+	textArcadeResultData  = new GUIText(MainMenu::convertSecondsToTimeString(Global::gameArcadePlaytime), 0.09f, font, 0, 0.5f, 1, true, false, false); INCR_NEW
 
 	if (menuSelectionID <= MISSION_MAX)
 	{
@@ -366,6 +375,7 @@ void MainMenu::loadResources()
 	{
 		MainMenu::selectMenuArcadeClear();
 	}
+	printf("Resources loaded\n");
 }
 
 void MainMenu::unloadResources()
@@ -778,8 +788,8 @@ void MainMenu::selectMenuExtra()
 	textExtra5Title->deleteMe(); delete textExtra5Title; INCR_DEL textExtra5Title = nullptr;
 	textExtra5Data ->deleteMe(); delete textExtra5Data;  INCR_DEL textExtra5Data  = nullptr;
 	const float yoff = -0.06f;
-	textExtra5Title = new GUIText("PLAY AS:", 2, font, 0, (1/4.0f)+yoff, 1, true, false, true); INCR_NEW
-	textExtra5Data  = new GUIText(unlockedCharacters[Global::gameMissionNumber], 2, font, 0, (1/4.0f), 1, true, false, true); INCR_NEW
+	textExtra5Title = new GUIText("PLAY AS:", 0.06f, font, 0, (1/4.0f)+yoff, 1, true, false, true); INCR_NEW
+	textExtra5Data  = new GUIText(unlockedCharacters[Global::gameMissionNumber], 0.06f, font, 0, (1/4.0f), 1, true, false, true); INCR_NEW
 
 	textItem1->setVisibility(false);
 	textItem2->setVisibility(false);
@@ -1117,8 +1127,8 @@ void MainMenu::step()
 					textExtra5Title->deleteMe(); delete textExtra5Title; INCR_DEL textExtra5Title = nullptr;
 					textExtra5Data ->deleteMe(); delete textExtra5Data;  INCR_DEL textExtra5Data  = nullptr;
 					const float yoff = -0.06f;
-					textExtra5Title = new GUIText("PLAY AS:", 2, font, 0, (1/4.0f)+yoff, 1, true, false, true); INCR_NEW
-					textExtra5Data  = new GUIText(unlockedCharacters[Global::gameMissionNumber], 2, font, 0, (1/4.0f), 1, true, false, true); INCR_NEW
+					textExtra5Title = new GUIText("PLAY AS:", 0.06f, font, 0, (1/4.0f)+yoff, 1, true, false, true); INCR_NEW
+					textExtra5Data  = new GUIText(unlockedCharacters[Global::gameMissionNumber], 0.06f, font, 0, (1/4.0f), 1, true, false, true); INCR_NEW
 				}
 			}
 			if (pressedBack)

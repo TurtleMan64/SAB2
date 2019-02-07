@@ -28,6 +28,7 @@ private:
 
 	static bool pausedSounds[14];
 
+	static float aspectRatio;
 
 public:
 	static FontType* font;

@@ -40,17 +40,18 @@ bool PauseScreen::isPaused = false;
 bool PauseScreen::shouldPause = false;
 bool PauseScreen::pausedSounds[14];
 
-float aspectRatio;
+float PauseScreen::aspectRatio;
 float size = 0.075f;
 
 void PauseScreen::init()
 {
-	aspectRatio = GuiManager::getAspectRatio();
+	PauseScreen::aspectRatio = GuiManager::getAspectRatio();
 
-	printf("PauseScreen::init() running\n");
+	printf("Pause Screen initializing...\n");
 	font = new FontType(Loader::loadTexture("res/Fonts/vipnagorgialla.png"), "res/Fonts/vipnagorgialla.fnt"); INCR_NEW
-	textCursor = new GUIText(">", size, font, 0.5f - (0.1f / aspectRatio), 0.25f, 1.0f, false, false, false); INCR_NEW
+	textCursor = new GUIText(">", size, font, 0.5f - (0.1f / PauseScreen::aspectRatio), 0.25f, 1.0f, false, false, false); INCR_NEW
 	isPaused = false;
+	printf("Pause Screen initialized!\n");
 }
 
 void PauseScreen::step()
@@ -228,10 +229,9 @@ void PauseScreen::unpause(bool shouldResumeSFX)
 
 void PauseScreen::pause()
 {
-	aspectRatio = GuiManager::getAspectRatio();
-	printf("%f\n", aspectRatio);
+	PauseScreen::aspectRatio = GuiManager::getAspectRatio();
 
-	textCursor->getPosition()->x = 0.5f - (0.1f / aspectRatio);
+	textCursor->getPosition()->x = 0.5f - (0.1f / PauseScreen::aspectRatio);
 
 	if (isPaused)
 	{
