@@ -621,7 +621,7 @@ int main()
 		{
 			Global::gameMultisampleFbo->bindFrameBuffer();
 		}
-		Master_render(&cam, 0, 1, 0, 1000);
+		Master_render(&cam, 0, 0, 0, 0);
 		glDisable(GL_CLIP_DISTANCE1);
 
 		if (Global::useHighQualityWater && Global::stageUsesWater)

@@ -48,7 +48,11 @@ public:
 	//number = the initial value of the number you want displayed
 	//x, y = coords on the screen, (0,0) being the top left of the screen, (1,1) being bottom right
 	//size = height of the text, 1.0 being the entire screen height
-	//alignment = 0 = left, 1 = center, 2 = right
+	//alignment = 0 = top-left, 1 = top-center, 2 = top-right, 3 = mid-left, 4 = mid-center, 5 = mid-right, 6 = bot-left, 7 = bot-center, 8 = bot-right
+	//chart: 
+	//  0 1 2
+	//  3 4 5
+	//  6 7 8
 	//visible = is the number visible initially
 	//totalDigits = number of digits to display, padded with 0's if necessary. for no padding, set this to 0.
 	GUINumber(int number, float x, float y, float size, int alignment, bool visible, int totalDigits);
