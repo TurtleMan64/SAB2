@@ -90,15 +90,6 @@ scrollX 0
 scrollY 0
 map_Kd m1_2005.png
 
-newmtl k1_umi03.png
-Ns 20
-Ni 0
-Tr 1
-d 1
-scrollX 0
-scrollY 0
-map_Kd k1_umi03.png
-
 newmtl m1_2001.png
 Ns 20
 Ni 0

@@ -35,8 +35,8 @@ Matrix4f* projectionMatrix;
 
 float VFOV_BASE = 60; //Vertical fov
 float VFOV_ADDITION = 0; //additional fov due to the vehicle going fast
-const float NEAR_PLANE = 0.5f;
-const float FAR_PLANE = 15000;
+const float NEAR_PLANE = 1.5f; //0.5
+const float FAR_PLANE = 60000; //15000
 
 float RED = 0.9f;
 float GREEN = 0.95f;

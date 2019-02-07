@@ -13,15 +13,15 @@ class Word
 {
 private:
 	std::list<Character> characters;
-	double width = 0;
-	double fontSize;
+	float width = 0;
+	float fontSize;
 
 public:
 	/**
 	* Create a new empty word.
 	* @param fontSize - the font size of the text which this word is in.
 	*/
-	Word(double fontSize);
+	Word(float fontSize);
 
 	/**
 	* Adds a character to the end of the current word and increases the screen-space width of the word.
@@ -37,7 +37,7 @@ public:
 	/**
 	* @return The width of the word in terms of screen size.
 	*/
-	double getWordWidth();
+	float getWordWidth();
 };
 
 #endif

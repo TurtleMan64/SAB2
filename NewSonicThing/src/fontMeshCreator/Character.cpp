@@ -1,7 +1,7 @@
 #include "character.h"
 
-Character::Character(int id, double xTextureCoord, double yTextureCoord, double xTexSize, double yTexSize,
-	double xOffset, double yOffset, double sizeX, double sizeY, double xAdvance)
+Character::Character(int id, float xTextureCoord, float yTextureCoord, float xTexSize, float yTexSize,
+	float xOffset, float yOffset, float sizeX, float sizeY, float xAdvance)
 {
 	this->id = id;
 	this->xTextureCoord = xTextureCoord;
@@ -35,47 +35,47 @@ int Character::getId()
 	return id;
 }
 
-double Character::getxTextureCoord()
+float Character::getxTextureCoord()
 {
 	return xTextureCoord;
 }
 
-double Character::getyTextureCoord()
+float Character::getyTextureCoord()
 {
 	return yTextureCoord;
 }
 
-double Character::getXMaxTextureCoord()
+float Character::getXMaxTextureCoord()
 {
 	return xMaxTextureCoord;
 }
 
-double Character::getYMaxTextureCoord()
+float Character::getYMaxTextureCoord()
 {
 	return yMaxTextureCoord;
 }
 
-double Character::getxOffset()
+float Character::getxOffset()
 {
 	return xOffset;
 }
 
-double Character::getyOffset()
+float Character::getyOffset()
 {
 	return yOffset;
 }
 
-double Character::getSizeX()
+float Character::getSizeX()
 {
 	return sizeX;
 }
 
-double Character::getSizeY()
+float Character::getSizeY()
 {
 	return sizeY;
 }
 
-double Character::getxAdvance()
+float Character::getxAdvance()
 {
 	return xAdvance;
 }

@@ -6,13 +6,12 @@
 #include "../engineTester/main.h"
 
 
-double TextMeshCreator::LINE_HEIGHT = 0.03;
+float TextMeshCreator::LINE_HEIGHT = 0.03f;
 
 
 TextMeshCreator::TextMeshCreator(std::string metaFilename)
 {
-	metaData = new MetaFile(metaFilename);
-	INCR_NEW
+	metaData = new MetaFile(metaFilename); INCR_NEW
 }
 
 TextMeshData* TextMeshCreator::createTextMesh(GUIText* text)
@@ -78,8 +77,8 @@ void TextMeshCreator::completeStructure(std::vector<Line> lines, Line currentLin
 TextMeshData* TextMeshCreator::createQuadVertices(GUIText* text, std::vector<Line>* lines)
 {
 	text->setNumberOfLines((int)(lines->size()));
-	double curserX = 0.0;
-	double curserY = 0.0;
+	float curserX = 0.0f;
+	float curserY = 0.0f;
 	std::vector<float> vertices;
 	std::vector<float> textureCoords;
 	for (Line line : (*lines))
@@ -110,48 +109,48 @@ TextMeshData* TextMeshCreator::createQuadVertices(GUIText* text, std::vector<Lin
 	return new TextMeshData(&vertices, &textureCoords);
 }
 
-void TextMeshCreator::addVerticesForCharacter(double curserX, double curserY, Character character, double fontSize,
+void TextMeshCreator::addVerticesForCharacter(float curserX, float curserY, Character character, float fontSize,
 	std::vector<float>* vertices)
 {
-	double x = curserX + (character.getxOffset() * fontSize);
-	double y = curserY + (character.getyOffset() * fontSize);
-	double maxX = x + (character.getSizeX() * fontSize);
-	double maxY = y + (character.getSizeY() * fontSize);
-	double properX = (2 * x) - 1;
-	double properY = (-2 * y) + 1;
-	double properMaxX = (2 * maxX) - 1;
-	double properMaxY = (-2 * maxY) + 1;
+	float x = curserX + (character.getxOffset() * fontSize);
+	float y = curserY + (character.getyOffset() * fontSize);
+	float maxX = x + (character.getSizeX() * fontSize);
+	float maxY = y + (character.getSizeY() * fontSize);
+	float properX = (2 * x) - 1;
+	float properY = (-2 * y) + 1;
+	float properMaxX = (2 * maxX) - 1;
+	float properMaxY = (-2 * maxY) + 1;
 	addVertices(vertices, properX, properY, properMaxX, properMaxY);
 }
 
-void TextMeshCreator::addVertices(std::vector<float>* vertices, double x, double y, double maxX, double maxY)
+void TextMeshCreator::addVertices(std::vector<float>* vertices, float x, float y, float maxX, float maxY)
 {
-	vertices->push_back((float)x);
-	vertices->push_back((float)y);
-	vertices->push_back((float)x);
-	vertices->push_back((float)maxY);
-	vertices->push_back((float)maxX);
-	vertices->push_back((float)maxY);
-	vertices->push_back((float)maxX);
-	vertices->push_back((float)maxY);
-	vertices->push_back((float)maxX);
-	vertices->push_back((float)y);
-	vertices->push_back((float)x);
-	vertices->push_back((float)y);
+	vertices->push_back(x);
+	vertices->push_back(y);
+	vertices->push_back(x);
+	vertices->push_back(maxY);
+	vertices->push_back(maxX);
+	vertices->push_back(maxY);
+	vertices->push_back(maxX);
+	vertices->push_back(maxY);
+	vertices->push_back(maxX);
+	vertices->push_back(y);
+	vertices->push_back(x);
+	vertices->push_back(y);
 }
 
-void TextMeshCreator::addTexCoords(std::vector<float>* texCoords, double x, double y, double maxX, double maxY)
+void TextMeshCreator::addTexCoords(std::vector<float>* texCoords, float x, float y, float maxX, float maxY)
 {
-	texCoords->push_back((float)x);
-	texCoords->push_back((float)y);
-	texCoords->push_back((float)x);
-	texCoords->push_back((float)maxY);
-	texCoords->push_back((float)maxX);
-	texCoords->push_back((float)maxY);
-	texCoords->push_back((float)maxX);
-	texCoords->push_back((float)maxY);
-	texCoords->push_back((float)maxX);
-	texCoords->push_back((float)y);
-	texCoords->push_back((float)x);
-	texCoords->push_back((float)y);
+	texCoords->push_back(x);
+	texCoords->push_back(y);
+	texCoords->push_back(x);
+	texCoords->push_back(maxY);
+	texCoords->push_back(maxX);
+	texCoords->push_back(maxY);
+	texCoords->push_back(maxX);
+	texCoords->push_back(maxY);
+	texCoords->push_back(maxX);
+	texCoords->push_back(y);
+	texCoords->push_back(x);
+	texCoords->push_back(y);
 }
