@@ -64,6 +64,7 @@ void LevelLoader::loadTitle()
 	Main_deleteAllEntitesPass2();
 	Main_deleteAllEntitesPass3();
 	Main_deleteAllTransparentEntites();
+	Main_deleteAllChunkedEntities();
 
 	for (Checkpoint* check : Global::gameCheckpointList)
 	{
@@ -162,6 +163,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
 	Main_deleteAllEntitesPass2();
 	Main_deleteAllEntitesPass3();
 	Main_deleteAllTransparentEntites();
+	Main_deleteAllChunkedEntities();
 
 	for (Checkpoint* check : Global::gameCheckpointList)
 	{
@@ -531,9 +533,16 @@ void LevelLoader::loadLevel(std::string levelFilename)
 		Global::gameRingTarget = std::stoi((currentLevel->missionData[Global::gameMissionNumber])[2]);
 	}
 
+
+
+
+
+
 	//Now read through all the objects defined in the file
 
 	std::string line;
+
+	std::list<Entity*> chunkedEntities;
 
 	while (!file.eof())
 	{
@@ -549,11 +558,52 @@ void LevelLoader::loadLevel(std::string levelFilename)
 		{
 			Input::pollInputs();
 
-			processLine(lineSplit, splitLength);
+			processLine(lineSplit, splitLength, &chunkedEntities);
 		}
 		free(lineSplit);
 	}
 	file.close();
+
+	//sort the chunked entity stuff
+	if (chunkedEntities.size() > 10)
+	{
+		bool first = true;
+		//calc min and max values
+		float minX = 0;
+		float maxX = 0;
+		float minZ = 0;
+		float maxZ = 0;
+		for (Entity* e : chunkedEntities)
+		{
+			if (first)
+			{
+				first = false;
+				minX = e->getX();
+				maxX = e->getX();
+				minZ = e->getZ();
+				maxZ = e->getZ();
+				continue;
+			}
+			minX = std::fminf(minX, e->getX());
+			maxX = std::fmaxf(maxX, e->getX());
+			minZ = std::fminf(minZ, e->getZ());
+			maxZ = std::fminf(maxZ, e->getZ());
+		}
+
+		Global::recalculateEntityChunks(minX, maxX, minZ, maxZ, 500);
+
+		for (Entity* e : chunkedEntities)
+		{
+			Main_addChunkedEntity(e);
+		}
+	}
+	else //not many chunked entities, dont bother
+	{
+		for (Entity* e : chunkedEntities)
+		{
+			Main_addEntity(e);
+		}
+	}
 
 	if (stageFault == 1)
 	{
@@ -617,7 +667,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
 }
 
 
-void LevelLoader::processLine(char** dat, int /*datLength*/)
+void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>* chunkedEntities)
 {
 	if (dat[0][0] == '#')
 	{
@@ -632,7 +682,7 @@ void LevelLoader::processLine(char** dat, int /*datLength*/)
 		{
 			Ring::loadStaticModels();
 			Ring* ring = new Ring(toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3])); INCR_NEW
-			Main_addEntity(ring);
+			chunkedEntities->push_back(ring);
 			return;
 		}
 
@@ -745,41 +795,47 @@ void LevelLoader::processLine(char** dat, int /*datLength*/)
 				{
 					MH_Tank::loadStaticModels();
 					MH_Tank* tank = new MH_Tank(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4])); INCR_NEW //x, y, z
-					Main_addEntity(tank);
+					//Main_addEntity(tank);
+					chunkedEntities->push_back(tank);
 					break;
 				}
 				case 1: //RocketBase
 				{
 					MH_RocketBase::loadStaticModels();
 					MH_RocketBase* rocketBase = new MH_RocketBase(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4])); INCR_NEW //x, y, z
-					Main_addEntity(rocketBase);
+					//Main_addEntity(rocketBase);
+					chunkedEntities->push_back(rocketBase);
 					break;
 				}
 				case 2: //GiantRocket
 				{
 					MH_GiantRocket::loadStaticModels();
 					MH_GiantRocket* giantRocket = new MH_GiantRocket(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4])); INCR_NEW //x, y, z
-					Main_addEntity(giantRocket);
+					//Main_addEntity(giantRocket);
+					chunkedEntities->push_back(giantRocket);
 					break;
 				}
 				case 3: //PathFlat
 				{
 					MH_PathFlat::loadStaticModels();
 					MH_PathFlat* pathFlat = new MH_PathFlat(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]), toFloat(dat[5])); INCR_NEW //x, y, z, rotY
-					Main_addEntity(pathFlat);
+					//Main_addEntity(pathFlat);
+					chunkedEntities->push_back(pathFlat);
 					break;
 				}case 4: //PathDiagonal
 				{
 					MH_PathDiagonal::loadStaticModels();
 					MH_PathDiagonal* pathDiagonal = new MH_PathDiagonal(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]), toFloat(dat[5])); INCR_NEW //x, y, z, rotY
-					Main_addEntity(pathDiagonal);
+					//Main_addEntity(pathDiagonal);
+					chunkedEntities->push_back(pathDiagonal);
 					break;
 				}
 				case 5: //PathFlatSmall
 				{
 					MH_PathFlatSmall::loadStaticModels();
 					MH_PathFlatSmall* pathFlatSmall = new MH_PathFlatSmall(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]), toFloat(dat[5])); INCR_NEW //x, y, z, rotY
-					Main_addEntity(pathFlatSmall);
+					//Main_addEntity(pathFlatSmall);
+					chunkedEntities->push_back(pathFlatSmall);
 					break;
 				}
 				default: break;
