@@ -29,15 +29,26 @@ private:
 	const float radius = 5;
 	const float height = 15;
 
+	//remove this when old rocket code is removed
 	Vector3f pointDifference;
 	Vector3f pointDifferenceNormalized;
 	float pointLength;
+
+	Vector3f rocketToEndDifference;
+	Vector3f rocketToEndDifferenceNormalized;
+	float rocketToEndDifferenceLength;
 
 	float timeOffset;
 	float startupTimer;
 
 	bool rocketAppearSoundPlayed;
 	Source* rocketSource;
+
+	Vector3f getPointPosition(int pointID);
+	void setupRocketBase();
+	void setupCollisionModel();
+	float calculateRocketYRotation();
+	float calculateRocketZRotation();
 
 public:
 	Rocket();
