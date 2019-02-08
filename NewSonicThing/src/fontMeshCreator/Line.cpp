@@ -30,12 +30,10 @@ float Line::getMaxLength()
 	return maxLength;
 }
 
-
 float Line::getLineLength()
 {
 	return currentLineLength;
 }
-
 
 std::list<Word>* Line::getWords()
 {

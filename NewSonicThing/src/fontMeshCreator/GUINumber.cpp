@@ -102,7 +102,7 @@ void GUINumber::refresh()
 	}
 
 	int currentNumber = displayNumber;
-	size = currentNumber/1000.0f;
+	//size = currentNumber/1000.0f;
 
 	extern unsigned int SCR_WIDTH;
 	extern unsigned int SCR_HEIGHT;

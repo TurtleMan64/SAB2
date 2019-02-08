@@ -15,7 +15,6 @@ Character::Character(int id, float xTextureCoord, float yTextureCoord, float xTe
 	this->xAdvance = xAdvance;
 }
 
-
 Character::Character()
 {
 	this->id = -1;
