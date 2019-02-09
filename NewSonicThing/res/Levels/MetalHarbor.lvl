@@ -1,6 +1,6 @@
 Levels/MetalHarbor
 1
-MetalHarbor -10000 -10000 -10000 10000 10000 10000
+MetalHarbor -10000 -10000 -100000 10000 10000 10000
 Levels/MetalHarbor
 1
 Collision 8
@@ -30,7 +30,8 @@ water
 
 # Player
 #6 5066.24 219.11 -10214.86
-6 0 500 32
+#6 0 500 32
+6 2049.853760, -268.865662, -5972.828125
 0 0 0 0
 
 #92 res/Models/Levels/MetalHarbor/Rails/Rail0.txt

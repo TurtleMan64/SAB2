@@ -1,4 +1,4 @@
-#include <glad/glad.h>
+/* #include <glad/glad.h>
 
 #include "./entity.h"
 #include "../models/models.h"
@@ -194,6 +194,7 @@ void Rocket::step()
 
 				int dirtToMake = 5;
 				float offset = 1;
+				
 				if (startupTimer >= 30)
 				{
 					offset = speed;
@@ -297,4 +298,4 @@ void Rocket::deleteStaticModels()
 
 	Entity::deleteModels(&Rocket::modelsRocket);
 	Entity::deleteModels(&Rocket::modelsBase);
-}
+} */
