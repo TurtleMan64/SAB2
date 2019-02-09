@@ -1,6 +1,6 @@
 Levels/MetalHarbor
 1
-MetalHarbor -10000 -10000 -10000 10000 10000 10000
+MetalHarbor -100000 -100000 -100000 100000 100000 100000
 Levels/MetalHarbor
 1
 Collision 8
@@ -32,10 +32,6 @@ water
 6 0 500 32
 0 0 0 0
 
-92 res/Models/Levels/MetalHarbor/Rails/Rail0.txt
-92 res/Models/Levels/MetalHarbor/Rails/Rail1.txt
-92 res/Models/Levels/MetalHarbor/Rails/Rail2.txt
-92 res/Models/Levels/MetalHarbor/Rails/Rail3.txt
 92 res/Models/Levels/MetalHarbor/Rails/Rail4.txt
 92 res/Models/Levels/MetalHarbor/Rails/Rail5.txt
 92 res/Models/Levels/MetalHarbor/Rails/Rail6.txt

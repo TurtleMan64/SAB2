@@ -1,6 +1,6 @@
 Levels/GreenForest
 1
-GreenForest -10000 -10000 -10000 10000 10000 10000
+GreenForest -100000 -100000 -100000 100000 100000 100000
 Levels/GreenForest
 1
 Collision 7
@@ -38,10 +38,6 @@ water
 # Transparent
 #4 res/Models/Tracks/Ordeal/ Water
 
-92 res/Models/Levels/GreenForest/Rails/Rail0.txt
-92 res/Models/Levels/GreenForest/Rails/Rail1.txt
-92 res/Models/Levels/GreenForest/Rails/Rail2.txt
-92 res/Models/Levels/GreenForest/Rails/Rail3.txt
 92 res/Models/Levels/GreenForest/Rails/Rail4.txt
 92 res/Models/Levels/GreenForest/Rails/Rail5.txt
 92 res/Models/Levels/GreenForest/Rails/Rail6.txt
