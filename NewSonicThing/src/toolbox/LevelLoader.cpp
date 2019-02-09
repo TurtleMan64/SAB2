@@ -587,10 +587,10 @@ void LevelLoader::loadLevel(std::string levelFilename)
 			minX = std::fminf(minX, e->getX());
 			maxX = std::fmaxf(maxX, e->getX());
 			minZ = std::fminf(minZ, e->getZ());
-			maxZ = std::fminf(maxZ, e->getZ());
+			maxZ = std::fmaxf(maxZ, e->getZ());
 		}
 
-		Global::recalculateEntityChunks(minX, maxX, minZ, maxZ, 500);
+		Global::recalculateEntityChunks(minX, maxX, minZ, maxZ, 1000);
 
 		for (Entity* e : chunkedEntities)
 		{
@@ -663,7 +663,9 @@ void LevelLoader::loadLevel(std::string levelFilename)
 
 	glfwSetTime(0);
 	extern double timeOld;
+	//extern double previousTime;
 	timeOld = 0.0;
+	//previousTime = 0.0;
 }
 
 

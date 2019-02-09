@@ -17,6 +17,7 @@ class WaterTile;
 #include <string>
 #include <random>
 #include <list>
+#include <vector>
 #include <unordered_map>
 #include <unordered_set>
 #include "../toolbox/level.h"
@@ -170,11 +171,11 @@ public:
 
 	static void increaseRingCount(int rings);
 
-	//Return a set of nearby entities. renderDistance is number of layers to go outwards.
+	//Return a list of nearby entity sets. renderDistance is number of layers to go outwards.
 	//0 = only the exact chunk.
 	//1 = 4 chunks
 	//2 = 9 chunks
-	static std::unordered_set<Entity*>* getNearbyEntities(float x, float z, int renderDistance);
+	static void getNearbyEntities(float x, float z, int renderDistance, std::list<std::unordered_set<Entity*>*>* list);
 
 	//Returns the index of 'gameChunkedEntities' for the (x, z) location
 	static int getChunkIndex(float x, float z);
