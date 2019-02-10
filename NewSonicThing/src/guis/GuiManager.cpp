@@ -145,8 +145,9 @@ void GuiManager::init()
 	GuiManager::timerCen2[9] = new GUIText("9", s, fontVip, 7*w+16*px, 16*py, w, true, false, true); INCR_NEW
 
 	//GuiManager::numberSpeed    = new GUINumber(0, 0.87f, 0.9f, 0, true); INCR_NEW
-	GuiManager::numberSpeed    = new GUINumber(0, 0.87f, 0.9f, 0.06f, 0, true, 4); INCR_NEW
-	GuiManager::textSpeedUnits = new GUIText("km/h", 1.5f, fontVip, 0.88f, 0.918f, 1.0f, false, false, true); INCR_NEW
+	GuiManager::numberSpeed    = new GUINumber(0, 0.87f, 0.9f, 0.06f, 2, true, 4); INCR_NEW
+	//GuiManager::textSpeedUnits = new GUIText("km/h", 1.5f, fontVip, 0.88f, 0.918f, 1.0f, false, false, true); INCR_NEW
+	GuiManager::textSpeedUnits = new GUIText("km/h", 0.045f, fontVip, 0.88f, 0.918f, 0, true); INCR_NEW
 
 	GuiManager::setTimerInvisible();
 

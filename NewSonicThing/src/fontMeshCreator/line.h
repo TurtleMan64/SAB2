@@ -12,11 +12,11 @@
 class Line
 {
 private:
-	double maxLength;
-	double spaceSize;
+	float maxLength;
+	float spaceSize;
 
 	std::list<Word> words;
-	double currentLineLength = 0;
+	float currentLineLength = 0;
 
 public:
 	/**
@@ -29,7 +29,7 @@ public:
 	* @param maxLength
 	*            - the screen-space maximum length of a line.
 	*/
-	Line(double spaceWidth, double fontSize, double maxLength);
+	Line(float spaceWidth, float fontSize, float maxLength);
 
 	/**
 	* Attempt to add a word to the line. If the line can fit the word in
@@ -45,12 +45,12 @@ public:
 	/**
 	* @return The max length of the line.
 	*/
-	double getMaxLength();
+	float getMaxLength();
 
 	/**
 	* @return The current screen-space length of the line.
 	*/
-	double getLineLength();
+	float getLineLength();
 
 	/**
 	* @return The list of words in the line.

@@ -11,6 +11,7 @@
 #include <string>
 #include <cstring>
 #include <unordered_map>
+#include <unordered_set>
 #include <list>
 
 #include <ctime>
@@ -77,21 +78,32 @@
 #endif
 
 
-std::unordered_map<Entity*, Entity*> gameEntities;
+std::unordered_set<Entity*> gameEntities;
 std::list<Entity*> gameEntitiesToAdd;
 std::list<Entity*> gameEntitiesToDelete;
 
-std::unordered_map<Entity*, Entity*> gameEntitiesPass2;
+std::unordered_set<Entity*> gameEntitiesPass2;
 std::list<Entity*> gameEntitiesPass2ToAdd;
 std::list<Entity*> gameEntitiesPass2ToDelete;
 
-std::unordered_map<Entity*, Entity*> gameEntitiesPass3;
+std::unordered_set<Entity*> gameEntitiesPass3;
 std::list<Entity*> gameEntitiesPass3ToAdd;
 std::list<Entity*> gameEntitiesPass3ToDelete;
 
-std::unordered_map<Entity*, Entity*> gameTransparentEntities;
+std::unordered_set<Entity*> gameTransparentEntities;
 std::list<Entity*> gameTransparentEntitiesToAdd;
 std::list<Entity*> gameTransparentEntitiesToDelete;
+
+//vector that we treat as a 2D array. 
+std::vector<std::unordered_set<Entity*>> gameChunkedEntities;
+std::list<Entity*> gameChunkedEntitiesToAdd;
+std::list<Entity*> gameChunkedEntitiesToDelete;
+float chunkedEntitiesMinX = 0;
+float chunkedEntitiesMinZ = 1;
+float chunkedEntitiesChunkSize = 1;
+int chunkedEntitiesWidth = 1;
+int chunkedEntitiesHeight = 1;
+
 
 float Global::waterHeight = 0.0f;
 WaterRenderer* Global::gameWaterRenderer = nullptr;
@@ -314,6 +326,8 @@ int main()
 	//PauseScreen::pause();
 	Global::gameState = STATE_TITLE;
 
+	std::list<std::unordered_set<Entity*>*> entityChunkedList;
+
 	while (Global::gameState != STATE_EXITING && displayWantsToClose() == 0)
 	{
 		frameCount++;
@@ -352,7 +366,7 @@ int main()
 		//entities managment
 		for (auto entityToAdd : gameEntitiesToAdd)
 		{
-			gameEntities.insert(std::pair<Entity*, Entity*>(entityToAdd, entityToAdd));
+			gameEntities.insert(entityToAdd);
 		}
 		gameEntitiesToAdd.clear();
 
@@ -367,7 +381,7 @@ int main()
 		//entities pass2 managment
 		for (auto entityToAdd : gameEntitiesPass2ToAdd)
 		{
-			gameEntitiesPass2.insert(std::pair<Entity*, Entity*>(entityToAdd, entityToAdd));
+			gameEntitiesPass2.insert(entityToAdd);
 		}
 		gameEntitiesPass2ToAdd.clear();
 
@@ -382,7 +396,7 @@ int main()
 		//entities pass3 managment
 		for (auto entityToAdd : gameEntitiesPass3ToAdd)
 		{
-			gameEntitiesPass3.insert(std::pair<Entity*, Entity*>(entityToAdd, entityToAdd));
+			gameEntitiesPass3.insert(entityToAdd);
 		}
 		gameEntitiesPass3ToAdd.clear();
 
@@ -397,7 +411,7 @@ int main()
 		//transnaprent entities managment
 		for (auto entityToAdd : gameTransparentEntitiesToAdd)
 		{
-			gameTransparentEntities.insert(std::pair<Entity*, Entity*>(entityToAdd, entityToAdd));
+			gameTransparentEntities.insert(entityToAdd);
 		}
 		gameTransparentEntitiesToAdd.clear();
 
@@ -407,6 +421,23 @@ int main()
 			delete entityToDelete; INCR_DEL
 		}
 		gameTransparentEntitiesToDelete.clear();
+
+
+		//chunked entities mamanegement
+		for (auto entityToAdd : gameChunkedEntitiesToAdd)
+		{
+			int realIndex = Global::getChunkIndex(entityToAdd->getX(), entityToAdd->getZ());
+			gameChunkedEntities[realIndex].insert(entityToAdd);
+		}
+		gameChunkedEntitiesToAdd.clear();
+
+		for (auto entityToDelete : gameChunkedEntitiesToDelete)
+		{
+			int realIndex = Global::getChunkIndex(entityToDelete->getX(), entityToDelete->getZ());
+			gameChunkedEntities[realIndex].erase(entityToDelete);
+			delete entityToDelete; INCR_DEL
+		}
+		gameChunkedEntitiesToDelete.clear();
 
 
 		MainMenu::step();
@@ -446,21 +477,32 @@ int main()
 					}
 				}
 
-				for (auto e : gameEntities)
+				for (Entity* e : gameEntities)
 				{
-					e.first->step();
+					e->step();
 				}
-				for (auto e : gameEntitiesPass2)
+				if (gameChunkedEntities.size() > 0)
 				{
-					e.first->step();
+					Global::getNearbyEntities(cam.eye.x, cam.eye.z, 2, &entityChunkedList);
+					for (std::unordered_set<Entity*>* entitySet : entityChunkedList)
+					{
+						for (Entity* e : (*entitySet))
+						{
+							e->step();
+						}
+					}
 				}
-				for (auto e : gameEntitiesPass3)
+				for (Entity* e : gameEntitiesPass2)
 				{
-					e.first->step();
+					e->step();
 				}
-				for (auto e : gameTransparentEntities)
+				for (Entity* e : gameEntitiesPass3)
 				{
-					e.first->step();
+					e->step();
+				}
+				for (Entity* e : gameTransparentEntities)
+				{
+					e->step();
 				}
 				skySphere.step();
 				Global::gameCamera->refresh();
@@ -536,21 +578,31 @@ int main()
 		SkyManager::calculateValues();
 
 		//prepare entities to render
-		for (auto e : gameEntities)
+		for (Entity* e : gameEntities)
 		{
-			Master_processEntity(e.first);
+			Master_processEntity(e);
 		}
-		for (auto e : gameEntitiesPass2)
+		if (gameChunkedEntities.size() > 0)
 		{
-			Master_processEntityPass2(e.first);
+			for (std::unordered_set<Entity*>* entitySet : entityChunkedList)
+			{
+				for (Entity* e : (*entitySet))
+				{
+					Master_processEntity(e);
+				}
+			}
 		}
-		for (auto e : gameEntitiesPass3)
+		for (Entity* e : gameEntitiesPass2)
 		{
-			Master_processEntityPass3(e.first);
+			Master_processEntityPass2(e);
 		}
-		for (auto e : gameTransparentEntities)
+		for (Entity* e : gameEntitiesPass3)
 		{
-			Master_processTransparentEntity(e.first);
+			Master_processEntityPass3(e);
+		}
+		for (Entity* e : gameTransparentEntities)
+		{
+			Master_processTransparentEntity(e);
 		}
 		for (Checkpoint* check : Global::gameCheckpointList)
 		{
@@ -764,7 +816,7 @@ int main()
 
 		if (timeNew - previousTime >= 1.0)
 		{
-			std::fprintf(stdout, "fps: %f\n", frameCount / (timeNew - previousTime));
+			//std::fprintf(stdout, "fps: %f\n", frameCount / (timeNew - previousTime));
 			//std::fprintf(stdout, "diff: %d\n", Global::countNew - Global::countDelete);
 			//Loader::printInfo();
 			//std::fprintf(stdout, "entity counts: %d %d %d\n", gameEntities.size(), gameEntitiesPass2.size(), gameTransparentEntities.size());
@@ -806,26 +858,24 @@ void Main_deleteEntity(Entity* entityToDelete)
 void Main_deleteAllEntites()
 {
 	//Make sure no entities get left behind in transition
-	for (auto entityToAdd : gameEntitiesToAdd)
+	for (Entity* entityToAdd : gameEntitiesToAdd)
 	{
-		gameEntities.insert(std::pair<Entity*, Entity*>(entityToAdd, entityToAdd));
+		gameEntities.insert(entityToAdd);
 	}
 	gameEntitiesToAdd.clear();
 
-	for (auto entityToDelete : gameEntitiesToDelete)
+	for (Entity* entityToDelete : gameEntitiesToDelete)
 	{
 		gameEntities.erase(entityToDelete);
-		delete entityToDelete;
-		INCR_DEL
+		delete entityToDelete; INCR_DEL
 	}
 	gameEntitiesToDelete.clear();
 
 
 	//Delete all the rest
-	for (auto entityToDelete : gameEntities)
+	for (Entity* entityToDelete : gameEntities)
 	{
-		delete entityToDelete.first;
-		INCR_DEL
+		delete entityToDelete; INCR_DEL
 	}
 	gameEntities.clear();
 }
@@ -843,24 +893,22 @@ void Main_deleteEntityPass2(Entity* entityToDelete)
 void Main_deleteAllEntitesPass2()
 {
 	//Make sure no entities get left behind in transition
-	for (auto entityToAdd : gameEntitiesPass2ToAdd)
+	for (Entity* entityToAdd : gameEntitiesPass2ToAdd)
 	{
-		gameEntitiesPass2.insert(std::pair<Entity*, Entity*>(entityToAdd, entityToAdd));
+		gameEntitiesPass2.insert(entityToAdd);
 	}
 	gameEntitiesPass2ToAdd.clear();
 
-	for (auto entityToDelete : gameEntitiesPass2ToDelete)
+	for (Entity* entityToDelete : gameEntitiesPass2ToDelete)
 	{
 		gameEntitiesPass2.erase(entityToDelete);
-		delete entityToDelete;
-		INCR_DEL
+		delete entityToDelete; INCR_DEL
 	}
 	gameEntitiesPass2ToDelete.clear();
 
-	for (auto entityToDelete : gameEntitiesPass2)
+	for (Entity* entityToDelete : gameEntitiesPass2)
 	{
-		delete entityToDelete.first;
-		INCR_DEL
+		delete entityToDelete; INCR_DEL
 	}
 	gameEntitiesPass2.clear();
 }
@@ -878,24 +926,22 @@ void Main_deleteEntityPass3(Entity* entityToDelete)
 void Main_deleteAllEntitesPass3()
 {
 	//Make sure no entities get left behind in transition
-	for (auto entityToAdd : gameEntitiesPass3ToAdd)
+	for (Entity* entityToAdd : gameEntitiesPass3ToAdd)
 	{
-		gameEntitiesPass3.insert(std::pair<Entity*, Entity*>(entityToAdd, entityToAdd));
+		gameEntitiesPass3.insert(entityToAdd);
 	}
 	gameEntitiesPass3ToAdd.clear();
 
-	for (auto entityToDelete : gameEntitiesPass3ToDelete)
+	for (Entity* entityToDelete : gameEntitiesPass3ToDelete)
 	{
 		gameEntitiesPass3.erase(entityToDelete);
-		delete entityToDelete;
-		INCR_DEL
+		delete entityToDelete; INCR_DEL
 	}
 	gameEntitiesPass3ToDelete.clear();
 
-	for (auto entityToDelete : gameEntitiesPass3)
+	for (Entity* entityToDelete : gameEntitiesPass3)
 	{
-		delete entityToDelete.first;
-		INCR_DEL
+		delete entityToDelete; INCR_DEL
 	}
 	gameEntitiesPass3.clear();
 }
@@ -903,22 +949,20 @@ void Main_deleteAllEntitesPass3()
 //Transparent entities shouldn't create new transparent entities from within their step function
 void Main_addTransparentEntity(Entity* entityToAdd)
 {
-	gameTransparentEntities.insert(std::pair<Entity*, Entity*>(entityToAdd, entityToAdd));
+	gameTransparentEntities.insert(entityToAdd);
 }
 
 void Main_deleteTransparentEntity(Entity* entityToDelete)
 {
 	gameTransparentEntities.erase(entityToDelete);
-	delete entityToDelete;
-	INCR_DEL
+	delete entityToDelete; INCR_DEL
 }
 
 void Main_deleteAllTransparentEntites()
 {
-	for (auto entityToDelete : gameTransparentEntities)
+	for (Entity* entityToDelete : gameTransparentEntities)
 	{
-		delete entityToDelete.first;
-		INCR_DEL
+		delete entityToDelete; INCR_DEL
 	}
 	gameTransparentEntities.clear();
 }
@@ -1302,4 +1346,169 @@ void listen()
 			//}
 		}
 	}
+}
+
+//Returns the index of 'gameChunkedEntities' for the (x, z) location
+int Global::getChunkIndex(float x, float z)
+{
+	float relativeX = x - chunkedEntitiesMinX;
+	float relativeZ = z - chunkedEntitiesMinZ;
+
+	//const float DIVIDE_OFFSET = 1.0f;
+
+	//ensure the coords arent out of bounds
+	//relativeX = std::fmaxf(0.0f, relativeX);
+	//relativeX = std::fminf(relativeX, chunkedEntitiesWidth*chunkedEntitiesChunkSize - DIVIDE_OFFSET);
+
+	//relativeZ = std::fmaxf(0.0f, relativeZ);
+	//relativeZ = std::fminf(relativeZ, chunkedEntitiesHeight*chunkedEntitiesChunkSize - DIVIDE_OFFSET);
+
+	//calculate 2d array indices
+	int iX = (int)(relativeX/chunkedEntitiesChunkSize);
+	int iZ = (int)(relativeZ/chunkedEntitiesChunkSize);
+
+	iX = std::max(0, iX);
+	iX = std::min(iX, chunkedEntitiesWidth-1);
+
+	iZ = std::max(0, iZ);
+	iZ = std::min(iZ, chunkedEntitiesHeight-1);
+
+	//calculate index in gameNearbyEntities that corresponds to iX, iZ
+	int realIndex = iX + iZ*chunkedEntitiesWidth;
+
+	if (realIndex >= (int)gameChunkedEntities.size())
+	{
+		std::fprintf(stderr, "Error: Index out of bounds on gameNearbyEntities. THIS IS VERY BAD.\n");
+		//std::fprintf(stdout, "	x = %f       z = %f\n", x, z);
+		//std::fprintf(stdout, "	relativeX = %f      relativeZ = %f\n", relativeX, relativeZ);
+		//std::fprintf(stdout, "	iX = %d        iZ = %d\n", iX, iZ);
+		//std::fprintf(stdout, "	chunkedEntitiesWidth = %d             chunkedEntitiesHeight = %d\n", chunkedEntitiesWidth, chunkedEntitiesHeight);
+		//std::fprintf(stdout, "	chunkedEntitiesChunkSize = %f\n", chunkedEntitiesChunkSize);
+		//std::fprintf(stdout, "	realIndex = %d          gameChunkedEntities.size() = %d\n", realIndex, (int)gameChunkedEntities.size());
+		return 0;
+	}
+
+	return realIndex;
+}
+
+void Global::getNearbyEntities(float x, float z, int renderDistance, std::list<std::unordered_set<Entity*>*>* list)
+{
+	list->clear();
+
+	switch (renderDistance)
+	{
+		case 0:
+		{
+			list->push_back(&gameChunkedEntities[Global::getChunkIndex(x, z)]);
+			break;
+		}
+
+		case 1:
+		{
+			std::unordered_set<int> chunkIdxs;
+			float w = chunkedEntitiesChunkSize/2;
+			chunkIdxs.insert(Global::getChunkIndex(x-w, z-w));
+			chunkIdxs.insert(Global::getChunkIndex(x+w, z-w));
+			chunkIdxs.insert(Global::getChunkIndex(x-w, z+w));
+			chunkIdxs.insert(Global::getChunkIndex(x+w, z+w));
+			for (int i : chunkIdxs)
+			{
+				list->push_back(&gameChunkedEntities[i]);
+			}
+			break;
+		}
+
+		case 2:
+		{
+			std::unordered_set<int> chunkIdxs;
+			float w = chunkedEntitiesChunkSize;
+			chunkIdxs.insert(Global::getChunkIndex(x-w, z-w));
+			chunkIdxs.insert(Global::getChunkIndex(x+0, z-w));
+			chunkIdxs.insert(Global::getChunkIndex(x+w, z-w));
+			chunkIdxs.insert(Global::getChunkIndex(x-w, z+0));
+			chunkIdxs.insert(Global::getChunkIndex(x+0, z+0));
+			chunkIdxs.insert(Global::getChunkIndex(x+w, z+0));
+			chunkIdxs.insert(Global::getChunkIndex(x-w, z+w));
+			chunkIdxs.insert(Global::getChunkIndex(x+0, z+w));
+			chunkIdxs.insert(Global::getChunkIndex(x+w, z+w));
+			for (int i : chunkIdxs)
+			{
+				list->push_back(&gameChunkedEntities[i]);
+			}
+			break;
+		}
+
+		default:
+		{
+			std::fprintf(stderr, "Error: Render distance not out of range.\n");
+			break;
+		}
+	}
+}
+
+void Global::recalculateEntityChunks(float minX, float maxX, float minZ, float maxZ, float chunkSize)
+{
+	if (gameChunkedEntities.size() != 0)
+	{
+		std::fprintf(stderr, "Error: Trying to recalculate entity chunks when gameChunkedEntities is not 0.\n");
+		return;
+	}
+
+	float xDiff = maxX - minX;
+	float zDiff = maxZ - minZ;
+
+	int newWidth  = (int)(xDiff/chunkSize) + 1;
+	int newHeight = (int)(zDiff/chunkSize) + 1;
+
+	int count = newWidth*newHeight;
+	for (int i = 0; i < count; i++)
+	{
+		std::unordered_set<Entity*> set;
+		gameChunkedEntities.push_back(set);
+	}
+
+	chunkedEntitiesMinX = minX;
+	chunkedEntitiesMinZ = minZ;
+	chunkedEntitiesChunkSize = chunkSize;
+	chunkedEntitiesWidth = newWidth;
+	chunkedEntitiesHeight = newHeight;
+}
+
+void Main_addChunkedEntity(Entity* entityToAdd)
+{
+	gameChunkedEntitiesToAdd.push_back(entityToAdd);
+}
+
+void Main_deleteChunkedEntity(Entity* entityToAdd)
+{
+	gameChunkedEntitiesToDelete.push_back(entityToAdd);
+}
+
+void Main_deleteAllChunkedEntities()
+{
+	//Make sure no entities get left behind in transition
+	for (Entity* entityToAdd : gameChunkedEntitiesToAdd)
+	{
+		int realIndex = Global::getChunkIndex(entityToAdd->getX(), entityToAdd->getZ());
+		gameChunkedEntities[realIndex].insert(entityToAdd);
+	}
+	gameChunkedEntitiesToAdd.clear();
+
+	for (Entity* entityToDelete : gameChunkedEntitiesToDelete)
+	{
+		int realIndex = Global::getChunkIndex(entityToDelete->getX(), entityToDelete->getZ());
+		gameChunkedEntities[realIndex].erase(entityToDelete);
+		delete entityToDelete; INCR_DEL
+	}
+	gameChunkedEntitiesToDelete.clear();
+
+	for (std::unordered_set<Entity*> set : gameChunkedEntities)
+	{
+		for (Entity* e : set)
+		{
+			delete e; INCR_DEL
+		}
+		set.clear();
+	}
+	gameChunkedEntities.clear();
 }

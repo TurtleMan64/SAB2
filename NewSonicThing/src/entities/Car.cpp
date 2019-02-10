@@ -533,7 +533,7 @@ void Car::step()
 					vel.setLength(len*fact);
 
 					canMoveTimer = hitWallTimePunish;
-					AudioPlayer::play(4, getPosition());
+					//AudioPlayer::play(4, getPosition());
 
 					increasePosition(colNormal->x*FLOOR_OFFSET*2, colNormal->y*FLOOR_OFFSET*2, colNormal->z*FLOOR_OFFSET*2);
 				}
@@ -591,7 +591,7 @@ void Car::step()
 								vel.setLength(len*fact);
 
 								canMoveTimer = hitWallTimePunish;
-								AudioPlayer::play(4, getPosition());
+								//AudioPlayer::play(4, getPosition());
 
 								increasePosition(colNormal->x*FLOOR_OFFSET*2, colNormal->y*FLOOR_OFFSET*2, colNormal->z*FLOOR_OFFSET*2);
 
@@ -685,7 +685,7 @@ void Car::step()
 					vel.setLength(len*fact);
 
 					canMoveTimer = hitWallTimePunish;
-					AudioPlayer::play(4, getPosition());
+					//AudioPlayer::play(4, getPosition());
 
 					increasePosition(colNormal->x*FLOOR_OFFSET*2, colNormal->y*FLOOR_OFFSET*2, colNormal->z*FLOOR_OFFSET*2);
 				}
@@ -734,6 +734,7 @@ void Car::step()
 	camDir.normalize();
 
 	//animating us
+	updateAnimationValues();
 	animate();
 
 	//Animating the camera
@@ -1023,6 +1024,60 @@ void Car::setRelativeUp(Vector3f* newUp)
 	relativeUp.set(newUp);
 }
 
+void Car::updateAnimationValues()
+{
+	float currSpeed = vel.length();
+
+	if (isJumping)
+	{
+		runAnimationCycle -= 3000*dt;
+	}
+	else if (isBouncing)
+	{
+		runAnimationCycle -= 3500*dt;
+	}
+	else if (isBall)
+	{
+		runAnimationCycle -= (8.0f*currSpeed + 300)*dt;
+	}
+	else if (isGrinding)
+	{
+
+	}
+	else if (isSpindashing)
+	{
+		if (spindashTimer >= spindashTimerMax)
+		{
+			runAnimationCycle -= 2500*dt;
+		}
+		else
+		{
+			runAnimationCycle = -(spindashTimer*spindashTimer*0.8f*60*60);
+		}
+	}
+	else if (spindashReleaseTimer > 0)
+	{
+		runAnimationCycle = (spindashReleaseTimer*spindashReleaseTimer*0.4f*60*60);
+	}
+	else if (onGround && currSpeed < 0.6f) //stand
+	{
+
+	}
+	else if (!onGround) //freefall
+	{
+
+	}
+	else //running animation
+	{
+		runAnimationCycle += (1.5f*currSpeed)*dt;
+		runAnimationCycle = fmodf(runAnimationCycle, 100.0f);
+		if (runAnimationCycle < 0.0f)
+		{
+			runAnimationCycle += 100.0f; //fmodf returns negative numbers if the number is negative
+		}
+	}
+}
+
 void Car::animate()
 {
 	//idea: relativeUpSmooth works pretty well here but its a bit too smooth. maybe make a new relativeUpSmoothAnim just for this animation?
@@ -1044,17 +1099,6 @@ void Car::animate()
 	float pitchAngleAir = Maths::toDegrees(atan2f(nYAir, normHLengthAir));
 	float yawAngleAir = Maths::toDegrees(atan2f(-nZAir, nXAir));
 	float diffAir = Maths::compareTwoAngles(twistAngleAir, yawAngleAir);
-
-	//float diffX = vel.x;
-	//float diffY = vel.y;
-	//float diffZ = vel.z;
-	//float normHLength = sqrtf(diffX*diffX + diffZ*diffZ);
-	//float pitchAngle  = Maths::toDegrees(atan2f(diffY, normHLength));
-	//float yawAngle = Maths::toDegrees(atan2f(-diffZ, diffX));
-	//rotX = 0;
-	//rotY = yawAngle;
-	//rotZ = pitchAngle+90;
-	//rotRoll = 0;
 
 	float currSpeed = vel.length();
 
@@ -1081,27 +1125,22 @@ void Car::animate()
 
 	if (isJumping)
 	{
-		runAnimationCycle -= 3000*dt;
 		maniaSonicModel->setOrientation(dspX, dspY, dspZ, diffAir, yawAngleAir, pitchAngleAir, runAnimationCycle);
 		maniaSonicModel->animate(12, 0);
 	}
 	else if (isBouncing)
 	{
-		runAnimationCycle -= 3500*dt;
 		maniaSonicModel->setOrientation(dspX, dspY, dspZ, diffAir, yawAngleAir, pitchAngleAir, runAnimationCycle);
 		maniaSonicModel->animate(12, 0);
 	}
 	else if (isBall)
 	{
-		runAnimationCycle -= (8.0f*currSpeed + 300)*dt;
 		if (onGround)
 		{
-			//runAnimationCycle -= (8.0f*currSpeed + 300)*dt;
 			maniaSonicModel->setOrientation(dspX, dspY, dspZ, diffGround, yawAngleGround, pitchAngleGround, runAnimationCycle);
 		}
 		else
 		{
-			//runAnimationCycle -= 300*dt;
 			maniaSonicModel->setOrientation(dspX, dspY, dspZ, diffAir, yawAngleAir, pitchAngleAir, runAnimationCycle);
 		}
 		maniaSonicModel->animate(12, 0);
@@ -1123,21 +1162,11 @@ void Car::animate()
 		float yawAngleGroundSpnd = Maths::toDegrees(atan2f(-nZGroundSpnd, nXGroundSpnd));
 		float diffGroundSpnd = Maths::compareTwoAngles(twistAngleGroundSpnd, yawAngleGroundSpnd);
 
-		if (spindashTimer >= spindashTimerMax)
-		{
-			runAnimationCycle -= 2500*dt;
-		}
-		else
-		{
-			runAnimationCycle = -(spindashTimer*spindashTimer*0.8f*60*60);
-		}
-
 		maniaSonicModel->setOrientation(dspX, dspY, dspZ, diffGroundSpnd, yawAngleGroundSpnd, pitchAngleGroundSpnd, runAnimationCycle);
 		maniaSonicModel->animate(12, 0);
 	}
 	else if (spindashReleaseTimer > 0)
 	{
-		runAnimationCycle = (spindashReleaseTimer*spindashReleaseTimer*0.4f*60*60);
 		maniaSonicModel->setOrientation(dspX, dspY, dspZ, diffGround, yawAngleGround, pitchAngleGround, runAnimationCycle);
 		maniaSonicModel->animate(12, 0);
 	}
@@ -1147,8 +1176,7 @@ void Car::animate()
 		rotY = yawAngleGround;
 		rotZ = pitchAngleGround;
 		rotRoll = 0;
-		//runAnimationCycle += (1.5f*currSpeed)*dt;
-		//runAnimationCycle = fmodf(runAnimationCycle, 100.0f);
+
 		maniaSonicModel->setOrientation(getX(), getY(), getZ(), rotX, rotY, rotZ, rotRoll);
 		maniaSonicModel->animate(15, 0);
 	}
@@ -1169,13 +1197,6 @@ void Car::animate()
 		rotZ = pitchAngleGround;
 		rotRoll = 0;
 
-		runAnimationCycle += (1.5f*currSpeed)*dt;
-		runAnimationCycle = fmodf(runAnimationCycle, 100.0f);
-		if (runAnimationCycle < 0.0f)
-		{
-			runAnimationCycle += 100.0f; //fmodf returns negative numbers if the number is negative
-		}
-
 		maniaSonicModel->setOrientation(getX(), getY(), getZ(), rotX, rotY, rotZ, rotRoll);
 
 		if (currSpeed < 200)
@@ -1185,62 +1206,6 @@ void Car::animate()
 		else
 		{
 			maniaSonicModel->animate(1, runAnimationCycle);
-		}
-	}
-
-	if (isBall)
-	{
-		//float velLength = vel.length();
-		//runAnimationCycle -= (8.0f*velLength + 300)*dt;
-		//
-		//if (onGround)
-		//{
-		//	maniaSonicModel->setOrientation(getX(), getY(), getZ(), diffGround, yawAngleGround, pitchAngleGround, runAnimationCycle);
-		//	maniaSonicModel->animate(12, 0);
-		//}
-		//else
-		//{
-		//	maniaSonicModel->setOrientation(getX(), getY(), getZ(), diffAir, yawAngleAir, pitchAngleAir, runAnimationCycle);
-		//	maniaSonicModel->animate(12, 0);
-		//}
-	}
-	else
-	{
-		if (onGround)
-		{
-			//rotX = diffGround;
-			//rotY = yawAngleGround;
-			//rotZ = pitchAngleGround;
-			//rotRoll = 0;
-			//
-			//float velLength = vel.length();
-			//runAnimationCycle += (1.5f*velLength)*dt;
-			//runAnimationCycle = fmodf(runAnimationCycle, 100.0f);
-			//
-			//maniaSonicModel->setOrientation(getX(), getY(), getZ(), rotX, rotY, rotZ, rotRoll);
-			//
-			//if (velLength < 2)
-			//{
-			//	maniaSonicModel->animate(15, 0);
-			//}
-			//else if (velLength < 200)
-			//{
-			//	maniaSonicModel->animate(15, runAnimationCycle);
-			//}
-			//else
-			//{
-			//	maniaSonicModel->animate(1, runAnimationCycle);
-			//}
-		}
-		else
-		{
-			//rotX = diffAir;
-			//rotY = yawAngleAir;
-			//rotZ = pitchAngleAir;
-			//rotRoll = 0;
-			//
-			//maniaSonicModel->setOrientation(getX(), getY(), getZ(), rotX, rotY, pitchAngleAir, rotRoll);
-			//maniaSonicModel->animate(12, 0);
 		}
 	}
 }

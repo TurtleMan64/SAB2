@@ -22,16 +22,16 @@ private:
 
 	TextMeshData* createQuadVertices(GUIText* text, std::vector<Line>* lines);
 
-	void addVerticesForCharacter(double curserX, double curserY, Character character, double fontSize, std::vector<float>* vertices);
+	void addVerticesForCharacter(float curserX, float curserY, Character character, float fontSize, std::vector<float>* vertices);
 
-	static void addVertices(std::vector<float>* vertices, double x, double y, double maxX, double maxY);
+	static void addVertices(std::vector<float>* vertices, float x, float y, float maxX, float maxY);
 
-	static void addTexCoords(std::vector<float>* texCoords, double x, double y, double maxX, double maxY);
+	static void addTexCoords(std::vector<float>* texCoords, float x, float y, float maxX, float maxY);
 
 	//static float[] listToArray(std::vector<Float> listOfFloats);
 
 public:
-	static double LINE_HEIGHT;
+	static float LINE_HEIGHT;
 	static const int SPACE_ASCII = 32;
 
 	TextMeshCreator(std::string filename);

@@ -161,11 +161,11 @@ void Rail::step()
 			for (RailSegment r : rails)
 			{
 				float dist = r.distanceToPoint(Global::gameMainVehicle->getPosition());
-				if (dist < 4)
+				if (dist < 5)
 				{
 					Vector3f landingPoint = r.closestPoint(Global::gameMainVehicle->getPosition());
 					Global::gameMainVehicle->setPosition(&landingPoint);
-					//Global::gameMainVehicle->increasePosition(r.normalBegin.x*1.0f, r.normalBegin.y*1.0f, r.normalBegin.z*1.0f);
+					Global::gameMainVehicle->increasePosition(r.normalBegin.x*1.0f, r.normalBegin.y*1.0f, r.normalBegin.z*1.0f);
 					currentSegment = &rails[r.index];
 					currentSegmentIndex = r.index;
 					Global::gameMainVehicle->startGrinding();
@@ -241,6 +241,9 @@ void Rail::step()
 						progressVec.setLength(Maths::sign(distanceRemaining)*distanceRemaining);
 						Vector3f nP = currentSegment->pointBegin + progressVec;
 						Global::gameMainVehicle->setPosition(&nP);
+						Global::gameMainVehicle->increasePosition(currentSegment->normalBegin.x*1.0f, 
+																  currentSegment->normalBegin.y*1.0f, 
+																  currentSegment->normalBegin.z*1.0f);
 						Global::gameMainVehicle->updateTransformationMatrix();
 
 						Global::gameMainVehicle->stopGrinding();
@@ -255,6 +258,9 @@ void Rail::step()
 					Vector3f progressVec = currentSegment->pointsDiff.scaleCopy(newProgress);
 					Vector3f nP = currentSegment->pointBegin + progressVec;
 					Global::gameMainVehicle->setPosition(&nP);
+					Global::gameMainVehicle->increasePosition(currentSegment->normalBegin.x*1.0f, 
+															  currentSegment->normalBegin.y*1.0f, 
+															  currentSegment->normalBegin.z*1.0f);
 					Global::gameMainVehicle->updateTransformationMatrix();
 
 					distanceRemaining = 0.0f;
@@ -281,6 +287,9 @@ void Rail::step()
 						progressVec.setLength(Maths::sign(distanceRemaining)*distanceRemaining);
 						Vector3f nP = currentSegment->pointEnd + progressVec;
 						Global::gameMainVehicle->setPosition(&nP);
+						Global::gameMainVehicle->increasePosition(currentSegment->normalBegin.x*1.0f, 
+																  currentSegment->normalBegin.y*1.0f, 
+																  currentSegment->normalBegin.z*1.0f);
 						Global::gameMainVehicle->updateTransformationMatrix();
 
 						Global::gameMainVehicle->stopGrinding();

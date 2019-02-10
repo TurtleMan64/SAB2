@@ -164,7 +164,7 @@ Source* AudioPlayer::play(int buffer, Vector3f* pos, float pitch, bool loop)
 //with everything
 Source* AudioPlayer::play(int buffer, Vector3f* pos, float pitch, bool loop, float xVel, float yVel, float zVel)
 {
-	if (buffer >= AudioPlayer::buffersSE.size())
+	if (buffer >= (int)AudioPlayer::buffersSE.size())
 	{
 		std::fprintf(stderr, "Error: Index out of bounds on SE buffers\n");
 		return nullptr;

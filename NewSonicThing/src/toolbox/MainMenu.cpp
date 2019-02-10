@@ -538,13 +538,13 @@ void MainMenu::selectMenuMission(int newSelection)
 	textMission6 ->getPosition()->y = yPos+offsetY; yPos+=128*py;
 	textMission7 ->getPosition()->y = yPos+offsetY;
 	
-	textMission1 ->getPosition()->x = 0.0f;
-	textMission2 ->getPosition()->x = 0.0f;
-	textMission3 ->getPosition()->x = 0.0f;
-	textMission4 ->getPosition()->x = 0.0f;
-	textMission5 ->getPosition()->x = 0.0f;
-	textMission6 ->getPosition()->x = 0.0f;
-	textMission7 ->getPosition()->x = 0.0f;
+	textMission1 ->getPosition()->x = 0.4f;
+	textMission2 ->getPosition()->x = 0.4f;
+	textMission3 ->getPosition()->x = 0.4f;
+	textMission4 ->getPosition()->x = 0.4f;
+	textMission5 ->getPosition()->x = 0.4f;
+	textMission6 ->getPosition()->x = 0.4f;
+	textMission7 ->getPosition()->x = 0.4f;
 
 	GuiManager::addGuiToRender(itemMission1);
 	GuiManager::addGuiToRender(itemMission2);

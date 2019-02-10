@@ -43,19 +43,19 @@ MH_PathFlatSmall::MH_PathFlatSmall(float x, float y, float z, float rotY)
 
 void MH_PathFlatSmall::step()
 {
-	if (abs(getX() - Global::gameCamera->eye.x) > ENTITY_RENDER_DIST)
+	//if (abs(getX() - Global::gameCamera->eye.x) > ENTITY_RENDER_DIST)
 	{
-		setVisible(false);
+		//setVisible(false);
 	}
-	else
+	//else
 	{
-		if (abs(getZ() - Global::gameCamera->eye.z) > ENTITY_RENDER_DIST)
+		//if (abs(getZ() - Global::gameCamera->eye.z) > ENTITY_RENDER_DIST)
 		{
-			setVisible(false);
+			//setVisible(false);
 		}
-		else
+		//else
 		{
-			setVisible(true);
+			//setVisible(true);
 		}
 	}
 }

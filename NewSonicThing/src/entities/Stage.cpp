@@ -32,7 +32,7 @@ Stage::Stage()
 void Stage::respawnChunks()
 {
 	Stage::chunkDummies.clear();
-	for (int i = 0; i < Stage::chunkModels.size(); i++)
+	for (int i = 0; i < (int)Stage::chunkModels.size(); i++)
 	{
 		Dummy* chunk = new Dummy(&Stage::chunkModels[i]);
 		chunk->setVisible(true);
@@ -46,7 +46,7 @@ void Stage::respawnChunks()
 void Stage::updateVisibleChunks()
 {
 	//go through and test bounds
-	for (int i = 0; i < Stage::chunkDummies.size(); i++)
+	for (int i = 0; i < (int)Stage::chunkDummies.size(); i++)
 	{
 		std::vector<Vector3f> mins = Stage::chunkMin[i];
 		std::vector<Vector3f> maxs = Stage::chunkMax[i];
@@ -59,7 +59,7 @@ void Stage::updateVisibleChunks()
 
 		bool vis = false;
 
-		for (int c = 0; c < mins.size(); c++)
+		for (int c = 0; c < (int)mins.size(); c++)
 		{
 			Vector3f min = mins[c];
 			Vector3f max = maxs[c];
@@ -103,7 +103,7 @@ void Stage::loadModels(
 	std::string path = "res/Models/";
 	path = (path + folder) + "/";
 
-	for (int i = 0; i < fnames->size(); i++)
+	for (int i = 0; i < (int)fnames->size(); i++)
 	{
 		std::list<TexturedModel*> model;
 		Stage::chunkModels.push_back(model);
@@ -120,7 +120,7 @@ void Stage::deleteModels()
 	std::fprintf(stdout, "Deleting stage models...\n");
 	#endif
 
-	for (int i = 0; i < Stage::chunkModels.size(); i++)
+	for (int i = 0; i < (int)Stage::chunkModels.size(); i++)
 	{
 		std::list<TexturedModel*>* models = &Stage::chunkModels[i];
 		Entity::deleteModels(models);

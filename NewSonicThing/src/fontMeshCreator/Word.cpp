@@ -4,7 +4,7 @@
 #include "character.h"
 
 
-Word::Word(double fontSize)
+Word::Word(float fontSize)
 {
 	this->fontSize = fontSize;
 }
@@ -20,7 +20,7 @@ std::list<Character>* Word::getCharacters()
 	return &characters;
 }
 
-double Word::getWordWidth()
+float Word::getWordWidth()
 {
 	return width;
 }
