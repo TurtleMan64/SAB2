@@ -404,7 +404,7 @@ void Car::step()
 	relativeUpSmooth = Maths::interpolateVector(&relativeUpSmooth, &relativeUp, 3*dt);
 	relativeUpAnim = Maths::interpolateVector(&relativeUpAnim, &relativeUp, 15*dt);
 
-	if (!isGrinding)
+	if (!(isGrinding or onRocket))
 	{
 		//speed before adjusting
 		float originalSpeed = vel.length();
@@ -909,7 +909,7 @@ void Car::moveMeGround()
 
 void Car::moveMeAir()
 {
-	if (isGrinding)
+	if (isGrinding or onRocket)
 	{
 		return;
 	}

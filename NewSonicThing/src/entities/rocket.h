@@ -29,7 +29,7 @@ private:
 	Vector3f pointPositionEnd;
 
 	//The speed the rocket moves at
-	const float ROCKET_SPEED = 15;
+	const float ROCKET_SPEED = 900;
 	//True only when the player is using the Rocket
 	bool isActive;
 	//Whether the Rocket can be used or not
@@ -41,16 +41,16 @@ private:
 	const float HITBOX_HEIGHT = 15;
 
 	//Difference of the position of the rocket at the start and the end of the path
-	Vector3f rocketStartToEndDifference;
+	Vector3f rocketPathPositionDifference;
 	//Normalized version of the difference of the position of the rocket at the start and the end of the path
-	Vector3f rocketStartToEndDifferenceNormalized;
+	Vector3f rocketPathPositionDifferenceNormalized;
 	//Length of the vector between the rocket at the start and the end of the path
-	float rocketStartToEndDifferenceLength;
+	float rocketPathPositionDifferenceLength;
 
 	//The difference in position from the player and the rocket.
-    Vector3f playerToRocketDifference;
+    Vector3f playerToRocketPositionDifference;
 	//Squared horizontal difference between the players position and the rockets position
-	float playerToRocketDifferenceHorizontalSquared;
+	float playerToRocketPositionDifferenceHorizontalSquared;
 
 	//Uses the speed, length of the path, and delta time to calculate how much of the path is completed every frame
 	float percentOfPathCompleted;
@@ -93,8 +93,10 @@ private:
 	bool playerWithinRocketHitbox();
 	//Make the dirt particles used to make the rocket's exhaust
 	void makeDirtParticles(float particlePositionOffset);
+	//Plays the sound of the rocket launching
+	void playRocketLaunchSound();
 	//Set the players velocity, onRocket, isBall, RotY, CanMoveTimer, and OnGround
-	void setupPlayerVariables();
+	void setupPlayerVariablesActivateRocket();
 	//If the rocket has started moving, the startup animation has finished
 	bool rocketStartedMoving();
 	//Set the player's position so they hold the rocket handle when the rocket is starting up
@@ -105,6 +107,8 @@ private:
 	void calculateNewRocketPosition();
 	//Calculates the new value of percentOfPathCompleted using the speed, length of the path, and dt
 	float calculateNewPercentOfPathCompletedValue();
+	//Returns true if the percentOfPathCompleted is 100% (equal to 1)
+	bool fullPathTraveled();
 public:
 	Rocket();
 	Rocket(int point1ID, int point2ID);
