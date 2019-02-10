@@ -90,13 +90,13 @@ private:
 	//version 2
 	const float groundBallFriction = 0.1f; //0.02f;
 	const float slopeBallAccel = 140.0f; //50.0f;
-	const float autoUnrollThreshold = 60.0f;
+	const float autoUnrollThreshold = 120.0f; //60
 
 	bool isSpindashing = false;
 	Vector3f spindashDirection;
 	bool canStartSpindash = false;
 	bool bufferedSpindashInput = false;
-	const float spindashPowerMax = 475.0f;
+	const float spindashPowerMax = 525.0f; //475.0f
 	const float spindashChargeRate = 0.4f*60*60;
 	const float spindashFriction = 2.0f;
 	const float spindashPowerfulFriction = 8.0f;
@@ -107,7 +107,7 @@ private:
 	float spindashReleaseTimer = 0;
 	const float spindashReleaseTimerMax = 30.0f/60.0f;
 	float spindashRestartDelay = 0;
-	const float spindashRestartDelayMax = 3.0f/60.0f;
+	const float spindashRestartDelayMax = 25.0f/60.0f; // 3.0f/60.0f
 	float storedSpindashSpeed = 0;
 
 	bool isSkidding = false;
@@ -261,7 +261,7 @@ private:
 
 	void setInputs();
 
-	void animate();
+	void updateAnimationValues();
 
 public:
 	Car();
@@ -269,6 +269,9 @@ public:
 	~Car();
 
 	void step();
+
+	//Call this to "redraw" sonic
+	void animate();
 
 	void setVelocity(float xVel, float yVel, float zVel);
 

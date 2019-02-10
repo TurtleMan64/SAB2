@@ -1,6 +1,6 @@
 Levels/SpeedHighway
 1
-SpeedHighway -10000 -10000 -10000 10000 10000 10000
+SpeedHighway -100000 -100000 -100000 100000 100000 100000
 Levels/SpeedHighway
 1
 Collision 8
