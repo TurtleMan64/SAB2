@@ -47,6 +47,7 @@ std::list<TexturedModel*> ManiaSonicModel::modelJog15;
 std::list<TexturedModel*> ManiaSonicModel::modelJog16;
 std::list<TexturedModel*> ManiaSonicModel::modelJog17;
 std::list<TexturedModel*> ManiaSonicModel::modelGrind;
+std::list<TexturedModel*> ManiaSonicModel::modelGrab;
 
 ManiaSonicModel::ManiaSonicModel()
 {
@@ -134,6 +135,12 @@ void ManiaSonicModel::animate(int animIndex, float time)
 			break;
 		}
 
+		case 27: //grabbing Rocket
+		{
+			models = &ManiaSonicModel::modelGrab;
+			break;
+		}
+
 		default:
 			break;
 	}
@@ -199,6 +206,7 @@ void ManiaSonicModel::loadStaticModels()
 	loadModel(&ManiaSonicModel::modelJog16 , "res/Models/Characters/ManiaSonic/", "Jog16");
 	loadModel(&ManiaSonicModel::modelJog17 , "res/Models/Characters/ManiaSonic/", "Jog17");
 	loadModel(&ManiaSonicModel::modelGrind , "res/Models/Characters/ManiaSonic/", "Grind");
+	loadModel(&ManiaSonicModel::modelGrab , "res/Models/Characters/ManiaSonic/", "Grab");
 }
 
 void ManiaSonicModel::deleteStaticModels()

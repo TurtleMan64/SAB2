@@ -96,7 +96,7 @@ private:
 	//Plays the sound of the rocket launching
 	void playRocketLaunchSound();
 	//Set the players velocity, onRocket, isBall, RotY, CanMoveTimer, and OnGround
-	void setupPlayerVariablesActivateRocket();
+	void setPlayerVariablesRocketActive();
 	//If the rocket has started moving, the startup animation has finished
 	bool rocketStartedMoving();
 	//Set the player's position so they hold the rocket handle when the rocket is starting up
@@ -109,6 +109,10 @@ private:
 	float calculateNewPercentOfPathCompletedValue();
 	//Returns true if the percentOfPathCompleted is 100% (equal to 1)
 	bool fullPathTraveled();
+	//Sets player velocity, onRocket, and canMoveTimer for the end of the rocket's path
+	void setPlayerVariablesRocketStopping();
+	//Resets the rocket's position, canActivate, isActive, percentOfPathCompleted, and startupTimer to default values
+	void resetRocketVariables();
 public:
 	Rocket();
 	Rocket(int point1ID, int point2ID);

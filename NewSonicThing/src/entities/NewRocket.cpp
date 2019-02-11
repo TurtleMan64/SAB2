@@ -125,7 +125,7 @@ void Rocket::step()
 			{
 				playRocketLaunchSound();
 
-				setupPlayerVariablesActivateRocket();
+				setPlayerVariablesRocketActive();
 
 				if (!rocketStartedMoving()) //rocket is starting up
 				{
@@ -150,11 +150,13 @@ void Rocket::step()
 			if (fullPathTraveled())
 			{
 				//stop moving and deactivate rocket
+				setPlayerVariablesRocketStopping();
 
+				resetRocketVariables();
 			}
 
 			updateTransformationMatrix();
-			//update players transformation matrix here
+			Global::gameMainVehicle->animate();
         }
     }
 }
@@ -309,13 +311,12 @@ void Rocket::playRocketLaunchSound()
 	}
 }
 
-void Rocket::setupPlayerVariablesActivateRocket()
+void Rocket::setPlayerVariablesRocketActive()
 {
 	Global::gameMainVehicle->setVelocity(rocketPathPositionDifferenceNormalized.x * 1000, rocketPathPositionDifferenceNormalized.y * 1000, rocketPathPositionDifferenceNormalized.z * 1000);
 	Global::gameMainVehicle->setOnRocket(true);
 	Global::gameMainVehicle->setIsBall(false);
-	//Global::gameMainVehicle->setRotY(rotY);
-	//Global::gameMainVehicle->setCanMoveTimer(1000);
+	Global::gameMainVehicle->setCanMoveTimer(1000);
 	Global::gameMainVehicle->setOnGround(false);
 }
 
@@ -327,27 +328,17 @@ bool Rocket::rocketStartedMoving()
 void Rocket::setPlayerPositionToHoldRocketHandleStartup()
 {
 	Global::gameMainVehicle->setPosition(
-			position.x - 8.75f*rocketPathPositionDifferenceNormalized.x,
-			position.y - 0,
-			position.z - 8.75f*rocketPathPositionDifferenceNormalized.z);
-
-	if (rotZ > 70)
-	{
-		Global::gameMainVehicle->increasePosition(0, 2, 0);
-	}
+			position.x - 6*rocketPathPositionDifferenceNormalized.x,
+			position.y - 5,
+			position.z - 6*rocketPathPositionDifferenceNormalized.z);
 }
 
 void Rocket::setPlayerPositionToHoldRocketHandleMoving()
 {
 	Global::gameMainVehicle->setPosition(
-			position.x - 8.75f*rocketPathPositionDifferenceNormalized.x,
-			position.y - 0,
-			position.z - 8.75f*rocketPathPositionDifferenceNormalized.z);
-
-	if (rotZ > 70)
-	{
-		//Global::gameMainVehicle->increasePosition(0, 14, 0);
-	}
+			position.x - 6*rocketPathPositionDifferenceNormalized.x,
+			position.y - 5,
+			position.z - 6*rocketPathPositionDifferenceNormalized.z);
 }
 
 void Rocket::calculateNewRocketPosition()
@@ -365,4 +356,21 @@ float Rocket::calculateNewPercentOfPathCompletedValue()
 bool Rocket::fullPathTraveled()
 {
 	return (percentOfPathCompleted >= 1);
+}
+
+void Rocket::setPlayerVariablesRocketStopping()
+{
+	Global::gameMainVehicle->setVelocity(rocketPathPositionDifferenceNormalized.x, rocketPathPositionDifferenceNormalized.y, rocketPathPositionDifferenceNormalized.z);
+	Global::gameMainVehicle->setOnRocket(false);
+	Global::gameMainVehicle->setCanMoveTimer(0);
+}
+
+void Rocket::resetRocketVariables()
+{
+	position.set(&pointPositionStart);
+	position.y += 10;
+	canActivate = true;
+	isActive = false;
+	percentOfPathCompleted = 0;
+	startupTimer = STARTUP_TIMER_INITIAL_VALUE;
 }

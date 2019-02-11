@@ -1123,7 +1123,12 @@ void Car::animate()
 		}
 	}
 
-	if (isJumping)
+	if (onRocket)
+	{
+		maniaSonicModel->setOrientation(getX(), getY(), getZ(), diffGround, yawAngleGround, pitchAngleGround, 0);
+		maniaSonicModel->animate(27, 0);
+	}
+	else if (isJumping)
 	{
 		maniaSonicModel->setOrientation(dspX, dspY, dspZ, diffAir, yawAngleAir, pitchAngleAir, runAnimationCycle);
 		maniaSonicModel->animate(12, 0);
