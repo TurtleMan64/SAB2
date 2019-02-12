@@ -64,6 +64,8 @@ public:
 	GUIText(std::string text, float fontSize, FontType* font, float x, float y, float maxLineLength,
 		bool centered, bool rightAlign, bool visible);
 
+	GUIText();
+
 
 	/**
 	* Remove the text from the screen.

@@ -1,6 +1,14 @@
 #include "guitext.h"
 #include "../renderEngine/renderEngine.h"
 #include "../fontRendering/textmaster.h"
+#include "fonttype.h"
+
+GUIText::GUIText()
+{
+	FontType* defaultFont = new FontType(Loader::loadTexture("res/Fonts/vipnagorgialla.png"),
+		"res/Fonts/vipnagorgialla.fnt");
+	GUIText::GUIText("SampleText", 0.01f, defaultFont, 0.0f, 0.0f, 1.0f, false, false, false);
+}
 
 GUIText::GUIText(std::string text, float fontSize, FontType* font, float x, float y, float maxLineLength,
 	bool centered, bool rightAligned, bool visible)

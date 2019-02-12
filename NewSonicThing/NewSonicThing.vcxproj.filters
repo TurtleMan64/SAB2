@@ -342,9 +342,6 @@
     <ClCompile Include="src\toolbox\LevelLoader.cpp">
       <Filter>Source Files\toolbox</Filter>
     </ClCompile>
-    <ClCompile Include="src\toolbox\MainMenu.cpp">
-      <Filter>Source Files\toolbox</Filter>
-    </ClCompile>
     <ClCompile Include="src\toolbox\maths.cpp">
       <Filter>Source Files\toolbox</Filter>
     </ClCompile>
@@ -404,6 +401,18 @@
     </ClCompile>
     <ClCompile Include="src\entities\MetalHarbor\MH_Tank.cpp">
       <Filter>Source Files\entities\MetalHarbor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\toolbox\MissionMenu.cpp">
+      <Filter>Source Files\toolbox</Filter>
+    </ClCompile>
+    <ClCompile Include="src\toolbox\Button.cpp">
+      <Filter>Source Files\toolbox</Filter>
+    </ClCompile>
+    <ClCompile Include="src\toolbox\MenuManager.cpp">
+      <Filter>Source Files\toolbox</Filter>
+    </ClCompile>
+    <ClCompile Include="src\toolbox\MainMenu.cpp">
+      <Filter>Source Files\toolbox</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -650,9 +659,6 @@
     <ClInclude Include="src\toolbox\levelloader.h">
       <Filter>Source Files\toolbox</Filter>
     </ClInclude>
-    <ClInclude Include="src\toolbox\mainmenu.h">
-      <Filter>Source Files\toolbox</Filter>
-    </ClInclude>
     <ClInclude Include="src\toolbox\maths.h">
       <Filter>Source Files\toolbox</Filter>
     </ClInclude>
@@ -712,6 +718,21 @@
     </ClInclude>
     <ClInclude Include="src\entities\MetalHarbor\mhtank.h">
       <Filter>Source Files\entities\MetalHarbor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\toolbox\missionmenu.h">
+      <Filter>Source Files\toolbox</Filter>
+    </ClInclude>
+    <ClInclude Include="src\toolbox\button.h">
+      <Filter>Source Files\toolbox</Filter>
+    </ClInclude>
+    <ClInclude Include="src\toolbox\menu.h">
+      <Filter>Source Files\toolbox</Filter>
+    </ClInclude>
+    <ClInclude Include="src\toolbox\menumanager.h">
+      <Filter>Source Files\toolbox</Filter>
+    </ClInclude>
+    <ClInclude Include="src\toolbox\mainmenu.h">
+      <Filter>Source Files\toolbox</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

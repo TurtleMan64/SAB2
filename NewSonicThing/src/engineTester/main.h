@@ -19,6 +19,7 @@ class WaterTile;
 #include <list>
 #include <unordered_map>
 #include "../toolbox/level.h"
+#include "../toolbox/menumanager.h"
 
 void Main_addEntity(Entity* entityToAdd);
 void Main_deleteEntity(Entity* entityToDelete);
@@ -164,5 +165,7 @@ public:
 	static int calculateRankAndUpdate();
 
 	static void increaseRingCount(int rings);
+
+	static MenuManager menuManager;
 };
 #endif

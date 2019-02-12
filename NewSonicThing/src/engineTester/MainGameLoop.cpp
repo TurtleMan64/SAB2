@@ -58,6 +58,7 @@
 #include "../guis/guirenderer.h"
 #include "../guis/guitextureresources.h"
 #include "../toolbox/mainmenu.h"
+#include "../toolbox/missionmenu.h"
 #include "../toolbox/level.h"
 #include "../guis/guitexture.h"
 #include "../particles/particle.h"
@@ -70,6 +71,9 @@
 #include "../water/waterrenderer.h"
 #include "../water/watertile.h"
 #include "../toolbox/getline.h"
+#include "../toolbox/menumanager.h"
+
+#include <chrono>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -203,6 +207,8 @@ void doListenThread();
 
 void listen();
 
+MenuManager Global::menuManager = MenuManager();
+
 int main()
 {
 	#ifdef DEV_MODE
@@ -240,10 +246,9 @@ int main()
 
 	GuiManager::init();
 
+	Global::menuManager.push(new MissionMenu());
+
 	PauseScreen::init();
-
-	MainMenu::init();
-
 
 	if (Global::renderParticles)
 	{
@@ -408,8 +413,7 @@ int main()
 		}
 		gameTransparentEntitiesToDelete.clear();
 
-
-		MainMenu::step();
+		Global::menuManager.step();
 		PauseScreen::step();
 
 		switch (Global::gameState)
@@ -704,8 +708,6 @@ int main()
 						Global::levelName = nextLevel->fileName;
 						Global::levelNameDisplay = nextLevel->displayName;
 						Global::gameMissionDescription = (nextLevel->missionData[Global::gameMissionNumber])[(nextLevel->missionData[Global::gameMissionNumber]).size()-1];
-
-						MainMenu::createTitleCard();
 					}
 					else
 					{
@@ -727,7 +729,7 @@ int main()
 						AudioPlayer::play(7, Global::gameCamera->getFadePosition1());
 
 						LevelLoader::loadTitle();
-						MainMenu::selectMenuArcadeClear();
+						// MainMenu::selectMenuArcadeClear();
 						Global::gameIsArcadeMode = false;
 					}
 				}
@@ -750,11 +752,6 @@ int main()
 				int rank = Global::calculateRankAndUpdate();
 				switch (rank)
 				{
-					case 0: GuiTextureResources::textureRankDisplay->setTexture(MainMenu::textureRankE); break;
-					case 1: GuiTextureResources::textureRankDisplay->setTexture(MainMenu::textureRankD); break;
-					case 2: GuiTextureResources::textureRankDisplay->setTexture(MainMenu::textureRankC); break;
-					case 3: GuiTextureResources::textureRankDisplay->setTexture(MainMenu::textureRankB); break;
-					case 4: GuiTextureResources::textureRankDisplay->setTexture(MainMenu::textureRankA); break;
 					default: break;
 				}
 				GuiManager::addGuiToRender(GuiTextureResources::textureRankDisplay);
