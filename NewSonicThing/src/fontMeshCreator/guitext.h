@@ -32,8 +32,7 @@ private:
 
 	FontType* font;
 
-	bool centerText;
-	bool rightAlign;
+	int alignment;
 
 public:
 	/**
@@ -61,11 +60,17 @@ public:
 	* @param centered
 	*            - whether the text should be centered or not.
 	*/
+	//old version constructor
 	GUIText(std::string text, float fontSize, FontType* font, float x, float y, float maxLineLength,
 		bool centered, bool rightAlign, bool visible);
 
-	GUIText();
-
+	//new version
+	//size = 1.0 = full screen height
+	//alignment chart:
+	//  0 1 2
+	//  3 4 5
+	//  6 7 8
+	GUIText(std::string text, float size, FontType* font, float x, float y, int alignment, bool visible);
 
 	/**
 	* Remove the text from the screen.
@@ -137,7 +142,7 @@ public:
 	int getVertexCount();
 
 	/**
-	* @return the font size of the text (a font size of 1 is normal).
+	* @return the font size of the text.
 	*/
 	float getFontSize();
 
@@ -149,17 +154,9 @@ public:
 	*/
 	void setNumberOfLines(int number);
 
-	/**
-	* @return {@code true} if the text should be centered.
-	*/
-	bool isCentered();
-
-	bool isRightAligned();
-
-	/**
-	* @return The maximum length of a line of this text.
-	*/
 	float getMaxLineSize();
+
+	int getAlignment();
 
 	/**
 	* @return The string of text.

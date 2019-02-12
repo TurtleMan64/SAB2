@@ -15,7 +15,7 @@ extern unsigned int SCR_HEIGHT;
 
 MetaFile::MetaFile(std::string filename)
 {
-	this->aspectRatio = (double)SCR_WIDTH / (double)SCR_HEIGHT;
+	this->aspectRatio = (float)SCR_WIDTH / (float)SCR_HEIGHT;
 	openFile(filename);
 	loadPaddingData();
 	loadLineSizes();
@@ -24,7 +24,7 @@ MetaFile::MetaFile(std::string filename)
 	close();
 }
 
-double MetaFile::getSpaceWidth()
+float MetaFile::getSpaceWidth()
 {
 	return spaceWidth;
 }
@@ -104,21 +104,18 @@ std::vector<int> MetaFile::getValuesOfVariable(std::string variable)
 void MetaFile::close()
 {
 	reader->close();
-	delete reader;
-	INCR_DEL
+	delete reader; INCR_DEL
 	reader = nullptr;
 }
 
 void MetaFile::openFile(std::string filename)
 {
-	reader = new std::ifstream(filename);
-	INCR_NEW
+	reader = new std::ifstream(filename); INCR_NEW
 	if (!reader->is_open())
 	{
 		std::fprintf(stdout, "Error: Cannot load file '%s'\n", (filename).c_str());
 		reader->close();
-		delete reader;
-		INCR_DEL
+		delete reader; INCR_DEL
 		reader = nullptr;
 	}
 }
@@ -135,7 +132,7 @@ void MetaFile::loadLineSizes()
 {
 	processNextLine();
 	int lineHeightPixels = getValueOfVariable("lineHeight") - paddingHeight;
-	verticalPerPixelSize = TextMeshCreator::LINE_HEIGHT / (double)lineHeightPixels;
+	verticalPerPixelSize = TextMeshCreator::LINE_HEIGHT / (float)lineHeightPixels;
 	horizontalPerPixelSize = verticalPerPixelSize / aspectRatio;
 }
 
@@ -149,8 +146,7 @@ void MetaFile::loadCharacterData(int imageWidth)
 		if (c != nullptr)
 		{
 			metaData[c->getId()] = (*c); //Put a copy of the character into the hash map
-			delete c;
-			INCR_DEL
+			delete c; INCR_DEL
 		}
 	}
 }
@@ -163,17 +159,17 @@ Character* MetaFile::loadCharacter(int imageSize)
 		this->spaceWidth = (getValueOfVariable("xadvance") - paddingWidth) * horizontalPerPixelSize;
 		return nullptr;
 	}
-	double xTex = ((double)getValueOfVariable("x") + (padding[PAD_LEFT] - DESIRED_PADDING)) / imageSize;
-	double yTex = ((double)getValueOfVariable("y") + (padding[PAD_TOP] - DESIRED_PADDING)) / imageSize;
+	float xTex = ((float)getValueOfVariable("x") + (padding[PAD_LEFT] - DESIRED_PADDING)) / imageSize;
+	float yTex = ((float)getValueOfVariable("y") + (padding[PAD_TOP] - DESIRED_PADDING)) / imageSize;
 	int width = getValueOfVariable("width") - (paddingWidth - (2 * DESIRED_PADDING));
 	int height = getValueOfVariable("height") - ((paddingHeight)-(2 * DESIRED_PADDING));
-	double quadWidth = width * horizontalPerPixelSize;
-	double quadHeight = height * verticalPerPixelSize;
-	double xTexSize = (double)width / imageSize;
-	double yTexSize = (double)height / imageSize;
-	double xOff = (getValueOfVariable("xoffset") + padding[PAD_LEFT] - DESIRED_PADDING) * horizontalPerPixelSize;
-	double yOff = (getValueOfVariable("yoffset") + (padding[PAD_TOP] - DESIRED_PADDING)) * verticalPerPixelSize;
-	double xAdvance = (getValueOfVariable("xadvance") - paddingWidth) * horizontalPerPixelSize;
+	float quadWidth = width * horizontalPerPixelSize;
+	float quadHeight = height * verticalPerPixelSize;
+	float xTexSize = (float)width / imageSize;
+	float yTexSize = (float)height / imageSize;
+	float xOff = (getValueOfVariable("xoffset") + padding[PAD_LEFT] - DESIRED_PADDING) * horizontalPerPixelSize;
+	float yOff = (getValueOfVariable("yoffset") + (padding[PAD_TOP] - DESIRED_PADDING)) * verticalPerPixelSize;
+	float xAdvance = (getValueOfVariable("xadvance") - paddingWidth) * horizontalPerPixelSize;
 	//std::fprintf(stdout, "%d %f %f %f %f %f %f %f %f %f\n", id, xTex, yTex, xTexSize, yTexSize, xOff, yOff, quadWidth, quadHeight, xAdvance);
 	INCR_NEW
 	return new Character(id, xTex, yTex, xTexSize, yTexSize, xOff, yOff, quadWidth, quadHeight, xAdvance);

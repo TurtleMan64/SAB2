@@ -3,7 +3,7 @@
 #include "line.h"
 
 
-Line::Line(double spaceWidth, double fontSize, double maxLength)
+Line::Line(float spaceWidth, float fontSize, float maxLength)
 {
 	this->spaceSize = spaceWidth * fontSize;
 	this->maxLength = maxLength;
@@ -11,7 +11,7 @@ Line::Line(double spaceWidth, double fontSize, double maxLength)
 
 bool Line::attemptToAddWord(Word* word)
 {
-	double additionalLength = word->getWordWidth();
+	float additionalLength = word->getWordWidth();
 	additionalLength += !words.empty() ? spaceSize : 0;
 	if (currentLineLength + additionalLength <= maxLength)
 	{
@@ -25,17 +25,15 @@ bool Line::attemptToAddWord(Word* word)
 	}
 }
 
-double Line::getMaxLength()
+float Line::getMaxLength()
 {
 	return maxLength;
 }
 
-
-double Line::getLineLength()
+float Line::getLineLength()
 {
 	return currentLineLength;
 }
-
 
 std::list<Word>* Line::getWords()
 {

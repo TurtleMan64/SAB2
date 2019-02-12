@@ -17,9 +17,10 @@ class WaterTile;
 #include <string>
 #include <random>
 #include <list>
+#include <vector>
 #include <unordered_map>
+#include <unordered_set>
 #include "../toolbox/level.h"
-#include "../toolbox/menumanager.h"
 
 void Main_addEntity(Entity* entityToAdd);
 void Main_deleteEntity(Entity* entityToDelete);
@@ -36,6 +37,10 @@ void Main_deleteAllEntitesPass3();
 void Main_addTransparentEntity(Entity* entityToAdd);
 void Main_deleteTransparentEntity(Entity* entityToDelete);
 void Main_deleteAllTransparentEntites();
+
+void Main_addChunkedEntity(Entity* entityToAdd);
+void Main_deleteChunkedEntity(Entity* entityToAdd);
+void Main_deleteAllChunkedEntities();
 
 #define STATE_PAUSED 0
 #define STATE_RUNNING 1
@@ -166,6 +171,15 @@ public:
 
 	static void increaseRingCount(int rings);
 
-	static MenuManager menuManager;
+	//Return a list of nearby entity sets. renderDistance is number of layers to go outwards.
+	//0 = only the exact chunk.
+	//1 = 4 chunks
+	//2 = 9 chunks
+	static void getNearbyEntities(float x, float z, int renderDistance, std::list<std::unordered_set<Entity*>*>* list);
+
+	//Returns the index of 'gameChunkedEntities' for the (x, z) location
+	static int getChunkIndex(float x, float z);
+
+	static void recalculateEntityChunks(float minX, float maxX, float minZ, float maxZ, float chunkSize);
 };
 #endif

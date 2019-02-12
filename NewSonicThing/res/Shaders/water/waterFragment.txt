@@ -24,8 +24,8 @@ const float waveStrength = 0.025;
 const float shineDamper = 80.0;
 const float reflectivity = 0.80;
 
-const float NEAR = 0.5;
-const float FAR = 15000.0;
+const float NEAR = 1.5;
+const float FAR = 60000.0;
 
 
 void main(void)

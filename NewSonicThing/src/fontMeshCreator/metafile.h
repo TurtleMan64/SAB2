@@ -22,11 +22,11 @@ private:
 	static const char SPLITTER = ' ';
 	static const char NUMBER_SEPARATOR = ',';
 
-	double aspectRatio;
+	float aspectRatio;
 
-	double verticalPerPixelSize;
-	double horizontalPerPixelSize;
-	double spaceWidth;
+	float verticalPerPixelSize;
+	float horizontalPerPixelSize;
+	float spaceWidth;
 	std::vector<int> padding;
 	int paddingWidth;
 	int paddingHeight;
@@ -119,7 +119,7 @@ public:
 	*/
 	MetaFile(std::string filename);
 
-	double getSpaceWidth();
+	float getSpaceWidth();
 
 	Character getCharacter(int ascii);
 };

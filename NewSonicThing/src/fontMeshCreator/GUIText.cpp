@@ -18,10 +18,32 @@ GUIText::GUIText(std::string text, float fontSize, FontType* font, float x, floa
 	this->fontSize = fontSize;
 	this->font = font;
 	this->position.set(x, y);
+	alignment = 0;
 	this->lineMaxSize = maxLineLength;
-	this->centerText = centered;
-	this->rightAlign = rightAligned;
+	if (centered)
+	{
+		alignment = 1;
+		position.x += maxLineLength/2;
+	}
+	else if (rightAligned)
+	{
+		alignment = 2;
+		position.x += maxLineLength;
+	}
 	this->visible = visible;
+	TextMaster::loadText(this);
+}
+
+GUIText::GUIText(std::string text, float fontSize, FontType* font, float x, float y, int alignment, bool visible)
+{
+	this->colour.set(1, 1, 1);
+	this->textString.assign(text);
+	this->fontSize = fontSize/0.03f;
+	this->font = font;
+	this->position.set(x, y);
+	this->alignment = alignment;
+	this->visible = visible;
+	this->lineMaxSize = 1000000.0f;
 	TextMaster::loadText(this);
 }
 
@@ -53,6 +75,11 @@ Vector3f* GUIText::getColour()
 int GUIText::getNumberOfLines()
 {
 	return numberOfLines;
+}
+
+float GUIText::getMaxLineSize()
+{
+	return lineMaxSize;
 }
 
 Vector2f* GUIText::getPosition()
@@ -105,19 +132,9 @@ void GUIText::setNumberOfLines(int number)
 	numberOfLines = number;
 }
 
-bool GUIText::isCentered()
+int GUIText::getAlignment()
 {
-	return centerText;
-}
-
-bool GUIText::isRightAligned()
-{
-	return rightAlign;
-}
-
-float GUIText::getMaxLineSize()
-{
-	return lineMaxSize;
+	return alignment;
 }
 
 std::string* GUIText::getTextString()

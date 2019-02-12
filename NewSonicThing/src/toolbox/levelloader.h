@@ -2,6 +2,9 @@
 #define LEVELLOADER_H
 
 #include <string>
+#include <list>
+
+class Entity;
 
 class LevelLoader
 {
@@ -10,7 +13,7 @@ private:
 
 	static int toInt(char* input);
 
-	static void processLine(char** data, int dataLength);
+	static void processLine(char** data, int dataLength, std::list<Entity*>* chunkedEntities);
 
 	static void freeAllStaticModels();
 

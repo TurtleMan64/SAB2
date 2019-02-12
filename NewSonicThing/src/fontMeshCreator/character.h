@@ -12,15 +12,15 @@ class Character
 {
 private:
 	int id;
-	double xTextureCoord;
-	double yTextureCoord;
-	double xMaxTextureCoord;
-	double yMaxTextureCoord;
-	double xOffset;
-	double yOffset;
-	double sizeX;
-	double sizeY;
-	double xAdvance;
+	float xTextureCoord;
+	float yTextureCoord;
+	float xMaxTextureCoord;
+	float yMaxTextureCoord;
+	float xOffset;
+	float yOffset;
+	float sizeX;
+	float sizeY;
+	float xAdvance;
 
 public:
 	/**
@@ -50,30 +50,30 @@ public:
 	*            - how far in pixels the cursor should advance after adding
 	*            this character.
 	*/
-	Character(int id, double xTextureCoord, double yTextureCoord, double xTexSize, double yTexSize,
-		double xOffset, double yOffset, double sizeX, double sizeY, double xAdvance);
+	Character(int id, float xTextureCoord, float yTextureCoord, float xTexSize, float yTexSize,
+		float xOffset, float yOffset, float sizeX, float sizeY, float xAdvance);
 
 	Character();
 
 	int getId();
 
-	double getxTextureCoord();
+	float getxTextureCoord();
 
-	double getyTextureCoord();
+	float getyTextureCoord();
 
-	double getXMaxTextureCoord();
+	float getXMaxTextureCoord();
 
-	double getYMaxTextureCoord();
+	float getYMaxTextureCoord();
 
-	double getxOffset();
+	float getxOffset();
 
-	double getyOffset();
+	float getyOffset();
 
-	double getSizeX();
+	float getSizeX();
 
-	double getSizeY();
+	float getSizeY();
 
-	double getxAdvance();
+	float getxAdvance();
 };
 
 #endif

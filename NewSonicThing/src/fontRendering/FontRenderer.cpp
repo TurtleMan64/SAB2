@@ -10,8 +10,7 @@
 
 FontRenderer::FontRenderer()
 {
-	shader = new FontShader("res/Shaders/fontRendering/fontVertex.txt", "res/Shaders/fontRendering/fontFragment.txt");
-	INCR_NEW
+	shader = new FontShader("res/Shaders/fontRendering/fontVertex.txt", "res/Shaders/fontRendering/fontFragment.txt"); INCR_NEW
 }
 
 
@@ -69,6 +68,7 @@ void FontRenderer::renderText(GUIText* text)
 	glBindVertexArray(text->getMesh());
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
+	//shader->loadScale(text->getFontSize());
 	shader->loadScale(1.0f);
 	shader->loadColour(text->getColour());
 	shader->loadTranslation(text->getPosition());
