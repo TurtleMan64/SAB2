@@ -13,6 +13,7 @@
 class MissionMenu : public Menu
 {
 private:
+	static int index;
 	GLuint textureParallelogram;
 	GLuint textureParallelogramBackdrop;
 	GLuint textureParallelogramHalf;
@@ -61,8 +62,6 @@ private:
 
 	GuiTexture* npcIcon;
 	FontType* font;
-
-	int index;
 
 	void selectButton();
 

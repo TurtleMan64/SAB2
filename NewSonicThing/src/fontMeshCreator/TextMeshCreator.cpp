@@ -6,7 +6,7 @@
 #include "../engineTester/main.h"
 
 
-float TextMeshCreator::LINE_HEIGHT = 0.03f;
+float TextMeshCreator::LINE_HEIGHT = 1.0f;
 #define FONT_SIZE text->getFontSize()
 
 TextMeshCreator::TextMeshCreator(std::string metaFilename)

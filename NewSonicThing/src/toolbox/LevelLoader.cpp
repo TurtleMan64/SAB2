@@ -93,7 +93,6 @@ void LevelLoader::loadTitle()
 
 	GuiManager::clearGuisToRender();
 
-	Global::menuManager.push(new MissionMenu());
 	Global::gameState = STATE_TITLE;
 	Global::gameIsNormalMode = false;
 	Global::gameIsHardMode = false;

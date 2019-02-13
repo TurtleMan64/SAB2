@@ -2,6 +2,9 @@
 #include "menu.h"
 #include <stack>
 #include <iostream>
+#include "input.h"
+#include "pausescreen.h"
+#include "missionmenu.h"
 
 MenuManager::MenuManager()
 {
@@ -29,7 +32,21 @@ void MenuManager::step()
 {
 	if (!this->menuStack.empty())
 	{
-		if (this->menuStack.top()->step()) // If step returns 1, pop.
+		int retVal = this->menuStack.top()->step();
+		if (retVal) // If step returns 1, pop.
+		{
 			this->pop();
+			if (retVal == 2)
+			{
+				this->push(new MissionMenu);
+			}
+		}
+	}
+	else
+	{
+		if (Input::inputs.INPUT_START && !Input::inputs.INPUT_PREVIOUS_START)
+		{
+			this->push(new PauseScreen());
+		}
 	}
 }

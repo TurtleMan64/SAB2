@@ -19,10 +19,11 @@
 #include "../guis/guitexture.h"
 #include "button.h"
 
+int MissionMenu::index = 0;
+
 MissionMenu::MissionMenu()
 {
 	std::cout << "Initializing Mission Menu\n";
-	index = 0;
 	this->init();
 	this->loadResources();
 	std::cout << "Mission Menu initialized\n";
@@ -74,7 +75,7 @@ void MissionMenu::loadResources()
 	{
 		std::string buttonText = "";
 		buttonText = level.displayName;
-		levelButton[counter] = new Button(level.displayName, font, textureParallelogram, textureParallelogramBackdrop, 0.5f, 0.5f + (0.25f * counter), 0.56f / GuiManager::getAspectRatio(), 0.07f, true);
+		levelButton[counter] = new Button(level.displayName, font, textureParallelogram, textureParallelogramBackdrop, 0.5f, 0.5f + (0.2f * counter), 0.56f / GuiManager::getAspectRatio(), 0.07f, true);
 		counter++;
 	}
 }
@@ -97,7 +98,7 @@ void MissionMenu::selectButton()
 	
 	for (int i = 0; i < this->counter; i++)
 	{
-		this->levelButton[i]->setPos(0.5f, 0.5f + (0.25f * (i - index)));
+		this->levelButton[i]->setPos(0.5f, 0.5f + (0.15f * (i - MissionMenu::index)));
 		this->levelButton[i]->setVisible(true);
 	}
 }
@@ -108,11 +109,22 @@ int MissionMenu::step()
 	bool shouldGoDown = false;
 	bool shouldGoLeft = false;
 	bool shouldGoRight = false;
-	bool pressedSelect = (Input::inputs.INPUT_ACTION1 && !Input::inputs.INPUT_PREVIOUS_ACTION1) || (Input::inputs.INPUT_START && !Input::inputs.INPUT_PREVIOUS_START);
-	bool pressedBack = (Input::inputs.INPUT_ACTION2 && !Input::inputs.INPUT_PREVIOUS_ACTION2);
+	bool pressedSelect = false;
+	bool pressedBack = false;
 
 	int moveX = (int)round(Input::inputs.INPUT_X);
 	int moveY = (int)round(Input::inputs.INPUT_Y);
+
+	if ((Input::inputs.INPUT_ACTION1 && !Input::inputs.INPUT_PREVIOUS_ACTION1) || 
+		(Input::inputs.INPUT_START && !Input::inputs.INPUT_PREVIOUS_START))
+	{
+		pressedSelect = true;
+	}
+
+	if (Input::inputs.INPUT_ACTION2 && !Input::inputs.INPUT_PREVIOUS_ACTION2)
+	{
+		pressedBack = true;
+	}
 
 	if (moveX != moveXPrevious)
 	{
@@ -178,24 +190,24 @@ int MissionMenu::step()
 
 	if (shouldGoUp)
 	{
-		if (index > 0)
+		if (MissionMenu::index > 0)
 		{
-			index = index - 1;
+			MissionMenu::index = MissionMenu::index - 1;
 		}
 	}
 	if (shouldGoDown)
 	{
-		if (index < (this->counter - 1))
+		if (MissionMenu::index < (this->counter - 1))
 		{
-			index = index + 1;
+			MissionMenu::index = MissionMenu::index + 1;
 		}
 	}
 
 	if (pressedSelect)
 	{
-		AudioPlayer::play(38, Global::gameCamera->getFadePosition1());
+ 		AudioPlayer::play(38, Global::gameCamera->getFadePosition1());
 
-		Level* currentLevel = &Global::gameLevelData[index];
+		Level* currentLevel = &Global::gameLevelData[MissionMenu::index];
 		Global::levelName = currentLevel->fileName;
 		Global::levelNameDisplay = currentLevel->displayName;
 		Global::gameMissionDescription = (currentLevel->missionData[Global::gameMissionNumber])[(currentLevel->missionData[Global::gameMissionNumber]).size() - 1];

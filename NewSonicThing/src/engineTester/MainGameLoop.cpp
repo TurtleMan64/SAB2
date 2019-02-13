@@ -71,7 +71,8 @@
 #include "../water/waterrenderer.h"
 #include "../water/watertile.h"
 #include "../toolbox/getline.h"
-
+#include "../toolbox/menumanager.h"
+#include "../toolbox/missionmenu.h"
 #ifdef _WIN32
 #include <windows.h>
 #include <tchar.h>
@@ -215,6 +216,8 @@ void doListenThread();
 
 void listen();
 
+MenuManager Global::menuManager = MenuManager();
+
 int main()
 {
 	#ifdef DEV_MODE
@@ -246,15 +249,13 @@ int main()
 
 	LevelLoader::loadLevelData();
 
-	PauseScreen::init();
-
 	AudioMaster::init();
 
 	TextMaster::init();
 
 	GuiManager::init();
 
-	MainMenu::init();
+	Global::menuManager.push(new MissionMenu);
 
 
 	if (Global::renderParticles)
@@ -439,9 +440,7 @@ int main()
 		}
 		gameChunkedEntitiesToDelete.clear();
 
-
-		MainMenu::step();
-		PauseScreen::step();
+		Global::menuManager.step();
 
 		switch (Global::gameState)
 		{
@@ -756,8 +755,6 @@ int main()
 						Global::levelName = nextLevel->fileName;
 						Global::levelNameDisplay = nextLevel->displayName;
 						Global::gameMissionDescription = (nextLevel->missionData[Global::gameMissionNumber])[(nextLevel->missionData[Global::gameMissionNumber]).size()-1];
-
-						MainMenu::createTitleCard();
 					}
 					else
 					{
@@ -779,7 +776,6 @@ int main()
 						AudioPlayer::play(7, Global::gameCamera->getFadePosition1());
 
 						LevelLoader::loadTitle();
-						MainMenu::selectMenuArcadeClear();
 						Global::gameIsArcadeMode = false;
 					}
 				}
@@ -800,15 +796,6 @@ int main()
 			if (finishTimerBefore < 6.166f && Global::finishStageTimer >= 6.166f)
 			{
 				int rank = Global::calculateRankAndUpdate();
-				switch (rank)
-				{
-					case 0: GuiTextureResources::textureRankDisplay->setTexture(MainMenu::textureRankE); break;
-					case 1: GuiTextureResources::textureRankDisplay->setTexture(MainMenu::textureRankD); break;
-					case 2: GuiTextureResources::textureRankDisplay->setTexture(MainMenu::textureRankC); break;
-					case 3: GuiTextureResources::textureRankDisplay->setTexture(MainMenu::textureRankB); break;
-					case 4: GuiTextureResources::textureRankDisplay->setTexture(MainMenu::textureRankA); break;
-					default: break;
-				}
 				GuiManager::addGuiToRender(GuiTextureResources::textureRankDisplay);
 				//AudioPlayer::play(44, Global::gamePlayer->getPosition());
 			}
