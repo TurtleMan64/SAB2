@@ -46,7 +46,8 @@
 #include "../entities/dashpad.h"
 #include "../entities/speedramp.h"
 #include "../entities/point.h"
-#include "../entities/rocket.h"
+#include "../entities/rockethorizontal.h"
+#include "../entities/rocketvertical.h"
 
 void LevelLoader::loadTitle()
 {
@@ -882,12 +883,21 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 			return;
 		}
 
-		case 97: //Rocket
+		case 97: //Horizontal Rocket
 		{
-			Rocket::loadStaticModels();
-			Rocket* rocket = new Rocket(toInt(dat[1]), toInt(dat[2])); //Point IDs for start and end of path, position of rocket initialized to where point ID 1 is
+			RocketHorizontal::loadStaticModels();
+			RocketHorizontal* rocketHorizontal = new RocketHorizontal(toInt(dat[1]), toInt(dat[2])); //Point IDs for start and end of path, position of rocket initialized to where point ID 1 is
 			INCR_NEW
-			Main_addEntity(rocket);
+			Main_addEntity(rocketHorizontal);
+			return;
+		}
+
+		case 98: //Vertical Rocket
+		{
+			RocketVertical::loadStaticModels();
+			RocketVertical* rocketVertical = new RocketVertical(toInt(dat[1]), toInt(dat[2])); //Point IDs for start and end of path, position of rocket initialized to where point ID 1 is
+			INCR_NEW
+			Main_addEntity(rocketVertical);
 			return;
 		}
 		//case 91: //Metal Harbor
@@ -993,7 +1003,8 @@ void LevelLoader::freeAllStaticModels()
 	Ring::deleteStaticModels();
 	Dashpad::deleteStaticModels();
 	SpeedRamp::deleteStaticModels();
-	Rocket::deleteStaticModels();
+	RocketHorizontal::deleteStaticModels();
+	RocketVertical::deleteStaticModels();
 	MH_GiantRocket::deleteStaticModels();
 	MH_PathDiagonal::deleteStaticModels();
 	MH_PathFlat::deleteStaticModels();

@@ -1,5 +1,5 @@
-#ifndef ROCKET_H
-#define ROCKET_H
+#ifndef ROCKETGENERAL_H
+#define ROCKETGENERAL_H
 
 class TexturedModel;
 class Body;
@@ -10,9 +10,13 @@ class Source;
 #include "./collideableobject.h"
 
 
-class Rocket : public CollideableObject
+class RocketGeneral : public CollideableObject
 {
-private:
+protected:
+	void rocketConstructor(int point1ID, int point2ID);
+
+	void rocketStep();
+
 	//Visual model of the rocket
 	static std::list<TexturedModel*> modelsRocket;
 	//Visual model of the base
@@ -60,7 +64,7 @@ private:
 	const float STARTUP_TIMER_INITIAL_VALUE = 0.5;
 
 	//particle position offset from the rockets position when the rocket is starting up
-	const float PARTICLE_POSITION_OFFSET_ROCKET_STARTUP = 0;
+	const float PARTICLE_POSITION_OFFSET_ROCKET_STARTUP = -2;
 	//particle position offset from the rockets position when the rocket is moving
 	const float PARTICLE_POSITION_OFFSET_ROCKET_MOVING = 0;
 
@@ -99,26 +103,20 @@ private:
 	void setPlayerVariablesRocketActive();
 	//If the rocket has started moving, the startup animation has finished
 	bool rocketStartedMoving();
-	//Set the player's position so they hold the rocket handle when the rocket is starting up
-	void setPlayerPositionToHoldRocketHandleStartup();
-	//Set the player's position so they hold the rocket handle when the rocket is moving
-	void setPlayerPositionToHoldRocketHandleMoving();
+	//Set the player's position so they hold the rocket handle
+	void setPlayerPositionToHoldRocketHandle();
 	//Calculates the new position of the rocket for the new frame
 	void calculateNewRocketPosition();
 	//Calculates the new value of percentOfPathCompleted using the speed, length of the path, and dt
-	float calculateNewPercentOfPathCompletedValue();
+	void calculateNewPercentOfPathCompletedValue();
 	//Returns true if the percentOfPathCompleted is 100% (equal to 1)
 	bool fullPathTraveled();
 	//Sets player velocity, onRocket, and canMoveTimer for the end of the rocket's path
 	void setPlayerVariablesRocketStopping();
 	//Resets the rocket's position, canActivate, isActive, percentOfPathCompleted, and startupTimer to default values
 	void resetRocketVariables();
+
 public:
-	Rocket();
-	Rocket(int point1ID, int point2ID);
-
-	void step();
-
 	std::list<TexturedModel*>* getModels();
 
 	static void loadStaticModels();
