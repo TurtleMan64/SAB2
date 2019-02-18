@@ -3,7 +3,7 @@
 #include "./entity.h"
 #include "../models/models.h"
 #include "../toolbox/vector.h"
-#include "rocketgeneral.h"
+#include "rocket.h"
 #include "../renderEngine/renderEngine.h"
 #include "../objLoader/objLoader.h"
 #include "../engineTester/main.h"
@@ -27,11 +27,11 @@
 
 extern float dt;
 
-std::list<TexturedModel*> RocketGeneral::modelsRocket;
-std::list<TexturedModel*> RocketGeneral::modelsBase;
-CollisionModel* RocketGeneral::cmBase;
+std::list<TexturedModel*> Rocket::modelsRocket;
+std::list<TexturedModel*> Rocket::modelsBase;
+CollisionModel* Rocket::cmBase;
 
-void RocketGeneral::rocketConstructor(int point1ID, int point2ID)
+Rocket::Rocket(int point1ID, int point2ID)
 {
     //get the positions of the start and end points
     pointPositionStart = getPointPosition(point1ID);
@@ -39,24 +39,24 @@ void RocketGeneral::rocketConstructor(int point1ID, int point2ID)
 
     //set some variables to their initial values
     position = pointPositionStart;
-    percentOfPathCompleted = 0;
-	startupTimer = STARTUP_TIMER_INITIAL_VALUE;
 	canActivate = true;
 	isActive = false;
-	rocketAppearSoundPlayed = false;
+	percentOfPathCompleted = 0;
+	startupTimer = STARTUP_TIMER_INITIAL_VALUE;
+
+	rocketAppearSoundPlayed = false; //these are outside that function so it can also be used for the end of the rocket's launch
     visible = true;
 
     setupRocketBase();
 
-    position.y += 10; //move RocketGeneral to be above the platform
+	position.y += 10; //place the rocket above the base of the rocket
 
     //for rotating the rocket to face the end, as well as for the actual movement
 	rocketPathPositionDifference = pointPositionEnd - position;
 
-    //calculate the actual rotation values using these position differences
-    rotY = calculateRocketYRotation();
+	rotY = calculateRocketYRotation();
 	rotZ = calculateRocketZRotation();
-	base->setRotY(rotY); //make the base point the same direction
+	base->setRotY(rotY);
 
 	rocketPathPositionDifferenceNormalized = rocketPathPositionDifference;
 	rocketPathPositionDifferenceNormalized.normalize();
@@ -69,7 +69,7 @@ void RocketGeneral::rocketConstructor(int point1ID, int point2ID)
 	base->updateTransformationMatrix();
 }
 
-void RocketGeneral::rocketStep()
+void Rocket::step()
 {
     if (abs(getX() - Global::gameCamera->eye.x) > ENTITY_RENDER_DIST) //not within visible range on the x-axis
 	{
@@ -147,7 +147,7 @@ void RocketGeneral::rocketStep()
 				//stop moving and deactivate rocket
 				setPlayerVariablesRocketStopping();
 
-				resetRocketVariables();
+				resetRocketVariables(); //reuse of function used in the constructor as well
 			}
 
 			updateTransformationMatrix();
@@ -156,14 +156,14 @@ void RocketGeneral::rocketStep()
     }
 }
 
-std::list<TexturedModel*>* RocketGeneral::getModels()
+std::list<TexturedModel*>* Rocket::getModels()
 {
-	return &RocketGeneral::modelsRocket;
+	return &Rocket::modelsRocket;
 }
 
-void RocketGeneral::loadStaticModels()
+void Rocket::loadStaticModels()
 {
-	if (RocketGeneral::modelsRocket.size() > 0)
+	if (Rocket::modelsRocket.size() > 0)
 	{
 		return;
 	}
@@ -172,28 +172,28 @@ void RocketGeneral::loadStaticModels()
 	std::fprintf(stdout, "Loading Rocket static models...\n");
 	#endif
 
-	loadModel(&RocketGeneral::modelsRocket, "res/Models/Objects/Rocket/", "Rocket");
-	loadModel(&RocketGeneral::modelsBase,   "res/Models/Objects/Rocket/", "RocketPlatform");
+	loadModel(&Rocket::modelsRocket, "res/Models/Objects/Rocket/", "Rocket");
+	loadModel(&Rocket::modelsBase,   "res/Models/Objects/Rocket/", "RocketPlatform");
 
-	if (RocketGeneral::cmBase == nullptr)
+	if (Rocket::cmBase == nullptr)
 	{
-		RocketGeneral::cmBase = loadCollisionModel("Models/Objects/Rocket/", "RocketPlatformCollision");
+		Rocket::cmBase = loadCollisionModel("Models/Objects/Rocket/", "RocketPlatformCollision");
 	}
 }
 
-void RocketGeneral::deleteStaticModels()
+void Rocket::deleteStaticModels()
 {
 	#ifdef DEV_MODE
 	std::fprintf(stdout, "Deleting Rocket static models...\n");
 	#endif
 
-	Entity::deleteModels(&RocketGeneral::modelsRocket);
-	Entity::deleteModels(&RocketGeneral::modelsBase);
+	Entity::deleteModels(&Rocket::modelsRocket);
+	Entity::deleteModels(&Rocket::modelsBase);
 }
 
 //functions used for the constructor start here
 
-Vector3f RocketGeneral::getPointPosition(int pointID)
+Vector3f Rocket::getPointPosition(int pointID)
 {
     Vector3f pointPos;
     extern std::list<Entity*> gameEntitiesToAdd;
@@ -212,26 +212,26 @@ Vector3f RocketGeneral::getPointPosition(int pointID)
     return pointPos;
 }
 
-void RocketGeneral::setupRocketBase()
+void Rocket::setupRocketBase()
 {
-    base = new Body(&RocketGeneral::modelsBase);
+    base = new Body(&Rocket::modelsBase);
 	base->setVisible(true);
 	INCR_NEW
 	Main_addEntity(base);
 	base->setPosition(&position);
 
-	collideModelOriginal = RocketGeneral::cmBase;
-	collideModelTransformed = loadCollisionModel("Models/Objects/RocketGeneral/", "RocketPlatformCollision");
+	collideModelOriginal = Rocket::cmBase;
+	collideModelTransformed = loadCollisionModel("Models/Objects/Rocket/", "RocketPlatformCollision");
 	CollisionChecker::addCollideModel(collideModelTransformed);
 	updateCollisionModel();
 }
 
-float RocketGeneral::calculateRocketYRotation()
+float Rocket::calculateRocketYRotation()
 {
     return Maths::toDegrees(atan2(-rocketPathPositionDifference.z, rocketPathPositionDifference.x));
 }
 
-float RocketGeneral::calculateRocketZRotation()
+float Rocket::calculateRocketZRotation()
 {
     return Maths::toDegrees(atan2(rocketPathPositionDifference.y, 
             sqrt(rocketPathPositionDifference.x*rocketPathPositionDifference.x +
@@ -239,31 +239,31 @@ float RocketGeneral::calculateRocketZRotation()
 }
 
 //functions used for step() start here
-float RocketGeneral::getPlayerToRocketDifferenceHorizontalSquared()
+float Rocket::getPlayerToRocketDifferenceHorizontalSquared()
 {
 	return playerToRocketPositionDifference.x*playerToRocketPositionDifference.x + playerToRocketPositionDifference.z*playerToRocketPositionDifference.z;
 
 }
 
-bool RocketGeneral::playerWithinAppearSoundRange()
+bool Rocket::playerWithinAppearSoundRange()
 {
 	return (playerToRocketPositionDifferenceHorizontalSquared <= pow(HITBOX_RADIUS * 30, 2)
 			&& fabsf(playerToRocketPositionDifference.y) < (HITBOX_HEIGHT * 10));
 }
 
-bool RocketGeneral::playerOutsideAppearSoundResetRange()
+bool Rocket::playerOutsideAppearSoundResetRange()
 {
 	return (playerToRocketPositionDifferenceHorizontalSquared >= pow(HITBOX_RADIUS * 150, 2)
 			&& fabsf(playerToRocketPositionDifference.y) < (HITBOX_HEIGHT * 50));
 }
 
-bool RocketGeneral::playerWithinRocketHitbox()
+bool Rocket::playerWithinRocketHitbox()
 {
 	return (playerToRocketPositionDifferenceHorizontalSquared <= pow(HITBOX_RADIUS, 2)
 			&& fabsf(playerToRocketPositionDifference.y) < HITBOX_HEIGHT);
 }
 
-void RocketGeneral::makeDirtParticles(float particlePositionOffset)
+void Rocket::makeDirtParticles(float particlePositionOffset)
 {
 	int dirtToMake = 5;
 	while (dirtToMake > 0)
@@ -291,7 +291,7 @@ void RocketGeneral::makeDirtParticles(float particlePositionOffset)
 		}
 }
 
-void RocketGeneral::playRocketLaunchSound()
+void Rocket::playRocketLaunchSound()
 {
 	if (rocketAudioSource != nullptr)
 	{
@@ -306,7 +306,7 @@ void RocketGeneral::playRocketLaunchSound()
 	}
 }
 
-void RocketGeneral::setPlayerVariablesRocketActive()
+void Rocket::setPlayerVariablesRocketActive()
 {
 	Global::gameMainVehicle->setVelocity(rocketPathPositionDifferenceNormalized.x * 1000, rocketPathPositionDifferenceNormalized.y * 1000, rocketPathPositionDifferenceNormalized.z * 1000);
 	Global::gameMainVehicle->setOnRocket(true);
@@ -315,12 +315,12 @@ void RocketGeneral::setPlayerVariablesRocketActive()
 	Global::gameMainVehicle->setOnGround(false);
 }
 
-bool RocketGeneral::rocketStartedMoving()
+bool Rocket::rocketStartedMoving()
 {
 	return startupTimer <= 0;
 }
 
-void RocketGeneral::setPlayerPositionToHoldRocketHandle()
+void Rocket::setPlayerPositionToHoldRocketHandle()
 {
 	Global::gameMainVehicle->setPosition(
 			position.x - 6*rocketPathPositionDifferenceNormalized.x,
@@ -328,33 +328,33 @@ void RocketGeneral::setPlayerPositionToHoldRocketHandle()
 			position.z - 6*rocketPathPositionDifferenceNormalized.z);
 }
 
-void RocketGeneral::calculateNewRocketPosition()
+void Rocket::calculateNewRocketPosition()
 {
 	position.x = pointPositionStart.x + (rocketPathPositionDifference.x * percentOfPathCompleted);
 	position.y = (pointPositionStart.y + 10) + (rocketPathPositionDifference.y * percentOfPathCompleted);
 	position.z = pointPositionStart.z + (rocketPathPositionDifference.z * percentOfPathCompleted);
 }
 
-void RocketGeneral::calculateNewPercentOfPathCompletedValue()
+void Rocket::calculateNewPercentOfPathCompletedValue()
 {
 	percentOfPathCompleted += (ROCKET_SPEED * dt) / rocketPathPositionDifferenceLength;
 }
 
-bool RocketGeneral::fullPathTraveled()
+bool Rocket::fullPathTraveled()
 {
 	return (percentOfPathCompleted >= 1);
 }
 
-void RocketGeneral::setPlayerVariablesRocketStopping()
+void Rocket::setPlayerVariablesRocketStopping()
 {
 	Global::gameMainVehicle->setVelocity(rocketPathPositionDifferenceNormalized.x, rocketPathPositionDifferenceNormalized.y, rocketPathPositionDifferenceNormalized.z);
 	Global::gameMainVehicle->setOnRocket(false);
 	Global::gameMainVehicle->setCanMoveTimer(0);
 }
 
-void RocketGeneral::resetRocketVariables()
+void Rocket::resetRocketVariables()
 {
-	position.set(&pointPositionStart);
+	position = pointPositionStart;
 	position.y += 10;
 	canActivate = true;
 	isActive = false;

@@ -1,5 +1,5 @@
-#ifndef ROCKETGENERAL_H
-#define ROCKETGENERAL_H
+#ifndef ROCKET_H
+#define ROCKET_H
 
 class TexturedModel;
 class Body;
@@ -10,13 +10,9 @@ class Source;
 #include "./collideableobject.h"
 
 
-class RocketGeneral : public CollideableObject
+class Rocket : public CollideableObject
 {
-protected:
-	void rocketConstructor(int point1ID, int point2ID);
-
-	void rocketStep();
-
+private:
 	//Visual model of the rocket
 	static std::list<TexturedModel*> modelsRocket;
 	//Visual model of the base
@@ -117,6 +113,11 @@ protected:
 	void resetRocketVariables();
 
 public:
+	Rocket();
+	Rocket(int point1ID, int point2ID);
+
+	void step();
+
 	std::list<TexturedModel*>* getModels();
 
 	static void loadStaticModels();
