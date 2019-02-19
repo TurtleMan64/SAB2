@@ -33,7 +33,6 @@ Spring::Spring(float x, float y, float z, float rotY, float rotZ, float myPower,
 	this->rotX = 0;
 	this->rotY = rotY;
 	this->rotZ = rotZ;
-	this->springRadius = 7.8f;
 	this->springPower = myPower;
 	this->cooldownTimer = 0;
 	this->cooldownTimerMax = cooldownMax / 60; //convert from frames at 60fps to seconds
@@ -117,9 +116,9 @@ Vector3f Spring::getHomingCenter()
 
 bool Spring::playerIsInRange()
 {
-	return Global::gameMainVehicle->getX() > getX() - springRadius - Global::gameMainVehicle->getHitboxHorizontal() && Global::gameMainVehicle->getX() < getX() + springRadius + Global::gameMainVehicle->getHitboxHorizontal() &&
-		Global::gameMainVehicle->getZ() > getZ() - springRadius - Global::gameMainVehicle->getHitboxHorizontal() && Global::gameMainVehicle->getZ() < getZ() + springRadius + Global::gameMainVehicle->getHitboxHorizontal() &&
-		Global::gameMainVehicle->getY() > getY() - springRadius - Global::gameMainVehicle->getHitboxVertical()   && Global::gameMainVehicle->getY() < getY() + springRadius;
+	return Global::gameMainVehicle->getX() > getX() - SPRING_RADIUS - Global::gameMainVehicle->getHitboxHorizontal() && Global::gameMainVehicle->getX() < getX() + SPRING_RADIUS + Global::gameMainVehicle->getHitboxHorizontal() &&
+		Global::gameMainVehicle->getZ() > getZ() - SPRING_RADIUS - Global::gameMainVehicle->getHitboxHorizontal() && Global::gameMainVehicle->getZ() < getZ() + SPRING_RADIUS + Global::gameMainVehicle->getHitboxHorizontal() &&
+		Global::gameMainVehicle->getY() > getY() - SPRING_RADIUS - Global::gameMainVehicle->getHitboxVertical()   && Global::gameMainVehicle->getY() < getY() + SPRING_RADIUS;
 }
 
 Vector3f Spring::calculateDirectionOfMovement()

@@ -10,13 +10,19 @@ class TexturedModel;
 class Spring : public Entity
 {
 private:
+	//Springs visual model
 	static std::list<TexturedModel*> models;
 
+	//power of the spring, how far it sends the player
 	float springPower;
-	float springRadius;
+	//radius of the spring, how far away from is is still considered touching
+	const float SPRING_RADIUS = 7.8f;
+	//Current value of the cooldown timer, when this is 0 you can interact with the spring,
+	//otherwise dt is subtracted from it until it is 0
 	int cooldownTimer;
-	int cooldownTimerMax;
-
+	//What the cooldown timer starts counting from when reset, also what the player canMove timer is set to
+	int cooldownTimerInitialValue;
+	//The direction of the movement the spring will send you in, calculated using the y and z rotation of the spring
 	Vector3f directionOfMovement;
 
 	//functions for step() start here
