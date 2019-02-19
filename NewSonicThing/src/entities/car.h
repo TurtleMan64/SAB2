@@ -49,20 +49,28 @@ private:
 	ManiaSonicModel* maniaSonicModel;
 
 	bool onGround = false;
-	Vector3f vel; //Direction we are currently going
-	Vector3f relativeUp; //What direction is "up", aka grounds normal
-	Vector3f relativeUpSmooth; //What direction is "up", aka grounds normal
-	Vector3f relativeUpAnim; //relative up to use for animations. smooth less than relativeUpSmooth
-	Vector3f camDir; //Direction the camera wants to be facing
-	Vector3f camDirSmooth; //Direction the camera is facing curerntly
+	//Current velocity of the player
+	Vector3f vel;
+	//What direction is "up", aka the normal of the ground
+	Vector3f relativeUp;
+	//(TODO: difference between up and smooth) What direction is "up", aka grounds normal
+	Vector3f relativeUpSmooth;
+	//(TODO: Better Description) relative up to use for animations. smooth less than relativeUpSmooth
+	Vector3f relativeUpAnim;
+	//Direction the camera wants to be facing
+	Vector3f camDir;
+	//Direction the camera is facing curerntly
+	Vector3f camDirSmooth; 
 
-	const float FLOOR_OFFSET = 0.1f; //How much you stay away from the floor
+	//How much you stay away from the floor
+	const float FLOOR_OFFSET = 0.1f; 
 	Triangle3D* currentTriangle = nullptr; //the triangle object that you are touching
 	const float smoothTransitionThreshold = 0.6f; //Dot product threshold for running between triangles
 	const float surfaceTension = 10.0f;     //To not fly off the ground
 	const float hitWallTimePunish = 0.0f;   //How long you can't move after hitting a wall 0.125
 	const float wallStickThreshold = 0.45f;  //How steep a slope must be to be considered a wall 0.3
 
+	//The force of gravity
 	const float gravityForce = 280.0f;
 	const float gravityTerminal = -550.0f;
 	const float gravityApproach = 0.4f;
@@ -264,6 +272,8 @@ private:
 	void setInputs();
 
 	void updateAnimationValues();
+
+
 
 public:
 	Car();
