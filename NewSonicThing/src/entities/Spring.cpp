@@ -35,7 +35,7 @@ Spring::Spring(float x, float y, float z, float rotY, float rotZ, float myPower,
 	this->rotZ = rotZ;
 	this->springPower = myPower;
 	this->cooldownTimer = 0;
-	this->cooldownTimerInitialValue = cooldownMax / 60; //convert from frames at 60fps to seconds
+	this->cooldownTimerInitialValue = cooldownMax;
 	this->scale = 1;
 	this->visible = true;
 
@@ -44,9 +44,9 @@ Spring::Spring(float x, float y, float z, float rotY, float rotZ, float myPower,
 
 void Spring::step()
 {
-	cooldownTimer = std::fmaxf(cooldownTimer - dt, 0);
+	cooldownTimer -= dt;
 
-	if (playerIsInRange() && cooldownTimer == 0)
+	if (playerIsInRange() && cooldownTimer <= 0)
 	{
 		directionOfMovement = calculateDirectionOfMovement();
 
@@ -113,6 +113,8 @@ Vector3f Spring::getHomingCenter()
 {
 	return Vector3f(getPosition());
 }
+
+//functions for step() start here
 
 bool Spring::playerIsInRange()
 {

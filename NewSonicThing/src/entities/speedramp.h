@@ -10,11 +10,27 @@ class TexturedModel;
 class SpeedRamp : public CollideableObject
 {
 private:
+	//visual model of the speedramp
 	static std::list<TexturedModel*> models;
+	//collision model of the speedramp
 	static CollisionModel* cmOriginal;
 
-	float power;
+	//power of the speedramp, how far it sends the player
+	float speedRampPower;
+	//how long the player can't move after using the speedramp
 	float inputLockDuration;
+
+	//functions for the contructor start here
+
+	//set the collision model up, not much more to say
+	void setupCollisionModel();
+
+	//functions for step() start here
+
+	//calculate the new velocity of the player when they step on the speedramp
+	Vector3f calculateNewVelocity();
+	//play the sound the speed ramp makes when you step on it
+	void playSpeedRampSound();
 
 public:
 	SpeedRamp();

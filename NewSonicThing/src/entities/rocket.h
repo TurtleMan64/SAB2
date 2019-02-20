@@ -84,19 +84,19 @@ private:
 
 	//Gets the squared horizontal difference between the players position and the rockets position
 	float getPlayerToRocketDifferenceHorizontalSquared();
-	//The player is within the range for the rocket appear sound to play
-	bool playerWithinAppearSoundRange();
-	//The player is outside the range for the rocket appear sound to set so it plays again when you get close
+	//The player is within the range for the rocket appear sound to play, and the sound hasn't been played/has been reset
+	bool rocketAppearSoundCanPlay();
+	//The player is outside the range for the rocket appear sound to set so it plays again when you get close.
 	//This is farther out than the spot where the appear sound plays so you can't run in a circle to spam it
-	bool playerOutsideAppearSoundResetRange();
+	bool rocketAppearSoundCanReset();
 	//The player is inside the rockets hitbox
 	bool playerWithinRocketHitbox();
 	//Make the dirt particles used to make the rocket's exhaust
 	void makeDirtParticles(float particlePositionOffset);
-	//Plays the sound of the rocket launching
-	void playRocketLaunchSound();
-	//Set the players velocity, onRocket, isBall, RotY, CanMoveTimer, and OnGround
-	void setPlayerVariablesRocketActive();
+	//Plays the portion of the sound of the rocket launching before the loop begins
+	void playRocketLaunchSoundStart();
+	//Plays the looping portion of the sound of the rocket launching
+	void playRocketLaunchSoundLoop();
 	//If the rocket has started moving, the startup animation has finished
 	bool rocketStartedMoving();
 	//Set the player's position so they hold the rocket handle
@@ -107,8 +107,6 @@ private:
 	void calculateNewPercentOfPathCompletedValue();
 	//Returns true if the percentOfPathCompleted is 100% (equal to 1)
 	bool fullPathTraveled();
-	//Sets player velocity, onRocket, and canMoveTimer for the end of the rocket's path
-	void setPlayerVariablesRocketStopping();
 	//Resets the rocket's position, canActivate, isActive, percentOfPathCompleted, and startupTimer to default values
 	void resetRocketVariables();
 

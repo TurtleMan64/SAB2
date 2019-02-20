@@ -19,9 +19,9 @@ private:
 	const float SPRING_RADIUS = 7.8f;
 	//Current value of the cooldown timer, when this is 0 you can interact with the spring,
 	//otherwise dt is subtracted from it until it is 0
-	int cooldownTimer;
+	float cooldownTimer;
 	//What the cooldown timer starts counting from when reset, also what the player canMove timer is set to
-	int cooldownTimerInitialValue;
+	float cooldownTimerInitialValue;
 	//The direction of the movement the spring will send you in, calculated using the y and z rotation of the spring
 	Vector3f directionOfMovement;
 

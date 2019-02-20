@@ -71,89 +71,76 @@ Rocket::Rocket(int point1ID, int point2ID)
 
 void Rocket::step()
 {
-    if (abs(getX() - Global::gameCamera->eye.x) > ENTITY_RENDER_DIST) //not within visible range on the x-axis
+	//The players current position as of this frame
+	Vector3f playerPos = Global::gameMainVehicle->getPosition();
+
+	playerToRocketPositionDifference = playerPos - position;
+
+	playerToRocketPositionDifferenceHorizontalSquared = getPlayerToRocketDifferenceHorizontalSquared();
+
+	if (rocketAppearSoundCanPlay())
 	{
-		setVisible(false);
-		base->setVisible(false);
+		rocketAppearSoundPlayed = true;
+		rocketAudioSource = AudioPlayer::play(54, getPosition(), 1, false);
 	}
-	else
+	else if (rocketAppearSoundCanReset())
 	{
-		if (abs(getZ() - Global::gameCamera->eye.z) > ENTITY_RENDER_DIST)//not within visible range on the z-axis
+		rocketAppearSoundPlayed = false;
+		rocketAudioSource = nullptr;
+	}
+
+	if (!isActive && canActivate && playerWithinRocketHitbox())
+	{
+		//activate rocket
+		isActive = true;
+		canActivate = false;
+
+		playRocketLaunchSoundStart();
+	}
+
+	if (isActive)
+	{
+		playRocketLaunchSoundLoop();
+
+		//Rocket state disables player movement based on velocity, velocity here is set purely for camera reasons
+		Global::gameMainVehicle->setVelocity(rocketPathPositionDifferenceNormalized.x * 1000, rocketPathPositionDifferenceNormalized.y * 1000, rocketPathPositionDifferenceNormalized.z * 1000);
+		Global::gameMainVehicle->setOnRocket(true);
+		Global::gameMainVehicle->setIsBall(false);
+		Global::gameMainVehicle->setCanMoveTimer(1000);
+		Global::gameMainVehicle->setOnGround(false);
+
+		if (!rocketStartedMoving()) //rocket is starting up
 		{
-			setVisible(false);
-			base->setVisible(false);
+			makeDirtParticles(PARTICLE_POSITION_OFFSET_ROCKET_STARTUP);
+
+			setPlayerPositionToHoldRocketHandle();
+
+			startupTimer -= dt;
 		}
-		else //is within visible range
+		else //rocket is moving
 		{
-            setVisible(true);
-            base->setVisible(true);
+			makeDirtParticles(PARTICLE_POSITION_OFFSET_ROCKET_MOVING);
 
-			//The players current position as of this frame
-            Vector3f playerPos = Global::gameMainVehicle->getPosition();
+			calculateNewRocketPosition();
 
-			playerToRocketPositionDifference = playerPos - position;
+			setPlayerPositionToHoldRocketHandle();
 
-			playerToRocketPositionDifferenceHorizontalSquared = getPlayerToRocketDifferenceHorizontalSquared();
+			calculateNewPercentOfPathCompletedValue();	
+		}	
+	}
 
-			if (!rocketAppearSoundPlayed && playerWithinAppearSoundRange())
-			{
-				rocketAppearSoundPlayed = true;
-				rocketAudioSource = AudioPlayer::play(54, getPosition(), 1, false);
-			}
-			else if (playerOutsideAppearSoundResetRange())
-			{
-				rocketAppearSoundPlayed = false;
-				rocketAudioSource = nullptr;
-			}
+	if (fullPathTraveled()) //stop moving and deactivate rocket
+	{
+		//velocity here is set so the player faces the correct direction at the end of the rocket path
+		Global::gameMainVehicle->setVelocity(rocketPathPositionDifferenceNormalized.x, rocketPathPositionDifferenceNormalized.y, rocketPathPositionDifferenceNormalized.z);
+		Global::gameMainVehicle->setOnRocket(false);
+		Global::gameMainVehicle->setCanMoveTimer(0);
 
-			if (!isActive && canActivate && playerWithinRocketHitbox())
-			{
-				//activate rocket
-				isActive = true;
-				canActivate = false;
+		resetRocketVariables();
+	}
 
-				//sound of the rocket launching
-				rocketAudioSource = AudioPlayer::play(55, getPosition(), 1, false);
-			}
-
-			if (isActive)
-			{
-				playRocketLaunchSound();
-
-				setPlayerVariablesRocketActive();
-
-				if (!rocketStartedMoving()) //rocket is starting up
-				{
-					makeDirtParticles(PARTICLE_POSITION_OFFSET_ROCKET_STARTUP);
-
-					setPlayerPositionToHoldRocketHandle();
-
-					startupTimer -= dt;
-				}
-				else //rocket is moving
-				{
-					makeDirtParticles(PARTICLE_POSITION_OFFSET_ROCKET_MOVING);
-
-					calculateNewRocketPosition();
-
-					setPlayerPositionToHoldRocketHandle();
-
-					calculateNewPercentOfPathCompletedValue();	
-				}	
-			}
-
-			if (fullPathTraveled())
-			{
-				//stop moving and deactivate rocket
-				setPlayerVariablesRocketStopping();
-
-				resetRocketVariables(); //reuse of function used in the constructor as well
-			}
-
-			updateTransformationMatrix();
-			Global::gameMainVehicle->animate();
-        }
-    }
+	updateTransformationMatrix();
+	Global::gameMainVehicle->animate();
 }
 
 std::list<TexturedModel*>* Rocket::getModels()
@@ -241,17 +228,16 @@ float Rocket::calculateRocketZRotation()
 //functions used for step() start here
 float Rocket::getPlayerToRocketDifferenceHorizontalSquared()
 {
-	return playerToRocketPositionDifference.x*playerToRocketPositionDifference.x + playerToRocketPositionDifference.z*playerToRocketPositionDifference.z;
-
+	return playerToRocketPositionDifference.x * playerToRocketPositionDifference.x + playerToRocketPositionDifference.z*playerToRocketPositionDifference.z;
 }
 
-bool Rocket::playerWithinAppearSoundRange()
+bool Rocket::rocketAppearSoundCanPlay()
 {
-	return (playerToRocketPositionDifferenceHorizontalSquared <= pow(HITBOX_RADIUS * 30, 2)
+	return !rocketAppearSoundPlayed && (playerToRocketPositionDifferenceHorizontalSquared <= pow(HITBOX_RADIUS * 30, 2)
 			&& fabsf(playerToRocketPositionDifference.y) < (HITBOX_HEIGHT * 10));
 }
 
-bool Rocket::playerOutsideAppearSoundResetRange()
+bool Rocket::rocketAppearSoundCanReset()
 {
 	return (playerToRocketPositionDifferenceHorizontalSquared >= pow(HITBOX_RADIUS * 150, 2)
 			&& fabsf(playerToRocketPositionDifference.y) < (HITBOX_HEIGHT * 50));
@@ -291,7 +277,12 @@ void Rocket::makeDirtParticles(float particlePositionOffset)
 		}
 }
 
-void Rocket::playRocketLaunchSound()
+void Rocket::playRocketLaunchSoundStart()
+{
+	rocketAudioSource = AudioPlayer::play(55, getPosition(), 1, false);
+}
+
+void Rocket::playRocketLaunchSoundLoop()
 {
 	if (rocketAudioSource != nullptr)
 	{
@@ -304,15 +295,6 @@ void Rocket::playRocketLaunchSound()
 	{
 		rocketAudioSource = AudioPlayer::play(56, getPosition(), 1, false);
 	}
-}
-
-void Rocket::setPlayerVariablesRocketActive()
-{
-	Global::gameMainVehicle->setVelocity(rocketPathPositionDifferenceNormalized.x * 1000, rocketPathPositionDifferenceNormalized.y * 1000, rocketPathPositionDifferenceNormalized.z * 1000);
-	Global::gameMainVehicle->setOnRocket(true);
-	Global::gameMainVehicle->setIsBall(false);
-	Global::gameMainVehicle->setCanMoveTimer(1000);
-	Global::gameMainVehicle->setOnGround(false);
 }
 
 bool Rocket::rocketStartedMoving()
@@ -343,13 +325,6 @@ void Rocket::calculateNewPercentOfPathCompletedValue()
 bool Rocket::fullPathTraveled()
 {
 	return (percentOfPathCompleted >= 1);
-}
-
-void Rocket::setPlayerVariablesRocketStopping()
-{
-	Global::gameMainVehicle->setVelocity(rocketPathPositionDifferenceNormalized.x, rocketPathPositionDifferenceNormalized.y, rocketPathPositionDifferenceNormalized.z);
-	Global::gameMainVehicle->setOnRocket(false);
-	Global::gameMainVehicle->setCanMoveTimer(0);
 }
 
 void Rocket::resetRocketVariables()

@@ -270,7 +270,7 @@ void Input::pollInputs()
 			std::fprintf(stdout, "Time of day: %f\n", SkyManager::getTimeOfDay());
 			std::fprintf(stdout, "position = [%f, %f, %f]\n", Global::gameMainVehicle->getPosition()->x, Global::gameMainVehicle->getPosition()->y, Global::gameMainVehicle->getPosition()->z);
 			//std::fprintf(stdout, "normal   = [%f, %f, %f]\n", Global::gameMainVehicle->get);
-			//std::fprintf(stdout, "player rot = %f\n", Global::gamePlayer->getRotY());
+			std::fprintf(stdout, "player rot = %f\n", Global::gameMainVehicle->getRotY());
 			//std::fprintf(stdout, "cam yaw: %f,   cam pitch: %f\n", Global::gameCamera->getYaw(), Global::gameCamera->getPitch());
 			std::fprintf(stdout, "\n");
 		}

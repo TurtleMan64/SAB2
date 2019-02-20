@@ -27,7 +27,7 @@ SpeedRamp::SpeedRamp()
 
 }
 
-SpeedRamp::SpeedRamp(float x, float y, float z, float rotY, float rotZ, float myPower, float inputLockDuration)
+SpeedRamp::SpeedRamp(float x, float y, float z, float rotY, float rotZ, float speedRampPower, float inputLockDuration)
 {
 	this->position.x = x;
 	this->position.y = y;
@@ -37,58 +37,27 @@ SpeedRamp::SpeedRamp(float x, float y, float z, float rotY, float rotZ, float my
 	this->rotZ = rotZ;
 	this->scale = 1;
 	this->visible = true;
-	this->power = myPower;
-	this->inputLockDuration = inputLockDuration / 60; //number in lvl file is frames at 60fps, convert to seconds by dividing by 60
+	this->speedRampPower = speedRampPower;
+	this->inputLockDuration = inputLockDuration;
 	updateTransformationMatrix();
 
-	collideModelOriginal = SpeedRamp::cmOriginal;
-	collideModelTransformed = loadCollisionModel("Models/Objects/SpeedRamp/", "SpeedRamp");
-
-	CollisionChecker::addCollideModel(collideModelTransformed);
+	setupCollisionModel();
 
 	updateCollisionModelWithZ();
 }
 
 void SpeedRamp::step()
 {
-	if (abs(getX() - Global::gameCamera->eye.x) > ENTITY_RENDER_DIST)
+	if (collideModelTransformed->playerIsOn)
 	{
-		setVisible(false);
-	}
-	else
-	{
-		if (abs(getZ() - Global::gameCamera->eye.z) > ENTITY_RENDER_DIST)
-		{
-			setVisible(false);
-		}
-		else
-		{
-			setVisible(true);
+		Vector3f newVelocity = calculateNewVelocity();
 
-			if (collideModelTransformed->playerIsOn)
-			{
-				//float dx =  power*cosf(toRadians(getRotY()));
-				//float dz = -power*sinf(toRadians(getRotY()));
-				//Global::gameMainVehicle->increaseGroundSpeed(dx, dz);
+		Global::gameMainVehicle->setOnGround(false);
+		Global::gameMainVehicle->increasePosition(0, 4, 0);
+		Global::gameMainVehicle->setVelocity(newVelocity.x, newVelocity.y, newVelocity.z);
+		Global::gameMainVehicle->setCanMoveTimer(inputLockDuration);
 
-				Vector3f newSpeeds = Maths::spherePositionFromAngles(-Maths::toRadians(getRotY()), Maths::toRadians(getRotZ()+10), power);
-
-				Global::gameMainVehicle->setOnGround(false);
-				//Global::gameMainVehicle->setOnPlanePrevious(false);
-				Global::gameMainVehicle->increasePosition(0, 4, 0);
-                Global::gameMainVehicle->setVelocity(newSpeeds.x, newSpeeds.y, newSpeeds.z);
-				//Global::gameMainVehicle->setxVelAir(newSpeeds.x);
-				//Global::gameMainVehicle->setzVelAir(newSpeeds.z);
-				//Global::gameMainVehicle->setyVel(newSpeeds.y);
-				//Global::gameMainVehicle->setxVel(0);
-				//Global::gameMainVehicle->setzVel(0);
-				
-                Global::gameMainVehicle->setCanMoveTimer(inputLockDuration);
-				//Global::gameMainVehicle->setGroundSpeed(0, 0);
-
-				AudioPlayer::play(21, getPosition());
-			}
-		}
+		playSpeedRampSound();
 	}
 }
 
@@ -124,4 +93,26 @@ void SpeedRamp::deleteStaticModels()
 
 	Entity::deleteModels(&SpeedRamp::models);
 	Entity::deleteCollisionModel(&SpeedRamp::cmOriginal);
+}
+
+//functions for the constructor start here
+
+void SpeedRamp::setupCollisionModel()
+{
+	collideModelOriginal = SpeedRamp::cmOriginal;
+	collideModelTransformed = loadCollisionModel("Models/Objects/SpeedRamp/", "SpeedRamp");
+	CollisionChecker::addCollideModel(collideModelTransformed);
+}
+
+//functions for step() start here
+		
+Vector3f SpeedRamp::calculateNewVelocity()
+{
+	Vector3f newVelocity = Maths::spherePositionFromAngles(-Maths::toRadians(getRotY()), Maths::toRadians(getRotZ()+10), speedRampPower);
+	return newVelocity;
+}
+
+void SpeedRamp::playSpeedRampSound()
+{
+	AudioPlayer::play(21, getPosition());
 }
