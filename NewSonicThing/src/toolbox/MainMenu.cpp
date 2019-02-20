@@ -23,18 +23,23 @@
 #include "missionmenu.h"
 #include <iostream>
 
-enum ButtonID { story, extras, quit };
+enum ButtonID { mission, config };
 
 MainMenu::MainMenu()
 {
+	extern unsigned int SCR_WIDTH;
+	extern unsigned int SCR_HEIGHT;
+
 	this->menuButtons = nullptr;
 	this->font = nullptr;
-	this->aspectRatio = GuiManager::getAspectRatio();
+	this->aspectRatio = (float) SCR_WIDTH / SCR_HEIGHT;
 	this->buttonCount = 0;
 	this->menuSelectionID = 0;
 	this->textureParallelogram = GL_NONE;
 	this->textureParallelogramBackdrop = GL_NONE;
+	this->textureLogo = GL_NONE;
 	MainMenu::init();
+	this->setVisible(true);
 }
 
 MainMenu::~MainMenu()
@@ -46,8 +51,6 @@ void MainMenu::init()
 {
 	printf("Main Menu initializing...\n");
 
-	MainMenu::aspectRatio = GuiManager::getAspectRatio();
-
 	font = new FontType(Loader::loadTexture("res/Fonts/vipnagorgialla.png"),
 		"res/Fonts/vipnagorgialla.fnt"); INCR_NEW
 
@@ -55,10 +58,10 @@ void MainMenu::init()
 		"res/Images/MainMenu/Parallelogram.png");
 	this->textureParallelogramBackdrop = Loader::loadTextureNoInterpolation(
 		"res/Images/MainMenu/ParallelogramBackdrop.png");
+	this->textureLogo = Loader::loadTexture("res/Images/MainMenu/Logo.png");
+	this->logo = GuiTexture(textureLogo, 0.5f, 0.4f, 0.6f * (767.0f / 784.0f) / this->aspectRatio, 0.6f, 0.0f);
 
 	MainMenu::loadResources();
-
-	MainMenu::selectMenuRoot(ButtonID::story);
 
 	printf("Main Menu initialized!\n");
 }
@@ -72,88 +75,87 @@ void MainMenu::loadResources()
 		return;
 	}
 
-	float fontScale = 0.06f;
+	float fontScale = 0.08f;
 
 	// Adding a string here *should* add a button.
 	std::vector<std::string> buttonNames(
 		{
-		"ARCADE",
-		"EXTRAS",
-		"EXIT"
+		"MISSION",
+		"CONFIG"
 		}
 	);
 
 	int numButtonsToMake = (int) buttonNames.size();
-	int numRows = (numButtonsToMake + 2 - 1) / 2;
-	std::cout << "NumRows: " << numRows << std::endl;
-	float buttonYSpacing = 1.0f / ((float) (numRows + 1)); // Used to center menu vertically
 
-	MainMenu::menuButtons = new Button*[numButtonsToMake];
+	this->menuButtons = new Button*[numButtonsToMake];
 
-	// Used to decide how to lay out the buttons
-	if (numButtonsToMake % 2 == 0)
+	for (int i = 0; i < numButtonsToMake; i++)
 	{
-		// Two columns
-		for (int i = 0; i < numButtonsToMake; i++)
-		{
-			std::cout << "Initializing button " << buttonNames[i] << std::endl;
-			// Left column
-			if (i % 2 == 0)
-			{
-				MainMenu::menuButtons[i] = new Button(buttonNames[i], 
-					MainMenu::font, MainMenu::textureParallelogram, MainMenu::textureParallelogramBackdrop,
-					0.5f - (0.25f / MainMenu::aspectRatio), 1.0f - (buttonYSpacing * (numRows - (i / 2))), 
-					fontScale * 8.0f / MainMenu::aspectRatio, fontScale, true);
-			}
-			// Right column
-			else
-			{
-				MainMenu::menuButtons[i] = new Button(buttonNames[i], 
-					MainMenu::font, MainMenu::textureParallelogram, MainMenu::textureParallelogramBackdrop,
-					0.5f + (0.25f / MainMenu::aspectRatio), 1.0f - (buttonYSpacing * (numRows - (i / 2))), 
-					fontScale * 8.0f / MainMenu::aspectRatio, fontScale, true);
-			}
-		}
+		this->menuButtons[i] = new Button(buttonNames[i], this->font, this->textureParallelogram, this->textureParallelogramBackdrop,
+			0.5f + (0.5f * (i - this->menuSelectionID) / this->aspectRatio), 0.8f, (fontScale * 8.0f / this->aspectRatio), fontScale, true);
 	}
-	else
-	{
-		// Two columns
-		for (int i = 0; i < numButtonsToMake - 1; i++)
-		{
-			std::cout << "Initializing button " << buttonNames[i] << std::endl;
-			// Left column
-			if (i % 2 == 0)
-			{
-				MainMenu::menuButtons[i] = new Button(buttonNames[i],
-					MainMenu::font, MainMenu::textureParallelogram, MainMenu::textureParallelogramBackdrop,
-					0.5f - (0.25f / MainMenu::aspectRatio), 1.0f - (buttonYSpacing * (numRows - (i / 2))),
-					fontScale * 8.0f / MainMenu::aspectRatio, fontScale, true);
-			}
-			// Right column
-			else
-			{
-				MainMenu::menuButtons[i] = new Button(buttonNames[i],
-					MainMenu::font, MainMenu::textureParallelogram, MainMenu::textureParallelogramBackdrop,
-					0.5f + (0.25f / MainMenu::aspectRatio), 1.0f - (buttonYSpacing * (numRows - (i / 2))),
-					fontScale * 8.0f / MainMenu::aspectRatio, fontScale, true);
-			}
-		}
-		// Final button at the bottom
-		std::cout << "Initializing button " << buttonNames[numButtonsToMake - 1] << std::endl;
-		MainMenu::menuButtons[numButtonsToMake - 1] = new Button(buttonNames[numButtonsToMake - 1], 
-			MainMenu::font, MainMenu::textureParallelogram, MainMenu::textureParallelogramBackdrop,
-			0.5f, 1.0f - buttonYSpacing, 
-			fontScale * 8.0f / MainMenu::aspectRatio, fontScale, true);
-	}
-	std::cout << "Initialized all buttons!\n";
-	MainMenu::buttonCount = numButtonsToMake;
 
-	if (menuSelectionID <= ButtonID::story)
-	{
-		MainMenu::selectMenuRoot(menuSelectionID);
-	}
+	this->buttonCount = numButtonsToMake;
 
 	printf("Resources loaded\n");
+}
+
+void MainMenu::draw()
+{
+	extern float dt;
+
+	if (oldSelection != this->menuSelectionID)
+	{
+		animationTime = 0.25f;
+		animating = true;
+		if (oldSelection < this->menuSelectionID)
+		{
+			animationDirection = 1;
+		}
+		else
+		{
+			animationDirection = -1;
+		}
+	}
+
+	if (animating)
+	{
+		animationTime -= dt;
+	}
+
+	if (animationTime < 0.0f)
+	{
+		animationTime = 0.00f;
+		animating = false;
+	}
+
+	GuiManager::clearGuisToRender();
+
+	GuiManager::addGuiToRender(&this->logo);
+
+	if (this->visible)
+	{
+		float animationOffset = animationDirection * 12 * (animationTime) * (animationTime);
+
+		for (int i = 0; i < this->buttonCount; i++)
+		{
+			this->menuButtons[i]->setPos(0.5f + (0.75f * (i - this->menuSelectionID) / this->aspectRatio) + animationOffset / this->aspectRatio, 0.8f);
+			this->menuButtons[i]->setVisible(true);
+			this->menuButtons[i]->setHighlight(false);
+		}
+	}
+
+	this->menuButtons[menuSelectionID]->setHighlight(true);
+	oldSelection = this->menuSelectionID;
+}
+
+void MainMenu::setVisible(bool visibleStatus)
+{
+	for (int i = 0; i < this->buttonCount; i++)
+	{
+		this->menuButtons[i]->setVisible(visibleStatus);
+	}
+	this->visible = visibleStatus;
 }
 
 void MainMenu::unloadResources()
@@ -178,55 +180,18 @@ void MainMenu::unloadResources()
 	std::cout << "Resources unloaded!\n";
 }
 
-void MainMenu::selectMenuRoot(int newSelection)
+void MainMenu::resetAnimation()
 {
-	MainMenu::menuButtons[MainMenu::menuSelectionID]->setHighlight(false);
-
-	MainMenu::menuButtons[newSelection]->setHighlight(true);
-
-	MainMenu::menuSelectionID = newSelection;
-
-	AudioPlayer::play(36, Global::gameCamera->getFadePosition1());
+	this->animating = false;
+	this->animationTime = 0;
 }
 
-// Run defined button code
-void MainMenu::buttonClick()
+Menu* MainMenu::step()
 {
-	switch (this->menuSelectionID)
-	{
-	case story:
-	{
-		Global::levelID = LVL_WINDY_VALLEY;
-		//Global::gameMissionNumber = 0;
-		Global::gameIsArcadeMode = true;
-		Global::gameArcadePlaytime = 0;
+	Menu* retVal = nullptr;
 
-		AudioPlayer::play(38, Global::gameCamera->getFadePosition1());
+	this->setVisible(true);
 
-		Level* currentLevel = &Global::gameLevelData[Global::levelID];
-		Global::levelName = currentLevel->fileName;
-		Global::levelNameDisplay = currentLevel->displayName;
-		Global::gameMissionDescription = (currentLevel->missionData[Global::gameMissionNumber])[(currentLevel->missionData[Global::gameMissionNumber]).size() - 1];
-
-		Global::isNewLevel = true;
-		Global::shouldLoadLevel = true;
-		MainMenu::unloadResources();
-		Global::gameState = STATE_RUNNING;
-		break;
-	}
-	case extras:
-		break;
-	case quit:
-	{
-		Global::gameState = STATE_EXITING;
-		break;
-	}
-	default: break;
-	}
-}
-
-int MainMenu::step()
-{
 	bool shouldGoUp    = false;
 	bool shouldGoDown  = false;
 	bool shouldGoLeft  = false;
@@ -234,47 +199,43 @@ int MainMenu::step()
 	bool pressedSelect = (Input::inputs.INPUT_ACTION1 && !Input::inputs.INPUT_PREVIOUS_ACTION1) || (Input::inputs.INPUT_START && !Input::inputs.INPUT_PREVIOUS_START);
 	bool pressedBack   = (Input::inputs.INPUT_ACTION2 && !Input::inputs.INPUT_PREVIOUS_ACTION2);
 
+	static int xPrev;
+	static int yPrev;
+
 	int moveX = (int)round(Input::inputs.INPUT_X);
 	int moveY = (int)round(Input::inputs.INPUT_Y);
 
-	// Logic for figuring out what direction to move in the menu
-	if (Global::gameState == STATE_TITLE)
+	if (moveX == -1 && moveX != xPrev && menuSelectionID > 0)
 	{
-		if (menuSelectionID >= 0 && menuSelectionID < MainMenu::buttonCount)
+		xPrev = -1;
+		menuSelectionID--;
+	}
+	else if (moveX == 1 && moveX != xPrev && menuSelectionID < (this->buttonCount - 1))
+	{
+		xPrev = 1;
+		menuSelectionID++;
+	}
+		
+	if (moveX == 0)
+	{
+		xPrev = 0;
+	}
+
+	if (pressedSelect)
+	{
+		this->resetAnimation();
+		switch (this->menuSelectionID)
 		{
-			if (shouldGoUp)
-			{
-				if (MainMenu::menuSelectionID - 2 >= 0)
-				{
-					MainMenu::selectMenuRoot(menuSelectionID - 2);
-				}
-			}
-			else if (shouldGoDown)
-			{
-				if (MainMenu::menuSelectionID + 2 < MainMenu::buttonCount)
-				{
-					MainMenu::selectMenuRoot(menuSelectionID + 2);
-				}
-			}
-			else if (shouldGoLeft)
-			{
-				if (MainMenu::menuSelectionID % 2 == 1)
-				{
-					MainMenu::selectMenuRoot(menuSelectionID - 1);
-				}
-			}
-			else if (shouldGoRight)
-			{
-				if (MainMenu::menuSelectionID % 2 == 0 && MainMenu::menuSelectionID + 1 < MainMenu::buttonCount)
-				{
-					MainMenu::selectMenuRoot(menuSelectionID + 1);
-				}
-			}
-			else if (pressedSelect)
-			{
-				buttonClick();
-			}
+		case mission:
+			retVal = new MissionMenu();
+			this->setVisible(false);
+			break;
+		case config:
+			break;
 		}
 	}
-	return 0;
+	
+	this->draw();
+
+	return retVal;
 }

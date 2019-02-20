@@ -19,13 +19,12 @@
 #include "../guis/guitexture.h"
 #include "button.h"
 
-int MissionMenu::index = 0;
-
 MissionMenu::MissionMenu()
 {
 	std::cout << "Initializing Mission Menu\n";
 	this->init();
 	this->loadResources();
+	this->visible = true;
 	std::cout << "Mission Menu initialized\n";
 }
 
@@ -44,17 +43,6 @@ void MissionMenu::init()
 		"res/Images/MainMenu/ParallelogramHalf2.png");
 	textureParallelogramHalf2Backdrop = Loader::loadTextureNoInterpolation(
 		"res/Images/MainMenu/ParallelogramHalf2Backdrop.png");
-	textureRankA = Loader::loadTexture("res/Images/MainMenu/RankA.png");
-	textureRankB = Loader::loadTexture("res/Images/MainMenu/RankB.png");
-	textureRankC = Loader::loadTexture("res/Images/MainMenu/RankC.png");
-	textureRankD = Loader::loadTexture("res/Images/MainMenu/RankD.png");
-	textureRankE = Loader::loadTexture("res/Images/MainMenu/RankE.png");
-	textureRankBlank = Loader::loadTextureNoInterpolation(
-		"res/Images/MainMenu/NoRank.png");
-	textureMissionSelect = Loader::loadTextureNoInterpolation(
-		"res/Images/MainMenu/MissionSelect.png");
-	textureNPCicon = Loader::loadTexture(
-		"res/Images/MainMenu/NPCicon.png");
 
 	font = new FontType(Loader::loadTexture("res/Fonts/vipnagorgialla.png"),
 		"res/Fonts/vipnagorgialla.fnt"); INCR_NEW
@@ -69,13 +57,16 @@ MissionMenu::~MissionMenu()
 
 void MissionMenu::loadResources()
 {
+	extern unsigned int SCR_WIDTH;
+	extern unsigned int SCR_HEIGHT;
+	float aspectRatio = (float)SCR_WIDTH / SCR_HEIGHT;
 	levelButton = new Button*[Global::gameLevelData.size()];
 	counter = 0;
 	for (Level level : Global::gameLevelData)
 	{
 		std::string buttonText = "";
 		buttonText = level.displayName;
-		levelButton[counter] = new Button(level.displayName, font, textureParallelogram, textureParallelogramBackdrop, 0.5f, 0.5f + (0.2f * counter), 0.56f / GuiManager::getAspectRatio(), 0.07f, true);
+		levelButton[counter] = new Button(level.displayName, font, textureParallelogram, textureParallelogramBackdrop, 0.5f, 0.5f + (0.2f * counter), 0.56f / aspectRatio, 0.07f, true);
 		counter++;
 	}
 }
@@ -92,28 +83,79 @@ void MissionMenu::unloadResources()
 	std::cout << "Mission Menu resources deleted.\n";
 }
 
-void MissionMenu::selectButton()
+void MissionMenu::draw()
 {
+	extern float dt;
+
+	if (oldSelection != this->index)
+	{
+		animationTime = 0.0f;
+		animating = true;
+		if (oldSelection < this->index)
+		{
+			animationDirection = 1;
+		}
+		else
+		{
+			animationDirection = -1;
+		}
+	}
+
+	if (animating)
+	{
+		animationTime += dt;
+	}
+
+	if (animationTime >= 0.25f)
+	{
+		animationTime = 0.25f;
+		animating = false;
+	}
+
 	GuiManager::clearGuisToRender();
 	
-	for (int i = 0; i < this->counter; i++)
+	if (this->visible)
 	{
-		this->levelButton[i]->setPos(0.5f, 0.5f + (0.15f * (i - MissionMenu::index)));
-		this->levelButton[i]->setVisible(true);
+		float animationOffset = animationDirection * 2.4f * (animationTime - 0.25f) * (animationTime - 0.25f);
+
+		for (int i = 0; i < this->counter; i++)
+		{
+			this->levelButton[i]->setPos(0.5f, 0.5f + animationOffset + (0.15f * (i - this->index)));
+			this->levelButton[i]->setVisible(true);
+			this->levelButton[i]->setHighlight(false);
+		}
 	}
+
+	this->levelButton[index]->setHighlight(true);
+
+	oldSelection = this->index;
 }
 
-int MissionMenu::step()
+void MissionMenu::setVisible(bool visibleStatus)
 {
+	for (int i = 0; i < this->counter; i++)
+	{
+		this->levelButton[i]->setVisible(visibleStatus);
+		this->levelButton[i]->setHighlight(visibleStatus);
+	}
+	this->visible = visibleStatus;
+}
+
+Menu* MissionMenu::step()
+{
+	Menu* retVal = nullptr;
+
+	extern float dt;
+	static float holdTick;
+
 	bool shouldGoUp = false;
 	bool shouldGoDown = false;
-	bool shouldGoLeft = false;
-	bool shouldGoRight = false;
 	bool pressedSelect = false;
 	bool pressedBack = false;
 
-	int moveX = (int)round(Input::inputs.INPUT_X);
 	int moveY = (int)round(Input::inputs.INPUT_Y);
+
+	this->setVisible(true);
 
 	if ((Input::inputs.INPUT_ACTION1 && !Input::inputs.INPUT_PREVIOUS_ACTION1) || 
 		(Input::inputs.INPUT_START && !Input::inputs.INPUT_PREVIOUS_START))
@@ -124,18 +166,6 @@ int MissionMenu::step()
 	if (Input::inputs.INPUT_ACTION2 && !Input::inputs.INPUT_PREVIOUS_ACTION2)
 	{
 		pressedBack = true;
-	}
-
-	if (moveX != moveXPrevious)
-	{
-		if (moveX == 1)
-		{
-			shouldGoRight = true;
-		}
-		else if (moveX == -1)
-		{
-			shouldGoLeft = true;
-		}
 	}
 
 	if (moveY != moveYPrevious)
@@ -150,40 +180,43 @@ int MissionMenu::step()
 		}
 	}
 
-	moveXPrevious = moveX;
 	moveYPrevious = moveY;
 
 	if (moveY == -1)
 	{
-		holdUpTimer++;
+		holdUpTimer += dt;
 	}
 	else
 	{
-		holdUpTimer = 0;
+		holdUpTimer = 0.0f;
 	}
 
 	if (moveY == 1)
 	{
-		holdDownTimer++;
+		holdDownTimer += dt;
 	}
 	else
 	{
-		holdDownTimer = 0;
+		holdDownTimer = 0.0f;
 	}
 
-	if (holdUpTimer >= 20)
+	if (holdUpTimer >= 0.25f)
 	{
-		if (holdUpTimer % 5 == 0)
+		holdTick += dt;
+		if (holdTick >= 0.15f)
 		{
 			shouldGoUp = true;
+			holdTick = 0.0f;
 		}
 	}
 
-	if (holdDownTimer >= 20)
+	if (holdDownTimer >= 0.25f)
 	{
-		if (holdDownTimer % 5 == 0)
+		holdTick += dt;
+		if (holdTick >= 0.15f)
 		{
 			shouldGoDown = true;
+			holdTick = 0.0f;
 		}
 	}
 
@@ -205,6 +238,7 @@ int MissionMenu::step()
 
 	if (pressedSelect)
 	{
+		this->setVisible(false);
  		AudioPlayer::play(38, Global::gameCamera->getFadePosition1());
 
 		Level* currentLevel = &Global::gameLevelData[MissionMenu::index];
@@ -215,13 +249,13 @@ int MissionMenu::step()
 		Global::isNewLevel = true;
 		Global::shouldLoadLevel = true;
 		Global::gameState = STATE_RUNNING;
-		return 1;
+		retVal = SwitchStack::get();
 	}
 	else if (pressedBack)
 	{
-		return 1;
+		retVal = PopMenu::get();
 	}
 
-	this->selectButton();
-	return 0;
+	this->draw();
+	return retVal;
 }

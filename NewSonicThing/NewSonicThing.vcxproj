@@ -223,16 +223,19 @@
     <ClCompile Include="src\textures\ModelTexture.cpp" />
     <ClCompile Include="src\toolbox\Button.cpp" />
     <ClCompile Include="src\toolbox\Getline.cpp" />
+    <ClCompile Include="src\toolbox\HUD.cpp" />
     <ClCompile Include="src\toolbox\Input.cpp" />
     <ClCompile Include="src\toolbox\Level.cpp" />
     <ClCompile Include="src\toolbox\LevelLoader.cpp" />
     <ClCompile Include="src\toolbox\MainMenu.cpp" />
     <ClCompile Include="src\toolbox\maths.cpp" />
     <ClCompile Include="src\toolbox\matrix.cpp" />
+    <ClCompile Include="src\toolbox\Menu.cpp" />
     <ClCompile Include="src\toolbox\MenuManager.cpp" />
     <ClCompile Include="src\toolbox\MissionMenu.cpp" />
     <ClCompile Include="src\toolbox\PauseScreen.cpp" />
     <ClCompile Include="src\toolbox\Split.cpp" />
+    <ClCompile Include="src\toolbox\Timer.cpp" />
     <ClCompile Include="src\toolbox\vector.cpp" />
     <ClCompile Include="src\water\WaterFrameBuffers.cpp" />
     <ClCompile Include="src\water\WaterRenderer.cpp" />
@@ -330,6 +333,7 @@
     <ClInclude Include="src\textures\modeltexture.h" />
     <ClInclude Include="src\toolbox\button.h" />
     <ClInclude Include="src\toolbox\getline.h" />
+    <ClInclude Include="src\toolbox\hud.h" />
     <ClInclude Include="src\toolbox\input.h" />
     <ClInclude Include="src\toolbox\level.h" />
     <ClInclude Include="src\toolbox\levelloader.h" />
@@ -341,6 +345,7 @@
     <ClInclude Include="src\toolbox\missionmenu.h" />
     <ClInclude Include="src\toolbox\pausescreen.h" />
     <ClInclude Include="src\toolbox\split.h" />
+    <ClInclude Include="src\toolbox\timer.h" />
     <ClInclude Include="src\toolbox\vector.h" />
     <ClInclude Include="src\water\waterframebuffers.h" />
     <ClInclude Include="src\water\waterrenderer.h" />

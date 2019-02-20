@@ -13,57 +13,38 @@
 class MissionMenu : public Menu
 {
 private:
-	static int index;
+	int index;
 	GLuint textureParallelogram;
 	GLuint textureParallelogramBackdrop;
 	GLuint textureParallelogramHalf;
 	GLuint textureParallelogramHalfBackdrop;
 	GLuint textureParallelogramHalf2;
 	GLuint textureParallelogramHalf2Backdrop;
-	GLuint textureRankBlank;
-	GLuint textureMissionSelect;
-	GLuint textureNPCicon;
 
 	int moveXPrevious;
 	int moveYPrevious;
 	bool selectInputPrevious;
 	bool backInputPrevious;
 
-	int holdUpTimer;
-	int holdDownTimer;
+	float holdUpTimer;
+	float holdDownTimer;
 
 	Button** levelButton;
 	int counter;
 
-public:
-	GLuint textureRankA;
-	GLuint textureRankB;
-	GLuint textureRankC;
-	GLuint textureRankD;
-	GLuint textureRankE;
+	bool visible;
+
+	// Animation
+	int oldSelection;
+	float animationTime;
+	bool animating;
+	int animationDirection;
 
 private:
-	GuiTexture* itemRankDisplay;
-	GuiTexture* itemRankDisplayBackdrop;
-	GuiTexture* itemTimeDisplay;
-	GuiTexture* itemTimeDisplayBackdrop;
-	GuiTexture* itemScoreDisplay;
-	GuiTexture* itemScoreDisplayBackdrop;
-
-	GUIText* textBestScore;
-	GUIText* textBestTime;
-
-	GuiTexture* rankM1;
-	GuiTexture* rankM2;
-	GuiTexture* rankM3;
-	GuiTexture* rankM4;
-
-	GuiTexture* missionSelect;
-
-	GuiTexture* npcIcon;
 	FontType* font;
 
-	void selectButton();
+	void draw();
+	void setVisible(bool);
 
 public:
 	MissionMenu();
@@ -71,7 +52,7 @@ public:
 	void init();
 	void loadResources();
 	void unloadResources();
-	int step();
+	Menu* step();
 	
 	float fontSize;
 };

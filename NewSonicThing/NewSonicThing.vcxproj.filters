@@ -411,6 +411,15 @@
     <ClCompile Include="src\toolbox\MenuManager.cpp">
       <Filter>Source Files\toolbox</Filter>
     </ClCompile>
+    <ClCompile Include="src\toolbox\Menu.cpp">
+      <Filter>Source Files\toolbox</Filter>
+    </ClCompile>
+    <ClCompile Include="src\toolbox\HUD.cpp">
+      <Filter>Source Files\toolbox</Filter>
+    </ClCompile>
+    <ClCompile Include="src\toolbox\Timer.cpp">
+      <Filter>Source Files\toolbox</Filter>
+    </ClCompile>
     <ClCompile Include="src\toolbox\MainMenu.cpp">
       <Filter>Source Files\toolbox</Filter>
     </ClCompile>
@@ -729,6 +738,12 @@
       <Filter>Source Files\toolbox</Filter>
     </ClInclude>
     <ClInclude Include="src\toolbox\menumanager.h">
+      <Filter>Source Files\toolbox</Filter>
+    </ClInclude>
+    <ClInclude Include="src\toolbox\hud.h">
+      <Filter>Source Files\toolbox</Filter>
+    </ClInclude>
+    <ClInclude Include="src\toolbox\timer.h">
       <Filter>Source Files\toolbox</Filter>
     </ClInclude>
     <ClInclude Include="src\toolbox\mainmenu.h">

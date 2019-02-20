@@ -19,16 +19,28 @@ private:
 	// Title card text graphics
 	GLuint textureParallelogram; // Texture for button
 	GLuint textureParallelogramBackdrop; // Texture for button highlight
+	GLuint textureLogo; // Texture for logo
 
-	float aspectRatio; // Current aspect ratio from GuiManager
+	GuiTexture logo;
 
 	Button** menuButtons;
 
 	int buttonCount;
 
+	float aspectRatio;
+
 	void unloadResources();
 
-	void buttonClick();
+	void setVisible(bool);
+
+	bool visible;
+
+	// Animation
+	int oldSelection;
+	float animationTime;
+	bool animating;
+	int animationDirection;
+	void resetAnimation();
 
 public:
 	MainMenu();
@@ -39,11 +51,11 @@ public:
 
 	void init();
 
-	int step();
+	Menu* step();
 
 	void loadResources();
 
-	void selectMenuRoot(int newSelection);
+	void draw();
 };
 
 #endif

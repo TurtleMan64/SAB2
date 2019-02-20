@@ -3,6 +3,7 @@
 #include "../fontMeshCreator/guitext.h"
 #include"../fontMeshCreator/fonttype.h"
 #include "menu.h"
+#include "hud.h"
 
 
 class PauseScreen : public Menu
@@ -11,7 +12,6 @@ private:
 	int menuSelection;
 	int menuSelectionMAX;
 	int menuDisplayID;
-	const int ROOT = 0;
 
 	int moveYPrevious;
 	bool selectInputPrevious;
@@ -23,22 +23,22 @@ private:
 	GUIText* textRestart;
 	GUIText* textQuit;
 
-	static bool shouldPause;
-
 	bool pausedSounds[14];
 
-	float aspectRatio;
 	float size;
 	void selectButton();
+	void setVisible(bool);
+
+	HUD* gameHud;
 
 public:
-	PauseScreen();
+	PauseScreen(HUD*);
 
 	~PauseScreen();
 
 	FontType* font;
 
-	int step();
+	Menu* step();
 };
 
 #endif

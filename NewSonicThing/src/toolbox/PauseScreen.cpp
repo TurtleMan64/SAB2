@@ -19,16 +19,17 @@
 #include "../particles/particlemaster.h"
 #include "../guis/guitextureresources.h"
 #include "../guis/guimanager.h"
+#include "hud.h"
+#include "timer.h"
 
-PauseScreen::PauseScreen()
+PauseScreen::PauseScreen(HUD* gameHud)
 {
-	aspectRatio = GuiManager::getAspectRatio();
+	this->gameHud = gameHud;
+
 	this->size = 0.075f;
 
 	printf("Pause Screen initializing...\n");
 	this->font = new FontType(Loader::loadTexture("res/Fonts/vipnagorgialla.png"), "res/Fonts/vipnagorgialla.fnt");
-
-	this->aspectRatio = GuiManager::getAspectRatio();
 
 	Global::gameState = STATE_PAUSED;
 	this->menuSelection = 0;
@@ -66,6 +67,14 @@ PauseScreen::~PauseScreen()
 	AudioPlayer::stopAllSFX();
 }
 
+void PauseScreen::setVisible(bool visible)
+{
+	this->textResume->setVisibility(visible);
+	this->textRestart->setVisibility(visible);
+	this->textCamera->setVisibility(visible);
+	this->textQuit->setVisibility(visible);
+}
+
 void PauseScreen::selectButton()
 {
 	GuiManager::clearGuisToRender();
@@ -94,8 +103,10 @@ void PauseScreen::selectButton()
 	}
 }
 
-int PauseScreen::step()
+Menu* PauseScreen::step()
 {
+	Menu* retVal = nullptr;
+
 	int moveY = Input::inputs.MENU_Y;
 	bool pressedSelect = false;
 
@@ -119,7 +130,7 @@ int PauseScreen::step()
 		case 0:
 		{
 			// Pop menu. Unpause.
-			return 1;
+			retVal = PopMenu::get();
 			break;
 		}
 
@@ -128,10 +139,11 @@ int PauseScreen::step()
 			if (Global::gameLives > 0)
 			{
 				Global::shouldLoadLevel = true;
+				this->gameHud->getTimer()->setTime(0.0f);
 				Vector3f vel(0, 0, 0);
 				new Particle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &vel, 0, 1.0f, 0.0f, 50.0f, 0, 1.0f, 0, true, false);
 				Global::gameState = STATE_CUTSCENE;
-				return 1;
+				retVal = PopMenu::get();
 			}
 			break;
 		}
@@ -161,7 +173,7 @@ int PauseScreen::step()
 			Vector3f vel(0, 0, 0);
 			new Particle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &vel, 0, 1.0f, 0.0f, 50.0f, 0, 1.0f, 0, true, false);
 			LevelLoader::loadTitle();
-			return 2;
+			retVal = ClearStack::get();
 			break;
 		}
 
@@ -171,6 +183,5 @@ int PauseScreen::step()
 	}
 
 	moveYPrevious = moveY;
-
-	return 0;
+	return retVal;
 }

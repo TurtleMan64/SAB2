@@ -45,7 +45,6 @@
 #include "../fontRendering/textmaster.h"
 #include "../fontMeshCreator/fonttype.h"
 #include "../fontMeshCreator/guitext.h"
-#include "../toolbox/pausescreen.h"
 #include "../guis/guimanager.h"
 #include "../audio/audiomaster.h"
 #include "../audio/audioplayer.h"
@@ -58,7 +57,6 @@
 #include "../postProcessing/fbo.h"
 #include "../guis/guirenderer.h"
 #include "../guis/guitextureresources.h"
-#include "../toolbox/mainmenu.h"
 #include "../toolbox/level.h"
 #include "../guis/guitexture.h"
 #include "../particles/particle.h"
@@ -72,7 +70,7 @@
 #include "../water/watertile.h"
 #include "../toolbox/getline.h"
 #include "../toolbox/menumanager.h"
-#include "../toolbox/missionmenu.h"
+#include "../toolbox/mainmenu.h"
 #ifdef _WIN32
 #include <windows.h>
 #include <tchar.h>
@@ -255,7 +253,7 @@ int main()
 
 	GuiManager::init();
 
-	Global::menuManager.push(new MissionMenu);
+	Global::menuManager.push(new MainMenu);
 
 
 	if (Global::renderParticles)
@@ -324,7 +322,6 @@ int main()
 	int frameCount = 0;
 	double previousTime = 0;
 
-	//PauseScreen::pause();
 	Global::gameState = STATE_TITLE;
 
 	std::list<std::unordered_set<Entity*>*> entityChunkedList;
@@ -440,14 +437,11 @@ int main()
 		}
 		gameChunkedEntitiesToDelete.clear();
 
-		Global::menuManager.step();
-
 		switch (Global::gameState)
 		{
 			case STATE_RUNNING:
 			{
 				//game logic
-				GuiManager::increaseTimer(dt);
 
 				if (Global::raceStartTimer >= 0)
 				{
@@ -463,7 +457,6 @@ int main()
 						{
 							//AudioPlayer::playBGM(0);
 						}
-						GuiManager::startTimer();
 						//Global::gameMainVehicle->setCanMoveTimer(0);
 						//Global::gameMainVehicle->setPosition(22.3715019f, 0.01f, 20.5539f);
 						//Global::gameMainVehicle->setVelocity(0, 0, -0.001f);
@@ -521,7 +514,6 @@ int main()
 					if (Global::gameRingCount >= Global::gameRingTarget && Global::finishStageTimer < -0.5f)
 					{
 						Global::finishStageTimer = 0;
-						GuiManager::stopTimer();
 					}
 				}
 				break;
@@ -572,6 +564,8 @@ int main()
 			default:
 				break;
 		}
+
+		Global::menuManager.step();
 
 		Stage::updateVisibleChunks();
 		SkyManager::calculateValues();
@@ -790,12 +784,11 @@ int main()
 				GuiManager::clearGuisToRender();
 				Global::gameScore = 0;
 				Global::gameRingCount = 0;
-				GuiManager::setTimer(0);
 			}
 
 			if (finishTimerBefore < 6.166f && Global::finishStageTimer >= 6.166f)
 			{
-				int rank = Global::calculateRankAndUpdate();
+				// int rank = Global::calculateRankAndUpdate();
 				GuiManager::addGuiToRender(GuiTextureResources::textureRankDisplay);
 				//AudioPlayer::play(44, Global::gamePlayer->getPosition());
 			}
@@ -1166,81 +1159,12 @@ int Global::calculateRankAndUpdate()
 			Global::saveSaveData();
 		}
 
-		float newTime   = GuiManager::getTotalTimerInSeconds();
 		float savedTime = 6000.0f;
 
 		if (Global::gameSaveData.find(currentLevel->displayName+missionTimeString) != Global::gameSaveData.end())
 		{
 			std::string savedTimeString = Global::gameSaveData[currentLevel->displayName+missionTimeString];
 			savedTime = std::stof(savedTimeString);
-		}
-
-		if (newTime < savedTime)
-		{
-			std::string newTimeString = std::to_string(newTime);
-			Global::gameSaveData[currentLevel->displayName+missionTimeString] = newTimeString;
-			Global::saveSaveData();
-		}
-
-		if (missionType == "Normal" || missionType == "Hard")
-		{
-			int scoreForRankA = std::stoi((currentLevel->missionData[Global::gameMissionNumber])[1]);
-			int scoreForRankB = (3*scoreForRankA)/4;
-			int scoreForRankC = (2*scoreForRankA)/3;
-			int scoreForRankD = (1*scoreForRankA)/2;
-
-			if      (newScore >= scoreForRankA) newRank = 4;
-			else if (newScore >= scoreForRankB) newRank = 3;
-			else if (newScore >= scoreForRankC) newRank = 2;
-			else if (newScore >= scoreForRankD) newRank = 1;
-
-			if (newScore > savedScore)
-			{
-				std::string newRankString = "ERROR";
-				switch (newRank)
-				{
-					case 0: newRankString = "E"; break;
-					case 1: newRankString = "D"; break;
-					case 2: newRankString = "C"; break;
-					case 3: newRankString = "B"; break;
-					case 4: newRankString = "A"; break;
-					default: break;
-				}
-
-				Global::gameSaveData[currentLevel->displayName+missionRankString]  = newRankString;
-
-				Global::saveSaveData();
-			}
-		}
-		else if (missionType == "Ring" || missionType == "Chao")
-		{
-			int timeForRankA = std::stoi((currentLevel->missionData[Global::gameMissionNumber])[1]);
-			int timeForRankB = (4*timeForRankA)/3;
-			int timeForRankC = (3*timeForRankA)/2;
-			int timeForRankD = (2*timeForRankA)/1;
-
-			if      (newTime <= timeForRankA) newRank = 4;
-			else if (newTime <= timeForRankB) newRank = 3;
-			else if (newTime <= timeForRankC) newRank = 2;
-			else if (newTime <= timeForRankD) newRank = 1;
-
-			if (newTime < savedTime)
-			{
-				std::string newRankString = "ERROR";
-				switch (newRank)
-				{
-					case 0: newRankString = "E"; break;
-					case 1: newRankString = "D"; break;
-					case 2: newRankString = "C"; break;
-					case 3: newRankString = "B"; break;
-					case 4: newRankString = "A"; break;
-					default: break;
-				}
-
-				Global::gameSaveData[currentLevel->displayName+missionRankString] = newRankString;
-
-				Global::saveSaveData();
-			}
 		}
 	}
 

@@ -88,8 +88,6 @@ void LevelLoader::loadTitle()
 	Global::gameRingCount = 0;
 	Global::gameScore = 0;
 	Global::gameLives = 4;
-	GuiManager::setTimer(0);
-	GuiManager::stopTimer();
 
 	GuiManager::clearGuisToRender();
 
@@ -623,9 +621,6 @@ void LevelLoader::loadLevel(std::string levelFilename)
 
 	Global::gameRingCount = 0;
 	Global::gameScore = 0;
-	GuiManager::setTimer(0);
-	GuiManager::stopTimer();
-	GuiManager::startTimer();
 
 	int maxNumber = -1;
 	for (Checkpoint* check : Global::gameCheckpointList)
