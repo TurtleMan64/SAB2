@@ -132,14 +132,14 @@ Vector3f Spring::calculateDirectionOfMovement()
 
 void Spring::setPlayerPositionToAboveSpring()
 {
-	Global::gameMainVehicle->setX(getX() + directionOfMovement.x * 2);
-	Global::gameMainVehicle->setY(getY() + directionOfMovement.y * 2);
-	Global::gameMainVehicle->setZ(getZ() + directionOfMovement.z * 2);
+	Global::gameMainVehicle->setX(getX() + directionOfMovement.x * 15);
+	Global::gameMainVehicle->setY(getY() + directionOfMovement.y * 15);
+	Global::gameMainVehicle->setZ(getZ() + directionOfMovement.z * 15);
 }
 
 void Spring::setPlayerVelocityToSpringAway()
 {
-	Global::gameMainVehicle->setVelocity(directionOfMovement.x * springPower, directionOfMovement.y, directionOfMovement.z * springPower);
+	Global::gameMainVehicle->setVelocity(directionOfMovement.x * springPower, directionOfMovement.y * springPower, directionOfMovement.z * springPower);
 }
 
 void Spring::playSpringSound()
