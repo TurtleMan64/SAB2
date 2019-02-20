@@ -35,7 +35,7 @@ Spring::Spring(float x, float y, float z, float rotY, float rotZ, float myPower,
 	this->rotZ = rotZ;
 	this->springPower = myPower;
 	this->cooldownTimer = 0;
-	this->cooldownTimerMax = cooldownMax / 60; //convert from frames at 60fps to seconds
+	this->cooldownTimerInitialValue = cooldownMax / 60; //convert from frames at 60fps to seconds
 	this->scale = 1;
 	this->visible = true;
 
@@ -55,11 +55,11 @@ void Spring::step()
 
 		Global::gameMainVehicle->setOnGround(false);
 		Global::gameMainVehicle->setHoverTimer(0);
-		Global::gameMainVehicle->setCanMoveTimer(cooldownTimerMax);
+		Global::gameMainVehicle->setCanMoveTimer(cooldownTimerInitialValue);
 
 		playSpringSound();
 
-		cooldownTimer = cooldownTimerMax;
+		cooldownTimer = cooldownTimerInitialValue;
 	}
 
 	increaseRotation(1, 0, 0); //this makes the spring turn

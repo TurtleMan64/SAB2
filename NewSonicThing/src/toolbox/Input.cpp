@@ -274,7 +274,7 @@ void Input::pollInputs()
 			//std::fprintf(stdout, "cam yaw: %f,   cam pitch: %f\n", Global::gameCamera->getYaw(), Global::gameCamera->getPitch());
 			std::fprintf(stdout, "\n");
 		}
-		Loader::printInfo();
+		//Loader::printInfo();
 	}
 	#endif
 
