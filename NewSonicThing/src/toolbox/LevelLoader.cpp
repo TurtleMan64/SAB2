@@ -35,12 +35,7 @@
 #include "../particles/particleresources.h"
 #include "../particles/particle.h"
 #include "../entities/GreenForest/gfstagemanager.h"
-#include "../entities/MetalHarbor/mhtank.h"
-#include "../entities/MetalHarbor/mhrocketbase.h"
-#include "../entities/MetalHarbor/mhgiantrocket.h"
-#include "../entities/MetalHarbor/mhpathflat.h"
-#include "../entities/MetalHarbor/mhpathdiagonal.h"
-#include "../entities/MetalHarbor/mhpathflatsmall.h"
+#include "../entities/MetalHarbor/mhstaticobjects.h"
 #include "../entities/rail.h"
 #include "../entities/ring.h"
 #include "../entities/dashpad.h"
@@ -795,58 +790,10 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 
 		case 93: //Metal Harbor Objects
 		{
-			int id2 = std::stoi(dat[1]);
-			switch (id2)
-			{
-				case 0: //Tank
-				{
-					MH_Tank::loadStaticModels();
-					MH_Tank* tank = new MH_Tank(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4])); INCR_NEW //x, y, z
-					//Main_addEntity(tank);
-					chunkedEntities->push_back(tank);
-					break;
-				}
-				case 1: //RocketBase
-				{
-					MH_RocketBase::loadStaticModels();
-					MH_RocketBase* rocketBase = new MH_RocketBase(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4])); INCR_NEW //x, y, z
-					//Main_addEntity(rocketBase);
-					chunkedEntities->push_back(rocketBase);
-					break;
-				}
-				case 2: //GiantRocket
-				{
-					MH_GiantRocket::loadStaticModels();
-					MH_GiantRocket* giantRocket = new MH_GiantRocket(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4])); INCR_NEW //x, y, z
-					//Main_addEntity(giantRocket);
-					chunkedEntities->push_back(giantRocket);
-					break;
-				}
-				case 3: //PathFlat
-				{
-					MH_PathFlat::loadStaticModels();
-					MH_PathFlat* pathFlat = new MH_PathFlat(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]), toFloat(dat[5])); INCR_NEW //x, y, z, rotY
-					//Main_addEntity(pathFlat);
-					chunkedEntities->push_back(pathFlat);
-					break;
-				}case 4: //PathDiagonal
-				{
-					MH_PathDiagonal::loadStaticModels();
-					MH_PathDiagonal* pathDiagonal = new MH_PathDiagonal(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]), toFloat(dat[5])); INCR_NEW //x, y, z, rotY
-					//Main_addEntity(pathDiagonal);
-					chunkedEntities->push_back(pathDiagonal);
-					break;
-				}
-				case 5: //PathFlatSmall
-				{
-					MH_PathFlatSmall::loadStaticModels();
-					MH_PathFlatSmall* pathFlatSmall = new MH_PathFlatSmall(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]), toFloat(dat[5])); INCR_NEW //x, y, z, rotY
-					//Main_addEntity(pathFlatSmall);
-					chunkedEntities->push_back(pathFlatSmall);
-					break;
-				}
-				default: break;
-			}
+			MH_StaticObjects::loadStaticModels();
+			MH_StaticObjects* staticObjects = new MH_StaticObjects(); INCR_NEW
+			Main_addEntity(staticObjects);
+			//chunkedEntities->push_back(tank);
 			return;
 		}
 		
@@ -1008,10 +955,5 @@ void LevelLoader::freeAllStaticModels()
 	SpeedRamp::deleteStaticModels();
 	Rocket::deleteStaticModels();
 	Spring::deleteStaticModels();
-	MH_GiantRocket::deleteStaticModels();
-	MH_PathDiagonal::deleteStaticModels();
-	MH_PathFlat::deleteStaticModels();
-	MH_PathFlatSmall::deleteStaticModels();
-	MH_RocketBase::deleteStaticModels();
-	MH_Tank::deleteStaticModels();
+	MH_StaticObjects::deleteStaticModels();
 }
