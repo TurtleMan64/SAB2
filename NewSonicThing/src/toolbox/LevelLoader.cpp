@@ -23,7 +23,7 @@
 #include "../entities/skysphere.h"
 #include "../guis/guimanager.h"
 #include "../renderEngine/skymanager.h"
-#include "../toolbox/mainmenu.h"
+#include "../toolbox/missionmenu.h"
 #include "../toolbox/getline.h"
 #include "split.h"
 #include "input.h"
@@ -43,6 +43,9 @@
 #include "../entities/MetalHarbor/mhpathflatsmall.h"
 #include "../entities/rail.h"
 #include "../entities/ring.h"
+#include "menumanager.h"
+
+int LevelLoader::numLevels = 0;
 
 void LevelLoader::loadTitle()
 {
@@ -85,12 +88,9 @@ void LevelLoader::loadTitle()
 	Global::gameRingCount = 0;
 	Global::gameScore = 0;
 	Global::gameLives = 4;
-	GuiManager::setTimer(0);
-	GuiManager::stopTimer();
 
 	GuiManager::clearGuisToRender();
 
-	MainMenu::loadResources();
 	Global::gameState = STATE_TITLE;
 	Global::gameIsNormalMode = false;
 	Global::gameIsHardMode = false;
@@ -621,9 +621,6 @@ void LevelLoader::loadLevel(std::string levelFilename)
 
 	Global::gameRingCount = 0;
 	Global::gameScore = 0;
-	GuiManager::setTimer(0);
-	GuiManager::stopTimer();
-	GuiManager::startTimer();
 
 	int maxNumber = -1;
 	for (Checkpoint* check : Global::gameCheckpointList)
@@ -856,6 +853,8 @@ void LevelLoader::loadLevelData()
 {
 	Global::gameLevelData.clear();
 
+	LevelLoader::numLevels = 0;
+
 	std::ifstream file("res/Levels/LevelData.dat");
 	if (!file.is_open())
 	{
@@ -867,7 +866,8 @@ void LevelLoader::loadLevelData()
 		std::string line;
 		getlineSafe(file, line);
 
-		int levelCount = std::stoi(line.c_str());
+		LevelLoader::numLevels = std::stoi(line.c_str());
+		int levelCount = LevelLoader::numLevels;
 		getlineSafe(file, line);
 
 		while (levelCount > 0)
@@ -944,4 +944,9 @@ void LevelLoader::freeAllStaticModels()
 	MH_PathFlatSmall::deleteStaticModels();
 	MH_RocketBase::deleteStaticModels();
 	MH_Tank::deleteStaticModels();
+}
+
+int LevelLoader::getNumLevels()
+{
+	return LevelLoader::numLevels;
 }

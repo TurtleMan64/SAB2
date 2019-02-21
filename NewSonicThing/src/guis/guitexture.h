@@ -16,6 +16,8 @@ private:
 	bool visible;
 
 public:
+	GuiTexture();
+
 	//position is (0,0) = top left of screen, (1,1) is bottom right
 	//Note that the image is drawn with its CENTER at position
 	GuiTexture(GLuint textureID, Vector2f* position, Vector2f* size, float rotation);

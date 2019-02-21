@@ -21,6 +21,7 @@ class WaterTile;
 #include <unordered_map>
 #include <unordered_set>
 #include "../toolbox/level.h"
+#include "../toolbox/menumanager.h"
 
 void Main_addEntity(Entity* entityToAdd);
 void Main_deleteEntity(Entity* entityToDelete);
@@ -74,6 +75,7 @@ void Main_deleteAllChunkedEntities();
 class Global
 {
 public:
+	static MenuManager menuManager;
 	static Camera* gameCamera;
 	static Car* gameMainVehicle;
 	static Stage* gameStage;

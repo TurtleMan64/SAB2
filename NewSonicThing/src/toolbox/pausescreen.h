@@ -1,43 +1,44 @@
 #ifndef PAUSESCREEN_H
 #define PAUSESCREEN_H
+#include "../fontMeshCreator/guitext.h"
+#include"../fontMeshCreator/fonttype.h"
+#include "menu.h"
+#include "hud.h"
 
-class FontType;
-class GUIText;
 
-
-class PauseScreen
+class PauseScreen : public Menu
 {
 private:
-	static int menuSelection;
-	static int menuSelectionMAX;
-	static int menuDisplayID;
-	static const int ROOT = 0;
+	int menuSelection;
+	int menuSelectionMAX;
+	int menuDisplayID;
 
-	static int moveYPrevious;
-	static bool selectInputPrevious;
-	static bool backInputPrevious;
+	int moveYPrevious;
+	bool selectInputPrevious;
+	bool backInputPrevious;
 
-	static GUIText* textCursor;
-	static GUIText* textResume;
-	static GUIText* textCamera;
-	static GUIText* textRestart;
-	static GUIText* textQuit;
+	GUIText* textCursor;
+	GUIText* textResume;
+	GUIText* textCamera;
+	GUIText* textRestart;
+	GUIText* textQuit;
 
-	static bool isPaused;
-	static bool shouldPause;
+	bool pausedSounds[14];
 
-	static bool pausedSounds[14];
+	float size;
+	void selectButton();
+	void setVisible(bool);
+
+	HUD* gameHud;
 
 public:
-	static FontType* font;
+	PauseScreen(HUD*);
 
-	static void init();
+	~PauseScreen();
 
-	static void step();
+	FontType* font;
 
-	static void unpause(bool shouldResumeSFX);
-
-	static void pause();
+	Menu* step();
 };
 
 #endif

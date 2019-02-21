@@ -1,6 +1,7 @@
 #include "guitext.h"
 #include "../renderEngine/renderEngine.h"
 #include "../fontRendering/textmaster.h"
+#include "fonttype.h"
 
 GUIText::GUIText(std::string text, float fontSize, FontType* font, float x, float y, float maxLineLength,
 	bool centered, bool rightAligned, bool visible)
@@ -30,7 +31,7 @@ GUIText::GUIText(std::string text, float fontSize, FontType* font, float x, floa
 {
 	this->colour.set(1, 1, 1);
 	this->textString.assign(text);
-	this->fontSize = fontSize/0.03f;
+	this->fontSize = fontSize;
 	this->font = font;
 	this->position.set(x, y);
 	this->alignment = alignment;

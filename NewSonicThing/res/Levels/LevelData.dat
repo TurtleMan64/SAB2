@@ -1,7 +1,15 @@
-7
+9
 
 CityEscape.lvl
-Windy Valley
+City Escape
+4
+Normal;100;Complete as Blue Falcon
+Ring;100;100;Complete as Twin Norita
+Chao;100;Complete as Soic Phantom
+Hard;100;Complete as Black Shadow
+
+SeasideHill.lvl
+Seaside Hill
 4
 Normal;100;Complete as Blue Falcon
 Ring;100;100;Complete as Twin Norita
@@ -49,9 +57,18 @@ Chao;100;Complete as Soic Phantom
 Hard;100;Complete as Black Shadow
 
 FrogForest.lvl
-Green Hill Zone
+Frog Forest
 4
 Normal;100;Complete as Blue Falcon
 Ring;100;100;Complete as Twin Norita
 Chao;100;Complete as Soic Phantom
 Hard;100;Complete as Black Shadow
+
+Test.lvl
+Epic Test Level
+4
+Normal;100;Complete as Blue Falcon
+Ring;100;100;Complete as Twin Norita
+Chao;100;Complete as Soic Phantom
+Hard;100;Complete as Black Shadow
+
