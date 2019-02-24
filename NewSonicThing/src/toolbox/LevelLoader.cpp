@@ -43,6 +43,7 @@
 #include "../entities/point.h"
 #include "../entities/rocket.h"
 #include "../entities/spring.h"
+#include "../entities/pulley.h"
 
 void LevelLoader::loadTitle()
 {
@@ -788,12 +789,11 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 			return;
 		}
 
-		case 93: //Metal Harbor Objects
+		case 93: //Metal Harbor Static Objects
 		{
 			MH_StaticObjects::loadStaticModels();
 			MH_StaticObjects* staticObjects = new MH_StaticObjects(); INCR_NEW
 			Main_addEntity(staticObjects);
-			//chunkedEntities->push_back(tank);
 			return;
 		}
 		
@@ -805,7 +805,7 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 				toFloat(dat[4]), toFloat(dat[5]), toFloat(dat[6]), 			//rotation
 				toFloat(dat[7]), toFloat(dat[8]), toFloat(dat[9])); INCR_NEW  //power, camYaw, time 
 			
-			Main_addEntity(dashpad);
+			chunkedEntities->push_back(dashpad);
 			return;
 		}
 
@@ -816,7 +816,7 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
 				toFloat(dat[4]), toFloat(dat[5]),                  //rotation
 				toFloat(dat[6]), toFloat(dat[7])); INCR_NEW          //power, time
-			Main_addEntity(ramp);
+			chunkedEntities->push_back(ramp);
 			return;
 		}
 
@@ -835,7 +835,7 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 			Rocket::loadStaticModels();
 			Rocket* rocket = new Rocket(toInt(dat[1]), toInt(dat[2])); //Point IDs for start and end of path, position of rocket initialized to where point ID 1 is
 			INCR_NEW
-			Main_addEntity(rocket);
+			chunkedEntities->push_back(rocket);
 			return;
 		}
 
@@ -847,7 +847,17 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 					toFloat(dat[4]), toFloat(dat[5]),                  //rotation
 					toFloat(dat[6]), toFloat(dat[7]));                   //power, control lock time in seconds
 			INCR_NEW
-			Main_addEntity(spring);
+			chunkedEntities->push_back(spring);
+			return;
+		}
+
+		case 99: //Pulley
+		{
+			Pulley::loadStaticModels();
+			Pulley* pulley = new Pulley(
+					toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3])); //position x,y,z
+			INCR_NEW
+			chunkedEntities->push_back(pulley);
 			return;
 		}
 		//case 91: //Metal Harbor
@@ -956,4 +966,5 @@ void LevelLoader::freeAllStaticModels()
 	Rocket::deleteStaticModels();
 	Spring::deleteStaticModels();
 	MH_StaticObjects::deleteStaticModels();
+	Pulley::deleteStaticModels();
 }
