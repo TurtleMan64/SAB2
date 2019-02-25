@@ -3,13 +3,17 @@
 
 #include <list>
 #include "entity.h"
+#include "collideableobject.h"
 
 class TexturedModel;
 
-class Pulley : public Entity
+class Pulley : public CollideableObject
 {
 private:
-	static std::list<TexturedModel*> models;
+	static std::list<TexturedModel*> modelsHandle;
+	static std::list<TexturedModel*> modelsRope;	
+	static std::list<TexturedModel*> modelsTop;
+	static CollisionModel* cmTop;
 
     float ropeYAxisScale;
 

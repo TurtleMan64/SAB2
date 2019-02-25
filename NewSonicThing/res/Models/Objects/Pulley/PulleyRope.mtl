@@ -1,0 +1,11 @@
+	# Material Count: 1
+	
+newmtl Mesh_1610.rip
+	Ns 20
+	Ni 0.02
+	Tr 1
+	d 1.000000
+	scrollX 0
+	scrollY 0
+	map_Kd tex1_32x32_m_07acf219953c5fe7_14_arb.png
+	

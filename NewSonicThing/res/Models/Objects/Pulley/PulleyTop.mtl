@@ -1,0 +1,47 @@
+	# Material Count: 5
+	
+newmtl Mesh_0550.rip
+	Ns 20
+	Ni 0.02
+	Tr 1
+	d 1.000000
+	scrollX 0
+	scrollY 0
+	map_Kd tex1_64x64_m_736a09069ae41ff0_14_arbFixed.png
+	
+newmtl Mesh_0546.rip
+	Ns 20
+	Ni 0.02
+	Tr 1
+	d 1.000000
+	scrollX 0
+	scrollY 0
+	map_Kd tex1_64x64_m_dbba696900a12062_14.png
+	
+newmtl Mesh_0548.rip
+	Ns 20
+	Ni 0.02
+	Tr 1
+	d 1.000000
+	scrollX 0
+	scrollY 0
+	map_Kd tex1_64x64_m_b969f2a29661ef64_14_arb.png
+	
+newmtl Mesh_0549.rip
+	Ns 20
+	Ni 0.02
+	Tr 1
+	d 1.000000
+	scrollX 0
+	scrollY 0
+	map_Kd tex1_128x128_m_de8b6ddb06d4fe27_14.png
+	
+newmtl Mesh_0551.rip
+	Ns 20
+	Ni 0.02
+	Tr 1
+	d 1.000000
+	scrollX 0
+	scrollY 0
+	map_Kd tex1_32x32_m_07acf219953c5fe7_14_arb.png
+	
