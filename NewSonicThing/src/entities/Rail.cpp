@@ -38,7 +38,7 @@ RailSegment::RailSegment(Vector3f* begin, Vector3f* end, Vector3f* beginNormal, 
 
 	Vector3f toAdd(&pointsDiff);
 	toAdd.normalize();
-	speedToAdd = -toAdd.y*(70.0f); //speed constant
+	speedToAdd = -toAdd.y*(RailSegment::steepnessFactor); //speed constant
 }
 
 //I want to optimize this as much as I can
@@ -197,6 +197,8 @@ void Rail::step()
 		{
 			playerSpeed += Maths::sign(playerSpeed)*crouchPush*dt;
 		}
+
+		playerSpeed = Maths::applyDrag(playerSpeed, railDrag, dt);
 
 		if (Input::inputs.INPUT_ACTION1 && !Input::inputs.INPUT_PREVIOUS_ACTION1)
 		{

@@ -23,7 +23,7 @@
 #include "../entities/skysphere.h"
 #include "../guis/guimanager.h"
 #include "../renderEngine/skymanager.h"
-#include "../toolbox/missionmenu.h"
+#include "../menu/missionmenu.h"
 #include "../toolbox/getline.h"
 #include "split.h"
 #include "input.h"
@@ -43,7 +43,7 @@
 #include "../entities/MetalHarbor/mhpathflatsmall.h"
 #include "../entities/rail.h"
 #include "../entities/ring.h"
-#include "menumanager.h"
+#include "../menu/menumanager.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -653,8 +653,9 @@ void LevelLoader::loadLevel(std::string levelFilename)
 
 	Global::finishStageTimer = -1;
 
-	//Vector3f partVel(0, 0, 0);
-	//new Particle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), 1.0f, 400.0f, false);
+	Vector3f partVel(0, 0, 0);
+	new Particle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &partVel, 0.0f,
+		1.0f, 0.0f, 50.0f, 0.0f, true, false);
 
 	Global::gameState = STATE_RUNNING;
 
@@ -794,7 +795,6 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 				{
 					MH_Tank::loadStaticModels();
 					MH_Tank* tank = new MH_Tank(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4])); INCR_NEW //x, y, z
-					//Main_addEntity(tank);
 					chunkedEntities->push_back(tank);
 					break;
 				}
@@ -802,7 +802,6 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 				{
 					MH_RocketBase::loadStaticModels();
 					MH_RocketBase* rocketBase = new MH_RocketBase(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4])); INCR_NEW //x, y, z
-					//Main_addEntity(rocketBase);
 					chunkedEntities->push_back(rocketBase);
 					break;
 				}
@@ -810,7 +809,6 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 				{
 					MH_GiantRocket::loadStaticModels();
 					MH_GiantRocket* giantRocket = new MH_GiantRocket(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4])); INCR_NEW //x, y, z
-					//Main_addEntity(giantRocket);
 					chunkedEntities->push_back(giantRocket);
 					break;
 				}
@@ -818,14 +816,13 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 				{
 					MH_PathFlat::loadStaticModels();
 					MH_PathFlat* pathFlat = new MH_PathFlat(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]), toFloat(dat[5])); INCR_NEW //x, y, z, rotY
-					//Main_addEntity(pathFlat);
 					chunkedEntities->push_back(pathFlat);
 					break;
-				}case 4: //PathDiagonal
+				}
+				case 4: //PathDiagonal
 				{
 					MH_PathDiagonal::loadStaticModels();
 					MH_PathDiagonal* pathDiagonal = new MH_PathDiagonal(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]), toFloat(dat[5])); INCR_NEW //x, y, z, rotY
-					//Main_addEntity(pathDiagonal);
 					chunkedEntities->push_back(pathDiagonal);
 					break;
 				}
@@ -833,7 +830,6 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 				{
 					MH_PathFlatSmall::loadStaticModels();
 					MH_PathFlatSmall* pathFlatSmall = new MH_PathFlatSmall(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]), toFloat(dat[5])); INCR_NEW //x, y, z, rotY
-					//Main_addEntity(pathFlatSmall);
 					chunkedEntities->push_back(pathFlatSmall);
 					break;
 				}

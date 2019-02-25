@@ -69,8 +69,8 @@
 #include "../water/waterrenderer.h"
 #include "../water/watertile.h"
 #include "../toolbox/getline.h"
-#include "../toolbox/menumanager.h"
-#include "../toolbox/mainmenu.h"
+#include "../menu/menumanager.h"
+#include "../menu/mainmenu.h"
 #ifdef _WIN32
 #include <windows.h>
 #include <tchar.h>
@@ -185,6 +185,7 @@ bool Global::gameIsArcadeMode = false;
 std::vector<Level> Global::gameLevelData;
 std::unordered_map<std::string, std::string> Global::gameSaveData;
 bool Global::stageUsesWater = true;
+FontType* Global::fontVipnagorgialla = nullptr;
 
 std::list<Checkpoint*> Global::gameCheckpointList;
 int Global::gameCheckpointLast;
@@ -199,6 +200,10 @@ float  Global::checkpointCamPitch = 0;
 int    Global::checkpointTimeCen  = 0;
 int    Global::checkpointTimeSec  = 0;
 int    Global::checkpointTimeMin  = 0;
+
+GUIText* Global::titleCardLevelName          = nullptr;
+GUIText* Global::titleCardMission            = nullptr;
+GUIText* Global::titleCardMissionDescription = nullptr;
 
 bool Global::unlockedSonicDoll = true;
 bool Global::unlockedMechaSonic = true;
@@ -248,6 +253,8 @@ int main()
 	LevelLoader::loadLevelData();
 
 	AudioMaster::init();
+
+	Global::fontVipnagorgialla = new FontType(Loader::loadTexture("res/Fonts/vipnagorgialla.png"), "res/Fonts/vipnagorgialla.fnt"); INCR_NEW
 
 	TextMaster::init();
 
@@ -565,6 +572,7 @@ int main()
 				break;
 		}
 
+		Global::clearTitleCard();
 		Global::menuManager.step();
 
 		Stage::updateVisibleChunks();
@@ -1422,4 +1430,59 @@ void Main_deleteAllChunkedEntities()
 		set.clear();
 	}
 	gameChunkedEntities.clear();
+}
+
+void Global::createTitleCard()
+{
+	ParticleMaster::deleteAllParticles();
+	GuiManager::clearGuisToRender();
+
+	Vector3f vel(0,0,0);
+	new Particle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &vel, 0, 1.0f, 0.0f, 50.0f, 0, true, false);
+	GuiManager::addGuiToRender(GuiTextureResources::textureBlueLine);
+
+	if (titleCardLevelName != nullptr)
+	{
+		titleCardLevelName->deleteMe();
+		delete titleCardLevelName; INCR_DEL
+		titleCardLevelName = nullptr;
+	}
+	if (titleCardMission != nullptr)
+	{
+		titleCardMission->deleteMe();
+		delete titleCardMission; INCR_DEL
+		titleCardMission = nullptr;
+	}
+	if (titleCardMissionDescription != nullptr)
+	{
+		titleCardMissionDescription->deleteMe();
+		delete titleCardMissionDescription; INCR_DEL
+		titleCardMissionDescription = nullptr;
+	}
+
+	titleCardLevelName          = new GUIText(Global::levelNameDisplay, 0.09f, Global::fontVipnagorgialla, 0.5f, 0.6f, 4, true); INCR_NEW
+	titleCardMission            = new GUIText("Mission "+std::to_string(Global::gameMissionNumber+1)+":", 0.075f, Global::fontVipnagorgialla, 0.5f, 0.7f, 4, true); INCR_NEW
+	titleCardMissionDescription = new GUIText(Global::gameMissionDescription, 0.06f, Global::fontVipnagorgialla, 0.5f, 0.8f, 4, true); INCR_NEW
+}
+
+void Global::clearTitleCard()
+{
+	if (titleCardLevelName != nullptr)
+	{
+		titleCardLevelName->deleteMe();
+		delete titleCardLevelName; INCR_DEL
+		titleCardLevelName = nullptr;
+	}
+	if (titleCardMission != nullptr)
+	{
+		titleCardMission->deleteMe();
+		delete titleCardMission; INCR_DEL
+		titleCardMission = nullptr;
+	}
+	if (titleCardMissionDescription != nullptr)
+	{
+		titleCardMissionDescription->deleteMe();
+		delete titleCardMissionDescription; INCR_DEL
+		titleCardMissionDescription = nullptr;
+	}
 }

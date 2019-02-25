@@ -75,6 +75,7 @@ bool CollisionChecker::checkCollision(
 			if (cm->hasQuadTree() == true)
 			{
 				QuadTreeNode* node = cm->quadTreeRoot;
+				QuadTreeNode* deepestNode = nullptr;
 
 				std::list<QuadTreeNode*> alreadySearchedNodes;
 
@@ -166,6 +167,7 @@ bool CollisionChecker::checkCollision(
 					}
 
 					//determine the next node
+					deepestNode = node;
 					if (node->depth != treeMaxDepth) //make sure we aren't at a leaf node
 					{
 						if (px1 < node->xMid)
@@ -285,6 +287,7 @@ bool CollisionChecker::checkCollision(
 					}
 
 					//determine the next node
+					QuadTreeNode* before = node;
 					if (node->depth != treeMaxDepth) //make sure we aren't at a leaf node
 					{
 						if (px2 < node->xMid)
@@ -313,6 +316,245 @@ bool CollisionChecker::checkCollision(
 					else
 					{
 						node = nullptr;
+					}
+
+					if (node == nullptr && before != deepestNode) //we have transitioned to a new node, so lets check catty corner nodes
+					{
+						node = cm->quadTreeRoot;
+						//search for (px1, pz2)
+						while (node != nullptr)
+						{
+							if (std::find(alreadySearchedNodes.begin(), alreadySearchedNodes.end(), node) == alreadySearchedNodes.end())
+							{
+								alreadySearchedNodes.push_back(node);
+
+								//check through node.tris;
+								for (Triangle3D* currTriangle : node->tris)
+								{
+									//Bounds check on individual triangle
+									if (px1 - checkRadius <= currTriangle->maxX && px1 + checkRadius >= currTriangle->minX &&
+										pz1 - checkRadius <= currTriangle->maxZ && pz1 + checkRadius >= currTriangle->minZ &&
+										py1 - checkRadius <= currTriangle->maxY && py1 + checkRadius >= currTriangle->minY)
+									{
+										tx1 = currTriangle->p1X;
+										tx2 = currTriangle->p2X;
+										tx3 = currTriangle->p3X;
+										ty1 = currTriangle->p1Y;
+										ty2 = currTriangle->p2Y;
+										ty3 = currTriangle->p3Y;
+										tz1 = currTriangle->p1Z;
+										tz2 = currTriangle->p2Z;
+										tz3 = currTriangle->p3Z;
+										A = currTriangle->A;
+										B = currTriangle->B;
+										C = currTriangle->C;
+										D = currTriangle->D;
+
+										numerator = (A*px1 + B*py1 + C*pz1 + D);
+										denominator = (A*(px1 - px2) + B*(py1 - py2) + C*(pz1 - pz2));
+
+										if (denominator != 0)
+										{
+											u = (numerator / denominator);
+											float cix = px1 + u*(px2 - px1);
+											float ciy = py1 + u*(py2 - py1);
+											float ciz = pz1 + u*(pz2 - pz1);
+
+											if (B != 0)
+											{
+												float planey1 = (((-A*px1) + (-C*pz1) - D) / B);
+												float planey2 = (((-A*px2) + (-C*pz2) - D) / B);
+												firstAbove = copysignf(1, py1 - planey1);
+												secondAbove = copysignf(1, py2 - planey2);
+											}
+											else if (A != 0)
+											{
+												float planex1 = (((-B*py1) + (-C*pz1) - D) / A);
+												float planex2 = (((-B*py2) + (-C*pz2) - D) / A);
+												firstAbove = copysignf(1, px1 - planex1);
+												secondAbove = copysignf(1, px2 - planex2);
+											}
+											else if (C != 0)
+											{
+												float planez1 = (((-B*py1) + (-A*px1) - D) / C);
+												float planez2 = (((-B*py2) + (-A*px2) - D) / C);
+												firstAbove = copysignf(1, pz1 - planez1);
+												secondAbove = copysignf(1, pz2 - planez2);
+											}
+
+											if (secondAbove != firstAbove &&
+												checkPointInTriangle3D(cix, ciy, ciz, tx1, ty1, tz1, tx2, ty2, tz2, tx3, ty3, tz3,
+													fabsf(currTriangle->normal.x),
+													fabsf(currTriangle->normal.y),
+													fabsf(currTriangle->normal.z)))
+											{
+												//what is the distance to the triangle? set it to maxdist
+												triangleCollide = true;
+												float thisDist = (sqrtf(fabsf((cix - px1)*(cix - px1) + (ciy - py1)*(ciy - py1) + (ciz - pz1)*(ciz - pz1))));
+												if (minDist == -1 || thisDist < minDist)
+												{
+													collideTriangle = currTriangle;
+													collidePosition.x = cix;
+													collidePosition.y = ciy;
+													collidePosition.z = ciz;
+													minDist = thisDist;
+													finalModel = cm;
+												}
+											}
+										}
+									}
+								}
+							}
+
+							//determine the next node
+							if (node->depth != treeMaxDepth) //make sure we aren't at a leaf node
+							{
+								if (px1 < node->xMid)
+								{
+									if (pz2 < node->zMid)
+									{
+										node = node->botLeft;
+									}
+									else
+									{
+										node = node->topLeft;
+									}
+								}
+								else
+								{
+									if (pz2 < node->zMid)
+									{
+										node = node->botRight;
+									}
+									else
+									{
+										node = node->topRight;
+									}
+								}
+							}
+							else
+							{
+								node = nullptr;
+							}
+						}
+
+						node = cm->quadTreeRoot;
+						//search for (px2, pz1)
+						while (node != nullptr)
+						{
+							if (std::find(alreadySearchedNodes.begin(), alreadySearchedNodes.end(), node) == alreadySearchedNodes.end())
+							{
+								alreadySearchedNodes.push_back(node);
+
+								//check through node.tris;
+								for (Triangle3D* currTriangle : node->tris)
+								{
+									//Bounds check on individual triangle
+									if (px1 - checkRadius <= currTriangle->maxX && px1 + checkRadius >= currTriangle->minX &&
+										pz1 - checkRadius <= currTriangle->maxZ && pz1 + checkRadius >= currTriangle->minZ &&
+										py1 - checkRadius <= currTriangle->maxY && py1 + checkRadius >= currTriangle->minY)
+									{
+										tx1 = currTriangle->p1X;
+										tx2 = currTriangle->p2X;
+										tx3 = currTriangle->p3X;
+										ty1 = currTriangle->p1Y;
+										ty2 = currTriangle->p2Y;
+										ty3 = currTriangle->p3Y;
+										tz1 = currTriangle->p1Z;
+										tz2 = currTriangle->p2Z;
+										tz3 = currTriangle->p3Z;
+										A = currTriangle->A;
+										B = currTriangle->B;
+										C = currTriangle->C;
+										D = currTriangle->D;
+
+										numerator = (A*px1 + B*py1 + C*pz1 + D);
+										denominator = (A*(px1 - px2) + B*(py1 - py2) + C*(pz1 - pz2));
+
+										if (denominator != 0)
+										{
+											u = (numerator / denominator);
+											float cix = px1 + u*(px2 - px1);
+											float ciy = py1 + u*(py2 - py1);
+											float ciz = pz1 + u*(pz2 - pz1);
+
+											if (B != 0)
+											{
+												float planey1 = (((-A*px1) + (-C*pz1) - D) / B);
+												float planey2 = (((-A*px2) + (-C*pz2) - D) / B);
+												firstAbove = copysignf(1, py1 - planey1);
+												secondAbove = copysignf(1, py2 - planey2);
+											}
+											else if (A != 0)
+											{
+												float planex1 = (((-B*py1) + (-C*pz1) - D) / A);
+												float planex2 = (((-B*py2) + (-C*pz2) - D) / A);
+												firstAbove = copysignf(1, px1 - planex1);
+												secondAbove = copysignf(1, px2 - planex2);
+											}
+											else if (C != 0)
+											{
+												float planez1 = (((-B*py1) + (-A*px1) - D) / C);
+												float planez2 = (((-B*py2) + (-A*px2) - D) / C);
+												firstAbove = copysignf(1, pz1 - planez1);
+												secondAbove = copysignf(1, pz2 - planez2);
+											}
+
+											if (secondAbove != firstAbove &&
+												checkPointInTriangle3D(cix, ciy, ciz, tx1, ty1, tz1, tx2, ty2, tz2, tx3, ty3, tz3,
+													fabsf(currTriangle->normal.x),
+													fabsf(currTriangle->normal.y),
+													fabsf(currTriangle->normal.z)))
+											{
+												//what is the distance to the triangle? set it to maxdist
+												triangleCollide = true;
+												float thisDist = (sqrtf(fabsf((cix - px1)*(cix - px1) + (ciy - py1)*(ciy - py1) + (ciz - pz1)*(ciz - pz1))));
+												if (minDist == -1 || thisDist < minDist)
+												{
+													collideTriangle = currTriangle;
+													collidePosition.x = cix;
+													collidePosition.y = ciy;
+													collidePosition.z = ciz;
+													minDist = thisDist;
+													finalModel = cm;
+												}
+											}
+										}
+									}
+								}
+							}
+
+							//determine the next node
+							if (node->depth != treeMaxDepth) //make sure we aren't at a leaf node
+							{
+								if (px2 < node->xMid)
+								{
+									if (pz1 < node->zMid)
+									{
+										node = node->botLeft;
+									}
+									else
+									{
+										node = node->topLeft;
+									}
+								}
+								else
+								{
+									if (pz1 < node->zMid)
+									{
+										node = node->botRight;
+									}
+									else
+									{
+										node = node->topRight;
+									}
+								}
+							}
+							else
+							{
+								node = nullptr;
+							}
+						}
 					}
 				}
 			}

@@ -83,6 +83,10 @@ public:
 	//drag should be a negative number to actually drag the velocity vector
 	static Vector3f applyDrag(Vector3f* velocity, float drag, float deltaTime);
 
+	//returns a new velocity that has undergone continous drag over a period of time. 
+	//drag should be a negative number to actually drag the velocity
+	static float applyDrag(float velocity, float drag, float deltaTime);
+
 	//angle in radians
 	static Vector3f mapInputs3(float angle, float mag, Vector3f* VecC);
 

@@ -101,7 +101,7 @@ void Vector3f::normalize()
 	}
 	else
 	{
-		std::fprintf(stdout, "Warning: Trying to normalize a very small vector [%f %f %f]\n", x, y, z);
+		//std::fprintf(stdout, "Warning: Trying to normalize a very small vector [%f %f %f]\n", x, y, z);
 		float xa = fabsf(x);
 		float ya = fabsf(y);
 		float max = fmaxf(xa, fmaxf(ya, fabsf(z)));

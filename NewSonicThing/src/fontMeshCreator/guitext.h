@@ -65,6 +65,7 @@ public:
 		bool centered, bool rightAlign, bool visible);
 
 	//new version
+	//x, y = (0, 0) is top left, (1, 1) is bottom right
 	//size = 1.0 = full screen height
 	//alignment chart:
 	//  0 1 2

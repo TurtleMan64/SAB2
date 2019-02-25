@@ -7,7 +7,7 @@
 #include "../fontMeshCreator/guitext.h"
 #include "../fontMeshCreator/guinumber.h"
 #include "../fontMeshCreator/fonttype.h"
-#include "../toolbox/pausescreen.h"
+#include "../menu/pausescreen.h"
 #include "guirenderer.h"
 #include "../toolbox/input.h"
 

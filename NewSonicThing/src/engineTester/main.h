@@ -13,6 +13,8 @@ class Checkpoint;
 class WaterRenderer;
 class WaterFrameBuffers;
 class WaterTile;
+class FontType;
+class GUIText;
 
 #include <string>
 #include <random>
@@ -21,7 +23,7 @@ class WaterTile;
 #include <unordered_map>
 #include <unordered_set>
 #include "../toolbox/level.h"
-#include "../toolbox/menumanager.h"
+#include "../menu/menumanager.h"
 
 void Main_addEntity(Entity* entityToAdd);
 void Main_deleteEntity(Entity* entityToDelete);
@@ -117,6 +119,7 @@ public:
 	static float gameTotalPlaytime;
 	static float gameArcadePlaytime;
 	static bool stageUsesWater;
+	static FontType* fontVipnagorgialla;
 
 	static bool  spawnAtCheckpoint;
 	static float checkpointX;
@@ -128,6 +131,11 @@ public:
 	static int   checkpointTimeCen;
 	static int   checkpointTimeSec;
 	static int   checkpointTimeMin;
+
+	//texts for the title card
+	static GUIText* titleCardLevelName;
+	static GUIText* titleCardMission;
+	static GUIText* titleCardMissionDescription;
 
 	static std::list<Checkpoint*> gameCheckpointList;
 	static int gameCheckpointLast;
@@ -183,5 +191,9 @@ public:
 	static int getChunkIndex(float x, float z);
 
 	static void recalculateEntityChunks(float minX, float maxX, float minZ, float maxZ, float chunkSize);
+
+	static void createTitleCard();
+
+	static void clearTitleCard();
 };
 #endif

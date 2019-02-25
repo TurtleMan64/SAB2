@@ -13,7 +13,6 @@ class GUINumber
 {
 private:
 	static void createNumber(int i, float x, float y, float w, float h);
-	static FontType* numberFont;
 	static GLuint numberMeshIDs[10];
 	static GLuint numberMeshVertexCounts[10];
 	Vector2f position;
@@ -62,10 +61,10 @@ public:
 
 	void deleteMe();
 
-	Vector2f* getPosition();
-
 	//x, y = coords on the screen, (0,0) being the top left of the screen, (1,1) being bottom right
 	void setPosition(float x, float y);
+
+	Vector2f* getPosition();
 
 	FontType* getFont() const;
 };

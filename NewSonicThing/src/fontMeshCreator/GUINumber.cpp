@@ -4,10 +4,9 @@
 #include "../fontRendering/textmaster.h"
 #include "textmeshdata.h"
 #include "fonttype.h"
-#include "../toolbox/pausescreen.h"
+#include "../menu/pausescreen.h"
 #include "../toolbox/maths.h"
 
-FontType* GUINumber::numberFont = nullptr;
 GLuint    GUINumber::numberMeshIDs[10];
 GLuint    GUINumber::numberMeshVertexCounts[10];
 
@@ -58,7 +57,7 @@ void GUINumber::createNumber(int i, float x, float y, float w, float h)
 
 void GUINumber::loadMeshData()
 {
-	GUINumber::numberFont = new FontType(Loader::loadTexture("res/Fonts/vipnagorgialla.png"), "res/Fonts/vipnagorgialla.fnt"); INCR_NEW
+	//GUINumber::numberFont = new FontType(Loader::loadTexture("res/Fonts/vipnagorgialla.png"), "res/Fonts/vipnagorgialla.fnt"); INCR_NEW
 
 	const float ts = 512; //size of the image used as the font atlas
 
@@ -214,7 +213,7 @@ void GUINumber::deleteMe()
 
 FontType* GUINumber::getFont() const
 {
-	return numberFont;
+	return Global::fontVipnagorgialla;
 }
 
 Vector2f* GUINumber::getPosition()

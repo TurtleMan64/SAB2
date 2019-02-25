@@ -16,6 +16,7 @@ public:
 	Vector3f normalBegin;
 	Vector3f normalEnd;
 	float speedToAdd; //speed to add to players vel. 
+	const float steepnessFactor = 90.0f;
 	float length;
 	bool playerIsOn;
 	float playerProgress; //players progress through the rail. 0 = at the begin point, 0.5 = halfway inbetween, 1 = at the end
@@ -39,7 +40,8 @@ private:
 	RailSegment* currentSegment;
 	int currentSegmentIndex;
 	float playerSpeed; //positive speed means going to end point from start point
-	const float crouchPush = 30.0f; //how much the player croushing accelerates them
+	const float crouchPush = 40.0f; //how much the player croushing accelerates them
+	const float railDrag = -0.13f;
 	float timer;
 	float minX;
 	float minY;

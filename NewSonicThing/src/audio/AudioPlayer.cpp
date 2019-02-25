@@ -63,9 +63,9 @@ void AudioPlayer::loadSoundEffects()
 	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/MenuBleep.ogg"));            //36
 	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/MenuWoosh.ogg"));            //37
 	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/MenuAccept.ogg"));           //38
-	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Snowhead/BabyGoron_Cry1.ogg"));      //39
-	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Snowhead/BabyGoron_Cry2.ogg"));      //40
-	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Snowhead/BabyGoron_Cry3.ogg"));      //41
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Player/PeelCharge.ogg"));            //39
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Player/PeelRelease.ogg"));           //40
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Player/Roll.ogg"));                  //41
 	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Snowhead/BabyGoron_Doze.ogg"));      //42
 	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/Dig.ogg"));                  //43
 	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/RankShow.ogg"));             //44

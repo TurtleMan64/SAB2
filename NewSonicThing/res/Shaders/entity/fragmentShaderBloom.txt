@@ -4,7 +4,7 @@ in vec2 pass_textureCoords;
 in vec3 surfaceNormal;
 in vec3 toLightVector;
 in vec3 toCameraVector;
-in float visibility;
+//in float visibility;
 in vec3 color;
 
 out vec4 out_Color;
@@ -18,6 +18,9 @@ uniform vec3 skyColour;
 uniform float hasTransparency;
 uniform float glowAmount;
 uniform vec3 baseColour;
+
+uniform float fogDensity;
+uniform float fogGradient;
 
 void main(void)
 {
@@ -57,7 +60,11 @@ void main(void)
 	float dampedFactor = pow(specularFactor, shineDamper);
 	vec3 finalSpecular = dampedFactor * reflectivity * lightColour;
 	
-	
+	//float distance = length(toCameraVector);
+	//float visibility = exp(-pow((distance*fogDensity), fogGradient));
+	//visibility = clamp(visibility, 0.0, 1.0);
+	//out_Color = mix(vec4(skyColour, out_Color.a), out_Color, visibility);
+    float visibility = clamp(exp(-pow((length(toCameraVector)*fogDensity), fogGradient)), 0.0, 1.0);
 	
 	vec3 toBeOutput = (diffuse)*rawTextureColour.rgb+finalSpecular;
 	toBeOutput = mix(skyColour, toBeOutput, visibility);
@@ -75,5 +82,12 @@ void main(void)
 	}
 	
 	out_Color = vec4(diffuse, rawTextureColour.a) * rawTextureColour + vec4(finalSpecular, rawTextureColour.a);
-	out_Color = mix(vec4(skyColour, out_Color.a), out_Color, visibility);
+    
+    //float distance = length(toCameraVector);
+	//float visibility = exp(-pow((distance*fogDensity), fogGradient));
+	//visibility = clamp(visibility, 0.0, 1.0);
+	//out_Color = mix(vec4(skyColour, out_Color.a), out_Color, visibility);
+    
+    //condensed version of above
+	out_Color = mix(vec4(skyColour, 1.0), out_Color, visibility);
 }
