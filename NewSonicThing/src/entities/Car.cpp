@@ -1128,6 +1128,11 @@ void Car::animate()
 		maniaSonicModel->setOrientation(getX(), getY(), getZ(), diffGround, yawAngleGround, pitchAngleGround, 0);
 		maniaSonicModel->animate(27, 0);
 	}
+	if (onPulley)
+	{
+		maniaSonicModel->setOrientation(getX(), getY(), getZ(), diffGround, yawAngleGround, pitchAngleGround, 0);
+		maniaSonicModel->animate(27, 0);
+	}
 	else if (isJumping)
 	{
 		maniaSonicModel->setOrientation(dspX, dspY, dspZ, diffAir, yawAngleAir, pitchAngleAir, runAnimationCycle);
@@ -1344,4 +1349,14 @@ float Car::getHitboxVertical()
 void Car::setOnRocket(bool newOnRocket) //for animation but that doesn't work atm
 {
 	onRocket = newOnRocket;
+}
+
+void Car::setVelocityMovesPlayer(bool newVelocityMovesPlayer)
+{
+	velocityMovesPlayer = newVelocityMovesPlayer;
+}
+
+void Car::setOnPulley(bool newOnPulley)
+{
+	onPulley = newOnPulley;
 }

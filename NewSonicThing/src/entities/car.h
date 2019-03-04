@@ -63,12 +63,17 @@ private:
 	Vector3f camDirSmooth; 
 
 	//How much you stay away from the floor
-	const float FLOOR_OFFSET = 0.1f; 
-	Triangle3D* currentTriangle = nullptr; //the triangle object that you are touching
-	const float smoothTransitionThreshold = 0.6f; //Dot product threshold for running between triangles
-	const float surfaceTension = 10.0f;     //To not fly off the ground
-	const float hitWallTimePunish = 0.0f;   //How long you can't move after hitting a wall 0.125
-	const float wallStickThreshold = 0.45f;  //How steep a slope must be to be considered a wall 0.3
+	const float FLOOR_OFFSET = 0.1f;
+	//the triangle object that you are touching
+	Triangle3D* currentTriangle = nullptr; 
+	//Dot product threshold for running between triangles
+	const float smoothTransitionThreshold = 0.6f;
+	//To not fly off the ground
+	const float surfaceTension = 10.0f;     
+	//How long you can't move after hitting a wall 0.125
+	const float hitWallTimePunish = 0.0f;
+	//How steep a slope must be to be considered a wall 0.3
+	const float wallStickThreshold = 0.45f;  
 
 	//The force of gravity
 	const float gravityForce = 280.0f;
@@ -76,7 +81,8 @@ private:
 	const float gravityApproach = 0.4f;
 
 	bool isJumping = false;
-	const float jumpPower = 102.0f; //Initial speed you get form jump
+	//Initial speed you get from jump
+	const float jumpPower = 102.0f;
 	const float hoverPower = 144.0f; //How much hover adds to your vel
 	const float hoverTimerThreshold = 1.0f; //How long you can hover for
 	float hoverTimer = 0.0f;
@@ -248,6 +254,10 @@ private:
 	const float displayHeightOffset = 0.6f;
 	const float displayBallOffset = 3.0f;
 
+	//If true, the velocity the player has will make them move.
+	//If false, the velocity will only change the camera direction.
+	bool velocityMovesPlayer = true;
+
 	bool  inputJump;
 	bool  inputJumpPrevious;
 	bool  inputAction;
@@ -261,6 +271,8 @@ private:
 
 	bool onRocket = false;
 
+	bool onPulley = false;
+
 	void moveMeGround();
 
 	void moveMeAir();
@@ -272,8 +284,6 @@ private:
 	void setInputs();
 
 	void updateAnimationValues();
-
-
 
 public:
 	Car();
@@ -325,5 +335,9 @@ public:
 	float getHitboxVertical();
 
 	void setOnRocket(bool newOnRocket);
+
+	void setVelocityMovesPlayer(bool newVelocityMovesPlayer);
+
+	void setOnPulley(bool newOnPulley);
 };
 #endif
