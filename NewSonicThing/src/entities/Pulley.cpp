@@ -10,8 +10,13 @@
 #include "../collision/collisionchecker.h"
 #include "../animation/body.h"
 #include "../entities/car.h"
+#include "../audio/audioplayer.h"
+#include "../audio/source.h"
+#include "../toolbox/input.h"
 
 #include <algorithm>
+
+extern float dt;
 
 std::list<TexturedModel*> Pulley::modelsHandle;
 std::list<TexturedModel*> Pulley::modelsRope;
@@ -33,11 +38,16 @@ Pulley::Pulley(float x, float y, float z, float newRotY, float handleVerticalDis
 	visible = true;
 
     this->handleVerticalDisplacement = handleVerticalDisplacement;
+	handleVerticalDisplacementBottom = handleVerticalDisplacement;
+
+	cameraDirection = calculateCameraDirection();
 
 	setupPulleyRope();
 
 	setupPulleyTop();
 	
+	pulleyTopYPosition = position.y;
+
 	//Move pulley down to initial position
 	position.y -= handleVerticalDisplacement;
 
@@ -58,40 +68,60 @@ void Pulley::step()
 		{
 			//Pulley not yet at top and player is riding, move towards top
 
-			playPulleySound();
+			//playPulleySound();
 
-			movePulley(true);
-
-			//Make player unable to move so velocity only changes camera direction
-			Global::gameMainVehicle->setVelocityMovesPlayer(false);
-			//Used for the animation of the player holding the pulley
-			Global::gameMainVehicle->setOnPulley(true);
+			movePulley(MOVE_UP);
 		}
+		else
+		{
+			//Make sure the pulley doesn't go any closer than the minimum
+			handleVerticalDisplacement = HANDLE_VERTICAL_DISPLACEMENT_MINIMUM;
+		}
+
+		//Make player attach to the pulleys position and not move
+		Global::gameMainVehicle->setPosition(position.x, position.y, position.z);
+		Global::gameMainVehicle->setVelocity(cameraDirection.x, 0, cameraDirection.z);
 
 		if (jumpInputPressed()) //get off the pulley, should also happen if damaged
 		{
+			Global::gameMainVehicle->setVelocity(0,0,0);
 			Global::gameMainVehicle->setVelocityMovesPlayer(true);
 			Global::gameMainVehicle->setOnPulley(false);
+			Global::gameMainVehicle->doJump();
 			
 			playerIsOnPulley = false;
-
-			//TODO: figure out how to make the player jump off and have a homing attack and such
 		}
 	}
 	else if (playerWithinHandleHitbox() && handleAtBottom()) //Player gets on the handle
 	{
-		//get on the pulley
+		//Set the pulley to the state of having the player on it
 		playerIsOnPulley = true;
 
+		//This below is all just setting up player variables in preparation for the movement
+
+		//Used for the animation of the player holding the pulley
+		Global::gameMainVehicle->setOnPulley(true);
+		//Make player unable to move so velocity only changes camera direction
+		Global::gameMainVehicle->setVelocityMovesPlayer(false);
+		//Make player face the right direction
+		Global::gameMainVehicle->setRotY(rotY);
 	}
-	else if (!handleAtBottom)
+	else if (!handleAtBottom())
 	{
 		//Pulley not yet at bottom and player not on, move towards bottom
 
-		playPulleySound();
+		//playPulleySound();
 
-		movePulley(false);
+		movePulley(MOVE_DOWN);
 	}
+	else
+	{
+		//Make sure the pulley doesn't go any father than the maximum displacement
+		handleVerticalDisplacement = handleVerticalDisplacementBottom;
+	}
+
+	position.y = pulleyTopYPosition - handleVerticalDisplacement;
+
 	updateTransformationMatrix();
 	//stretch the rope out to where the pulley is
 	rope->updateTransformationMatrix(1, handleVerticalDisplacement, 1);
@@ -135,6 +165,11 @@ void Pulley::deleteStaticModels()
 	Entity::deleteModels(&Pulley::modelsTop);
 }
 
+Vector3f Pulley::calculateCameraDirection()
+{
+	return Vector3f(sin(Maths::toRadians(rotY)) * 1000, 0, -cos(Maths::toRadians(rotY)) * 1000);
+}
+
 void Pulley::setupPulleyRope()
 {
     rope = new Body(&Pulley::modelsRope);
@@ -170,25 +205,52 @@ bool Pulley::playerWithinHandleHitbox()
 
 bool Pulley::handleAtBottom()
 {
-	return handleVerticalDisplacement <= handleVerticalDisplacementBottom;
+	return handleVerticalDisplacement >= handleVerticalDisplacementBottom;
 }
 
 bool Pulley::handleAtTop()
 {
-	return handleVerticalDisplacement >= HANDLE_VERTICAL_DISPLACEMENT_MINIMUM;
+	return handleVerticalDisplacement <= HANDLE_VERTICAL_DISPLACEMENT_MINIMUM;
 }
 
 void Pulley::playPulleySound()
 {
-
+	if (pulleyAudioSource != nullptr)
+	{
+		if (!pulleyAudioSource->isPlaying())
+		{
+			pulleyAudioSource = AudioPlayer::play(56, getPosition(), 1, false);
+		}
+	}
+	else
+	{
+		pulleyAudioSource = AudioPlayer::play(56, getPosition(), 1, false);
+	}
 }
 
 void Pulley::movePulley(bool movePulleyUp)
 {
 	//if true, the pulley moves up, if false, it moves down
+	
+	//is either 1 or -1, used to control what direction the pulley moves
+	int pulleyDirection = getPulleyMoveDirection(movePulleyUp);
+
+	handleVerticalDisplacement += PULLEY_SPEED * pulleyDirection * dt;
+}
+
+int Pulley::getPulleyMoveDirection(bool movePulleyUp)
+{
+	if (movePulleyUp)
+	{
+		return -1;
+	}
+	else
+	{
+		return 1;
+	}
 }
 
 bool Pulley::jumpInputPressed()
 {
-	//check for input somehow
+	return Input::inputs.INPUT_ACTION1 && !Input::inputs.INPUT_PREVIOUS_ACTION1;
 }

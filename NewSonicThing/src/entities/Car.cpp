@@ -404,7 +404,7 @@ void Car::step()
 	relativeUpSmooth = Maths::interpolateVector(&relativeUpSmooth, &relativeUp, 3*dt);
 	relativeUpAnim = Maths::interpolateVector(&relativeUpAnim, &relativeUp, 15*dt);
 
-	if (!(isGrinding or onRocket))
+	if (velocityMovesPlayer)//(!(isGrinding or onRocket))
 	{
 		//speed before adjusting
 		float originalSpeed = vel.length();
