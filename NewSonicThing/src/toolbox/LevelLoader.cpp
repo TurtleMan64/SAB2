@@ -855,7 +855,8 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 		{
 			Pulley::loadStaticModels();
 			Pulley* pulley = new Pulley(
-					toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3])); //position x,y,z
+					toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position x,y,z
+					toFloat(dat[4]), toFloat(dat[5])); 				   //y rotation, handle vertical displacement
 			INCR_NEW
 			chunkedEntities->push_back(pulley);
 			return;

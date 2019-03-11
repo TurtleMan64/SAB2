@@ -52,7 +52,8 @@ private:
 	//Squared horizontal difference between the players position and the rockets position
 	float playerToRocketPositionDifferenceHorizontalSquared;
 
-	//Uses the speed, length of the path, and delta time to calculate how much of the path is completed every frame
+	//What fraction of the path has been completed, rather than actually moving the Rocket, it instead just
+	//teleports to the correct spot in the path, which simulates movement
 	float percentOfPathCompleted;
 	//Timer used for the startup animation of the rocket, where it waits before shooting off
 	float startupTimer;
