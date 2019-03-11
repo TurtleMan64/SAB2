@@ -844,7 +844,7 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 			Spring::loadStaticModels();
 			Spring* spring = new Spring(
 					toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position x,y,z
-					toFloat(dat[4]), toFloat(dat[5]),                  //rotation
+					toFloat(dat[4]), toFloat(dat[5]),                  //rotation y, rotation z
 					toFloat(dat[6]), toFloat(dat[7]));                   //power, control lock time in seconds
 			INCR_NEW
 			chunkedEntities->push_back(spring);
