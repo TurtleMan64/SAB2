@@ -11,8 +11,8 @@ Collision 8
 0.1922 0.3961 0.9059
 0.05 0.05 0.075
 0.00005 2.0
-60
-0 80
+90
+0 -0.884752 -0.166026
 1
 4
 res/Audio/BGM/m_harb1_intro.ogg
@@ -29,7 +29,7 @@ water
 ######## Human placed objects #######
 
 # Player
-6 0 500 32
+6 0 500 -10
 0 0 0 0
 
 92 res/Models/Levels/MetalHarbor/Rails/Rail4.txt

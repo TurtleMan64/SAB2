@@ -85,6 +85,9 @@
     <Filter Include="Source Files\menu">
       <UniqueIdentifier>{f370deba-d3e5-4af5-96ca-908bb8ec7f5d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\entities\SkyRail">
+      <UniqueIdentifier>{a3414b4d-e85a-470d-86d5-144acce47658}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\glad.c">
@@ -429,6 +432,12 @@
     <ClCompile Include="src\menu\Timer.cpp">
       <Filter>Source Files\menu</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\SkyRail\SR_StageManager.cpp">
+      <Filter>Source Files\entities\SkyRail</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\GoalRing.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.h">
@@ -757,6 +766,12 @@
     </ClInclude>
     <ClInclude Include="src\menu\timer.h">
       <Filter>Source Files\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\SkyRail\srstagemanager.h">
+      <Filter>Source Files\entities\SkyRail</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\goalring.h">
+      <Filter>Source Files\entities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

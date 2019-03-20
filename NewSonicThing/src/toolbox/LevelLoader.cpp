@@ -44,6 +44,8 @@
 #include "../entities/rail.h"
 #include "../entities/ring.h"
 #include "../menu/menumanager.h"
+#include "../entities/SkyRail/srstagemanager.h"
+#include "../entities/goalring.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -426,7 +428,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
 
 	//Global::gameSkySphere->setVisible(false);
 
-
+    Vector3f initialCamDir;
 	std::string camOrientation;
 	getlineSafe(file, camOrientation);
 	{
@@ -435,8 +437,8 @@ void LevelLoader::loadLevel(std::string levelFilename)
 		int splitLength = 0;
 		char** dat = split(lineBuf, ' ', &splitLength);
 
-		//Global::gameCamera->setYaw(toFloat(dat[0]));
-		//Global::gameCamera->setPitch(toFloat(dat[1]));
+        initialCamDir = Vector3f(toFloat(dat[0]), toFloat(dat[1]), toFloat(dat[2]));
+        initialCamDir.normalize();
 
 		free(dat);
 	}
@@ -613,6 +615,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
 	if (Global::gameMainVehicle != nullptr)
 	{
 		Global::gameMainVehicle->setCanMoveTimer(1.0f);
+        Global::gameMainVehicle->setCameraDirection(&initialCamDir);
 		//Global::bufferTime = 60;
 	}
 
@@ -756,6 +759,15 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 			return;
 		}
 
+        case 69: //GoalRing
+		{
+			GoalRing::loadStaticModels();
+			GoalRing* goal = new GoalRing(
+				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3])); INCR_NEW
+			Main_addEntity(goal);
+			return;
+		}
+
 		case 91: //General Purpose Stage Manager
 		{
 			int id2 = std::stoi(dat[1]);
@@ -773,6 +785,14 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 				//	G* mh = new MH_Manager; INCR_NEW
 				//	Main_addEntity(mh);
 				//	break;
+
+                case 2:
+                {
+                    SRStageManager::loadStaticModels();
+					SRStageManager* sr = new SRStageManager; INCR_NEW
+					Main_addEntity(sr);
+					break;
+                }
 
 				default: break;
 			}
@@ -940,6 +960,8 @@ void LevelLoader::freeAllStaticModels()
 	MH_PathFlatSmall::deleteStaticModels();
 	MH_RocketBase::deleteStaticModels();
 	MH_Tank::deleteStaticModels();
+    SRStageManager::deleteStaticModels();
+    GoalRing::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()

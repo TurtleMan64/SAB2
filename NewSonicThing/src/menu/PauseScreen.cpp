@@ -174,6 +174,8 @@ Menu* PauseScreen::step()
 			{
 				Global::shouldLoadLevel = true;
 				this->gameHud->getTimer()->setTime(0.0f);
+                this->gameHud->getTimer()->freeze(true);
+                Global::raceStartTimer = -1.0f;
 				Vector3f vel(0, 0, 0);
 				new Particle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &vel, 0, 1.0f, 0.0f, 50.0f, 0, 50.0f, 0, true, false); INCR_NEW
 				Global::gameState = STATE_CUTSCENE;

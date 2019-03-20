@@ -3,35 +3,40 @@
 
 class Triangle3D;
 class CollisionModel;
+class QuadTreeNode;
 
 #include <math.h>
 #include <list>
+#include <unordered_set>
 #include "../toolbox/vector.h"
-
 
 class CollisionChecker
 {
 private:
 	static Vector3f collidePosition;
 	static Triangle3D* collideTriangle;
-	//static CollisionModel* stageCollideModel;
 	static std::list<CollisionModel*> collideModels;
 	static bool checkPlayer;
 
+    //given two coords, populates a set with all of the quadtree nodes
+    // that the line can intersect with
+    static void fetchNodesToCheck(
+        std::unordered_set<QuadTreeNode*>* set, 
+        CollisionModel* cm, 
+        float x1, float z1, float x2, float z2);
+
+public:
+	static bool debug;
 
 public:
 	static void initChecker();
 
-	/**
-	*  Makes the next collision check set which collision
-	*  model the player has collided with, and sets that model
-	*  to touching the player.
-	*/
+	// Makes the next collision check set which collision
+	// model the player has collided with, and sets that model
+	// to touching the player.
 	static void setCheckPlayer();
 
-	/**
-	*  Sets all collision models to not have the player on them
-	*/
+	// Sets all collision models to not have the player on them
 	static void falseAlarm();
 
 	static bool checkCollision(
@@ -40,10 +45,7 @@ public:
 
 	static bool checkPointInTriangle3D(
 		float checkx, float checky, float checkz,
-		float cx1,    float cy1,    float cz1,
-		float cx2,    float cy2,    float cz2,
-		float cx3,    float cy3,    float cz3,
-		float nX,     float nY,     float nZ);
+		Triangle3D* tri);
 
 	static bool checkPointInTriangle2D(
 		float x,  float y,

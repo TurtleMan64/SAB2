@@ -49,22 +49,22 @@ void Entity::step()
 
 }
 
-bool Entity::isVehicle()
+const bool Entity::isVehicle()
 {
 	return false;
 }
 
-bool Entity::isEmeraldPiece()
+const bool Entity::isEmeraldPiece()
 {
 	return false;
 }
 
-bool Entity::isGoalTrigger()
+const bool Entity::isGoalTrigger()
 {
 	return false;
 }
 
-bool Entity::isEnemy()
+const bool Entity::isEnemy()
 {
 	return false;
 }
@@ -120,7 +120,7 @@ void Entity::setBaseColour(float red, float green, float blue)
 	baseColour.set(red, green, blue);
 }
 
-float Entity::getRotX()
+const float Entity::getRotX()
 {
 	return rotX;
 }
@@ -129,7 +129,7 @@ void Entity::setRotX(float newRotX)
 	rotX = newRotX;
 }
 
-float Entity::getRotY()
+const float Entity::getRotY()
 {
 	return rotY;
 }
@@ -138,7 +138,7 @@ void Entity::setRotY(float newRotY)
 	rotY = newRotY;
 }
 
-float Entity::getRotZ()
+const float Entity::getRotZ()
 {
 	return rotZ;
 }
@@ -147,7 +147,7 @@ void Entity::setRotZ(float newRotZ)
 	rotZ = newRotZ;
 }
 
-float Entity::getRotSpin()
+const float Entity::getRotSpin()
 {
 	return rotRoll;
 }
@@ -156,7 +156,7 @@ void Entity::setRotSpin(float newRotSpin)
 	rotRoll = newRotSpin;
 }
 
-float Entity::getScale()
+const float Entity::getScale()
 {
 	return scale;
 }
@@ -165,7 +165,7 @@ void Entity::setScale(float newScale)
 	scale = newScale;
 }
 
-bool Entity::getVisible()
+const bool Entity::getVisible()
 {
 	return visible;
 }
@@ -174,17 +174,17 @@ void Entity::setVisible(bool newVisible)
 	visible = newVisible;
 }
 
-float Entity::getX()
+const float Entity::getX()
 {
 	return position.x;
 }
 
-float Entity::getY()
+const float Entity::getY()
 {
 	return position.y;
 }
 
-float Entity::getZ()
+const float Entity::getZ()
 {
 	return position.z;
 }
@@ -224,27 +224,22 @@ Matrix4f* Entity::getTransformationMatrix()
 	return &transformationMatrix;
 }
 
-std::string Entity::getName()
-{
-	return "";
-}
-
-bool Entity::canLightdashOn()
+const bool Entity::canLightdashOn()
 {
 	return false;
 }
 
-bool Entity::canHomingAttackOn()
+const bool Entity::canHomingAttackOn()
 {
 	return false;
 }
 
-Vector3f Entity::getHomingCenter()
+const Vector3f Entity::getHomingCenter()
 {
 	return Vector3f(0,0,0);
 }
 
-bool Entity::isPoint()
+const bool Entity::isPoint()
 {
 	return false;
 }

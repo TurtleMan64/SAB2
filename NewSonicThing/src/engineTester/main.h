@@ -15,6 +15,7 @@ class WaterFrameBuffers;
 class WaterTile;
 class FontType;
 class GUIText;
+class Timer;
 
 #include <string>
 #include <random>
@@ -78,6 +79,7 @@ class Global
 {
 public:
 	static MenuManager menuManager;
+    static Timer* mainHudTimer;
 	static Camera* gameCamera;
 	static Car* gameMainVehicle;
 	static Stage* gameStage;

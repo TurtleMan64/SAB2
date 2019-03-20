@@ -272,9 +272,10 @@ void Input::pollInputs()
 			//std::fprintf(stdout, "normal   = [%f, %f, %f]\n", Global::gameMainVehicle->get);
 			//std::fprintf(stdout, "player rot = %f\n", Global::gamePlayer->getRotY());
 			//std::fprintf(stdout, "cam yaw: %f,   cam pitch: %f\n", Global::gameCamera->getYaw(), Global::gameCamera->getPitch());
+            std::fprintf(stdout, "cam dir = [%f, %f, %f]\n", Global::gameMainVehicle->getCameraDirection()->x, Global::gameMainVehicle->getCameraDirection()->y, Global::gameMainVehicle->getCameraDirection()->z);
 			std::fprintf(stdout, "\n");
 		}
-		Loader::printInfo();
+		//Loader::printInfo();
 	}
 	#endif
 

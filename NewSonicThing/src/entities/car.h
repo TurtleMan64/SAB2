@@ -295,6 +295,11 @@ public:
 
 	static void deleteStaticModels();
 
-	bool isVehicle();
+	const bool isVehicle();
+
+    Vector3f* getCameraDirection();
+
+    void setCameraDirection(Vector3f* newDirection);
+
 };
 #endif

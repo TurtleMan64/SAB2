@@ -26,6 +26,7 @@ HUD::HUD()
 	this->numberLives = new GUINumber(Global::gameLives, safeAreaX, 1.0f - safeAreaY, s, 6, true, 2); INCR_NEW
 
 	this->timer = new Timer(Global::fontVipnagorgialla, safeAreaX, safeAreaY, s, 0, true); INCR_NEW
+    Global::mainHudTimer = this->timer;
 
 	this->speedometerScale = 1.5f;
 
@@ -62,10 +63,19 @@ Menu* HUD::step()
 {
 	Menu* retVal = nullptr;
 
-	if (Input::inputs.INPUT_START && !Input::inputs.INPUT_PREVIOUS_START)
+	if (Input::inputs.INPUT_START && !Input::inputs.INPUT_PREVIOUS_START &&
+        Global::finishStageTimer < 0.0f)
 	{
 		retVal = new PauseScreen(this); INCR_NEW
 	}
+    else if (Global::finishStageTimer >= 9.05f)
+    {
+        if (!Global::gameIsArcadeMode)
+		{
+            std::fprintf(stdout, "asdfafsf\n");
+            retVal = ClearStack::get();
+        }
+    }
 
 	this->draw();
 	return retVal;

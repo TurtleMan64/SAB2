@@ -37,8 +37,8 @@ Car::Car()
 
 Car::Car(float x, float y, float z)
 {
-	position.set(x, y, z);
-	vel.set(0, 0, 0);
+	position.set(x+0.00001f, y, z+0.00001f);
+	vel.set(0.00001f, 0.00001f, 0.00001f);
 	relativeUp.set(0, 1, 0);
 	relativeUpSmooth.set(0, 1, 0);
 	relativeUpAnim.set(0, 1, 0);
@@ -336,13 +336,45 @@ void Car::step()
 
 			//vertical check - rotate down if too high or too low
 			float dot = camDir.dot(&relativeUp);
+            //TODO make sure these dont overshoot
+            //maybe switch the to use the approach function?
 			if (dot < -0.325f)
 			{
-				camDir = Maths::rotatePoint(&camDir, &perpen, -((dot+0.325f)*12)*dt);
+                float tryingToRotate = -(((dot+0.325f)*15)*dt);
+                float maxAngle = (Maths::angleBetweenVectors(&camDir, &relativeUp));
+                //rotate whichever is "less" rotation
+                if (fabsf(tryingToRotate) < fabsf(maxAngle))
+                {
+                    camDir = Maths::rotatePoint(&camDir, &perpen, tryingToRotate);
+                }
+                else
+                {
+                    camDir = Maths::rotatePoint(&camDir, &perpen, maxAngle);
+                }
+
+				//camDir = Maths::rotatePoint(&camDir, &perpen, -((dot+0.325f)*12)*dt);
 			}
 			else if (dot > -0.2f)
 			{
-				camDir = Maths::rotatePoint(&camDir, &perpen, -((dot+0.2f)*20)*dt);
+                float tryingToRotate = -(((dot+0.2f)*40)*dt);
+                float maxAngle = (Maths::angleBetweenVectors(&camDir, &relativeUp));
+                //rotate whichever is "less" rotation
+                if (fabsf(tryingToRotate) < fabsf(maxAngle))
+                {
+                    camDir = Maths::rotatePoint(&camDir, &perpen, tryingToRotate);
+                }
+                else
+                {
+                    camDir = Maths::rotatePoint(&camDir, &perpen, maxAngle);
+                }
+                //float angleToRotate = -Maths::sign(dot)*fminf(tryingToRotate, maxAngle);
+				//camDir = Maths::rotatePoint(&camDir, &perpen, angleToRotate);
+
+                //std::fprintf(stdout, "tryingToRotate = %f\n", tryingToRotate);
+                //std::fprintf(stdout, "maxAngle       = %f\n", maxAngle);
+                //std::fprintf(stdout, "angleToRotate  = %f\n", angleToRotate);
+                //std::fprintf(stdout, "works          = %f\n", -((dot+0.2f)*40)*dt);
+                //std::fprintf(stdout, "\n");
 			}
 		}
 		else
@@ -759,16 +791,20 @@ void Car::step()
 	up.set(newUp[0], newUp[1], newUp[2]);
 
 	Vector3f camDelta = eye - target;
-	camDelta.setLength(10);
+	camDelta.setLength(5); //this is what causes metal harbor to go through cam at beginning
 	Vector3f camStart = target + camDelta;
+	CollisionChecker::debug = Input::inputs.INPUT_ACTION4;
+	//std::fprintf(stdout, "camStart = (%f, %f, %f)  \ncamEnd = (%f, %f, %f)\n", camStart.x, camStart.y, camStart.z, eye.x, eye.y, eye.z);
 	if (CollisionChecker::checkCollision(camStart.x, camStart.y, camStart.z, eye.x, eye.y, eye.z))
 	{
+        //std::fprintf(stdout, "there was a collision");
 		Vector3f delta = eye - target;
-		delta.setLength(2);
+		delta.setLength(3);
 		Vector3f newPos(CollisionChecker::getCollidePosition());
 		newPos = newPos - delta;
 		eye.set(&newPos);
 	}
+	CollisionChecker::debug = false;
 
 	Global::gameCamera->setViewMatrixValues(&eye, &target, &up);
 
@@ -1271,7 +1307,7 @@ void Car::setInputs()
 	inputActionPrevious  = Input::inputs.INPUT_PREVIOUS_ACTION2;
 	inputAction2Previous = Input::inputs.INPUT_PREVIOUS_ACTION3;
 
-	if (canMoveTimer > 0.0f)
+	if (canMoveTimer > 0.0f || Global::finishStageTimer >= 0.0f)
 	{
 		inputJump    = false;
 		inputAction  = false;
@@ -1338,7 +1374,18 @@ void Car::deleteStaticModels()
 	//}
 }
 
-bool Car::isVehicle()
+const bool Car::isVehicle()
 {
 	return true;
+}
+
+Vector3f* Car::getCameraDirection()
+{
+    return &camDir;
+}
+
+void Car::setCameraDirection(Vector3f* newDirection)
+{
+    camDir.set(newDirection);
+    camDirSmooth.set(newDirection);
 }

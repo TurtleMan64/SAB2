@@ -71,6 +71,7 @@
 #include "../toolbox/getline.h"
 #include "../menu/menumanager.h"
 #include "../menu/mainmenu.h"
+#include "../menu/timer.h"
 #ifdef _WIN32
 #include <windows.h>
 #include <tchar.h>
@@ -220,6 +221,7 @@ void doListenThread();
 void listen();
 
 MenuManager Global::menuManager = MenuManager();
+Timer* Global::mainHudTimer = nullptr;
 
 int main()
 {

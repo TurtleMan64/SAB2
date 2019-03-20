@@ -49,8 +49,11 @@ bool CollisionModel::hasQuadTree()
 void CollisionModel::generateQuadTree(int maxDepth)
 {
 	this->treeMaxDepth = maxDepth;
-	quadTreeRoot = new QuadTreeNode(minX, maxX, minZ, maxZ, triangles, 0, maxDepth);
-	INCR_NEW
+	const float pad = 200.0f; //padding to add to the edges of the quad tree
+	this->quadTreeRoot = new QuadTreeNode(minX-pad, maxX+pad, minZ-pad, maxZ+pad, triangles, 0, maxDepth); INCR_NEW
+
+    this->leafNodeWidth = ((maxX+pad) - (minX-pad))/(1<<maxDepth);
+    this->leafNodeHeight = ((maxZ+pad) - (minZ-pad))/(1<<maxDepth);
 }
 
 void CollisionModel::offsetModel(Vector3f* offset)

@@ -219,7 +219,7 @@ void Ring::deleteStaticModels()
 	Entity::deleteModels(&Ring::models);
 }
 
-bool Ring::canLightdashOn()
+const inline bool Ring::canLightdashOn()
 {
 	return true;
 }

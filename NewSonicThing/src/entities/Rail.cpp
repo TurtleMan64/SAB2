@@ -26,10 +26,10 @@ RailSegment::RailSegment(Vector3f* begin, Vector3f* end, Vector3f* beginNormal, 
 		std::fprintf(stdout, "Warning: Very small rail segment.\n");
 	}
 
-	Ring* ring1 = new Ring(pointBegin.x, pointBegin.y, pointBegin.z); INCR_NEW
-	Main_addEntity(ring1);
-	Ring* ring2 = new Ring(pointEnd.x, pointEnd.y, pointEnd.z); INCR_NEW
-	Main_addEntity(ring2);
+	//Ring* ring1 = new Ring(pointBegin.x, pointBegin.y, pointBegin.z); INCR_NEW
+	//Main_addEntity(ring1);
+	//Ring* ring2 = new Ring(pointEnd.x, pointEnd.y, pointEnd.z); INCR_NEW
+	//Main_addEntity(ring2);
 
 	playerIsOn = false;
 	playerProgress = 0;
@@ -131,6 +131,14 @@ Rail::Rail(const char* railPath)
 
 				Vector3f n(std::stof(lineSplit[3]), std::stof(lineSplit[4]), std::stof(lineSplit[5]));
 				normalList.push_back(n);
+
+                maxX = fmaxf(maxX, p.x);
+                maxY = fmaxf(maxY, p.y);
+                maxZ = fmaxf(maxZ, p.z);
+
+                minX = fminf(minX, p.x);
+                minY = fminf(minY, p.y);
+                minZ = fminf(minZ, p.z);
 			}
 			free(lineSplit);
 		}
@@ -157,33 +165,43 @@ void Rail::step()
 	{
 		if (timer < 0.0f)
 		{
-			//Check if sonic should get on a rail
-			for (RailSegment r : rails)
-			{
-				float dist = r.distanceToPoint(Global::gameMainVehicle->getPosition());
-				if (dist < 5)
-				{
-					Vector3f landingPoint = r.closestPoint(Global::gameMainVehicle->getPosition());
-					Global::gameMainVehicle->setPosition(&landingPoint);
-					Global::gameMainVehicle->increasePosition(r.normalBegin.x*1.0f, r.normalBegin.y*1.0f, r.normalBegin.z*1.0f);
-					currentSegment = &rails[r.index];
-					currentSegmentIndex = r.index;
-					Global::gameMainVehicle->startGrinding();
-					Vector3f newVel(Global::gameMainVehicle->getVelocity());
-					newVel = Maths::projectAlongLine(&newVel, &r.pointsDiff);
-					Global::gameMainVehicle->setVelocity(newVel.x, newVel.y, newVel.z);
+            const float pad = 30.0f;
+            if (Global::gameMainVehicle->getX() >= minX-pad && Global::gameMainVehicle->getX() <= maxX+pad &&
+                Global::gameMainVehicle->getY() >= minY-pad && Global::gameMainVehicle->getY() <= maxY+pad &&
+                Global::gameMainVehicle->getZ() >= minZ-pad && Global::gameMainVehicle->getZ() <= maxZ+pad)
+            {
+			    //Check if sonic should get on a rail
+			    for (RailSegment r : rails)
+			    {
+				    float dist = r.distanceToPoint(Global::gameMainVehicle->getPosition());
+				    if (dist < 5) //radius of the rail
+				    {
+					    Vector3f landingPoint = r.closestPoint(Global::gameMainVehicle->getPosition());
+					    Global::gameMainVehicle->setPosition(&landingPoint);
+					    Global::gameMainVehicle->increasePosition(r.normalBegin.x*1.0f, r.normalBegin.y*1.0f, r.normalBegin.z*1.0f);
+					    currentSegment = &rails[r.index];
+					    currentSegmentIndex = r.index;
+					    Global::gameMainVehicle->startGrinding();
+					    Vector3f newVel(Global::gameMainVehicle->getVelocity());
+                        float originalSpeed = newVel.length();
+					    newVel = Maths::projectAlongLine(&newVel, &r.pointsDiff);
+                        float newSpeed = newVel.length();
+                        float averageSpeed = (originalSpeed+newSpeed)*0.5f;
+                        newVel.setLength(averageSpeed);
+					    Global::gameMainVehicle->setVelocity(newVel.x, newVel.y, newVel.z);
 
-					//sound effect start
+					    //sound effect start
 
-					currentSegment->playerProgress = r.calcProgress(&landingPoint);
-					currentSegment->playerIsOn = true;
+					    currentSegment->playerProgress = r.calcProgress(&landingPoint);
+					    currentSegment->playerIsOn = true;
 
-					float dot = currentSegment->pointsDiff.dot(&newVel);
-					playerSpeed = Maths::sign(dot)*newVel.length();
+					    float dot = currentSegment->pointsDiff.dot(&newVel);
+					    playerSpeed = Maths::sign(dot)*newVel.length();
 
-					timer = 0.2f; //0.2 seconds before we can land on the rail again
-				}
-			}
+					    timer = 0.2f; //0.2 seconds before we can land on the rail again
+				    }
+			    }
+            }
 		}
 		else
 		{

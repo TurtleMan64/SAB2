@@ -43,10 +43,8 @@ public:
 
 	//void setBaseRotZ(float rotZ);
 
-	std::list<TexturedModel*>* getModels();
+	inline std::list<TexturedModel*>* getModels();
 
-	void setModels(std::list<TexturedModel*>* newModels);
-
-	//std::string getName();
+	inline void setModels(std::list<TexturedModel*>* newModels);
 };
 #endif

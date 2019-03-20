@@ -10,9 +10,9 @@ Collision 7
 1.0 1.0 1.0
 0.9 0.9 .9
 1.0 1.0 1.0
-0.0005 4.0
+0.0000000000001 1.5     #0.0001 1.5 cant do fog because of transparency
 90
-540 9
+-0.011671 -0.325006 0.945640
 1
 2
 res/Audio/BGM/secret_bb_intro.ogg
@@ -23,10 +23,19 @@ res/Audio/BGM/secret_bb_loop.ogg
 nowater
 0
 
+# Stage Manager
+91 2
+
 # Player
-6 8.500000 1000 -300
+6 0 648 -596.75
+
+# Rings
 0 0 0 0
 
+# Goal Ring
+69 13.576908 -1073.630737 1648.087524
+
+# Rails
 92 res/Models/Levels/SkyRail/Rails/Rail0.txt
 92 res/Models/Levels/SkyRail/Rails/Rail1.txt
 92 res/Models/Levels/SkyRail/Rails/Rail2.txt

@@ -213,6 +213,10 @@ float Maths::compareTwoAngles(float origAng1, float origAng2)
 
 int Maths::sign(float value)
 {
+    //int v = *(int*)&value; //get bits of value casted as an int
+
+    //return 1 - 2*((v>>31) & 0x01);
+
 	if (value > 0)
 	{
 		return 1;

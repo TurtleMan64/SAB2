@@ -42,6 +42,7 @@ public:
 	//ang1 and ang2 should be in degrees
 	static float compareTwoAngles(float ang1, float ang2);
 
+    //assumes the size of int and float are 32 bits
 	static int sign(float value);
 
 	//calculates the number of base 10 decimal digits in the number. 
