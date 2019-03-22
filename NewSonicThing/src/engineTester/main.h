@@ -68,11 +68,11 @@ void Main_deleteAllChunkedEntities();
 
 #ifdef DEV_MODE
 	#include <thread>
-	#define INCR_NEW Global::countNew++;
-	#define INCR_DEL Global::countDelete++;
+	#define INCR_NEW(NAME) Global::debugNew(NAME);
+	#define INCR_DEL(NAME) Global::debugDel(NAME);
 #else
-	#define INCR_NEW ;
-	#define INCR_DEL ;
+	#define INCR_NEW(NAME) ;
+	#define INCR_DEL(NAME) ;
 #endif
 
 class Global
@@ -197,5 +197,9 @@ public:
 	static void createTitleCard();
 
 	static void clearTitleCard();
+
+    static void debugNew(const char* name);
+
+    static void debugDel(const char* name);
 };
 #endif

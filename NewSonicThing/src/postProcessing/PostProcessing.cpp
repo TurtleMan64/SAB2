@@ -1,6 +1,7 @@
 #include <glad/glad.h>
 #include <vector>
 
+#include "../engineTester/main.h"
 #include "postprocessing.h"
 #include "../models/models.h"
 #include "../gaussianBlur/horizontalblur.h"
@@ -32,11 +33,11 @@ void PostProcessing::init()
 	
 	PostProcessing::quadModel = Loader::loadToVAO(&PostProcessing::POSITIONS, 2);
 	
-	PostProcessing::hBlur  = new HorizontalBlur(SCR_WIDTH/16, SCR_HEIGHT/16);
-	PostProcessing::vBlur  = new VerticalBlur  (SCR_WIDTH/16, SCR_HEIGHT/16);
-	PostProcessing::hBlur2 = new HorizontalBlur(SCR_WIDTH/6,  SCR_HEIGHT/6);
-	PostProcessing::vBlur2 = new VerticalBlur  (SCR_WIDTH/6,  SCR_HEIGHT/6);
-	PostProcessing::combineFilter = new CombineFilter;
+	PostProcessing::hBlur  = new HorizontalBlur(SCR_WIDTH/16, SCR_HEIGHT/16); INCR_NEW("HorizontalBlur");
+	PostProcessing::vBlur  = new VerticalBlur  (SCR_WIDTH/16, SCR_HEIGHT/16); INCR_NEW("VerticalBlur");
+	PostProcessing::hBlur2 = new HorizontalBlur(SCR_WIDTH/6,  SCR_HEIGHT/6);  INCR_NEW("HorizontalBlur");
+	PostProcessing::vBlur2 = new VerticalBlur  (SCR_WIDTH/6,  SCR_HEIGHT/6);  INCR_NEW("VerticalBlur");
+	PostProcessing::combineFilter = new CombineFilter; INCR_NEW("CombineFilter");
 }
 
 void PostProcessing::doPostProcessing(int colourTexture, int brightTexture)

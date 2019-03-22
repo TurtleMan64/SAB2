@@ -120,16 +120,16 @@ void Master_init()
 			}
 		}
 	}
-	INCR_NEW
+	INCR_NEW("ShaderProgram");
 
-	projectionMatrix = new Matrix4f; INCR_NEW
+	projectionMatrix = new Matrix4f; INCR_NEW("Matrix4f");
 
-	renderer = new EntityRenderer(shader, projectionMatrix); INCR_NEW
+	renderer = new EntityRenderer(shader, projectionMatrix); INCR_NEW("EntityRenderer");
 	Master_makeProjectionMatrix();
 
 
-	shadowMapRenderer = new ShadowMapMasterRenderer; INCR_NEW
-	shadowMapRenderer2 = new ShadowMapMasterRenderer2; INCR_NEW
+	shadowMapRenderer = new ShadowMapMasterRenderer; INCR_NEW("ShadowMapMasterRenderer");
+	shadowMapRenderer2 = new ShadowMapMasterRenderer2; INCR_NEW("ShadowMapMasterRenderer2");
 
 	randomMap = Loader::loadTextureNoInterpolation("res/Images/randomMap.png");
 
@@ -299,15 +299,15 @@ void prepareTransparentRenderDepthOnly()
 void Master_cleanUp()
 {
 	shader->cleanUp();
-	delete shader; INCR_DEL
-	delete renderer; INCR_DEL
-	delete projectionMatrix; INCR_DEL
+	delete shader; INCR_DEL("ShaderProgram");
+	delete renderer; INCR_DEL("EntityRenderer");
+	delete projectionMatrix; INCR_DEL("Matrix4f");
 
 	shadowMapRenderer->cleanUp();
-	delete shadowMapRenderer; INCR_DEL
+	delete shadowMapRenderer; INCR_DEL("ShadowMapMasterRenderer");
 
 	shadowMapRenderer2->cleanUp();
-	delete shadowMapRenderer2; INCR_DEL
+	delete shadowMapRenderer2; INCR_DEL("ShadowMapMasterRenderer2");
 }
 
 void Master_enableCulling()

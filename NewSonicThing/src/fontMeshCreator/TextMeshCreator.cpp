@@ -11,7 +11,7 @@ float TextMeshCreator::LINE_HEIGHT = 1.0f;
 
 TextMeshCreator::TextMeshCreator(std::string metaFilename)
 {
-	metaData = new MetaFile(metaFilename); INCR_NEW
+	metaData = new MetaFile(metaFilename); INCR_NEW("MetaFile");
 }
 
 TextMeshData* TextMeshCreator::createTextMesh(GUIText* text)
@@ -126,7 +126,7 @@ TextMeshData* TextMeshCreator::createQuadVertices(GUIText* text, std::vector<Lin
 		curserY += LINE_HEIGHT * FONT_SIZE;
 	}
 
-	INCR_NEW
+	INCR_NEW("TextMeshData");
 	return new TextMeshData(&vertices, &textureCoords);
 }
 

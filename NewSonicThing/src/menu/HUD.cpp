@@ -23,24 +23,24 @@ HUD::HUD()
 	this->w = 0.8f * s / this->aspectRatio; //width of a single text character
 
 	//this->fontVip = new FontType(Loader::loadTexture("res/Fonts/vipnagorgialla.png"), "res/Fonts/vipnagorgialla.fnt"); INCR_NEW
-	this->numberLives = new GUINumber(Global::gameLives, safeAreaX, 1.0f - safeAreaY, s, 6, true, 2); INCR_NEW
+	this->numberLives = new GUINumber(Global::gameLives, safeAreaX, 1.0f - safeAreaY, s, 6, true, 2); INCR_NEW("GUINumber");
 
-	this->timer = new Timer(Global::fontVipnagorgialla, safeAreaX, safeAreaY, s, 0, true); INCR_NEW
+	this->timer = new Timer(Global::fontVipnagorgialla, safeAreaX, safeAreaY, s, 0, true); INCR_NEW("Timer");
     Global::mainHudTimer = this->timer;
 
 	this->speedometerScale = 1.5f;
 
-	this->numberSpeed = new GUINumber(Global::gameMainVehicleSpeed, 1.0f - safeAreaX - (4 * w), 1.0f - safeAreaY, speedometerScale * s, 8, true, 3); INCR_NEW
-	this->textSpeedUnits = new GUIText("km/h", s, Global::fontVipnagorgialla, 1 - safeAreaX, 1.0f - safeAreaY, 8, true); INCR_NEW
+	this->numberSpeed = new GUINumber(Global::gameMainVehicleSpeed, 1.0f - safeAreaX - (4 * w), 1.0f - safeAreaY, speedometerScale * s, 8, true, 3); INCR_NEW("GUINumber");
+	this->textSpeedUnits = new GUIText("km/h", s, Global::fontVipnagorgialla, 1 - safeAreaX, 1.0f - safeAreaY, 8, true); INCR_NEW("GUIText");
 }
 
 HUD::~HUD()
 {
 	//delete this->fontVip; INCR_DEL
-	delete this->timer; INCR_DEL
-	this->numberLives->deleteMe(); delete this->numberLives; INCR_DEL
-	this->numberSpeed->deleteMe(); delete this->numberSpeed; INCR_DEL
-	this->textSpeedUnits->deleteMe(); delete this->textSpeedUnits; INCR_DEL
+	delete this->timer; INCR_DEL("Timer");
+	this->numberLives->deleteMe(); delete this->numberLives; INCR_DEL("GUINumber");
+	this->numberSpeed->deleteMe(); delete this->numberSpeed; INCR_DEL("GUINumber");
+	this->textSpeedUnits->deleteMe(); delete this->textSpeedUnits; INCR_DEL("GUIText");
 }
 
 Timer* HUD::getTimer()
@@ -55,7 +55,6 @@ void HUD::draw()
 	this->numberSpeed->displayNumber = Global::gameMainVehicleSpeed;
 	this->numberSpeed->refresh();
 
-	this->timer->increment();
 	this->timer->refresh();
 }
 
@@ -66,15 +65,19 @@ Menu* HUD::step()
 	if (Input::inputs.INPUT_START && !Input::inputs.INPUT_PREVIOUS_START &&
         Global::finishStageTimer < 0.0f)
 	{
-		retVal = new PauseScreen(this); INCR_NEW
+		retVal = new PauseScreen(this); INCR_NEW("Menu");
 	}
     else if (Global::finishStageTimer >= 9.05f)
     {
         if (!Global::gameIsArcadeMode)
 		{
-            std::fprintf(stdout, "asdfafsf\n");
             retVal = ClearStack::get();
         }
+    }
+
+    if (Global::raceStartTimer <= 0.0f)
+    {
+        this->timer->increment();
     }
 
 	this->draw();

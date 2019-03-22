@@ -17,7 +17,7 @@
 */
 Button::Button(std::string label, FontType* font, GLuint texture, GLuint highlight, float posX, float posY, float scaleX, float scaleY, bool visible)
 {
-	this->text = new GUIText(label, scaleY, font, posX, posY, 4, true); INCR_NEW
+	this->text = new GUIText(label, scaleY, font, posX, posY, 4, true); INCR_NEW("GUIText");
 	this->texture = GuiTexture(texture, posX, posY, scaleX, scaleY, 0);
 	this->textureHighlight = GuiTexture(highlight, posX, posY, scaleX, scaleY, 0);
 
@@ -26,7 +26,7 @@ Button::Button(std::string label, FontType* font, GLuint texture, GLuint highlig
 
 Button::~Button()
 {
-	this->text->deleteMe(); delete this->text; INCR_DEL
+	this->text->deleteMe(); delete this->text; INCR_DEL("GUIText");
 }
 
 // Changes the button poosition. Should be preceded by GuiManager::clearGuisToRender.

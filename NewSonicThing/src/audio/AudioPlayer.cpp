@@ -93,7 +93,7 @@ void AudioPlayer::deleteSources()
 	for (Source* src : AudioPlayer::sources)
 	{
 		src->deleteMe();
-		delete src; INCR_DEL
+		delete src; INCR_DEL("Source");
 	}
 	AudioPlayer::sources.clear();
 	AudioPlayer::sources.shrink_to_fit();
@@ -125,22 +125,22 @@ void AudioPlayer::deleteBuffersBGM()
 void AudioPlayer::createSources()
 {
 	//First 14 sources are for sound effects
-	sources.push_back(new Source(1, 100, 600)); INCR_NEW
-	sources.push_back(new Source(1, 100, 600));	INCR_NEW
-	sources.push_back(new Source(1, 100, 600));	INCR_NEW
-	sources.push_back(new Source(1, 100, 600));	INCR_NEW
-	sources.push_back(new Source(1, 100, 600));	INCR_NEW
-	sources.push_back(new Source(1, 100, 600));	INCR_NEW
-	sources.push_back(new Source(1, 100, 600));	INCR_NEW
-	sources.push_back(new Source(1, 100, 600));	INCR_NEW
-	sources.push_back(new Source(1, 100, 600));	INCR_NEW
-	sources.push_back(new Source(1, 100, 600));	INCR_NEW
-	sources.push_back(new Source(1, 100, 600));	INCR_NEW
-	sources.push_back(new Source(1, 100, 600));	INCR_NEW
-	sources.push_back(new Source(1, 100, 600));	INCR_NEW
-	sources.push_back(new Source(1, 100, 600));	INCR_NEW
+	sources.push_back(new Source(1, 100, 600)); INCR_NEW("Source");
+	sources.push_back(new Source(1, 100, 600));	INCR_NEW("Source");
+	sources.push_back(new Source(1, 100, 600));	INCR_NEW("Source");
+	sources.push_back(new Source(1, 100, 600));	INCR_NEW("Source");
+	sources.push_back(new Source(1, 100, 600));	INCR_NEW("Source");
+	sources.push_back(new Source(1, 100, 600));	INCR_NEW("Source");
+	sources.push_back(new Source(1, 100, 600));	INCR_NEW("Source");
+	sources.push_back(new Source(1, 100, 600));	INCR_NEW("Source");
+	sources.push_back(new Source(1, 100, 600));	INCR_NEW("Source");
+	sources.push_back(new Source(1, 100, 600));	INCR_NEW("Source");
+	sources.push_back(new Source(1, 100, 600));	INCR_NEW("Source");
+	sources.push_back(new Source(1, 100, 600));	INCR_NEW("Source");
+	sources.push_back(new Source(1, 100, 600));	INCR_NEW("Source");
+	sources.push_back(new Source(1, 100, 600));	INCR_NEW("Source");
 	//Last source is dedicated to background music
-	sources.push_back(new Source(0, 0, 0));     INCR_NEW
+	sources.push_back(new Source(0, 0, 0));     INCR_NEW("Source");
 }
 
 //with position

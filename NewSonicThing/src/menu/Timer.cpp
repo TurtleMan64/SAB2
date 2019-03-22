@@ -20,11 +20,11 @@ Timer::Timer(FontType* font, float posX, float posY, float scale, int alignment,
 
 	float aspectRatio = (float)SCR_WIDTH / (float)SCR_HEIGHT;
 
-	this->minutes = new GUINumber(0, posX, posY, scale, alignment, visible, 2); INCR_NEW
-	this->colon = new GUIText(":", scale, font, posX + (0.118f / aspectRatio), posY, alignment, true); INCR_NEW
-	this->seconds = new GUINumber(0, posX + (0.15f / aspectRatio), posY, scale, alignment, visible, 2); INCR_NEW
-	this->dot = new GUIText(".", scale, font, posX + (0.268f / aspectRatio), posY, alignment, true); INCR_NEW
-	this->centiseconds = new GUINumber(0, posX + (0.30f / aspectRatio), posY, scale, alignment, visible, 2); INCR_NEW
+	this->minutes = new GUINumber(0, posX, posY, scale, alignment, visible, 2); INCR_NEW("GUINumber");
+	this->colon = new GUIText(":", scale, font, posX + (0.118f / aspectRatio), posY, alignment, true); INCR_NEW("GUIText");
+	this->seconds = new GUINumber(0, posX + (0.15f / aspectRatio), posY, scale, alignment, visible, 2); INCR_NEW("GUINumber");
+	this->dot = new GUIText(".", scale, font, posX + (0.268f / aspectRatio), posY, alignment, true); INCR_NEW("GUIText");
+	this->centiseconds = new GUINumber(0, posX + (0.30f / aspectRatio), posY, scale, alignment, visible, 2); INCR_NEW("GUINumber");
 
 	this->totalTime = 0;
 	this->frozen = false;
@@ -34,11 +34,11 @@ Timer::Timer(FontType* font, float posX, float posY, float scale, int alignment,
 Timer::~Timer()
 {
 	std::cout << "Deleting timer\n";
-	this->colon->deleteMe(); delete this->colon; INCR_DEL
-	this->dot->deleteMe(); delete this->dot; INCR_DEL
-	this->minutes->deleteMe(); delete this->minutes; INCR_DEL
-	this->seconds->deleteMe(); delete this->seconds; INCR_DEL
-	this->centiseconds->deleteMe(); delete this->centiseconds; INCR_DEL
+	this->colon->deleteMe(); delete this->colon; INCR_DEL("GUIText");
+	this->dot->deleteMe(); delete this->dot; INCR_DEL("GUIText");
+	this->minutes->deleteMe(); delete this->minutes; INCR_DEL("GUINumber");
+	this->seconds->deleteMe(); delete this->seconds; INCR_DEL("GUINumber");
+	this->centiseconds->deleteMe(); delete this->centiseconds; INCR_DEL("GUINumber");
 }
 
 void Timer::increment()

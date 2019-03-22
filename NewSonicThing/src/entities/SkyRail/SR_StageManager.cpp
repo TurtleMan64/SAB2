@@ -20,9 +20,9 @@ SRStageManager::SRStageManager()
 {
 	visible = true;
 
-    skyPass2       = new Dummy(&SRStageManager::modelsSkyPass2);       INCR_NEW
-    skyPass3       = new Dummy(&SRStageManager::modelsSkyPass3);       INCR_NEW
-    skyTransparent = new Dummy(&SRStageManager::modelsSkyTransparent); INCR_NEW
+    skyPass2       = new Dummy(&SRStageManager::modelsSkyPass2);       INCR_NEW("Entity");
+    skyPass3       = new Dummy(&SRStageManager::modelsSkyPass3);       INCR_NEW("Entity");
+    skyTransparent = new Dummy(&SRStageManager::modelsSkyTransparent); INCR_NEW("Entity");
 
     skyPass2->setVisible(true);
     skyPass3->setVisible(true);

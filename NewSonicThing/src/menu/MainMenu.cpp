@@ -28,15 +28,14 @@ MainMenu::MainMenu()
 	extern unsigned int SCR_WIDTH;
 	extern unsigned int SCR_HEIGHT;
 
-	this->menuButtons = nullptr;
-	this->aspectRatio = (float) SCR_WIDTH / SCR_HEIGHT;
-	this->buttonCount = 0;
-	this->menuSelectionID = 0;
-	this->textureParallelogram = GL_NONE;
-	this->textureParallelogramBackdrop = GL_NONE;
-	this->textureLogo = GL_NONE;
-	MainMenu::init();
-	this->setVisible(true);
+	aspectRatio = (float) SCR_WIDTH / SCR_HEIGHT;
+	buttonCount = 0;
+	menuSelectionID = 0;
+	textureParallelogram = GL_NONE;
+	textureParallelogramBackdrop = GL_NONE;
+	textureLogo = GL_NONE;
+	init();
+	setVisible(true);
 }
 
 MainMenu::~MainMenu()
@@ -51,12 +50,10 @@ void MainMenu::init()
 	//font = new FontType(Loader::loadTexture("res/Fonts/vipnagorgialla.png"),
 	//	"res/Fonts/vipnagorgialla.fnt"); INCR_NEW
 
-	this->textureParallelogram = Loader::loadTextureNoInterpolation(
-		"res/Images/MainMenu/Parallelogram.png");
-	this->textureParallelogramBackdrop = Loader::loadTextureNoInterpolation(
-		"res/Images/MainMenu/ParallelogramBackdrop.png");
-	this->textureLogo = Loader::loadTexture("res/Images/MainMenu/Logo.png");
-	this->logo = GuiTexture(textureLogo, 0.5f, 0.4f, 0.6f * (767.0f / 784.0f) / this->aspectRatio, 0.6f, 0.0f);
+	textureParallelogram = Loader::loadTextureNoInterpolation("res/Images/MainMenu/Parallelogram.png");
+	textureParallelogramBackdrop = Loader::loadTextureNoInterpolation("res/Images/MainMenu/ParallelogramBackdrop.png");
+	textureLogo = Loader::loadTexture("res/Images/MainMenu/Logo.png");
+	logo = GuiTexture(textureLogo, 0.5f, 0.4f, 0.6f * (767.0f / 784.0f) / aspectRatio, 0.6f, 0.0f);
 
 	MainMenu::loadResources();
 
@@ -66,7 +63,7 @@ void MainMenu::init()
 void MainMenu::loadResources()
 {
 	printf("Loading resources\n");
-	if (MainMenu::menuButtons != nullptr)
+    if (menuButtons.size() != 0)
 	{
 		std::fprintf(stdout, "Main Menu trying to load resources when they are already loaded!\n");
 		return;
@@ -85,15 +82,15 @@ void MainMenu::loadResources()
 
 	int numButtonsToMake = (int) buttonNames.size();
 
-	this->menuButtons = new Button*[numButtonsToMake]; INCR_NEW
+    menuButtons.clear();
 
 	for (int i = 0; i < numButtonsToMake; i++)
 	{
-		this->menuButtons[i] = new Button(buttonNames[i], Global::fontVipnagorgialla, this->textureParallelogram, this->textureParallelogramBackdrop,
-			0.5f + (0.5f * (i - this->menuSelectionID) / this->aspectRatio), 0.8f, (fontScale * 8.0f / this->aspectRatio), fontScale, true); INCR_NEW
+        menuButtons.push_back(new Button(buttonNames[i], Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop,
+			0.5f + (0.5f * (i - menuSelectionID) / aspectRatio), 0.8f, (fontScale * 8.0f / aspectRatio), fontScale, true)); INCR_NEW("Button");
 	}
 
-	this->buttonCount = numButtonsToMake;
+	buttonCount = numButtonsToMake;
 
 	printf("Resources loaded\n");
 }
@@ -102,11 +99,11 @@ void MainMenu::draw()
 {
 	extern float dt;
 
-	if (oldSelection != this->menuSelectionID)
+	if (oldSelection != menuSelectionID)
 	{
 		animationTime = 0.25f;
 		animating = true;
-		if (oldSelection < this->menuSelectionID)
+		if (oldSelection < menuSelectionID)
 		{
 			animationDirection = 1;
 		}
@@ -129,22 +126,22 @@ void MainMenu::draw()
 
 	GuiManager::clearGuisToRender();
 
-	GuiManager::addGuiToRender(&this->logo);
+	GuiManager::addGuiToRender(&logo);
 
-	if (this->visible)
+	if (visible)
 	{
 		float animationOffset = animationDirection * 12 * (animationTime) * (animationTime);
 
-		for (int i = 0; i < this->buttonCount; i++)
+		for (int i = 0; i < buttonCount; i++)
 		{
-			this->menuButtons[i]->setPos(0.5f + (0.75f * (i - this->menuSelectionID) / this->aspectRatio) + animationOffset / this->aspectRatio, 0.8f);
-			this->menuButtons[i]->setVisible(true);
-			this->menuButtons[i]->setHighlight(false);
+			menuButtons[i]->setPos(0.5f + (0.75f * (i - menuSelectionID) / aspectRatio) + animationOffset / aspectRatio, 0.8f);
+			menuButtons[i]->setVisible(true);
+			menuButtons[i]->setHighlight(false);
 		}
 	}
 
-	this->menuButtons[menuSelectionID]->setHighlight(true);
-	oldSelection = this->menuSelectionID;
+	menuButtons[menuSelectionID]->setHighlight(true);
+	oldSelection = menuSelectionID;
 }
 
 void MainMenu::setVisible(bool visibleStatus)
@@ -159,20 +156,20 @@ void MainMenu::setVisible(bool visibleStatus)
 void MainMenu::unloadResources()
 {
 	std::cout << "Unloading resources...\n";
-	if (MainMenu::menuButtons == nullptr)
+	if (menuButtons.size() == 0)
 	{
 		std::fprintf(stdout, "Main Menu trying to unload resources when they are already unloaded!\n");
 		return;
 	}
 
-	int numToDelete = MainMenu::buttonCount;
+	int numToDelete = buttonCount;
 
 	for (int i = 0; i < numToDelete; i++)
 	{
-		delete MainMenu::menuButtons[i]; INCR_DEL
+		delete menuButtons[i]; INCR_DEL("Button");
 	}
 
-	delete[] MainMenu::menuButtons; MainMenu::menuButtons = nullptr; INCR_DEL
+	menuButtons.clear();
 
 	GuiManager::clearGuisToRender();
 	std::cout << "Resources unloaded!\n";
@@ -180,15 +177,15 @@ void MainMenu::unloadResources()
 
 void MainMenu::resetAnimation()
 {
-	this->animating = false;
-	this->animationTime = 0;
+	animating = false;
+	animationTime = 0;
 }
 
 Menu* MainMenu::step()
 {
 	Menu* retVal = nullptr;
 
-	this->setVisible(true);
+	setVisible(true);
 
 	//bool shouldGoUp    = false;
 	//bool shouldGoDown  = false;
@@ -209,7 +206,7 @@ Menu* MainMenu::step()
 		menuSelectionID--;
 		AudioPlayer::play(36, Global::gameCamera->getFadePosition1());
 	}
-	else if (moveX == 1 && moveX != xPrev && menuSelectionID < (this->buttonCount - 1))
+	else if (moveX == 1 && moveX != xPrev && menuSelectionID < (buttonCount - 1))
 	{
 		xPrev = 1;
 		menuSelectionID++;
@@ -223,13 +220,13 @@ Menu* MainMenu::step()
 
 	if (pressedSelect)
 	{
-		this->resetAnimation();
-		switch (this->menuSelectionID)
+		resetAnimation();
+		switch (menuSelectionID)
 		{
 			case mission:
 				AudioPlayer::play(38, Global::gameCamera->getFadePosition1());
-				retVal = new MissionMenu; INCR_NEW
-				this->setVisible(false);
+				retVal = new MissionMenu; INCR_NEW("Menu");
+				setVisible(false);
 				break;
 
 			case config:
@@ -241,7 +238,7 @@ Menu* MainMenu::step()
 		}
 	}
 	
-	this->draw();
+	draw();
 
 	return retVal;
 }

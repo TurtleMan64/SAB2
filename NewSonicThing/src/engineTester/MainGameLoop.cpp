@@ -256,13 +256,13 @@ int main()
 
 	AudioMaster::init();
 
-	Global::fontVipnagorgialla = new FontType(Loader::loadTexture("res/Fonts/vipnagorgialla.png"), "res/Fonts/vipnagorgialla.fnt"); INCR_NEW
+	Global::fontVipnagorgialla = new FontType(Loader::loadTexture("res/Fonts/vipnagorgialla.png"), "res/Fonts/vipnagorgialla.fnt"); INCR_NEW("FontType");
 
 	TextMaster::init();
 
 	GuiManager::init();
 
-	Global::menuManager.push(new MainMenu);
+	Global::menuManager.push(new MainMenu); INCR_NEW("MainMenu");
 
 
 	if (Global::renderParticles)
@@ -302,24 +302,24 @@ int main()
 
 	if (Global::useHighQualityWater)
 	{
-		Global::gameWaterFBOs     = new WaterFrameBuffers; INCR_NEW
-		WaterShader* waterShader  = new WaterShader; INCR_NEW
-		Global::gameWaterRenderer = new WaterRenderer(waterShader, Master_getProjectionMatrix(), Global::gameWaterFBOs, Master_getShadowRenderer()); INCR_NEW
-		Global::gameWaterTiles    = new std::list<WaterTile*>; INCR_NEW
+		Global::gameWaterFBOs     = new WaterFrameBuffers; INCR_NEW("WaterFrameBuffers");
+		WaterShader* waterShader  = new WaterShader; INCR_NEW("WaterShader");
+		Global::gameWaterRenderer = new WaterRenderer(waterShader, Master_getProjectionMatrix(), Global::gameWaterFBOs, Master_getShadowRenderer()); INCR_NEW("WaterRenderer");
+		Global::gameWaterTiles    = new std::list<WaterTile*>; INCR_NEW("std::list<WaterTile*>");
 		for (int r = -6; r < 6; r++) //-9 , 9
 		{
 			for (int c = -8; c < 8; c++) //-12  12
 			{
-				Global::gameWaterTiles->push_back(new WaterTile(r*WaterTile::TILE_SIZE*2, c*WaterTile::TILE_SIZE*2)); INCR_NEW
+				Global::gameWaterTiles->push_back(new WaterTile(r*WaterTile::TILE_SIZE*2, c*WaterTile::TILE_SIZE*2)); INCR_NEW("WaterTile");
 			}
 		}
 	}
 
 	if (Global::renderBloom)
 	{
-		Global::gameMultisampleFbo = new Fbo(SCR_WIDTH, SCR_HEIGHT); INCR_NEW
-		Global::gameOutputFbo      = new Fbo(SCR_WIDTH, SCR_HEIGHT, Fbo::DEPTH_TEXTURE); INCR_NEW
-		Global::gameOutputFbo2     = new Fbo(SCR_WIDTH, SCR_HEIGHT, Fbo::DEPTH_TEXTURE); INCR_NEW
+		Global::gameMultisampleFbo = new Fbo(SCR_WIDTH, SCR_HEIGHT); INCR_NEW("Fbo");
+		Global::gameOutputFbo      = new Fbo(SCR_WIDTH, SCR_HEIGHT, Fbo::DEPTH_TEXTURE); INCR_NEW("Fbo");
+		Global::gameOutputFbo2     = new Fbo(SCR_WIDTH, SCR_HEIGHT, Fbo::DEPTH_TEXTURE); INCR_NEW("Fbo");
 		PostProcessing::init();
 	}
 
@@ -353,6 +353,8 @@ int main()
 
 		Input::pollInputs();
 
+        Global::menuManager.step();
+
 		GLenum err = glGetError();
 		if (err != GL_NO_ERROR)
 		{
@@ -380,7 +382,7 @@ int main()
 		for (auto entityToDelete : gameEntitiesToDelete)
 		{
 			gameEntities.erase(entityToDelete);
-			delete entityToDelete; INCR_DEL
+			delete entityToDelete; INCR_DEL("Entity");
 		}
 		gameEntitiesToDelete.clear();
 
@@ -395,7 +397,7 @@ int main()
 		for (auto entityToDelete : gameEntitiesPass2ToDelete)
 		{
 			gameEntitiesPass2.erase(entityToDelete);
-			delete entityToDelete; INCR_DEL
+			delete entityToDelete; INCR_DEL("Entity");
 		}
 		gameEntitiesPass2ToDelete.clear();
 
@@ -410,7 +412,7 @@ int main()
 		for (auto entityToDelete : gameEntitiesPass3ToDelete)
 		{
 			gameEntitiesPass3.erase(entityToDelete);
-			delete entityToDelete; INCR_DEL
+			delete entityToDelete; INCR_DEL("Entity");
 		}
 		gameEntitiesPass3ToDelete.clear();
 
@@ -425,7 +427,7 @@ int main()
 		for (auto entityToDelete : gameTransparentEntitiesToDelete)
 		{
 			gameTransparentEntities.erase(entityToDelete);
-			delete entityToDelete; INCR_DEL
+			delete entityToDelete; INCR_DEL("Entity");
 		}
 		gameTransparentEntitiesToDelete.clear();
 
@@ -442,7 +444,7 @@ int main()
 		{
 			int realIndex = Global::getChunkIndex(entityToDelete->getX(), entityToDelete->getZ());
 			gameChunkedEntities[realIndex].erase(entityToDelete);
-			delete entityToDelete; INCR_DEL
+			delete entityToDelete; INCR_DEL("Entity");
 		}
 		gameChunkedEntitiesToDelete.clear();
 
@@ -454,9 +456,11 @@ int main()
 
 				if (Global::raceStartTimer >= 0)
 				{
+                    //Global::mainHudTimer->setTime(0.0f);
 					Global::raceStartTimer -= dt;
 					if (Global::raceStartTimer < 0)
 					{
+                        Global::mainHudTimer->freeze(false);
 						//if (bgmHasLoop != 0)
 						{
 							//By default, first 2 buffers are the intro and loop, respectively
@@ -478,6 +482,10 @@ int main()
 					}
 				}
 
+                if (Global::gameMainVehicle != nullptr)
+                {
+                    Global::gameMainVehicle->step();
+                }
 				for (Entity* e : gameEntities)
 				{
 					e->step();
@@ -575,7 +583,6 @@ int main()
 		}
 
 		Global::clearTitleCard();
-		Global::menuManager.step();
 
 		Stage::updateVisibleChunks();
 		SkyManager::calculateValues();
@@ -857,7 +864,7 @@ void Main_deleteAllEntites()
 	for (Entity* entityToDelete : gameEntitiesToDelete)
 	{
 		gameEntities.erase(entityToDelete);
-		delete entityToDelete; INCR_DEL
+		delete entityToDelete; INCR_DEL("Entity");
 	}
 	gameEntitiesToDelete.clear();
 
@@ -865,9 +872,15 @@ void Main_deleteAllEntites()
 	//Delete all the rest
 	for (Entity* entityToDelete : gameEntities)
 	{
-		delete entityToDelete; INCR_DEL
+		delete entityToDelete; INCR_DEL("Entity");
 	}
 	gameEntities.clear();
+
+    if (Global::gameMainVehicle != nullptr)
+    {
+        delete Global::gameMainVehicle; INCR_DEL("Entity");
+        Global::gameMainVehicle = nullptr;
+    }
 }
 
 void Main_addEntityPass2(Entity* entityToAdd)
@@ -892,13 +905,13 @@ void Main_deleteAllEntitesPass2()
 	for (Entity* entityToDelete : gameEntitiesPass2ToDelete)
 	{
 		gameEntitiesPass2.erase(entityToDelete);
-		delete entityToDelete; INCR_DEL
+		delete entityToDelete; INCR_DEL("Entity");
 	}
 	gameEntitiesPass2ToDelete.clear();
 
 	for (Entity* entityToDelete : gameEntitiesPass2)
 	{
-		delete entityToDelete; INCR_DEL
+		delete entityToDelete; INCR_DEL("Entity");
 	}
 	gameEntitiesPass2.clear();
 }
@@ -925,13 +938,13 @@ void Main_deleteAllEntitesPass3()
 	for (Entity* entityToDelete : gameEntitiesPass3ToDelete)
 	{
 		gameEntitiesPass3.erase(entityToDelete);
-		delete entityToDelete; INCR_DEL
+		delete entityToDelete; INCR_DEL("Entity");
 	}
 	gameEntitiesPass3ToDelete.clear();
 
 	for (Entity* entityToDelete : gameEntitiesPass3)
 	{
-		delete entityToDelete; INCR_DEL
+		delete entityToDelete; INCR_DEL("Entity");
 	}
 	gameEntitiesPass3.clear();
 }
@@ -945,14 +958,14 @@ void Main_addTransparentEntity(Entity* entityToAdd)
 void Main_deleteTransparentEntity(Entity* entityToDelete)
 {
 	gameTransparentEntities.erase(entityToDelete);
-	delete entityToDelete; INCR_DEL
+	delete entityToDelete; INCR_DEL("Entity");
 }
 
 void Main_deleteAllTransparentEntites()
 {
 	for (Entity* entityToDelete : gameTransparentEntities)
 	{
-		delete entityToDelete; INCR_DEL
+		delete entityToDelete; INCR_DEL("Entity");
 	}
 	gameTransparentEntities.clear();
 }
@@ -1419,7 +1432,7 @@ void Main_deleteAllChunkedEntities()
 	{
 		int realIndex = Global::getChunkIndex(entityToDelete->getX(), entityToDelete->getZ());
 		gameChunkedEntities[realIndex].erase(entityToDelete);
-		delete entityToDelete; INCR_DEL
+		delete entityToDelete; INCR_DEL("Entity");
 	}
 	gameChunkedEntitiesToDelete.clear();
 
@@ -1427,7 +1440,7 @@ void Main_deleteAllChunkedEntities()
 	{
 		for (Entity* e : set)
 		{
-			delete e; INCR_DEL
+			delete e; INCR_DEL("Entity");
 		}
 		set.clear();
 	}
@@ -1446,25 +1459,25 @@ void Global::createTitleCard()
 	if (titleCardLevelName != nullptr)
 	{
 		titleCardLevelName->deleteMe();
-		delete titleCardLevelName; INCR_DEL
+		delete titleCardLevelName; INCR_DEL("GUIText");
 		titleCardLevelName = nullptr;
 	}
 	if (titleCardMission != nullptr)
 	{
 		titleCardMission->deleteMe();
-		delete titleCardMission; INCR_DEL
+		delete titleCardMission; INCR_DEL("GUIText");
 		titleCardMission = nullptr;
 	}
 	if (titleCardMissionDescription != nullptr)
 	{
 		titleCardMissionDescription->deleteMe();
-		delete titleCardMissionDescription; INCR_DEL
+		delete titleCardMissionDescription; INCR_DEL("GUIText");
 		titleCardMissionDescription = nullptr;
 	}
 
-	titleCardLevelName          = new GUIText(Global::levelNameDisplay, 0.09f, Global::fontVipnagorgialla, 0.5f, 0.6f, 4, true); INCR_NEW
-	titleCardMission            = new GUIText("Mission "+std::to_string(Global::gameMissionNumber+1)+":", 0.075f, Global::fontVipnagorgialla, 0.5f, 0.7f, 4, true); INCR_NEW
-	titleCardMissionDescription = new GUIText(Global::gameMissionDescription, 0.06f, Global::fontVipnagorgialla, 0.5f, 0.8f, 4, true); INCR_NEW
+	titleCardLevelName          = new GUIText(Global::levelNameDisplay, 0.09f, Global::fontVipnagorgialla, 0.5f, 0.6f, 4, true); INCR_NEW("GUIText");
+	titleCardMission            = new GUIText("Mission "+std::to_string(Global::gameMissionNumber+1)+":", 0.075f, Global::fontVipnagorgialla, 0.5f, 0.7f, 4, true); INCR_NEW("GUIText");
+	titleCardMissionDescription = new GUIText(Global::gameMissionDescription, 0.06f, Global::fontVipnagorgialla, 0.5f, 0.8f, 4, true); INCR_NEW("GUIText");
 }
 
 void Global::clearTitleCard()
@@ -1472,19 +1485,56 @@ void Global::clearTitleCard()
 	if (titleCardLevelName != nullptr)
 	{
 		titleCardLevelName->deleteMe();
-		delete titleCardLevelName; INCR_DEL
+		delete titleCardLevelName; INCR_DEL("GUIText");
 		titleCardLevelName = nullptr;
 	}
 	if (titleCardMission != nullptr)
 	{
 		titleCardMission->deleteMe();
-		delete titleCardMission; INCR_DEL
+		delete titleCardMission; INCR_DEL("GUIText");
 		titleCardMission = nullptr;
 	}
 	if (titleCardMissionDescription != nullptr)
 	{
 		titleCardMissionDescription->deleteMe();
-		delete titleCardMissionDescription; INCR_DEL
+		delete titleCardMissionDescription; INCR_DEL("GUIText");
 		titleCardMissionDescription = nullptr;
 	}
+}
+
+std::unordered_map<std::string, int> heapObjects;
+
+void Global::debugNew(const char* name)
+{
+    Global::countNew++;
+
+    #ifdef DEV_MODE
+    if (heapObjects.find(name) == heapObjects.end())
+    {
+        heapObjects[name] = 1;
+    }
+    else
+    {
+        int num = heapObjects[name];
+        heapObjects[name] = num+1;
+    }
+    #endif
+}
+
+void Global::debugDel(const char* name)
+{
+    Global::countDelete++;
+
+    #ifdef DEV_MODE
+    if (heapObjects.find(name) == heapObjects.end())
+    {
+        std::fprintf(stdout, "Warning: trying to delete '%s' when there are none.\n", name);
+        heapObjects[name] = 0;
+    }
+    else
+    {
+        int num = heapObjects[name];
+        heapObjects[name] = num-1;
+    }
+    #endif
 }

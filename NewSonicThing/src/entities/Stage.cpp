@@ -34,7 +34,7 @@ void Stage::respawnChunks()
 	Stage::chunkDummies.clear();
 	for (int i = 0; i < (int)Stage::chunkModels.size(); i++)
 	{
-		Dummy* chunk = new Dummy(&Stage::chunkModels[i]);
+		Dummy* chunk = new Dummy(&Stage::chunkModels[i]); INCR_NEW("Entity");
 		chunk->setVisible(true);
 		chunk->setPosition(0, 0, 0);
 		chunk->updateTransformationMatrix();

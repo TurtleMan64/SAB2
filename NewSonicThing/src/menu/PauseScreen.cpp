@@ -49,32 +49,32 @@ PauseScreen::PauseScreen(HUD* gameHud)
 	this->menuSelection = 0;
 	this->menuSelectionMAX = 3;
 
-	this->textResume = new GUIText("Resume", size, Global::fontVipnagorgialla, 0.5f, 0.35f, 4, true); INCR_NEW
-	this->textRestart = new GUIText("Restart", size, Global::fontVipnagorgialla, 0.5f, 0.45f, 4, true); INCR_NEW
+	this->textResume = new GUIText("Resume", size, Global::fontVipnagorgialla, 0.5f, 0.35f, 4, true); INCR_NEW("GUIText");
+	this->textRestart = new GUIText("Restart", size, Global::fontVipnagorgialla, 0.5f, 0.45f, 4, true); INCR_NEW("GUIText");
 
 	if (Global::isAutoCam)
 	{
-		this->textCamera = new GUIText("Auto Cam", size, Global::fontVipnagorgialla, 0.5f, 0.55f, 4, true); INCR_NEW
+		this->textCamera = new GUIText("Auto Cam", size, Global::fontVipnagorgialla, 0.5f, 0.55f, 4, true); INCR_NEW("GUIText");
 	}
 	else
 	{
-		this->textCamera = new GUIText("Free Cam", size, Global::fontVipnagorgialla, 0.5f, 0.55f, 4, true); INCR_NEW
+		this->textCamera = new GUIText("Free Cam", size, Global::fontVipnagorgialla, 0.5f, 0.55f, 4, true); INCR_NEW("GUIText");
 	}
 
-	this->textQuit = new GUIText("Quit", size, Global::fontVipnagorgialla, 0.5f, 0.65f, 4, true); INCR_NEW
+	this->textQuit = new GUIText("Quit", size, Global::fontVipnagorgialla, 0.5f, 0.65f, 4, true); INCR_NEW("GUIText");
 
 	printf("Pause Screen initialized!\n");
 }
 
 PauseScreen::~PauseScreen()
 {
-	textResume->deleteMe(); delete textResume; INCR_DEL
+	textResume->deleteMe(); delete textResume; INCR_DEL("GUIText");
 
-	textRestart->deleteMe(); delete textRestart; INCR_DEL
+	textRestart->deleteMe(); delete textRestart; INCR_DEL("GUIText");
 
-	textCamera->deleteMe(); delete textCamera; INCR_DEL
+	textCamera->deleteMe(); delete textCamera; INCR_DEL("GUIText");
 
-	textQuit->deleteMe(); delete textQuit; INCR_DEL
+	textQuit->deleteMe(); delete textQuit; INCR_DEL("GUIText");
 
 	Global::gameState = STATE_RUNNING;
 }
@@ -175,9 +175,8 @@ Menu* PauseScreen::step()
 				Global::shouldLoadLevel = true;
 				this->gameHud->getTimer()->setTime(0.0f);
                 this->gameHud->getTimer()->freeze(true);
-                Global::raceStartTimer = -1.0f;
 				Vector3f vel(0, 0, 0);
-				new Particle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &vel, 0, 1.0f, 0.0f, 50.0f, 0, 50.0f, 0, true, false); INCR_NEW
+				new Particle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &vel, 0, 1.0f, 0.0f, 50.0f, 0, 50.0f, 0, true, false);
 				Global::gameState = STATE_CUTSCENE;
 				retVal = PopMenu::get();
 				AudioPlayer::stopAllSFX();
@@ -194,15 +193,15 @@ Menu* PauseScreen::step()
 			//switch cam, reload text
 			if (textCamera != nullptr)
 			{
-				textCamera->deleteMe(); delete textCamera; INCR_DEL textCamera = nullptr;
+				textCamera->deleteMe(); delete textCamera; textCamera = nullptr; INCR_DEL("GUIText");
 				if (Global::isAutoCam)
 				{
-					textCamera = new GUIText("Free Cam", size, Global::fontVipnagorgialla, 0.5f, 0.55f, 4, true); INCR_NEW
+					textCamera = new GUIText("Free Cam", size, Global::fontVipnagorgialla, 0.5f, 0.55f, 4, true); INCR_NEW("GUIText");
 					Global::isAutoCam = false;
 				}
 				else
 				{
-					textCamera = new GUIText("Auto Cam", size, Global::fontVipnagorgialla, 0.5f, 0.55f, 4, true); INCR_NEW
+					textCamera = new GUIText("Auto Cam", size, Global::fontVipnagorgialla, 0.5f, 0.55f, 4, true); INCR_NEW("GUIText");
 					Global::isAutoCam = true;
 				}
 			}
@@ -212,7 +211,7 @@ Menu* PauseScreen::step()
 		case 3:
 		{
 			Vector3f vel(0, 0, 0);
-			new Particle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &vel, 0, 1.0f, 0.0f, 50.0f, 0, 50.0f, 0, true, false); INCR_NEW
+			new Particle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &vel, 0, 1.0f, 0.0f, 50.0f, 0, 50.0f, 0, true, false);
 			LevelLoader::loadTitle();
 			retVal = ClearStack::get();
 			AudioPlayer::stopAllSFX();

@@ -93,22 +93,22 @@ QuadTreeNode::QuadTreeNode(float xBoundMin, float xBoundMax, float zBoundMin, fl
 
 		if (topLeftPool.size() != 0)
 		{
-			topLeft = new QuadTreeNode(xBoundMin, xMid, zMid, zBoundMax, topLeftPool, depth + 1, depthMax); INCR_NEW
+			topLeft = new QuadTreeNode(xBoundMin, xMid, zMid, zBoundMax, topLeftPool, depth + 1, depthMax); INCR_NEW("QuadTreeNode");
 		}
 
 		if (topRightPool.size() != 0)
 		{
-			topRight = new QuadTreeNode(xMid, xBoundMax, zMid, zBoundMax, topRightPool, depth + 1, depthMax); INCR_NEW
+			topRight = new QuadTreeNode(xMid, xBoundMax, zMid, zBoundMax, topRightPool, depth + 1, depthMax); INCR_NEW("QuadTreeNode");
 		}
 
 		if (botLeftPool.size() != 0)
 		{
-			botLeft = new QuadTreeNode(xBoundMin, xMid, zBoundMin, zMid, botLeftPool, depth + 1, depthMax); INCR_NEW
+			botLeft = new QuadTreeNode(xBoundMin, xMid, zBoundMin, zMid, botLeftPool, depth + 1, depthMax); INCR_NEW("QuadTreeNode");
 		}
 
 		if (botRightPool.size() != 0)
 		{
-			botRight = new QuadTreeNode(xMid, xBoundMax, zBoundMin, zMid, botRightPool, depth + 1, depthMax); INCR_NEW
+			botRight = new QuadTreeNode(xMid, xBoundMax, zBoundMin, zMid, botRightPool, depth + 1, depthMax); INCR_NEW("QuadTreeNode");
 		}
 	}
 }
@@ -118,28 +118,28 @@ void QuadTreeNode::deleteMe()
 	if (topLeft != nullptr)
 	{
 		topLeft->deleteMe();
-		delete topLeft; INCR_DEL
+		delete topLeft; INCR_DEL("QuadTreeNode");
 		topLeft = nullptr;
 	}
 
 	if (topRight != nullptr)
 	{
 		topRight->deleteMe();
-		delete topRight; INCR_DEL
+		delete topRight; INCR_DEL("QuadTreeNode");
 		topRight = nullptr;
 	}
 
 	if (botLeft != nullptr)
 	{
 		botLeft->deleteMe();
-		delete botLeft; INCR_DEL
+		delete botLeft; INCR_DEL("QuadTreeNode");
 		botLeft = nullptr;
 	}
 
 	if (botRight != nullptr)
 	{
 		botRight->deleteMe();
-		delete botRight; INCR_DEL
+		delete botRight; INCR_DEL("QuadTreeNode");
 		botRight = nullptr;
 	}
 

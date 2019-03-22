@@ -20,14 +20,8 @@ private:
 public:
 	Menu* step() { return nullptr; }
 	~PopMenu() {}
-	static Menu* get()
-	{
-		if (retVal == nullptr)
-		{
-			retVal = new PopMenu;
-		}
-		return retVal;
-	}
+
+	static Menu* get();
 };
 
 class ClearStack : public Menu
@@ -38,14 +32,8 @@ private:
 public:
 	Menu* step() { return nullptr; }
 	~ClearStack() {}
-	static Menu* get()
-	{
-		if (retVal == nullptr)
-		{
-			retVal = new ClearStack;
-		}
-		return retVal;
-	}
+
+	static Menu* get();
 };
 
 class SwitchStack : public Menu
@@ -56,14 +44,8 @@ private:
 public:
 	Menu* step() { return nullptr; }
 	~SwitchStack() {}
-	static Menu* get()
-	{
-		if (retVal == nullptr)
-		{
-			retVal = new SwitchStack;
-		}
-		return retVal;
-	}
+
+	static Menu* get();
 };
 
 #endif

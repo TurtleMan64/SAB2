@@ -36,7 +36,7 @@ GoalRing::GoalRing(float x, float y, float z)
 	scale = 1;
 	visible = true;
 
-	text = new Dummy(&GoalRing::modelsText); INCR_NEW
+	text = new Dummy(&GoalRing::modelsText); INCR_NEW("Entity");
 	text->setVisible(true);
 	text->setPosition(&position);
 	Main_addEntityPass2(text);

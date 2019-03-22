@@ -23,7 +23,7 @@ private:
 
 	GuiTexture logo;
 
-	Button** menuButtons;
+    std::vector<Button*> menuButtons;
 
 	int buttonCount;
 

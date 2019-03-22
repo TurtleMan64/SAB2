@@ -50,7 +50,7 @@ void CollisionModel::generateQuadTree(int maxDepth)
 {
 	this->treeMaxDepth = maxDepth;
 	const float pad = 200.0f; //padding to add to the edges of the quad tree
-	this->quadTreeRoot = new QuadTreeNode(minX-pad, maxX+pad, minZ-pad, maxZ+pad, triangles, 0, maxDepth); INCR_NEW
+	this->quadTreeRoot = new QuadTreeNode(minX-pad, maxX+pad, minZ-pad, maxZ+pad, triangles, 0, maxDepth); INCR_NEW("QuadTreeNode");
 
     this->leafNodeWidth = ((maxX+pad) - (minX-pad))/(1<<maxDepth);
     this->leafNodeHeight = ((maxZ+pad) - (minZ-pad))/(1<<maxDepth);
@@ -150,8 +150,7 @@ void CollisionModel::transformModel(CollisionModel* targetModel, Vector3f* trans
 		Vector3f newP3(offX + (newX*cosAng - zDiff*sinAng), offY + newY, offZ + (zDiff*cosAng + newX*sinAng));
 
 
-		Triangle3D* newTri = new Triangle3D(&newP1, &newP2, &newP3, tri->type, tri->sound, tri->particle);
-		INCR_NEW
+		Triangle3D* newTri = new Triangle3D(&newP1, &newP2, &newP3, tri->type, tri->sound, tri->particle); INCR_NEW("Triangle3D");
 
 		targetModel->triangles.push_back(newTri);
 	}
@@ -191,8 +190,7 @@ void CollisionModel::transformModel(CollisionModel* targetModel, Vector3f* trans
 		zDiff = tri->p3Z;
 		Vector3f newP3(offX + (xDiff*cosAng - zDiff*sinAng), offY + tri->p3Y, offZ + (zDiff*cosAng + xDiff*sinAng));
 
-		Triangle3D* newTri = new Triangle3D(&newP1, &newP2, &newP3, tri->type, tri->sound, tri->particle);
-		INCR_NEW
+		Triangle3D* newTri = new Triangle3D(&newP1, &newP2, &newP3, tri->type, tri->sound, tri->particle); INCR_NEW("Triangle3D");
 
 		targetModel->triangles.push_back(newTri);
 	}
@@ -226,8 +224,7 @@ void CollisionModel::transformModelWithScale(CollisionModel* targetModel, Vector
 		zDiff = tri->p3Z*scale;
 		Vector3f newP3(offX + (xDiff*cosAng - zDiff*sinAng), offY + tri->p3Y*scale, offZ + (zDiff*cosAng + xDiff*sinAng));
 
-		Triangle3D* newTri = new Triangle3D(&newP1, &newP2, &newP3, tri->type, tri->sound, tri->particle);
-		INCR_NEW
+		Triangle3D* newTri = new Triangle3D(&newP1, &newP2, &newP3, tri->type, tri->sound, tri->particle); INCR_NEW("Triangle3D");
 
 		targetModel->triangles.push_back(newTri);
 	}
@@ -250,8 +247,7 @@ void CollisionModel::transformModel(CollisionModel* targetModel, Vector3f* trans
 		Vector3f newP2(offX + tri->p2X, offY + tri->p2Y, offZ + tri->p2Z);
 		Vector3f newP3(offX + tri->p3X, offY + tri->p3Y, offZ + tri->p3Z);
 
-		Triangle3D* newTri = new Triangle3D(&newP1, &newP2, &newP3, tri->type, tri->sound, tri->particle);
-		INCR_NEW
+		Triangle3D* newTri = new Triangle3D(&newP1, &newP2, &newP3, tri->type, tri->sound, tri->particle); INCR_NEW("Triangle3D");
 
 		targetModel->triangles.push_back(newTri);
 	}
@@ -264,8 +260,7 @@ void CollisionModel::deleteMe()
 	//Delete triangles 
 	for (Triangle3D* tri : triangles)
 	{
-		delete tri;
-		INCR_DEL
+		delete tri; INCR_DEL("Triangle3D");
 	}
 
 	triangles.clear();
@@ -274,8 +269,7 @@ void CollisionModel::deleteMe()
 	if (quadTreeRoot != nullptr)
 	{
 		quadTreeRoot->deleteMe();
-		delete quadTreeRoot;
-		INCR_DEL
+		delete quadTreeRoot; INCR_DEL("QuadTreeNode");
 		quadTreeRoot = nullptr;
 	}
 }

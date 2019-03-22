@@ -249,7 +249,7 @@ void Entity::deleteModels(std::list<TexturedModel*>* modelsToDelete)
 	for (auto model : (*modelsToDelete))
 	{
 		model->deleteMe();
-		delete model; INCR_DEL
+		delete model; INCR_DEL("TexturedModel");
 	}
 	modelsToDelete->clear();
 }
@@ -259,7 +259,7 @@ void Entity::deleteCollisionModel(CollisionModel** colModelToDelete)
 	if ((*colModelToDelete) != nullptr)
 	{
 		(*colModelToDelete)->deleteMe();
-		delete (*colModelToDelete); INCR_DEL
+		delete (*colModelToDelete); INCR_DEL("CollisionModel");
 		(*colModelToDelete) = nullptr;
 	}
 }

@@ -361,7 +361,7 @@ void CollisionChecker::deleteAllCollideModels()
 		CollisionModel* cm = CollisionChecker::collideModels.front();
 		CollisionChecker::collideModels.remove(cm);
 		cm->deleteMe();
-		delete cm; INCR_DEL
+		delete cm; INCR_DEL("CollisionModel");
 	}
 }
 
@@ -381,7 +381,7 @@ void CollisionChecker::deleteAllCollideModelsExceptQuadTrees()
 	{
 		CollisionChecker::collideModels.remove(cm);
 		cm->deleteMe();
-		delete cm; INCR_DEL
+		delete cm; INCR_DEL("CollisionModel");
 	}
 }
 
@@ -389,7 +389,7 @@ void CollisionChecker::deleteCollideModel(CollisionModel* cm)
 {
 	CollisionChecker::collideModels.remove(cm);
 	cm->deleteMe();
-	delete cm; INCR_DEL
+	delete cm; INCR_DEL("CollisionModel");
 }
 
 //The model added must be created with the new keyword, as it will be deleted

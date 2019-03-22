@@ -10,16 +10,16 @@
 Extras::Extras()
 {
 	FontType * font = new FontType(Loader::loadTexture("res/Fonts/vipnagorgialla.png"),
-		"res/Fonts/vipnagorgialla.fnt");
+		"res/Fonts/vipnagorgialla.fnt"); INCR_NEW("FontType");
 
-	timeText = new GUIText("Total Playtime:", 0.1f, font, 0.0f, 0.45f, 1.0f, true, false, true);
-	jebaited = new GUIText("bro...........................", 0.01f, font, 0.0f, 0.6f, 1.0f, true, false, true);
+	timeText = new GUIText("Total Playtime:", 0.1f, font, 0.0f, 0.45f, 1.0f, true, false, true); INCR_NEW("GUIText");
+	jebaited = new GUIText("bro...........................", 0.01f, font, 0.0f, 0.6f, 1.0f, true, false, true); INCR_NEW("GUIText");
 }
 
 Extras::~Extras()
 {
-	this->timeText->deleteMe(); delete this->timeText;
-	this->jebaited->deleteMe(); delete this->jebaited;
+	this->timeText->deleteMe(); delete this->timeText; INCR_DEL("GUIText");
+	this->jebaited->deleteMe(); delete this->jebaited; INCR_DEL("GUIText");
 }
 
 Menu* Extras::step()

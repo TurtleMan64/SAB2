@@ -46,7 +46,7 @@ Car::Car(float x, float y, float z)
 	camDir.set(0, 0, -1);
 	camDirSmooth.set(0, 0, -1);
 
-	maniaSonicModel = new ManiaSonicModel; INCR_NEW
+	maniaSonicModel = new ManiaSonicModel; INCR_NEW("Entity");
 	Main_addEntity(maniaSonicModel);
 	maniaSonicModel->setVisible(true);
 

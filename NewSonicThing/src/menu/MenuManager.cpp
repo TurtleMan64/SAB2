@@ -29,7 +29,7 @@ void MenuManager::push(Menu* menu)
 void MenuManager::pop()
 {
 	std::cout << "Popping top menu...\n";
-	delete this->currentStack->top(); INCR_DEL
+	delete this->currentStack->top(); INCR_DEL("Menu");
 	this->currentStack->pop();
 	std::cout << "Top menu popped\n";
 }
@@ -54,7 +54,7 @@ void MenuManager::switchStack()
 		this->currentStack = &this->gameMenuStack;
 		if (this->currentStack->empty())
 		{
-			this->currentStack->push(new HUD); INCR_NEW
+			this->currentStack->push(new HUD); INCR_NEW("Menu");
 		}
 	}
 	else
@@ -63,7 +63,7 @@ void MenuManager::switchStack()
 		this->currentStack = &this->menuStack;
 		if (this->currentStack->empty())
 		{
-			this->currentStack->push(new MainMenu); INCR_NEW
+			this->currentStack->push(new MainMenu); INCR_NEW("Menu");
 		}
 	}
 }

@@ -61,16 +61,21 @@ MissionMenu::~MissionMenu()
 
 void MissionMenu::loadResources()
 {
+    if (counter != 0)
+    {
+        std::fprintf(stdout, "Warning: MissionMenu loading resources when they are already loaded.\n");
+    }
+
 	extern unsigned int SCR_WIDTH;
 	extern unsigned int SCR_HEIGHT;
 	float aspectRatio = (float)SCR_WIDTH / SCR_HEIGHT;
-	levelButton = new Button*[Global::gameLevelData.size()]; INCR_NEW
+	levelButton = new Button*[Global::gameLevelData.size()]; INCR_NEW("Button");
 	counter = 0;
 	for (Level level : Global::gameLevelData)
 	{
 		std::string buttonText = "";
 		buttonText = level.displayName;
-		levelButton[counter] = new Button(level.displayName, Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.5f, 0.5f + (0.2f * counter), 0.56f / aspectRatio, 0.07f, true); INCR_NEW
+		levelButton[counter] = new Button(level.displayName, Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.5f, 0.5f + (0.2f * counter), 0.56f / aspectRatio, 0.07f, true); INCR_NEW("Button");
 		counter++;
 	}
 }
@@ -78,12 +83,18 @@ void MissionMenu::loadResources()
 void MissionMenu::unloadResources()
 {
 	std::cout << "Unloading Mission Menu resources.\n";
+    if (counter == 0)
+    {
+        std::fprintf(stdout, "Warning: MissionMenu unloading resources when they are empty.\n");
+    }
+
 	GuiManager::clearGuisToRender();
 	for (int i = 0; i < counter; i++)
 	{
-		delete levelButton[i]; INCR_DEL
+		delete levelButton[i]; INCR_DEL("Button");
 	}
-	delete levelButton; INCR_DEL
+	delete[] levelButton; INCR_DEL("Button");
+    counter = 0;
 	std::cout << "Mission Menu resources deleted.\n";
 }
 

@@ -42,7 +42,7 @@ Boostpad::Boostpad(
 	visible = true;
 	playerIsIn = false;
 
-	bolt = new Dummy(&Boostpad::modelsBolt); INCR_NEW
+	bolt = new Dummy(&Boostpad::modelsBolt); INCR_NEW("Entity");
 	bolt->setVisible(true);
 	bolt->setPosition(&position);
 	Main_addTransparentEntity(bolt);

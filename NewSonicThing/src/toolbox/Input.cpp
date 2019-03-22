@@ -275,6 +275,16 @@ void Input::pollInputs()
             std::fprintf(stdout, "cam dir = [%f, %f, %f]\n", Global::gameMainVehicle->getCameraDirection()->x, Global::gameMainVehicle->getCameraDirection()->y, Global::gameMainVehicle->getCameraDirection()->z);
 			std::fprintf(stdout, "\n");
 		}
+        std::fprintf(stdout, "diff = %d\n", Global::countNew-Global::countDelete);
+
+        //extern std::unordered_map<std::string, int> heapObjects;
+        //std::unordered_map<std::string, int>::iterator it = heapObjects.begin();
+		//while (it != heapObjects.end())
+		//{
+        //    std::fprintf(stdout, "'%s' count: %d\n", it->first.c_str(), it->second);
+		//	it++;
+		//}
+
 		//Loader::printInfo();
 	}
 	#endif
