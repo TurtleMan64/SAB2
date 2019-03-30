@@ -100,12 +100,13 @@ private:
 	void playRocketLaunchSoundLoop();
 	//If the rocket has started moving, the startup animation has finished
 	bool rocketStartedMoving();
-	//Set the player's position so they hold the rocket handle
-	void setPlayerPositionToHoldRocketHandle();
+	//Calculate the player's position so they hold the rocket handle
+	Vector3f calculateNewPlayerPosition();
 	//Calculates the new position of the rocket for the new frame
-	void calculateNewRocketPosition();
-	//Calculates the new value of percentOfPathCompleted using the speed, length of the path, and dt
-	void calculateNewPercentOfPathCompletedValue();
+	Vector3f calculateNewRocketPosition();
+	//Calculates the new value of percentOfPathCompleted, which is used to teleport the rocket and player to that position on the path
+	//This simulates movement, since the updates happen every single frame
+	float calculatePathMovementPercentForThisFrame();
 	//Returns true if the percentOfPathCompleted is 100% (equal to 1)
 	bool fullPathTraveled();
 	//Resets the rocket's position, canActivate, isActive, percentOfPathCompleted, and startupTimer to default values
