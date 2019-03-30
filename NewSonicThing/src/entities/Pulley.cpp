@@ -174,7 +174,7 @@ void Pulley::setupPulleyRope()
 {
     rope = new Body(&Pulley::modelsRope);
 	rope->setVisible(true);
-	INCR_NEW
+	INCR_NEW("Entity");
 	Main_addEntity(rope);
 	rope->setPosition(&position);
 }
@@ -183,7 +183,7 @@ void Pulley::setupPulleyTop()
 {
     top = new Body(&Pulley::modelsTop);
 	top->setVisible(true);
-	INCR_NEW
+	INCR_NEW("Entity");
 	Main_addEntity(top);
 	top->setPosition(&position);
 

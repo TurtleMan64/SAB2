@@ -54,8 +54,8 @@ public:
 
 	std::string getName();
 
-	bool canHomingAttackOn();
+	const bool canHomingAttackOn();
 
-	Vector3f getHomingCenter();
+	const Vector3f getHomingCenter();
 };
 #endif

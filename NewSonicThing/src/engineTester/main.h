@@ -13,6 +13,9 @@ class Checkpoint;
 class WaterRenderer;
 class WaterFrameBuffers;
 class WaterTile;
+class FontType;
+class GUIText;
+class Timer;
 
 #include <string>
 #include <random>
@@ -21,6 +24,7 @@ class WaterTile;
 #include <unordered_map>
 #include <unordered_set>
 #include "../toolbox/level.h"
+#include "../menu/menumanager.h"
 
 void Main_addEntity(Entity* entityToAdd);
 void Main_deleteEntity(Entity* entityToDelete);
@@ -64,16 +68,18 @@ void Main_deleteAllChunkedEntities();
 
 #ifdef DEV_MODE
 	#include <thread>
-	#define INCR_NEW Global::countNew++;
-	#define INCR_DEL Global::countDelete++;
+	#define INCR_NEW(NAME) Global::debugNew(NAME);
+	#define INCR_DEL(NAME) Global::debugDel(NAME);
 #else
-	#define INCR_NEW ;
-	#define INCR_DEL ;
+	#define INCR_NEW(NAME) ;
+	#define INCR_DEL(NAME) ;
 #endif
 
 class Global
 {
 public:
+	static MenuManager menuManager;
+    static Timer* mainHudTimer;
 	static Camera* gameCamera;
 	static Car* gameMainVehicle;
 	static Stage* gameStage;
@@ -115,6 +121,7 @@ public:
 	static float gameTotalPlaytime;
 	static float gameArcadePlaytime;
 	static bool stageUsesWater;
+	static FontType* fontVipnagorgialla;
 
 	static bool  spawnAtCheckpoint;
 	static float checkpointX;
@@ -126,6 +133,11 @@ public:
 	static int   checkpointTimeCen;
 	static int   checkpointTimeSec;
 	static int   checkpointTimeMin;
+
+	//texts for the title card
+	static GUIText* titleCardLevelName;
+	static GUIText* titleCardMission;
+	static GUIText* titleCardMissionDescription;
 
 	static std::list<Checkpoint*> gameCheckpointList;
 	static int gameCheckpointLast;
@@ -181,5 +193,13 @@ public:
 	static int getChunkIndex(float x, float z);
 
 	static void recalculateEntityChunks(float minX, float maxX, float minZ, float maxZ, float chunkSize);
+
+	static void createTitleCard();
+
+	static void clearTitleCard();
+
+    static void debugNew(const char* name);
+
+    static void debugDel(const char* name);
 };
 #endif

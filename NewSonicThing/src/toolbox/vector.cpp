@@ -101,7 +101,7 @@ void Vector3f::normalize()
 	}
 	else
 	{
-		std::fprintf(stdout, "Warning: Trying to normalize a very small vector [%f %f %f]\n", x, y, z);
+		//std::fprintf(stdout, "Warning: Trying to normalize a very small vector [%f %f %f]\n", x, y, z);
 		float xa = fabsf(x);
 		float ya = fabsf(y);
 		float max = fmaxf(xa, fmaxf(ya, fabsf(z)));
@@ -242,38 +242,46 @@ void Vector2f::set(Vector2f* vec)
 	y = vec->y;
 }
 
-float Vector2f::length() {
-	return (float)sqrt((x * x) + (y * y));
+float Vector2f::length()
+{
+	return sqrtf((x * x) + (y * y));
 }
 
-Vector2f Vector2f::normalized() {
+Vector2f Vector2f::normalized()
+{
 	float mag = length();
 
 	return Vector2f(x / mag, y / mag);
 }
 
-void Vector2f::neg() {
+void Vector2f::neg()
+{
 	x = -x;
 	y = -y;
 }
 
-float Vector2f::dot(Vector2f* other) {
+float Vector2f::dot(Vector2f* other)
+{
 	return x * other->getX() + y * other->getY();
 }
 
-Vector2f Vector2f::operator + (const Vector2f &other) {
+Vector2f Vector2f::operator + (const Vector2f &other)
+{
 	return Vector2f(x + other.x, y + other.y);
 }
 
-Vector2f Vector2f::operator - (const Vector2f &other) {
+Vector2f Vector2f::operator - (const Vector2f &other)
+{
 	return Vector2f(x - other.x, y - other.y);
 }
 
-Vector2f Vector2f::operator * (const Vector2f &other) {
+Vector2f Vector2f::operator * (const Vector2f &other)
+{
 	return Vector2f(x * other.x, y * other.y);
 }
 
-Vector2f Vector2f::operator / (const Vector2f &other) {
+Vector2f Vector2f::operator / (const Vector2f &other)
+{
 	return Vector2f(x / other.x, y / other.y);
 }
 
@@ -282,18 +290,20 @@ Vector2f Vector2f::operator * (const float &scale)
 	return Vector2f(x * scale, y * scale);
 }
 
-
-Vector2f::Vector2f() {
+Vector2f::Vector2f()
+{
 	x = 0;
 	y = 0;
 }
 
-Vector2f::Vector2f(float x, float y) {
+Vector2f::Vector2f(float x, float y)
+{
 	this->x = x;
 	this->y = y;
 }
 
-Vector2f::Vector2f(Vector2f* base) {
+Vector2f::Vector2f(Vector2f* base)
+{
 	this->x = base->x;
 	this->y = base->y;
 }
@@ -343,7 +353,8 @@ float Vector4f::lengthSquared()
 	return (x * x) + (y * y) + (z * z) + (w * w);
 }
 
-void Vector4f::normalize() {
+void Vector4f::normalize()
+{
 	float mag = length();
 
 	x = x / mag;
@@ -352,7 +363,8 @@ void Vector4f::normalize() {
 	w = w / mag;
 }
 
-void Vector4f::neg() {
+void Vector4f::neg()
+{
 	x = -x;
 	y = -y;
 	z = -z;
@@ -367,42 +379,50 @@ void Vector4f::scale(float scale)
 	w *= scale;
 }
 
-float Vector4f::dot(Vector4f* other) {
+float Vector4f::dot(Vector4f* other)
+{
 	return x * other->getX() + y * other->getY() + z * other->getZ() + w * other->getW();
 }
 
-Vector4f Vector4f::operator + (const Vector4f &other) {
+Vector4f Vector4f::operator + (const Vector4f &other)
+{
 	return Vector4f(x + other.x, y + other.y, z + other.z, w + other.w);
 }
 
-Vector4f Vector4f::operator - (const Vector4f &other) {
+Vector4f Vector4f::operator - (const Vector4f &other)
+{
 	return Vector4f(x - other.x, y - other.y, z - other.z, w - other.w);
 }
 
-Vector4f Vector4f::operator * (const Vector4f &other) {
+Vector4f Vector4f::operator * (const Vector4f &other)
+{
 	return Vector4f(x * other.x, y * other.y, z * other.z, w * other.w);
 }
 
-Vector4f Vector4f::operator / (const Vector4f &other) {
+Vector4f Vector4f::operator / (const Vector4f &other)
+{
 	return Vector4f(x / other.x, y / other.y, z / other.z, w / other.w);
 }
 
 
-Vector4f::Vector4f() {
+Vector4f::Vector4f()
+{
 	x = 0;
 	y = 0;
 	z = 0;
 	w = 0;
 }
 
-Vector4f::Vector4f(float x, float y, float z, float w) {
+Vector4f::Vector4f(float x, float y, float z, float w)
+{
 	this->x = x;
 	this->y = y;
 	this->z = z;
 	this->w = w;
 }
 
-Vector4f::Vector4f(Vector4f* base) {
+Vector4f::Vector4f(Vector4f* base)
+{
 	this->x = base->x;
 	this->y = base->y;
 	this->z = base->z;

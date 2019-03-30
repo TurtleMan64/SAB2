@@ -104,12 +104,12 @@ std::string Spring::getName()
 	return "spring";
 }
 
-bool Spring::canHomingAttackOn()
+const bool Spring::canHomingAttackOn()
 {
 	return true;
 }
 
-Vector3f Spring::getHomingCenter()
+const Vector3f Spring::getHomingCenter()
 {
 	return Vector3f(getPosition());
 }

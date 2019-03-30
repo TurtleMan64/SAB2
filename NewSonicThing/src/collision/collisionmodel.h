@@ -18,6 +18,8 @@ public:
 
 	QuadTreeNode* quadTreeRoot;
 	int treeMaxDepth;
+    float leafNodeWidth;
+    float leafNodeHeight;
 
 	float maxX;
 	float minX;

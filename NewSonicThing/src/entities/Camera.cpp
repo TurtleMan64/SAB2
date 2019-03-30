@@ -66,11 +66,11 @@ void Camera::refresh()
 	off = target-eye;
 
 	off.normalize();
-	off.scale(0.7f);
+	off.scale(1.7f);
 	fadePosition1.set(eye.x + off.x, eye.y + off.y, eye.z + off.z);
 
 	off.normalize();
-	off.scale(0.55f);
+	off.scale(1.55f);
 	fadePosition2.set(eye.x + off.x, eye.y + off.y, eye.z + off.z);
 
 	extern float dt;

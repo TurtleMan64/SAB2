@@ -1,0 +1,56 @@
+Levels/SkyRail
+1
+SkyRail -100000 -100000 -100000 100000 100000 100000
+Levels/SkyRail
+1
+Collision 7
+1.0 1.0 1.0
+1.0 1.0 1.0
+1.0 1.0 1.0
+1.0 1.0 1.0
+0.9 0.9 .9
+1.0 1.0 1.0
+0.0000000000001 1.5     #0.0001 1.5 cant do fog because of transparency
+90
+-0.011671 -0.325006 0.945640
+1
+2
+res/Audio/BGM/secret_bb_intro.ogg
+res/Audio/BGM/secret_bb_loop.ogg
+0 0 0
+0 0
+-200
+nowater
+0
+
+# Stage Manager
+91 2
+
+# Player
+6 0 648 -596.75
+
+# Rings
+0 0 0 0
+
+# Goal Ring
+69 -1198.973877 -4868.458008 10065.091797
+
+# Rails
+92 res/Models/Levels/SkyRail/Rails/Rail0.txt
+92 res/Models/Levels/SkyRail/Rails/Rail1.txt
+92 res/Models/Levels/SkyRail/Rails/Rail2.txt
+92 res/Models/Levels/SkyRail/Rails/Rail3.txt
+92 res/Models/Levels/SkyRail/Rails/Rail4.txt
+92 res/Models/Levels/SkyRail/Rails/Rail5.txt
+92 res/Models/Levels/SkyRail/Rails/Rail6.txt
+92 res/Models/Levels/SkyRail/Rails/Rail7.txt
+92 res/Models/Levels/SkyRail/Rails/Rail8.txt
+92 res/Models/Levels/SkyRail/Rails/Rail9.txt
+92 res/Models/Levels/SkyRail/Rails/Rail10.txt
+92 res/Models/Levels/SkyRail/Rails/Rail11.txt
+92 res/Models/Levels/SkyRail/Rails/Rail12.txt
+92 res/Models/Levels/SkyRail/Rails/Rail13.txt
+92 res/Models/Levels/SkyRail/Rails/Rail14.txt
+92 res/Models/Levels/SkyRail/Rails/Rail15.txt
+92 res/Models/Levels/SkyRail/Rails/Rail16.txt
+92 res/Models/Levels/SkyRail/Rails/Rail17.txt

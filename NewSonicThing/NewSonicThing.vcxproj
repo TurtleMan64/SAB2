@@ -150,6 +150,7 @@
     <ClCompile Include="src\entities\CollideableObject.cpp" />
     <ClCompile Include="src\entities\Dummy.cpp" />
     <ClCompile Include="src\entities\Entity.cpp" />
+    <ClCompile Include="src\entities\GoalRing.cpp" />
     <ClCompile Include="src\entities\GreenForest\GF_StageManager.cpp" />
     <ClCompile Include="src\entities\JumpRamp.cpp" />
     <ClCompile Include="src\entities\Light.cpp" />
@@ -162,6 +163,7 @@
     <ClCompile Include="src\entities\MetalHarbor\MH_Tank.cpp" />
     <ClCompile Include="src\entities\Rail.cpp" />
     <ClCompile Include="src\entities\Ring.cpp" />
+    <ClCompile Include="src\entities\SkyRail\SR_StageManager.cpp" />
     <ClCompile Include="src\entities\SkySphere.cpp" />
     <ClCompile Include="src\entities\Stage.cpp" />
     <ClCompile Include="src\entities\StagePass2.cpp" />
@@ -189,6 +191,15 @@
     <ClCompile Include="src\guis\GuiShader.cpp" />
     <ClCompile Include="src\guis\GuiTexture.cpp" />
     <ClCompile Include="src\guis\GuiTextureResources.cpp" />
+    <ClCompile Include="src\menu\Button.cpp" />
+    <ClCompile Include="src\menu\Extras.cpp" />
+    <ClCompile Include="src\menu\HUD.cpp" />
+    <ClCompile Include="src\menu\MainMenu.cpp" />
+    <ClCompile Include="src\menu\Menu.cpp" />
+    <ClCompile Include="src\menu\MenuManager.cpp" />
+    <ClCompile Include="src\menu\MissionMenu.cpp" />
+    <ClCompile Include="src\menu\PauseScreen.cpp" />
+    <ClCompile Include="src\menu\Timer.cpp" />
     <ClCompile Include="src\models\RawModel.cpp" />
     <ClCompile Include="src\models\TexturedModel.cpp" />
     <ClCompile Include="src\objLoader\FakeTexture.cpp" />
@@ -225,10 +236,8 @@
     <ClCompile Include="src\toolbox\Input.cpp" />
     <ClCompile Include="src\toolbox\Level.cpp" />
     <ClCompile Include="src\toolbox\LevelLoader.cpp" />
-    <ClCompile Include="src\toolbox\MainMenu.cpp" />
     <ClCompile Include="src\toolbox\maths.cpp" />
     <ClCompile Include="src\toolbox\matrix.cpp" />
-    <ClCompile Include="src\toolbox\PauseScreen.cpp" />
     <ClCompile Include="src\toolbox\Split.cpp" />
     <ClCompile Include="src\toolbox\vector.cpp" />
     <ClCompile Include="src\water\WaterFrameBuffers.cpp" />
@@ -259,6 +268,7 @@
     <ClInclude Include="src\entities\collideableobject.h" />
     <ClInclude Include="src\entities\dummy.h" />
     <ClInclude Include="src\entities\entity.h" />
+    <ClInclude Include="src\entities\goalring.h" />
     <ClInclude Include="src\entities\GreenForest\gfstagemanager.h" />
     <ClInclude Include="src\entities\jumpramp.h" />
     <ClInclude Include="src\entities\light.h" />
@@ -271,6 +281,7 @@
     <ClInclude Include="src\entities\MetalHarbor\mhtank.h" />
     <ClInclude Include="src\entities\rail.h" />
     <ClInclude Include="src\entities\ring.h" />
+    <ClInclude Include="src\entities\SkyRail\srstagemanager.h" />
     <ClInclude Include="src\entities\skysphere.h" />
     <ClInclude Include="src\entities\stage.h" />
     <ClInclude Include="src\entities\stagepass2.h" />
@@ -297,6 +308,15 @@
     <ClInclude Include="src\guis\guishader.h" />
     <ClInclude Include="src\guis\guitexture.h" />
     <ClInclude Include="src\guis\guitextureresources.h" />
+    <ClInclude Include="src\menu\button.h" />
+    <ClInclude Include="src\menu\extras.h" />
+    <ClInclude Include="src\menu\hud.h" />
+    <ClInclude Include="src\menu\mainmenu.h" />
+    <ClInclude Include="src\menu\menu.h" />
+    <ClInclude Include="src\menu\menumanager.h" />
+    <ClInclude Include="src\menu\missionmenu.h" />
+    <ClInclude Include="src\menu\pausescreen.h" />
+    <ClInclude Include="src\menu\timer.h" />
     <ClInclude Include="src\models\models.h" />
     <ClInclude Include="src\objLoader\fakeTexture.h" />
     <ClInclude Include="src\objLoader\objLoader.h" />
@@ -329,10 +349,8 @@
     <ClInclude Include="src\toolbox\input.h" />
     <ClInclude Include="src\toolbox\level.h" />
     <ClInclude Include="src\toolbox\levelloader.h" />
-    <ClInclude Include="src\toolbox\mainmenu.h" />
     <ClInclude Include="src\toolbox\maths.h" />
     <ClInclude Include="src\toolbox\matrix.h" />
-    <ClInclude Include="src\toolbox\pausescreen.h" />
     <ClInclude Include="src\toolbox\split.h" />
     <ClInclude Include="src\toolbox\vector.h" />
     <ClInclude Include="src\water\waterframebuffers.h" />

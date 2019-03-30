@@ -169,12 +169,12 @@ void Body::setBaseOrientation(float newBaseX, float newBaseY, float newBaseZ, fl
 	//baseRotZ = rotZ;
 //}
 
-std::list<TexturedModel*>* Body::getModels()
+inline std::list<TexturedModel*>* Body::getModels()
 {
 	return myModels;
 }
 
-void Body::setModels(std::list<TexturedModel*>* newModels)
+inline void Body::setModels(std::list<TexturedModel*>* newModels)
 {
 	myModels = newModels;
 }

@@ -130,7 +130,7 @@ int loadBinaryModel(std::list<TexturedModel*>* models, std::string filePath, std
 		fread(t, sizeof(float), 3, file);
 
 		Vector3f vertex(t[0], t[1], t[2]);
-		Vertex* newVertex = new Vertex((int)vertices.size(), &vertex); INCR_NEW
+		Vertex* newVertex = new Vertex((int)vertices.size(), &vertex); INCR_NEW("Vertex");
 		vertices.push_back(newVertex);
 	}
 
@@ -210,13 +210,13 @@ int loadBinaryModel(std::list<TexturedModel*>* models, std::string filePath, std
 	//go through rawModelsList and modelTextures to construct and add to the given TexturedModel list
 	for (unsigned int i = 0; i < rawModelsList.size(); i++)
 	{
-		TexturedModel* tm = new TexturedModel(&rawModelsList[i], &modelTextures[i]); INCR_NEW
+		TexturedModel* tm = new TexturedModel(&rawModelsList[i], &modelTextures[i]); INCR_NEW("TexturedModel");
 		models->push_back(tm);
 	}
 
 	for (auto vertex : vertices)
 	{
-		delete vertex; INCR_DEL
+		delete vertex; INCR_DEL("Vertex");
 	}
 
 	modelTextures.clear();
@@ -293,13 +293,13 @@ int loadObjModel(std::list<TexturedModel*>* models, std::string filePath, std::s
 						std::string c3(lineSplit[6]);
 						Vector3f vertex(std::stof(p1, nullptr), std::stof(p2, nullptr), std::stof(p3, nullptr));
 						Vector3f colors(std::stof(c1, nullptr), std::stof(c2, nullptr), std::stof(c3, nullptr));
-						Vertex* newVertex = new Vertex((int)vertices.size(), &vertex, &colors); INCR_NEW
+						Vertex* newVertex = new Vertex((int)vertices.size(), &vertex, &colors); INCR_NEW("Vertex");
 						vertices.push_back(newVertex);
 					}
 					else
 					{
 						Vector3f vertex(std::stof(p1, nullptr), std::stof(p2, nullptr), std::stof(p3, nullptr));
-						Vertex* newVertex = new Vertex((int)vertices.size(), &vertex); INCR_NEW
+						Vertex* newVertex = new Vertex((int)vertices.size(), &vertex); INCR_NEW("Vertex");
 						vertices.push_back(newVertex);
 					}
 				}
@@ -396,13 +396,13 @@ int loadObjModel(std::list<TexturedModel*>* models, std::string filePath, std::s
 	//go through rawModelsList and modelTextures to construct and add to the given TexturedModel list
 	for (unsigned int i = 0; i < rawModelsList.size(); i++)
 	{
-		TexturedModel* tm = new TexturedModel(&rawModelsList[i], &modelTextures[i]); INCR_NEW
+		TexturedModel* tm = new TexturedModel(&rawModelsList[i], &modelTextures[i]); INCR_NEW("TexturedModel");
 		models->push_back(tm);
 	}
 
 	for (auto vertex : vertices)
 	{
-		delete vertex; INCR_DEL
+		delete vertex; INCR_DEL("Vertex");
 	}
 
 	modelTextures.clear();
@@ -588,13 +588,13 @@ int loadObjModelWithMTL(std::list<TexturedModel*>* models, std::string filePath,
 						std::string c3(lineSplit[6]);
 						Vector3f vertex(std::stof(p1, nullptr), std::stof(p2, nullptr), std::stof(p3, nullptr));
 						Vector3f colors(std::stof(c1, nullptr), std::stof(c2, nullptr), std::stof(c3, nullptr));
-						Vertex* newVertex = new Vertex((int)vertices.size(), &vertex, &colors); INCR_NEW
+						Vertex* newVertex = new Vertex((int)vertices.size(), &vertex, &colors); INCR_NEW("Vertex");
 						vertices.push_back(newVertex);
 					}
 					else
 					{
 						Vector3f vertex(std::stof(p1, nullptr), std::stof(p2, nullptr), std::stof(p3, nullptr));
-						Vertex* newVertex = new Vertex((int)vertices.size(), &vertex); INCR_NEW
+						Vertex* newVertex = new Vertex((int)vertices.size(), &vertex); INCR_NEW("Vertex");
 						vertices.push_back(newVertex);
 					}
 				}
@@ -686,13 +686,13 @@ int loadObjModelWithMTL(std::list<TexturedModel*>* models, std::string filePath,
 	//go through rawModelsList and modelTextures to construct and add to the given TexturedModel list
 	for (unsigned int i = 0; i < rawModelsList.size(); i++)
 	{
-		TexturedModel* tm = new TexturedModel(&rawModelsList[i], &modelTextures[i]); INCR_NEW
+		TexturedModel* tm = new TexturedModel(&rawModelsList[i], &modelTextures[i]); INCR_NEW("TexturedModel");
 		models->push_back(tm);
 	}
 
 	for (auto vertex : vertices)
 	{
-		delete vertex; INCR_DEL
+		delete vertex; INCR_DEL("Vertex");
 	}
 
 	modelTextures.clear();
@@ -761,7 +761,7 @@ int loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::string filePa
 		fread(t, sizeof(float), 3, file);
 
 		Vector3f vertex(t[0], t[1], t[2]);
-		Vertex* newVertex = new Vertex((int)vertices.size(), &vertex); INCR_NEW
+		Vertex* newVertex = new Vertex((int)vertices.size(), &vertex); INCR_NEW("Vertex");
 		vertices.push_back(newVertex);
 	}
 
@@ -841,13 +841,13 @@ int loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::string filePa
 	//go through rawModelsList and modelTextures to construct and add to the given TexturedModel list
 	for (unsigned int i = 0; i < rawModelsList.size(); i++)
 	{
-		TexturedModel* tm = new TexturedModel(&rawModelsList[i], &modelTextures[i]); INCR_NEW
+		TexturedModel* tm = new TexturedModel(&rawModelsList[i], &modelTextures[i]); INCR_NEW("TexturedModel");
 		models->push_back(tm);
 	}
 
 	for (auto vertex : vertices)
 	{
-		delete vertex; INCR_DEL
+		delete vertex; INCR_DEL("Vertex");
 	}
 
 	modelTextures.clear();
@@ -923,7 +923,7 @@ void dealWithAlreadyProcessedVertex(
 		}
 		else
 		{
-			Vertex* duplicateVertex = new Vertex((int)vertices->size(), previousVertex->getPosition(), &previousVertex->color); INCR_NEW
+			Vertex* duplicateVertex = new Vertex((int)vertices->size(), previousVertex->getPosition(), &previousVertex->color); INCR_NEW("Vertex");
 
 			duplicateVertex->setTextureIndex(newTextureIndex);
 			duplicateVertex->setNormalIndex(newNormalIndex);
@@ -978,7 +978,7 @@ void removeUnusedVertices(std::vector<Vertex*>* vertices)
 
 CollisionModel* loadCollisionModel(std::string filePath, std::string fileName)
 {
-	CollisionModel* collisionModel = new CollisionModel; INCR_NEW
+	CollisionModel* collisionModel = new CollisionModel; INCR_NEW("CollisionModel");
 
 	std::list<FakeTexture> fakeTextures;
 
@@ -1031,7 +1031,7 @@ CollisionModel* loadCollisionModel(std::string filePath, std::string fileName)
 				Vector3f* vert2 = &vertices[std::stoi(vertex2[0]) - 1];
 				Vector3f* vert3 = &vertices[std::stoi(vertex3[0]) - 1];
 
-				Triangle3D* tri = new Triangle3D(vert1, vert2, vert3, currType, currSound, currParticle); INCR_NEW
+				Triangle3D* tri = new Triangle3D(vert1, vert2, vert3, currType, currSound, currParticle); INCR_NEW("Triangle3D");
 
 				collisionModel->triangles.push_back(tri);
 
@@ -1138,7 +1138,7 @@ CollisionModel* loadCollisionModel(std::string filePath, std::string fileName)
 
 CollisionModel* loadBinaryCollisionModel(std::string filePath, std::string fileName)
 {
-	CollisionModel* collisionModel = new CollisionModel; INCR_NEW
+	CollisionModel* collisionModel = new CollisionModel; INCR_NEW("CollisionModel");
 
 	std::list<FakeTexture> fakeTextures;
 	std::vector<Vector3f> vertices;
@@ -1296,7 +1296,7 @@ CollisionModel* loadBinaryCollisionModel(std::string filePath, std::string fileN
 
 			fread(&f[0], sizeof(int), 3, file);
 
-			Triangle3D* tri = new Triangle3D(&vertices[f[0]-1], &vertices[f[1]-1], &vertices[f[2]-1], currType, currSound, currParticle); INCR_NEW
+			Triangle3D* tri = new Triangle3D(&vertices[f[0]-1], &vertices[f[1]-1], &vertices[f[2]-1], currType, currSound, currParticle); INCR_NEW("Triangle3D");
 
 			collisionModel->triangles.push_back(tri);
 		}

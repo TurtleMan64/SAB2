@@ -37,8 +37,8 @@ Car::Car()
 
 Car::Car(float x, float y, float z)
 {
-	position.set(x, y, z);
-	vel.set(0, 0, 0);
+	position.set(x+0.00001f, y, z+0.00001f);
+	vel.set(0.00001f, 0.00001f, 0.00001f);
 	relativeUp.set(0, 1, 0);
 	relativeUpSmooth.set(0, 1, 0);
 	relativeUpAnim.set(0, 1, 0);
@@ -46,7 +46,7 @@ Car::Car(float x, float y, float z)
 	camDir.set(0, 0, -1);
 	camDirSmooth.set(0, 0, -1);
 
-	maniaSonicModel = new ManiaSonicModel; INCR_NEW
+	maniaSonicModel = new ManiaSonicModel; INCR_NEW("Entity");
 	Main_addEntity(maniaSonicModel);
 	maniaSonicModel->setVisible(true);
 
@@ -123,6 +123,25 @@ void Car::step()
 		isJumping = false;
 		justHomingAttacked = false;
 
+		if (inputAction2 && !inputAction2Previous)
+		{
+			if (isBall)
+			{
+				isBall = false;
+				spindashReleaseTimer = spindashReleaseTimerMax;
+				spindashRestartDelay = spindashRestartDelayMax;
+			}
+			else
+			{
+				float speed = vel.lengthSquared();
+				if (speed > autoUnrollThreshold*autoUnrollThreshold)
+				{
+					AudioPlayer::play(41, getPosition()); //roll
+					isBall = true;
+				}
+			}
+		}
+
 		if (isBall)
 		{
 			float speed = vel.lengthSquared();
@@ -151,15 +170,14 @@ void Car::step()
 
 		if (spindashRestartDelay > 0)
 		{
-			if ((inputAction  && !inputActionPrevious) || 
-				(inputAction2 && !inputAction2Previous))
+			if (inputAction  && !inputActionPrevious)
 			{
 				bufferedSpindashInput = true;
 			}
 		}
 
-		if ((((inputAction && !inputActionPrevious) || (inputAction2 && !inputAction2Previous)) && canStartSpindash) || 
-			(bufferedSpindashInput && (inputAction || inputAction2) && canStartSpindash))
+		if (((inputAction && !inputActionPrevious) && canStartSpindash) || 
+			(bufferedSpindashInput && (inputAction) && canStartSpindash))
 		{
 			if (!isSpindashing)
 			{
@@ -168,7 +186,7 @@ void Car::step()
 			isSpindashing = true;
 		}
 
-		if (!inputAction && !inputAction2)
+		if (!inputAction)
 		{
 			isSpindashing = false;
 			bufferedSpindashInput = false;
@@ -178,7 +196,7 @@ void Car::step()
 		{
 			if (spindashTimer == 0)
 			{
-				AudioPlayer::play(14, getPosition());
+				AudioPlayer::play(39, getPosition()); //peel charge
 			}
 
 			spindashTimer = std::fminf(spindashTimer + dt, spindashTimerMax);
@@ -214,8 +232,7 @@ void Car::step()
 			storedSpindashSpeed = 0;
 		}
 
-		if (((inputAction  && !inputActionPrevious) ||
-			 (inputAction2 && !inputAction2Previous)))
+		if (inputAction  && !inputActionPrevious)
 		{
 			if (isBall)
 			{
@@ -254,9 +271,16 @@ void Car::step()
 	}
 
 	//Grinding
-	if (onGround)
+	if (isGrinding)
 	{
-		isGrinding = false;
+		onGround = false;
+		isJumping = false;
+		isBouncing = false;
+		isBall = false;
+		isLightdashing = false;
+		isSkidding = false;
+		isSpindashing = false;
+		isStomping = false;
 	}
 
 	if (onGround)
@@ -267,42 +291,6 @@ void Car::step()
 	{
 		moveMeAir();
 	}
-
-	//Add to velocity based on the slope you are on
-	if (onGround)
-	{
-		//std::fprintf(stdout, "relativeU.y = %f\n", relativeUp.y);
-		if (relativeUp.y < 0.99f)
-		{
-			if (!isSpindashing || vel.lengthSquared() > spindashPowerfulFrictionThreshold*spindashPowerfulFrictionThreshold) //if you are stopped and charging a spindash, dont move sonic
-			{
-				if (isBall)
-				{
-					//version 2
-					float slopePower = slopeBallAccel; //TODO: this might not work perfectly with arbitrary framerate
-					Vector3f slopeVel(0, -slopePower*dt, 0); //slopeAccel
-					slopeVel = Maths::projectOntoPlane(&slopeVel, &relativeUp);
-					vel = vel + slopeVel;
-
-					//version 1
-					//float slopePower = slopeBallAccel/(vel.length()+1); //TODO: this might not work perfectly with arbitrary framerate
-					//Vector3f slopeVel(0, -slopePower*dt, 0); //slopeAccel
-					//slopeVel = Maths::projectOntoPlane(&slopeVel, &relativeUp);
-					//vel = vel + slopeVel;
-				}
-				else
-				{
-					float slopePower = slopeRunAccel/(vel.length()+1); //TODO: this might not work perfectly with arbitrary framerate
-					//float slopePower = 300.0f; //80
-					Vector3f slopeVel(0, -slopePower*dt, 0); //slopeAccel
-					slopeVel = Maths::projectOntoPlane(&slopeVel, &relativeUp);
-					vel = vel + slopeVel;
-				}
-			}
-		}
-	}
-
-
 
 	if (!isGrinding)
 	{
@@ -348,13 +336,45 @@ void Car::step()
 
 			//vertical check - rotate down if too high or too low
 			float dot = camDir.dot(&relativeUp);
+            //TODO make sure these dont overshoot
+            //maybe switch the to use the approach function?
 			if (dot < -0.325f)
 			{
-				camDir = Maths::rotatePoint(&camDir, &perpen, -((dot+0.325f)*12)*dt);
+                float tryingToRotate = -(((dot+0.325f)*15)*dt);
+                float maxAngle = (Maths::angleBetweenVectors(&camDir, &relativeUp));
+                //rotate whichever is "less" rotation
+                if (fabsf(tryingToRotate) < fabsf(maxAngle))
+                {
+                    camDir = Maths::rotatePoint(&camDir, &perpen, tryingToRotate);
+                }
+                else
+                {
+                    camDir = Maths::rotatePoint(&camDir, &perpen, maxAngle);
+                }
+
+				//camDir = Maths::rotatePoint(&camDir, &perpen, -((dot+0.325f)*12)*dt);
 			}
 			else if (dot > -0.2f)
 			{
-				camDir = Maths::rotatePoint(&camDir, &perpen, -((dot+0.2f)*20)*dt);
+                float tryingToRotate = -(((dot+0.2f)*40)*dt);
+                float maxAngle = (Maths::angleBetweenVectors(&camDir, &relativeUp));
+                //rotate whichever is "less" rotation
+                if (fabsf(tryingToRotate) < fabsf(maxAngle))
+                {
+                    camDir = Maths::rotatePoint(&camDir, &perpen, tryingToRotate);
+                }
+                else
+                {
+                    camDir = Maths::rotatePoint(&camDir, &perpen, maxAngle);
+                }
+                //float angleToRotate = -Maths::sign(dot)*fminf(tryingToRotate, maxAngle);
+				//camDir = Maths::rotatePoint(&camDir, &perpen, angleToRotate);
+
+                //std::fprintf(stdout, "tryingToRotate = %f\n", tryingToRotate);
+                //std::fprintf(stdout, "maxAngle       = %f\n", maxAngle);
+                //std::fprintf(stdout, "angleToRotate  = %f\n", angleToRotate);
+                //std::fprintf(stdout, "works          = %f\n", -((dot+0.2f)*40)*dt);
+                //std::fprintf(stdout, "\n");
 			}
 		}
 		else
@@ -771,16 +791,20 @@ void Car::step()
 	up.set(newUp[0], newUp[1], newUp[2]);
 
 	Vector3f camDelta = eye - target;
-	camDelta.setLength(10);
+	camDelta.setLength(5); //this is what causes metal harbor to go through cam at beginning
 	Vector3f camStart = target + camDelta;
+	CollisionChecker::debug = Input::inputs.INPUT_ACTION4;
+	//std::fprintf(stdout, "camStart = (%f, %f, %f)  \ncamEnd = (%f, %f, %f)\n", camStart.x, camStart.y, camStart.z, eye.x, eye.y, eye.z);
 	if (CollisionChecker::checkCollision(camStart.x, camStart.y, camStart.z, eye.x, eye.y, eye.z))
 	{
+        //std::fprintf(stdout, "there was a collision");
 		Vector3f delta = eye - target;
-		delta.setLength(2);
+		delta.setLength(3);
 		Vector3f newPos(CollisionChecker::getCollidePosition());
 		newPos = newPos - delta;
 		eye.set(&newPos);
 	}
+	CollisionChecker::debug = false;
 
 	Global::gameCamera->setViewMatrixValues(&eye, &target, &up);
 
@@ -806,9 +830,10 @@ void Car::spindash()
 	Vector3f newDir = Maths::projectOntoPlane(&spindashDirection, &relativeUp);
 	newDir.setLength(storedSpindashSpeed);
 	vel.set(&newDir);
-	std::fprintf(stdout, "spindash at %f speed\n", storedSpindashSpeed);
-	isBall = true;
-	AudioPlayer::play(15, getPosition());
+	//std::fprintf(stdout, "spindash at %f speed\n", storedSpindashSpeed);
+	//isBall = true;
+	isBall = false; //geeks idea change
+	AudioPlayer::play(40, getPosition()); //peel release
 	storedSpindashSpeed = 0;
 }
 
@@ -843,8 +868,13 @@ void Car::moveMeGround()
 	dirForward.setLength(stickRadius);
 	Vector3f velToAdd = Maths::rotatePoint(&dirForward, &relativeUp, stickAngle);
 
+	Vector3f velBefore(&vel);
+	bool skidded = false;
+	bool heldUp = false;
+
 	if (stickRadius > 0.1f)
 	{
+		heldUp = true;
 		if (isBall)
 		{
 			Vector3f fr(0, -0.001f, 0);
@@ -871,6 +901,7 @@ void Car::moveMeGround()
 			if (ang > Maths::toRadians(135.0f) && vel.length() > 30) //skid
 			{
 				vel = Maths::applyDrag(&vel, skidPower, dt);
+				skidded = true;
 			}
 			else
 			{
@@ -904,6 +935,58 @@ void Car::moveMeGround()
 				float frictionPower = groundNeutralFriction*(1 - fr.length());
 				vel = Maths::applyDrag(&vel, -frictionPower, dt); //Slow vel down due to friction
 			}
+		}
+	}
+
+	//Add to velocity based on the slope you are on
+	//std::fprintf(stdout, "relativeU.y = %f\n", relativeUp.y);
+	if (relativeUp.y < 0.99f)
+	{
+		if (!isSpindashing || vel.lengthSquared() > spindashPowerfulFrictionThreshold*spindashPowerfulFrictionThreshold) //if you are stopped and charging a spindash, dont move sonic
+		{
+			if (isBall)
+			{
+				//version 2
+				float slopePower = slopeBallAccel; //TODO: this might not work perfectly with arbitrary framerate
+				Vector3f slopeVel(0, -slopePower*dt, 0); //slopeAccel
+				slopeVel = Maths::projectOntoPlane(&slopeVel, &relativeUp);
+				vel = vel + slopeVel;
+
+				//version 1
+				//float slopePower = slopeBallAccel/(vel.length()+1); //TODO: this might not work perfectly with arbitrary framerate
+				//Vector3f slopeVel(0, -slopePower*dt, 0); //slopeAccel
+				//slopeVel = Maths::projectOntoPlane(&slopeVel, &relativeUp);
+				//vel = vel + slopeVel;
+			}
+			else
+			{
+				float slopePower = slopeRunAccel/(vel.length()+1); //TODO: this might not work perfectly with arbitrary framerate
+				//float slopePower = 300.0f; //80
+				Vector3f slopeVel(0, -slopePower*dt, 0); //slopeAccel
+				slopeVel = Maths::projectOntoPlane(&slopeVel, &relativeUp);
+				vel = vel + slopeVel;
+			}
+		}
+	}
+
+	//part 1 of geeks idea
+	if (heldUp && !skidded && !isBall)
+	{
+		//dont slow down if you holding out on stick and youre running
+		if (velBefore.lengthSquared() > vel.lengthSquared())
+		{
+			vel.setLength(velBefore.length());
+		}
+	}
+
+	//extension of geeks idea
+	if (isBall)
+	{
+		//dont let ball speed surpass some max threshold
+		//const float maxBallthreshold = 800.0f;
+		if (velBefore.lengthSquared() > maxBallSpeed*maxBallSpeed)
+		{
+			vel.setLength(velBefore.length());
 		}
 	}
 }
@@ -1157,7 +1240,7 @@ void Car::animate()
 	}
 	else if (isGrinding)
 	{
-		maniaSonicModel->setOrientation(getX(), getY(), getZ(), diffGround, yawAngleGround, pitchAngleGround, 0);
+		maniaSonicModel->setOrientation(getX()-nXAir, getY()-nYAir, getZ()-nZAir, diffGround, yawAngleGround, pitchAngleGround, 0);
 		maniaSonicModel->animate(26, 0);
 	}
 	else if (isSpindashing)
@@ -1234,7 +1317,7 @@ void Car::setInputs()
 	inputActionPrevious  = Input::inputs.INPUT_PREVIOUS_ACTION2;
 	inputAction2Previous = Input::inputs.INPUT_PREVIOUS_ACTION3;
 
-	if (canMoveTimer > 0.0f)
+	if (canMoveTimer > 0.0f || Global::finishStageTimer >= 0.0f)
 	{
 		inputJump    = false;
 		inputAction  = false;
@@ -1301,7 +1384,7 @@ void Car::deleteStaticModels()
 	//}
 }
 
-bool Car::isVehicle()
+const bool Car::isVehicle()
 {
 	return true;
 }
@@ -1359,4 +1442,15 @@ void Car::setVelocityMovesPlayer(bool newVelocityMovesPlayer)
 void Car::setOnPulley(bool newOnPulley)
 {
 	onPulley = newOnPulley;
+}
+
+Vector3f* Car::getCameraDirection()
+{
+    return &camDir;
+}
+
+void Car::setCameraDirection(Vector3f* newDirection)
+{
+    camDir.set(newDirection);
+    camDirSmooth.set(newDirection);
 }

@@ -28,7 +28,7 @@ Particle::Particle(ParticleTexture* texture, Vector3f* position, float lifeLengt
 	this->onlyRendersOnce = onlyRendersOnce;
 	if (Global::renderParticles)
 	{
-		ParticleMaster::addParticle(this); INCR_NEW
+		ParticleMaster::addParticle(this); INCR_NEW("Particle");
 	}
 	else
 	{
@@ -56,7 +56,7 @@ Particle::Particle(ParticleTexture* texture, Vector3f* position, Vector3f* veloc
 	this->onlyRendersOnce = onlyRendersOnce;
 	if (Global::renderParticles)
 	{
-		ParticleMaster::addParticle(this); INCR_NEW
+		ParticleMaster::addParticle(this); INCR_NEW("Particle");
 	}
 	else
 	{
@@ -92,7 +92,7 @@ Particle::Particle(ParticleTexture* texture, Vector3f* position, Vector3f* veloc
 	this->onlyRendersOnce = onlyRendersOnce;
 	if (Global::renderParticles)
 	{
-		ParticleMaster::addParticle(this); INCR_NEW
+		ParticleMaster::addParticle(this); INCR_NEW("Particle");
 	}
 	else
 	{
@@ -129,7 +129,7 @@ Particle::Particle(ParticleTexture* texture, Vector3f* position, Vector3f* veloc
 	this->onlyRendersOnce = onlyRendersOnce;
 	if (Global::renderParticles)
 	{
-		ParticleMaster::addParticle(this); INCR_NEW
+		ParticleMaster::addParticle(this); INCR_NEW("Particle");
 	}
 	else
 	{

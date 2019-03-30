@@ -35,8 +35,6 @@ public:
 
 	static void deleteStaticModels();
 
-	//std::string getName();
-
-	bool canLightdashOn();
+	const inline bool canLightdashOn();
 };
 #endif

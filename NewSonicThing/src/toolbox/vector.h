@@ -12,16 +12,16 @@ public:
 	float z;
 
 	Vector3f();
-	Vector3f(float, float, float);
-	Vector3f(Vector3f*);
+	Vector3f(float x, float y, float z);
+	Vector3f(Vector3f* other);
 
 	float getX();
 	float getY();
 	float getZ();
 
-	void set(float, float, float);
+	void set(float x, float y, float z);
 
-	void set(Vector3f*);
+	void set(Vector3f* other);
 
 	float length();
 
@@ -33,13 +33,13 @@ public:
 
 	void neg();
 
-	float dot(Vector3f*);
+	float dot(Vector3f* other);
 
 	void scale(float scale);
 
 	Vector3f scaleCopy(float scale);
 
-	Vector3f cross(Vector3f*);
+	Vector3f cross(Vector3f* other);
 
 	Vector3f operator + (const Vector3f &other);
 
@@ -57,15 +57,15 @@ public:
 	float y;
 
 	Vector2f();
-	Vector2f(float, float);
-	Vector2f(Vector2f*);
+	Vector2f(float x, float y);
+	Vector2f(Vector2f* other);
 
 	float getX();
 	float getY();
 
-	void set(float, float);
+	void set(float x, float y);
 
-	void set(Vector2f* vec);
+	void set(Vector2f* other);
 
 	float length();
 
@@ -73,7 +73,7 @@ public:
 
 	void neg();
 
-	float dot(Vector2f*);
+	float dot(Vector2f* other);
 
 	Vector2f operator + (const Vector2f &other);
 
@@ -96,7 +96,7 @@ public:
 
 	Vector4f();
 	Vector4f(float x, float y, float z, float w);
-	Vector4f(Vector4f*);
+	Vector4f(Vector4f* other);
 
 	float getX();
 	float getY();

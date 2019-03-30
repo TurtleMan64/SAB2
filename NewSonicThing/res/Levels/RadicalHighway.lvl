@@ -11,8 +11,8 @@ Collision 9
 0.0 0.0 0.0 #0.03 0.02 0.0
 0.0 0.0 0.0
 0.00000001 2.0
-112.0
-0 18
+90.0
+1 0 0
 1
 2
 res/Audio/BGM/r_hwy_intro.ogg
@@ -25,7 +25,7 @@ nowater
 
 
 # Player
-6 -9963 -7000 -14843
+6 0 0 0
 0 0 0 0
 
 #92 res/Models/Levels/RadicalHighway/Rails/Rail0.txt

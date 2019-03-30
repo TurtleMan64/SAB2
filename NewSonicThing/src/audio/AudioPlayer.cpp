@@ -63,9 +63,9 @@ void AudioPlayer::loadSoundEffects()
 	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/MenuBleep.ogg"));            //36
 	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/MenuWoosh.ogg"));            //37
 	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/MenuAccept.ogg"));           //38
-	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Snowhead/BabyGoron_Cry1.ogg"));      //39
-	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Snowhead/BabyGoron_Cry2.ogg"));      //40
-	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Snowhead/BabyGoron_Cry3.ogg"));      //41
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Player/PeelCharge.ogg"));            //39
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Player/PeelRelease.ogg"));           //40
+	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Player/Roll.ogg"));                  //41
 	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/Snowhead/BabyGoron_Doze.ogg"));      //42
 	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/Dig.ogg"));                  //43
 	AudioPlayer::buffersSE.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/RankShow.ogg"));             //44
@@ -94,7 +94,7 @@ void AudioPlayer::deleteSources()
 	for (Source* src : AudioPlayer::sources)
 	{
 		src->deleteMe();
-		delete src; INCR_DEL
+		delete src; INCR_DEL("Source");
 	}
 	AudioPlayer::sources.clear();
 	AudioPlayer::sources.shrink_to_fit();
@@ -126,22 +126,22 @@ void AudioPlayer::deleteBuffersBGM()
 void AudioPlayer::createSources()
 {
 	//First 14 sources are for sound effects
-	sources.push_back(new Source(1, 100, 600)); INCR_NEW
-	sources.push_back(new Source(1, 100, 600));	INCR_NEW
-	sources.push_back(new Source(1, 100, 600));	INCR_NEW
-	sources.push_back(new Source(1, 100, 600));	INCR_NEW
-	sources.push_back(new Source(1, 100, 600));	INCR_NEW
-	sources.push_back(new Source(1, 100, 600));	INCR_NEW
-	sources.push_back(new Source(1, 100, 600));	INCR_NEW
-	sources.push_back(new Source(1, 100, 600));	INCR_NEW
-	sources.push_back(new Source(1, 100, 600));	INCR_NEW
-	sources.push_back(new Source(1, 100, 600));	INCR_NEW
-	sources.push_back(new Source(1, 100, 600));	INCR_NEW
-	sources.push_back(new Source(1, 100, 600));	INCR_NEW
-	sources.push_back(new Source(1, 100, 600));	INCR_NEW
-	sources.push_back(new Source(1, 100, 600));	INCR_NEW
+	sources.push_back(new Source(1, 100, 600)); INCR_NEW("Source");
+	sources.push_back(new Source(1, 100, 600));	INCR_NEW("Source");
+	sources.push_back(new Source(1, 100, 600));	INCR_NEW("Source");
+	sources.push_back(new Source(1, 100, 600));	INCR_NEW("Source");
+	sources.push_back(new Source(1, 100, 600));	INCR_NEW("Source");
+	sources.push_back(new Source(1, 100, 600));	INCR_NEW("Source");
+	sources.push_back(new Source(1, 100, 600));	INCR_NEW("Source");
+	sources.push_back(new Source(1, 100, 600));	INCR_NEW("Source");
+	sources.push_back(new Source(1, 100, 600));	INCR_NEW("Source");
+	sources.push_back(new Source(1, 100, 600));	INCR_NEW("Source");
+	sources.push_back(new Source(1, 100, 600));	INCR_NEW("Source");
+	sources.push_back(new Source(1, 100, 600));	INCR_NEW("Source");
+	sources.push_back(new Source(1, 100, 600));	INCR_NEW("Source");
+	sources.push_back(new Source(1, 100, 600));	INCR_NEW("Source");
 	//Last source is dedicated to background music
-	sources.push_back(new Source(0, 0, 0));     INCR_NEW
+	sources.push_back(new Source(0, 0, 0));     INCR_NEW("Source");
 }
 
 //with position

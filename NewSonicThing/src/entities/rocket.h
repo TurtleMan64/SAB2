@@ -29,7 +29,7 @@ private:
 	Vector3f pointPositionEnd;
 
 	//The speed the rocket moves at
-	const float ROCKET_SPEED = 900;
+	const float ROCKET_SPEED = 450;//900;
 	//True only when the player is using the Rocket
 	bool isActive;
 	//Whether the Rocket can be used or not

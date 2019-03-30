@@ -25,55 +25,55 @@ protected:
 
 public:
 	Entity();
-	Entity(Vector3f*, float, float, float, float);
+	Entity(Vector3f* initialPosition, float rotX, float rotY, float rotZ, float scale);
 	virtual ~Entity();
 
 	virtual void step();
 
-	virtual bool isVehicle();
+	virtual const bool isVehicle();
 
-	virtual bool isEmeraldPiece();
+	virtual const bool isEmeraldPiece();
 
-	virtual bool isGoalTrigger();
+	virtual const bool isGoalTrigger();
 
-	virtual bool isEnemy();
+	virtual const bool isEnemy();
 
-	void increasePosition(float, float, float);
+	void increasePosition(float dx, float dy, float dz);
 
-	void increaseRotation(float, float, float);
+	void increaseRotation(float dx, float dy, float dz);
 
 	virtual std::list<TexturedModel*>* getModels();
 
 	Vector3f* getPosition();
-	void setPosition(Vector3f*);
+	void setPosition(Vector3f* newPosition);
 	void setPosition(float newX, float newY, float newZ);
 
 	Vector3f* getBaseColour();
 	void setBaseColour(float red, float green, float blue);
 
-	float getRotX();
-	void setRotX(float);
+	const float getRotX();
+	void setRotX(float newRotX);
 
-	float getRotY();
-	void setRotY(float);
+	const float getRotY();
+	void setRotY(float newRotY);
 
-	float getRotZ();
-	void setRotZ(float);
+	const float getRotZ();
+	void setRotZ(float newRotZ);
 
-	float getRotSpin();
-	void setRotSpin(float);
+	const float getRotSpin();
+	void setRotSpin(float newRotSpin);
 
-	float getScale();
-	void setScale(float);
+	const float getScale();
+	void setScale(float newScale);
 
-	bool getVisible();
-	void setVisible(bool);
+	const bool getVisible();
+	void setVisible(bool newVisible);
 
-	float getX();
+	const float getX();
 
-	float getY();
+	const float getY();
 
-	float getZ();
+	const float getZ();
 
 	void setX(float newX);
 
@@ -89,15 +89,13 @@ public:
 
 	void updateTransformationMatrixSADX();
 
-	virtual std::string getName();
+	virtual const bool canLightdashOn();
 
-	virtual bool canLightdashOn();
+	virtual const bool canHomingAttackOn();
 
-	virtual bool canHomingAttackOn();
-
-	virtual Vector3f getHomingCenter();
+	virtual const Vector3f getHomingCenter();
 	
-	virtual bool isPoint();
+	virtual const bool isPoint();
 
 	virtual void die();
 };

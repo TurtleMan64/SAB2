@@ -11,7 +11,7 @@
 FontType::FontType(int textureAtlas, std::string fontFilename)
 {
 	this->textureAtlas = textureAtlas;
-	this->loader = new TextMeshCreator(fontFilename); INCR_NEW
+	this->loader = new TextMeshCreator(fontFilename); INCR_NEW("TextMeshCreator");
 }
 
 int FontType::getTextureAtlas()

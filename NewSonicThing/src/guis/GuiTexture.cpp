@@ -3,6 +3,11 @@
 #include <glad/glad.h>
 #include "../toolbox/vector.h"
 
+GuiTexture::GuiTexture()
+{
+	
+}
+
 GuiTexture::GuiTexture(GLuint textureID, Vector2f* position, Vector2f* size, float rotation)
 {
 	this->textureID = textureID;

@@ -213,6 +213,10 @@ float Maths::compareTwoAngles(float origAng1, float origAng2)
 
 int Maths::sign(float value)
 {
+    //int v = *(int*)&value; //get bits of value casted as an int
+
+    //return 1 - 2*((v>>31) & 0x01);
+
 	if (value > 0)
 	{
 		return 1;
@@ -248,6 +252,17 @@ Vector3f Maths::applyDrag(Vector3f* velocity, float drag, float deltaTime)
 	}
 	float newLength = length*powf(2.718281828459f, drag*deltaTime);
 	return velocity->scaleCopy(newLength/length);
+}
+
+float Maths::applyDrag(float velocity, float drag, float deltaTime)
+{
+	float length = fabsf(velocity);
+	if (length < 0.0001f)
+	{
+		return velocity;
+	}
+	float newLength = length*powf(2.718281828459f, drag*deltaTime);
+	return velocity*(newLength/length);
 }
 
 //angle in radians
@@ -352,7 +367,7 @@ void Maths::rotatePoint(float result[],
 {
 	if (sqrtf(u*u + v*v + w*w) < 0.000000001f)
 	{
-		std::fprintf(stdout, "Warning: trying to rotate by a very small axis [%f %f %f]\n", u, v, w);
+		//std::fprintf(stdout, "Warning: trying to rotate by a very small axis [%f %f %f]\n", u, v, w);
 		result[0] = x;
 		result[1] = y;
 		result[2] = z;
@@ -412,7 +427,7 @@ Vector3f Maths::interpolateVector(Vector3f* A, Vector3f* B, float percent)
 
 	if (mag < 0.0000001f)
 	{
-		std::fprintf(stdout, "Warning: Trying to interpolate between small vectors\n");
+		//std::fprintf(stdout, "Warning: Trying to interpolate between small vectors\n");
 		return Vector3f(A);
 	}
 

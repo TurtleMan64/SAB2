@@ -25,7 +25,7 @@ void Limb::step()
 
 void Limb::update(float time)
 {
-	time = (float)fmax(time, 0);
+	time = fmaxf(time, 0);
 	bool inRange = false;
 	Keyframe* key1 = nullptr;
 	Keyframe* key2 = nullptr;
@@ -110,7 +110,7 @@ void Limb::update(float time)
 		float t = (time - key1->time) / (key2->time - key1->time);
 
 		//sinusoidal interpolation
-		t = 1 - ((float)(cos(Maths::PI*t) + 1)*0.5f);
+		t = 1 - ((cosf(Maths::PI*t) + 1)*0.5f);
 
 		float ratio = t;
 

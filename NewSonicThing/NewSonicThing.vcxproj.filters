@@ -82,6 +82,12 @@
     <Filter Include="Source Files\entities\MetalHarbor">
       <UniqueIdentifier>{4de1601d-fcd3-4920-9716-4b9d93390886}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\menu">
+      <UniqueIdentifier>{f370deba-d3e5-4af5-96ca-908bb8ec7f5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entities\SkyRail">
+      <UniqueIdentifier>{a3414b4d-e85a-470d-86d5-144acce47658}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\glad.c">
@@ -342,16 +348,10 @@
     <ClCompile Include="src\toolbox\LevelLoader.cpp">
       <Filter>Source Files\toolbox</Filter>
     </ClCompile>
-    <ClCompile Include="src\toolbox\MainMenu.cpp">
-      <Filter>Source Files\toolbox</Filter>
-    </ClCompile>
     <ClCompile Include="src\toolbox\maths.cpp">
       <Filter>Source Files\toolbox</Filter>
     </ClCompile>
     <ClCompile Include="src\toolbox\matrix.cpp">
-      <Filter>Source Files\toolbox</Filter>
-    </ClCompile>
-    <ClCompile Include="src\toolbox\PauseScreen.cpp">
       <Filter>Source Files\toolbox</Filter>
     </ClCompile>
     <ClCompile Include="src\toolbox\Split.cpp">
@@ -404,6 +404,39 @@
     </ClCompile>
     <ClCompile Include="src\entities\MetalHarbor\MH_Tank.cpp">
       <Filter>Source Files\entities\MetalHarbor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\menu\Button.cpp">
+      <Filter>Source Files\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\menu\Extras.cpp">
+      <Filter>Source Files\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\menu\HUD.cpp">
+      <Filter>Source Files\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\menu\MainMenu.cpp">
+      <Filter>Source Files\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\menu\Menu.cpp">
+      <Filter>Source Files\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\menu\MenuManager.cpp">
+      <Filter>Source Files\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\menu\MissionMenu.cpp">
+      <Filter>Source Files\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\menu\PauseScreen.cpp">
+      <Filter>Source Files\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\menu\Timer.cpp">
+      <Filter>Source Files\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\SkyRail\SR_StageManager.cpp">
+      <Filter>Source Files\entities\SkyRail</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\GoalRing.cpp">
+      <Filter>Source Files\entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -650,16 +683,10 @@
     <ClInclude Include="src\toolbox\levelloader.h">
       <Filter>Source Files\toolbox</Filter>
     </ClInclude>
-    <ClInclude Include="src\toolbox\mainmenu.h">
-      <Filter>Source Files\toolbox</Filter>
-    </ClInclude>
     <ClInclude Include="src\toolbox\maths.h">
       <Filter>Source Files\toolbox</Filter>
     </ClInclude>
     <ClInclude Include="src\toolbox\matrix.h">
-      <Filter>Source Files\toolbox</Filter>
-    </ClInclude>
-    <ClInclude Include="src\toolbox\pausescreen.h">
       <Filter>Source Files\toolbox</Filter>
     </ClInclude>
     <ClInclude Include="src\toolbox\split.h">
@@ -712,6 +739,39 @@
     </ClInclude>
     <ClInclude Include="src\entities\MetalHarbor\mhtank.h">
       <Filter>Source Files\entities\MetalHarbor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\menu\button.h">
+      <Filter>Source Files\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\menu\extras.h">
+      <Filter>Source Files\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\menu\hud.h">
+      <Filter>Source Files\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\menu\mainmenu.h">
+      <Filter>Source Files\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\menu\menu.h">
+      <Filter>Source Files\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\menu\menumanager.h">
+      <Filter>Source Files\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\menu\missionmenu.h">
+      <Filter>Source Files\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\menu\pausescreen.h">
+      <Filter>Source Files\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\menu\timer.h">
+      <Filter>Source Files\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\SkyRail\srstagemanager.h">
+      <Filter>Source Files\entities\SkyRail</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\goalring.h">
+      <Filter>Source Files\entities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

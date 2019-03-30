@@ -6,7 +6,7 @@
 
 ImageRenderer::ImageRenderer(int width, int height)
 {
-	fbo = new Fbo(width, height, Fbo::NONE); INCR_NEW
+	fbo = new Fbo(width, height, Fbo::NONE); INCR_NEW("Fbo");
 }
 
 ImageRenderer::ImageRenderer()
@@ -38,6 +38,6 @@ void ImageRenderer::cleanUp()
 	if (fbo != nullptr) 
 	{
 		fbo->cleanUp();
-		delete fbo; INCR_DEL
+		delete fbo; INCR_DEL("Fbo");
 	}
 }

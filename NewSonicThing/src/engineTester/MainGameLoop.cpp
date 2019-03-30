@@ -45,7 +45,6 @@
 #include "../fontRendering/textmaster.h"
 #include "../fontMeshCreator/fonttype.h"
 #include "../fontMeshCreator/guitext.h"
-#include "../toolbox/pausescreen.h"
 #include "../guis/guimanager.h"
 #include "../audio/audiomaster.h"
 #include "../audio/audioplayer.h"
@@ -58,7 +57,6 @@
 #include "../postProcessing/fbo.h"
 #include "../guis/guirenderer.h"
 #include "../guis/guitextureresources.h"
-#include "../toolbox/mainmenu.h"
 #include "../toolbox/level.h"
 #include "../guis/guitexture.h"
 #include "../particles/particle.h"
@@ -71,7 +69,9 @@
 #include "../water/waterrenderer.h"
 #include "../water/watertile.h"
 #include "../toolbox/getline.h"
-
+#include "../menu/menumanager.h"
+#include "../menu/mainmenu.h"
+#include "../menu/timer.h"
 #ifdef _WIN32
 #include <windows.h>
 #include <tchar.h>
@@ -186,6 +186,7 @@ bool Global::gameIsArcadeMode = false;
 std::vector<Level> Global::gameLevelData;
 std::unordered_map<std::string, std::string> Global::gameSaveData;
 bool Global::stageUsesWater = true;
+FontType* Global::fontVipnagorgialla = nullptr;
 
 std::list<Checkpoint*> Global::gameCheckpointList;
 int Global::gameCheckpointLast;
@@ -201,6 +202,10 @@ int    Global::checkpointTimeCen  = 0;
 int    Global::checkpointTimeSec  = 0;
 int    Global::checkpointTimeMin  = 0;
 
+GUIText* Global::titleCardLevelName          = nullptr;
+GUIText* Global::titleCardMission            = nullptr;
+GUIText* Global::titleCardMissionDescription = nullptr;
+
 bool Global::unlockedSonicDoll = true;
 bool Global::unlockedMechaSonic = true;
 bool Global::unlockedDage4 = true;
@@ -214,6 +219,9 @@ void increaseProcessPriority();
 void doListenThread();
 
 void listen();
+
+MenuManager Global::menuManager = MenuManager();
+Timer* Global::mainHudTimer = nullptr;
 
 int main()
 {
@@ -246,15 +254,15 @@ int main()
 
 	LevelLoader::loadLevelData();
 
-	PauseScreen::init();
-
 	AudioMaster::init();
+
+	Global::fontVipnagorgialla = new FontType(Loader::loadTexture("res/Fonts/vipnagorgialla.png"), "res/Fonts/vipnagorgialla.fnt"); INCR_NEW("FontType");
 
 	TextMaster::init();
 
 	GuiManager::init();
 
-	MainMenu::init();
+	Global::menuManager.push(new MainMenu); INCR_NEW("MainMenu");
 
 
 	if (Global::renderParticles)
@@ -294,24 +302,24 @@ int main()
 
 	if (Global::useHighQualityWater)
 	{
-		Global::gameWaterFBOs     = new WaterFrameBuffers; INCR_NEW
-		WaterShader* waterShader  = new WaterShader; INCR_NEW
-		Global::gameWaterRenderer = new WaterRenderer(waterShader, Master_getProjectionMatrix(), Global::gameWaterFBOs, Master_getShadowRenderer()); INCR_NEW
-		Global::gameWaterTiles    = new std::list<WaterTile*>; INCR_NEW
+		Global::gameWaterFBOs     = new WaterFrameBuffers; INCR_NEW("WaterFrameBuffers");
+		WaterShader* waterShader  = new WaterShader; INCR_NEW("WaterShader");
+		Global::gameWaterRenderer = new WaterRenderer(waterShader, Master_getProjectionMatrix(), Global::gameWaterFBOs, Master_getShadowRenderer()); INCR_NEW("WaterRenderer");
+		Global::gameWaterTiles    = new std::list<WaterTile*>; INCR_NEW("std::list<WaterTile*>");
 		for (int r = -6; r < 6; r++) //-9 , 9
 		{
 			for (int c = -8; c < 8; c++) //-12  12
 			{
-				Global::gameWaterTiles->push_back(new WaterTile(r*WaterTile::TILE_SIZE*2, c*WaterTile::TILE_SIZE*2)); INCR_NEW
+				Global::gameWaterTiles->push_back(new WaterTile(r*WaterTile::TILE_SIZE*2, c*WaterTile::TILE_SIZE*2)); INCR_NEW("WaterTile");
 			}
 		}
 	}
 
 	if (Global::renderBloom)
 	{
-		Global::gameMultisampleFbo = new Fbo(SCR_WIDTH, SCR_HEIGHT); INCR_NEW
-		Global::gameOutputFbo      = new Fbo(SCR_WIDTH, SCR_HEIGHT, Fbo::DEPTH_TEXTURE); INCR_NEW
-		Global::gameOutputFbo2     = new Fbo(SCR_WIDTH, SCR_HEIGHT, Fbo::DEPTH_TEXTURE); INCR_NEW
+		Global::gameMultisampleFbo = new Fbo(SCR_WIDTH, SCR_HEIGHT); INCR_NEW("Fbo");
+		Global::gameOutputFbo      = new Fbo(SCR_WIDTH, SCR_HEIGHT, Fbo::DEPTH_TEXTURE); INCR_NEW("Fbo");
+		Global::gameOutputFbo2     = new Fbo(SCR_WIDTH, SCR_HEIGHT, Fbo::DEPTH_TEXTURE); INCR_NEW("Fbo");
 		PostProcessing::init();
 	}
 
@@ -323,7 +331,6 @@ int main()
 	int frameCount = 0;
 	double previousTime = 0;
 
-	//PauseScreen::pause();
 	Global::gameState = STATE_TITLE;
 
 	std::list<std::unordered_set<Entity*>*> entityChunkedList;
@@ -345,6 +352,8 @@ int main()
 		}
 
 		Input::pollInputs();
+
+        Global::menuManager.step();
 
 		GLenum err = glGetError();
 		if (err != GL_NO_ERROR)
@@ -373,7 +382,7 @@ int main()
 		for (auto entityToDelete : gameEntitiesToDelete)
 		{
 			gameEntities.erase(entityToDelete);
-			delete entityToDelete; INCR_DEL
+			delete entityToDelete; INCR_DEL("Entity");
 		}
 		gameEntitiesToDelete.clear();
 
@@ -388,7 +397,7 @@ int main()
 		for (auto entityToDelete : gameEntitiesPass2ToDelete)
 		{
 			gameEntitiesPass2.erase(entityToDelete);
-			delete entityToDelete; INCR_DEL
+			delete entityToDelete; INCR_DEL("Entity");
 		}
 		gameEntitiesPass2ToDelete.clear();
 
@@ -403,7 +412,7 @@ int main()
 		for (auto entityToDelete : gameEntitiesPass3ToDelete)
 		{
 			gameEntitiesPass3.erase(entityToDelete);
-			delete entityToDelete; INCR_DEL
+			delete entityToDelete; INCR_DEL("Entity");
 		}
 		gameEntitiesPass3ToDelete.clear();
 
@@ -418,7 +427,7 @@ int main()
 		for (auto entityToDelete : gameTransparentEntitiesToDelete)
 		{
 			gameTransparentEntities.erase(entityToDelete);
-			delete entityToDelete; INCR_DEL
+			delete entityToDelete; INCR_DEL("Entity");
 		}
 		gameTransparentEntitiesToDelete.clear();
 
@@ -435,26 +444,23 @@ int main()
 		{
 			int realIndex = Global::getChunkIndex(entityToDelete->getX(), entityToDelete->getZ());
 			gameChunkedEntities[realIndex].erase(entityToDelete);
-			delete entityToDelete; INCR_DEL
+			delete entityToDelete; INCR_DEL("Entity");
 		}
 		gameChunkedEntitiesToDelete.clear();
-
-
-		MainMenu::step();
-		PauseScreen::step();
 
 		switch (Global::gameState)
 		{
 			case STATE_RUNNING:
 			{
 				//game logic
-				GuiManager::increaseTimer(dt);
 
 				if (Global::raceStartTimer >= 0)
 				{
+                    //Global::mainHudTimer->setTime(0.0f);
 					Global::raceStartTimer -= dt;
 					if (Global::raceStartTimer < 0)
 					{
+                        Global::mainHudTimer->freeze(false);
 						//if (bgmHasLoop != 0)
 						{
 							//By default, first 2 buffers are the intro and loop, respectively
@@ -464,7 +470,6 @@ int main()
 						{
 							//AudioPlayer::playBGM(0);
 						}
-						GuiManager::startTimer();
 						//Global::gameMainVehicle->setCanMoveTimer(0);
 						//Global::gameMainVehicle->setPosition(22.3715019f, 0.01f, 20.5539f);
 						//Global::gameMainVehicle->setVelocity(0, 0, -0.001f);
@@ -477,6 +482,10 @@ int main()
 					}
 				}
 
+                if (Global::gameMainVehicle != nullptr)
+                {
+                    Global::gameMainVehicle->step();
+                }
 				for (Entity* e : gameEntities)
 				{
 					e->step();
@@ -522,7 +531,6 @@ int main()
 					if (Global::gameRingCount >= Global::gameRingTarget && Global::finishStageTimer < -0.5f)
 					{
 						Global::finishStageTimer = 0;
-						GuiManager::stopTimer();
 					}
 				}
 				break;
@@ -573,6 +581,8 @@ int main()
 			default:
 				break;
 		}
+
+		Global::clearTitleCard();
 
 		Stage::updateVisibleChunks();
 		SkyManager::calculateValues();
@@ -756,8 +766,6 @@ int main()
 						Global::levelName = nextLevel->fileName;
 						Global::levelNameDisplay = nextLevel->displayName;
 						Global::gameMissionDescription = (nextLevel->missionData[Global::gameMissionNumber])[(nextLevel->missionData[Global::gameMissionNumber]).size()-1];
-
-						MainMenu::createTitleCard();
 					}
 					else
 					{
@@ -779,7 +787,6 @@ int main()
 						AudioPlayer::play(7, Global::gameCamera->getFadePosition1());
 
 						LevelLoader::loadTitle();
-						MainMenu::selectMenuArcadeClear();
 						Global::gameIsArcadeMode = false;
 					}
 				}
@@ -794,21 +801,11 @@ int main()
 				GuiManager::clearGuisToRender();
 				Global::gameScore = 0;
 				Global::gameRingCount = 0;
-				GuiManager::setTimer(0);
 			}
 
 			if (finishTimerBefore < 6.166f && Global::finishStageTimer >= 6.166f)
 			{
-				int rank = Global::calculateRankAndUpdate();
-				switch (rank)
-				{
-					case 0: GuiTextureResources::textureRankDisplay->setTexture(MainMenu::textureRankE); break;
-					case 1: GuiTextureResources::textureRankDisplay->setTexture(MainMenu::textureRankD); break;
-					case 2: GuiTextureResources::textureRankDisplay->setTexture(MainMenu::textureRankC); break;
-					case 3: GuiTextureResources::textureRankDisplay->setTexture(MainMenu::textureRankB); break;
-					case 4: GuiTextureResources::textureRankDisplay->setTexture(MainMenu::textureRankA); break;
-					default: break;
-				}
+				// int rank = Global::calculateRankAndUpdate();
 				GuiManager::addGuiToRender(GuiTextureResources::textureRankDisplay);
 				//AudioPlayer::play(44, Global::gamePlayer->getPosition());
 			}
@@ -867,7 +864,7 @@ void Main_deleteAllEntites()
 	for (Entity* entityToDelete : gameEntitiesToDelete)
 	{
 		gameEntities.erase(entityToDelete);
-		delete entityToDelete; INCR_DEL
+		delete entityToDelete; INCR_DEL("Entity");
 	}
 	gameEntitiesToDelete.clear();
 
@@ -875,9 +872,15 @@ void Main_deleteAllEntites()
 	//Delete all the rest
 	for (Entity* entityToDelete : gameEntities)
 	{
-		delete entityToDelete; INCR_DEL
+		delete entityToDelete; INCR_DEL("Entity");
 	}
 	gameEntities.clear();
+
+    if (Global::gameMainVehicle != nullptr)
+    {
+        delete Global::gameMainVehicle; INCR_DEL("Entity");
+        Global::gameMainVehicle = nullptr;
+    }
 }
 
 void Main_addEntityPass2(Entity* entityToAdd)
@@ -902,13 +905,13 @@ void Main_deleteAllEntitesPass2()
 	for (Entity* entityToDelete : gameEntitiesPass2ToDelete)
 	{
 		gameEntitiesPass2.erase(entityToDelete);
-		delete entityToDelete; INCR_DEL
+		delete entityToDelete; INCR_DEL("Entity");
 	}
 	gameEntitiesPass2ToDelete.clear();
 
 	for (Entity* entityToDelete : gameEntitiesPass2)
 	{
-		delete entityToDelete; INCR_DEL
+		delete entityToDelete; INCR_DEL("Entity");
 	}
 	gameEntitiesPass2.clear();
 }
@@ -935,13 +938,13 @@ void Main_deleteAllEntitesPass3()
 	for (Entity* entityToDelete : gameEntitiesPass3ToDelete)
 	{
 		gameEntitiesPass3.erase(entityToDelete);
-		delete entityToDelete; INCR_DEL
+		delete entityToDelete; INCR_DEL("Entity");
 	}
 	gameEntitiesPass3ToDelete.clear();
 
 	for (Entity* entityToDelete : gameEntitiesPass3)
 	{
-		delete entityToDelete; INCR_DEL
+		delete entityToDelete; INCR_DEL("Entity");
 	}
 	gameEntitiesPass3.clear();
 }
@@ -955,14 +958,14 @@ void Main_addTransparentEntity(Entity* entityToAdd)
 void Main_deleteTransparentEntity(Entity* entityToDelete)
 {
 	gameTransparentEntities.erase(entityToDelete);
-	delete entityToDelete; INCR_DEL
+	delete entityToDelete; INCR_DEL("Entity");
 }
 
 void Main_deleteAllTransparentEntites()
 {
 	for (Entity* entityToDelete : gameTransparentEntities)
 	{
-		delete entityToDelete; INCR_DEL
+		delete entityToDelete; INCR_DEL("Entity");
 	}
 	gameTransparentEntities.clear();
 }
@@ -1179,81 +1182,12 @@ int Global::calculateRankAndUpdate()
 			Global::saveSaveData();
 		}
 
-		float newTime   = GuiManager::getTotalTimerInSeconds();
 		float savedTime = 6000.0f;
 
 		if (Global::gameSaveData.find(currentLevel->displayName+missionTimeString) != Global::gameSaveData.end())
 		{
 			std::string savedTimeString = Global::gameSaveData[currentLevel->displayName+missionTimeString];
 			savedTime = std::stof(savedTimeString);
-		}
-
-		if (newTime < savedTime)
-		{
-			std::string newTimeString = std::to_string(newTime);
-			Global::gameSaveData[currentLevel->displayName+missionTimeString] = newTimeString;
-			Global::saveSaveData();
-		}
-
-		if (missionType == "Normal" || missionType == "Hard")
-		{
-			int scoreForRankA = std::stoi((currentLevel->missionData[Global::gameMissionNumber])[1]);
-			int scoreForRankB = (3*scoreForRankA)/4;
-			int scoreForRankC = (2*scoreForRankA)/3;
-			int scoreForRankD = (1*scoreForRankA)/2;
-
-			if      (newScore >= scoreForRankA) newRank = 4;
-			else if (newScore >= scoreForRankB) newRank = 3;
-			else if (newScore >= scoreForRankC) newRank = 2;
-			else if (newScore >= scoreForRankD) newRank = 1;
-
-			if (newScore > savedScore)
-			{
-				std::string newRankString = "ERROR";
-				switch (newRank)
-				{
-					case 0: newRankString = "E"; break;
-					case 1: newRankString = "D"; break;
-					case 2: newRankString = "C"; break;
-					case 3: newRankString = "B"; break;
-					case 4: newRankString = "A"; break;
-					default: break;
-				}
-
-				Global::gameSaveData[currentLevel->displayName+missionRankString]  = newRankString;
-
-				Global::saveSaveData();
-			}
-		}
-		else if (missionType == "Ring" || missionType == "Chao")
-		{
-			int timeForRankA = std::stoi((currentLevel->missionData[Global::gameMissionNumber])[1]);
-			int timeForRankB = (4*timeForRankA)/3;
-			int timeForRankC = (3*timeForRankA)/2;
-			int timeForRankD = (2*timeForRankA)/1;
-
-			if      (newTime <= timeForRankA) newRank = 4;
-			else if (newTime <= timeForRankB) newRank = 3;
-			else if (newTime <= timeForRankC) newRank = 2;
-			else if (newTime <= timeForRankD) newRank = 1;
-
-			if (newTime < savedTime)
-			{
-				std::string newRankString = "ERROR";
-				switch (newRank)
-				{
-					case 0: newRankString = "E"; break;
-					case 1: newRankString = "D"; break;
-					case 2: newRankString = "C"; break;
-					case 3: newRankString = "B"; break;
-					case 4: newRankString = "A"; break;
-					default: break;
-				}
-
-				Global::gameSaveData[currentLevel->displayName+missionRankString] = newRankString;
-
-				Global::saveSaveData();
-			}
 		}
 	}
 
@@ -1498,7 +1432,7 @@ void Main_deleteAllChunkedEntities()
 	{
 		int realIndex = Global::getChunkIndex(entityToDelete->getX(), entityToDelete->getZ());
 		gameChunkedEntities[realIndex].erase(entityToDelete);
-		delete entityToDelete; INCR_DEL
+		delete entityToDelete; INCR_DEL("Entity");
 	}
 	gameChunkedEntitiesToDelete.clear();
 
@@ -1506,9 +1440,101 @@ void Main_deleteAllChunkedEntities()
 	{
 		for (Entity* e : set)
 		{
-			delete e; INCR_DEL
+			delete e; INCR_DEL("Entity");
 		}
 		set.clear();
 	}
 	gameChunkedEntities.clear();
+}
+
+void Global::createTitleCard()
+{
+	ParticleMaster::deleteAllParticles();
+	GuiManager::clearGuisToRender();
+
+	Vector3f vel(0,0,0);
+	new Particle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &vel, 0, 1.0f, 0.0f, 50.0f, 0, true, false);
+	GuiManager::addGuiToRender(GuiTextureResources::textureBlueLine);
+
+	if (titleCardLevelName != nullptr)
+	{
+		titleCardLevelName->deleteMe();
+		delete titleCardLevelName; INCR_DEL("GUIText");
+		titleCardLevelName = nullptr;
+	}
+	if (titleCardMission != nullptr)
+	{
+		titleCardMission->deleteMe();
+		delete titleCardMission; INCR_DEL("GUIText");
+		titleCardMission = nullptr;
+	}
+	if (titleCardMissionDescription != nullptr)
+	{
+		titleCardMissionDescription->deleteMe();
+		delete titleCardMissionDescription; INCR_DEL("GUIText");
+		titleCardMissionDescription = nullptr;
+	}
+
+	titleCardLevelName          = new GUIText(Global::levelNameDisplay, 0.09f, Global::fontVipnagorgialla, 0.5f, 0.6f, 4, true); INCR_NEW("GUIText");
+	titleCardMission            = new GUIText("Mission "+std::to_string(Global::gameMissionNumber+1)+":", 0.075f, Global::fontVipnagorgialla, 0.5f, 0.7f, 4, true); INCR_NEW("GUIText");
+	titleCardMissionDescription = new GUIText(Global::gameMissionDescription, 0.06f, Global::fontVipnagorgialla, 0.5f, 0.8f, 4, true); INCR_NEW("GUIText");
+}
+
+void Global::clearTitleCard()
+{
+	if (titleCardLevelName != nullptr)
+	{
+		titleCardLevelName->deleteMe();
+		delete titleCardLevelName; INCR_DEL("GUIText");
+		titleCardLevelName = nullptr;
+	}
+	if (titleCardMission != nullptr)
+	{
+		titleCardMission->deleteMe();
+		delete titleCardMission; INCR_DEL("GUIText");
+		titleCardMission = nullptr;
+	}
+	if (titleCardMissionDescription != nullptr)
+	{
+		titleCardMissionDescription->deleteMe();
+		delete titleCardMissionDescription; INCR_DEL("GUIText");
+		titleCardMissionDescription = nullptr;
+	}
+}
+
+std::unordered_map<std::string, int> heapObjects;
+
+void Global::debugNew(const char* name)
+{
+    Global::countNew++;
+
+    #ifdef DEV_MODE
+    if (heapObjects.find(name) == heapObjects.end())
+    {
+        heapObjects[name] = 1;
+    }
+    else
+    {
+        int num = heapObjects[name];
+        heapObjects[name] = num+1;
+    }
+    #endif
+}
+
+void Global::debugDel(const char* name)
+{
+    Global::countDelete++;
+
+    #ifdef DEV_MODE
+    if (heapObjects.find(name) == heapObjects.end())
+    {
+        std::fprintf(stdout, "Warning: trying to delete '%s' when there are none.\n", name);
+        heapObjects[name] = 0;
+    }
+    else
+    {
+        int num = heapObjects[name];
+        heapObjects[name] = num-1;
+    }
+    #endif
 }

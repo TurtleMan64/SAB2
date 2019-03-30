@@ -16,7 +16,7 @@ ParticleRenderer* ParticleMaster::renderer = nullptr;
 
 void ParticleMaster::init(Matrix4f* projectionMatrix)
 {
-	ParticleMaster::renderer = new ParticleRenderer(projectionMatrix); INCR_NEW
+	ParticleMaster::renderer = new ParticleRenderer(projectionMatrix); INCR_NEW("ParticleRenderer");
 }
 
 //There was a crash in here once for some reason... something with 'list'?
@@ -40,7 +40,7 @@ void ParticleMaster::update(Camera* cam)
 			bool stillAlive = p->update(cam);
 			if (stillAlive == false)
 			{
-				delete p; INCR_DEL //maybe switch this with next line?
+				delete p; INCR_DEL("Particle"); //maybe switch this with next line?
 				it = list->erase(it);
 
 				if (list->size() == 0)
@@ -120,7 +120,7 @@ void ParticleMaster::deleteAllParticles()
 		{
 			Particle* p = *it;
 
-			delete p; INCR_DEL
+			delete p; INCR_DEL("Particle");
 			it = list->erase(it);
 
 			if (list->size() == 0)

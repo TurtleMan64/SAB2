@@ -23,7 +23,7 @@
 #include "../entities/skysphere.h"
 #include "../guis/guimanager.h"
 #include "../renderEngine/skymanager.h"
-#include "../toolbox/mainmenu.h"
+#include "../menu/missionmenu.h"
 #include "../toolbox/getline.h"
 #include "split.h"
 #include "input.h"
@@ -44,6 +44,11 @@
 #include "../entities/rocket.h"
 #include "../entities/spring.h"
 #include "../entities/pulley.h"
+#include "../menu/menumanager.h"
+#include "../entities/SkyRail/srstagemanager.h"
+#include "../entities/goalring.h"
+
+int LevelLoader::numLevels = 0;
 
 void LevelLoader::loadTitle()
 {
@@ -58,7 +63,10 @@ void LevelLoader::loadTitle()
 
 	CollisionChecker::deleteAllCollideModels();
 
-	//SkyManager::setCenterObject(nullptr);
+    if (Global::gameMainVehicle != nullptr)
+    {
+        delete Global::gameMainVehicle; INCR_DEL("Entity");
+    }
 	Global::gameMainVehicle = nullptr;
 
 	Main_deleteAllEntites();
@@ -69,14 +77,12 @@ void LevelLoader::loadTitle()
 
 	for (Checkpoint* check : Global::gameCheckpointList)
 	{
-		delete check; INCR_DEL
+		delete check; INCR_DEL("Entity");
 	}
 	Global::gameCheckpointList.clear();
 
 	AudioPlayer::stopBGM();
 	AudioPlayer::deleteBuffersBGM();
-
-	//Global::gameSkySphere->setVisible(false);
 
 	Global::finishStageTimer = -1;
 	Global::raceStartTimer = -1;
@@ -86,12 +92,9 @@ void LevelLoader::loadTitle()
 	Global::gameRingCount = 0;
 	Global::gameScore = 0;
 	Global::gameLives = 4;
-	GuiManager::setTimer(0);
-	GuiManager::stopTimer();
 
 	GuiManager::clearGuisToRender();
 
-	MainMenu::loadResources();
 	Global::gameState = STATE_TITLE;
 	Global::gameIsNormalMode = false;
 	Global::gameIsHardMode = false;
@@ -157,7 +160,10 @@ void LevelLoader::loadLevel(std::string levelFilename)
 		freeAllStaticModels();
 	}
 
-	//SkyManager::setCenterObject(nullptr);
+    if (Global::gameMainVehicle != nullptr)
+    {
+        delete Global::gameMainVehicle; INCR_DEL("Entity");
+    }
 	Global::gameMainVehicle = nullptr;
 
 	Main_deleteAllEntites();
@@ -168,7 +174,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
 
 	for (Checkpoint* check : Global::gameCheckpointList)
 	{
-		delete check; INCR_DEL
+		delete check; INCR_DEL("Entity");
 	}
 	Global::gameCheckpointList.clear();
 
@@ -427,7 +433,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
 
 	//Global::gameSkySphere->setVisible(false);
 
-
+    Vector3f initialCamDir;
 	std::string camOrientation;
 	getlineSafe(file, camOrientation);
 	{
@@ -436,8 +442,8 @@ void LevelLoader::loadLevel(std::string levelFilename)
 		int splitLength = 0;
 		char** dat = split(lineBuf, ' ', &splitLength);
 
-		//Global::gameCamera->setYaw(toFloat(dat[0]));
-		//Global::gameCamera->setPitch(toFloat(dat[1]));
+        initialCamDir = Vector3f(toFloat(dat[0]), toFloat(dat[1]), toFloat(dat[2]));
+        initialCamDir.normalize();
 
 		free(dat);
 	}
@@ -614,17 +620,15 @@ void LevelLoader::loadLevel(std::string levelFilename)
 	if (Global::gameMainVehicle != nullptr)
 	{
 		Global::gameMainVehicle->setCanMoveTimer(1.0f);
+        Global::gameMainVehicle->setCameraDirection(&initialCamDir);
 		//Global::bufferTime = 60;
 	}
 
-	Global::raceStartTimer = -1.0f;
+	Global::raceStartTimer = 1.0f;
 
 
 	Global::gameRingCount = 0;
 	Global::gameScore = 0;
-	GuiManager::setTimer(0);
-	GuiManager::stopTimer();
-	GuiManager::startTimer();
 
 	int maxNumber = -1;
 	for (Checkpoint* check : Global::gameCheckpointList)
@@ -655,10 +659,11 @@ void LevelLoader::loadLevel(std::string levelFilename)
 
 	//GuiManager::addGuiToRender(GuiTextureResources::textureRing);
 
-	Global::finishStageTimer = -1;
+	Global::finishStageTimer = -1.0f;
 
-	//Vector3f partVel(0, 0, 0);
-	//new Particle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), 1.0f, 400.0f, false);
+	Vector3f partVel(0, 0, 0);
+	new Particle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &partVel, 0.0f,
+		1.0f, 0.0f, 50.0f, 0.0f, true, false);
 
 	Global::gameState = STATE_RUNNING;
 
@@ -684,37 +689,41 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 		case 0: //Ring
 		{
 			Ring::loadStaticModels();
-			Ring* ring = new Ring(toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3])); INCR_NEW
+			Ring* ring = new Ring(toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3])); INCR_NEW("Entity");
 			chunkedEntities->push_back(ring);
 			return;
 		}
 
 		case 2: //Stage Pass 2
 		{
-			StagePass2* pass2 = new StagePass2(dat[1], dat[2]); INCR_NEW
+			StagePass2* pass2 = new StagePass2(dat[1], dat[2]); INCR_NEW("Entity");
 			Main_addEntityPass2(pass2);
 			return;
 		}
 
 		case 3: //Stage Pass 3
 		{
-			StagePass3* pass3 = new StagePass3(dat[1], dat[2]); INCR_NEW
+			StagePass3* pass3 = new StagePass3(dat[1], dat[2]); INCR_NEW("Entity");
 			Main_addEntityPass3(pass3);
 			return;
 		}
 
 		case 4: //Stage Transparent
 		{
-			StageTransparent* trans = new StageTransparent(dat[1], dat[2]); INCR_NEW
+			StageTransparent* trans = new StageTransparent(dat[1], dat[2]); INCR_NEW("Entity");
 			Main_addTransparentEntity(trans);
 			return;
 		}
 
 		case 6: //Car
 		{
-			Car* car = new Car(toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3])); INCR_NEW
+			Car* car = new Car(toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3])); INCR_NEW("Entity");
+            if (Global::gameMainVehicle != nullptr)
+            {
+                delete Global::gameMainVehicle; INCR_DEL("Entity");
+            }
 			Global::gameMainVehicle = car;
-			Main_addEntity(car);
+			//Main_addEntity(car);
 			return;
 		}
 
@@ -733,7 +742,7 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 			Boostpad* pad = new Boostpad(
 				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]),
 				toFloat(dat[4]), toFloat(dat[5]), toFloat(dat[6]),
-				toFloat(dat[7]), toFloat(dat[8]), toFloat(dat[9])); INCR_NEW
+				toFloat(dat[7]), toFloat(dat[8]), toFloat(dat[9])); INCR_NEW("Entity");
 			Main_addTransparentEntity(pad);
 			return;
 		}
@@ -744,7 +753,7 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 			Checkpoint* checkpoint = new Checkpoint(
 				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]),
 				toFloat(dat[4]), toFloat(dat[5]), toFloat(dat[6]),
-				toFloat(dat[7]), toInt(dat[8])); INCR_NEW
+				toFloat(dat[7]), toInt(dat[8])); INCR_NEW("Entity");
 			Global::gameCheckpointList.push_back(checkpoint);
 			return;
 		}
@@ -754,8 +763,17 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 			JumpRamp::loadStaticModels();
 			JumpRamp* ramp = new JumpRamp(
 				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]),
-				toFloat(dat[4])); INCR_NEW
+				toFloat(dat[4])); INCR_NEW("Entity");
 			Main_addTransparentEntity(ramp);
+			return;
+		}
+
+        case 69: //GoalRing
+		{
+			GoalRing::loadStaticModels();
+			GoalRing* goal = new GoalRing(
+				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3])); INCR_NEW("Entity");
+			Main_addEntity(goal);
 			return;
 		}
 
@@ -767,7 +785,7 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 				case 0:
 				{
 					GFStageManager::loadStaticModels();
-					GFStageManager* gf = new GFStageManager; INCR_NEW
+					GFStageManager* gf = new GFStageManager; INCR_NEW("Entity");
 					Main_addEntity(gf);
 					break;
 				}
@@ -777,6 +795,14 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 				//	Main_addEntity(mh);
 				//	break;
 
+                case 2:
+                {
+                    SRStageManager::loadStaticModels();
+					SRStageManager* sr = new SRStageManager; INCR_NEW("Entity");
+					Main_addEntity(sr);
+					break;
+                }
+
 				default: break;
 			}
 			return;
@@ -784,7 +810,7 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 
 		case 92: //Rail
 		{
-			Rail* rail = new Rail(dat[1]); INCR_NEW
+			Rail* rail = new Rail(dat[1]); INCR_NEW("Entity");
 			Main_addEntity(rail);
 			return;
 		}
@@ -792,7 +818,7 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 		case 93: //Metal Harbor Static Objects
 		{
 			MH_StaticObjects::loadStaticModels();
-			MH_StaticObjects* staticObjects = new MH_StaticObjects(); INCR_NEW
+			MH_StaticObjects* staticObjects = new MH_StaticObjects(); INCR_NEW("Entity");
 			Main_addEntity(staticObjects);
 			return;
 		}
@@ -803,8 +829,8 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 			Dashpad* dashpad = new Dashpad(
 				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), 			//position
 				toFloat(dat[4]), toFloat(dat[5]), toFloat(dat[6]), 			//rotation
-				toFloat(dat[7]), toFloat(dat[8]), toFloat(dat[9])); INCR_NEW  //power, camYaw, time 
-			
+				toFloat(dat[7]), toFloat(dat[8]), toFloat(dat[9]));   //power, camYaw, time 
+			INCR_NEW("Entity");
 			chunkedEntities->push_back(dashpad);
 			return;
 		}
@@ -815,7 +841,8 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 			SpeedRamp* ramp = new SpeedRamp(
 				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
 				toFloat(dat[4]), toFloat(dat[5]),                  //rotation
-				toFloat(dat[6]), toFloat(dat[7])); INCR_NEW          //power, time
+				toFloat(dat[6]), toFloat(dat[7]));         		   //power, time
+			INCR_NEW("Entity");
 			chunkedEntities->push_back(ramp);
 			return;
 		}
@@ -825,7 +852,7 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 			Point* point = new Point(
 				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
 				toInt(dat[4])); //point id
-			INCR_NEW
+			INCR_NEW("Entity");
 			Main_addEntity(point);
 			return;
 		}
@@ -834,7 +861,7 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 		{
 			Rocket::loadStaticModels();
 			Rocket* rocket = new Rocket(toInt(dat[1]), toInt(dat[2])); //Point IDs for start and end of path, position of rocket initialized to where point ID 1 is
-			INCR_NEW
+			INCR_NEW("Entity");
 			chunkedEntities->push_back(rocket);
 			return;
 		}
@@ -846,7 +873,7 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 					toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position x,y,z
 					toFloat(dat[4]), toFloat(dat[5]),                  //rotation y, rotation z
 					toFloat(dat[6]), toFloat(dat[7]));                   //power, control lock time in seconds
-			INCR_NEW
+			INCR_NEW("Entity");
 			chunkedEntities->push_back(spring);
 			return;
 		}
@@ -857,7 +884,7 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 			Pulley* pulley = new Pulley(
 					toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position x,y,z
 					toFloat(dat[4]), toFloat(dat[5])); 				   //y rotation, handle vertical displacement
-			INCR_NEW
+			INCR_NEW("Entity");
 			chunkedEntities->push_back(pulley);
 			return;
 		}
@@ -880,6 +907,8 @@ void LevelLoader::loadLevelData()
 {
 	Global::gameLevelData.clear();
 
+	LevelLoader::numLevels = 0;
+
 	std::ifstream file("res/Levels/LevelData.dat");
 	if (!file.is_open())
 	{
@@ -891,7 +920,8 @@ void LevelLoader::loadLevelData()
 		std::string line;
 		getlineSafe(file, line);
 
-		int levelCount = std::stoi(line.c_str());
+		LevelLoader::numLevels = std::stoi(line.c_str());
+		int levelCount = LevelLoader::numLevels;
 		getlineSafe(file, line);
 
 		while (levelCount > 0)
@@ -968,4 +998,11 @@ void LevelLoader::freeAllStaticModels()
 	Spring::deleteStaticModels();
 	MH_StaticObjects::deleteStaticModels();
 	Pulley::deleteStaticModels();
+    SRStageManager::deleteStaticModels();
+    GoalRing::deleteStaticModels();
+}
+
+int LevelLoader::getNumLevels()
+{
+	return LevelLoader::numLevels;
 }

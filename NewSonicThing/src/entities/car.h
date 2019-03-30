@@ -105,6 +105,7 @@ private:
 	const float groundBallFriction = 0.1f; //0.02f;
 	const float slopeBallAccel = 140.0f; //50.0f;
 	const float autoUnrollThreshold = 120.0f; //60
+	const float maxBallSpeed = 800.0f; //you wont go faster than this when rolling down a hill in ball form
 
 	bool isSpindashing = false;
 	Vector3f spindashDirection;
@@ -316,7 +317,7 @@ public:
 
 	static void deleteStaticModels();
 
-	bool isVehicle();
+	const bool isVehicle();
 
 	bool isChargingSpindash();
 	
@@ -339,5 +340,10 @@ public:
 	void setVelocityMovesPlayer(bool newVelocityMovesPlayer);
 
 	void setOnPulley(bool newOnPulley);
+
+    Vector3f* getCameraDirection();
+
+    void setCameraDirection(Vector3f* newDirection);
+
 };
 #endif

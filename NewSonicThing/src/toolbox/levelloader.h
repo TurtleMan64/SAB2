@@ -17,11 +17,15 @@ private:
 
 	static void freeAllStaticModels();
 
+	static int numLevels;
+
 public:
 	static void loadTitle();
 
 	static void loadLevel(std::string levelFilename);
 
 	static void loadLevelData();
+
+	static int getNumLevels();
 };
 #endif

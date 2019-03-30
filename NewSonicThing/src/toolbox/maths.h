@@ -42,6 +42,7 @@ public:
 	//ang1 and ang2 should be in degrees
 	static float compareTwoAngles(float ang1, float ang2);
 
+    //assumes the size of int and float are 32 bits
 	static int sign(float value);
 
 	//calculates the number of base 10 decimal digits in the number. 
@@ -82,6 +83,10 @@ public:
 	//returns a new velocity vector that has undergone continous drag over a period of time. 
 	//drag should be a negative number to actually drag the velocity vector
 	static Vector3f applyDrag(Vector3f* velocity, float drag, float deltaTime);
+
+	//returns a new velocity that has undergone continous drag over a period of time. 
+	//drag should be a negative number to actually drag the velocity
+	static float applyDrag(float velocity, float drag, float deltaTime);
 
 	//angle in radians
 	static Vector3f mapInputs3(float angle, float mag, Vector3f* VecC);

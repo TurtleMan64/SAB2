@@ -131,7 +131,7 @@ void Rocket::step()
 			makeDirtParticles(PARTICLE_POSITION_OFFSET_ROCKET_MOVING);
 
 			//calculate how far along the path the rocket should move next
-			percentOfPathCompleted = calculatePathMovementPercentForThisFrame();
+			percentOfPathCompleted += calculatePathMovementPercentForThisFrame();
 
 			position = calculateNewRocketPosition();
 
@@ -217,7 +217,7 @@ void Rocket::setupRocketBase()
 {
     base = new Body(&Rocket::modelsBase);
 	base->setVisible(true);
-	INCR_NEW
+	INCR_NEW("Entity");
 	Main_addEntity(base);
 	base->setPosition(&position);
 

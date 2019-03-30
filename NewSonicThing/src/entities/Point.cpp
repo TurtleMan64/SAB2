@@ -24,7 +24,7 @@ int Point::getID()
 	return id;
 }
 
-bool Point::isPoint()
+const bool Point::isPoint()
 {
 	return true;
 }
