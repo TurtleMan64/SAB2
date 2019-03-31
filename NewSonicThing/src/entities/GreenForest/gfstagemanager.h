@@ -1,12 +1,12 @@
-#ifndef GFSTAGEMANAGER_H
-#define GFSTAGEMANAGER_H
+#ifndef GF_STAGEMANAGER_H
+#define GF_STAGEMANAGER_H
 
 class TexturedModel;
 
 #include <list>
 #include "../entity.h"
 
-class GFStageManager : public Entity
+class GF_StageManager : public Entity
 {
 private:
 	static std::list<TexturedModel*> modelsSkydome;
@@ -15,7 +15,7 @@ private:
 	const float pollenRadius = 200.0f;
 
 public:
-	GFStageManager();
+	GF_StageManager();
 
 	void step();
 

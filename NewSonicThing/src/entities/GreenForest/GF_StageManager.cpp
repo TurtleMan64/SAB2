@@ -11,14 +11,14 @@
 #include "../../particles/particle.h"
 #include "../../particles/particleresources.h"
 
-std::list<TexturedModel*> GFStageManager::modelsSkydome;
+std::list<TexturedModel*> GF_StageManager::modelsSkydome;
 
-GFStageManager::GFStageManager()
+GF_StageManager::GF_StageManager()
 {
 	visible = true;
 }
 
-void GFStageManager::step()
+void GF_StageManager::step()
 {
 	//setting the global water heights
 	if (Global::gameMainVehicle->getPosition()->x < 25 &&
@@ -86,30 +86,30 @@ void GFStageManager::step()
 	}
 }
 
-std::list<TexturedModel*>* GFStageManager::getModels()
+std::list<TexturedModel*>* GF_StageManager::getModels()
 {
-	return &GFStageManager::modelsSkydome;
+	return &GF_StageManager::modelsSkydome;
 }
 
-void GFStageManager::loadStaticModels()
+void GF_StageManager::loadStaticModels()
 {
-	if (GFStageManager::modelsSkydome.size() > 0)
+	if (GF_StageManager::modelsSkydome.size() > 0)
 	{
 		return;
 	}
 
 	#ifdef DEV_MODE
-	std::fprintf(stdout, "Loading GFStageManager static models...\n");
+	std::fprintf(stdout, "Loading GF_StageManager static models...\n");
 	#endif
 
-	loadModel(&GFStageManager::modelsSkydome,  "res/Models/Levels/GreenForest/", "Skydome");
+	loadModel(&GF_StageManager::modelsSkydome,  "res/Models/Levels/GreenForest/", "Skydome");
 }
 
-void GFStageManager::deleteStaticModels()
+void GF_StageManager::deleteStaticModels()
 {
 	#ifdef DEV_MODE
-	std::fprintf(stdout, "Deleting GFStageManager static models...\n");
+	std::fprintf(stdout, "Deleting GF_StageManager static models...\n");
 	#endif
 
-	Entity::deleteModels(&GFStageManager::modelsSkydome);
+	Entity::deleteModels(&GF_StageManager::modelsSkydome);
 }

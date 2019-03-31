@@ -35,7 +35,7 @@ void EntityRenderer::renderNEW(std::unordered_map<TexturedModel*, std::list<Enti
 		shader->loadToShadowSpaceMatrixClose(toShadowSpaceClose);
 	}
 
-	clockTime = Global::gameClock / 60.0f;
+	clockTime = Global::gameClock;
 
 	shader->loadFogGradient(SkyManager::getFogGradient());
 	shader->loadFogDensity(SkyManager::getFogDensity());

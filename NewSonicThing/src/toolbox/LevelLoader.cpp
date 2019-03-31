@@ -46,6 +46,9 @@
 #include "../menu/menumanager.h"
 #include "../entities/SkyRail/srstagemanager.h"
 #include "../entities/goalring.h"
+#include "../entities/point.h"
+#include "../entities/rocket.h"
+#include "../entities/MetalHarbor/mhstagemanager.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -660,9 +663,9 @@ void LevelLoader::loadLevel(std::string levelFilename)
 
 	Global::finishStageTimer = -1.0f;
 
-	Vector3f partVel(0, 0, 0);
-	new Particle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &partVel, 0.0f,
-		1.0f, 0.0f, 50.0f, 0.0f, true, false);
+	//Vector3f partVel(0, 0, 0);
+	//new Particle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &partVel, 0.0f,
+	//	1.0f, 0.0f, 50.0f, 0.0f, true, false);
 
 	Global::gameState = STATE_RUNNING;
 
@@ -783,21 +786,24 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 			{
 				case 0:
 				{
-					GFStageManager::loadStaticModels();
-					GFStageManager* gf = new GFStageManager; INCR_NEW("Entity");
+					GF_StageManager::loadStaticModels();
+					GF_StageManager* gf = new GF_StageManager; INCR_NEW("Entity");
 					Main_addEntity(gf);
 					break;
 				}
 
-				//case 1:
-				//	G* mh = new MH_Manager; INCR_NEW
-				//	Main_addEntity(mh);
-				//	break;
+				case 1:
+                {
+                    MH_StageManager::loadStaticModels();
+					MH_StageManager* mh = new MH_StageManager; INCR_NEW("Entity");
+					Main_addEntity(mh);
+					break;
+                }
 
                 case 2:
                 {
-                    SRStageManager::loadStaticModels();
-					SRStageManager* sr = new SRStageManager; INCR_NEW("Entity");
+                    SR_StageManager::loadStaticModels();
+					SR_StageManager* sr = new SR_StageManager; INCR_NEW("Entity");
 					Main_addEntity(sr);
 					break;
                 }
@@ -863,6 +869,25 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 				}
 				default: break;
 			}
+			return;
+		}
+
+        case 96: //Point (for paths)
+		{
+			Point* point = new Point(
+				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
+				toInt(dat[4])); //point id
+			INCR_NEW("Entity");
+			Main_addEntity(point);
+			return;
+		}
+
+		case 97: //Rocket
+		{
+			Rocket::loadStaticModels();
+			Rocket* rocket = new Rocket(toInt(dat[1]), toInt(dat[2])); //Point IDs for start and end of path, position of rocket initialized to where point ID 1 is
+			INCR_NEW("Entity");
+			Main_addEntity(rocket);
 			return;
 		}
 
@@ -960,16 +985,18 @@ void LevelLoader::freeAllStaticModels()
 	Car::deleteStaticModels();
 	Checkpoint::deleteStaticModels();
 	JumpRamp::deleteStaticModels();
-	GFStageManager::deleteStaticModels();
+	GF_StageManager::deleteStaticModels();
 	Ring::deleteStaticModels();
+    MH_StageManager::deleteStaticModels();
 	MH_GiantRocket::deleteStaticModels();
 	MH_PathDiagonal::deleteStaticModels();
 	MH_PathFlat::deleteStaticModels();
 	MH_PathFlatSmall::deleteStaticModels();
 	MH_RocketBase::deleteStaticModels();
 	MH_Tank::deleteStaticModels();
-    SRStageManager::deleteStaticModels();
+    SR_StageManager::deleteStaticModels();
     GoalRing::deleteStaticModels();
+    Rocket::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()

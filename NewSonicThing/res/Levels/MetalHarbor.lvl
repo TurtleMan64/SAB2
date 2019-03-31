@@ -30,12 +30,29 @@ water
 
 # Player
 6 0 500 -10
+
+# Ring
 0 0 0 0
 
+# Stage Manager
+91 1
+
+# Rails
 92 res/Models/Levels/MetalHarbor/Rails/Rail4.txt
 92 res/Models/Levels/MetalHarbor/Rails/Rail5.txt
 92 res/Models/Levels/MetalHarbor/Rails/Rail6.txt
 92 res/Models/Levels/MetalHarbor/Rails/Rail7.txt
+
+# Rockets
+96 5066.24 219.11 -10214.86 1
+96 5246.4 3540.19 -10215 2
+97 1 2
+96 4760.79 -268.89 -9240.97 3
+96 4757.71 -124.89 -9811.88 4
+97 3 4
+96 2024.06 -268.89 -5980.38 5
+96 2066.24 -255 -6599.64 6
+97 5 6
 
 ####### Generated Objects ###########
 

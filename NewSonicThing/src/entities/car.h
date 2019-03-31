@@ -115,6 +115,7 @@ private:
 	bool isStomping = false;
 	bool isLightdashing = false;
 	bool isGrinding = false;
+    bool onRocket = false;
 
 	const float bounceVel = -300.0f;
 	const float bounceFactor = 0.7f;
@@ -274,6 +275,10 @@ public:
 	//Call this to "redraw" sonic
 	void animate();
 
+    //updates the global camera's values based on 
+    // this player's values
+    void refreshCamera();
+
 	void setVelocity(float xVel, float yVel, float zVel);
 
 	Vector3f* getVelocity();
@@ -283,6 +288,12 @@ public:
 	void startGrinding();
 
 	void stopGrinding();
+
+    void setOnRocket(bool newOnRocket);
+
+	void setIsBall(bool newIsBall);
+
+	void setOnGround(bool newOnGround);
 
 	//called by Rail when sonic jumps off
 	void doJump();

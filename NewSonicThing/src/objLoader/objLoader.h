@@ -23,6 +23,10 @@ int loadBinaryModel(std::list<TexturedModel*>* models, std::string filePath, std
 
 //Each TexturedModel contained within 'models' must be deleted later.
 //Returns 0 if successful, 1 if model is already loaded, -1 if file couldn't be loaded
+int loadVclModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName);
+
+//Each TexturedModel contained within 'models' must be deleted later.
+//Returns 0 if successful, 1 if model is already loaded, -1 if file couldn't be loaded
 int loadObjModelWithMTL(std::list<TexturedModel*>* models, std::string filePath, std::string fileNameOBJ, std::string fileNameMTL);
 
 //Each TexturedModel contained within 'models' must be deleted later.

@@ -63,15 +63,6 @@ scrollX 0
 scrollY 0
 map_Kd pr128_35.png
 
-newmtl pr_kage32.png
-Ns 20
-Ni 0.02
-Tr 0
-d 1
-scrollX 0
-scrollY 0
-map_Kd pr_kage32.png
-
 newmtl pr128_27.png
 Ns 20
 Ni 0.02
@@ -107,15 +98,6 @@ d 1
 scrollX 0
 scrollY 0
 map_Kd pr128_15.png
-
-newmtl pr_2kage32.png
-Ns 20
-Ni 0.02
-Tr 0
-d 1
-scrollX 0
-scrollY 0
-map_Kd pr_2kage32.png
 
 newmtl pr128_28.png
 Ns 20
@@ -251,15 +233,6 @@ d 1
 scrollX 0
 scrollY 0
 map_Kd pr64_23.png
-
-newmtl pr_3kage32.png
-Ns 20
-Ni 0.02
-Tr 0
-d 1
-scrollX 0
-scrollY 0
-map_Kd pr_3kage32.png
 
 newmtl pr64_3.png
 Ns 20

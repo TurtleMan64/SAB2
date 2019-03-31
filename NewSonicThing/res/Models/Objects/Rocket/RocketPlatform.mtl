@@ -1,0 +1,47 @@
+# Material Count: 5
+
+newmtl object_004BFEF4_material_54
+	Ns 20
+	Ni 0.02
+Tr 1
+	d 1.000000
+scrollX 0
+scrollY 0
+map_Kd rock_panel2.png
+
+newmtl object_004BFEF4_material_12
+	Ns 20
+	Ni 0.02
+Tr 1
+	d 1.000000
+scrollX 0
+scrollY 0
+map_Kd board_ura.png
+
+newmtl object_004BFEF4_material_52
+	Ns 20
+	Ni 0.02
+Tr 1
+	d 1.000000
+scrollX 0
+scrollY 0
+map_Kd rock_burn.png
+
+newmtl object_004BFEF4_material_69
+	Ns 20
+	Ni 0.02
+Tr 1
+	d 1.000000
+scrollX 0
+scrollY 0
+map_Kd yuka.png
+
+newmtl object_004BFEF4_material_76
+	Ns 20
+	Ni 0.02
+Tr 1
+	d 1.000000
+scrollX 0
+scrollY 0
+map_Kd rock_cover0.png
+

@@ -99,7 +99,7 @@ public:
 	static int gameRingCount;
 	static int gameScore;
 	static int gameLives;
-	static int gameClock;
+	static float gameClock;
 	static WaterRenderer* gameWaterRenderer;
 	static WaterFrameBuffers* gameWaterFBOs;
 	static std::list<WaterTile*>* gameWaterTiles;

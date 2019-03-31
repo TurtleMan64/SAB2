@@ -55,23 +55,30 @@ std::vector<std::string> textureNamesList;
 
 int loadModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName)
 {
-	int attemptBinary = loadBinaryModel(models, filePath, fileName+".binobj");
+	int attemptBinaryOBJ = loadBinaryModel(models, filePath, fileName+".binobj");
 	
-	if (attemptBinary == -1)
+	if (attemptBinaryOBJ == -1)
 	{
-		int attemptOBJ = loadObjModel(models, filePath, fileName+".obj");
+        int attemptVCL = loadVclModel(models, filePath, fileName+".binvcl");
 
-		if (attemptOBJ == -1)
-		{
-			std::fprintf(stderr, "Error: Cannot load file '%s' or '%s'\n", 
-				((filePath + fileName) + ".bin").c_str(), 
-				((filePath + fileName) + ".obj").c_str());
-		}
+        if (attemptVCL == -1)
+        {
+		    int attemptOBJ = loadObjModel(models, filePath, fileName+".obj");
 
-		return attemptOBJ;
+		    if (attemptOBJ == -1)
+		    {
+			    std::fprintf(stderr, "Error: Cannot load file '%s' or '%s'\n", 
+				    ((filePath + fileName) + ".bin").c_str(), 
+				    ((filePath + fileName) + ".obj").c_str());
+		    }
+
+            return attemptOBJ;
+        }
+
+		return attemptVCL;
 	}
 
-	return attemptBinary;
+	return attemptBinaryOBJ;
 }
 
 //Each TexturedModel contained within 'models' must be deleted later.
@@ -192,6 +199,155 @@ int loadBinaryModel(std::list<TexturedModel*>* models, std::string filePath, std
 			processVertexBinary(f[0], f[1], f[2], &vertices, &indices);
 			processVertexBinary(f[3], f[4], f[5], &vertices, &indices);
 			processVertexBinary(f[6], f[7], f[8], &vertices, &indices);
+		}
+
+		//save the model we've been building so far...
+		removeUnusedVertices(&vertices);
+
+		std::vector<float> verticesArray;
+		std::vector<float> texturesArray;
+		std::vector<float> normalsArray;
+		std::vector<float> colorsArray;
+		convertDataToArrays(&vertices, &textures, &normals, &verticesArray, &texturesArray, &normalsArray, &colorsArray);
+		rawModelsList.push_back(Loader::loadToVAO(&verticesArray, &texturesArray, &normalsArray, &colorsArray, &indices));
+	}
+
+	fclose(file);
+
+	//go through rawModelsList and modelTextures to construct and add to the given TexturedModel list
+	for (unsigned int i = 0; i < rawModelsList.size(); i++)
+	{
+		TexturedModel* tm = new TexturedModel(&rawModelsList[i], &modelTextures[i]); INCR_NEW("TexturedModel");
+		models->push_back(tm);
+	}
+
+	for (auto vertex : vertices)
+	{
+		delete vertex; INCR_DEL("Vertex");
+	}
+
+	modelTextures.clear();
+	modelTexturesList.clear();
+	textureNamesList.clear();
+
+	modelTextures.shrink_to_fit();
+	modelTexturesList.shrink_to_fit();
+	textureNamesList.shrink_to_fit();
+
+	return 0;
+}
+
+//Each TexturedModel contained within 'models' must be deleted later.
+int loadVclModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName)
+{
+	if (models->size() > 0)
+	{
+		return 1;
+	}
+
+	FILE* file = nullptr;
+	int err = fopen_s(&file, (filePath+fileName).c_str(), "rb");
+    if (file == nullptr || err != 0)
+	{
+        //std::fprintf(stderr, "Error: Cannot load file '%s'\n", (filePath + fileName).c_str());
+		//std::fprintf(stderr, "fopen_s error code: '%d'\n", err);
+		return -1;
+    }
+
+	char fileType[4];
+	fread(fileType, sizeof(char), 4, file);
+	if (fileType[0] != 'v' || 
+		fileType[1] != 'c' ||
+		fileType[2] != 'l' ||
+		fileType[3] != 0)
+	{
+		std::fprintf(stdout, "Error: File '%s' is not a valid .binvcl file\n", (filePath+fileName).c_str());
+		return -2;
+	}
+
+	std::string line;
+
+	std::string mtlname = "";
+	std::vector<Vertex*>  vertices;
+	std::vector<Vector2f> textures;
+	std::vector<Vector3f> normals;
+	std::vector<std::string> indiceMaterials;
+	std::vector<RawModel> rawModelsList;
+
+	int mtllibLength;
+	fread(&mtllibLength, sizeof(int), 1, file);
+	for (int i = 0; i < mtllibLength; i++)
+	{
+		char nextChar;
+		fread(&nextChar, sizeof(char), 1, file);
+		mtlname = mtlname + nextChar;
+	}
+	parseMtl(filePath, mtlname);
+
+
+	int numVertices;
+	fread(&numVertices, sizeof(int), 1, file);
+	for (int i = 0; i < numVertices; i++)
+	{
+		float t[6];
+		fread(t, sizeof(float), 6, file);
+
+		Vector3f vertex(t[0], t[1], t[2]);
+		Vertex* newVertex = new Vertex((int)vertices.size(), &vertex); INCR_NEW("Vertex");
+        newVertex->color = Vector3f(t[3], t[4], t[5]);
+		vertices.push_back(newVertex);
+	}
+
+	int numTexCoords;
+	fread(&numTexCoords, sizeof(int), 1, file);
+	for (int i = 0; i < numTexCoords; i++)
+	{
+		float t[2];
+		fread(t, sizeof(float), 2, file);
+
+		Vector2f texCoord(t[0], t[1]);
+		textures.push_back(texCoord);
+	}
+
+	Vector3f normal(0, 1, 0); //hard coded normal of up
+	normals.push_back(normal);
+
+	int numMaterials;
+	fread(&numMaterials, sizeof(int), 1, file);
+	for (int m = 0; m < numMaterials; m++)
+	{
+		int matnameLength;
+		fread(&matnameLength, sizeof(int), 1, file);
+		std::string matname = "";
+		for (int c = 0; c < matnameLength; c++)
+		{
+			char nextChar;
+			fread(&nextChar, sizeof(char), 1, file);
+			matname = matname + nextChar;
+		}
+		indiceMaterials.push_back(matname);
+
+		for (unsigned int i = 0; i < textureNamesList.size(); i++) //search for the right texture to use based off its name
+		{
+			std::string testName = textureNamesList[i];
+			if (testName == matname) //we've found the right texture!
+			{
+				modelTextures.push_back(modelTexturesList[i]); //put a copy of the texture into modelTextures
+			}
+		}
+
+		std::vector<int> indices;
+		int numFaces;
+		fread(&numFaces, sizeof(int), 1, file);
+		for (int i = 0; i < numFaces; i++)
+		{
+			int f[6];
+
+			fread(&f[0], sizeof(int), 6, file);
+
+			processVertexBinary(f[0], f[1], 1, &vertices, &indices);
+			processVertexBinary(f[2], f[3], 1, &vertices, &indices);
+			processVertexBinary(f[4], f[5], 1, &vertices, &indices);
 		}
 
 		//save the model we've been building so far...

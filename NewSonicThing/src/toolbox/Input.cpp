@@ -124,16 +124,85 @@ void Input::pollInputs()
 		int axesCount;
 		const float *axes = glfwGetJoystickAxes(CONTROLLER_ID, &axesCount);
 
-		Input::inputs.INPUT_X = axes[STICK_LX] * STICK_LX_SCALE;
-		Input::inputs.INPUT_Y = axes[STICK_LY] * STICK_LY_SCALE;
+		Input::inputs.INPUT_X = axes[STICK_LX];
+		Input::inputs.INPUT_Y = axes[STICK_LY];
 
-		Input::inputs.INPUT_X2 = axes[STICK_RX] * STICK_RX_SCALE;
-		Input::inputs.INPUT_Y2 = axes[STICK_RY] * STICK_RY_SCALE;
+		Input::inputs.INPUT_X2 = axes[STICK_RX];
+		Input::inputs.INPUT_Y2 = axes[STICK_RY];
 
-		if (abs(Input::inputs.INPUT_X)  < STICK_LXDEADZONE) { Input::inputs.INPUT_X  = 0; }
-		if (abs(Input::inputs.INPUT_Y)  < STICK_LYDEADZONE) { Input::inputs.INPUT_Y  = 0; }
-		if (abs(Input::inputs.INPUT_X2) < STICK_RXDEADZONE) { Input::inputs.INPUT_X2 = 0; }
-		if (abs(Input::inputs.INPUT_Y2) < STICK_RYDEADZONE) { Input::inputs.INPUT_Y2 = 0; }
+		if (abs(Input::inputs.INPUT_X)  < STICK_LXDEADZONE)
+        { 
+            Input::inputs.INPUT_X  = 0;
+        }
+        else
+        {
+            const float RANGE = 1.0f - STICK_LXDEADZONE;
+            if (Input::inputs.INPUT_X >= 0)
+            {
+                Input::inputs.INPUT_X = (Input::inputs.INPUT_X - STICK_LXDEADZONE)/RANGE;
+            }
+            else
+            {
+                Input::inputs.INPUT_X = (Input::inputs.INPUT_X + STICK_LXDEADZONE)/RANGE;
+            }
+        }
+
+		if (abs(Input::inputs.INPUT_Y)  < STICK_LYDEADZONE)
+        {
+            Input::inputs.INPUT_Y  = 0;
+        }
+        else
+        {
+            const float RANGE = 1.0f - STICK_LYDEADZONE;
+            if (Input::inputs.INPUT_Y >= 0)
+            {
+                Input::inputs.INPUT_Y = (Input::inputs.INPUT_Y - STICK_LYDEADZONE)/RANGE;
+            }
+            else
+            {
+                Input::inputs.INPUT_Y = (Input::inputs.INPUT_Y + STICK_LYDEADZONE)/RANGE;
+            }
+        }
+
+		if (abs(Input::inputs.INPUT_X2) < STICK_RXDEADZONE)
+        {
+            Input::inputs.INPUT_X2 = 0;
+        }
+        else
+        {
+            const float RANGE = 1.0f - STICK_RXDEADZONE;
+            if (Input::inputs.INPUT_X2 >= 0)
+            {
+                Input::inputs.INPUT_X2 = (Input::inputs.INPUT_X2 - STICK_RXDEADZONE)/RANGE;
+            }
+            else
+            {
+                Input::inputs.INPUT_X2 = (Input::inputs.INPUT_X2 + STICK_RXDEADZONE)/RANGE;
+            }
+        }
+
+
+		if (abs(Input::inputs.INPUT_Y2) < STICK_RYDEADZONE)
+        {
+            Input::inputs.INPUT_Y2 = 0;
+        }
+        else
+        {
+            const float RANGE = 1.0f - STICK_RYDEADZONE;
+            if (Input::inputs.INPUT_Y2 >= 0)
+            {
+                Input::inputs.INPUT_Y2 = (Input::inputs.INPUT_Y2 - STICK_RYDEADZONE)/RANGE;
+            }
+            else
+            {
+                Input::inputs.INPUT_Y2 = (Input::inputs.INPUT_Y2 + STICK_RYDEADZONE)/RANGE;
+            }
+        }
+
+        Input::inputs.INPUT_X  *= STICK_LX_SCALE;
+		Input::inputs.INPUT_Y  *= STICK_LY_SCALE;
+		Input::inputs.INPUT_X2 *= STICK_RX_SCALE;
+		Input::inputs.INPUT_Y2 *= STICK_RY_SCALE;
 
 		Input::inputs.INPUT_X2 = Input::inputs.INPUT_X2 * stickSensitivityX;
 		Input::inputs.INPUT_Y2 = Input::inputs.INPUT_Y2 * stickSensitivityY;
@@ -277,13 +346,13 @@ void Input::pollInputs()
 		}
         std::fprintf(stdout, "diff = %d\n", Global::countNew-Global::countDelete);
 
-        //extern std::unordered_map<std::string, int> heapObjects;
-        //std::unordered_map<std::string, int>::iterator it = heapObjects.begin();
-		//while (it != heapObjects.end())
-		//{
-        //    std::fprintf(stdout, "'%s' count: %d\n", it->first.c_str(), it->second);
-		//	it++;
-		//}
+        extern std::unordered_map<std::string, int> heapObjects;
+        std::unordered_map<std::string, int>::iterator it = heapObjects.begin();
+		while (it != heapObjects.end())
+		{
+            std::fprintf(stdout, "'%s' count: %d\n", it->first.c_str(), it->second);
+			it++;
+		}
 
 		//Loader::printInfo();
 	}

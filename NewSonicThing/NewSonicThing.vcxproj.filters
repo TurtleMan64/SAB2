@@ -438,6 +438,15 @@
     <ClCompile Include="src\entities\GoalRing.cpp">
       <Filter>Source Files\entities</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\Point.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\Rocket.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\MetalHarbor\MH_StageManager.cpp">
+      <Filter>Source Files\entities\MetalHarbor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.h">
@@ -772,6 +781,15 @@
     </ClInclude>
     <ClInclude Include="src\entities\goalring.h">
       <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\point.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\rocket.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\MetalHarbor\mhstagemanager.h">
+      <Filter>Source Files\entities\MetalHarbor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
