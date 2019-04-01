@@ -292,7 +292,7 @@ void Car::step()
 		moveMeAir();
 	}
 
-	if (!isGrinding)
+	if (!isGrinding && !onRocket)
 	{
 		//Twisting camera from user input
 		camDir = Maths::rotatePoint(&camDir, &relativeUp, -inputX2*dt);
@@ -753,60 +753,12 @@ void Car::step()
 
 	camDir.normalize();
 
-	//animating us
+	//Animating us
 	updateAnimationValues();
 	animate();
 
 	//Animating the camera
-
-	Master_makeProjectionMatrix();
-
-	Vector3f camOffset(&camDirSmooth);
-	camOffset.normalize();
-	camOffset.scale(camRadius);
-
-	float rotationVector[3];
-	Maths::rotatePoint(rotationVector, 0, 0, 0, camDirSmooth.x, camDirSmooth.y, camDirSmooth.z, relativeUpSmooth.x, relativeUpSmooth.y, relativeUpSmooth.z, -(float)(Maths::PI/2));
-
-	float newCameraOffset[3];
-	Maths::rotatePoint(newCameraOffset, 0, 0, 0, rotationVector[0], rotationVector[1], rotationVector[2], camOffset.x, camOffset.y, camOffset.z, 0);
-	camOffset.set(newCameraOffset[0], newCameraOffset[1], newCameraOffset[2]);
-
-	Vector3f camHeight(&relativeUpSmooth);
-	camHeight.normalize();
-	camHeight.scale(camHeightOffset);
-
-	Vector3f eye(getPosition());
-	eye = eye - camOffset;
-	eye = eye + camHeight;
-
-	Vector3f target(getPosition());
-	target = target + camHeight;
-
-	Vector3f up(&relativeUpSmooth);
-	up.normalize();
-
-	float newUp[3];
-	Maths::rotatePoint(newUp, 0, 0, 0, rotationVector[0], rotationVector[1], rotationVector[2], up.x, up.y, up.z, 0);
-	up.set(newUp[0], newUp[1], newUp[2]);
-
-	Vector3f camDelta = eye - target;
-	camDelta.setLength(5); //this is what causes metal harbor to go through cam at beginning
-	Vector3f camStart = target + camDelta;
-	CollisionChecker::debug = Input::inputs.INPUT_ACTION4;
-	//std::fprintf(stdout, "camStart = (%f, %f, %f)  \ncamEnd = (%f, %f, %f)\n", camStart.x, camStart.y, camStart.z, eye.x, eye.y, eye.z);
-	if (CollisionChecker::checkCollision(camStart.x, camStart.y, camStart.z, eye.x, eye.y, eye.z))
-	{
-        //std::fprintf(stdout, "there was a collision");
-		Vector3f delta = eye - target;
-		delta.setLength(3);
-		Vector3f newPos(CollisionChecker::getCollidePosition());
-		newPos = newPos - delta;
-		eye.set(&newPos);
-	}
-	CollisionChecker::debug = false;
-
-	Global::gameCamera->setViewMatrixValues(&eye, &target, &up);
+	refreshCamera();
 
 	Global::gameMainVehicleSpeed = (int)(vel.length());
 
@@ -1340,30 +1292,11 @@ std::list<TexturedModel*>* Car::getModels()
 
 void Car::loadVehicleInfo()
 {
-	//if (Car::models[vehicleID].size() > 0)
-	{
-		//return;
-	}
-
 	#ifdef DEV_MODE
 	std::fprintf(stdout, "Loading Car static models...\n");
 	#endif
 	
 	ManiaSonicModel::loadStaticModels();
-	
-	//std::string modelFolder = "";
-	//std::string modelName = "";
-	//switch (vehicleID)
-	//{
-	//	case 0: modelFolder = "res/Models/Characters/SADXSonic/";   modelName = "TPose";           break;
-	//	case 4: modelFolder = "res/Models/Machines/Arwing/";       modelName = "Arwing";       break;
-	//	case 5: modelFolder = "res/Models/Machines/RedGazelle/";   modelName = "RedGazelle";   break;
-	//	case 1: modelFolder = "res/Models/Machines/TwinNorita/";   modelName = "TwinNorita";   break;
-	//	case 3: modelFolder = "res/Models/Machines/BlackBull/";    modelName = "BlackBull";    break;
-	//	case 2: modelFolder = "res/Models/Machines/SonicPhantom/"; modelName = "SonicPhantom"; break;
-	//	default: break;
-	//}
-	//loadModel(&Car::models[vehicleID], modelFolder, modelName);
 }
 
 void Car::deleteStaticModels()
@@ -1373,15 +1306,6 @@ void Car::deleteStaticModels()
 	#endif
 	
 	ManiaSonicModel::deleteStaticModels();
-	//
-	//for (int i = 0; i < 30; i++)
-	//{
-	//	std::list<TexturedModel*>* e = &Car::models[i];
-	//	if (e->size() > 0)
-	//	{
-	//		Entity::deleteModels(e);
-	//	}
-	//}
 }
 
 const bool Car::isVehicle()
@@ -1453,4 +1377,59 @@ void Car::setCameraDirection(Vector3f* newDirection)
 {
     camDir.set(newDirection);
     camDirSmooth.set(newDirection);
+}
+
+void Car::refreshCamera()
+{
+    //Animating the camera
+
+    //only need this in case of FOV change
+	//Master_makeProjectionMatrix();
+
+	Vector3f camOffset(&camDirSmooth);
+	camOffset.normalize();
+	camOffset.scale(camRadius);
+
+	float rotationVector[3];
+	Maths::rotatePoint(rotationVector, 0, 0, 0, camDirSmooth.x, camDirSmooth.y, camDirSmooth.z, relativeUpSmooth.x, relativeUpSmooth.y, relativeUpSmooth.z, -(float)(Maths::PI/2));
+
+	float newCameraOffset[3];
+	Maths::rotatePoint(newCameraOffset, 0, 0, 0, rotationVector[0], rotationVector[1], rotationVector[2], camOffset.x, camOffset.y, camOffset.z, 0);
+	camOffset.set(newCameraOffset[0], newCameraOffset[1], newCameraOffset[2]);
+
+	Vector3f camHeight(&relativeUpSmooth);
+	camHeight.normalize();
+	camHeight.scale(camHeightOffset);
+
+	Vector3f eye(getPosition());
+	eye = eye - camOffset;
+	eye = eye + camHeight;
+
+	Vector3f target(getPosition());
+	target = target + camHeight;
+
+	Vector3f up(&relativeUpSmooth);
+	up.normalize();
+
+	float newUp[3];
+	Maths::rotatePoint(newUp, 0, 0, 0, rotationVector[0], rotationVector[1], rotationVector[2], up.x, up.y, up.z, 0);
+	up.set(newUp[0], newUp[1], newUp[2]);
+
+	Vector3f camDelta = eye - target;
+	camDelta.setLength(5); //this is what causes metal harbor to go through cam at beginning
+	Vector3f camStart = target + camDelta;
+	//CollisionChecker::debug = Input::inputs.INPUT_ACTION4;
+	//std::fprintf(stdout, "camStart = (%f, %f, %f)  \ncamEnd = (%f, %f, %f)\n", camStart.x, camStart.y, camStart.z, eye.x, eye.y, eye.z);
+	if (CollisionChecker::checkCollision(camStart.x, camStart.y, camStart.z, eye.x, eye.y, eye.z))
+	{
+        //std::fprintf(stdout, "there was a collision");
+		Vector3f delta = eye - target;
+		delta.setLength(3);
+		Vector3f newPos(CollisionChecker::getCollidePosition());
+		newPos = newPos - delta;
+		eye.set(&newPos);
+	}
+	//CollisionChecker::debug = false;
+
+	Global::gameCamera->setViewMatrixValues(&eye, &target, &up);
 }

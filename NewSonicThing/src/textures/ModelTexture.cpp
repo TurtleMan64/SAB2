@@ -1,105 +1,135 @@
 #include <glad/glad.h>
 #include <iostream>
+#include <vector>
+#include <unordered_set>
 
 #include "modeltexture.h"
 #include "../renderEngine/renderEngine.h"
 
+std::unordered_set<ModelTexture*> ModelTexture::textureReferences;
+
 ModelTexture::ModelTexture()
 {
-	this->shineDamper = 20;
-	this->reflectivity = 0.02f;
-	this->hasTransparency = 0;
-	this->useFakeLighting = 0;
+	this->shineDamper = 20.0f;
+	this->reflectivity = 0.0f;
+	this->hasTransparency = false;
+	this->useFakeLighting = false;
 	this->glowAmount = 0;
+    this->isAnimated = false;
+    this->animatedProgress = 0.0f;
+    this->animationSpeed = 0.0f;
+    this->currentImageIndex = 0;
+    this->smoothMixing = true;
 }
 
-ModelTexture::ModelTexture(GLuint texID)
+ModelTexture::ModelTexture(std::vector<GLuint>* texIDs)
 {
-	this->texID = texID;
-	this->shineDamper = 20;
-	this->reflectivity = 0.02f;
-	this->hasTransparency = 0;
-	this->useFakeLighting = 0;
+    for (GLuint id : (*texIDs))
+    {
+        this->texIDs.push_back(id);
+    }
+	this->shineDamper = 20.0f;
+	this->reflectivity = 0.0f;
+	this->hasTransparency = false;
+	this->useFakeLighting = false;
 	this->glowAmount = 0;
+    this->isAnimated = false;
+    this->animatedProgress = 0.0f;
+    this->animationSpeed = 0.0f;
+    this->currentImageIndex = 0;
+    this->smoothMixing = true;
+    this->scrollX = 0.0f;
+	this->scrollY = 0.0f;
+
+    if (this->texIDs.size() > 1)
+    {
+        this->isAnimated = true;
+    }
+}
+
+ModelTexture::ModelTexture(ModelTexture* other)
+{
+    std::vector<GLuint>* otherIDs = other->getIDs();
+    for (GLuint id : (*otherIDs))
+    {
+        this->texIDs.push_back(id);
+    }
+	this->shineDamper       = other->shineDamper;
+	this->reflectivity      = other->reflectivity;
+	this->hasTransparency   = other->hasTransparency;
+	this->useFakeLighting   = other->useFakeLighting;
+	this->glowAmount        = other->glowAmount;
+    this->isAnimated        = other->isAnimated;
+    this->animatedProgress  = other->animatedProgress;
+    this->animationSpeed    = other->animationSpeed;
+    this->currentImageIndex = other->currentImageIndex;
+    this->smoothMixing      = other->smoothMixing;
+    this->scrollX           = other->scrollX;
+	this->scrollY           = other->scrollY;
+
+    if (this->texIDs.size() > 1)
+    {
+        this->isAnimated = true;
+    }
 }
 
 GLuint ModelTexture::getID()
 {
-	return texID;
+	return texIDs[currentImageIndex];
 }
 
-void ModelTexture::setID(GLuint newID)
+GLuint ModelTexture::getID2()
 {
-	texID = newID;
+	return texIDs[(currentImageIndex+1)%texIDs.size()];
 }
 
-float ModelTexture::getShineDamper()
+bool ModelTexture::hasMultipleImages()
 {
-	return shineDamper;
-}
-void ModelTexture::setShineDamper(float newShineDamper)
-{
-	shineDamper = newShineDamper;
-}
-
-float ModelTexture::getReflectivity()
-{
-	return reflectivity;
-}
-void ModelTexture::setReflectivity(float newReflectivity)
-{
-	reflectivity = newReflectivity;
-}
-
-int ModelTexture::getHasTransparency()
-{
-	return hasTransparency;
-}
-void ModelTexture::setHasTransparency(int newHasTransparency)
-{
-	hasTransparency = newHasTransparency;
-}
-
-int ModelTexture::getUsesFakeLighting()
-{
-	return useFakeLighting;
-}
-void ModelTexture::setUsesFakeLighting(int newUseFakeLighting)
-{
-	useFakeLighting = newUseFakeLighting;
-}
-
-float ModelTexture::getGlowAmount()
-{
-	return glowAmount;
-}
-
-void ModelTexture::setGlowAmount(float newGlowAmount)
-{
-	glowAmount = newGlowAmount;
-}
-
-void ModelTexture::setScrollX(float speedX)
-{
-	scrollX = speedX;
-}
-
-void ModelTexture::setScrollY(float speedY)
-{
-	scrollY = speedY;
-}
-
-float ModelTexture::getScrollX()
-{
-	return scrollX;
-}
-
-float ModelTexture::getScrollY()
-{
-	return scrollY;
+    return isAnimated;
 }
 
 void ModelTexture::deleteMe()
 {
-	Loader::deleteTexture(texID);
+    for (GLuint id : texIDs)
+    {
+	    Loader::deleteTexture(id);
+    }
+    texIDs.clear();
+    ModelTexture::textureReferences.erase(this);
+}
+
+float ModelTexture::mixFactor()
+{
+    if (smoothMixing)
+    {
+        return animatedProgress; //might have to do 1- heere
+    }
+
+    return 0.0f;
+}
+
+std::vector<GLuint>* ModelTexture::getIDs()
+{
+    return &texIDs;
+}
+
+void ModelTexture::addMeToAnimationsSetIfNeeded()
+{
+    if (isAnimated)
+    {
+        ModelTexture::textureReferences.insert(this);
+    }
+}
+
+void ModelTexture::updateAnimations(float dt)
+{
+    for (ModelTexture* tex : ModelTexture::textureReferences)
+    {
+        tex->animatedProgress += tex->animationSpeed*dt;
+        if (tex->animatedProgress >= 1.0f)
+        {
+            tex->currentImageIndex = (tex->currentImageIndex+1)%tex->texIDs.size();
+            tex->animatedProgress-=1.0f;
+        }
+    }
 }

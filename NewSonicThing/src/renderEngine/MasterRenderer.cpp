@@ -266,14 +266,14 @@ void prepare()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(RED, GREEN, BLUE, 1);
 
-	glActiveTexture(GL_TEXTURE5);
-	glBindTexture(GL_TEXTURE_2D, Master_getShadowMapTexture());
+	//glActiveTexture(GL_TEXTURE5);
+	//glBindTexture(GL_TEXTURE_2D, Master_getShadowMapTexture());
 
-	glActiveTexture(GL_TEXTURE6);
-	glBindTexture(GL_TEXTURE_2D, Master_getShadowMapTexture2());
+	//glActiveTexture(GL_TEXTURE6);
+	//glBindTexture(GL_TEXTURE_2D, Master_getShadowMapTexture2());
 
-	glActiveTexture(GL_TEXTURE7);
-	glBindTexture(GL_TEXTURE_2D, randomMap);
+	//glActiveTexture(GL_TEXTURE7);
+	//glBindTexture(GL_TEXTURE_2D, randomMap);
 }
 
 void prepareTransparentRender()

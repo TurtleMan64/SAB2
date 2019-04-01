@@ -19,7 +19,6 @@ void ParticleMaster::init(Matrix4f* projectionMatrix)
 	ParticleMaster::renderer = new ParticleRenderer(projectionMatrix); INCR_NEW("ParticleRenderer");
 }
 
-//There was a crash in here once for some reason... something with 'list'?
 void ParticleMaster::update(Camera* cam)
 {
 	std::unordered_map<ParticleTexture*, std::list<Particle*>>::iterator mapIt = ParticleMaster::particles.begin();
@@ -33,14 +32,14 @@ void ParticleMaster::update(Camera* cam)
 
 		deletedEntry = false;
 
-		while (it != list->end())
+		while (!deletedEntry && it != list->end())
 		{
 			Particle* p = *it;
 
 			bool stillAlive = p->update(cam);
 			if (stillAlive == false)
 			{
-				delete p; INCR_DEL("Particle"); //maybe switch this with next line?
+				delete p; INCR_DEL("Particle");
 				it = list->erase(it);
 
 				if (list->size() == 0)
@@ -57,26 +56,9 @@ void ParticleMaster::update(Camera* cam)
 
 		if (deletedEntry == false)
 		{
-			//InsertionSort::sortHighToLow(list); //Maybe remove this for debug?
 			mapIt++;
 		}
 	}
-	/*
-	for (auto entry : particles)
-	{
-		std::list<Particle*>* list = &entry.second;
-
-		for (Particle* particle : (*list))
-		{
-			bool stillAlive = particle->update(cam);
-			if (stillAlive == false)
-			{
-
-			}
-		}
-
-		InsertionSort::sortHighToLow(list);
-	}*/
 }
 
 void ParticleMaster::renderParticles(Camera* camera, float brightness, int clipSide)

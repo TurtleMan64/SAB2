@@ -198,7 +198,7 @@ void Rail::step()
 					    float dot = currentSegment->pointsDiff.dot(&newVel);
 					    playerSpeed = Maths::sign(dot)*newVel.length();
 
-					    timer = 0.2f; //0.2 seconds before we can land on the rail again
+					    timer = 0.1f; //0.1 seconds before we can land on the rail again
 				    }
 			    }
             }
@@ -320,96 +320,11 @@ void Rail::step()
 				}
 			}
 		}
-
-		/*
-		float newProgress = currentSegment->playerProgress + (playerSpeed/currentSegment->length)*dt;
-
-		if (newProgress < 0) //go to previous rail segment
-		{
-			if (currentSegmentIndex > 0)
-			{
-				float totalDistance = (currentSegment->playerProgress - newProgress)/currentSegment->length;
-				float distanceAlreadyUsed = currentSegment->playerProgress/currentSegment->length;
-				float distanceRemaining = totalDistance - distanceAlreadyUsed;
-
-				//clean up this segment
-				currentSegment->playerIsOn = false;
-				currentSegment->playerProgress = 0;
-
-				currentSegmentIndex--;
-				currentSegment = &rails[currentSegmentIndex];
-				currentSegment->playerIsOn = true;
-
-				float newSegmentProgress = 1.0f - distanceRemaining/currentSegment->length;
-				currentSegment->playerProgress = newSegmentProgress;
-				Vector3f progessVec = currentSegment->pointsDiff.scaleCopy(newSegmentProgress);
-				Vector3f nP = currentSegment->pointBegin + progessVec;
-				Global::gameMainVehicle->setPosition(&nP);
-				//Global::gameMainVehicle->increasePosition(currentSegment->normalBegin.x*1.0f, 
-				//										  currentSegment->normalBegin.y*1.0f, 
-				//										  currentSegment->normalBegin.z*1.0f);
-				Global::gameMainVehicle->updateTransformationMatrix();
-				Global::gameMainVehicle->setRelativeUp(&currentSegment->normalBegin);
-			}
-			else
-			{
-				Global::gameMainVehicle->stopGrinding();
-				currentSegment = nullptr;
-				currentSegmentIndex = -1;
-			}
-		}
-		else if (newProgress < 1) //stay on current segment
-		{
-			//Global::gameMainVehicle->setPosition(&nextPosition);
-			currentSegment->playerProgress = newProgress;
-			Vector3f progessVec = currentSegment->pointsDiff.scaleCopy(newProgress);
-			Vector3f nP = currentSegment->pointBegin + progessVec;
-			Global::gameMainVehicle->setPosition(&nP);
-			//Global::gameMainVehicle->increasePosition(currentSegment->normalBegin.x*1.0f, 
-			//										  currentSegment->normalBegin.y*1.0f, 
-			//										  currentSegment->normalBegin.z*1.0f);
-			Global::gameMainVehicle->updateTransformationMatrix();
-
-			Vector3f newVel(currentSegment->pointsDiff);
-			newVel.normalize();
-			newVel.scale(playerSpeed);
-			Global::gameMainVehicle->setVelocity(newVel.x, newVel.y, newVel.z);
-			Global::gameMainVehicle->setRelativeUp(&currentSegment->normalBegin);
-		}
-		else //go to next rail segment
-		{
-			if (currentSegmentIndex < ((int)rails.size())-1)
-			{
-				float totalDistance = (newProgress - currentSegment->playerProgress)/currentSegment->length;
-				float distanceAlreadyUsed = (1.0f - currentSegment->playerProgress)/currentSegment->length;
-				float distanceRemaining = totalDistance - distanceAlreadyUsed;
-
-				//clean up this segment
-				currentSegment->playerIsOn = false;
-				currentSegment->playerProgress = 0;
-
-				currentSegmentIndex++;
-				currentSegment = &rails[currentSegmentIndex];
-				currentSegment->playerIsOn = true;
-
-				float newSegmentProgress = distanceRemaining/currentSegment->length;
-				currentSegment->playerProgress = newSegmentProgress;
-				Vector3f progessVec = currentSegment->pointsDiff.scaleCopy(newSegmentProgress);
-				Vector3f nP = currentSegment->pointBegin + progessVec;
-				Global::gameMainVehicle->setPosition(&nP);
-				//Global::gameMainVehicle->increasePosition(currentSegment->normalBegin.x*1.0f, 
-				//										  currentSegment->normalBegin.y*1.0f, 
-				//										  currentSegment->normalBegin.z*1.0f);
-				Global::gameMainVehicle->updateTransformationMatrix();
-				Global::gameMainVehicle->setRelativeUp(&currentSegment->normalBegin);
-			}
-			else
-			{
-				Global::gameMainVehicle->stopGrinding();
-				currentSegment = nullptr;
-				currentSegmentIndex = -1;
-			}
-		}
-		*/
 	}
+
+    if (currentSegment != nullptr)
+    {
+        Global::gameMainVehicle->animate();
+        Global::gameMainVehicle->refreshCamera();
+    }
 }

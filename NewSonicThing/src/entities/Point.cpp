@@ -1,5 +1,6 @@
 #include "point.h"
 #include "../toolbox/vector.h"
+#include "../engineTester/main.h"
 
 Point::Point()
 {
@@ -17,6 +18,11 @@ Point::Point(float x, float y, float z, int id)
 	this->rotZ = 0;
 	this->scale = 1;
 	this->visible = false;
+}
+
+void Point::step()
+{
+    Main_deleteEntity(this);
 }
 
 int Point::getID()

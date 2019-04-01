@@ -55,23 +55,30 @@ std::vector<std::string> textureNamesList;
 
 int loadModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName)
 {
-	int attemptBinary = loadBinaryModel(models, filePath, fileName+".binobj");
+	int attemptBinaryOBJ = loadBinaryModel(models, filePath, fileName+".binobj");
 	
-	if (attemptBinary == -1)
+	if (attemptBinaryOBJ == -1)
 	{
-		int attemptOBJ = loadObjModel(models, filePath, fileName+".obj");
+        int attemptVCL = loadVclModel(models, filePath, fileName+".binvcl");
 
-		if (attemptOBJ == -1)
-		{
-			std::fprintf(stderr, "Error: Cannot load file '%s' or '%s'\n", 
-				((filePath + fileName) + ".bin").c_str(), 
-				((filePath + fileName) + ".obj").c_str());
-		}
+        if (attemptVCL == -1)
+        {
+		    int attemptOBJ = loadObjModel(models, filePath, fileName+".obj");
 
-		return attemptOBJ;
+		    if (attemptOBJ == -1)
+		    {
+			    std::fprintf(stderr, "Error: Cannot load file '%s' or '%s'\n", 
+				    ((filePath + fileName) + ".bin").c_str(), 
+				    ((filePath + fileName) + ".obj").c_str());
+		    }
+
+            return attemptOBJ;
+        }
+
+		return attemptVCL;
 	}
 
-	return attemptBinary;
+	return attemptBinaryOBJ;
 }
 
 //Each TexturedModel contained within 'models' must be deleted later.
@@ -192,6 +199,155 @@ int loadBinaryModel(std::list<TexturedModel*>* models, std::string filePath, std
 			processVertexBinary(f[0], f[1], f[2], &vertices, &indices);
 			processVertexBinary(f[3], f[4], f[5], &vertices, &indices);
 			processVertexBinary(f[6], f[7], f[8], &vertices, &indices);
+		}
+
+		//save the model we've been building so far...
+		removeUnusedVertices(&vertices);
+
+		std::vector<float> verticesArray;
+		std::vector<float> texturesArray;
+		std::vector<float> normalsArray;
+		std::vector<float> colorsArray;
+		convertDataToArrays(&vertices, &textures, &normals, &verticesArray, &texturesArray, &normalsArray, &colorsArray);
+		rawModelsList.push_back(Loader::loadToVAO(&verticesArray, &texturesArray, &normalsArray, &colorsArray, &indices));
+	}
+
+	fclose(file);
+
+	//go through rawModelsList and modelTextures to construct and add to the given TexturedModel list
+	for (unsigned int i = 0; i < rawModelsList.size(); i++)
+	{
+		TexturedModel* tm = new TexturedModel(&rawModelsList[i], &modelTextures[i]); INCR_NEW("TexturedModel");
+		models->push_back(tm);
+	}
+
+	for (auto vertex : vertices)
+	{
+		delete vertex; INCR_DEL("Vertex");
+	}
+
+	modelTextures.clear();
+	modelTexturesList.clear();
+	textureNamesList.clear();
+
+	modelTextures.shrink_to_fit();
+	modelTexturesList.shrink_to_fit();
+	textureNamesList.shrink_to_fit();
+
+	return 0;
+}
+
+//Each TexturedModel contained within 'models' must be deleted later.
+int loadVclModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName)
+{
+	if (models->size() > 0)
+	{
+		return 1;
+	}
+
+	FILE* file = nullptr;
+	int err = fopen_s(&file, (filePath+fileName).c_str(), "rb");
+    if (file == nullptr || err != 0)
+	{
+        //std::fprintf(stderr, "Error: Cannot load file '%s'\n", (filePath + fileName).c_str());
+		//std::fprintf(stderr, "fopen_s error code: '%d'\n", err);
+		return -1;
+    }
+
+	char fileType[4];
+	fread(fileType, sizeof(char), 4, file);
+	if (fileType[0] != 'v' || 
+		fileType[1] != 'c' ||
+		fileType[2] != 'l' ||
+		fileType[3] != 0)
+	{
+		std::fprintf(stdout, "Error: File '%s' is not a valid .binvcl file\n", (filePath+fileName).c_str());
+		return -2;
+	}
+
+	std::string line;
+
+	std::string mtlname = "";
+	std::vector<Vertex*>  vertices;
+	std::vector<Vector2f> textures;
+	std::vector<Vector3f> normals;
+	std::vector<std::string> indiceMaterials;
+	std::vector<RawModel> rawModelsList;
+
+	int mtllibLength;
+	fread(&mtllibLength, sizeof(int), 1, file);
+	for (int i = 0; i < mtllibLength; i++)
+	{
+		char nextChar;
+		fread(&nextChar, sizeof(char), 1, file);
+		mtlname = mtlname + nextChar;
+	}
+	parseMtl(filePath, mtlname);
+
+
+	int numVertices;
+	fread(&numVertices, sizeof(int), 1, file);
+	for (int i = 0; i < numVertices; i++)
+	{
+		float t[6];
+		fread(t, sizeof(float), 6, file);
+
+		Vector3f vertex(t[0], t[1], t[2]);
+		Vertex* newVertex = new Vertex((int)vertices.size(), &vertex); INCR_NEW("Vertex");
+        newVertex->color = Vector3f(t[3], t[4], t[5]);
+		vertices.push_back(newVertex);
+	}
+
+	int numTexCoords;
+	fread(&numTexCoords, sizeof(int), 1, file);
+	for (int i = 0; i < numTexCoords; i++)
+	{
+		float t[2];
+		fread(t, sizeof(float), 2, file);
+
+		Vector2f texCoord(t[0], t[1]);
+		textures.push_back(texCoord);
+	}
+
+	Vector3f normal(0, 1, 0); //hard coded normal of up
+	normals.push_back(normal);
+
+	int numMaterials;
+	fread(&numMaterials, sizeof(int), 1, file);
+	for (int m = 0; m < numMaterials; m++)
+	{
+		int matnameLength;
+		fread(&matnameLength, sizeof(int), 1, file);
+		std::string matname = "";
+		for (int c = 0; c < matnameLength; c++)
+		{
+			char nextChar;
+			fread(&nextChar, sizeof(char), 1, file);
+			matname = matname + nextChar;
+		}
+		indiceMaterials.push_back(matname);
+
+		for (unsigned int i = 0; i < textureNamesList.size(); i++) //search for the right texture to use based off its name
+		{
+			std::string testName = textureNamesList[i];
+			if (testName == matname) //we've found the right texture!
+			{
+				modelTextures.push_back(modelTexturesList[i]); //put a copy of the texture into modelTextures
+			}
+		}
+
+		std::vector<int> indices;
+		int numFaces;
+		fread(&numFaces, sizeof(int), 1, file);
+		for (int i = 0; i < numFaces; i++)
+		{
+			int f[6];
+
+			fread(&f[0], sizeof(int), 6, file);
+
+			processVertexBinary(f[0], f[1], 1, &vertices, &indices);
+			processVertexBinary(f[2], f[3], 1, &vertices, &indices);
+			processVertexBinary(f[4], f[5], 1, &vertices, &indices);
 		}
 
 		//save the model we've been building so far...
@@ -447,6 +603,9 @@ void parseMtl(std::string filePath, std::string fileName)
 	float currentGlowAmountValue = 0.0f;
 	float currentScrollXValue = 0.0f;
 	float currentScrollYValue = 0.0f;
+    int   currentNumImages = 1;
+    float currentAnimSpeed = 0.0f;
+    int   currentSmoothMix = 1;
 
 	while (!file.eof())
 	{
@@ -470,27 +629,63 @@ void parseMtl(std::string filePath, std::string fileName)
 				currentGlowAmountValue = 0.0f;
 				currentScrollXValue = 0.0f;
 				currentScrollYValue = 0.0f;
+                currentNumImages = 1;
+                currentAnimSpeed = 0.0f;
+                currentSmoothMix = 1;
 			}
 			else if (strcmp(lineSplit[0], "\tmap_Kd") == 0 || strcmp(lineSplit[0], "map_Kd") == 0) //end of material found, generate it with all its attrributes
 			{
 				std::string imageFilenameString = filePath+lineSplit[1];
 				char* fname = (char*)imageFilenameString.c_str();
-				ModelTexture newTexture(Loader::loadTexture(fname)); //generate new texture
-				newTexture.setShineDamper(currentShineDamperValue);
-				newTexture.setReflectivity(currentReflectivityValue);
-				newTexture.setHasTransparency(1);
-				newTexture.setUsesFakeLighting(0);
+
+                std::vector<GLuint> textureIDs;
+                textureIDs.push_back(Loader::loadTexture(fname)); //generate new texture
+
+                currentNumImages--;
+                while (currentNumImages > 0)
+                {
+                    free(lineSplit);
+
+                    getlineSafe(file, line);
+
+		            memcpy(lineBuf, line.c_str(), line.size()+1);
+
+		            lineSplit = split(lineBuf, ' ', &splitLength);
+
+                    char* nextFilename = lineSplit[0];
+
+                    if (lineSplit[0][0] == '\t')
+                    {
+                        nextFilename = &lineSplit[0][1];
+                    }
+
+                    imageFilenameString = filePath+nextFilename;
+                    fname = (char*)imageFilenameString.c_str();
+                    textureIDs.push_back(Loader::loadTexture(fname)); //load the new texture
+
+                    currentNumImages--;
+                }
+
+				ModelTexture newTexture(&textureIDs);
+
+				newTexture.shineDamper = currentShineDamperValue;
+				newTexture.reflectivity = currentReflectivityValue;
+				newTexture.hasTransparency = true;
+				newTexture.useFakeLighting = false;
 				if (currentTransparencyValue > 0.0f)
 				{
-					newTexture.setHasTransparency(0);
+                    newTexture.hasTransparency = false;
 				}
 				if (currentFakeLightingValue < 1.0f)
 				{
-					newTexture.setUsesFakeLighting(1);
+                    newTexture.useFakeLighting = true;
 				}
-				newTexture.setGlowAmount(currentGlowAmountValue);
-				newTexture.setScrollX(currentScrollXValue);
-				newTexture.setScrollY(currentScrollYValue);
+				newTexture.glowAmount = currentGlowAmountValue;
+				newTexture.scrollX = currentScrollXValue;
+				newTexture.scrollY = currentScrollYValue;
+                newTexture.animationSpeed = currentAnimSpeed;
+                newTexture.smoothMixing = (bool)currentSmoothMix;
+
 				modelTexturesList.push_back(newTexture); //put a copy of newTexture into the list
 			}
 			else if (strcmp(lineSplit[0], "\tNs") == 0 || strcmp(lineSplit[0], "Ns") == 0)
@@ -520,6 +715,28 @@ void parseMtl(std::string filePath, std::string fileName)
 			else if (strcmp(lineSplit[0], "\tscrollY") == 0 || strcmp(lineSplit[0], "scrollY") == 0)
 			{
 				currentScrollYValue = std::stof(lineSplit[1]);
+			}
+            else if (strcmp(lineSplit[0], "\tanimSpeed") == 0 || strcmp(lineSplit[0], "animSpeed") == 0)
+			{
+				currentAnimSpeed = std::stof(lineSplit[1]);
+                if (currentAnimSpeed < 0)
+                {
+                    std::fprintf(stderr, "Error: animSpeed was negative.\n");
+                    currentAnimSpeed = 0;
+                }
+			}
+            else if (strcmp(lineSplit[0], "\tnumImages") == 0 || strcmp(lineSplit[0], "numImages") == 0)
+			{
+				currentNumImages = std::stoi(lineSplit[1]);
+                if (currentNumImages < 1)
+                {
+                    std::fprintf(stderr, "Error: numImages was negative.\n");
+                    currentNumImages = 1;
+                }
+			}
+            else if (strcmp(lineSplit[0], "\tsmoothMix") == 0 || strcmp(lineSplit[0], "smoothMix") == 0)
+			{
+				currentSmoothMix = std::stoi(lineSplit[1]);
 			}
 		}
 

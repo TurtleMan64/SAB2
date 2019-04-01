@@ -25,7 +25,6 @@ res/Audio/BGM/m_harb2_loop.ogg
 water
 -329.8
 
-
 ######## Human placed objects #######
 
 # Player
@@ -35,25 +34,31 @@ water
 #6 5080.669434, 219.141556, -10209.421875
 #6 2049.853760, -268.865662, -5972.828125
 #6 2391.131836, -208.863602, -7096.957031
+
+# Ring
 0 0 0 0
 
-#92 res/Models/Levels/MetalHarbor/Rails/Rail0.txt
-#92 res/Models/Levels/MetalHarbor/Rails/Rail1.txt
-#92 res/Models/Levels/MetalHarbor/Rails/Rail2.txt
-#92 res/Models/Levels/MetalHarbor/Rails/Rail3.txt
+# Stage Manager
+91 1
+
+# Rails
 92 res/Models/Levels/MetalHarbor/Rails/Rail4.txt
 92 res/Models/Levels/MetalHarbor/Rails/Rail5.txt
 92 res/Models/Levels/MetalHarbor/Rails/Rail6.txt
 92 res/Models/Levels/MetalHarbor/Rails/Rail7.txt
 
-# Dashpads (from SAB1)
-# Commented out until the bug with spindashing being faster is fixed
-#94 3554.4 -222.66 -7824.00 0 83.7 0 1000 83.7 30
-#94 3574.4 -222.66 -7824.00 0 83.7 0 1000 83.7 30
-#94 3594.4 -222.66 -7824.00 0 83.7 0 1000 83.7 30
-#94 3560.0 -222.66 -7867.92 0 83.7 0 1000 83.7 30
-#94 3580.0 -222.66 -7867.92 0 83.7 0 1000 83.7 30
-#94 3600.0 -222.66 -7867.92 0 83.7 0 1000 83.7 30
+# Rockets
+96 5066.24 219.11 -10214.86 1
+96 5246.4 3540.19 -10215 2
+97 1 2
+96 4760.79 -268.89 -9240.97 3
+96 4757.71 -124.89 -9811.88 4
+97 3 4
+96 2024.06 -268.89 -5980.38 5
+96 2066.24 -255 -6599.64 6
+97 5 6
+
+####### Generated Objects ###########
 
 #94 3702.4 -72.82 -8041.6 0 90 0 800 90 10
 #94 3721.6 -72.82 -8041.6 0 90 0 800 90 10

@@ -1,5 +1,5 @@
-#ifndef SRSTAGEMANAGER_H
-#define SRSTAGEMANAGER_H
+#ifndef SR_STAGEMANAGER_H
+#define SR_STAGEMANAGER_H
 
 class TexturedModel;
 class Dummy;
@@ -7,7 +7,7 @@ class Dummy;
 #include <list>
 #include "../entity.h"
 
-class SRStageManager : public Entity
+class SR_StageManager : public Entity
 {
 private:
 	static std::list<TexturedModel*> modelsSkyPass1;
@@ -20,7 +20,7 @@ private:
     Dummy* skyTransparent;
 
 public:
-	SRStageManager();
+	SR_StageManager();
 
 	void step();
 

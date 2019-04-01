@@ -169,7 +169,7 @@ std::string Global::levelNameDisplay = "";
 int Global::gameRingCount = 0;
 int Global::gameScore = 0;
 int Global::gameLives = 4;
-int Global::gameClock = 0;
+float Global::gameClock = 0.0f;
 float Global::gameTotalPlaytime = 0;
 float Global::gameArcadePlaytime = 0;
 float Global::deathHeight = -100.0f;
@@ -514,12 +514,13 @@ int main()
 					e->step();
 				}
 				skySphere.step();
+                ModelTexture::updateAnimations(dt);
 				Global::gameCamera->refresh();
 				if (Global::renderParticles)
 				{
 					ParticleMaster::update(Global::gameCamera);
 				}
-				Global::gameClock++;
+				Global::gameClock+=dt;
 
 				if (Global::debugDisplay && Global::frozen)
 				{

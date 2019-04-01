@@ -155,6 +155,7 @@ void Rocket::step()
 
 	updateTransformationMatrix();
 	Global::gameMainVehicle->animate();
+	Global::gameMainVehicle->refreshCamera();
 }
 
 std::list<TexturedModel*>* Rocket::getModels()

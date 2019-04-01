@@ -35,7 +35,7 @@ void EntityRenderer::renderNEW(std::unordered_map<TexturedModel*, std::list<Enti
 		shader->loadToShadowSpaceMatrixClose(toShadowSpaceClose);
 	}
 
-	clockTime = Global::gameClock / 60.0f;
+	clockTime = Global::gameClock;
 
 	shader->loadFogGradient(SkyManager::getFogGradient());
 	shader->loadFogDensity(SkyManager::getFogDensity());
@@ -72,13 +72,20 @@ void EntityRenderer::prepareTexturedModel(TexturedModel* model)
 	{
 		//Master_enableCulling();
 	}
-	shader->loadFakeLighting(texture->getUsesFakeLighting());
-	shader->loadShineVariables(texture->getShineDamper(), texture->getReflectivity());
-	shader->loadTransparency(texture->getHasTransparency());
-	shader->loadGlowAmount(texture->getGlowAmount());
-	shader->loadTextureOffsets(clockTime*texture->getScrollX(), clockTime*texture->getScrollY());
+	shader->loadFakeLighting(texture->useFakeLighting);
+	shader->loadShineVariables(texture->shineDamper, texture->reflectivity);
+	shader->loadTransparency(texture->hasTransparency);
+	shader->loadGlowAmount(texture->glowAmount);
+	shader->loadTextureOffsets(clockTime * (texture->scrollX), clockTime * (texture->scrollY));
+    if (texture->hasMultipleImages())
+    {
+        //std::fprintf(stdout, "mix factor = %f\n", texture->animationSpeed);
+    }
+    shader->loadMixFactor(texture->mixFactor());
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture->getID());
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, texture->getID2());
 }
 
 void EntityRenderer::unbindTexturedModel()

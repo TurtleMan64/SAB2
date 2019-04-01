@@ -88,6 +88,9 @@
     <Filter Include="Source Files\entities\SkyRail">
       <UniqueIdentifier>{a3414b4d-e85a-470d-86d5-144acce47658}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\entities\GreenHill">
+      <UniqueIdentifier>{c2e0e7b4-63f1-4fb5-87dc-fef8eb7f38f1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\glad.c">
@@ -438,6 +441,18 @@
     <ClCompile Include="src\entities\GoalRing.cpp">
       <Filter>Source Files\entities</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\Point.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\Rocket.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\MetalHarbor\MH_StageManager.cpp">
+      <Filter>Source Files\entities\MetalHarbor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\GreenHill\GH_StageManager.cpp">
+      <Filter>Source Files\entities\GreenHill</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.h">
@@ -772,6 +787,18 @@
     </ClInclude>
     <ClInclude Include="src\entities\goalring.h">
       <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\point.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\rocket.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\MetalHarbor\mhstagemanager.h">
+      <Filter>Source Files\entities\MetalHarbor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\GreenHill\ghstagemanager.h">
+      <Filter>Source Files\entities\GreenHill</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

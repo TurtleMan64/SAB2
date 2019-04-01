@@ -1,11 +1,13 @@
+# Blender MTL File: 'None'
 # Material Count: 1
 
 newmtl collision
-Ns 20
-Ni 0.02
-Tr 1
+Ns 19.607843
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
 d 1.000000
-scrollX 0
-scrollY 0
-map_Kd map_Kd temp.png
-
+illum 2
+map_Kd temp.png

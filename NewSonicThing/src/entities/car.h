@@ -129,6 +129,8 @@ private:
 	bool isStomping = false;
 	bool isLightdashing = false;
 	bool isGrinding = false;
+    bool onRocket = false;
+	bool onPulley = false;
 
 	const float bounceVel = -300.0f;
 	const float bounceFactor = 0.7f;
@@ -270,10 +272,6 @@ private:
 	float inputX2;
 	float inputY2;
 
-	bool onRocket = false;
-
-	bool onPulley = false;
-
 	void moveMeGround();
 
 	void moveMeAir();
@@ -296,6 +294,10 @@ public:
 	//Call this to "redraw" sonic
 	void animate();
 
+    //updates the global camera's values based on 
+    // this player's values
+    void refreshCamera();
+
 	void setVelocity(float xVel, float yVel, float zVel);
 
 	Vector3f* getVelocity();
@@ -305,6 +307,12 @@ public:
 	void startGrinding();
 
 	void stopGrinding();
+
+    void setOnRocket(bool newOnRocket);
+
+	void setIsBall(bool newIsBall);
+
+	void setOnGround(bool newOnGround);
 
 	//called by Rail when sonic jumps off
 	void doJump();
@@ -323,11 +331,7 @@ public:
 	
 	bool isOnGround();
 
-	void setOnGround(bool newOnGround);
-
 	void setHoverTimer(float newTimer);
-	
-	void setIsBall(bool newIsBall);
 
 	void setSpindashTimer(float newSpindashTimer);
 
@@ -335,15 +339,12 @@ public:
 
 	float getHitboxVertical();
 
-	void setOnRocket(bool newOnRocket);
-
-	void setVelocityMovesPlayer(bool newVelocityMovesPlayer);
-
-	void setOnPulley(bool newOnPulley);
-
     Vector3f* getCameraDirection();
 
     void setCameraDirection(Vector3f* newDirection);
 
+	void setVelocityMovesPlayer(bool newVelocityMovesPlayer);
+
+	void setOnPulley(bool newOnPulley);
 };
 #endif

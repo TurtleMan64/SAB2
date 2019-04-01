@@ -11,20 +11,22 @@ out vec4 out_Color;
 out vec4 out_BrightColour;
 
 uniform sampler2D textureSampler;
-uniform vec3 lightColour;
+uniform sampler2D textureSampler2;
+uniform vec3  lightColour;
 uniform float shineDamper;
 uniform float reflectivity;
-uniform vec3 skyColour;
-uniform float hasTransparency;
+uniform vec3  skyColour;
+uniform int   hasTransparency;
 uniform float glowAmount;
-uniform vec3 baseColour;
+uniform vec3  baseColour;
+uniform float mixFactor;
 
 uniform float fogDensity;
 uniform float fogGradient;
 
 void main(void)
 {
-	vec4 rawTextureColour = texture(textureSampler, pass_textureCoords);
+	vec4 rawTextureColour = mix(texture(textureSampler, pass_textureCoords), texture(textureSampler2, pass_textureCoords), mixFactor);
 	rawTextureColour.rgb *= baseColour*color;
     
 	float ogTransparency = rawTextureColour.a;

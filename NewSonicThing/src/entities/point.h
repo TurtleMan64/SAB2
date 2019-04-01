@@ -12,6 +12,8 @@ public:
 	Point();
 	Point(float x, float y, float z, int id);
 
+    void step();
+
 	int getID();
 
 	const bool isPoint();

@@ -47,6 +47,10 @@
 #include "../menu/menumanager.h"
 #include "../entities/SkyRail/srstagemanager.h"
 #include "../entities/goalring.h"
+#include "../entities/point.h"
+#include "../entities/rocket.h"
+#include "../entities/MetalHarbor/mhstagemanager.h"
+#include "../entities/GreenHill/ghstagemanager.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -661,9 +665,9 @@ void LevelLoader::loadLevel(std::string levelFilename)
 
 	Global::finishStageTimer = -1.0f;
 
-	Vector3f partVel(0, 0, 0);
-	new Particle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &partVel, 0.0f,
-		1.0f, 0.0f, 50.0f, 0.0f, true, false);
+	//Vector3f partVel(0, 0, 0);
+	//new Particle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &partVel, 0.0f,
+	//	1.0f, 0.0f, 50.0f, 0.0f, true, false);
 
 	Global::gameState = STATE_RUNNING;
 
@@ -784,22 +788,33 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 			{
 				case 0:
 				{
-					GFStageManager::loadStaticModels();
-					GFStageManager* gf = new GFStageManager; INCR_NEW("Entity");
+					GF_StageManager::loadStaticModels();
+					GF_StageManager* gf = new GF_StageManager; INCR_NEW("Entity");
 					Main_addEntity(gf);
 					break;
 				}
 
-				//case 1:
-				//	G* mh = new MH_Manager; INCR_NEW
-				//	Main_addEntity(mh);
-				//	break;
+				case 1:
+                {
+                    MH_StageManager::loadStaticModels();
+					MH_StageManager* mh = new MH_StageManager; INCR_NEW("Entity");
+					Main_addEntity(mh);
+					break;
+                }
 
                 case 2:
                 {
-                    SRStageManager::loadStaticModels();
-					SRStageManager* sr = new SRStageManager; INCR_NEW("Entity");
+                    SR_StageManager::loadStaticModels();
+					SR_StageManager* sr = new SR_StageManager; INCR_NEW("Entity");
 					Main_addEntity(sr);
+					break;
+                }
+
+                case 3:
+                {
+                    GH_StageManager::loadStaticModels();
+					GH_StageManager* gh = new GH_StageManager; INCR_NEW("Entity");
+					Main_addEntity(gh);
 					break;
                 }
 
@@ -990,7 +1005,7 @@ void LevelLoader::freeAllStaticModels()
 	Car::deleteStaticModels();
 	Checkpoint::deleteStaticModels();
 	JumpRamp::deleteStaticModels();
-	GFStageManager::deleteStaticModels();
+	GF_StageManager::deleteStaticModels();
 	Ring::deleteStaticModels();
 	Dashpad::deleteStaticModels();
 	SpeedRamp::deleteStaticModels();
@@ -998,8 +1013,11 @@ void LevelLoader::freeAllStaticModels()
 	Spring::deleteStaticModels();
 	MH_StaticObjects::deleteStaticModels();
 	Pulley::deleteStaticModels();
-    SRStageManager::deleteStaticModels();
+    SR_StageManager::deleteStaticModels();
+    MH_StageManager::deleteStaticModels();
     GoalRing::deleteStaticModels();
+    Rocket::deleteStaticModels();
+    GH_StageManager::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()

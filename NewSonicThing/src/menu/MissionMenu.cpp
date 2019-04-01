@@ -30,6 +30,7 @@ MissionMenu::MissionMenu()
 	this->offsetCurr = 0.0f;
 	this->offsetTarget = 0.0f;
 	std::cout << "Mission Menu initialized\n";
+	index = 0;
 }
 
 void MissionMenu::init()

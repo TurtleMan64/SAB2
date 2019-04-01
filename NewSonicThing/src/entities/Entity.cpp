@@ -69,6 +69,11 @@ const bool Entity::isEnemy()
 	return false;
 }
 
+const bool Entity::isPoint()
+{
+    return false;
+}
+
 void Entity::die()
 {
 	
@@ -237,11 +242,6 @@ const bool Entity::canHomingAttackOn()
 const Vector3f Entity::getHomingCenter()
 {
 	return Vector3f(0,0,0);
-}
-
-const bool Entity::isPoint()
-{
-	return false;
 }
 
 void Entity::deleteModels(std::list<TexturedModel*>* modelsToDelete)

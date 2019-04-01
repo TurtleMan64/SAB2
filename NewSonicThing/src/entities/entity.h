@@ -38,6 +38,8 @@ public:
 
 	virtual const bool isEnemy();
 
+    virtual const bool isPoint();
+
 	void increasePosition(float dx, float dy, float dz);
 
 	void increaseRotation(float dx, float dy, float dz);
@@ -94,8 +96,6 @@ public:
 	virtual const bool canHomingAttackOn();
 
 	virtual const Vector3f getHomingCenter();
-	
-	virtual const bool isPoint();
 
 	virtual void die();
 };
