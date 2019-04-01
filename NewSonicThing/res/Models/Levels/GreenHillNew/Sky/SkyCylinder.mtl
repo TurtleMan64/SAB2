@@ -1,0 +1,20 @@
+# Material Count: 2
+
+newmtl Mesh_0122.rip
+Ns 20
+Ni 0.0
+Tr 1
+d 0.0
+scrollX 0
+scrollY 0.5
+map_Kd Tex_0020_0.dds
+
+newmtl Mesh_0118.rip
+Ns 20
+Ni 0.0
+Tr 1
+d 0.0
+scrollX 0
+scrollY 0
+map_Kd Tex_0019_0.dds
+

@@ -1,24 +1,17 @@
-Levels/GreenHillZone
+Levels/GreenHillNew
 1
-GreenHillZone -100000 -100000 -100000 100000 100000 100000
-Levels/GreenHillZone
-8
-Chunk1 5
-Chunk2 5
-Chunk3 5
-Chunk4 5
-Chunk5 5
-Chunk6 2
-Chunk7 1
-Chunk8 1
+GreenHill -100000 -100000 -100000 100000 100000 100000
+Levels/GreenHillNew
+1
+Collision 7
 1.0 1.0 1.0
 0.0 0.0 0.0
 0.0 0.0 0.0
 0.3 0.3 0.45
 0.1922 0.3961 0.9059
 0.05 0.05 0.075
-0.00005 2.0
-108
+0.0000000005 2.0
+90
 1 0 0
 1
 2
@@ -26,9 +19,12 @@ res/Audio/BGM/g_hill_intro.ogg
 res/Audio/BGM/g_hill_loop.ogg
 -2997.882813 204.103973 -10584.179688
 103 3
--100
+-1500
 nowater
 0
 
 # Player
-6 0 2350 0
+6 0 41 0
+
+# Stage Manager
+91 3

@@ -25,14 +25,8 @@ TexturedModel::TexturedModel(RawModel* model, ModelTexture* texture)
 	}
 
 	//Copy over the ModelTexture data
-	this->texture.setID(texture->getID());
-	this->texture.setShineDamper(texture->getShineDamper());
-	this->texture.setReflectivity(texture->getReflectivity());
-	this->texture.setHasTransparency(texture->getHasTransparency());
-	this->texture.setUsesFakeLighting(texture->getUsesFakeLighting());
-	this->texture.setGlowAmount(texture->getGlowAmount());
-	this->texture.setScrollX(texture->getScrollX());
-	this->texture.setScrollY(texture->getScrollY());
+    this->texture = ModelTexture(texture);
+    this->texture.addMeToAnimationsSetIfNeeded();
 }
 
 RawModel* TexturedModel::getRawModel()

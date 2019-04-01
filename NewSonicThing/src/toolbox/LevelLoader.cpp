@@ -49,6 +49,7 @@
 #include "../entities/point.h"
 #include "../entities/rocket.h"
 #include "../entities/MetalHarbor/mhstagemanager.h"
+#include "../entities/GreenHill/ghstagemanager.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -808,6 +809,14 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 					break;
                 }
 
+                case 3:
+                {
+                    GH_StageManager::loadStaticModels();
+					GH_StageManager* gh = new GH_StageManager; INCR_NEW("Entity");
+					Main_addEntity(gh);
+					break;
+                }
+
 				default: break;
 			}
 			return;
@@ -997,6 +1006,7 @@ void LevelLoader::freeAllStaticModels()
     SR_StageManager::deleteStaticModels();
     GoalRing::deleteStaticModels();
     Rocket::deleteStaticModels();
+    GH_StageManager::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()

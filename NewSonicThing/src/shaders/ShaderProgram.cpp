@@ -85,7 +85,7 @@ void ShaderProgram::loadFakeLighting(int fakeLighting)
 
 void ShaderProgram::loadTransparency(int transparency)
 {
-	loadFloat(location_hasTransparency, (float)transparency);
+	loadInt(location_hasTransparency, transparency);
 }
 
 void ShaderProgram::loadGlowAmount(float glowAmount)
@@ -170,6 +170,8 @@ void ShaderProgram::getAllUniformLocations()
 	location_shadowMapClose        = getUniformLocation("shadowMapClose");
 	location_toShadowMapSpaceClose = getUniformLocation("toShadowMapSpaceClose");
 	location_randomMap             = getUniformLocation("randomMap");
+    location_mixFactor             = getUniformLocation("mixFactor");
+    location_textureSampler2       = getUniformLocation("textureSampler2");
 }
 
 int ShaderProgram::getUniformLocation(const char* uniformName)
@@ -192,9 +194,9 @@ void ShaderProgram::loadVector(int location, Vector3f* vect)
 	glUniform3f(location, vect->x, vect->y, vect->z);
 }
 
-void ShaderProgram::loadBoolean(int location, float value)
+void ShaderProgram::loadBoolean(int location, bool value)
 {
-	glUniform1f(location, round(value));
+	glUniform1i(location, (int)(value));
 }
 
 void ShaderProgram::loadMatrix(int location, Matrix4f* matrix)
@@ -228,6 +230,8 @@ void ShaderProgram::connectTextureUnits()
 
 		loadInt(location_randomMap, 7);
 	}
+
+    loadInt(location_textureSampler2, 1);
 }
 
 void ShaderProgram::loadToShadowSpaceMatrixFar(Matrix4f* matrix)
@@ -238,4 +242,9 @@ void ShaderProgram::loadToShadowSpaceMatrixFar(Matrix4f* matrix)
 void ShaderProgram::loadToShadowSpaceMatrixClose(Matrix4f* matrix)
 {
 	loadMatrix(location_toShadowMapSpaceClose, matrix);
+}
+
+void ShaderProgram::loadMixFactor(float factor)
+{
+    loadFloat(location_mixFactor, factor);
 }

@@ -1,0 +1,11 @@
+# Material Count: 1
+
+newmtl greenhill64_2.png
+Ns 20
+Ni 0.0
+Tr 1
+d 0
+scrollX 0
+scrollY -1.5
+map_Kd greenhill64_2.png
+

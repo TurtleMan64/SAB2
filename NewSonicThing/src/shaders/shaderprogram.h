@@ -39,6 +39,8 @@ private:
 	int location_shadowMapClose;
 	int location_toShadowMapSpaceClose;
 	int location_randomMap;
+    int location_mixFactor;
+    int location_textureSampler2;
 
 public:
 	ShaderProgram(const char*, const char*);
@@ -83,6 +85,8 @@ public:
 
 	void loadToShadowSpaceMatrixClose(Matrix4f* matrix);
 
+    void loadMixFactor(float factor);
+
 	void connectTextureUnits();
 
 protected:
@@ -102,7 +106,7 @@ protected:
 
 	void loadVector(int, Vector3f*);
 
-	void loadBoolean(int, float);
+	void loadBoolean(int, bool);
 
 	void loadMatrix(int, Matrix4f*);
 };

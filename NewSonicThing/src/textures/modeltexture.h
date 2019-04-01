@@ -3,49 +3,58 @@
 
 #include <glad/glad.h>
 #include "../toolbox/vector.h"
+#include <vector>
+#include <unordered_set>
 
 class ModelTexture
 {
 private:
-	GLuint texID;
+	std::vector<GLuint> texIDs;
 
+    //animation 
+    bool isAnimated; //has more than 1 image
+    char currentImageIndex; //current index of the animation
+    float animatedProgress; //progress to the next image in the animation
+
+    //for use of updating the animation values
+    static std::unordered_set<ModelTexture*> textureReferences;
+
+public:
 	float shineDamper;
 	float reflectivity;
 	float scrollX;
 	float scrollY;
 	float glowAmount;
-	int hasTransparency;
-	int useFakeLighting;
+	bool hasTransparency;
+	bool useFakeLighting;
+    bool smoothMixing;
+    float animationSpeed; //delta per second
 
-public:
 	ModelTexture();
 
-	ModelTexture(GLuint texID);
+	ModelTexture(std::vector<GLuint>* texIDs);
 
+    ModelTexture(ModelTexture* other);
+
+    bool hasMultipleImages();
+
+    //returns image 1
 	GLuint getID();
-	void setID(GLuint newID);
 
-	float getShineDamper();
-	void setShineDamper(float newShineDamper);
+    //returns image 2 (next image in the animation)
+    GLuint getID2();
 
-	float getReflectivity();
-	void setReflectivity(float newReflectivity);
+    //how much the 2nd image should be mixed with the first (for animations)
+    float mixFactor();
 
-	int getHasTransparency();
-	void setHasTransparency(int newHasTransparency);
+    std::vector<GLuint>* getIDs();
 
-	int getUsesFakeLighting();
-	void setUsesFakeLighting(int newUsesFakeLighting);
-
-	float getGlowAmount();
-	void setGlowAmount(float newGlowAmount);
-
-	void setScrollX(float speedX);
-	void setScrollY(float speedY);
-
-	float getScrollX();
-	float getScrollY();
-
+    //deletes all of the texture IDs out of gpu memory
 	void deleteMe();
+
+    void addMeToAnimationsSetIfNeeded();
+
+    //updates all of the textures animation progress by dt
+    static void updateAnimations(float dt);
 };
 #endif

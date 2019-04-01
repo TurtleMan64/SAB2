@@ -603,6 +603,9 @@ void parseMtl(std::string filePath, std::string fileName)
 	float currentGlowAmountValue = 0.0f;
 	float currentScrollXValue = 0.0f;
 	float currentScrollYValue = 0.0f;
+    int   currentNumImages = 1;
+    float currentAnimSpeed = 0.0f;
+    int   currentSmoothMix = 1;
 
 	while (!file.eof())
 	{
@@ -626,27 +629,63 @@ void parseMtl(std::string filePath, std::string fileName)
 				currentGlowAmountValue = 0.0f;
 				currentScrollXValue = 0.0f;
 				currentScrollYValue = 0.0f;
+                currentNumImages = 1;
+                currentAnimSpeed = 0.0f;
+                currentSmoothMix = 1;
 			}
 			else if (strcmp(lineSplit[0], "\tmap_Kd") == 0 || strcmp(lineSplit[0], "map_Kd") == 0) //end of material found, generate it with all its attrributes
 			{
 				std::string imageFilenameString = filePath+lineSplit[1];
 				char* fname = (char*)imageFilenameString.c_str();
-				ModelTexture newTexture(Loader::loadTexture(fname)); //generate new texture
-				newTexture.setShineDamper(currentShineDamperValue);
-				newTexture.setReflectivity(currentReflectivityValue);
-				newTexture.setHasTransparency(1);
-				newTexture.setUsesFakeLighting(0);
+
+                std::vector<GLuint> textureIDs;
+                textureIDs.push_back(Loader::loadTexture(fname)); //generate new texture
+
+                currentNumImages--;
+                while (currentNumImages > 0)
+                {
+                    free(lineSplit);
+
+                    getlineSafe(file, line);
+
+		            memcpy(lineBuf, line.c_str(), line.size()+1);
+
+		            lineSplit = split(lineBuf, ' ', &splitLength);
+
+                    char* nextFilename = lineSplit[0];
+
+                    if (lineSplit[0][0] == '\t')
+                    {
+                        nextFilename = &lineSplit[0][1];
+                    }
+
+                    imageFilenameString = filePath+nextFilename;
+                    fname = (char*)imageFilenameString.c_str();
+                    textureIDs.push_back(Loader::loadTexture(fname)); //load the new texture
+
+                    currentNumImages--;
+                }
+
+				ModelTexture newTexture(&textureIDs);
+
+				newTexture.shineDamper = currentShineDamperValue;
+				newTexture.reflectivity = currentReflectivityValue;
+				newTexture.hasTransparency = true;
+				newTexture.useFakeLighting = false;
 				if (currentTransparencyValue > 0.0f)
 				{
-					newTexture.setHasTransparency(0);
+                    newTexture.hasTransparency = false;
 				}
 				if (currentFakeLightingValue < 1.0f)
 				{
-					newTexture.setUsesFakeLighting(1);
+                    newTexture.useFakeLighting = true;
 				}
-				newTexture.setGlowAmount(currentGlowAmountValue);
-				newTexture.setScrollX(currentScrollXValue);
-				newTexture.setScrollY(currentScrollYValue);
+				newTexture.glowAmount = currentGlowAmountValue;
+				newTexture.scrollX = currentScrollXValue;
+				newTexture.scrollY = currentScrollYValue;
+                newTexture.animationSpeed = currentAnimSpeed;
+                newTexture.smoothMixing = (bool)currentSmoothMix;
+
 				modelTexturesList.push_back(newTexture); //put a copy of newTexture into the list
 			}
 			else if (strcmp(lineSplit[0], "\tNs") == 0 || strcmp(lineSplit[0], "Ns") == 0)
@@ -676,6 +715,28 @@ void parseMtl(std::string filePath, std::string fileName)
 			else if (strcmp(lineSplit[0], "\tscrollY") == 0 || strcmp(lineSplit[0], "scrollY") == 0)
 			{
 				currentScrollYValue = std::stof(lineSplit[1]);
+			}
+            else if (strcmp(lineSplit[0], "\tanimSpeed") == 0 || strcmp(lineSplit[0], "animSpeed") == 0)
+			{
+				currentAnimSpeed = std::stof(lineSplit[1]);
+                if (currentAnimSpeed < 0)
+                {
+                    std::fprintf(stderr, "Error: animSpeed was negative.\n");
+                    currentAnimSpeed = 0;
+                }
+			}
+            else if (strcmp(lineSplit[0], "\tnumImages") == 0 || strcmp(lineSplit[0], "numImages") == 0)
+			{
+				currentNumImages = std::stoi(lineSplit[1]);
+                if (currentNumImages < 1)
+                {
+                    std::fprintf(stderr, "Error: numImages was negative.\n");
+                    currentNumImages = 1;
+                }
+			}
+            else if (strcmp(lineSplit[0], "\tsmoothMix") == 0 || strcmp(lineSplit[0], "smoothMix") == 0)
+			{
+				currentSmoothMix = std::stoi(lineSplit[1]);
 			}
 		}
 

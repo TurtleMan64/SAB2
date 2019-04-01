@@ -514,6 +514,7 @@ int main()
 					e->step();
 				}
 				skySphere.step();
+                ModelTexture::updateAnimations(dt);
 				Global::gameCamera->refresh();
 				if (Global::renderParticles)
 				{

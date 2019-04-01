@@ -6,10 +6,7 @@
 #include "../dummy.h"
 #include "../car.h"
 #include "../../objLoader/objLoader.h"
-#include "../camera.h"
 #include "../../toolbox/maths.h"
-#include "../../particles/particle.h"
-#include "../../particles/particleresources.h"
 
 std::list<TexturedModel*> SR_StageManager::modelsSkyPass1;
 std::list<TexturedModel*> SR_StageManager::modelsSkyPass2;
