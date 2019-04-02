@@ -32,7 +32,7 @@ private:
 
 	//The players velocity is set to this to make the autocam point towards the direction the pulley is pointing
 	//Also ends up rotating the player to face the correct direction as well
-	Vector3f cameraDirection;
+	Vector3f cameraDirectionVector;
 
 	//How far down the handle is from the top of the rocket.
 	//Used for both the position of the handle and the length of the rope.
@@ -67,7 +67,7 @@ private:
 	//functions for the constructor start here
 	
 	//Get the vector for the horizontal direction the camera should point using the y rotation
-	Vector3f calculateCameraDirection();
+	Vector3f calculateCameraDirectionVector();
 	//Setup the visual model of the rope of the pulley as a separate entity, 
 	//allowing it to move separately from the handle.
 	void setupPulleyRope();

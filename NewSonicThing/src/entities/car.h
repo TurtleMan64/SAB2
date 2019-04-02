@@ -317,6 +317,11 @@ public:
 	//called by Rail when sonic jumps off
 	void doJump();
 
+	//Called by the Pulley when Sonic jumps off, separate due tounique properties required for pulley jump.
+	//Specifically, Sonic needs to basically go completely horizontally off the pulley, and should go straight
+	//forward even with neutral stick.
+	void doPulleyJump(Vector3f forwardDirectionVector);
+
 	void setRelativeUp(Vector3f* newUp);
 
 	std::list<TexturedModel*>* getModels();
