@@ -464,7 +464,7 @@ int main()
 						//if (bgmHasLoop != 0)
 						{
 							//By default, first 2 buffers are the intro and loop, respectively
-							AudioPlayer::playBGMWithIntro(0, 1);
+							//AudioPlayer::playBGMWithIntro(0, 1);
 						}
 						//else
 						{

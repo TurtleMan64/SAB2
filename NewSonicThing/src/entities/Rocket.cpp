@@ -110,7 +110,6 @@ void Rocket::step()
 		Global::gameMainVehicle->setVelocity(rocketPathPositionDifferenceNormalized.x * 1000, rocketPathPositionDifferenceNormalized.y * 1000, rocketPathPositionDifferenceNormalized.z * 1000);
 		
 		//ensure the player can't move themselves at all or turn into a ball or anything weird like that
-		Global::gameMainVehicle->setCanMoveTimer(1000);
 		Global::gameMainVehicle->setOnGround(false);
 		Global::gameMainVehicle->setIsBall(false);
 
@@ -147,7 +146,6 @@ void Rocket::step()
 		//velocity here is set so the player faces the correct direction at the end of the rocket path
 		Global::gameMainVehicle->setVelocity(rocketPathPositionDifferenceNormalized.x, rocketPathPositionDifferenceNormalized.y, rocketPathPositionDifferenceNormalized.z);
 		Global::gameMainVehicle->setOnRocket(false);
-		Global::gameMainVehicle->setCanMoveTimer(0);
 		Global::gameMainVehicle->setVelocityMovesPlayer(true);
 
 		resetRocketVariables();

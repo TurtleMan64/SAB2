@@ -1054,6 +1054,37 @@ void Car::doJump()
 	AudioPlayer::play(12, getPosition());
 }
 
+void Car::doPulleyJump(Vector3f forwardDirectionVector)
+{
+	isGrinding = false;
+	isBouncing = false;
+	isBall = false;
+	isLightdashing = false;
+	isSkidding = false;
+	isSpindashing = false;
+	isStomping = false;
+	justBounced = false;
+	justHomingAttacked = false;
+	homingAttackTimer = -1.0f;
+
+	if (inputX == 0 and inputY == 0)
+	{
+		//Stick isn't being held, move straight forward instead
+		forwardDirectionVector.normalize();
+		vel = forwardDirectionVector.scaleCopy(200);
+	}
+	else
+	{
+		//Stick is being held, move in that direction
+		Vector3f stickHeldVector = Vector3f(inputX, 0, inputY);
+		vel = stickHeldVector.scaleCopy(200);
+	}
+	
+
+	//jump sound
+	AudioPlayer::play(12, getPosition());
+}
+
 void Car::setRelativeUp(Vector3f* newUp)
 {
 	relativeUp.set(newUp);

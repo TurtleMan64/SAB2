@@ -40,7 +40,7 @@ Pulley::Pulley(float x, float y, float z, float newRotY, float handleVerticalDis
     this->handleVerticalDisplacement = handleVerticalDisplacement;
 	handleVerticalDisplacementBottom = handleVerticalDisplacement;
 
-	cameraDirection = calculateCameraDirection();
+	cameraDirectionVector = calculateCameraDirectionVector();
 
 	setupPulleyRope();
 
@@ -80,14 +80,14 @@ void Pulley::step()
 
 		//Make player attach to the pulleys position and not move
 		Global::gameMainVehicle->setPosition(position.x, position.y, position.z);
-		Global::gameMainVehicle->setVelocity(cameraDirection.x, 0, cameraDirection.z);
+		Global::gameMainVehicle->setVelocity(cameraDirectionVector.x, 0, cameraDirectionVector.z);
 
 		if (jumpInputPressed()) //get off the pulley, should also happen if damaged
 		{
 			Global::gameMainVehicle->setVelocity(0,0,0);
 			Global::gameMainVehicle->setVelocityMovesPlayer(true);
 			Global::gameMainVehicle->setOnPulley(false);
-			Global::gameMainVehicle->doJump();
+			Global::gameMainVehicle->doPulleyJump(cameraDirectionVector);
 			
 			playerIsOnPulley = false;
 		}
@@ -165,7 +165,7 @@ void Pulley::deleteStaticModels()
 	Entity::deleteModels(&Pulley::modelsTop);
 }
 
-Vector3f Pulley::calculateCameraDirection()
+Vector3f Pulley::calculateCameraDirectionVector()
 {
 	return Vector3f(sin(Maths::toRadians(rotY)) * 1000, 0, -cos(Maths::toRadians(rotY)) * 1000);
 }
