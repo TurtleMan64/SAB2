@@ -146,5 +146,5 @@ void Spring::setPlayerVelocityToSpringAway()
 
 void Spring::playSpringSound()
 {
-	AudioPlayer::play(6, getPosition(), 1 + (springPower*0.008f));
+	AudioPlayer::play(6, getPosition(), 1 + ((springPower/60)*0.008f));
 }
