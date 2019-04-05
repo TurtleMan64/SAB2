@@ -79,7 +79,7 @@ void Pulley::step()
 		}
 
 		//Make player attach to the pulleys position and not move
-		Global::gameMainVehicle->setPosition(position.x, position.y, position.z);
+		Global::gameMainVehicle->setPosition(position.x, position.y - 5, position.z);
 		Global::gameMainVehicle->setVelocity(cameraDirectionVector.x, 0, cameraDirectionVector.z);
 
 		if (jumpInputPressed()) //get off the pulley, should also happen if damaged
@@ -87,7 +87,7 @@ void Pulley::step()
 			Global::gameMainVehicle->setVelocity(0,0,0);
 			Global::gameMainVehicle->setVelocityMovesPlayer(true);
 			Global::gameMainVehicle->setOnPulley(false);
-			Global::gameMainVehicle->doPulleyJump(cameraDirectionVector);
+			Global::gameMainVehicle->doJumpPulley(cameraDirectionVector);
 			
 			playerIsOnPulley = false;
 		}

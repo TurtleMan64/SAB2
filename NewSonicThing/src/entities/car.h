@@ -86,6 +86,7 @@ private:
 	const float hoverPower = 144.0f; //How much hover adds to your vel
 	const float hoverTimerThreshold = 1.0f; //How long you can hover for
 	float hoverTimer = 0.0f;
+	const float jumpPowerPulley = 102.0f;
 
 	const float groundRunPush = 100.0f;
 	const float groundRunFriction = 0.5f;
@@ -320,7 +321,7 @@ public:
 	//Called by the Pulley when Sonic jumps off, separate due tounique properties required for pulley jump.
 	//Specifically, Sonic needs to basically go completely horizontally off the pulley, and should go straight
 	//forward even with neutral stick.
-	void doPulleyJump(Vector3f forwardDirectionVector);
+	void doJumpPulley(Vector3f forwardDirectionVector);
 
 	void setRelativeUp(Vector3f* newUp);
 

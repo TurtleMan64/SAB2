@@ -41,12 +41,12 @@ private:
 	//The very bottom point of how far
 	float handleVerticalDisplacementBottom;
 	//The closest the handle can get to the top of the pulley
-	const float HANDLE_VERTICAL_DISPLACEMENT_MINIMUM = 25;
+	const float HANDLE_VERTICAL_DISPLACEMENT_MINIMUM = 10;
 
 	//Radius of the horizontal component of the hitbox of the handle
 	const float HITBOX_RADIUS = 5;
 	//Height of the hitbox of the handle
-	const float HITBOX_HEIGHT = 5;
+	const float HITBOX_HEIGHT = 10;
 
 	//Player is riding the pulley
 	bool playerIsOnPulley = false;
@@ -62,7 +62,7 @@ private:
 	const bool MOVE_DOWN = false;
 	
 	//The speed the pulley moves at
-	const float PULLEY_SPEED = 50;
+	const float PULLEY_SPEED = 100;
 
 	//functions for the constructor start here
 	

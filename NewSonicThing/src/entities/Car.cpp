@@ -1054,7 +1054,7 @@ void Car::doJump()
 	AudioPlayer::play(12, getPosition());
 }
 
-void Car::doPulleyJump(Vector3f forwardDirectionVector)
+void Car::doJumpPulley(Vector3f forwardDirectionVector)
 {
 	isGrinding = false;
 	isBouncing = false;
@@ -1067,17 +1067,21 @@ void Car::doPulleyJump(Vector3f forwardDirectionVector)
 	justHomingAttacked = false;
 	homingAttackTimer = -1.0f;
 
+	forwardDirectionVector.normalize();
 	if (inputX == 0 and inputY == 0)
 	{
 		//Stick isn't being held, move straight forward instead
-		forwardDirectionVector.normalize();
-		vel = forwardDirectionVector.scaleCopy(200);
+		vel = forwardDirectionVector.scaleCopy(jumpPowerPulley);
 	}
 	else
 	{
 		//Stick is being held, move in that direction
-		Vector3f stickHeldVector = Vector3f(inputX, 0, inputY);
-		vel = stickHeldVector.scaleCopy(200);
+		float stickAngle = -atan2f(inputY, inputX) - Maths::PI/2; //angle you are holding on the stick, with 0 being up
+		float stickRadius = sqrtf(inputX*inputX + inputY*inputY);
+		Vector3f dirForward = Maths::projectOntoPlane(&camDir, &relativeUp);
+		dirForward.setLength(stickRadius);
+		Vector3f velNew = Maths::rotatePoint(&dirForward, &relativeUp, stickAngle);
+		vel = velNew.scaleCopy(jumpPowerPulley);
 	}
 	
 
