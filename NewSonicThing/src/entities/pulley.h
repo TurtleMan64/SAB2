@@ -52,7 +52,7 @@ private:
 	bool playerIsOnPulley = false;
 
 	//The audio source used to play the Pulley's audio
-	Source* pulleyAudioSource;
+	Source* pulleyAudioSource = nullptr;
 
 	//Bool used to give a name to the bool passed to the move_pulley function, purely to make it easier
 	//to read
@@ -85,6 +85,8 @@ private:
 	bool handleAtTop();
 	//Play and loop the sound the pulley makes while it moves.
 	void playPulleySound();
+	//Stop playing the pulley sound.
+	void stopPulleySound();
 	//Move the pulley either up or down, depending on if true or false
 	void movePulley(bool movePulleyUp);
 	//Returns either 1 to move down or -1 to move up, used to multiply the speed to control direction

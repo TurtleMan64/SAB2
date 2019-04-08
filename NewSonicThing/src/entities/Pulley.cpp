@@ -61,6 +61,8 @@ Pulley::Pulley(float x, float y, float z, float newRotY, float handleVerticalDis
 
 void Pulley::step() 
 {
+	//Idea: make pulley bob when it hits the top? like SA2
+
 	//Change all of this so the start moving is separate from the actual moving, isMoving variable required
     if (playerIsOnPulley)
 	{
@@ -68,7 +70,7 @@ void Pulley::step()
 		{
 			//Pulley not yet at top and player is riding, move towards top
 
-			//playPulleySound();
+			playPulleySound();
 
 			movePulley(MOVE_UP);
 		}
@@ -76,6 +78,8 @@ void Pulley::step()
 		{
 			//Make sure the pulley doesn't go any closer than the minimum
 			handleVerticalDisplacement = HANDLE_VERTICAL_DISPLACEMENT_MINIMUM;
+
+			stopPulleySound();
 		}
 
 		//Make player attach to the pulleys position and not move
@@ -110,7 +114,7 @@ void Pulley::step()
 	{
 		//Pulley not yet at bottom and player not on, move towards bottom
 
-		//playPulleySound();
+		playPulleySound();
 
 		movePulley(MOVE_DOWN);
 	}
@@ -118,6 +122,7 @@ void Pulley::step()
 	{
 		//Make sure the pulley doesn't go any father than the maximum displacement
 		handleVerticalDisplacement = handleVerticalDisplacementBottom;
+		stopPulleySound();
 	}
 
 	position.y = pulleyTopYPosition - handleVerticalDisplacement;
@@ -126,6 +131,7 @@ void Pulley::step()
 	//stretch the rope out to where the pulley is
 	rope->updateTransformationMatrix(1, handleVerticalDisplacement, 1);
 	Global::gameMainVehicle->animate();
+	Global::gameMainVehicle->refreshCamera();
 }
 
 std::list<TexturedModel*>* Pulley::getModels()
@@ -215,16 +221,22 @@ bool Pulley::handleAtTop()
 
 void Pulley::playPulleySound()
 {
+	if (pulleyAudioSource == nullptr)
+	{
+		pulleyAudioSource = AudioPlayer::play(57, top->getPosition(), 1, false);
+	}
+	pulleyAudioSource->setLooping(true);
+}
+
+void Pulley::stopPulleySound()
+{
 	if (pulleyAudioSource != nullptr)
 	{
-		if (!pulleyAudioSource->isPlaying())
+		if (pulleyAudioSource->isPlaying())
 		{
-			pulleyAudioSource = AudioPlayer::play(56, getPosition(), 1, false);
+			pulleyAudioSource->stop();
+			pulleyAudioSource = nullptr;
 		}
-	}
-	else
-	{
-		pulleyAudioSource = AudioPlayer::play(56, getPosition(), 1, false);
 	}
 }
 

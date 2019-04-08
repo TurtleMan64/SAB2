@@ -137,7 +137,6 @@ void Rocket::step()
 			//make sure the player is holding onto the rocket in the right spot
 			Vector3f newPlayerPos = calculateNewPlayerPosition();
 			Global::gameMainVehicle->setPosition(&newPlayerPos);
-	
 		}	
 	}
 	
