@@ -54,6 +54,15 @@ private:
 	//The audio source used to play the Pulley's audio
 	Source* pulleyAudioSource = nullptr;
 
+	//Max value the bob timer can have, it will be clamped at this point
+	const float BOB_TIMER_MAX = 31.4159265359;
+	//Minimum value the bob timer can have, since you divide by this value so it can't be set to 0
+	const float BOB_TIMER_MIN = 3.14159265359;
+	//Timer used for the animation of the Pulley bobbing up and down
+	float bobTimer = BOB_TIMER_MAX;
+	//Whether the pulley is bobbing or not
+	bool isBobbing = false;
+
 	//Bool used to give a name to the bool passed to the move_pulley function, purely to make it easier
 	//to read
 	const bool MOVE_UP = true;
@@ -62,38 +71,41 @@ private:
 	const bool MOVE_DOWN = false;
 	
 	//The speed the pulley moves at
-	const float PULLEY_SPEED = 100;
+	const float PULLEY_SPEED = 150;
 
 	//functions for the constructor start here
 	
 	//Get the vector for the horizontal direction the camera should point using the y rotation
-	Vector3f calculateCameraDirectionVector();
+	inline Vector3f calculateCameraDirectionVector();
 	//Setup the visual model of the rope of the pulley as a separate entity, 
 	//allowing it to move separately from the handle.
-	void setupPulleyRope();
+	inline void setupPulleyRope();
 	//Setup the visual model and collision of the top of the pulley as a separate entity, 
 	//allowing it to move separately from the handle.
-	void setupPulleyTop();
+	inline void setupPulleyTop();
 
 	//functions for step() start here
 
 	//Check if the player has collided with the rocket handle.
-	bool playerWithinHandleHitbox();
+	inline bool playerWithinHandleHitbox();
 	//Check if the pulley is at the bottom position where it can be grabbed.
-	bool handleAtBottom();
+	inline bool handleAtBottom();
 	//Check if the pulley is at the very top where it stops moving.
-	bool handleAtTop();
+	inline bool handleAtTop();
 	//Play and loop the sound the pulley makes while it moves.
-	void playPulleySound();
+	inline void playPulleySound();
 	//Stop playing the pulley sound.
-	void stopPulleySound();
+	inline void stopPulleySound();
 	//Move the pulley either up or down, depending on if true or false
-	void movePulley(bool movePulleyUp);
+	inline void movePulley(bool movePulleyUp);
 	//Returns either 1 to move down or -1 to move up, used to multiply the speed to control direction
 	//and reduce duplicate code.
-	int getPulleyMoveDirection(bool movePulleyUp);
+	inline int getPulleyMoveDirection(bool movePulleyUp);
 	//Check if the player has jumped.
-	bool jumpInputPressed();
+	inline bool jumpInputPressed();
+	//Handle the animation of the Pulley bobbing up and down when it hits the top with the player on it
+	inline void bobPulley();
+
 public:
 	Pulley();
     Pulley(float x, float y, float z, float rotY, float handleVerticalDisplacement);

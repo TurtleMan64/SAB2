@@ -66,21 +66,30 @@ void Pulley::step()
 	//Change all of this so the start moving is separate from the actual moving, isMoving variable required
     if (playerIsOnPulley)
 	{
-		if (!handleAtTop()) 
+		if (!isBobbing and !handleAtTop()) 
 		{
 			//Pulley not yet at top and player is riding, move towards top
 
 			playPulleySound();
 
 			movePulley(MOVE_UP);
+
+			//Reset timer here, the only way this block would ever not be called first is with a handle displacement equal to the 
+			bobTimer = BOB_TIMER_MIN;
 		}
 		else
 		{
 			//Make sure the pulley doesn't go any closer than the minimum
-			handleVerticalDisplacement = HANDLE_VERTICAL_DISPLACEMENT_MINIMUM;
+			//handleVerticalDisplacement = HANDLE_VERTICAL_DISPLACEMENT_MINIMUM;
+			isBobbing = true;
+
+			bobPulley();
 
 			stopPulleySound();
 		}
+
+		//update the position of the pulley handle so the player can be synced to it
+		position.y = pulleyTopYPosition - handleVerticalDisplacement;
 
 		//Make player attach to the pulleys position and not move
 		Global::gameMainVehicle->setPosition(position.x, position.y - 5, position.z);
@@ -92,8 +101,10 @@ void Pulley::step()
 			Global::gameMainVehicle->setVelocityMovesPlayer(true);
 			Global::gameMainVehicle->setOnPulley(false);
 			Global::gameMainVehicle->doJumpPulley(cameraDirectionVector);
-			
+
 			playerIsOnPulley = false;
+
+			isBobbing = false;
 		}
 	}
 	else if (playerWithinHandleHitbox() && handleAtBottom()) //Player gets on the handle
@@ -171,12 +182,12 @@ void Pulley::deleteStaticModels()
 	Entity::deleteModels(&Pulley::modelsTop);
 }
 
-Vector3f Pulley::calculateCameraDirectionVector()
+inline Vector3f Pulley::calculateCameraDirectionVector()
 {
 	return Vector3f(sin(Maths::toRadians(rotY)) * 1000, 0, -cos(Maths::toRadians(rotY)) * 1000);
 }
 
-void Pulley::setupPulleyRope()
+inline void Pulley::setupPulleyRope()
 {
     rope = new Body(&Pulley::modelsRope);
 	rope->setVisible(true);
@@ -185,13 +196,14 @@ void Pulley::setupPulleyRope()
 	rope->setPosition(&position);
 }
 
-void Pulley::setupPulleyTop()
+inline void Pulley::setupPulleyTop()
 {
     top = new Body(&Pulley::modelsTop);
 	top->setVisible(true);
 	INCR_NEW("Entity");
 	Main_addEntity(top);
 	top->setPosition(&position);
+	top->setRotY(rotY);
 
 	collideModelOriginal = Pulley::cmTop;
 	collideModelTransformed = loadCollisionModel("Models/Objects/Pulley/", "PulleyTopCollision");
@@ -199,7 +211,7 @@ void Pulley::setupPulleyTop()
 	updateCollisionModel();
 }
 
-bool Pulley::playerWithinHandleHitbox()
+inline bool Pulley::playerWithinHandleHitbox()
 {
 	Vector3f playerPosition = Global::gameMainVehicle->getPosition();
 	Vector3f playerPulleyDistance = playerPosition - position;
@@ -209,17 +221,17 @@ bool Pulley::playerWithinHandleHitbox()
 			fabsf(playerPulleyDistance.y) <= HITBOX_HEIGHT);
 }
 
-bool Pulley::handleAtBottom()
+inline bool Pulley::handleAtBottom()
 {
 	return handleVerticalDisplacement >= handleVerticalDisplacementBottom;
 }
 
-bool Pulley::handleAtTop()
+inline bool Pulley::handleAtTop()
 {
 	return handleVerticalDisplacement <= HANDLE_VERTICAL_DISPLACEMENT_MINIMUM;
 }
 
-void Pulley::playPulleySound()
+inline void Pulley::playPulleySound()
 {
 	if (pulleyAudioSource == nullptr)
 	{
@@ -228,7 +240,7 @@ void Pulley::playPulleySound()
 	pulleyAudioSource->setLooping(true);
 }
 
-void Pulley::stopPulleySound()
+inline void Pulley::stopPulleySound()
 {
 	if (pulleyAudioSource != nullptr)
 	{
@@ -240,7 +252,7 @@ void Pulley::stopPulleySound()
 	}
 }
 
-void Pulley::movePulley(bool movePulleyUp)
+inline void Pulley::movePulley(bool movePulleyUp)
 {
 	//if true, the pulley moves up, if false, it moves down
 	
@@ -250,7 +262,7 @@ void Pulley::movePulley(bool movePulleyUp)
 	handleVerticalDisplacement += PULLEY_SPEED * pulleyDirection * dt;
 }
 
-int Pulley::getPulleyMoveDirection(bool movePulleyUp)
+inline int Pulley::getPulleyMoveDirection(bool movePulleyUp)
 {
 	if (movePulleyUp)
 	{
@@ -262,7 +274,21 @@ int Pulley::getPulleyMoveDirection(bool movePulleyUp)
 	}
 }
 
-bool Pulley::jumpInputPressed()
+inline bool Pulley::jumpInputPressed()
 {
 	return Input::inputs.INPUT_ACTION1 && !Input::inputs.INPUT_PREVIOUS_ACTION1;
+}
+
+inline void Pulley::bobPulley()
+{
+	if (bobTimer > BOB_TIMER_MAX)
+	{
+		bobTimer = BOB_TIMER_MAX;
+		handleVerticalDisplacement = HANDLE_VERTICAL_DISPLACEMENT_MINIMUM;
+		return;
+	}
+	//Check out the curve of this in a graphing calculator, it's a sine wave that slows down, pretty cool
+	handleVerticalDisplacement = HANDLE_VERTICAL_DISPLACEMENT_MINIMUM - (sin(bobTimer) / bobTimer) * 10;
+
+	bobTimer += dt * 20;
 }
