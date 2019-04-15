@@ -11,13 +11,13 @@ map_Kd pr64_21.png
 
 newmtl texture_5_material_0
 Ns 20
-Ni -1.000000
+Ni 0
 Tr 0
 d 1
 scrollX 0
 scrollY 0
 illum 2
-map_Kd translucentBlack.png
+map_Kd blackglass.png
 
 newmtl None
 Ns 20
