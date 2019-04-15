@@ -29,7 +29,7 @@ MH_StaticObjects::MH_StaticObjects()
 	updateTransformationMatrix();
 
 	collideModelOriginal = MH_StaticObjects::cmOriginal;
-	collideModelTransformed = loadCollisionModel("Models/Levels/MetalHarbor/", "StaticObjectsCollision");
+	collideModelTransformed = loadCollisionModel("Models/Objects/MetalHarbor/StaticObjects/", "StaticObjectsCollision");
 
 	CollisionChecker::addCollideModel(collideModelTransformed);
 
@@ -54,11 +54,12 @@ void MH_StaticObjects::loadStaticModels()
 	std::fprintf(stdout, "Loading MH_StaticObjects static models...\n");
 	#endif
 
-	loadModel(&MH_StaticObjects::models, "res/Models/Levels/MetalHarbor/", "StaticObjects");
+	loadModel(&MH_StaticObjects::models, "res/Models/Objects/MetalHarbor/StaticObjects/", "TrafficLight");
+	//loadModel(&MH_StaticObjects::models, "res/Models/Objects/MetalHarbor/StaticObjects/", "StaticObjects");
 
 	if (MH_StaticObjects::cmOriginal == nullptr)
 	{
-		MH_StaticObjects::cmOriginal = loadCollisionModel("Models/Levels/MetalHarbor/", "StaticObjectsCollision");
+		MH_StaticObjects::cmOriginal = loadCollisionModel("Models/Objects/MetalHarbor/StaticObjects/", "StaticObjectsCollision");
 	}
 }
 
