@@ -6,8 +6,6 @@
 #include <vector>
 #include <list>
 
-//#include <ctime>
-
 #include "objLoader.h"
 #include "../models/models.h"
 #include "../renderEngine/renderEngine.h"
@@ -163,6 +161,13 @@ int loadBinaryModel(std::list<TexturedModel*>* models, std::string filePath, std
 		normals.push_back(normal);
 	}
 
+    //int bytesPerIndV;
+    //fread(&bytesPerIndV, sizeof(int), 1, file);
+    //int bytesPerIndVT;
+    //fread(&bytesPerIndVT, sizeof(int), 1, file);
+    //int bytesPerIndVN;
+    //fread(&bytesPerIndVN, sizeof(int), 1, file);
+
 	int numMaterials;
 	fread(&numMaterials, sizeof(int), 1, file);
 	for (int m = 0; m < numMaterials; m++)
@@ -192,7 +197,19 @@ int loadBinaryModel(std::list<TexturedModel*>* models, std::string filePath, std
 		fread(&numFaces, sizeof(int), 1, file);
 		for (int i = 0; i < numFaces; i++)
 		{
-			int f[9];
+            //int f[9] = {0,0,0,0,0,0,0,0,0};
+            //
+			//fread(&f[0], bytesPerIndV,  1, file);
+            //fread(&f[1], bytesPerIndVT, 1, file);
+            //fread(&f[2], bytesPerIndVN, 1, file);
+            //fread(&f[3], bytesPerIndV,  1, file);
+            //fread(&f[4], bytesPerIndVT, 1, file);
+            //fread(&f[5], bytesPerIndVN, 1, file);
+            //fread(&f[6], bytesPerIndV,  1, file);
+            //fread(&f[7], bytesPerIndVT, 1, file);
+            //fread(&f[8], bytesPerIndVN, 1, file);
+
+            int f[9];
 
 			fread(&f[0], sizeof(int), 9, file);
 
@@ -309,6 +326,11 @@ int loadVclModel(std::list<TexturedModel*>* models, std::string filePath, std::s
 		textures.push_back(texCoord);
 	}
 
+    //int bytesPerIndV;
+    //fread(&bytesPerIndV, sizeof(int), 1, file);
+    //int bytesPerIndVT;
+    //fread(&bytesPerIndVT, sizeof(int), 1, file);
+
 	Vector3f normal(0, 1, 0); //hard coded normal of up
 	normals.push_back(normal);
 
@@ -341,7 +363,16 @@ int loadVclModel(std::list<TexturedModel*>* models, std::string filePath, std::s
 		fread(&numFaces, sizeof(int), 1, file);
 		for (int i = 0; i < numFaces; i++)
 		{
-			int f[6];
+            //int f[6] = {0,0,0,0,0,0};
+            //
+			//fread(&f[0], bytesPerIndV,  1, file);
+            //fread(&f[1], bytesPerIndVT, 1, file);
+            //fread(&f[2], bytesPerIndV,  1, file);
+            //fread(&f[3], bytesPerIndVT, 1, file);
+            //fread(&f[4], bytesPerIndV,  1, file);
+            //fread(&f[5], bytesPerIndVT, 1, file);
+
+            int f[6];
 
 			fread(&f[0], sizeof(int), 6, file);
 
@@ -1004,6 +1035,13 @@ int loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::string filePa
 		normals.push_back(normal);
 	}
 
+    //int bytesPerIndV;
+    //fread(&bytesPerIndV, sizeof(int), 1, file);
+    //int bytesPerIndVT;
+    //fread(&bytesPerIndVT, sizeof(int), 1, file);
+    //int bytesPerIndVN;
+    //fread(&bytesPerIndVN, sizeof(int), 1, file);
+
 	int numMaterials;
 	fread(&numMaterials, sizeof(int), 1, file);
 	for (int m = 0; m < numMaterials; m++)
@@ -1033,7 +1071,19 @@ int loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::string filePa
 		fread(&numFaces, sizeof(int), 1, file);
 		for (int i = 0; i < numFaces; i++)
 		{
-			int f[9];
+            //int f[9] = {0,0,0,0,0,0,0,0,0};
+            //
+			//fread(&f[0], bytesPerIndV,  1, file);
+            //fread(&f[1], bytesPerIndVT, 1, file);
+            //fread(&f[2], bytesPerIndVN, 1, file);
+            //fread(&f[3], bytesPerIndV,  1, file);
+            //fread(&f[4], bytesPerIndVT, 1, file);
+            //fread(&f[5], bytesPerIndVN, 1, file);
+            //fread(&f[6], bytesPerIndV,  1, file);
+            //fread(&f[7], bytesPerIndVT, 1, file);
+            //fread(&f[8], bytesPerIndVN, 1, file);
+
+            int f[9];
 
 			fread(&f[0], sizeof(int), 9, file);
 
@@ -1476,6 +1526,9 @@ CollisionModel* loadBinaryCollisionModel(std::string filePath, std::string fileN
 		vertices.push_back(vertex);
 	}
 
+    //int bytesPerIndV;
+    //fread(&bytesPerIndV, sizeof(int), 1, file);
+
 	int numMaterials;
 	fread(&numMaterials, sizeof(int), 1, file);
 	for (int m = 0; m < numMaterials; m++)
@@ -1509,7 +1562,13 @@ CollisionModel* loadBinaryCollisionModel(std::string filePath, std::string fileN
 		fread(&numFaces, sizeof(int), 1, file);
 		for (int i = 0; i < numFaces; i++)
 		{
-			int f[3];
+            //int f[3] = {0,0,0};
+            //
+			//fread(&f[0], bytesPerIndV, 1, file);
+            //fread(&f[1], bytesPerIndV, 1, file);
+            //fread(&f[2], bytesPerIndV, 1, file);
+
+            int f[3];
 
 			fread(&f[0], sizeof(int), 3, file);
 
