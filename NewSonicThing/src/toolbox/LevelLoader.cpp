@@ -51,6 +51,7 @@
 #include "../entities/rocket.h"
 #include "../entities/MetalHarbor/mhstagemanager.h"
 #include "../entities/GreenHill/ghstagemanager.h"
+#include "../entities/windgust.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -901,6 +902,18 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 					toFloat(dat[4]), toFloat(dat[5])); 				   //y rotation, handle vertical displacement
 			INCR_NEW("Entity");
 			chunkedEntities->push_back(pulley);
+			return;
+		}
+
+		case 100: //WindGust
+		{
+			WindGust* windGust = new WindGust(
+					toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position x,y,z
+					toFloat(dat[4]), toFloat(dat[5]), 				   //y rotation, z rotation
+					toFloat(dat[6]), toFloat(dat[7]), toFloat(dat[8]) //radius, height, power
+			);
+			INCR_NEW("Entity");
+			Main_addEntity(windGust);
 			return;
 		}
 		//case 91: //Metal Harbor
