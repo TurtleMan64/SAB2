@@ -835,7 +835,7 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 		{
 			MH_StaticObjects::loadStaticModels();
 			MH_StaticObjects* staticObjects = new MH_StaticObjects(); INCR_NEW("Entity");
-			Main_addEntity(staticObjects);
+			Main_addEntityPass2(staticObjects);
 			return;
 		}
 		
