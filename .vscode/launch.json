@@ -5,7 +5,7 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/NewSonicThing/a.out",
+            "program": "${workspaceFolder}/NewSonicThing/SAB2.out",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/NewSonicThing/",

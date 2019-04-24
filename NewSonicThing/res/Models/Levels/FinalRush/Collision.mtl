@@ -1,0 +1,6 @@
+# Blender MTL File: 'None'
+# Material Count: 670
+
+newmtl Shape
+map_Kd collisionsmooth.png
+

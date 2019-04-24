@@ -456,29 +456,10 @@ int main()
 
 				if (Global::raceStartTimer >= 0)
 				{
-                    //Global::mainHudTimer->setTime(0.0f);
 					Global::raceStartTimer -= dt;
 					if (Global::raceStartTimer < 0)
 					{
                         Global::mainHudTimer->freeze(false);
-						//if (bgmHasLoop != 0)
-						{
-							//By default, first 2 buffers are the intro and loop, respectively
-							//AudioPlayer::playBGMWithIntro(0, 1);
-						}
-						//else
-						{
-							//AudioPlayer::playBGM(0);
-						}
-						//Global::gameMainVehicle->setCanMoveTimer(0);
-						//Global::gameMainVehicle->setPosition(22.3715019f, 0.01f, 20.5539f);
-						//Global::gameMainVehicle->setVelocity(0, 0, -0.001f);
-					}
-					else
-					{
-						//Global::gameMainVehicle->setPosition(22.3715019f, 0.01f, 20.5539f);
-						//Global::gameMainVehicle->setVelocity(0, 0, -0.001f);
-						//Global::gameMainVehicle->setCanMoveTimer(1.0f);
 					}
 				}
 

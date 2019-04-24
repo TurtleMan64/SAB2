@@ -29,6 +29,7 @@ MissionMenu::MissionMenu()
 	this->visible = true;
 	this->offsetCurr = 0.0f;
 	this->offsetTarget = 0.0f;
+    this->index = 0;
 	std::cout << "Mission Menu initialized\n";
 	index = 0;
 }
@@ -62,7 +63,7 @@ MissionMenu::~MissionMenu()
 
 void MissionMenu::loadResources()
 {
-    if (counter != 0)
+    if (this->counter != 0)
     {
         std::fprintf(stdout, "Warning: MissionMenu loading resources when they are already loaded.\n");
     }
@@ -70,32 +71,32 @@ void MissionMenu::loadResources()
 	extern unsigned int SCR_WIDTH;
 	extern unsigned int SCR_HEIGHT;
 	float aspectRatio = (float)SCR_WIDTH / SCR_HEIGHT;
-	levelButton = new Button*[Global::gameLevelData.size()]; INCR_NEW("Button");
-	counter = 0;
+	this->levelButton = new Button*[Global::gameLevelData.size()]; INCR_NEW("Button");
+	this->counter = 0;
 	for (Level level : Global::gameLevelData)
 	{
 		std::string buttonText = "";
 		buttonText = level.displayName;
-		levelButton[counter] = new Button(level.displayName, Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.5f, 0.5f + (0.2f * counter), 0.56f / aspectRatio, 0.07f, true); INCR_NEW("Button");
-		counter++;
+		levelButton[this->counter] = new Button(level.displayName, Global::fontVipnagorgialla, this->textureParallelogram, this->textureParallelogramBackdrop, 0.5f, 0.5f + (0.2f * this->counter), 0.56f / aspectRatio, 0.07f, true); INCR_NEW("Button");
+		this->counter++;
 	}
 }
 
 void MissionMenu::unloadResources()
 {
 	std::cout << "Unloading Mission Menu resources.\n";
-    if (counter == 0)
+    if (this->counter == 0)
     {
         std::fprintf(stdout, "Warning: MissionMenu unloading resources when they are empty.\n");
     }
 
 	GuiManager::clearGuisToRender();
-	for (int i = 0; i < counter; i++)
+	for (int i = 0; i < this->counter; i++)
 	{
-		delete levelButton[i]; INCR_DEL("Button");
+		delete this->levelButton[i]; INCR_DEL("Button");
 	}
-	delete[] levelButton; INCR_DEL("Button");
-    counter = 0;
+	delete[] this->levelButton; INCR_DEL("Button");
+    this->counter = 0;
 	std::cout << "Mission Menu resources deleted.\n";
 }
 
@@ -103,11 +104,11 @@ void MissionMenu::draw()
 {
 	extern float dt;
 
-	offsetTarget = -index*0.15f;
-	offsetCurr = Maths::approach(offsetCurr, offsetTarget, 15.0f, dt);
-	if (fabsf(offsetTarget-offsetCurr) < 0.002f)
+	this->offsetTarget = -this->index*0.15f;
+	this->offsetCurr = Maths::approach(this->offsetCurr, this->offsetTarget, 15.0f, dt);
+	if (fabsf(this->offsetTarget-this->offsetCurr) < 0.002f)
 	{
-		offsetCurr = offsetTarget;
+		this->offsetCurr = this->offsetTarget;
 	}
 
 	//if (oldSelection != this->index)
@@ -144,7 +145,7 @@ void MissionMenu::draw()
 		for (int i = 0; i < this->counter; i++)
 		{
 			//this->levelButton[i]->setPos(0.5f, 0.5f + animationOffset + (0.15f * (i - this->index))); offsetCurr
-			this->levelButton[i]->setPos(0.5f, 0.5f + offsetCurr + 0.15f*i);
+			this->levelButton[i]->setPos(0.5f, 0.5f + this->offsetCurr + 0.15f*i);
 			this->levelButton[i]->setVisible(true);
 			this->levelButton[i]->setHighlight(false);
 		}
@@ -208,23 +209,23 @@ Menu* MissionMenu::step()
 
 	if (moveY == -1)
 	{
-		holdUpTimer += dt;
+		this->holdUpTimer += dt;
 	}
 	else
 	{
-		holdUpTimer = 0.0f;
+		this->holdUpTimer = 0.0f;
 	}
 
 	if (moveY == 1)
 	{
-		holdDownTimer += dt;
+		this->holdDownTimer += dt;
 	}
 	else
 	{
-		holdDownTimer = 0.0f;
+		this->holdDownTimer = 0.0f;
 	}
 
-	if (holdUpTimer >= 0.25f)
+	if (this->holdUpTimer >= 0.25f)
 	{
 		holdTick += dt;
 		if (holdTick >= 0.15f)
@@ -234,7 +235,7 @@ Menu* MissionMenu::step()
 		}
 	}
 
-	if (holdDownTimer >= 0.25f)
+	if (this->holdDownTimer >= 0.25f)
 	{
 		holdTick += dt;
 		if (holdTick >= 0.15f)
@@ -247,17 +248,17 @@ Menu* MissionMenu::step()
 
 	if (shouldGoUp)
 	{
-		if (MissionMenu::index > 0)
+		if (this->index > 0)
 		{
-			MissionMenu::index = MissionMenu::index - 1;
+			this->index = this->index - 1;
 			AudioPlayer::play(36, Global::gameCamera->getFadePosition1());
 		}
 	}
 	if (shouldGoDown)
 	{
-		if (MissionMenu::index < (this->counter - 1))
+		if (this->index < (this->counter - 1))
 		{
-			MissionMenu::index = MissionMenu::index + 1;
+			this->index = this->index + 1;
 			AudioPlayer::play(36, Global::gameCamera->getFadePosition1());
 		}
 	}
@@ -269,7 +270,7 @@ Menu* MissionMenu::step()
 		this->setVisible(false);
  		AudioPlayer::play(38, Global::gameCamera->getFadePosition1());
 
-		Level* currentLevel = &Global::gameLevelData[MissionMenu::index];
+		Level* currentLevel = &Global::gameLevelData[this->index];
 		Global::levelName = currentLevel->fileName;
 		Global::levelNameDisplay = currentLevel->displayName;
 		Global::gameMissionDescription = (currentLevel->missionData[Global::gameMissionNumber])[(currentLevel->missionData[Global::gameMissionNumber]).size() - 1];

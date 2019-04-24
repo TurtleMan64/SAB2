@@ -5,8 +5,9 @@
 
 #include "modeltexture.h"
 #include "../renderEngine/renderEngine.h"
+#include "../toolbox/maths.h"
 
-std::unordered_set<ModelTexture*> ModelTexture::textureReferences;
+std::unordered_set<ModelTexture*> ModelTexture::animatedTextureReferences;
 
 ModelTexture::ModelTexture()
 {
@@ -19,7 +20,7 @@ ModelTexture::ModelTexture()
     this->animatedProgress = 0.0f;
     this->animationSpeed = 0.0f;
     this->currentImageIndex = 0;
-    this->smoothMixing = true;
+    this->mixingType = 1;
 }
 
 ModelTexture::ModelTexture(std::vector<GLuint>* texIDs)
@@ -37,7 +38,7 @@ ModelTexture::ModelTexture(std::vector<GLuint>* texIDs)
     this->animatedProgress = 0.0f;
     this->animationSpeed = 0.0f;
     this->currentImageIndex = 0;
-    this->smoothMixing = true;
+    this->mixingType = 1;
     this->scrollX = 0.0f;
 	this->scrollY = 0.0f;
 
@@ -63,7 +64,7 @@ ModelTexture::ModelTexture(ModelTexture* other)
     this->animatedProgress  = other->animatedProgress;
     this->animationSpeed    = other->animationSpeed;
     this->currentImageIndex = other->currentImageIndex;
-    this->smoothMixing      = other->smoothMixing;
+    this->mixingType        = other->mixingType;
     this->scrollX           = other->scrollX;
 	this->scrollY           = other->scrollY;
 
@@ -95,14 +96,21 @@ void ModelTexture::deleteMe()
 	    Loader::deleteTexture(id);
     }
     texIDs.clear();
-    ModelTexture::textureReferences.erase(this);
+    ModelTexture::animatedTextureReferences.erase(this);
 }
 
 float ModelTexture::mixFactor()
 {
-    if (smoothMixing)
+    switch (mixingType)
     {
-        return animatedProgress; //might have to do 1- heere
+        case 1:
+            return 0.0f;
+
+        case 2:
+            return animatedProgress;
+
+        case 3:
+            return 0.5f*(sinf(Maths::PI*(animatedProgress - 0.5f)) + 1);
     }
 
     return 0.0f;
@@ -117,13 +125,13 @@ void ModelTexture::addMeToAnimationsSetIfNeeded()
 {
     if (isAnimated)
     {
-        ModelTexture::textureReferences.insert(this);
+        ModelTexture::animatedTextureReferences.insert(this);
     }
 }
 
 void ModelTexture::updateAnimations(float dt)
 {
-    for (ModelTexture* tex : ModelTexture::textureReferences)
+    for (ModelTexture* tex : ModelTexture::animatedTextureReferences)
     {
         tex->animatedProgress += tex->animationSpeed*dt;
         if (tex->animatedProgress >= 1.0f)
