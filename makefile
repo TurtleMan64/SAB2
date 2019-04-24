@@ -1,4 +1,4 @@
-TARGET_EXEC ?= a.out
+TARGET_EXEC ?= ../NewSonicThing/SAB2.out
 
 BUILD_DIR ?= makebuild
 SRC_DIRS ?= NewSonicThing/src

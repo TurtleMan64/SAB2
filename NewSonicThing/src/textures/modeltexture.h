@@ -17,7 +17,7 @@ private:
     float animatedProgress; //progress to the next image in the animation
 
     //for use of updating the animation values
-    static std::unordered_set<ModelTexture*> textureReferences;
+    static std::unordered_set<ModelTexture*> animatedTextureReferences;
 
 public:
 	float shineDamper;
@@ -27,7 +27,7 @@ public:
 	float glowAmount;
 	bool hasTransparency;
 	bool useFakeLighting;
-    bool smoothMixing;
+    int mixingType; //interpolation. 1 = binary, 2 = linear, 3 = sinusoid
     float animationSpeed; //delta per second
 
 	ModelTexture();

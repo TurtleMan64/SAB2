@@ -636,7 +636,7 @@ void parseMtl(std::string filePath, std::string fileName)
 	float currentScrollYValue = 0.0f;
     int   currentNumImages = 1;
     float currentAnimSpeed = 0.0f;
-    int   currentSmoothMix = 1;
+    int   currentMixingType = 1;
 
 	while (!file.eof())
 	{
@@ -662,7 +662,7 @@ void parseMtl(std::string filePath, std::string fileName)
 				currentScrollYValue = 0.0f;
                 currentNumImages = 1;
                 currentAnimSpeed = 0.0f;
-                currentSmoothMix = 1;
+                currentMixingType = 1;
 			}
 			else if (strcmp(lineSplit[0], "\tmap_Kd") == 0 || strcmp(lineSplit[0], "map_Kd") == 0) //end of material found, generate it with all its attrributes
 			{
@@ -715,7 +715,7 @@ void parseMtl(std::string filePath, std::string fileName)
 				newTexture.scrollX = currentScrollXValue;
 				newTexture.scrollY = currentScrollYValue;
                 newTexture.animationSpeed = currentAnimSpeed;
-                newTexture.smoothMixing = (bool)currentSmoothMix;
+                newTexture.mixingType = currentMixingType;
 
 				modelTexturesList.push_back(newTexture); //put a copy of newTexture into the list
 			}
@@ -765,9 +765,13 @@ void parseMtl(std::string filePath, std::string fileName)
                     currentNumImages = 1;
                 }
 			}
-            else if (strcmp(lineSplit[0], "\tsmoothMix") == 0 || strcmp(lineSplit[0], "smoothMix") == 0)
+            else if (strcmp(lineSplit[0], "\tmixLinear") == 0 || strcmp(lineSplit[0], "mixLinear") == 0)
 			{
-				currentSmoothMix = std::stoi(lineSplit[1]);
+				currentMixingType = 2;
+			}
+            else if (strcmp(lineSplit[0], "\tmixSinusoidal") == 0 || strcmp(lineSplit[0], "mixSinusoidal") == 0)
+			{
+				currentMixingType = 3;
 			}
 		}
 
