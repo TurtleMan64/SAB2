@@ -54,8 +54,8 @@ void MH_StaticObjects::loadStaticModels()
 	std::fprintf(stdout, "Loading MH_StaticObjects static models...\n");
 	#endif
 
-	loadModel(&MH_StaticObjects::models, "res/Models/Objects/MetalHarbor/StaticObjects/", "LittleSpeedBumpThingy");
-	//loadModel(&MH_StaticObjects::models, "res/Models/Objects/MetalHarbor/StaticObjects/", "StaticObjects");
+	//loadModel(&MH_StaticObjects::models, "res/Models/Objects/MetalHarbor/StaticObjects/", "LittleSpeedBumpThingy");
+	loadModel(&MH_StaticObjects::models, "res/Models/Objects/MetalHarbor/StaticObjects/", "StaticObjects");
 
 	if (MH_StaticObjects::cmOriginal == nullptr)
 	{

@@ -7,7 +7,7 @@ Ni 0
 d 1
 numImages 4
 animSpeed 1.0
-smoothMix 1
+mixLinear
 map_Kd 100.png
 200.png
 300.png
