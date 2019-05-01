@@ -7,7 +7,7 @@ Ni 0
 d 1.000000
 numImages 8
 animSpeed 8.0
-mixBinary
+mixSinusodial
 map_Kd 1.png
 2.png
 3.png
