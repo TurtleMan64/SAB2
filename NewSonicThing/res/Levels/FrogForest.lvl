@@ -3,7 +3,7 @@ Levels/FrogForest
 FF -100000 -100000 -100000 100000 100000 100000
 Levels/FrogForest
 1
-Collision 8
+CollisionSmooth 8
 1.0 1.0 1.0
 0.0 0.0 0.0
 0.0 0.0 0.0
@@ -15,8 +15,8 @@ Collision 8
 1 0 0
 1
 2
-res/Audio/BGM/g_hill_intro.ogg
-res/Audio/BGM/g_hill_loop.ogg
+res/Audio/BGM/ff_intro.ogg
+res/Audio/BGM/ff_loop.ogg
 -2997.882813 204.103973 -10584.179688
 103 3
 -100

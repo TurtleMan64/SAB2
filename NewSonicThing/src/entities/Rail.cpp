@@ -104,10 +104,10 @@ Rail::Rail(const char* railPath)
 	std::vector<Vector3f> pointsList;
 	std::vector<Vector3f> normalList;
 
-	std::ifstream file(railPath);
+	std::ifstream file(Global::pathToEXE+railPath);
 	if (!file.is_open())
 	{
-		std::fprintf(stdout, "Error: Cannot load file '%s'\n", railPath);
+		std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE+railPath).c_str());
 		file.close();
 	}
 	else

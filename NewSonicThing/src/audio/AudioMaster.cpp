@@ -87,10 +87,10 @@ ALuint AudioMaster::loadOGG(const char* fileName)
 	FILE* fp = nullptr;
 
 	#ifdef _WIN32
-	int er = fopen_s(&fp, fileName, "rb");
+	int er = fopen_s(&fp, (Global::pathToEXE+fileName).c_str(), "rb");
 	if (fp == nullptr || er != 0)
 	{
-		fprintf(stderr, "Error when trying to open '%s'\n", fileName);
+		fprintf(stderr, "Error when trying to open '%s'\n", (Global::pathToEXE+fileName).c_str());
 		if (er != 0)
 		{
 			fprintf(stderr, "fopen_s return value: %d\n", er);

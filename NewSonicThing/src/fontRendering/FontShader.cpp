@@ -113,7 +113,7 @@ void FontShader::loadMatrix(int location, Matrix4f* matrix)
 GLuint FontShader::loadShader(const char* fileName, int type)
 {
 	std::ifstream sourceFile;
-	sourceFile.open(fileName);
+	sourceFile.open(Global::pathToEXE+fileName);
 	std::string filetext;
 
 	if (sourceFile.is_open())
@@ -129,7 +129,7 @@ GLuint FontShader::loadShader(const char* fileName, int type)
 	}
 	else
 	{
-		std::fprintf(stdout, "Error: Could not find shader file '%s'\n", fileName);
+		std::fprintf(stdout, "Error: Could not find shader file '%s'\n", (Global::pathToEXE+fileName).c_str());
 		sourceFile.close();
 		return 0;
 	}

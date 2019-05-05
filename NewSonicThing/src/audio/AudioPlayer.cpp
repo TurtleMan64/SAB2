@@ -308,10 +308,10 @@ void AudioPlayer::setBGMVolume(float percent)
 
 void AudioPlayer::loadSettings()
 {
-	std::ifstream file("Settings/AudioSettings.ini");
+	std::ifstream file(Global::pathToEXE+"Settings/AudioSettings.ini");
 	if (!file.is_open())
 	{
-		std::fprintf(stderr, "Error: Cannot load file 'Settings/AudioSettings.ini'\n");
+		std::fprintf(stderr, "Error: Cannot load file '%s'\n", (Global::pathToEXE+"Settings/AudioSettings.ini").c_str());
 		file.close();
 	}
 	else

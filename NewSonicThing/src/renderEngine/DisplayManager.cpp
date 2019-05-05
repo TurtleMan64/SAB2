@@ -205,10 +205,10 @@ void window_close_callback(GLFWwindow* /*windowHandle*/)
 
 void loadDisplaySettings()
 {
-	std::ifstream file("Settings/DisplaySettings.ini");
+	std::ifstream file(Global::pathToEXE + "Settings/DisplaySettings.ini");
 	if (!file.is_open())
 	{
-		std::fprintf(stdout, "Error: Cannot load file 'Settings/DisplaySettings.ini'\n");
+		std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE + "Settings/DisplaySettings.ini").c_str());
 		file.close();
 	}
 	else
@@ -272,10 +272,10 @@ void loadDisplaySettings()
 
 void loadGraphicsSettings()
 {
-	std::ifstream file("Settings/GraphicsSettings.ini");
+	std::ifstream file(Global::pathToEXE + "Settings/GraphicsSettings.ini");
 	if (!file.is_open())
 	{
-		std::fprintf(stdout, "Error: Cannot load file 'Settings/GraphicsSettings.ini'\n");
+		std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE + "Settings/GraphicsSettings.ini").c_str());
 		file.close();
 	}
 	else

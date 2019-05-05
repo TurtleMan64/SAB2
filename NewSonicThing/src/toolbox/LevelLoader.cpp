@@ -189,10 +189,10 @@ void LevelLoader::loadLevel(std::string levelFilename)
 		StageTransparent::deleteStaticModels();
 	}
 
-	std::ifstream file("res/Levels/" + fname);
+	std::ifstream file(Global::pathToEXE + "res/Levels/" + fname);
 	if (!file.is_open())
 	{
-		std::fprintf(stdout, "Error: Cannot load file '%s'\n", ("res/Levels/" + fname).c_str());
+		std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE + "res/Levels/" + fname).c_str());
 		file.close();
 		return;
 	}
@@ -913,10 +913,10 @@ void LevelLoader::loadLevelData()
 
 	LevelLoader::numLevels = 0;
 
-	std::ifstream file("res/Levels/LevelData.dat");
+	std::ifstream file(Global::pathToEXE + "res/Levels/LevelData.dat");
 	if (!file.is_open())
 	{
-		std::fprintf(stdout, "Error: Cannot load file 'res/Levels/LevelData.dat'\n");
+		std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE + "res/Levels/LevelData.dat").c_str());
 		file.close();
 	}
 	else
