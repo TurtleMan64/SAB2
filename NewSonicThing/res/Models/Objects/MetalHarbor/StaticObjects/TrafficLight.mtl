@@ -1,54 +1,44 @@
-# Material Count: 6
+# Material Count: 5
 
-newmtl texture_4_material_0
+newmtl pr64_21.png
 Ns 20
-Ni -1.000000
+Ni 0.02
 Tr 1
 d 1
 scrollX 0
 scrollY 0
 map_Kd pr64_21.png
 
-newmtl texture_5_material_0
+newmtl miu32_mh004.png
 Ns 20
-Ni 0
-Tr 0
-d 1
-scrollX 0
-scrollY 0
-illum 2
-map_Kd blackglass.png
-
-newmtl None
-Ns 20
-Ni 0
+Ni 0.02
 Tr 1
 d 1
 scrollX 0
 scrollY 0
 map_Kd miu32_mh004.png
 
-newmtl texture_1_material_0
+newmtl pr128_28.png
 Ns 20
-Ni -1.000000
+Ni 0.02
 Tr 1
 d 1
 scrollX 0
 scrollY 0
 map_Kd pr128_28.png
 
-newmtl texture_2_material_0
+newmtl pr32_4fixed.png
 Ns 20
-Ni -1.000000
+Ni 0.02
 Tr 1
 d 1
 scrollX 0
 scrollY 0
 map_Kd pr32_4fixed.png
 
-newmtl texture_3_material_0
+newmtl pr64_11.png
 Ns 20
-Ni -1.000000
+Ni 0.02
 Tr 1
 d 1
 scrollX 0

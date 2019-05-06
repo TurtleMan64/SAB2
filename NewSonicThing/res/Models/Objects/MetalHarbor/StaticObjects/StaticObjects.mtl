@@ -1,312 +1,254 @@
-	# Material Count: 34
+	# Material Count: 28
 	
-newmtl pr64_15.png
+newmtl None_pr64_15.png.001
 	Ns 20
 	Ni 0.02
 	Tr 1
-	d 1
+	d 1.000000
 	scrollX 0
 	scrollY 0
 	map_Kd pr64_15.png
 	
-newmtl miu64_mh003.png
+newmtl None.001
 	Ns 20
 	Ni 0.02
 	Tr 1
-	d 1
+	d 1.000000
 	scrollX 0
 	scrollY 0
 	map_Kd miu64_mh003.png
 	
-newmtl miu64_mh008.png
+newmtl miu64_mh008.001
 	Ns 20
 	Ni 0.02
 	Tr 1
-	d 1
+	d 1.000000
 	scrollX 0
 	scrollY 0
 	map_Kd miu64_mh008.png
 	
-newmtl miu256_mh001.png
+newmtl None.050
 	Ns 20
 	Ni 0.02
 	Tr 1
-	d 1
+	d 1.000000
 	scrollX 0
 	scrollY 0
 	map_Kd miu256_mh001.png
 	
-newmtl pr128_17.png
+newmtl pr128_17.023
 	Ns 20
 	Ni 0.02
 	Tr 1
-	d 1
+	d 1.000000
 	scrollX 0
 	scrollY 0
 	map_Kd pr128_17.png
 	
-newmtl pr128_12.png
+newmtl wire_228153184.038
 	Ns 20
 	Ni 0.02
 	Tr 1
-	d 1
+	d 1.000000
 	scrollX 0
 	scrollY 0
 	map_Kd pr128_12.png
 	
-newmtl pr128_7.png
+newmtl wire_228153184.001_pr128_7.png.038
 	Ns 20
 	Ni 0.02
 	Tr 1
-	d 1
+	d 1.000000
 	scrollX 0
 	scrollY 0
 	map_Kd pr128_7.png
 	
-newmtl miu64_mh007.png
+newmtl miu64_mh007.001
 	Ns 20
 	Ni 0.02
 	Tr 1
-	d 1
-	numImages 2
-	animSpeed 1.0
-	mixSinusoidal
-	map_Kd miu64_mh007.png
-	miu64_mh007dim.png
-	
-newmtl pr32_4fixed.png
-	Ns 20
-	Ni 0.02
-	Tr 1
-	d 1
+	d 1.000000
 	scrollX 0
 	scrollY 0
-	map_Kd pr32_4fixed.png
+	map_Kd miu64_mh007.png
 	
-newmtl pr128_34.png
+newmtl wire_228153184.001_pr128_34_-_Copy.png.038
 	Ns 20
 	Ni 0.02
 	Tr 1
-	d 1
+	d 1.000000
 	scrollX 0
 	scrollY 0
 	map_Kd pr128_34.png
 	
-newmtl miu256_mh002.png
+newmtl miu256_mh002.001
 	Ns 20
 	Ni 0.02
 	Tr 1
-	d 1
+	d 1.000000
 	scrollX 0
 	scrollY 0
 	map_Kd miu256_mh002.png
 	
-newmtl pr128_22.png
+newmtl None_pr128_22.png.001
 	Ns 20
 	Ni 0.02
 	Tr 1
-	d 1
+	d 1.000000
 	scrollX 0
 	scrollY 0
 	map_Kd pr128_22.png
 	
-newmtl pr128_8.png
+newmtl None_pr128_8.png.001
 	Ns 20
 	Ni 0.02
 	Tr 1
-	d 1
+	d 1.000000
 	scrollX 0
 	scrollY 0
 	map_Kd pr128_8.png
 	
-newmtl pr64_14.png
+newmtl None_pr64_14.png.001
 	Ns 20
 	Ni 0.02
 	Tr 1
-	d 1
+	d 1.000000
 	scrollX 0
 	scrollY 0
 	map_Kd pr64_14.png
 	
-newmtl pr128_27.png
+newmtl pr128_27.001
 	Ns 20
 	Ni 0.02
 	Tr 1
-	d 1
+	d 1.000000
 	scrollX 0
 	scrollY 0
 	map_Kd pr128_27.png
 	
-newmtl pr128_14.png
+newmtl pr128_14.023
 	Ns 20
 	Ni 0.02
 	Tr 1
-	d 1
+	d 1.000000
 	scrollX 0
 	scrollY 0
 	map_Kd pr128_14.png
 	
-newmtl miu32_mh004.png
+newmtl None_pr32_1.png.001
 	Ns 20
 	Ni 0.02
 	Tr 1
-	d 1
-	numImages 2
-	animSpeed 1.0
-	mixSinusoidal
-	map_Kd miu32_mh004.png
-	miu32_mh004dim.png
-	
-newmtl pr32_1.png
-	Ns 20
-	Ni 0.02
-	Tr 1
-	d 1
+	d 1.000000
 	scrollX 0
 	scrollY 0
 	map_Kd pr32_1.png
 	
-newmtl pr32_3.png
+newmtl None_pr32_3.png.001
 	Ns 20
 	Ni 0.02
 	Tr 1
-	d 1
+	d 1.000000
 	scrollX 0
 	scrollY 0
 	map_Kd pr32_3.png
 	
-newmtl pr128_23.png
+newmtl pr128_15.023
 	Ns 20
 	Ni 0.02
 	Tr 1
-	d 1
+	d 1.000000
 	scrollX 0
 	scrollY 0
-	map_Kd pr128_23.png
+	map_Kd pr128_15.png
 	
-newmtl pr64_21.png
+newmtl miu64_mh001.023
 	Ns 20
 	Ni 0.02
 	Tr 1
-	d 1
-	scrollX 0
-	scrollY 0
-	map_Kd pr64_21.png
-	
-newmtl miu64_mh001.png
-	Ns 20
-	Ni 0.02
-	Tr 1
-	d 1
+	d 1.000000
 	scrollX 0
 	scrollY 0
 	map_Kd miu64_mh001.png
 	
-newmtl pr128_28.png
+newmtl miu64_mh005.023
 	Ns 20
 	Ni 0.02
 	Tr 1
-	d 1
-	scrollX 0
-	scrollY 0
-	map_Kd pr128_28.png
-	
-newmtl pr64_18.png
-	Ns 20
-	Ni 0.02
-	Tr 1
-	d 1
-	scrollX 0
-	scrollY 0
-	map_Kd pr64_18.png
-	
-newmtl miu64_mh005.png
-	Ns 20
-	Ni 0.02
-	Tr 1
-	d 1
+	d 1.000000
 	scrollX 0
 	scrollY 0
 	map_Kd miu64_mh005.png
 	
-newmtl pr32_2.png
+newmtl wire_228153184.001_pr32_2.png.038
 	Ns 20
 	Ni 0.02
 	Tr 1
-	d 1
+	d 1.000000
 	scrollX 0
 	scrollY 0
 	map_Kd pr32_2.png
 	
-newmtl miu128_mh001.png
+newmtl None_miu128_mh001.png.001
 	Ns 20
 	Ni 0.02
 	Tr 1
-	d 1
+	d 1.000000
 	scrollX 0
 	scrollY 0
 	map_Kd miu128_mh001.png
 	
-newmtl pr64_19.png
+newmtl pr64_19.001
 	Ns 20
 	Ni 0.02
 	Tr 1
-	d 1
+	d 1.000000
 	scrollX 0
 	scrollY 0
 	map_Kd pr64_19.png
 	
-newmtl miu64_mh002.png
+newmtl None_miu64_mh002.png.001
 	Ns 20
 	Ni 0.02
 	Tr 1
-	d 1
+	d 1.000000
 	scrollX 0
 	scrollY 0
 	map_Kd miu64_mh002.png
 	
-newmtl pr128_6.png
+newmtl pr128_6.001
 	Ns 20
 	Ni 0.02
 	Tr 1
-	d 1
+	d 1.000000
 	scrollX 0
 	scrollY 0
 	map_Kd pr128_6.png
 	
-newmtl miu32_mh001.png
+newmtl None_miu64_mh006.png.001
 	Ns 20
 	Ni 0.02
 	Tr 1
-	d 1
-	scrollX 0
-	scrollY 0
-	map_Kd miu32_mh001.png
-	
-newmtl miu64_mh006.png
-	Ns 20
-	Ni 0.02
-	Tr 1
-	d 1
+	d 1.000000
 	scrollX 0
 	scrollY 0
 	map_Kd miu64_mh006.png
 	
-newmtl miu64_ig007.png
+newmtl miu32_mh001.001
 	Ns 20
 	Ni 0.02
 	Tr 1
-	d 1
+	d 1.000000
+	scrollX 0
+	scrollY 0
+	map_Kd miu32_mh001.png
+	
+newmtl None_miu64_ig007.png.001
+	Ns 20
+	Ni 0.02
+	Tr 1
+	d 1.000000
 	scrollX 0
 	scrollY 0
 	map_Kd miu64_ig007.png
-	
-newmtl pr64_11.png
-	Ns 20
-	Ni 0.02
-	Tr 1
-	d 1
-	scrollX 0
-	scrollY 0
-	map_Kd pr64_11.png
 	
