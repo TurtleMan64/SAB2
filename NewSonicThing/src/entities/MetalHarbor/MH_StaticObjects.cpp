@@ -8,10 +8,13 @@
 #include "../../toolbox/maths.h"
 #include "../../collision/collisionmodel.h"
 #include "../../collision/collisionchecker.h"
+#include "../../animation/body.h"
 
 #include <algorithm>
 
 std::list<TexturedModel*> MH_StaticObjects::models;
+std::list<TexturedModel*> MH_StaticObjects::modelsVertexColours;
+std::list<TexturedModel*> MH_StaticObjects::modelsTransparent;
 CollisionModel* MH_StaticObjects::cmOriginal;
 
 MH_StaticObjects::MH_StaticObjects()
@@ -26,6 +29,9 @@ MH_StaticObjects::MH_StaticObjects()
 	scale = 1;
 	visible = true;
 	
+	setupModelVertexColours();
+	setupModelTransparent();
+
 	updateTransformationMatrix();
 
 	collideModelOriginal = MH_StaticObjects::cmOriginal;
@@ -54,8 +60,10 @@ void MH_StaticObjects::loadStaticModels()
 	std::fprintf(stdout, "Loading MH_StaticObjects static models...\n");
 	#endif
 
-	//loadModel(&MH_StaticObjects::models, "res/Models/Objects/MetalHarbor/StaticObjects/", "LittleSpeedBumpThingy");
 	loadModel(&MH_StaticObjects::models, "res/Models/Objects/MetalHarbor/StaticObjects/", "StaticObjects");
+	loadModel(&MH_StaticObjects::modelsVertexColours, "res/Models/Objects/MetalHarbor/StaticObjects/", "StaticObjectsVertexColours");
+	loadModel(&MH_StaticObjects::modelsTransparent, "res/Models/Objects/MetalHarbor/StaticObjects/", "StaticObjectsTransparent");
+
 
 	if (MH_StaticObjects::cmOriginal == nullptr)
 	{
@@ -70,5 +78,23 @@ void MH_StaticObjects::deleteStaticModels()
 	#endif
 
 	Entity::deleteModels(&MH_StaticObjects::models);
+	Entity::deleteModels(&MH_StaticObjects::modelsVertexColours);
+	Entity::deleteModels(&MH_StaticObjects::modelsTransparent);
 	Entity::deleteCollisionModel(&MH_StaticObjects::cmOriginal);
+}
+
+void MH_StaticObjects::setupModelVertexColours()
+{
+	modelVertexColours = new Body(&MH_StaticObjects::modelsVertexColours);
+	modelVertexColours->setVisible(true);
+	INCR_NEW("Entity");
+	Main_addEntity(modelVertexColours);
+}
+
+void MH_StaticObjects::setupModelTransparent()
+{
+	modelTransparent = new Body(&MH_StaticObjects::modelsTransparent);
+	modelTransparent->setVisible(true);
+	INCR_NEW("Entity");
+	Main_addEntityPass2(modelTransparent);
 }

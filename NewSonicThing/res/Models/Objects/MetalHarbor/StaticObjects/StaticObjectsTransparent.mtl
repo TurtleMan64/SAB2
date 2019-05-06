@@ -1,11 +1,10 @@
 # Material Count: 1
 
 newmtl blackglass.png
-Ns 19.607843
-Ni 1.000000
-Tr 1
+Ns 20
+Ni 0
+Tr 0
 d 1.000000
-scrollX 0
-scrollY 0
+illum 2
 map_Kd blackglass.png
 
