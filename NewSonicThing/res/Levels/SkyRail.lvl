@@ -10,7 +10,7 @@ Collision 7
 1.0 1.0 1.0
 0.9 0.9 .9
 1.0 1.0 1.0
-0.0000000000001 1.5     #0.0001 1.5 cant do fog because of transparency
+0.00025 1.5  #cant do fog because of transparency
 90
 -0.011671 -0.325006 0.945640
 1

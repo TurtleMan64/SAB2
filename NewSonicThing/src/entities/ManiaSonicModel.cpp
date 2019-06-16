@@ -47,6 +47,7 @@ std::list<TexturedModel*> ManiaSonicModel::modelJog15;
 std::list<TexturedModel*> ManiaSonicModel::modelJog16;
 std::list<TexturedModel*> ManiaSonicModel::modelJog17;
 std::list<TexturedModel*> ManiaSonicModel::modelGrind;
+std::list<TexturedModel*> ManiaSonicModel::modelSkid;
 
 ManiaSonicModel::ManiaSonicModel()
 {
@@ -92,6 +93,12 @@ void ManiaSonicModel::animate(int animIndex, float time)
 			}
 			break;
 		}
+
+        case 8: //skid
+        {
+            models = &ManiaSonicModel::modelSkid;
+			break;
+        }
 
 		case 12: //jump
 		{
@@ -199,6 +206,7 @@ void ManiaSonicModel::loadStaticModels()
 	loadModel(&ManiaSonicModel::modelJog16 , "res/Models/Characters/ManiaSonic/", "Jog16");
 	loadModel(&ManiaSonicModel::modelJog17 , "res/Models/Characters/ManiaSonic/", "Jog17");
 	loadModel(&ManiaSonicModel::modelGrind , "res/Models/Characters/ManiaSonic/", "Grind");
+    loadModel(&ManiaSonicModel::modelSkid  , "res/Models/Characters/ManiaSonic/", "Skid");
 }
 
 void ManiaSonicModel::deleteStaticModels()
@@ -239,4 +247,5 @@ void ManiaSonicModel::deleteStaticModels()
 	Entity::deleteModels(&ManiaSonicModel::modelJog16);
 	Entity::deleteModels(&ManiaSonicModel::modelJog17);
 	Entity::deleteModels(&ManiaSonicModel::modelGrind);
+    Entity::deleteModels(&ManiaSonicModel::modelSkid);
 }

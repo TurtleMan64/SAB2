@@ -23,6 +23,8 @@
 #include "maniasonicmodel.h"
 
 #include <list>
+#include <vector>
+#include <unordered_set>
 #include <iostream>
 #include <algorithm>
 #include <fstream>
@@ -66,6 +68,113 @@ void Car::step()
 	homingAttackTimer = std::fmaxf(0.0f, homingAttackTimer - dt);
 
 	setInputs();
+
+    //Start Lightdash
+    if (!isLightdashing)
+    {
+        if (inputAction3 && !inputAction3Previous)
+        {
+            lightdashTrail.clear();
+            lightdashTrailIdx = -1;
+
+            //search through close entities to find rings
+            std::list<std::unordered_set<Entity*>*> entities;
+            Global::getNearbyEntities(position.x, position.z, 1, &entities);
+
+            //keep track of rings we've already used, to not use them again
+            std::unordered_set<Entity*> alreadyUsedRings;
+
+            float closest = 100000000.0f;
+            Vector3f* closestPoint = nullptr;
+            Entity* closestEntity = nullptr;
+
+            for (std::unordered_set<Entity*>* set : entities)
+	        {
+		        for (Entity* e : (*set))
+		        {
+                    if (!e->canLightdashOn())
+                    {
+                        continue;
+                    }
+
+                    Vector3f diff = position - e->position;
+                    float thisdist = diff.lengthSquared();
+                    if (thisdist < closest)
+                    {
+                        closest = thisdist;
+                        closestPoint = &e->position;
+                    }
+                }
+            }
+
+            if (closest < 20.0f*20.0f)
+            {
+                isLightdashing = true;
+                lightdashTrailIdx = 0;
+                lightdashTrail.push_back(closestPoint);
+                alreadyUsedRings.insert(closestEntity);
+
+                bool keepGoing = true;
+                while (keepGoing)
+                {
+                    Vector3f center = lightdashTrail.back();
+                    //search through close entities to find rings
+                    Global::getNearbyEntities(center.x, center.z, 1, &entities);
+
+                    closest = 100000000.0f;
+                    closestPoint = nullptr;
+
+                    for (std::unordered_set<Entity*>* set : entities)
+                    {
+                        for (Entity* e : (*set))
+                        {
+                            if (!e->canLightdashOn() || alreadyUsedRings.find(e) != alreadyUsedRings.end())
+                            {
+                                continue;
+                            }
+
+                            Vector3f diff = center - e->position;
+                            float thisdist = diff.lengthSquared();
+                            if (thisdist < closest)
+                            {
+                                closest = thisdist;
+                                closestPoint = &e->position;
+                                closestEntity = e;
+                            }
+                        }
+                    }
+
+                    if (closest < 60.0f*60.0f)
+                    {
+                        lightdashTrail.push_back(closestPoint);
+                        alreadyUsedRings.insert(closestEntity);
+                    }
+                    else
+                    {
+                        keepGoing = false;
+                    }
+                }
+            }
+        }
+    }
+
+    //Move along lightdash trail
+    if (isLightdashing)
+    {
+        Vector3f nextPoint = lightdashTrail[lightdashTrailIdx];
+        Vector3f diff = position - nextPoint;
+
+        //todo change this to actually smoothly go through points
+        position.set(&nextPoint);
+
+        lightdashTrailIdx++;
+        if (lightdashTrailIdx >= lightdashTrail.size())
+        {
+            isLightdashing = false;
+            lightdashTrail.clear();
+            lightdashTrailIdx = -1;
+        }
+    }
 
 	//Homing attack
 	if (onGround)
@@ -227,6 +336,7 @@ void Car::step()
 			if (spindashTimer > 0)
 			{
 				spindash();
+                spindashRestartDelay = spindashRestartDelayMax;
 			}
 			spindashTimer = 0;
 			storedSpindashSpeed = 0;
@@ -292,6 +402,7 @@ void Car::step()
 		moveMeAir();
 	}
 
+    //camera stuff
 	if (!isGrinding && !onRocket)
 	{
 		//Twisting camera from user input
@@ -302,7 +413,11 @@ void Car::step()
 		{
 			if (Global::isAutoCam)
 			{
-				camDir = Maths::interpolateVector(&camDir, &vel, fminf(vel.length()*0.014f*dt, 45.0f*dt));
+                //idea: dont adjust the camera if sonic is heading towards it
+                if (camDir.dot(&vel) > -0.5f)
+                {
+                    camDir = Maths::interpolateVector(&camDir, &vel, fminf(vel.length()*0.014f*dt, 45.0f*dt));
+                }
 			}
 			else
 			{
@@ -395,7 +510,7 @@ void Car::step()
 			}
 		}
 	}
-	else
+	else //rotating the camera if youre grinding or on a rocket
 	{
 		//Twisting camera from user input
 		camDir = Maths::rotatePoint(&camDir, &relativeUp, -inputX2*dt);
@@ -419,12 +534,35 @@ void Car::step()
 		}
 	}
 
+    //wall sticking
+    if (!onGround)
+    {
+        wallStickTimer = 0.0f;
+    }
+    else
+    {
+        if ((currentTriangle->isWall() || currentTriangle->normal.y < wallStickThreshold) &&
+            vel.lengthSquared() < wallStickSpeedRequirement*wallStickSpeedRequirement)
+        {
+            wallStickTimer += dt;
+
+            if (wallStickTimer > wallStickTimerMax)
+            {
+                popOffWall();
+            }
+        }
+        else
+        {
+            wallStickTimer = 0.0f;
+        }
+    }
+
 	//smoothing
 	camDirSmooth = Maths::interpolateVector(&camDirSmooth, &camDir, 10*dt);
 	relativeUpSmooth = Maths::interpolateVector(&relativeUpSmooth, &relativeUp, 3*dt);
 	relativeUpAnim = Maths::interpolateVector(&relativeUpAnim, &relativeUp, 15*dt);
 
-	if (!isGrinding && !onRocket)
+	if (!isGrinding && !onRocket && !isLightdashing)
 	{
 		//speed before adjusting
 		float originalSpeed = vel.length();
@@ -490,10 +628,11 @@ void Car::step()
 
 							onGround = false;
 							relativeUp.set(0, 1, 0);
-							vel.y = Maths::approach(vel.y, gravityTerminal, gravityApproach, dt);
+							//vel.y = Maths::approach(vel.y, gravityTerminal, gravityApproach, dt);
+
 							Vector3f velToAddFromGravity(relativeUp);
 							velToAddFromGravity.setLength(-gravityForce*dt);
-
+                            vel = vel + velToAddFromGravity;
 
 
 
@@ -739,10 +878,11 @@ void Car::step()
 
 				relativeUp.set(0, 1, 0);
 
-				vel.y = Maths::approach(vel.y, gravityTerminal, gravityApproach, dt);
+				//vel.y = Maths::approach(vel.y, gravityTerminal, gravityApproach, dt);
 
 				Vector3f velToAddFromGravity(relativeUp);
 				velToAddFromGravity.setLength(-gravityForce*dt);
+                vel = vel + velToAddFromGravity;
 				if (Input::inputs.INPUT_RB)
 				{
 					vel = vel - velToAddFromGravity.scaleCopy(4);
@@ -836,7 +976,7 @@ void Car::moveMeGround()
 
 			//rotate vel to where the stick is going
 			float spd = vel.length();
-			vel = Maths::interpolateVector(&vel, &velToAdd, dt*(60.0f/12.0f));
+			vel = Maths::interpolateVector(&vel, &velToAdd, dt*(60.0f/12.0f)); // 60.0f/12.0f before 6/11/2019
 			vel.setLength(spd);
 		}
 		else
@@ -854,11 +994,15 @@ void Car::moveMeGround()
 			{
 				vel = Maths::applyDrag(&vel, skidPower, dt);
 				skidded = true;
+                if (!isSkidding && vel.lengthSquared() >= skidAudioThreshold*skidAudioThreshold)
+                {
+                    AudioPlayer::play(13, &position);
+                }
 			}
 			else
 			{
 				float spd = vel.length();
-				vel = Maths::interpolateVector(&vel, &velToAdd, dt*(60.0f/12.0f));
+				vel = Maths::interpolateVector(&vel, &velToAdd, dt*(60.0f/12.0f)); // 60.0f/12.0f before 6/11/2019
 				vel.setLength(spd);
 			}
 		}
@@ -880,12 +1024,22 @@ void Car::moveMeGround()
 				//float frictionPower = groundBallFriction;
 				//vel = Maths::applyDrag(&vel, -frictionPower, dt); //Slow vel down due to friction
 			}
-			else
+			else //neutral stick slowdown
 			{
-				Vector3f fr(0, -0.95f, 0); //0.75
-				fr = Maths::projectOntoPlane(&fr, &relativeUp);
-				float frictionPower = groundNeutralFriction*(1 - fr.length());
-				vel = Maths::applyDrag(&vel, -frictionPower, dt); //Slow vel down due to friction
+                if (vel.lengthSquared() > 35.0f*35.0f) //normal neutral stick friction
+		        {
+				    Vector3f fr(0, -0.95f, 0); //0.75
+				    fr = Maths::projectOntoPlane(&fr, &relativeUp);
+				    float frictionPower = groundNeutralFriction*(1 - fr.length());
+				    vel = Maths::applyDrag(&vel, -frictionPower, dt); //Slow vel down due to friction
+                }
+                else //when close to no speed, increase friction
+		        {
+				    Vector3f fr(0, -0.95f, 0); //0.75
+				    fr = Maths::projectOntoPlane(&fr, &relativeUp);
+				    float frictionPower = (groundNeutralFriction*4)*(1 - fr.length()); //multiply by 4, arbitrary
+				    vel = Maths::applyDrag(&vel, -frictionPower, dt); //Slow vel down due to friction
+                }
 			}
 		}
 	}
@@ -925,7 +1079,8 @@ void Car::moveMeGround()
 	if (heldUp && !skidded && !isBall)
 	{
 		//dont slow down if you holding out on stick and youre running
-		if (velBefore.lengthSquared() > vel.lengthSquared())
+		if (velBefore.lengthSquared() > vel.lengthSquared() &&
+            velBefore.length() > spindashPowerMax-20.0f) //only dont slow down if youre already going fast
 		{
 			vel.setLength(velBefore.length());
 		}
@@ -941,6 +1096,8 @@ void Car::moveMeGround()
 			vel.setLength(velBefore.length());
 		}
 	}
+
+    isSkidding = skidded;
 }
 
 void Car::moveMeAir()
@@ -983,7 +1140,7 @@ void Car::moveMeAir()
 		if (ang > 0.001f)
 		{
 			float spd = vel.length();
-			vel = Maths::interpolateVector(&vel, &velToAdd, dt*(60.0f/12.0f));
+			vel = Maths::interpolateVector(&vel, &velToAdd, dt*(60.0f/10.0f)); //changed from 12 on 6/11/2019
 			vel.setLength(spd);
 			vel.scale(1 - 4.5f*ang*dt*(1/Maths::PI)); //slow down from turning in the air
 		}
@@ -1200,6 +1357,16 @@ void Car::animate()
 		maniaSonicModel->setOrientation(dspX, dspY, dspZ, diffGroundSpnd, yawAngleGroundSpnd, pitchAngleGroundSpnd, runAnimationCycle);
 		maniaSonicModel->animate(12, 0);
 	}
+    else if (isSkidding && vel.lengthSquared() >= skidAudioThreshold*skidAudioThreshold)
+    {
+        rotX = diffGround;
+		rotY = yawAngleGround;
+		rotZ = pitchAngleGround;
+		rotRoll = 0;
+
+		maniaSonicModel->setOrientation(getX(), getY(), getZ(), rotX, rotY, rotZ, rotRoll);
+        maniaSonicModel->animate(8, 0);
+    }
 	else if (spindashReleaseTimer > 0)
 	{
 		maniaSonicModel->setOrientation(dspX, dspY, dspZ, diffGround, yawAngleGround, pitchAngleGround, runAnimationCycle);
@@ -1250,6 +1417,7 @@ void Car::setInputs()
 	inputJump    = Input::inputs.INPUT_ACTION1;
 	inputAction  = Input::inputs.INPUT_ACTION2;
 	inputAction2 = Input::inputs.INPUT_ACTION3;
+    inputAction3 = Input::inputs.INPUT_ACTION4;
 	inputX       = Input::inputs.INPUT_X;
 	inputY       = Input::inputs.INPUT_Y;
 	inputX2      = Input::inputs.INPUT_X2;
@@ -1258,12 +1426,14 @@ void Car::setInputs()
 	inputJumpPrevious    = Input::inputs.INPUT_PREVIOUS_ACTION1;
 	inputActionPrevious  = Input::inputs.INPUT_PREVIOUS_ACTION2;
 	inputAction2Previous = Input::inputs.INPUT_PREVIOUS_ACTION3;
+    inputAction3Previous = Input::inputs.INPUT_PREVIOUS_ACTION4;
 
 	if (canMoveTimer > 0.0f || Global::finishStageTimer >= 0.0f)
 	{
 		inputJump    = false;
 		inputAction  = false;
 		inputAction2 = false;
+        inputAction3 = false;
 		inputX    = 0;
 		inputY    = 0;
 		inputX2   = 0;
@@ -1272,6 +1442,7 @@ void Car::setInputs()
 		inputJumpPrevious    = false;
 		inputActionPrevious  = false;
 		inputAction2Previous = false;
+        inputAction3Previous = false;
 	}
 }
 
@@ -1382,4 +1553,17 @@ void Car::refreshCamera()
 	//CollisionChecker::debug = false;
 
 	Global::gameCamera->setViewMatrixValues(&eye, &target, &up);
+}
+
+//Do a small 'pop off' off the wall
+void Car::popOffWall()
+{
+    if (onGround)
+    {
+	    vel.x = vel.x + relativeUp.x * 90.0f;
+	    vel.z = vel.z + relativeUp.z * 90.0f;
+	    vel.y = vel.y + relativeUp.y * 90.0f;
+	    onGround = false;
+	    relativeUp.set(0, 1, 0);
+    }
 }

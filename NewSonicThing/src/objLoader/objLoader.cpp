@@ -637,6 +637,7 @@ void parseMtl(std::string filePath, std::string fileName)
     int   currentNumImages = 1;
     float currentAnimSpeed = 0.0f;
     int   currentMixingType = 1;
+    float currentFogScale = 1.0f;
 
 	while (!file.eof())
 	{
@@ -663,6 +664,7 @@ void parseMtl(std::string filePath, std::string fileName)
                 currentNumImages = 1;
                 currentAnimSpeed = 0.0f;
                 currentMixingType = 1;
+                currentFogScale = 1.0f;
 			}
 			else if (strcmp(lineSplit[0], "\tmap_Kd") == 0 || strcmp(lineSplit[0], "map_Kd") == 0) //end of material found, generate it with all its attrributes
 			{
@@ -716,6 +718,7 @@ void parseMtl(std::string filePath, std::string fileName)
 				newTexture.scrollY = currentScrollYValue;
                 newTexture.animationSpeed = currentAnimSpeed;
                 newTexture.mixingType = currentMixingType;
+                newTexture.fogScale = currentFogScale;
 
 				modelTexturesList.push_back(newTexture); //put a copy of newTexture into the list
 			}
@@ -773,6 +776,10 @@ void parseMtl(std::string filePath, std::string fileName)
 			{
 				currentMixingType = 3;
 			}
+            else if (strcmp(lineSplit[0], "\tfogScale") == 0 || strcmp(lineSplit[0], "fogScale") == 0)
+            {
+                currentFogScale = std::stof(lineSplit[1]);
+            }
 		}
 
 		free(lineSplit);

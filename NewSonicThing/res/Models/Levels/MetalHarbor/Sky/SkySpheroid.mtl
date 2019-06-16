@@ -10,6 +10,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 0
 d 0
 illum 2
+fogScale 0
 map_Kd Tex_0055_0.dds
 
 newmtl Mesh_0879.rip
@@ -21,4 +22,5 @@ Ke 0.000000 0.000000 0.000000
 Ni 0
 d 0
 illum 2
+fogScale 0
 map_Kd Tex_0056_0.dds

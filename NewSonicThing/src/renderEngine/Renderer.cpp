@@ -82,6 +82,7 @@ void EntityRenderer::prepareTexturedModel(TexturedModel* model)
         //std::fprintf(stdout, "mix factor = %f\n", texture->animationSpeed);
     }
     shader->loadMixFactor(texture->mixFactor());
+    shader->loadFogScale(texture->fogScale);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture->getID());
     glActiveTexture(GL_TEXTURE1);

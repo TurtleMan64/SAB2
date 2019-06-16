@@ -27,6 +27,7 @@ public:
 	float glowAmount;
 	bool hasTransparency;
 	bool useFakeLighting;
+    float fogScale;
     int mixingType; //interpolation. 1 = binary, 2 = linear, 3 = sinusoid
     float animationSpeed; //delta per second
 

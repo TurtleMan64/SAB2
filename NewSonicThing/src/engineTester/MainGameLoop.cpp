@@ -240,7 +240,7 @@ int main(int argc, char** argv)
     }
 
     //uncomment this out when building+running from visual studio :)
-    //Global::pathToEXE = "";
+    Global::pathToEXE = "";
 
 	#ifdef DEV_MODE
 	std::thread listenThread(doListenThread);
