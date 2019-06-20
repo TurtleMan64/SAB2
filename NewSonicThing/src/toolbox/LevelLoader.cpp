@@ -25,6 +25,7 @@
 #include "../renderEngine/skymanager.h"
 #include "../menu/missionmenu.h"
 #include "../toolbox/getline.h"
+#include "../toolbox/maths.h"
 #include "split.h"
 #include "input.h"
 #include "../entities/car.h"
@@ -114,6 +115,9 @@ void LevelLoader::loadTitle()
 	Global::checkpointTimeCen  = 0;
 	Global::checkpointTimeSec  = 0;
 	Global::checkpointTimeMin  = 0;
+
+    //use vsync on the title screen
+    glfwSwapInterval(1); 
 }
 
 void LevelLoader::loadLevel(std::string levelFilename)
@@ -575,7 +579,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
 	file.close();
 
 	//sort the chunked entity stuff
-	if (chunkedEntities.size() > 10)
+	if (chunkedEntities.size() > 0)
 	{
 		bool first = true;
 		//calc min and max values
@@ -675,6 +679,12 @@ void LevelLoader::loadLevel(std::string levelFilename)
 	//extern double previousTime;
 	timeOld = 0.0;
 	//previousTime = 0.0;
+
+    //unlock framerate during gameplay
+    if (Global::framerateUnlock)
+    {
+        glfwSwapInterval(0);
+    }
 }
 
 
@@ -741,23 +751,23 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 
 		case 8: //Boostpad
 		{
-			Boostpad::loadStaticModels();
-			Boostpad* pad = new Boostpad(
-				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]),
-				toFloat(dat[4]), toFloat(dat[5]), toFloat(dat[6]),
-				toFloat(dat[7]), toFloat(dat[8]), toFloat(dat[9])); INCR_NEW("Entity");
-			Main_addTransparentEntity(pad);
+			//Boostpad::loadStaticModels();
+			//Boostpad* pad = new Boostpad(
+			//	toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]),
+			//	toFloat(dat[4]), toFloat(dat[5]), toFloat(dat[6]),
+			//	toFloat(dat[7]), toFloat(dat[8]), toFloat(dat[9])); INCR_NEW("Entity");
+			//Main_addTransparentEntity(pad);
 			return;
 		}
 
 		case 10: //Checkpoint
 		{
-			Checkpoint::loadStaticModels();
-			Checkpoint* checkpoint = new Checkpoint(
-				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]),
-				toFloat(dat[4]), toFloat(dat[5]), toFloat(dat[6]),
-				toFloat(dat[7]), toInt(dat[8])); INCR_NEW("Entity");
-			Global::gameCheckpointList.push_back(checkpoint);
+			//Checkpoint::loadStaticModels();
+			//Checkpoint* checkpoint = new Checkpoint(
+			//	toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]),
+			//	toFloat(dat[4]), toFloat(dat[5]), toFloat(dat[6]),
+			//	toFloat(dat[7]), toInt(dat[8])); INCR_NEW("Entity");
+			//Global::gameCheckpointList.push_back(checkpoint);
 			return;
 		}
 
@@ -770,6 +780,11 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 			Main_addTransparentEntity(ramp);
 			return;
 		}
+
+        case 12: //spring
+        {
+            return;
+        }
 
         case 69: //GoalRing
 		{
@@ -899,6 +914,61 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 			Main_addEntity(rocket);
 			return;
 		}
+
+        case 98: //Line of rings
+        {
+            Ring::loadStaticModels();
+			Vector3f pos1(toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]));
+			Vector3f pos2(toFloat(dat[4]), toFloat(dat[5]), toFloat(dat[6]));
+			int numRings = toInt(dat[7]);
+
+			float xDiff = pos2.x - pos1.x;
+			float yDiff = pos2.y - pos1.y;
+			float zDiff = pos2.z - pos1.z;
+
+			if (numRings > 1)
+			{
+				for (int i = 0; i < numRings; i++)
+				{
+					Ring* ring = new Ring(pos1.x + i*(xDiff / (numRings - 1)), 
+										  pos1.y + i*(yDiff / (numRings - 1)),
+										  pos1.z + i*(zDiff / (numRings - 1))); INCR_NEW("Entity");
+                    chunkedEntities->push_back(ring);
+				}
+			}
+			else
+			{
+				Ring* ring = new Ring(pos1.x, pos1.y, pos1.z); INCR_NEW("Entity");
+                chunkedEntities->push_back(ring);
+			}
+        }
+
+        case 99: //Circle of rings
+        {
+            Ring::loadStaticModels();
+			Vector3f centerPos(toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]));
+			float ringRadius = toFloat(dat[4]);
+			int numRings = toInt(dat[5]);
+
+			if (numRings > 1)
+			{
+				float degreeSegment = 360.0f / numRings;
+				Vector3f newPoint(0, centerPos.y, 0);
+
+				for (int i = 0; i < numRings; i++)
+				{
+					newPoint.x = centerPos.x + ringRadius*cosf(Maths::toRadians(degreeSegment*i));
+					newPoint.z = centerPos.z + ringRadius*sinf(Maths::toRadians(degreeSegment*i));
+					Ring* ring = new Ring(newPoint.x, newPoint.y, newPoint.z); INCR_NEW("Entity");
+					chunkedEntities->push_back(ring);
+				}
+			}
+			else
+			{
+				Ring* ring = new Ring(centerPos.x, centerPos.y, centerPos.z); INCR_NEW("Entity");
+				chunkedEntities->push_back(ring);
+			}
+        }
 
 		default:
 		{

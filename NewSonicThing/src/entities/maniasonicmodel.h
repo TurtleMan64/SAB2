@@ -45,6 +45,9 @@ private:
 	static std::list<TexturedModel*> modelJog17;
 	static std::list<TexturedModel*> modelGrind;
     static std::list<TexturedModel*> modelSkid;
+    static std::list<TexturedModel*> modelLightdash;
+    static std::list<TexturedModel*> modelFreefall;
+    static std::list<TexturedModel*> modelGrab;
 
 public:
 	ManiaSonicModel();

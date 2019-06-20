@@ -75,7 +75,7 @@ void Car::step()
         if (inputAction3 && !inputAction3Previous)
         {
             lightdashTrail.clear();
-            lightdashTrailIdx = -1;
+            lightdashTrailProgress = -1.0f;
 
             //search through close entities to find rings
             std::list<std::unordered_set<Entity*>*> entities;
@@ -103,14 +103,15 @@ void Car::step()
                     {
                         closest = thisdist;
                         closestPoint = &e->position;
+                        closestEntity = e;
                     }
                 }
             }
 
-            if (closest < 20.0f*20.0f)
+            if (closest < 45.0f*45.0f)
             {
                 isLightdashing = true;
-                lightdashTrailIdx = 0;
+                lightdashTrailProgress = 0.0f;
                 lightdashTrail.push_back(closestPoint);
                 alreadyUsedRings.insert(closestEntity);
 
@@ -144,7 +145,7 @@ void Car::step()
                         }
                     }
 
-                    if (closest < 60.0f*60.0f)
+                    if (closest < 80.0f*80.0f)
                     {
                         lightdashTrail.push_back(closestPoint);
                         alreadyUsedRings.insert(closestEntity);
@@ -155,24 +156,80 @@ void Car::step()
                     }
                 }
             }
+
+            //Dont lightdash on a single ring.
+            // We only want to dash on 2 or more.
+            if (isLightdashing && lightdashTrail.size() < 2)
+            {
+                lightdashTrail.clear();
+                lightdashTrailProgress = -1.0f;
+                isLightdashing = false;
+            }
         }
     }
 
     //Move along lightdash trail
     if (isLightdashing)
     {
-        Vector3f nextPoint = lightdashTrail[lightdashTrailIdx];
-        Vector3f diff = position - nextPoint;
-
-        //todo change this to actually smoothly go through points
-        position.set(&nextPoint);
-
-        lightdashTrailIdx++;
-        if (lightdashTrailIdx >= lightdashTrail.size())
+        if (((int)lightdashTrailProgress)+1 < lightdashTrail.size())
         {
+            Vector3f p1 = lightdashTrail[(int)lightdashTrailProgress];
+            Vector3f p2 = lightdashTrail[((int)lightdashTrailProgress)+1];
+            Vector3f segment = p2 - p1;
+
+            float currentSegmentProg = fmodf(lightdashTrailProgress, 1.0f);
+
+            Vector3f diff = segment.scaleCopy(currentSegmentProg);
+            position = p1 + diff;
+
+            vel.set(&segment);
+            vel.setLength(lightdashSpeed);
+
+            float segmentLength = segment.length();
+
+            float howMuchProgToAdd = (dt*lightdashSpeed)/segmentLength;
+            float howMuchProgLeft = 1.0f - currentSegmentProg;
+
+            if (howMuchProgToAdd < howMuchProgLeft)
+            {
+                lightdashTrailProgress += howMuchProgToAdd;
+            }
+            else //go to next segment
+            {
+                lightdashTrailProgress = std::ceilf(lightdashTrailProgress);
+
+                if (((int)lightdashTrailProgress)+1 < lightdashTrail.size())
+                {
+                    float leftoverProg = howMuchProgToAdd - howMuchProgLeft;
+                    float leftoverLen = segmentLength*leftoverProg;
+
+                    p1 = lightdashTrail[(int)lightdashTrailProgress];
+                    p2 = lightdashTrail[((int)lightdashTrailProgress)+1];
+                    segment = p2 - p1;
+
+                    segmentLength = segment.length();
+                    howMuchProgToAdd = leftoverLen/segmentLength;
+
+                    if (howMuchProgToAdd < 1)
+                    {
+                        lightdashTrailProgress+=howMuchProgToAdd;
+                    }
+                    else //todo make this keep going until you run out
+                    {
+                        lightdashTrailProgress+=0.99999f;
+                    }
+                }
+            }
+
+            onGround = false;
+        }
+        else
+        {
+            position.set(&lightdashTrail.back());
+            vel.setLength(lightdashExitSpeed);
             isLightdashing = false;
             lightdashTrail.clear();
-            lightdashTrailIdx = -1;
+            lightdashTrailProgress = -1.0f;
         }
     }
 
@@ -403,7 +460,7 @@ void Car::step()
 	}
 
     //camera stuff
-	if (!isGrinding && !onRocket)
+	if (!isGrinding && !onRocket && !isLightdashing)
 	{
 		//Twisting camera from user input
 		camDir = Maths::rotatePoint(&camDir, &relativeUp, -inputX2*dt);
@@ -510,7 +567,7 @@ void Car::step()
 			}
 		}
 	}
-	else //rotating the camera if youre grinding or on a rocket
+	else //rotating the camera if youre grinding or on a rocket or lightdashing
 	{
 		//Twisting camera from user input
 		camDir = Maths::rotatePoint(&camDir, &relativeUp, -inputX2*dt);
@@ -909,12 +966,13 @@ void Car::step()
 
 	//std::fprintf(stdout, "%f\n\n\n\n", vel.length());
 
-	Vector3f vnorm(&vel);
-	vnorm.normalize();
+	//Vector3f vnorm(&vel);
+	//vnorm.normalize();
 	//std::fprintf(stdout, "pos  = [%f, %f, %f]\n", position.x, position.y, position.z);
 	//std::fprintf(stdout, "norm = [%f, %f, %f]\n", currNorm.x, currNorm.y, currNorm.z);
 	//std::fprintf(stdout, "dir  = [%f, %f, %f]\n", vnorm   .x, vnorm   .y, vnorm   .z);
 	//std::fprintf(stdout, "%f %f %f   %f %f %f   %f %f %f\n", position.x, position.y, position.z, currNorm.x, currNorm.y, currNorm.z, vnorm.x, vnorm.y, vnorm.z);
+    centerPosPrev = getCenterPosition();
 }
 
 void Car::spindash()
@@ -949,7 +1007,8 @@ void Car::calcSpindashDirection()
 
 void Car::moveMeGround()
 {
-	if (isSpindashing && vel.lengthSquared() < spindashPowerfulFrictionThreshold*spindashPowerfulFrictionThreshold) //if you are stopped and charging a spindash, dont move sonic
+	if (isSpindashing && vel.lengthSquared() < spindashPowerfulFrictionThreshold*spindashPowerfulFrictionThreshold || //if you are stopped and charging a spindash, dont move sonic
+        isLightdashing)
 	{
 		return;
 	}
@@ -1102,7 +1161,7 @@ void Car::moveMeGround()
 
 void Car::moveMeAir()
 {
-	if (isGrinding)
+	if (isGrinding || isLightdashing)
 	{
 		return;
 	}
@@ -1220,7 +1279,15 @@ void Car::updateAnimationValues()
 {
 	float currSpeed = vel.length();
 
-	if (isJumping)
+    if (isLightdashing)
+    {
+
+    }
+    else if (onRocket)
+    {
+
+    }
+	else if (isJumping)
 	{
 		runAnimationCycle -= 3000*dt;
 	}
@@ -1231,6 +1298,19 @@ void Car::updateAnimationValues()
 	else if (isBall)
 	{
 		runAnimationCycle -= (8.0f*currSpeed + 300)*dt;
+
+        Vector3f centerNew = getCenterPosition();
+        Vector3f diff = centerNew - centerPosPrev;
+        float density = 1.0f; //1 particle every 1 units
+        int numParticles = (int)(diff.length()/density);
+
+        Vector3f zero(0,0,0);
+
+        for (int i = 0; i < numParticles; i++)
+        {
+            Vector3f partPos = centerPosPrev + diff.scaleCopy(((float)i)/numParticles);
+            new Particle(ParticleResources::textureLightBlueTrail, &partPos, &zero, 0, 0.25f, 0, 8.0f, -32.0f, false, false);
+        }
 	}
 	else if (isGrinding)
 	{
@@ -1247,6 +1327,10 @@ void Car::updateAnimationValues()
 			runAnimationCycle = -(spindashTimer*spindashTimer*0.8f*60*60);
 		}
 	}
+    else if (isSkidding)
+    {
+
+    }
 	else if (spindashReleaseTimer > 0)
 	{
 		runAnimationCycle = (spindashReleaseTimer*spindashReleaseTimer*0.4f*60*60);
@@ -1267,6 +1351,15 @@ void Car::updateAnimationValues()
 		{
 			runAnimationCycle += 100.0f; //fmodf returns negative numbers if the number is negative
 		}
+
+        Vector3f spd(Maths::nextUniform()-0.5f, Maths::nextUniform()-0.5f, Maths::nextUniform()-0.5f);
+        spd.scale(50.0f);
+        if (currSpeed > 490)
+        {
+            Vector3f partPos = position + relativeUp.scaleCopy(1.5f);
+            new Particle(ParticleResources::textureDust, &position, &spd, 0, 0.25f, 0, 6.0f, 0.0f, false, false);
+            //new Particle(ParticleResources::textureDust, &partPos, 0.25f, 6.0f, 2.8f, false);
+        }
 	}
 }
 
@@ -1292,6 +1385,9 @@ void Car::animate()
 	float yawAngleAir = Maths::toDegrees(atan2f(-nZAir, nXAir));
 	float diffAir = Maths::compareTwoAngles(twistAngleAir, yawAngleAir);
 
+    float airYaw = Maths::toDegrees(atan2f(-vel.z, vel.x));
+    float airPitch = Maths::toDegrees(atan2f(vel.y, sqrtf(vel.x*vel.x + vel.z*vel.z)));
+
 	float currSpeed = vel.length();
 
 	float dspX = position.x;
@@ -1315,7 +1411,17 @@ void Car::animate()
 		}
 	}
 
-	if (isJumping)
+    if (isLightdashing)
+    {
+        maniaSonicModel->setOrientation(dspX, dspY, dspZ, 0, airYaw, 90, airPitch);
+		maniaSonicModel->animate(18, 0);
+    }
+    else if (onRocket)
+    {
+        maniaSonicModel->setOrientation(dspX, dspY, dspZ, 0, airYaw, 90, airPitch);
+		maniaSonicModel->animate(25, 0);
+    }
+	else if (isJumping)
 	{
 		maniaSonicModel->setOrientation(dspX, dspY, dspZ, diffAir, yawAngleAir, pitchAngleAir, runAnimationCycle);
 		maniaSonicModel->animate(12, 0);
@@ -1357,7 +1463,7 @@ void Car::animate()
 		maniaSonicModel->setOrientation(dspX, dspY, dspZ, diffGroundSpnd, yawAngleGroundSpnd, pitchAngleGroundSpnd, runAnimationCycle);
 		maniaSonicModel->animate(12, 0);
 	}
-    else if (isSkidding && vel.lengthSquared() >= skidAudioThreshold*skidAudioThreshold)
+    else if (isSkidding)
     {
         rotX = diffGround;
 		rotY = yawAngleGround;
@@ -1390,7 +1496,7 @@ void Car::animate()
 		rotRoll = 0;
 
 		maniaSonicModel->setOrientation(getX(), getY(), getZ(), rotX, rotY, pitchAngleAir, rotRoll);
-		maniaSonicModel->animate(2, 0);
+		maniaSonicModel->animate(21, 0);
 	}
 	else //running animation
 	{
@@ -1565,5 +1671,17 @@ void Car::popOffWall()
 	    vel.y = vel.y + relativeUp.y * 90.0f;
 	    onGround = false;
 	    relativeUp.set(0, 1, 0);
+    }
+}
+
+Vector3f Car::getCenterPosition()
+{
+    if (onGround)
+    {
+        return position + relativeUp.scaleCopy(displayBallOffset);
+    }
+    else
+    {
+        return position;
     }
 }

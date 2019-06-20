@@ -124,7 +124,9 @@ private:
 
     bool isLightdashing = false;
     std::vector<Vector3f> lightdashTrail;
-    int lightdashTrailIdx = -1;
+    float lightdashTrailProgress = -1.0f;
+    const float lightdashSpeed = 600.0f;
+    const float lightdashExitSpeed = 300.0f;
 
 	const float bounceVel = -300.0f;
 	const float bounceFactor = 0.7f;
@@ -251,9 +253,9 @@ private:
 	const float displayHeightOffset = 0.6f;
 	const float displayBallOffset = 3.0f;
 
+    Vector3f centerPosPrev;
 
     //variables who only are for audio
-    //Source* sourceSkid = nullptr;
     const float skidAudioThreshold = 150.0f;
 
     //input variables
@@ -331,5 +333,6 @@ public:
 
     void setCameraDirection(Vector3f* newDirection);
 
+    Vector3f getCenterPosition();
 };
 #endif

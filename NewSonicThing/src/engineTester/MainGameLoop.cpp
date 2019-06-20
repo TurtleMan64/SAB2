@@ -141,6 +141,8 @@ bool Global::renderParticles = true;
 
 bool Global::renderBloom = false;
 
+bool Global::framerateUnlock = false;
+
 bool Global::renderShadowsFar = false;
 bool Global::renderShadowsClose = false;
 int Global::shadowsFarQuality = 0;
@@ -809,6 +811,11 @@ int main(int argc, char** argv)
 				//AudioPlayer::play(44, Global::gamePlayer->getPosition());
 			}
 		}
+
+        if (previousTime > timeNew)
+        {
+            previousTime = timeNew;
+        }
 
 		if (timeNew - previousTime >= 1.0)
 		{

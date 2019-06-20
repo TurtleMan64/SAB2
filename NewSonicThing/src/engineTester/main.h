@@ -162,6 +162,8 @@ public:
 
 	static bool renderBloom;
 
+    static bool framerateUnlock;
+
 	static bool renderShadowsFar;
 	static bool renderShadowsClose;
 	static int shadowsFarQuality;
