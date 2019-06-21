@@ -12,7 +12,7 @@ class CollisionModel;
 
 class Entity
 {
-protected:
+public:
 	Vector3f position;
 	float rotX, rotY, rotZ, rotRoll;
 	float scale;

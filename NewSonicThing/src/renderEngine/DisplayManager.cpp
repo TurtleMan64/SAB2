@@ -202,13 +202,12 @@ void window_close_callback(GLFWwindow* /*windowHandle*/)
 	Global::gameState = STATE_EXITING;
 }
 
-
 void loadDisplaySettings()
 {
-	std::ifstream file("Settings/DisplaySettings.ini");
+	std::ifstream file(Global::pathToEXE + "Settings/DisplaySettings.ini");
 	if (!file.is_open())
 	{
-		std::fprintf(stdout, "Error: Cannot load file 'Settings/DisplaySettings.ini'\n");
+		std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE + "Settings/DisplaySettings.ini").c_str());
 		file.close();
 	}
 	else
@@ -272,10 +271,10 @@ void loadDisplaySettings()
 
 void loadGraphicsSettings()
 {
-	std::ifstream file("Settings/GraphicsSettings.ini");
+	std::ifstream file(Global::pathToEXE + "Settings/GraphicsSettings.ini");
 	if (!file.is_open())
 	{
-		std::fprintf(stdout, "Error: Cannot load file 'Settings/GraphicsSettings.ini'\n");
+		std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE + "Settings/GraphicsSettings.ini").c_str());
 		file.close();
 	}
 	else
@@ -324,6 +323,17 @@ void loadGraphicsSettings()
 				else if (strcmp(lineSplit[0], "FOV") == 0)
 				{
 					VFOV_BASE = std::stof(lineSplit[1], nullptr);
+				}
+                else if (strcmp(lineSplit[0], "Unlock_Framerate") == 0)
+				{
+					if (strcmp(lineSplit[1], "on") == 0)
+					{
+						Global::framerateUnlock = true;
+					}
+					else
+					{
+						Global::framerateUnlock = false;
+					}
 				}
 				else if (strcmp(lineSplit[0], "Anti-Aliasing_Samples") == 0)
 				{

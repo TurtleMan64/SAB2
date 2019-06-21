@@ -78,6 +78,7 @@ void Main_deleteAllChunkedEntities();
 class Global
 {
 public:
+    static std::string pathToEXE;
 	static MenuManager menuManager;
     static Timer* mainHudTimer;
 	static Camera* gameCamera;
@@ -160,6 +161,8 @@ public:
 	static bool renderParticles;
 
 	static bool renderBloom;
+
+    static bool framerateUnlock;
 
 	static bool renderShadowsFar;
 	static bool renderShadowsClose;

@@ -10,6 +10,7 @@ class Body;
 class Limb;
 
 #include <list>
+#include <vector>
 #include "entity.h"
 #include "../toolbox/vector.h"
 
@@ -31,22 +32,22 @@ private:
 	static std::list<TexturedModel*> modelRightShin;
 	static std::list<TexturedModel*> modelRightFoot;
 
-	Body* myBody;
-	Limb* myHead;
-	Limb* myLeftHumerus;
-	Limb* myLeftForearm;
-	Limb* myLeftHand;
-	Limb* myLeftThigh;
-	Limb* myLeftShin;
-	Limb* myLeftFoot;
-	Limb* myRightHumerus;
-	Limb* myRightForearm;
-	Limb* myRightHand;
-	Limb* myRightThigh;
-	Limb* myRightShin;
-	Limb* myRightFoot;
+	Body* myBody         = nullptr;
+	Limb* myHead         = nullptr;
+	Limb* myLeftHumerus  = nullptr;
+	Limb* myLeftForearm  = nullptr;
+	Limb* myLeftHand     = nullptr;
+	Limb* myLeftThigh    = nullptr;
+	Limb* myLeftShin     = nullptr;
+	Limb* myLeftFoot     = nullptr;
+	Limb* myRightHumerus = nullptr;
+	Limb* myRightForearm = nullptr;
+	Limb* myRightHand    = nullptr;
+	Limb* myRightThigh   = nullptr;
+	Limb* myRightShin    = nullptr;
+	Limb* myRightFoot    = nullptr;
 
-	ManiaSonicModel* maniaSonicModel;
+	ManiaSonicModel* maniaSonicModel = nullptr;
 
 	bool onGround = false;
 	//Current velocity of the player
@@ -74,6 +75,10 @@ private:
 	const float hitWallTimePunish = 0.0f;
 	//How steep a slope must be to be considered a wall 0.3
 	const float wallStickThreshold = 0.45f;  
+	
+	const float wallStickTimerMax = 0.5f; //How much time you can stick to a wall while running slow
+    const float wallStickSpeedRequirement = 100.0f; //how much speed you need to stick to a wall
+    float wallStickTimer = 0.0f;
 
 	//The force of gravity
 	const float gravityForce = 280.0f;
@@ -90,7 +95,7 @@ private:
 
 	const float groundRunPush = 100.0f;
 	const float groundRunFriction = 0.5f;
-	const float groundNeutralFriction = 5.5f;
+	const float groundNeutralFriction = 1.5f; //5.5
 	const float skidPower = -5.0f;
 	const float airRunPush = 25.0f; //30.0
 	const float airRunFrictionUp = 0.75f; //0.25    //maybe make another variable for this to use when vel.y < 0?
@@ -112,12 +117,12 @@ private:
 	Vector3f spindashDirection;
 	bool canStartSpindash = false;
 	bool bufferedSpindashInput = false;
-	const float spindashPowerMax = 525.0f; //475.0f
+	const float spindashPowerMax = 500.0f; //475.0f
 	const float spindashChargeRate = 0.4f*60*60;
 	const float spindashFriction = 2.0f;
 	const float spindashPowerfulFriction = 8.0f;
 	const float spindashPowerfulFrictionThreshold = 100.0f;
-	const float spindashDelay = 0;
+	const float spindashDelay = 0; //how long the timer waits before it starts applying spindash friction
 	float spindashTimer = 0;
 	const float spindashTimerMax = 35.0f/60.0f;
 	float spindashReleaseTimer = 0;
@@ -128,10 +133,15 @@ private:
 
 	bool isSkidding = false;
 	bool isStomping = false;
-	bool isLightdashing = false;
 	bool isGrinding = false;
     bool onRocket = false;
 	bool onPulley = false;
+
+    bool isLightdashing = false;
+    std::vector<Vector3f> lightdashTrail;
+    float lightdashTrailProgress = -1.0f;
+    const float lightdashSpeed = 600.0f;
+    const float lightdashExitSpeed = 300.0f;
 
 	const float bounceVel = -300.0f;
 	const float bounceFactor = 0.7f;
@@ -262,12 +272,20 @@ private:
 	//If false, the velocity will only change the camera direction.
 	bool velocityMovesPlayer = true;
 
+    Vector3f centerPosPrev;
+
+    //variables who only are for audio
+    const float skidAudioThreshold = 150.0f;
+
+    //input variables
 	bool  inputJump;
 	bool  inputJumpPrevious;
 	bool  inputAction;
 	bool  inputActionPrevious;
 	bool  inputAction2;
 	bool  inputAction2Previous;
+    bool  inputAction3;
+    bool  inputAction3Previous;
 	float inputX;
 	float inputY;
 	float inputX2;
@@ -302,6 +320,8 @@ public:
 	void setVelocity(float xVel, float yVel, float zVel);
 
 	Vector3f* getVelocity();
+
+    void popOffWall();
 
 	void setCanMoveTimer(float newTimer);
 
@@ -352,5 +372,7 @@ public:
 	void setVelocityMovesPlayer(bool newVelocityMovesPlayer);
 
 	void setOnPulley(bool newOnPulley);
+	
+    Vector3f getCenterPosition();
 };
 #endif

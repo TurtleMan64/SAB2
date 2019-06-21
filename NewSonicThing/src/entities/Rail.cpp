@@ -104,10 +104,10 @@ Rail::Rail(const char* railPath)
 	std::vector<Vector3f> pointsList;
 	std::vector<Vector3f> normalList;
 
-	std::ifstream file(railPath);
+	std::ifstream file(Global::pathToEXE+railPath);
 	if (!file.is_open())
 	{
-		std::fprintf(stdout, "Error: Cannot load file '%s'\n", railPath);
+		std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE+railPath).c_str());
 		file.close();
 	}
 	else
@@ -237,7 +237,14 @@ void Rail::step()
 				newVel.normalize();
 				newVel.scale(playerSpeed);
 				Global::gameMainVehicle->setVelocity(newVel.x, newVel.y, newVel.z);
-				Global::gameMainVehicle->setRelativeUp(&currentSegment->normalBegin);
+
+                //interpolate the normal vector between the start and end points
+                Vector3f interpolatedNormal = Maths::interpolateVector(&currentSegment->normalBegin, &currentSegment->normalEnd, newProgress);
+                //printf("[%f, %f, %f]  [%f, %f, %f]\n", 
+                //    currentSegment->normalBegin.x, currentSegment->normalBegin.y, currentSegment->normalBegin.z,
+                //    currentSegment->normalEnd.x, currentSegment->normalEnd.y, currentSegment->normalEnd.z);
+                //printf("prog = %f\n\n", newProgress);
+				Global::gameMainVehicle->setRelativeUp(&interpolatedNormal);
 
 				if (newProgress < 0) //go to previous rail segment
 				{

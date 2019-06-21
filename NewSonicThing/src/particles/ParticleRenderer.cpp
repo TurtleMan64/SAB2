@@ -49,13 +49,15 @@ void ParticleRenderer::render(std::unordered_map<ParticleTexture*, std::list<Par
 				//bind texture
 				glActiveTexture(GL_TEXTURE0);
 				glBindTexture(GL_TEXTURE_2D, texture.first->getTextureID());
-				shader->loadOpacity(texture.first->getOpacity());
+				//shader->loadOpacity(texture.first->getOpacity());
+                float texOpac = texture.first->getOpacity();
 				shader->loadGlow(texture.first->getGlow());
 				std::list<Particle*>* texturesList = &texture.second;
 				for (Particle* particle : (*texturesList))
 				{
 					if (particle->getPosition()->y < 0)
 					{
+                        shader->loadOpacity(texOpac*particle->getOpacity());
 						updateModelViewMatrix(particle->getPosition(), particle->getRotation(), particle->getScaleX(), particle->getScaleY(), &viewMatrix);
 						shader->loadTextureCoordInfo(particle->getTexOffset1(), particle->getTexOffset2(), (float)texture.first->getNumberOfRows(), particle->getBlend());
 						glDrawArrays(GL_TRIANGLE_STRIP, 0, quad->getVertexCount());
@@ -70,12 +72,14 @@ void ParticleRenderer::render(std::unordered_map<ParticleTexture*, std::list<Par
 				//bind texture
 				glActiveTexture(GL_TEXTURE0);
 				glBindTexture(GL_TEXTURE_2D, texture.first->getTextureID());
-				shader->loadOpacity(texture.first->getOpacity());
+				//shader->loadOpacity(texture.first->getOpacity());
 				shader->loadGlow(texture.first->getGlow());
+                float texOpac = texture.first->getOpacity();
 
 				std::list<Particle*>* texturesList = &texture.second;
 				for (Particle* particle : (*texturesList))
 				{
+                    shader->loadOpacity(texOpac*particle->getOpacity());
 					updateModelViewMatrix(particle->getPosition(), particle->getRotation(), particle->getScaleX(), particle->getScaleY(), &viewMatrix);
 					shader->loadTextureCoordInfo(particle->getTexOffset1(), particle->getTexOffset2(), (float)texture.first->getNumberOfRows(), particle->getBlend());
 					glDrawArrays(GL_TRIANGLE_STRIP, 0, quad->getVertexCount());
@@ -89,13 +93,15 @@ void ParticleRenderer::render(std::unordered_map<ParticleTexture*, std::list<Par
 				//bind texture
 				glActiveTexture(GL_TEXTURE0);
 				glBindTexture(GL_TEXTURE_2D, texture.first->getTextureID());
-				shader->loadOpacity(texture.first->getOpacity());
+				//shader->loadOpacity(texture.first->getOpacity());
 				shader->loadGlow(texture.first->getGlow());
+                float texOpac = texture.first->getOpacity();
 				std::list<Particle*>* texturesList = &texture.second;
 				for (Particle* particle : (*texturesList))
 				{
 					if (particle->getPosition()->y >= 0)
 					{
+                        shader->loadOpacity(texOpac*particle->getOpacity());
 						updateModelViewMatrix(particle->getPosition(), particle->getRotation(), particle->getScaleX(), particle->getScaleY(), &viewMatrix);
 						shader->loadTextureCoordInfo(particle->getTexOffset1(), particle->getTexOffset2(), (float)texture.first->getNumberOfRows(), particle->getBlend());
 						glDrawArrays(GL_TRIANGLE_STRIP, 0, quad->getVertexCount());

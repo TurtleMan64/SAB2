@@ -21,6 +21,7 @@ ModelTexture::ModelTexture()
     this->animationSpeed = 0.0f;
     this->currentImageIndex = 0;
     this->mixingType = 1;
+    this->fogScale = 1.0f;
 }
 
 ModelTexture::ModelTexture(std::vector<GLuint>* texIDs)
@@ -41,6 +42,7 @@ ModelTexture::ModelTexture(std::vector<GLuint>* texIDs)
     this->mixingType = 1;
     this->scrollX = 0.0f;
 	this->scrollY = 0.0f;
+    this->fogScale = 1.0f;
 
     if (this->texIDs.size() > 1)
     {
@@ -67,6 +69,7 @@ ModelTexture::ModelTexture(ModelTexture* other)
     this->mixingType        = other->mixingType;
     this->scrollX           = other->scrollX;
 	this->scrollY           = other->scrollY;
+    this->fogScale          = other->fogScale;
 
     if (this->texIDs.size() > 1)
     {

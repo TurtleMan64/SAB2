@@ -189,6 +189,43 @@ void Ring::step()
 			updateTransformationMatrix();
 		}
 	}*/
+
+    increaseRotation(0, 5, 0);
+    updateTransformationMatrix();
+
+    if (abs(getY() - Global::gameMainVehicle->position.y) < 40 &&
+		abs(getZ() - Global::gameMainVehicle->position.z) < 40 &&
+		abs(getX() - Global::gameMainVehicle->position.x) < 40 &&
+		grabTimer == 0)
+	{
+		if ((Global::gameMainVehicle->getCenterPosition() - position).lengthSquared() < (5.0f*5.0f + 9.0f*9.0f))
+		{
+			AudioPlayer::play(4, getPosition());
+
+			//for (int i = 0; i < 10; i++)
+			//{
+			//	Vector3f pos(
+			//		getX() + Maths::random() * 8 - 4,
+			//		getY() + Maths::random() * 8 - 4,
+			//		getZ() + Maths::random() * 8 - 4);
+            //
+			//	Vector3f vel(0, 0.4f, 0);
+            //
+			//	new Particle(ParticleResources::textureSparkleYellow, &pos, &vel,
+			//		0.025f, 30, 0, 7, -(7.0f / 30.0f), false);
+			//}
+
+			Global::increaseRingCount(1);
+
+			if (givesPoints)
+			{
+				Global::gameScore += 10;
+			}
+
+			Main_deleteChunkedEntity(this);
+			return;
+		}
+	}
 }
 
 std::list<TexturedModel*>* Ring::getModels()

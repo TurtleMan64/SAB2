@@ -404,10 +404,10 @@ void Input::init()
 
 	//load sensitivity and button mappings from external file
 
-	std::ifstream file("Settings/CameraSensitivity.ini");
+	std::ifstream file(Global::pathToEXE + "Settings/CameraSensitivity.ini");
 	if (!file.is_open())
 	{
-		std::fprintf(stdout, "Error: Cannot load file 'Settings/CameraSensitivity.ini'\n");
+		std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE + "Settings/CameraSensitivity.ini").c_str());
 		file.close();
 	}
 	else
@@ -454,10 +454,10 @@ void Input::init()
 	}
 
 
-	std::ifstream file2("Settings/ControllerConfig.ini");
+	std::ifstream file2(Global::pathToEXE + "Settings/ControllerConfig.ini");
 	if (!file2.is_open())
 	{
-		std::fprintf(stdout, "Error: Cannot load file 'Settings/ControllerConfig.ini'\n");
+		std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE + "Settings/ControllerConfig.ini").c_str());
 		file2.close();
 	}
 	else

@@ -26,6 +26,7 @@ private:
 	Vector2f texOffset2;
 	float blend;
 	float elapsedTime = 0;
+    float opacity;
 
 	void updateTextureCoordInfo();
 
@@ -33,6 +34,8 @@ private:
 
 public:
 	Particle(ParticleTexture* texture, Vector3f* position, float lifeLength, float scale, bool onlyRendersOnce);
+
+    Particle(ParticleTexture* texture, Vector3f* position, float lifeLength, float scale, float opacity, bool onlyRendersOnce);
 
 	Particle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float lifeLength, float scale, bool onlyRendersOnce);
 
@@ -54,6 +57,8 @@ public:
 	float getScaleX();
 
 	float getScaleY();
+
+    float getOpacity();
 
 	Vector2f* getTexOffset1();
 
