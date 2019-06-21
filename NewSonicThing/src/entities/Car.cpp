@@ -1150,7 +1150,8 @@ void Car::moveMeGround()
 	{
 		//dont let ball speed surpass some max threshold
 		//const float maxBallthreshold = 800.0f;
-		if (velBefore.lengthSquared() > maxBallSpeed*maxBallSpeed)
+		if (velBefore.lengthSquared() < maxBallSpeed*maxBallSpeed && 
+            vel.lengthSquared() >= maxBallSpeed*maxBallSpeed)
 		{
 			vel.setLength(velBefore.length());
 		}
@@ -1352,12 +1353,17 @@ void Car::updateAnimationValues()
 			runAnimationCycle += 100.0f; //fmodf returns negative numbers if the number is negative
 		}
 
-        Vector3f spd(Maths::nextUniform()-0.5f, Maths::nextUniform()-0.5f, Maths::nextUniform()-0.5f);
-        spd.scale(50.0f);
-        if (currSpeed > 490)
+        if (currSpeed > spindashPowerMax-20.0f)
         {
+            Vector3f rng(Maths::nextUniform()-0.5f, Maths::nextUniform()-0.5f, Maths::nextUniform()-0.5f);
+            rng.scale(75.0f);
+            rng = Maths::projectOntoPlane(&rng, &relativeUp);
+
+            Vector3f spd = relativeUp.scaleCopy(55.0f) + rng;
+
             Vector3f partPos = position + relativeUp.scaleCopy(1.5f);
-            new Particle(ParticleResources::textureDust, &position, &spd, 0, 0.25f, 0, 6.0f, 0.0f, false, false);
+
+            new Particle(ParticleResources::textureDust, &position, &spd, 0, 0.25f + (0.125f*Maths::nextGaussian()), 0, 5.0f+Maths::nextGaussian(), 0.0f, false, false);
             //new Particle(ParticleResources::textureDust, &partPos, 0.25f, 6.0f, 2.8f, false);
         }
 	}
