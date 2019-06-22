@@ -235,7 +235,7 @@ int main(int argc, char** argv)
         #ifdef _WIN32
         int idx = (int)Global::pathToEXE.find_last_of('\\', Global::pathToEXE.size());
         Global::pathToEXE = Global::pathToEXE.substr(0, idx+1);
-        #elif
+        #else
         int idx = (int)Global::pathToEXE.find_last_of('/', Global::pathToEXE.size());
         Global::pathToEXE = Global::pathToEXE.substr(0, idx+1);
         #endif
@@ -1188,12 +1188,12 @@ int Global::calculateRankAndUpdate()
 			Global::saveSaveData();
 		}
 
-		float savedTime = 6000.0f;
+		//float savedTime = 6000.0f;
 
-		if (Global::gameSaveData.find(currentLevel->displayName+missionTimeString) != Global::gameSaveData.end())
+		//if (Global::gameSaveData.find(currentLevel->displayName+missionTimeString) != Global::gameSaveData.end())
 		{
-			std::string savedTimeString = Global::gameSaveData[currentLevel->displayName+missionTimeString];
-			savedTime = std::stof(savedTimeString);
+			//std::string savedTimeString = Global::gameSaveData[currentLevel->displayName+missionTimeString];
+			//savedTime = std::stof(savedTimeString);
 		}
 	}
 

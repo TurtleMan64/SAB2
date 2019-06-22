@@ -23,6 +23,7 @@ uniform float mixFactor;
 
 uniform float fogDensity;
 uniform float fogGradient;
+uniform float fogScale; //per material
 
 void main(void)
 {
@@ -75,8 +76,10 @@ void main(void)
     //float distance = length(toCameraVector);
 	//float visibility = exp(-pow((distance*fogDensity), fogGradient));
 	//visibility = clamp(visibility, 0.0, 1.0);
+    //visibility = (1 - fogScale*(1 - visibility));
 	//out_Color = mix(vec4(skyColour, 1.0), out_Color, visibility);
     
     //condensed version of above
-	out_Color = mix(vec4(skyColour, 1.0), out_Color, clamp(exp(-pow((length(toCameraVector)*fogDensity), fogGradient)), 0.0, 1.0));
+	out_Color = mix(vec4(skyColour, 1.0), out_Color, (1 - fogScale*(1 - clamp(exp(-pow((length(toCameraVector)*fogDensity), fogGradient)), 0.0, 1.0))));
 }
+

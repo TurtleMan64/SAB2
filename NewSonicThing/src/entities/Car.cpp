@@ -28,6 +28,7 @@
 #include <iostream>
 #include <algorithm>
 #include <fstream>
+#include <cmath>
 
 
 extern float dt;
@@ -159,7 +160,7 @@ void Car::step()
 
             //Dont lightdash on a single ring.
             // We only want to dash on 2 or more.
-            if (isLightdashing && lightdashTrail.size() < 2)
+            if (isLightdashing && (int)lightdashTrail.size() < 2)
             {
                 lightdashTrail.clear();
                 lightdashTrailProgress = -1.0f;
@@ -171,7 +172,7 @@ void Car::step()
     //Move along lightdash trail
     if (isLightdashing)
     {
-        if (((int)lightdashTrailProgress)+1 < lightdashTrail.size())
+        if (((int)lightdashTrailProgress)+1 < (int)lightdashTrail.size())
         {
             Vector3f p1 = lightdashTrail[(int)lightdashTrailProgress];
             Vector3f p2 = lightdashTrail[((int)lightdashTrailProgress)+1];
@@ -196,9 +197,9 @@ void Car::step()
             }
             else //go to next segment
             {
-                lightdashTrailProgress = std::ceilf(lightdashTrailProgress);
+                lightdashTrailProgress = std::ceil(lightdashTrailProgress);
 
-                if (((int)lightdashTrailProgress)+1 < lightdashTrail.size())
+                if (((int)lightdashTrailProgress)+1 < (int)lightdashTrail.size())
                 {
                     float leftoverProg = howMuchProgToAdd - howMuchProgLeft;
                     float leftoverLen = segmentLength*leftoverProg;
@@ -1007,7 +1008,7 @@ void Car::calcSpindashDirection()
 
 void Car::moveMeGround()
 {
-	if (isSpindashing && vel.lengthSquared() < spindashPowerfulFrictionThreshold*spindashPowerfulFrictionThreshold || //if you are stopped and charging a spindash, dont move sonic
+	if ((isSpindashing && vel.lengthSquared() < spindashPowerfulFrictionThreshold*spindashPowerfulFrictionThreshold) || //if you are stopped and charging a spindash, dont move sonic
         isLightdashing)
 	{
 		return;
@@ -1363,7 +1364,7 @@ void Car::updateAnimationValues()
 
             Vector3f partPos = position + relativeUp.scaleCopy(1.5f);
 
-            new Particle(ParticleResources::textureDust, &position, &spd, 0, 0.25f + (0.125f*Maths::nextGaussian()), 0, 5.0f+Maths::nextGaussian(), 0.0f, false, false);
+            new Particle(ParticleResources::textureDust, &partPos, &spd, 0, 0.25f + (0.125f*Maths::nextGaussian()), 0, 5.0f+Maths::nextGaussian(), 0.0f, false, false);
             //new Particle(ParticleResources::textureDust, &partPos, 0.25f, 6.0f, 2.8f, false);
         }
 	}
