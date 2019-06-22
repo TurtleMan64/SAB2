@@ -36,7 +36,7 @@ bool useFullscreeen = false;
 
 extern float input_zoom_buffer;
 
-GLFWwindow* window;
+GLFWwindow* window = nullptr;
 
 void loadDisplaySettings();
 void loadGraphicsSettings();
@@ -45,7 +45,11 @@ int createDisplay()
 {
 	// glfw: initialize and configure
 	// ------------------------------
-	glfwInit();
+    if (glfwInit() == GL_FALSE)
+    {
+        std::fprintf(stdout, "Error: GLFW could not be initialized (glfwInit() failed).\n");
+        return -1;
+    }
 	//glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	//glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -93,14 +97,15 @@ int createDisplay()
 		glfwTerminate();
 		return -1;
 	}
+
 	glfwMakeContextCurrent(window);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glfwSetWindowCloseCallback(window, window_close_callback);
 
 	GLFWimage icons[3];
-	icons[0].pixels = SOIL_load_image("res/Images/Icon16.png", &icons[0].width, &icons[0].height, 0, SOIL_LOAD_RGBA);
-	icons[1].pixels = SOIL_load_image("res/Images/Icon32.png", &icons[1].width, &icons[1].height, 0, SOIL_LOAD_RGBA);
-	icons[2].pixels = SOIL_load_image("res/Images/Icon64.png", &icons[2].width, &icons[2].height, 0, SOIL_LOAD_RGBA);
+	icons[0].pixels = SOIL_load_image((Global::pathToEXE+"res/Images/Icon16.png").c_str(), &icons[0].width, &icons[0].height, 0, SOIL_LOAD_RGBA);
+	icons[1].pixels = SOIL_load_image((Global::pathToEXE+"res/Images/Icon32.png").c_str(), &icons[1].width, &icons[1].height, 0, SOIL_LOAD_RGBA);
+	icons[2].pixels = SOIL_load_image((Global::pathToEXE+"res/Images/Icon64.png").c_str(), &icons[2].width, &icons[2].height, 0, SOIL_LOAD_RGBA);
 	glfwSetWindowIcon(window, 3, icons);
 	SOIL_free_image_data(icons[0].pixels);
 	SOIL_free_image_data(icons[1].pixels);
