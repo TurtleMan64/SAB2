@@ -1,12 +1,22 @@
-On Ubuntu:
+On Ubuntu and derivatives (eg Linux Mint):
 
 Install Dependancies:
+
+In the terminal, run either this command:
+
+sudo apt install libglfw3-dev libogg-dev libvorbis-dev libopenal-dev libsoil-dev pkg-config
+
+OR, individually, these commands:
+
 sudo apt install libglfw3-dev
 sudo apt install libogg-dev
 sudo apt install libvorbis-dev
 sudo apt install libopenal-dev
 sudo apt install libsoil-dev
+sudo apt install pkg-config
 
-Then:
+Then run the command:
+
 make
-In the directory where the makefile is
+
+From the directory where the makefile is.
