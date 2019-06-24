@@ -1,0 +1,71 @@
+#VRML V2.0 utf8
+#modeled using blender3d http://blender.org
+
+# 'mesh_8'
+Shape {
+	appearance Appearance {
+		texture ImageTexture {
+			url [ "blackglass.png" "blackglass.png" "/home/nothisisstupider/SAB/YellowMovingPlatform/blackglass.png" ]
+		}
+	}
+	geometry IndexedFaceSet {
+		coord Coordinate {
+			point [ 15.608732 0.099999 20.050238 15.608732 0.100001 -27.150238 -15.608732 0.099999 20.050238 -15.608732 0.100001 -27.150238 ]
+		}
+		colorPerVertex TRUE
+		color Color {
+			color [ 1.00 1.00 1.00 1.00 1.00 1.00 1.00 1.00 1.00 1.00 1.00 1.00 ]
+		}
+		texCoord TextureCoordinate {
+			point [ 0.0000 0.7507 0.0000 1.0000 0.2502 0.7507 0.2502 1.0000 0.2502 0.7507 0.0000 1.0000 ]
+		}
+		texCoordIndex [ 0 1 2 -1 3 4 5 -1 ]
+		coordIndex [ 0 1 2 -1 3 2 1 -1 ]
+	}
+}
+
+# 'mesh_12'
+Shape {
+	appearance Appearance {
+		texture ImageTexture {
+			url [ "miu32_mh004.png" "miu32_mh004.png" "/home/nothisisstupider/SAB/YellowMovingPlatform/miu32_mh004.png" ]
+		}
+	}
+	geometry IndexedFaceSet {
+		coord Coordinate {
+			point [ 10.820830 17.743744 20.500000 5.779163 17.743744 20.500000 10.820830 12.470830 20.500000 5.779163 12.470830 20.500000 ]
+		}
+		colorPerVertex TRUE
+		color Color {
+			color [ 1.00 1.00 1.00 1.00 1.00 1.00 1.00 1.00 1.00 1.00 1.00 1.00 ]
+		}
+		texCoord TextureCoordinate {
+			point [ 1.0026 1.0019 0.0016 1.0019 1.0026 0.0048 0.0016 0.0048 1.0026 0.0048 0.0016 1.0019 ]
+		}
+		texCoordIndex [ 0 1 2 -1 3 4 5 -1 ]
+		coordIndex [ 0 1 2 -1 3 2 1 -1 ]
+	}
+}
+
+# 'mesh_7'
+Shape {
+	appearance Appearance {
+		texture ImageTexture {
+			url [ "miu64_mh008.png" "miu64_mh008.png" "/home/nothisisstupider/SAB/YellowMovingPlatform/miu64_mh008.png" ]
+		}
+	}
+	geometry IndexedFaceSet {
+		coord Coordinate {
+			point [ 10.631771 6.627622 20.100008 10.631771 11.372375 20.100008 5.887018 6.627622 20.100008 5.887018 11.372375 20.100008 ]
+		}
+		colorPerVertex TRUE
+		color Color {
+			color [ 0.61 0.60 0.62 0.78 0.76 0.77 0.61 0.60 0.62 0.78 0.76 0.77 ]
+		}
+		texCoord TextureCoordinate {
+			point [ 0.4731 0.5064 0.4731 0.9913 0.0351 0.5064 0.0351 0.9913 0.0351 0.5064 0.4731 0.9913 ]
+		}
+		texCoordIndex [ 0 1 2 -1 3 4 5 -1 ]
+		coordIndex [ 0 1 2 -1 3 2 1 -1 ]
+	}
+}
