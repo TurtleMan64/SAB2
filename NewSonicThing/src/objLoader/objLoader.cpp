@@ -88,7 +88,7 @@ int loadBinaryModel(std::list<TexturedModel*>* models, std::string filePath, std
 	}
 
 	FILE* file = nullptr;
-	int err = fopen_s(&file, (filePath+fileName).c_str(), "rb");
+	int err = fopen_s(&file, (Global::pathToEXE+filePath+fileName).c_str(), "rb");
     if (file == nullptr || err != 0)
 	{
         //std::fprintf(stderr, "Error: Cannot load file '%s'\n", (filePath + fileName).c_str());
@@ -263,7 +263,7 @@ int loadVclModel(std::list<TexturedModel*>* models, std::string filePath, std::s
 	}
 
 	FILE* file = nullptr;
-	int err = fopen_s(&file, (filePath+fileName).c_str(), "rb");
+	int err = fopen_s(&file, (Global::pathToEXE+filePath+fileName).c_str(), "rb");
     if (file == nullptr || err != 0)
 	{
         //std::fprintf(stderr, "Error: Cannot load file '%s'\n", (filePath + fileName).c_str());
@@ -424,7 +424,7 @@ int loadObjModel(std::list<TexturedModel*>* models, std::string filePath, std::s
 		return 1;
 	}
 
-	std::ifstream file(filePath+fileName);
+	std::ifstream file(Global::pathToEXE+filePath+fileName);
 	if (!file.is_open())
 	{
 		//std::fprintf(stdout, "Error: Cannot load file '%s'\n", (filePath + fileName).c_str());
@@ -612,10 +612,10 @@ void parseMtl(std::string filePath, std::string fileName)
 	modelTexturesList.clear();
 	textureNamesList.clear();
 
-	std::ifstream file(filePath+fileName);
+	std::ifstream file(Global::pathToEXE+filePath+fileName);
 	if (!file.is_open())
 	{
-		std::fprintf(stderr, "Error: Cannot load file '%s'\n", (filePath + fileName).c_str());
+		std::fprintf(stderr, "Error: Cannot load file '%s'\n", (Global::pathToEXE + filePath + fileName).c_str());
 		file.close();
 		return;
 	}
@@ -637,6 +637,7 @@ void parseMtl(std::string filePath, std::string fileName)
     int   currentNumImages = 1;
     float currentAnimSpeed = 0.0f;
     int   currentMixingType = 1;
+    float currentFogScale = 1.0f;
 
 	while (!file.eof())
 	{
@@ -663,6 +664,7 @@ void parseMtl(std::string filePath, std::string fileName)
                 currentNumImages = 1;
                 currentAnimSpeed = 0.0f;
                 currentMixingType = 1;
+                currentFogScale = 1.0f;
 			}
 			else if (strcmp(lineSplit[0], "\tmap_Kd") == 0 || strcmp(lineSplit[0], "map_Kd") == 0) //end of material found, generate it with all its attrributes
 			{
@@ -716,6 +718,7 @@ void parseMtl(std::string filePath, std::string fileName)
 				newTexture.scrollY = currentScrollYValue;
                 newTexture.animationSpeed = currentAnimSpeed;
                 newTexture.mixingType = currentMixingType;
+                newTexture.fogScale = currentFogScale;
 
 				modelTexturesList.push_back(newTexture); //put a copy of newTexture into the list
 			}
@@ -773,6 +776,10 @@ void parseMtl(std::string filePath, std::string fileName)
 			{
 				currentMixingType = 3;
 			}
+            else if (strcmp(lineSplit[0], "\tfogScale") == 0 || strcmp(lineSplit[0], "fogScale") == 0)
+            {
+                currentFogScale = std::stof(lineSplit[1]);
+            }
 		}
 
 		free(lineSplit);
@@ -793,10 +800,10 @@ int loadObjModelWithMTL(std::list<TexturedModel*>* models, std::string filePath,
 		return 1;
 	}
 
-	std::ifstream file(filePath + fileNameOBJ);
+	std::ifstream file(Global::pathToEXE + filePath + fileNameOBJ);
 	if (!file.is_open())
 	{
-		std::fprintf(stderr, "Error: Cannot load file '%s'\n", (filePath + fileNameOBJ).c_str());
+		std::fprintf(stderr, "Error: Cannot load file '%s'\n", (Global::pathToEXE + filePath + fileNameOBJ).c_str());
 		file.close();
 		return -1;
 	}
@@ -966,7 +973,7 @@ int loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::string filePa
 	}
 
 	FILE* file = nullptr;
-	int err = fopen_s(&file, (filePath+fileNameBin).c_str(), "rb");
+	int err = fopen_s(&file, (Global::pathToEXE+filePath+fileNameBin).c_str(), "rb");
     if (file == nullptr || err != 0)
 	{
         std::fprintf(stderr, "Error: Cannot load file '%s'\n", (filePath + fileNameBin).c_str());
@@ -1257,10 +1264,10 @@ CollisionModel* loadCollisionModel(std::string filePath, std::string fileName)
 	char currSound = 0;
 	char currParticle = 0;
 
-	std::ifstream file("res/" + filePath + fileName + ".obj");
+	std::ifstream file(Global::pathToEXE + "res/" + filePath + fileName + ".obj");
 	if (!file.is_open())
 	{
-		std::fprintf(stdout, "Error: Cannot load file '%s'\n", ("res/" + filePath + fileName + ".obj").c_str());
+		std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE + "res/" + filePath + fileName + ".obj").c_str());
 		file.close();
 		return collisionModel;
 	}
@@ -1328,10 +1335,10 @@ CollisionModel* loadCollisionModel(std::string filePath, std::string fileName)
 			}
 			else if (strcmp(lineSplit[0], "mtllib") == 0)
 			{
-				std::ifstream fileMTL("res/" + filePath + lineSplit[1]);
+				std::ifstream fileMTL(Global::pathToEXE + "res/" + filePath + lineSplit[1]);
 				if (!fileMTL.is_open())
 				{
-					std::fprintf(stdout, "Error: Cannot load file '%s'\n", ("res/" + filePath + lineSplit[1]).c_str());
+					std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE + "res/" + filePath + lineSplit[1]).c_str());
 					fileMTL.close();
 					file.close();
 					return collisionModel;
@@ -1419,10 +1426,10 @@ CollisionModel* loadBinaryCollisionModel(std::string filePath, std::string fileN
 	char currParticle = 0;
 
 	FILE* file = nullptr;
-	int err = fopen_s(&file, ("res/" + filePath+fileName+".bincol").c_str(), "rb");
+	int err = fopen_s(&file, (Global::pathToEXE + "res/" + filePath+fileName+".bincol").c_str(), "rb");
     if (file == nullptr || err != 0)
 	{
-		std::fprintf(stdout, "Error: Cannot load file '%s'\n", ("res/" + filePath+fileName+".bincol").c_str());
+		std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE + "res/" + filePath+fileName+".bincol").c_str());
 		return collisionModel;
     }
 
@@ -1433,7 +1440,7 @@ CollisionModel* loadBinaryCollisionModel(std::string filePath, std::string fileN
 		fileType[2] != 'l' ||
 		fileType[3] != 0)
 	{
-		std::fprintf(stdout, "Error: File '%s' is not a valid .bincol file\n", ("res/" + filePath+fileName+".bincol").c_str());
+		std::fprintf(stdout, "Error: File '%s' is not a valid .bincol file\n", (Global::pathToEXE + "res/" + filePath+fileName+".bincol").c_str());
 		return collisionModel;
 	}
 
@@ -1448,10 +1455,10 @@ CollisionModel* loadBinaryCollisionModel(std::string filePath, std::string fileN
 	}
 
 	{
-		std::ifstream fileMTL("res/" + filePath + mtlname);
+		std::ifstream fileMTL(Global::pathToEXE + "res/" + filePath + mtlname);
 		if (!fileMTL.is_open())
 		{
-			std::fprintf(stdout, "Error: Cannot load file '%s'\n", ("res/" + filePath + mtlname).c_str());
+			std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE + "res/" + filePath + mtlname).c_str());
 			fileMTL.close();
 			fclose(file);
 			return collisionModel;

@@ -10,6 +10,7 @@
 #include <cmath>
 
 #include "renderEngine.h"
+#include "../engineTester/main.h"
 
 #include "../models/models.h"
 #include "../toolbox/getline.h"
@@ -82,12 +83,12 @@ GLuint Loader::loadTexture(const char* fileName)
 	}
 
 	int width, height, channels;
-	unsigned char* image = SOIL_load_image(fileName, &width, &height, &channels, SOIL_LOAD_RGBA);
+	unsigned char* image = SOIL_load_image((Global::pathToEXE + fileName).c_str(), &width, &height, &channels, SOIL_LOAD_RGBA);
 
 	if (image == 0)
 	{
 		const char* err = SOIL_last_result();
-		std::fprintf(stdout, "Error loading image '%s', because '%s'\n", fileName, err);
+		std::fprintf(stdout, "Error loading image '%s', because '%s'\n", (Global::pathToEXE + fileName).c_str(), err);
 		return GL_NONE;
 	}
 
@@ -149,12 +150,12 @@ GLuint Loader::loadTextureNoInterpolation(const char* fileName)
 	}
 
 	int width, height, channels;
-	unsigned char* image = SOIL_load_image(fileName, &width, &height, &channels, SOIL_LOAD_RGBA);
+	unsigned char* image = SOIL_load_image((Global::pathToEXE + fileName).c_str(), &width, &height, &channels, SOIL_LOAD_RGBA);
 
 	if (image == 0)
 	{
 		const char* err = SOIL_last_result();
-		std::fprintf(stdout, "Error loading image '%s', because '%s'\n", fileName, err);
+		std::fprintf(stdout, "Error loading image '%s', because '%s'\n", (Global::pathToEXE + fileName).c_str(), err);
 		return GL_NONE;
 	}
 
@@ -319,7 +320,7 @@ void Loader::printInfo()
 GLuint Loader::loadShader(const char* file, int shaderType)
 {
 	std::ifstream sourceFile;
-	sourceFile.open(file);
+	sourceFile.open(Global::pathToEXE+file);
 	std::string filetext;
 
 	if (sourceFile.is_open())
@@ -335,7 +336,7 @@ GLuint Loader::loadShader(const char* file, int shaderType)
 	}
 	else
 	{
-		std::fprintf(stdout, "Error: Could not find shader file '%s'\n", file);
+		std::fprintf(stdout, "Error: Could not find shader file '%s'\n", (Global::pathToEXE + file).c_str());
 		sourceFile.close();
 		return 0;
 	}

@@ -172,6 +172,7 @@ void ShaderProgram::getAllUniformLocations()
 	location_randomMap             = getUniformLocation("randomMap");
     location_mixFactor             = getUniformLocation("mixFactor");
     location_textureSampler2       = getUniformLocation("textureSampler2");
+    location_fogScale              = getUniformLocation("fogScale");
 }
 
 int ShaderProgram::getUniformLocation(const char* uniformName)
@@ -247,4 +248,9 @@ void ShaderProgram::loadToShadowSpaceMatrixClose(Matrix4f* matrix)
 void ShaderProgram::loadMixFactor(float factor)
 {
     loadFloat(location_mixFactor, factor);
+}
+
+void ShaderProgram::loadFogScale(float scale)
+{
+    loadFloat(location_fogScale, scale);
 }

@@ -77,6 +77,7 @@
 #include <tchar.h>
 #endif
 
+std::string Global::pathToEXE;
 
 std::unordered_set<Entity*> gameEntities;
 std::list<Entity*> gameEntitiesToAdd;
@@ -139,6 +140,8 @@ unsigned Global::HQWaterRefractionHeight = 720;
 bool Global::renderParticles = true;
 
 bool Global::renderBloom = false;
+
+bool Global::framerateUnlock = false;
 
 bool Global::renderShadowsFar = false;
 bool Global::renderShadowsClose = false;
@@ -223,8 +226,24 @@ void listen();
 MenuManager Global::menuManager = MenuManager();
 Timer* Global::mainHudTimer = nullptr;
 
-int main()
+int main(int argc, char** argv)
 {
+    if (argc > 0)
+    {
+        Global::pathToEXE = argv[0];
+
+        #ifdef _WIN32
+        int idx = (int)Global::pathToEXE.find_last_of('\\', Global::pathToEXE.size());
+        Global::pathToEXE = Global::pathToEXE.substr(0, idx+1);
+        #else
+        int idx = (int)Global::pathToEXE.find_last_of('/', Global::pathToEXE.size());
+        Global::pathToEXE = Global::pathToEXE.substr(0, idx+1);
+        #endif
+    }
+
+    //uncomment this out when building+running from visual studio :)
+    Global::pathToEXE = "";
+
 	#ifdef DEV_MODE
 	std::thread listenThread(doListenThread);
 	#endif
@@ -793,6 +812,11 @@ int main()
 			}
 		}
 
+        if (previousTime > timeNew)
+        {
+            previousTime = timeNew;
+        }
+
 		if (timeNew - previousTime >= 1.0)
 		{
 			//std::fprintf(stdout, "fps: %f\n", frameCount / (timeNew - previousTime));
@@ -1002,7 +1026,7 @@ void Global::loadSaveData()
 {
 	Global::gameSaveData.clear();
 
-	std::ifstream file("res/SaveData/SaveData.sav");
+	std::ifstream file(Global::pathToEXE+"res/SaveData/SaveData.sav");
 	if (!file.is_open())
 	{
 		std::fprintf(stdout, "No save data found. Creating new save file...\n");
@@ -1056,17 +1080,17 @@ void Global::loadSaveData()
 void Global::saveSaveData()
 {
 	#ifdef _WIN32
-	_mkdir("res/SaveData");
+	_mkdir((Global::pathToEXE + "res/SaveData").c_str());
 	#else
-	mkdir("res/SaveData", 0777);
+	mkdir((Global::pathToEXE + "res/SaveData").c_str(), 0777);
 	#endif
 
 	std::ofstream file;
-	file.open("res/SaveData/SaveData.sav", std::ios::out | std::ios::trunc);
+	file.open((Global::pathToEXE + "res/SaveData/SaveData.sav").c_str(), std::ios::out | std::ios::trunc);
 
 	if (!file.is_open())
 	{
-		std::fprintf(stderr, "Error: Failed to create/access 'res/SaveData/SaveData.sav'\n");
+		std::fprintf(stderr, "Error: Failed to create/access '%s'\n", (Global::pathToEXE + "res/SaveData/SaveData.sav").c_str());
 		file.close();
 	}
 	else

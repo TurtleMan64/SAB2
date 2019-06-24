@@ -13,8 +13,8 @@
 
 
 
-float AudioPlayer::soundLevelSE = 1.0f;
-float AudioPlayer::soundLevelBGM = 1.0f;
+float AudioPlayer::soundLevelSE = 0.05f;
+float AudioPlayer::soundLevelBGM = 0.05f;
 std::vector<Source*> AudioPlayer::sources;
 std::vector<ALuint> AudioPlayer::buffersSE;
 std::vector<ALuint> AudioPlayer::buffersBGM;
@@ -309,10 +309,10 @@ void AudioPlayer::setBGMVolume(float percent)
 
 void AudioPlayer::loadSettings()
 {
-	std::ifstream file("Settings/AudioSettings.ini");
+	std::ifstream file(Global::pathToEXE+"Settings/AudioSettings.ini");
 	if (!file.is_open())
 	{
-		std::fprintf(stderr, "Error: Cannot load file 'Settings/AudioSettings.ini'\n");
+		std::fprintf(stderr, "Error: Cannot load file '%s'\n", (Global::pathToEXE+"Settings/AudioSettings.ini").c_str());
 		file.close();
 	}
 	else

@@ -3,7 +3,7 @@ Levels/FrogForest
 FF -100000 -100000 -100000 100000 100000 100000
 Levels/FrogForest
 1
-Collision 8
+CollisionSmooth 8
 1.0 1.0 1.0
 0.0 0.0 0.0
 0.0 0.0 0.0
@@ -15,8 +15,8 @@ Collision 8
 1 0 0
 1
 2
-res/Audio/BGM/g_hill_intro.ogg
-res/Audio/BGM/g_hill_loop.ogg
+res/Audio/BGM/ff_intro.ogg
+res/Audio/BGM/ff_loop.ogg
 -2997.882813 204.103973 -10584.179688
 103 3
 -100
@@ -27,6 +27,57 @@ nowater
 #6 -1.319926 2755.100586 -1153.838745
 6 30 4000 120
 
+92 res/Models/Levels/FrogForest/Rails/Rails0.txt 
+92 res/Models/Levels/FrogForest/Rails/Rails1.txt 
+92 res/Models/Levels/FrogForest/Rails/Rails2.txt 
+92 res/Models/Levels/FrogForest/Rails/Rails3.txt 
+92 res/Models/Levels/FrogForest/Rails/Rails4.txt 
+92 res/Models/Levels/FrogForest/Rails/Rails5.txt 
+92 res/Models/Levels/FrogForest/Rails/Rails6.txt 
+92 res/Models/Levels/FrogForest/Rails/Rails7.txt 
+92 res/Models/Levels/FrogForest/Rails/Rails8.txt 
+92 res/Models/Levels/FrogForest/Rails/Rails9.txt 
+92 res/Models/Levels/FrogForest/Rails/Rails10.txt
+92 res/Models/Levels/FrogForest/Rails/Rails11.txt
+92 res/Models/Levels/FrogForest/Rails/Rails12.txt
+92 res/Models/Levels/FrogForest/Rails/Rails13.txt
+92 res/Models/Levels/FrogForest/Rails/Rails14.txt
+92 res/Models/Levels/FrogForest/Rails/Rails15.txt
+92 res/Models/Levels/FrogForest/Rails/Rails16.txt
+92 res/Models/Levels/FrogForest/Rails/Rails17.txt
+92 res/Models/Levels/FrogForest/Rails/Rails18.txt
+92 res/Models/Levels/FrogForest/Rails/Rails19.txt
+92 res/Models/Levels/FrogForest/Rails/Rails20.txt
+92 res/Models/Levels/FrogForest/Rails/Rails21.txt
+92 res/Models/Levels/FrogForest/Rails/Rails22.txt
+92 res/Models/Levels/FrogForest/Rails/Rails23.txt
+92 res/Models/Levels/FrogForest/Rails/Rails24.txt
+92 res/Models/Levels/FrogForest/Rails/Rails25.txt
+92 res/Models/Levels/FrogForest/Rails/Rails26.txt
+92 res/Models/Levels/FrogForest/Rails/Rails27.txt
+92 res/Models/Levels/FrogForest/Rails/Rails28.txt
+92 res/Models/Levels/FrogForest/Rails/Rails29.txt
+92 res/Models/Levels/FrogForest/Rails/Rails30.txt
+92 res/Models/Levels/FrogForest/Rails/Rails31.txt
+92 res/Models/Levels/FrogForest/Rails/Rails32.txt
+92 res/Models/Levels/FrogForest/Rails/Rails33.txt
+92 res/Models/Levels/FrogForest/Rails/Rails34.txt
+92 res/Models/Levels/FrogForest/Rails/Rails35.txt
+92 res/Models/Levels/FrogForest/Rails/Rails36.txt
+92 res/Models/Levels/FrogForest/Rails/Rails37.txt
+92 res/Models/Levels/FrogForest/Rails/Rails38.txt
+92 res/Models/Levels/FrogForest/Rails/Rails39.txt
+92 res/Models/Levels/FrogForest/Rails/Rails40.txt
+92 res/Models/Levels/FrogForest/Rails/Rails41.txt
+92 res/Models/Levels/FrogForest/Rails/Rails42.txt
+92 res/Models/Levels/FrogForest/Rails/Rails43.txt
+92 res/Models/Levels/FrogForest/Rails/Rails44.txt
+92 res/Models/Levels/FrogForest/Rails/Rails45.txt
+92 res/Models/Levels/FrogForest/Rails/Rails46.txt
+92 res/Models/Levels/FrogForest/Rails/Rails47.txt
+92 res/Models/Levels/FrogForest/Rails/Rails48.txt
+92 res/Models/Levels/FrogForest/Rails/Rails49.txt
+92 res/Models/Levels/FrogForest/Rails/Rails50.txt
 
-92 res/Models/Levels/FrogForest/Rail.txt
+
 0 0 0 0

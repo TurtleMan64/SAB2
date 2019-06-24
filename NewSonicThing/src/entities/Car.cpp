@@ -23,6 +23,8 @@
 #include "maniasonicmodel.h"
 
 #include <list>
+#include <vector>
+#include <unordered_set>
 #include <iostream>
 #include <algorithm>
 #include <fstream>
@@ -66,6 +68,170 @@ void Car::step()
 	homingAttackTimer = std::fmaxf(0.0f, homingAttackTimer - dt);
 
 	setInputs();
+
+    //Start Lightdash
+    if (!isLightdashing)
+    {
+        if (inputAction3 && !inputAction3Previous)
+        {
+            lightdashTrail.clear();
+            lightdashTrailProgress = -1.0f;
+
+            //search through close entities to find rings
+            std::list<std::unordered_set<Entity*>*> entities;
+            Global::getNearbyEntities(position.x, position.z, 1, &entities);
+
+            //keep track of rings we've already used, to not use them again
+            std::unordered_set<Entity*> alreadyUsedRings;
+
+            float closest = 100000000.0f;
+            Vector3f* closestPoint = nullptr;
+            Entity* closestEntity = nullptr;
+
+            for (std::unordered_set<Entity*>* set : entities)
+	        {
+		        for (Entity* e : (*set))
+		        {
+                    if (!e->canLightdashOn())
+                    {
+                        continue;
+                    }
+
+                    Vector3f diff = position - e->position;
+                    float thisdist = diff.lengthSquared();
+                    if (thisdist < closest)
+                    {
+                        closest = thisdist;
+                        closestPoint = &e->position;
+                        closestEntity = e;
+                    }
+                }
+            }
+
+            if (closest < 45.0f*45.0f)
+            {
+                isLightdashing = true;
+                lightdashTrailProgress = 0.0f;
+                lightdashTrail.push_back(closestPoint);
+                alreadyUsedRings.insert(closestEntity);
+
+                bool keepGoing = true;
+                while (keepGoing)
+                {
+                    Vector3f center = lightdashTrail.back();
+                    //search through close entities to find rings
+                    Global::getNearbyEntities(center.x, center.z, 1, &entities);
+
+                    closest = 100000000.0f;
+                    closestPoint = nullptr;
+
+                    for (std::unordered_set<Entity*>* set : entities)
+                    {
+                        for (Entity* e : (*set))
+                        {
+                            if (!e->canLightdashOn() || alreadyUsedRings.find(e) != alreadyUsedRings.end())
+                            {
+                                continue;
+                            }
+
+                            Vector3f diff = center - e->position;
+                            float thisdist = diff.lengthSquared();
+                            if (thisdist < closest)
+                            {
+                                closest = thisdist;
+                                closestPoint = &e->position;
+                                closestEntity = e;
+                            }
+                        }
+                    }
+
+                    if (closest < 80.0f*80.0f)
+                    {
+                        lightdashTrail.push_back(closestPoint);
+                        alreadyUsedRings.insert(closestEntity);
+                    }
+                    else
+                    {
+                        keepGoing = false;
+                    }
+                }
+            }
+
+            //Dont lightdash on a single ring.
+            // We only want to dash on 2 or more.
+            if (isLightdashing && lightdashTrail.size() < 2)
+            {
+                lightdashTrail.clear();
+                lightdashTrailProgress = -1.0f;
+                isLightdashing = false;
+            }
+        }
+    }
+
+    //Move along lightdash trail
+    if (isLightdashing)
+    {
+        if (((int)lightdashTrailProgress)+1 < lightdashTrail.size())
+        {
+            Vector3f p1 = lightdashTrail[(int)lightdashTrailProgress];
+            Vector3f p2 = lightdashTrail[((int)lightdashTrailProgress)+1];
+            Vector3f segment = p2 - p1;
+
+            float currentSegmentProg = fmodf(lightdashTrailProgress, 1.0f);
+
+            Vector3f diff = segment.scaleCopy(currentSegmentProg);
+            position = p1 + diff;
+
+            vel.set(&segment);
+            vel.setLength(lightdashSpeed);
+
+            float segmentLength = segment.length();
+
+            float howMuchProgToAdd = (dt*lightdashSpeed)/segmentLength;
+            float howMuchProgLeft = 1.0f - currentSegmentProg;
+
+            if (howMuchProgToAdd < howMuchProgLeft)
+            {
+                lightdashTrailProgress += howMuchProgToAdd;
+            }
+            else //go to next segment
+            {
+                lightdashTrailProgress = std::ceil(lightdashTrailProgress);
+
+                if (((int)lightdashTrailProgress)+1 < lightdashTrail.size())
+                {
+                    float leftoverProg = howMuchProgToAdd - howMuchProgLeft;
+                    float leftoverLen = segmentLength*leftoverProg;
+
+                    p1 = lightdashTrail[(int)lightdashTrailProgress];
+                    p2 = lightdashTrail[((int)lightdashTrailProgress)+1];
+                    segment = p2 - p1;
+
+                    segmentLength = segment.length();
+                    howMuchProgToAdd = leftoverLen/segmentLength;
+
+                    if (howMuchProgToAdd < 1)
+                    {
+                        lightdashTrailProgress+=howMuchProgToAdd;
+                    }
+                    else //todo make this keep going until you run out
+                    {
+                        lightdashTrailProgress+=0.99999f;
+                    }
+                }
+            }
+
+            onGround = false;
+        }
+        else
+        {
+            position.set(&lightdashTrail.back());
+            vel.setLength(lightdashExitSpeed);
+            isLightdashing = false;
+            lightdashTrail.clear();
+            lightdashTrailProgress = -1.0f;
+        }
+    }
 
 	//Homing attack
 	if (onGround)
@@ -227,6 +393,7 @@ void Car::step()
 			if (spindashTimer > 0)
 			{
 				spindash();
+                spindashRestartDelay = spindashRestartDelayMax;
 			}
 			spindashTimer = 0;
 			storedSpindashSpeed = 0;
@@ -292,7 +459,8 @@ void Car::step()
 		moveMeAir();
 	}
 
-	if (!isGrinding && !onRocket)
+    //camera stuff
+	if (!isGrinding && !onRocket && !isLightdashing)
 	{
 		//Twisting camera from user input
 		camDir = Maths::rotatePoint(&camDir, &relativeUp, -inputX2*dt);
@@ -302,7 +470,11 @@ void Car::step()
 		{
 			if (Global::isAutoCam)
 			{
-				camDir = Maths::interpolateVector(&camDir, &vel, fminf(vel.length()*0.014f*dt, 45.0f*dt));
+                //idea: dont adjust the camera if sonic is heading towards it
+                if (camDir.dot(&vel) > -0.5f)
+                {
+                    camDir = Maths::interpolateVector(&camDir, &vel, fminf(vel.length()*0.014f*dt, 45.0f*dt));
+                }
 			}
 			else
 			{
@@ -395,7 +567,7 @@ void Car::step()
 			}
 		}
 	}
-	else
+	else //rotating the camera if youre grinding or on a rocket or lightdashing
 	{
 		//Twisting camera from user input
 		camDir = Maths::rotatePoint(&camDir, &relativeUp, -inputX2*dt);
@@ -419,12 +591,36 @@ void Car::step()
 		}
 	}
 
+    //wall sticking
+    if (!onGround)
+    {
+        wallStickTimer = 0.0f;
+    }
+    else
+    {
+        if ((currentTriangle->isWall() || currentTriangle->normal.y < wallStickThreshold) &&
+            vel.lengthSquared() < wallStickSpeedRequirement*wallStickSpeedRequirement)
+        {
+            wallStickTimer += dt;
+
+            if (wallStickTimer > wallStickTimerMax)
+            {
+                popOffWall();
+            }
+        }
+        else
+        {
+            wallStickTimer = 0.0f;
+        }
+    }
+
 	//smoothing
 	camDirSmooth = Maths::interpolateVector(&camDirSmooth, &camDir, 10*dt);
 	relativeUpSmooth = Maths::interpolateVector(&relativeUpSmooth, &relativeUp, 3*dt);
 	relativeUpAnim = Maths::interpolateVector(&relativeUpAnim, &relativeUp, 15*dt);
 
-	if (velocityMovesPlayer)//(!(isGrinding or onRocket))
+	//if (velocityMovesPlayer)//(!isGrinding && !onRocket && !isLightdashing))
+	if (!isGrinding && !onRocket && !isLightdashing)
 	{
 		//speed before adjusting
 		float originalSpeed = vel.length();
@@ -490,10 +686,11 @@ void Car::step()
 
 							onGround = false;
 							relativeUp.set(0, 1, 0);
-							vel.y = Maths::approach(vel.y, gravityTerminal, gravityApproach, dt);
+							//vel.y = Maths::approach(vel.y, gravityTerminal, gravityApproach, dt);
+
 							Vector3f velToAddFromGravity(relativeUp);
 							velToAddFromGravity.setLength(-gravityForce*dt);
-
+                            vel = vel + velToAddFromGravity;
 
 
 
@@ -739,10 +936,11 @@ void Car::step()
 
 				relativeUp.set(0, 1, 0);
 
-				vel.y = Maths::approach(vel.y, gravityTerminal, gravityApproach, dt);
+				//vel.y = Maths::approach(vel.y, gravityTerminal, gravityApproach, dt);
 
 				Vector3f velToAddFromGravity(relativeUp);
 				velToAddFromGravity.setLength(-gravityForce*dt);
+                vel = vel + velToAddFromGravity;
 				if (Input::inputs.INPUT_RB)
 				{
 					vel = vel - velToAddFromGravity.scaleCopy(4);
@@ -769,12 +967,13 @@ void Car::step()
 
 	//std::fprintf(stdout, "%f\n\n\n\n", vel.length());
 
-	Vector3f vnorm(&vel);
-	vnorm.normalize();
+	//Vector3f vnorm(&vel);
+	//vnorm.normalize();
 	//std::fprintf(stdout, "pos  = [%f, %f, %f]\n", position.x, position.y, position.z);
 	//std::fprintf(stdout, "norm = [%f, %f, %f]\n", currNorm.x, currNorm.y, currNorm.z);
 	//std::fprintf(stdout, "dir  = [%f, %f, %f]\n", vnorm   .x, vnorm   .y, vnorm   .z);
 	//std::fprintf(stdout, "%f %f %f   %f %f %f   %f %f %f\n", position.x, position.y, position.z, currNorm.x, currNorm.y, currNorm.z, vnorm.x, vnorm.y, vnorm.z);
+    centerPosPrev = getCenterPosition();
 }
 
 void Car::spindash()
@@ -809,7 +1008,8 @@ void Car::calcSpindashDirection()
 
 void Car::moveMeGround()
 {
-	if (isSpindashing && vel.lengthSquared() < spindashPowerfulFrictionThreshold*spindashPowerfulFrictionThreshold) //if you are stopped and charging a spindash, dont move sonic
+	if (isSpindashing && vel.lengthSquared() < spindashPowerfulFrictionThreshold*spindashPowerfulFrictionThreshold || //if you are stopped and charging a spindash, dont move sonic
+        isLightdashing)
 	{
 		return;
 	}
@@ -836,7 +1036,7 @@ void Car::moveMeGround()
 
 			//rotate vel to where the stick is going
 			float spd = vel.length();
-			vel = Maths::interpolateVector(&vel, &velToAdd, dt*(60.0f/12.0f));
+			vel = Maths::interpolateVector(&vel, &velToAdd, dt*(60.0f/12.0f)); // 60.0f/12.0f before 6/11/2019
 			vel.setLength(spd);
 		}
 		else
@@ -854,11 +1054,15 @@ void Car::moveMeGround()
 			{
 				vel = Maths::applyDrag(&vel, skidPower, dt);
 				skidded = true;
+                if (!isSkidding && vel.lengthSquared() >= skidAudioThreshold*skidAudioThreshold)
+                {
+                    AudioPlayer::play(13, &position);
+                }
 			}
 			else
 			{
 				float spd = vel.length();
-				vel = Maths::interpolateVector(&vel, &velToAdd, dt*(60.0f/12.0f));
+				vel = Maths::interpolateVector(&vel, &velToAdd, dt*(60.0f/12.0f)); // 60.0f/12.0f before 6/11/2019
 				vel.setLength(spd);
 			}
 		}
@@ -880,12 +1084,22 @@ void Car::moveMeGround()
 				//float frictionPower = groundBallFriction;
 				//vel = Maths::applyDrag(&vel, -frictionPower, dt); //Slow vel down due to friction
 			}
-			else
+			else //neutral stick slowdown
 			{
-				Vector3f fr(0, -0.95f, 0); //0.75
-				fr = Maths::projectOntoPlane(&fr, &relativeUp);
-				float frictionPower = groundNeutralFriction*(1 - fr.length());
-				vel = Maths::applyDrag(&vel, -frictionPower, dt); //Slow vel down due to friction
+                if (vel.lengthSquared() > 35.0f*35.0f) //normal neutral stick friction
+		        {
+				    Vector3f fr(0, -0.95f, 0); //0.75
+				    fr = Maths::projectOntoPlane(&fr, &relativeUp);
+				    float frictionPower = groundNeutralFriction*(1 - fr.length());
+				    vel = Maths::applyDrag(&vel, -frictionPower, dt); //Slow vel down due to friction
+                }
+                else //when close to no speed, increase friction
+		        {
+				    Vector3f fr(0, -0.95f, 0); //0.75
+				    fr = Maths::projectOntoPlane(&fr, &relativeUp);
+				    float frictionPower = (groundNeutralFriction*4)*(1 - fr.length()); //multiply by 4, arbitrary
+				    vel = Maths::applyDrag(&vel, -frictionPower, dt); //Slow vel down due to friction
+                }
 			}
 		}
 	}
@@ -925,7 +1139,8 @@ void Car::moveMeGround()
 	if (heldUp && !skidded && !isBall)
 	{
 		//dont slow down if you holding out on stick and youre running
-		if (velBefore.lengthSquared() > vel.lengthSquared())
+		if (velBefore.lengthSquared() > vel.lengthSquared() &&
+            velBefore.length() > spindashPowerMax-20.0f) //only dont slow down if youre already going fast
 		{
 			vel.setLength(velBefore.length());
 		}
@@ -941,11 +1156,14 @@ void Car::moveMeGround()
 			vel.setLength(velBefore.length());
 		}
 	}
+
+    isSkidding = skidded;
 }
 
 void Car::moveMeAir()
 {
-	if (isGrinding or onRocket)
+	if (isGrinding || onRocket || isLightdashing)
+	//if (isGrinding || isLightdashing)
 	{
 		return;
 	}
@@ -983,7 +1201,7 @@ void Car::moveMeAir()
 		if (ang > 0.001f)
 		{
 			float spd = vel.length();
-			vel = Maths::interpolateVector(&vel, &velToAdd, dt*(60.0f/12.0f));
+			vel = Maths::interpolateVector(&vel, &velToAdd, dt*(60.0f/10.0f)); //changed from 12 on 6/11/2019
 			vel.setLength(spd);
 			vel.scale(1 - 4.5f*ang*dt*(1/Maths::PI)); //slow down from turning in the air
 		}
@@ -1098,7 +1316,15 @@ void Car::updateAnimationValues()
 {
 	float currSpeed = vel.length();
 
-	if (isJumping)
+    if (isLightdashing)
+    {
+
+    }
+    else if (onRocket)
+    {
+
+    }
+	else if (isJumping)
 	{
 		runAnimationCycle -= 3000*dt;
 	}
@@ -1109,6 +1335,19 @@ void Car::updateAnimationValues()
 	else if (isBall)
 	{
 		runAnimationCycle -= (8.0f*currSpeed + 300)*dt;
+
+        Vector3f centerNew = getCenterPosition();
+        Vector3f diff = centerNew - centerPosPrev;
+        float density = 1.0f; //1 particle every 1 units
+        int numParticles = (int)(diff.length()/density);
+
+        Vector3f zero(0,0,0);
+
+        for (int i = 0; i < numParticles; i++)
+        {
+            Vector3f partPos = centerPosPrev + diff.scaleCopy(((float)i)/numParticles);
+            new Particle(ParticleResources::textureLightBlueTrail, &partPos, &zero, 0, 0.25f, 0, 8.0f, -32.0f, false, false);
+        }
 	}
 	else if (isGrinding)
 	{
@@ -1125,6 +1364,10 @@ void Car::updateAnimationValues()
 			runAnimationCycle = -(spindashTimer*spindashTimer*0.8f*60*60);
 		}
 	}
+    else if (isSkidding)
+    {
+
+    }
 	else if (spindashReleaseTimer > 0)
 	{
 		runAnimationCycle = (spindashReleaseTimer*spindashReleaseTimer*0.4f*60*60);
@@ -1145,6 +1388,15 @@ void Car::updateAnimationValues()
 		{
 			runAnimationCycle += 100.0f; //fmodf returns negative numbers if the number is negative
 		}
+
+        Vector3f spd(Maths::nextUniform()-0.5f, Maths::nextUniform()-0.5f, Maths::nextUniform()-0.5f);
+        spd.scale(50.0f);
+        if (currSpeed > 490)
+        {
+            Vector3f partPos = position + relativeUp.scaleCopy(1.5f);
+            new Particle(ParticleResources::textureDust, &position, &spd, 0, 0.25f, 0, 6.0f, 0.0f, false, false);
+            //new Particle(ParticleResources::textureDust, &partPos, 0.25f, 6.0f, 2.8f, false);
+        }
 	}
 }
 
@@ -1169,6 +1421,9 @@ void Car::animate()
 	float pitchAngleAir = Maths::toDegrees(atan2f(nYAir, normHLengthAir));
 	float yawAngleAir = Maths::toDegrees(atan2f(-nZAir, nXAir));
 	float diffAir = Maths::compareTwoAngles(twistAngleAir, yawAngleAir);
+
+    float airYaw = Maths::toDegrees(atan2f(-vel.z, vel.x));
+    float airPitch = Maths::toDegrees(atan2f(vel.y, sqrtf(vel.x*vel.x + vel.z*vel.z)));
 
 	float currSpeed = vel.length();
 
@@ -1198,11 +1453,21 @@ void Car::animate()
 		maniaSonicModel->setOrientation(getX(), getY(), getZ(), diffGround, yawAngleGround, pitchAngleGround, 0);
 		maniaSonicModel->animate(27, 0);
 	}
-	if (onPulley)
+	else if (onPulley)
 	{
 		maniaSonicModel->setOrientation(getX(), getY(), getZ(), diffGround, yawAngleGround, pitchAngleGround, 0);
 		maniaSonicModel->animate(27, 0);
 	}
+    else if (isLightdashing)
+    {
+        maniaSonicModel->setOrientation(dspX, dspY, dspZ, 0, airYaw, 90, airPitch);
+		maniaSonicModel->animate(18, 0);
+    }
+    else if (onRocket)
+    {
+        maniaSonicModel->setOrientation(dspX, dspY, dspZ, 0, airYaw, 90, airPitch);
+		maniaSonicModel->animate(25, 0);
+    }
 	else if (isJumping)
 	{
 		maniaSonicModel->setOrientation(dspX, dspY, dspZ, diffAir, yawAngleAir, pitchAngleAir, runAnimationCycle);
@@ -1245,6 +1510,16 @@ void Car::animate()
 		maniaSonicModel->setOrientation(dspX, dspY, dspZ, diffGroundSpnd, yawAngleGroundSpnd, pitchAngleGroundSpnd, runAnimationCycle);
 		maniaSonicModel->animate(12, 0);
 	}
+    else if (isSkidding)
+    {
+        rotX = diffGround;
+		rotY = yawAngleGround;
+		rotZ = pitchAngleGround;
+		rotRoll = 0;
+
+		maniaSonicModel->setOrientation(getX(), getY(), getZ(), rotX, rotY, rotZ, rotRoll);
+        maniaSonicModel->animate(8, 0);
+    }
 	else if (spindashReleaseTimer > 0)
 	{
 		maniaSonicModel->setOrientation(dspX, dspY, dspZ, diffGround, yawAngleGround, pitchAngleGround, runAnimationCycle);
@@ -1268,7 +1543,7 @@ void Car::animate()
 		rotRoll = 0;
 
 		maniaSonicModel->setOrientation(getX(), getY(), getZ(), rotX, rotY, pitchAngleAir, rotRoll);
-		maniaSonicModel->animate(2, 0);
+		maniaSonicModel->animate(21, 0);
 	}
 	else //running animation
 	{
@@ -1295,6 +1570,7 @@ void Car::setInputs()
 	inputJump    = Input::inputs.INPUT_ACTION1;
 	inputAction  = Input::inputs.INPUT_ACTION2;
 	inputAction2 = Input::inputs.INPUT_ACTION3;
+    inputAction3 = Input::inputs.INPUT_ACTION4;
 	inputX       = Input::inputs.INPUT_X;
 	inputY       = Input::inputs.INPUT_Y;
 	inputX2      = Input::inputs.INPUT_X2;
@@ -1303,12 +1579,14 @@ void Car::setInputs()
 	inputJumpPrevious    = Input::inputs.INPUT_PREVIOUS_ACTION1;
 	inputActionPrevious  = Input::inputs.INPUT_PREVIOUS_ACTION2;
 	inputAction2Previous = Input::inputs.INPUT_PREVIOUS_ACTION3;
+    inputAction3Previous = Input::inputs.INPUT_PREVIOUS_ACTION4;
 
 	if (canMoveTimer > 0.0f || Global::finishStageTimer >= 0.0f)
 	{
 		inputJump    = false;
 		inputAction  = false;
 		inputAction2 = false;
+        inputAction3 = false;
 		inputX    = 0;
 		inputY    = 0;
 		inputX2   = 0;
@@ -1317,6 +1595,7 @@ void Car::setInputs()
 		inputJumpPrevious    = false;
 		inputActionPrevious  = false;
 		inputAction2Previous = false;
+        inputAction3Previous = false;
 	}
 }
 
@@ -1467,4 +1746,29 @@ void Car::refreshCamera()
 	//CollisionChecker::debug = false;
 
 	Global::gameCamera->setViewMatrixValues(&eye, &target, &up);
+}
+
+//Do a small 'pop off' off the wall
+void Car::popOffWall()
+{
+    if (onGround)
+    {
+	    vel.x = vel.x + relativeUp.x * 90.0f;
+	    vel.z = vel.z + relativeUp.z * 90.0f;
+	    vel.y = vel.y + relativeUp.y * 90.0f;
+	    onGround = false;
+	    relativeUp.set(0, 1, 0);
+    }
+}
+
+Vector3f Car::getCenterPosition()
+{
+    if (onGround)
+    {
+        return position + relativeUp.scaleCopy(displayBallOffset);
+    }
+    else
+    {
+        return position;
+    }
 }

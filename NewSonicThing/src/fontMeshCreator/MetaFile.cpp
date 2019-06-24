@@ -110,10 +110,10 @@ void MetaFile::close()
 
 void MetaFile::openFile(std::string filename)
 {
-	reader = new std::ifstream(filename); INCR_NEW("ifstream");
+	reader = new std::ifstream(Global::pathToEXE+filename); INCR_NEW("ifstream");
 	if (!reader->is_open())
 	{
-		std::fprintf(stdout, "Error: Cannot load file '%s'\n", (filename).c_str());
+		std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE+filename).c_str());
 		reader->close();
 		delete reader; INCR_DEL("ifstream");
 		reader = nullptr;

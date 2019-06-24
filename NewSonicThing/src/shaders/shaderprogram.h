@@ -41,6 +41,7 @@ private:
 	int location_randomMap;
     int location_mixFactor;
     int location_textureSampler2;
+    int location_fogScale;
 
 public:
 	ShaderProgram(const char*, const char*);
@@ -86,6 +87,8 @@ public:
 	void loadToShadowSpaceMatrixClose(Matrix4f* matrix);
 
     void loadMixFactor(float factor);
+
+    void loadFogScale(float scale);
 
 	void connectTextureUnits();
 

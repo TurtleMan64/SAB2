@@ -26,6 +26,36 @@ Particle::Particle(ParticleTexture* texture, Vector3f* position, float lifeLengt
 	this->scaleY = scale;
 	this->scaleYChange = 0;
 	this->onlyRendersOnce = onlyRendersOnce;
+    this->opacity = 1.0f;
+	if (Global::renderParticles)
+	{
+		ParticleMaster::addParticle(this); INCR_NEW("Particle");
+	}
+	else
+	{
+		delete this;
+	}
+}
+
+Particle::Particle(ParticleTexture* texture, Vector3f* position, float lifeLength, float scale, float opacity, bool onlyRendersOnce)
+{
+    this->texture = texture;
+	this->positionRef = &this->position;
+	this->position.x = position->x;
+	this->position.y = position->y;
+	this->position.z = position->z;
+	this->velocity.x = 0;
+	this->velocity.y = 0;
+	this->velocity.z = 0;
+	this->gravityEffect = 0;
+	this->lifeLength = lifeLength;
+	this->rotation = 0;
+	this->scaleX = scale;
+	this->scaleXChange = 0;
+	this->scaleY = scale;
+	this->scaleYChange = 0;
+	this->onlyRendersOnce = onlyRendersOnce;
+    this->opacity = opacity;
 	if (Global::renderParticles)
 	{
 		ParticleMaster::addParticle(this); INCR_NEW("Particle");
@@ -54,6 +84,7 @@ Particle::Particle(ParticleTexture* texture, Vector3f* position, Vector3f* veloc
 	this->scaleY = scale;
 	this->scaleYChange = 0;
 	this->onlyRendersOnce = onlyRendersOnce;
+    this->opacity = 1.0f;
 	if (Global::renderParticles)
 	{
 		ParticleMaster::addParticle(this); INCR_NEW("Particle");
@@ -90,6 +121,7 @@ Particle::Particle(ParticleTexture* texture, Vector3f* position, Vector3f* veloc
 	this->scaleY = scale;
 	this->scaleYChange = scaleChange;
 	this->onlyRendersOnce = onlyRendersOnce;
+    this->opacity = 1.0f;
 	if (Global::renderParticles)
 	{
 		ParticleMaster::addParticle(this); INCR_NEW("Particle");
@@ -127,6 +159,7 @@ Particle::Particle(ParticleTexture* texture, Vector3f* position, Vector3f* veloc
 	this->scaleY = scaleY;
 	this->scaleYChange = scaleYChange;
 	this->onlyRendersOnce = onlyRendersOnce;
+    this->opacity = 1.0f;
 	if (Global::renderParticles)
 	{
 		ParticleMaster::addParticle(this); INCR_NEW("Particle");
@@ -185,6 +218,11 @@ float Particle::getScaleX()
 float Particle::getScaleY()
 {
 	return scaleY;
+}
+
+float Particle::getOpacity()
+{
+    return opacity;
 }
 
 Vector2f* Particle::getTexOffset1()
