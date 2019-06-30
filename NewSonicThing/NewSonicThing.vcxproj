@@ -143,10 +143,12 @@
     <ClCompile Include="src\collision\QuadTreeNode.cpp" />
     <ClCompile Include="src\collision\Triangle3D.cpp" />
     <ClCompile Include="src\engineTester\MainGameLoop.cpp" />
+    <ClCompile Include="src\entities\Beetle.cpp" />
     <ClCompile Include="src\entities\Boostpad.cpp" />
     <ClCompile Include="src\entities\Camera.cpp" />
     <ClCompile Include="src\entities\Car.cpp" />
     <ClCompile Include="src\entities\Checkpoint.cpp" />
+    <ClCompile Include="src\entities\CityEscape\CE_StageManager.cpp" />
     <ClCompile Include="src\entities\CollideableObject.cpp" />
     <ClCompile Include="src\entities\Dummy.cpp" />
     <ClCompile Include="src\entities\Entity.cpp" />
@@ -265,10 +267,12 @@
     <ClInclude Include="src\collision\quadtreenode.h" />
     <ClInclude Include="src\collision\triangle3d.h" />
     <ClInclude Include="src\engineTester\main.h" />
+    <ClInclude Include="src\entities\beetle.h" />
     <ClInclude Include="src\entities\boostpad.h" />
     <ClInclude Include="src\entities\camera.h" />
     <ClInclude Include="src\entities\car.h" />
     <ClInclude Include="src\entities\checkpoint.h" />
+    <ClInclude Include="src\entities\CityEscape\cestagemanager.h" />
     <ClInclude Include="src\entities\collideableobject.h" />
     <ClInclude Include="src\entities\dummy.h" />
     <ClInclude Include="src\entities\entity.h" />

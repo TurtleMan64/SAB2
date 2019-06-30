@@ -462,7 +462,23 @@ int main(int argc, char** argv)
 		for (auto entityToDelete : gameChunkedEntitiesToDelete)
 		{
 			int realIndex = Global::getChunkIndex(entityToDelete->getX(), entityToDelete->getZ());
-			gameChunkedEntities[realIndex].erase(entityToDelete);
+			size_t numDeleted = gameChunkedEntities[realIndex].erase(entityToDelete);
+            if (numDeleted == 0)
+            {
+                for (int i = 0; i < gameChunkedEntities.size(); i++)
+                {
+                    numDeleted = gameChunkedEntities[i].erase(entityToDelete);
+                    if (numDeleted > 0)
+                    {
+                        break;
+                    }
+                }
+
+                if (numDeleted == 0)
+                {
+                    std::fprintf(stdout, "Error: Tried to delete a chunked entity that wasn't in the lists.\n");
+                }
+            }
 			delete entityToDelete; INCR_DEL("Entity");
 		}
 		gameChunkedEntitiesToDelete.clear();
@@ -1319,12 +1335,12 @@ int Global::getChunkIndex(float x, float z)
 	if (realIndex >= (int)gameChunkedEntities.size())
 	{
 		std::fprintf(stderr, "Error: Index out of bounds on gameNearbyEntities. THIS IS VERY BAD.\n");
-		//std::fprintf(stdout, "	x = %f       z = %f\n", x, z);
-		//std::fprintf(stdout, "	relativeX = %f      relativeZ = %f\n", relativeX, relativeZ);
-		//std::fprintf(stdout, "	iX = %d        iZ = %d\n", iX, iZ);
-		//std::fprintf(stdout, "	chunkedEntitiesWidth = %d             chunkedEntitiesHeight = %d\n", chunkedEntitiesWidth, chunkedEntitiesHeight);
-		//std::fprintf(stdout, "	chunkedEntitiesChunkSize = %f\n", chunkedEntitiesChunkSize);
-		//std::fprintf(stdout, "	realIndex = %d          gameChunkedEntities.size() = %d\n", realIndex, (int)gameChunkedEntities.size());
+		std::fprintf(stdout, "	x = %f       z = %f\n", x, z);
+		std::fprintf(stdout, "	relativeX = %f      relativeZ = %f\n", relativeX, relativeZ);
+		std::fprintf(stdout, "	iX = %d        iZ = %d\n", iX, iZ);
+		std::fprintf(stdout, "	chunkedEntitiesWidth = %d             chunkedEntitiesHeight = %d\n", chunkedEntitiesWidth, chunkedEntitiesHeight);
+		std::fprintf(stdout, "	chunkedEntitiesChunkSize = %f\n", chunkedEntitiesChunkSize);
+		std::fprintf(stdout, "	realIndex = %d          gameChunkedEntities.size() = %d\n", realIndex, (int)gameChunkedEntities.size());
 		return 0;
 	}
 
@@ -1429,17 +1445,10 @@ void Main_deleteAllChunkedEntities()
 	//Make sure no entities get left behind in transition
 	for (Entity* entityToAdd : gameChunkedEntitiesToAdd)
 	{
-		int realIndex = Global::getChunkIndex(entityToAdd->getX(), entityToAdd->getZ());
-		gameChunkedEntities[realIndex].insert(entityToAdd);
+		delete entityToAdd; INCR_DEL("Entity");
 	}
 	gameChunkedEntitiesToAdd.clear();
 
-	for (Entity* entityToDelete : gameChunkedEntitiesToDelete)
-	{
-		int realIndex = Global::getChunkIndex(entityToDelete->getX(), entityToDelete->getZ());
-		gameChunkedEntities[realIndex].erase(entityToDelete);
-		delete entityToDelete; INCR_DEL("Entity");
-	}
 	gameChunkedEntitiesToDelete.clear();
 
 	for (std::unordered_set<Entity*> set : gameChunkedEntities)

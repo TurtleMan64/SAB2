@@ -133,7 +133,7 @@ void ManiaSonicModel::animate(int animIndex, float time)
 				case 15: models = &ManiaSonicModel::modelJog15; break;
 				case 16: models = &ManiaSonicModel::modelJog16; break;
 				case 17: models = &ManiaSonicModel::modelJog17; break;
-				default: std::fprintf(stdout, "jog animation index out of bounds"); break;
+                default: std::fprintf(stdout, "warning: jog animation index out of bounds\n"); break;
 			}
 			break;
 		}

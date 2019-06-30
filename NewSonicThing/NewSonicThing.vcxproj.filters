@@ -91,6 +91,9 @@
     <Filter Include="Source Files\entities\GreenHill">
       <UniqueIdentifier>{c2e0e7b4-63f1-4fb5-87dc-fef8eb7f38f1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\entities\CityEscape">
+      <UniqueIdentifier>{00ee3630-0ee9-40b4-800f-2f8edf887ba5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\glad.c">
@@ -453,6 +456,12 @@
     <ClCompile Include="src\entities\GreenHill\GH_StageManager.cpp">
       <Filter>Source Files\entities\GreenHill</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\Beetle.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\CityEscape\CE_StageManager.cpp">
+      <Filter>Source Files\entities\CityEscape</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.h">
@@ -799,6 +808,12 @@
     </ClInclude>
     <ClInclude Include="src\entities\GreenHill\ghstagemanager.h">
       <Filter>Source Files\entities\GreenHill</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\beetle.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\CityEscape\cestagemanager.h">
+      <Filter>Source Files\entities\CityEscape</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -86,6 +86,7 @@ private:
 	const float airRunPush = 25.0f; //30.0
 	const float airRunFrictionUp = 0.75f; //0.25    //maybe make another variable for this to use when vel.y < 0?
 	const float airRunFrictionDown = 0.25f; //For when sonic is falling down
+    const float airFrictionThreshold = 40.0f; //When youre going slower than this horizontally, doing apply friction
 	const float airNeutralFriction = 1.25f;
 	const float slopeRunAccel = 9000.0f;
 
@@ -135,7 +136,10 @@ private:
 
 	bool justHomingAttacked = false; //Are we in the air after doing a homing attack?
 	float homingAttackTimer = -1.0f; // less than 0 = can start a homing attack
-	const float homingAttackTimerMax = 0.1666f;
+	const float homingAttackTimerMax = 0.2f;
+    bool isHomingOnPoint = false;
+    const float homingAttackRangeMax =  115.0f*115.0f; //max squared
+    const float homingAttackDotThreshold = 0.65f;
 
 	//const float camAngleLookdown = 0.0f; //0.2f; //How much the camera looks down
 	const float camRadius        = 75.0;  //Camera radius at zero speed
@@ -278,6 +282,8 @@ private:
 
 	void spindash();
 
+    void homingAttack();
+
 	void calcSpindashDirection();
 
 	void setInputs();
@@ -303,6 +309,10 @@ public:
 	Vector3f* getVelocity();
 
     void popOffWall();
+
+    bool isVulnerable();
+
+    void rebound(Vector3f* source);
 
 	void setCanMoveTimer(float newTimer);
 

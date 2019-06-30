@@ -184,6 +184,8 @@ void Rocket::deleteStaticModels()
 
 	Entity::deleteModels(&Rocket::modelsRocket);
 	Entity::deleteModels(&Rocket::modelsBase);
+
+    Entity::deleteCollisionModel(&Rocket::cmBase);
 }
 
 //functions used for the constructor start here

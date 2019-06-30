@@ -1,6 +1,6 @@
 Levels/CityEscape
 1
-CE -100000 -100000 -100000 100000 100000 100000
+CityEscape -100000 -100000 -100000 100000 100000 100000
 Levels/CityEscape
 1
 Collision 8
@@ -11,8 +11,8 @@ Collision 8
 0.1922 0.3961 0.9059
 0.05 0.05 0.075
 0.00005 2.0
-108
-1 0 0
+90
+0 0.384336 -0.923163
 1
 2
 res/Audio/BGM/g_hill_intro.ogg
@@ -23,8 +23,14 @@ res/Audio/BGM/g_hill_loop.ogg
 nowater
 0
 
+# Pass 2
+2 res/Models/Levels/CityEscape/ CityEscapeShadows
+
+#Stage Manager
+91 4
+
 # Player
-6 0 7 0
+6 0 -101.988007 175.837097
 0 0 0 0
 
 92 res/Models/Levels/CityEscape/Rails/Rail1.txt

@@ -74,6 +74,8 @@ public:
 	//If the two vectors are too small or are too similar already, a copy of A is retured.
 	static Vector3f interpolateVector(Vector3f* A, Vector3f* B, float percent);
 
+    static Vector3f interpolateVectorDebug(Vector3f* A, Vector3f* B, float percent);
+
 	//calculates the angle in radians between two vectors
 	static float angleBetweenVectors(Vector3f* A, Vector3f* B);
 

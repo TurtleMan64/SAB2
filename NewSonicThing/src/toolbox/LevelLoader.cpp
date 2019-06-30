@@ -51,6 +51,8 @@
 #include "../entities/rocket.h"
 #include "../entities/MetalHarbor/mhstagemanager.h"
 #include "../entities/GreenHill/ghstagemanager.h"
+#include "../entities/beetle.h"
+#include "../entities/CityEscape/cestagemanager.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -786,6 +788,14 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
             return;
         }
 
+        case 28: //Beetle
+		{
+			Beetle::loadStaticModels();
+			Beetle* beetle = new Beetle(toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3])); INCR_NEW("Entity");
+			chunkedEntities->push_back(beetle);
+			return;
+		}
+
         case 69: //GoalRing
 		{
 			GoalRing::loadStaticModels();
@@ -829,6 +839,14 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
                     GH_StageManager::loadStaticModels();
 					GH_StageManager* gh = new GH_StageManager; INCR_NEW("Entity");
 					Main_addEntity(gh);
+					break;
+                }
+
+                case 4:
+                {
+                    CE_StageManager::loadStaticModels();
+					CE_StageManager* ce = new CE_StageManager; INCR_NEW("Entity");
+					Main_addEntity(ce);
 					break;
                 }
 
@@ -941,6 +959,7 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 				Ring* ring = new Ring(pos1.x, pos1.y, pos1.z); INCR_NEW("Entity");
                 chunkedEntities->push_back(ring);
 			}
+            return;
         }
 
         case 99: //Circle of rings
@@ -968,6 +987,7 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 				Ring* ring = new Ring(centerPos.x, centerPos.y, centerPos.z); INCR_NEW("Entity");
 				chunkedEntities->push_back(ring);
 			}
+            return;
         }
 
 		default:
@@ -1077,6 +1097,8 @@ void LevelLoader::freeAllStaticModels()
     GoalRing::deleteStaticModels();
     Rocket::deleteStaticModels();
     GH_StageManager::deleteStaticModels();
+    Beetle::deleteStaticModels();
+    CE_StageManager::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()

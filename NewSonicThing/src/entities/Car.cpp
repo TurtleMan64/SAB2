@@ -66,7 +66,7 @@ void Car::step()
 {
 	canMoveTimer      = std::fmaxf(0.0f, canMoveTimer      - dt);
 	hoverTimer        = std::fmaxf(0.0f, hoverTimer        - dt);
-	homingAttackTimer = std::fmaxf(0.0f, homingAttackTimer - dt);
+	homingAttackTimer = std::fmaxf(-1.0f, homingAttackTimer - dt);
 
 	setInputs();
 
@@ -237,30 +237,15 @@ void Car::step()
 	//Homing attack
 	if (onGround)
 	{
-		homingAttackTimer = 0.0f;
+		homingAttackTimer = -1.0f;
 		justHomingAttacked = false;
+        isHomingOnPoint = false;
 	}
 	else
 	{
 		if (inputJump && !inputJumpPrevious && (isBall || isJumping) && !justHomingAttacked)
 		{
-			isJumping = false;
-			isBall = true;
-			isBouncing = false;
-			justBounced = false;
-			homingAttackTimer = homingAttackTimerMax;
-			justHomingAttacked = true;
-
-			float storedVelY = vel.y;
-			vel.y = 0;
-
-			if (vel.length() < 300.0f)
-			{
-				vel.setLength(300.0f);
-			}
-
-			vel.y = storedVelY;
-			AudioPlayer::play(11, getPosition());
+            homingAttack();
 		}
 	}
 
@@ -280,7 +265,10 @@ void Car::step()
 	{
 		if (inputJump && hoverTimer > 0.0f && isJumping) //Add vel from hover
 		{
-			vel = vel + relativeUpSmooth.scaleCopy(hoverPower*dt);
+            if (!(isHomingOnPoint && homingAttackTimer > 0))
+            {
+			    vel = vel + relativeUpSmooth.scaleCopy(hoverPower*dt);
+            }
 		}
 	}
 
@@ -451,6 +439,12 @@ void Car::step()
 		isStomping = false;
 	}
 
+    //Skidding (more logic done in moveMeGround)
+    if (!onGround)
+    {
+        isSkidding = false;
+    }
+
 	if (onGround)
 	{
 		moveMeGround();
@@ -474,7 +468,29 @@ void Car::step()
                 //idea: dont adjust the camera if sonic is heading towards it
                 if (camDir.dot(&vel) > -0.5f)
                 {
-                    camDir = Maths::interpolateVector(&camDir, &vel, fminf(vel.length()*0.014f*dt, 45.0f*dt));
+                    //this causes annoying camera jitter when you have fps lag spikes
+                    //camDir = Maths::interpolateVectorDebug(&camDir, &vel, fminf(vel.length()*0.014f*dt, 45.0f*dt));
+
+                    //new stuff to get rid of annoying jitter: only rotate "horizontally", not vertically.
+                    // this means we need to decrease the max angle you can look down to not stare at the ground
+                    // during loops.
+                    Vector3f camDirFlat = Maths::projectOntoPlane(&camDir, &relativeUp);
+                    float angleDiff = Maths::angleBetweenVectors(&camDirFlat, &vel);
+                    float percent = fminf(vel.length()*0.014f*dt, 45.0f*dt);
+                    percent = fminf(1.0f, fmaxf(0.0f, percent));
+                    float angToRotate = angleDiff*percent;
+
+                    Vector3f camDirRotatePositive = Maths::rotatePoint(&camDirFlat, &relativeUp, angToRotate);
+                    float angleDiffAfter = Maths::angleBetweenVectors(&camDirRotatePositive, &vel);
+
+                    if (angleDiffAfter > angleDiff)
+                    {
+                        camDir = Maths::rotatePoint(&camDir, &relativeUp, -angToRotate);
+                    }
+                    else
+                    {
+                        camDir = Maths::rotatePoint(&camDir, &relativeUp, angToRotate);
+                    }
                 }
 			}
 			else
@@ -509,12 +525,14 @@ void Car::step()
 
 			//vertical check - rotate down if too high or too low
 			float dot = camDir.dot(&relativeUp);
-            //TODO make sure these dont overshoot
-            //maybe switch the to use the approach function?
-			if (dot < -0.325f)
+			//if (dot < -0.325f)
+            if (dot < -0.2f) //had to change this because of new change in camera rotation to remove annoying jitter
 			{
-                float tryingToRotate = -(((dot+0.325f)*15)*dt);
-                float maxAngle = (Maths::angleBetweenVectors(&camDir, &relativeUp));
+                //float tryingToRotate = -(((dot+0.325f)*15)*dt);
+                float tryingToRotate = -(((dot+0.2f)*15)*dt);
+                float targetAngle = acosf(-0.2f);
+                float currentAngle = acosf(dot);
+                float maxAngle = currentAngle-targetAngle;
                 //rotate whichever is "less" rotation
                 if (fabsf(tryingToRotate) < fabsf(maxAngle))
                 {
@@ -525,12 +543,23 @@ void Car::step()
                     camDir = Maths::rotatePoint(&camDir, &perpen, maxAngle);
                 }
 
-				//camDir = Maths::rotatePoint(&camDir, &perpen, -((dot+0.325f)*12)*dt);
+                //have it always at least be -0.4f with the ground
+                float dotNew = camDir.dot(&relativeUp);
+                if (dotNew < -0.4f)
+                {
+                    targetAngle = acosf(-0.4f);
+                    currentAngle = acosf(dotNew);
+                    maxAngle = currentAngle-targetAngle;
+                    camDir = Maths::rotatePoint(&camDir, &perpen, maxAngle);
+                    dotNew = camDir.dot(&relativeUp);
+                }
 			}
 			else if (dot > -0.2f)
 			{
                 float tryingToRotate = -(((dot+0.2f)*40)*dt);
-                float maxAngle = (Maths::angleBetweenVectors(&camDir, &relativeUp));
+                float targetAngle = acosf(-0.2f);
+                float currentAngle = acosf(dot);
+                float maxAngle = currentAngle-targetAngle;
                 //rotate whichever is "less" rotation
                 if (fabsf(tryingToRotate) < fabsf(maxAngle))
                 {
@@ -540,14 +569,26 @@ void Car::step()
                 {
                     camDir = Maths::rotatePoint(&camDir, &perpen, maxAngle);
                 }
-                //float angleToRotate = -Maths::sign(dot)*fminf(tryingToRotate, maxAngle);
-				//camDir = Maths::rotatePoint(&camDir, &perpen, angleToRotate);
 
-                //std::fprintf(stdout, "tryingToRotate = %f\n", tryingToRotate);
-                //std::fprintf(stdout, "maxAngle       = %f\n", maxAngle);
-                //std::fprintf(stdout, "angleToRotate  = %f\n", angleToRotate);
-                //std::fprintf(stdout, "works          = %f\n", -((dot+0.2f)*40)*dt);
-                //std::fprintf(stdout, "\n");
+                //have it always at least be flat with the ground
+                float dotNew = camDir.dot(&relativeUp);
+                if (dotNew > 0.0f)
+                {
+                    targetAngle = acosf(0.0f);
+                    currentAngle = acosf(dotNew);
+                    maxAngle = currentAngle-targetAngle;
+                    camDir = Maths::rotatePoint(&camDir, &perpen, maxAngle);
+                }
+
+                //Idea: the smooth camera direction should NEVER have a dot product > 0
+                float dotSmooth = camDirSmooth.dot(&relativeUp);
+                if (dotSmooth > 0.0f)
+                {
+                    targetAngle = acosf(0.0f);
+                    currentAngle = acosf(dotSmooth);
+                    maxAngle = currentAngle-targetAngle;
+                    camDirSmooth = Maths::rotatePoint(&camDirSmooth, &perpen, maxAngle);
+                }
 			}
 		}
 		else
@@ -639,7 +680,8 @@ void Car::step()
 					justBounced = true;
 					isStomping = false;
 					justHomingAttacked = false;
-					homingAttackTimer = 0.0f;
+					homingAttackTimer = -1.0f;
+                    isHomingOnPoint = false;
 					hoverTimer = 0.0f;
 					AudioPlayer::play(8, getPosition());
 				}
@@ -686,12 +728,15 @@ void Car::step()
 
 							onGround = false;
 							relativeUp.set(0, 1, 0);
-							//vel.y = Maths::approach(vel.y, gravityTerminal, gravityApproach, dt);
 
-							Vector3f velToAddFromGravity(relativeUp);
-							velToAddFromGravity.setLength(-gravityForce*dt);
-                            vel = vel + velToAddFromGravity;
+                            if (!(isHomingOnPoint && homingAttackTimer > 0))
+                            {
+							    //vel.y = Maths::approach(vel.y, gravityTerminal, gravityApproach, dt);
 
+							    Vector3f velToAddFromGravity(relativeUp);
+							    velToAddFromGravity.setLength(-gravityForce*dt);
+                                vel = vel + velToAddFromGravity;
+                            }
 
 
 							//Vector3f velFrame = vel.scaleCopy(dt);
@@ -936,15 +981,18 @@ void Car::step()
 
 				relativeUp.set(0, 1, 0);
 
-				//vel.y = Maths::approach(vel.y, gravityTerminal, gravityApproach, dt);
+                if (!(isHomingOnPoint && homingAttackTimer > 0))
+                {
+                    //vel.y = Maths::approach(vel.y, gravityTerminal, gravityApproach, dt);
 
-				Vector3f velToAddFromGravity(relativeUp);
-				velToAddFromGravity.setLength(-gravityForce*dt);
-                vel = vel + velToAddFromGravity;
-				if (Input::inputs.INPUT_RB)
-				{
-					vel = vel - velToAddFromGravity.scaleCopy(4);
-				}
+				    Vector3f velToAddFromGravity(relativeUp);
+				    velToAddFromGravity.setLength(-gravityForce*dt);
+                    vel = vel + velToAddFromGravity;
+				    if (Input::inputs.INPUT_RB)
+				    {
+					    vel = vel - velToAddFromGravity.scaleCopy(4);
+				    }
+                }
 			}
 		}
 	}
@@ -1156,6 +1204,14 @@ void Car::moveMeGround()
 		{
 			vel.setLength(velBefore.length());
 		}
+        else if (velBefore.lengthSquared() > maxBallSpeed*maxBallSpeed && 
+                 vel.lengthSquared() > maxBallSpeed*maxBallSpeed) //if you are over the limit, dont speed up more
+        {
+            if (vel.lengthSquared() > velBefore.lengthSquared())
+            {
+                vel.setLength(velBefore.length());
+            }
+        }
 	}
 
     isSkidding = skidded;
@@ -1163,7 +1219,7 @@ void Car::moveMeGround()
 
 void Car::moveMeAir()
 {
-	if (isGrinding || isLightdashing)
+	if (isGrinding || isLightdashing || (isHomingOnPoint && homingAttackTimer > 0))
 	{
 		return;
 	}
@@ -1183,14 +1239,17 @@ void Car::moveMeAir()
 		{
 			float storedVelY = vel.y;
 			vel.y = 0;
-			if (storedVelY >= 0)
-			{
-				vel = Maths::applyDrag(&vel, -airRunFrictionUp, dt); //Slow vel down due to friction (but no slowdown in y direction)
-			}
-			else
-			{
-				vel = Maths::applyDrag(&vel, -airRunFrictionDown, dt); //Slow vel down due to friction (but no slowdown in y direction)
-			}
+            if (vel.lengthSquared() > airFrictionThreshold*airFrictionThreshold)
+            {
+			    if (storedVelY >= 0)
+			    {
+				    vel = Maths::applyDrag(&vel, -airRunFrictionUp, dt); //Slow vel down due to friction (but no slowdown in y direction)
+			    }
+			    else
+			    {
+				    vel = Maths::applyDrag(&vel, -airRunFrictionDown, dt); //Slow vel down due to friction (but no slowdown in y direction)
+			    }
+            }
 			vel.y = storedVelY;
 		}
 
@@ -1264,12 +1323,164 @@ void Car::doJump()
 	isStomping = false;
 	justBounced = false;
 	justHomingAttacked = false;
+    isHomingOnPoint = false;
 	homingAttackTimer = -1.0f;
 	vel = vel + relativeUp.scaleCopy(jumpPower);
 	hoverTimer = hoverTimerThreshold;
 	onGround = false;
 	isJumping = true;
 	AudioPlayer::play(12, getPosition());
+}
+
+void Car::rebound(Vector3f* source)
+{
+	if (!onGround)
+	{
+        vel.y = 0;
+        vel.setLength(5.0f);
+	    vel.y = 126.0f;
+	    setX(source->x);
+	    setZ(source->z);
+	    //setY(source->y + 3.5f);
+        setY(source->y + 0.01f);
+	    homingAttackTimer = -1.0f;
+	    justHomingAttacked = false;
+        isHomingOnPoint = false;
+	    hoverTimer = hoverTimerThreshold/2;
+	}
+}
+
+bool Car::isVulnerable()
+{
+	return !(homingAttackTimer > 0 ||
+		isBouncing ||
+		isJumping ||
+		isBall ||
+		isSpindashing ||
+		isStomping);
+		//invincibleTimer != 0);
+}
+
+void Car::homingAttack()
+{
+    float stickAngle = -atan2f(inputY, inputX) - Maths::PI/2; //angle you are holding on the stick, with 0 being up
+	float stickRadius = sqrtf(inputX*inputX + inputY*inputY);
+	Vector3f dirForward = Maths::projectOntoPlane(&camDir, &relativeUp);
+	Vector3f stickDirection = Maths::rotatePoint(&dirForward, &relativeUp, stickAngle);
+    stickDirection.y = 0;
+    stickDirection.normalize();
+
+    //if neutral sticking, home in on the closest enemy
+    bool lookingForClosest = (stickRadius < 0.1f);
+    
+    //search through close entities to find rings
+    std::list<std::unordered_set<Entity*>*> entities;
+    Global::getNearbyEntities(position.x, position.z, 1, &entities);
+
+    float closestDist = homingAttackRangeMax;
+    float bestDotProduct = -1.0f;
+
+    bool homeInOnPoint = false;
+    Vector3f homeTargetPoint(0, 0, 0);
+
+    if (lookingForClosest)
+    {
+        for (std::unordered_set<Entity*>* set : entities)
+	    {
+		    for (Entity* e : (*set))
+		    {
+                if (!e->canHomingAttackOn())
+                {
+                    continue;
+                }
+
+                Vector3f diff = position - e->getHomingCenter();
+                if (diff.y < -12 || diff.y > 80)
+                {
+                    continue;
+                }
+
+                float thisdist = diff.lengthSquared();
+                if (thisdist < closestDist)
+                {
+                    closestDist = thisdist;
+                    homeTargetPoint = e->getHomingCenter();
+                    homeInOnPoint = true;
+                }
+            }
+        }
+    }
+    else 
+    {
+        for (std::unordered_set<Entity*>* set : entities)
+	    {
+		    for (Entity* e : (*set))
+		    {
+                if (!e->canHomingAttackOn())
+                {
+                    continue;
+                }
+
+                Vector3f diff = position - e->getHomingCenter();
+                if (diff.y < -12 || diff.y > 80)
+                {
+                    continue;
+                }
+
+                if (diff.lengthSquared() >= homingAttackRangeMax)
+                {
+                    continue;
+                }
+
+                diff.y = 0;
+                diff.neg();
+                diff.normalize();
+
+                float thisdot = diff.dot(&stickDirection);
+                if (thisdot > bestDotProduct)
+                {
+                    bestDotProduct = thisdot;
+                    homeTargetPoint = e->getHomingCenter();
+                }
+            }
+        }
+
+        if (bestDotProduct > homingAttackDotThreshold)
+        {
+            homeInOnPoint = true;
+        }
+    }
+
+	if (homeInOnPoint)
+	{
+        vel = homeTargetPoint - position;
+        vel.setLength(6.7f*60.0f);
+
+		isHomingOnPoint = true;
+	}
+	else
+	{
+        float storedVelY = vel.y;
+		vel.y = 0;
+
+		if (vel.length() < 300.0f)
+		{
+			vel.setLength(300.0f);
+        }
+
+		vel.y = storedVelY;
+
+        isHomingOnPoint = false;
+	}
+
+	homingAttackTimer = homingAttackTimerMax;
+	isBall = false;
+	isJumping = true;
+	isBouncing = false;
+	isStomping = false;
+	justBounced = false;
+	justHomingAttacked = true;
+	AudioPlayer::play(11, getPosition());
 }
 
 void Car::setRelativeUp(Vector3f* newUp)
@@ -1300,19 +1511,6 @@ void Car::updateAnimationValues()
 	else if (isBall)
 	{
 		runAnimationCycle -= (8.0f*currSpeed + 300)*dt;
-
-        Vector3f centerNew = getCenterPosition();
-        Vector3f diff = centerNew - centerPosPrev;
-        float density = 1.0f; //1 particle every 1 units
-        int numParticles = (int)(diff.length()/density);
-
-        Vector3f zero(0,0,0);
-
-        for (int i = 0; i < numParticles; i++)
-        {
-            Vector3f partPos = centerPosPrev + diff.scaleCopy(((float)i)/numParticles);
-            new Particle(ParticleResources::textureLightBlueTrail, &partPos, &zero, 0, 0.25f, 0, 8.0f, -32.0f, false, false);
-        }
 	}
 	else if (isGrinding)
 	{
@@ -1368,6 +1566,38 @@ void Car::updateAnimationValues()
             //new Particle(ParticleResources::textureDust, &partPos, 0.25f, 6.0f, 2.8f, false);
         }
 	}
+
+    ParticleTexture* trail = nullptr;
+    float density = 2.0f; //1 particle every 2 units
+
+    if (isLightdashing)
+    {
+        trail = ParticleResources::textureOrangeTrail;
+        density = 0.75f;
+    }
+    else if (homingAttackTimer > 0 ||
+             (isJumping && (hoverTimer > 0 && inputJump)) ||
+             (isBall && onGround) ||
+             isBouncing)
+    {
+        trail = ParticleResources::textureLightBlueTrail;
+        density = 0.75f;
+    }
+
+    if (trail != nullptr)
+    {
+        Vector3f centerNew = getCenterPosition();
+        Vector3f diff = centerNew - centerPosPrev;
+        int numParticles = (int)(diff.length()/density);
+
+        Vector3f zero(0, 0, 0);
+
+        for (int i = 0; i < numParticles; i++)
+        {
+            Vector3f partPos = centerPosPrev + diff.scaleCopy(((float)i)/numParticles);
+            new Particle(trail, &partPos, &zero, 0, 0.25f, 0, 8.0f, -32.0f, false, false);
+        }
+    }
 }
 
 void Car::animate()

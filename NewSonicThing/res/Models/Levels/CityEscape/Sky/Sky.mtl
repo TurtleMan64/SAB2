@@ -1,0 +1,32 @@
+# Material Count: 3
+
+newmtl Mesh_0385.rip
+Ns 20
+Ni 0
+Tr 1
+d 0
+scrollX 0
+scrollY 0
+fogScale 0
+map_Kd Tex_0047_0.dds
+
+newmtl Mesh_0386.rip
+Ns 20
+Ni 0
+Tr 1
+d 0
+scrollX 0
+scrollY 0
+fogScale 0
+map_Kd Tex_0048_0.dds
+
+newmtl Mesh_0384.rip
+Ns 20
+Ni 0
+Tr 1
+d 0
+scrollX 0
+scrollY 0
+fogScale 0
+map_Kd Tex_0046_0.dds
+
