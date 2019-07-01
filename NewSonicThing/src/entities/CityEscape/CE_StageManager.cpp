@@ -11,15 +11,13 @@ std::list<TexturedModel*> CE_StageManager::modelsSkydome;
 
 CE_StageManager::CE_StageManager()
 {
+    scale = 1.5f;
 	visible = true;
 }
 
 void CE_StageManager::step()
 {
-	//set the position of the background sky dome
-	position.y = Global::gameMainVehicle->getY()-750.0f;
-	position.x = Global::gameMainVehicle->getX();
-	position.z = Global::gameMainVehicle->getZ();
+	position.set(&Global::gameMainVehicle->position);
 	updateTransformationMatrix();
 }
 
