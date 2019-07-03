@@ -37,6 +37,7 @@
 #include "../particles/particle.h"
 #include "../entities/GreenForest/gfstagemanager.h"
 #include "../entities/MetalHarbor/mhstaticobjects.h"
+#include "../entities/MetalHarbor/mhyellowmovingplatform.h"
 #include "../entities/rail.h"
 #include "../entities/ring.h"
 #include "../entities/dashpad.h"
@@ -846,12 +847,30 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 			return;
 		}
 
-		case 93: //Metal Harbor Static Objects
+		case 93: //Metal Harbor Specific Objects
 		{
-			MH_StaticObjects::loadStaticModels();
-			MH_StaticObjects* staticObjects = new MH_StaticObjects(); INCR_NEW("Entity");
-			Main_addEntity(staticObjects);
-			return;
+			switch(toInt(dat[1]))
+			{
+				case 0: //Static Objects (environment stuff that never moves)
+				{
+					MH_StaticObjects::loadStaticModels();
+					MH_StaticObjects* staticObjects = new MH_StaticObjects(); INCR_NEW("Entity");
+					Main_addEntity(staticObjects);
+					return;
+				}
+				case 1: //Yellow Moving Platform
+				{
+					MH_YellowMovingPlatform::loadStaticModels();
+					MH_YellowMovingPlatform* yellowMovingPlatform = new MH_YellowMovingPlatform(
+						toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]), 			//position
+						toFloat(dat[5]), toInt(dat[6]), toFloat(dat[7]), 			//rotY, axis, displacementMax
+						toFloat(dat[8]));											//speed
+					INCR_NEW("Entity");
+					Main_addEntity(yellowMovingPlatform);
+					return;
+				}
+			}
+			
 		}
 		
 		case 94: //Dashpad
@@ -1097,6 +1116,7 @@ void LevelLoader::freeAllStaticModels()
 	Rocket::deleteStaticModels();
 	Spring::deleteStaticModels();
 	MH_StaticObjects::deleteStaticModels();
+	MH_YellowMovingPlatform::deleteStaticModels();
 	Pulley::deleteStaticModels();
     SR_StageManager::deleteStaticModels();
     MH_StageManager::deleteStaticModels();

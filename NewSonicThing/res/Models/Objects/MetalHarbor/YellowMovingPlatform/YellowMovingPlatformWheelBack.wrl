@@ -1,16 +1,16 @@
 #VRML V2.0 utf8
 #modeled using blender3d http://blender.org
 
-# 'mesh_9'
+# 'Shape_IndexedFaceSet'
 Shape {
 	appearance Appearance {
 		texture ImageTexture {
-			url [ "miu32_mh006fixed.png" "miu32_mh006fixed.png" "/home/nothisisstupider/SAB/YellowMovingPlatform/miu32_mh006fixed.png" ]
+			url [ "miu32_mh006fixed.png" "miu32_mh006fixed.png" "/home/nothisisstupider/SAB/SAB2/NewSonicThing/res/Models/Objects/MetalHarbor/YellowMovingPlatform/miu32_mh006fixed.png" ]
 		}
 	}
 	geometry IndexedFaceSet {
 		coord Coordinate {
-			point [ 14.799999 0.011046 -7.286777 14.800003 0.011047 -18.713226 14.800001 11.437492 -7.286776 14.800004 11.437492 -18.713226 -14.800001 11.437492 -7.286776 -14.800004 11.437492 -18.713226 -14.799999 0.011046 -7.286777 -14.800003 0.011047 -18.713226 ]
+			point [ -14.800000 -5.713224 -5.713223 -14.800002 -5.713223 5.713226 -14.800002 5.713222 -5.713225 -14.800004 5.713223 5.713225 14.800000 5.713222 -5.713227 14.800004 5.713223 5.713223 14.799998 -5.713224 -5.713226 14.800004 -5.713223 5.713223 ]
 		}
 		colorPerVertex TRUE
 		color Color {

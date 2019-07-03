@@ -52,7 +52,14 @@ MH_YellowMovingPlatform::MH_YellowMovingPlatform(float x, float y, float z, floa
 
 void MH_YellowMovingPlatform::step() 
 {
-    
+	wheelFront->rotX += wheelSpeedFront;
+	wheelBack->rotX += wheelSpeedBack;
+
+	updateTransformationMatrix();
+	wheelFront->updateTransformationMatrix();
+	wheelBack->updateTransformationMatrix();
+	bodyTransparent->updateTransformationMatrix();
+	updateCollisionModel();
 }
 
 std::list<TexturedModel*>* MH_YellowMovingPlatform::getModels()
@@ -98,24 +105,32 @@ void MH_YellowMovingPlatform::deleteStaticModels()
 
 void MH_YellowMovingPlatform::setupModelWheelFront()
 {
-	modelWheelFront = new Body(&MH_YellowMovingPlatform::modelsWheelFront);
-	modelWheelFront->setVisible(true);
+	wheelFront = new Body(&MH_YellowMovingPlatform::modelsWheelFront);
+	wheelFront->setVisible(true);
 	INCR_NEW("Entity");
-	Main_addEntityPass2(modelWheelFront);
+	Main_addEntityPass2(wheelFront);
+	wheelFront->setPosition(&position);
+	wheelFront->position.z += wheelOffsetFrontHorizontal;
+	wheelFront->position.y += wheelOffsetFrontVertical;
 }
 
 void MH_YellowMovingPlatform::setupModelWheelBack()
 {
-	modelWheelBack = new Body(&MH_YellowMovingPlatform::modelsWheelBack);
-	modelWheelBack->setVisible(true);
+	wheelBack = new Body(&MH_YellowMovingPlatform::modelsWheelBack);
+	wheelBack->setVisible(true);
 	INCR_NEW("Entity");
-	Main_addEntityPass2(modelWheelBack);
+	Main_addEntityPass2(wheelBack);
+	wheelBack->setPosition(&position);
+    wheelBack->position.z += wheelOffsetBackHorizontal;
+	wheelBack->position.y += wheelOffsetBackVertical;
 }
 
 void MH_YellowMovingPlatform::setupModelTransparent()
 {
-	modelTransparent = new Body(&MH_YellowMovingPlatform::modelsTransparent);
-	modelTransparent->setVisible(true);
+	bodyTransparent = new Body(&MH_YellowMovingPlatform::modelsTransparent);
+	bodyTransparent->setVisible(true);
 	INCR_NEW("Entity");
-	Main_addEntityPass3(modelTransparent);
+	Main_addEntityPass3(bodyTransparent);
+	bodyTransparent->setPosition(&position);
+
 }

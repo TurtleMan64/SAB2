@@ -1,5 +1,21 @@
 13
 
+Test.lvl
+Epic Test Level
+4
+Normal;100;Complete as Blue Falcon
+Ring;100;100;Complete as Twin Norita
+Chao;100;Complete as Soic Phantom
+Hard;100;Complete as Black Shadow
+
+MetalHarbor.lvl
+Metal Harbor
+4
+Normal;100;Complete as Blue Falcon
+Ring;100;100;Complete as Twin Norita
+Chao;100;Complete as Soic Phantom
+Hard;100;Complete as Black Shadow
+
 Mountain.lvl
 City Escape
 4
@@ -18,14 +34,6 @@ Hard;100;Complete as Black Shadow
 
 GreenForest.lvl
 Green Forest
-4
-Normal;100;Complete as Blue Falcon
-Ring;100;100;Complete as Twin Norita
-Chao;100;Complete as Soic Phantom
-Hard;100;Complete as Black Shadow
-
-MetalHarbor.lvl
-Metal Harbor
 4
 Normal;100;Complete as Blue Falcon
 Ring;100;100;Complete as Twin Norita
@@ -58,14 +66,6 @@ Hard;100;Complete as Black Shadow
 
 FrogForest.lvl
 Frog Forest
-4
-Normal;100;Complete as Blue Falcon
-Ring;100;100;Complete as Twin Norita
-Chao;100;Complete as Soic Phantom
-Hard;100;Complete as Black Shadow
-
-Test.lvl
-Epic Test Level
 4
 Normal;100;Complete as Blue Falcon
 Ring;100;100;Complete as Twin Norita

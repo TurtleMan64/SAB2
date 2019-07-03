@@ -1,0 +1,31 @@
+	# Material Count: 3
+	
+newmtl miu64_mh008.png
+	Ns 20
+	Ni 0.02
+	Tr 1
+	d 1
+	scrollX 0
+	scrollY 0
+	map_Kd miu64_mh008.png
+	
+newmtl blackglass.png
+	Ns 20
+	Ni 0.02
+	Tr 1
+	d 1
+	scrollX 0
+	scrollY 0
+	map_Kd blackglass.png
+	
+newmtl miu32_mh004.png
+	Ns 20
+	Ni 0.02
+	Tr 1
+	d 1
+	numImages 2
+	mixSinusoidal
+	animSpeed 1.0
+	map_Kd miu32_mh004.png
+	miu32_mh004dim.png
+	

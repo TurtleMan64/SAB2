@@ -23,11 +23,11 @@ private:
 	static CollisionModel* cmOriginal;
 
 	//Body used to be able to display the front wheels model
-	Body* modelWheelFront;
+	Body* wheelFront;
 	//Body used to be able to display the back wheels model
-	Body* modelWheelBack;
+	Body* wheelBack;
 	//Body used to be able to display the transparent model
-	Body* modelTransparent;
+	Body* bodyTransparent;
     
     //initial position of the platform
     Vector3f positionInitial;
@@ -39,6 +39,18 @@ private:
     //speed at which the platform moves
     float speed;
 
+	//Horizontal Offset of the Front Wheel
+	const float wheelOffsetFrontHorizontal = 8.86459;
+	//Horizontal Offset of the Back Wheel
+	const float wheelOffsetBackHorizontal = -13.1062;
+	//Vertical Offset of the Front Wheel
+	const float wheelOffsetFrontVertical = 4.28373;
+	//Vertical Offset of the Back Wheel
+	const float wheelOffsetBackVertical = 5.71319;
+	//Speed of the Front Wheel
+	const float wheelSpeedFront = 2;
+	//Speed of the Back Wheel
+	const float wheelSpeedBack = 1.885;
 
 	//Functions for the constructor start here
 	

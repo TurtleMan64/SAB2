@@ -1,0 +1,11 @@
+	# Material Count: 1
+	
+newmtl miu32_mh006fixed.png
+	Ns 20
+	Ni 0.02
+	Tr 1
+	d 0
+	scrollX 0
+	scrollY 0
+	map_Kd miu32_mh006fixed.png
+	
