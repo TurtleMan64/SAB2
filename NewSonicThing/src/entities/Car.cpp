@@ -591,29 +591,6 @@ void Car::step()
 		}
 	}
 
-    //wall sticking
-    if (!onGround)
-    {
-        wallStickTimer = 0.0f;
-    }
-    else
-    {
-        if ((currentTriangle->isWall() || currentTriangle->normal.y < wallStickThreshold) &&
-            vel.lengthSquared() < wallStickSpeedRequirement*wallStickSpeedRequirement)
-        {
-            wallStickTimer += dt;
-
-            if (wallStickTimer > wallStickTimerMax)
-            {
-                popOffWall();
-            }
-        }
-        else
-        {
-            wallStickTimer = 0.0f;
-        }
-    }
-
 	//smoothing
 	camDirSmooth = Maths::interpolateVector(&camDirSmooth, &camDir, 10*dt);
 	relativeUpSmooth = Maths::interpolateVector(&relativeUpSmooth, &relativeUp, 3*dt);
@@ -948,6 +925,29 @@ void Car::step()
 			}
 		}
 	}
+
+	//wall sticking
+    if (!onGround)
+    {
+        wallStickTimer = 0.0f;
+    }
+    else
+    {
+        if ((currentTriangle->isWall() || currentTriangle->normal.y < wallStickThreshold) &&
+            vel.lengthSquared() < wallStickSpeedRequirement*wallStickSpeedRequirement)
+        {
+            wallStickTimer += dt;
+
+            if (wallStickTimer > wallStickTimerMax)
+            {
+                popOffWall();
+            }
+        }
+        else
+        {
+            wallStickTimer = 0.0f;
+        }
+    }
 
 	camDir.normalize();
 
