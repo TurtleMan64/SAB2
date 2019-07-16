@@ -34,7 +34,7 @@ MH_PathFlat::MH_PathFlat(float x, float y, float z, float rotY)
 	updateTransformationMatrix();
 
 	collideModelOriginal = MH_PathFlat::cmOriginal;
-	collideModelTransformed = loadCollisionModel("Models/Levels/MetalHarbor/", "PathFlat");
+	collideModelTransformed = collideModelOriginal->duplicateMe();
 
 	CollisionChecker::addCollideModel(collideModelTransformed);
 
@@ -43,21 +43,7 @@ MH_PathFlat::MH_PathFlat(float x, float y, float z, float rotY)
 
 void MH_PathFlat::step()
 {
-	//if (abs(getX() - Global::gameCamera->eye.x) > ENTITY_RENDER_DIST)
-	{
-		//setVisible(false);
-	}
-	//else
-	{
-		//if (abs(getZ() - Global::gameCamera->eye.z) > ENTITY_RENDER_DIST)
-		{
-			//setVisible(false);
-		}
-		//else
-		{
-			//setVisible(true);
-		}
-	}
+	
 }
 
 std::list<TexturedModel*>* MH_PathFlat::getModels()

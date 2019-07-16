@@ -6,7 +6,7 @@
 
 //int iwfviub = 1;
 
-QuadTreeNode::QuadTreeNode(float xBoundMin, float xBoundMax, float zBoundMin, float zBoundMax, std::list<Triangle3D*> pool, int depth, int depthMax)
+QuadTreeNode::QuadTreeNode(float xBoundMin, float xBoundMax, float zBoundMin, float zBoundMax, std::vector<Triangle3D*> pool, int depth, int depthMax)
 {
 	topLeft = nullptr;
 	topRight = nullptr;
@@ -48,10 +48,10 @@ QuadTreeNode::QuadTreeNode(float xBoundMin, float xBoundMax, float zBoundMin, fl
 		xMid = (xBoundMin + xBoundMax) / 2;
 		zMid = (zBoundMin + zBoundMax) / 2;
 
-		std::list<Triangle3D*> topLeftPool;
-		std::list<Triangle3D*> topRightPool;
-		std::list<Triangle3D*> botLeftPool;
-		std::list<Triangle3D*> botRightPool;
+		std::vector<Triangle3D*> topLeftPool;
+		std::vector<Triangle3D*> topRightPool;
+		std::vector<Triangle3D*> botLeftPool;
+		std::vector<Triangle3D*> botRightPool;
 
 		//Claim our triangles, split up pool into 4 smaller pools
 		for (Triangle3D* tri : pool)

@@ -34,7 +34,7 @@ MH_RocketBase::MH_RocketBase(float x, float y, float z)
 	updateTransformationMatrix();
 
 	collideModelOriginal = MH_RocketBase::cmOriginal;
-	collideModelTransformed = loadCollisionModel("Models/Levels/MetalHarbor/", "RocketBase");
+	collideModelTransformed = collideModelOriginal->duplicateMe();
 
 	CollisionChecker::addCollideModel(collideModelTransformed);
 
@@ -43,21 +43,7 @@ MH_RocketBase::MH_RocketBase(float x, float y, float z)
 
 void MH_RocketBase::step()
 {
-	//if (abs(getX() - Global::gameCamera->eye.x) > ENTITY_RENDER_DIST)
-	{
-		//setVisible(false);
-	}
-	//else
-	{
-		//if (abs(getZ() - Global::gameCamera->eye.z) > ENTITY_RENDER_DIST)
-		{
-			//setVisible(false);
-		}
-		//else
-		{
-			//setVisible(true);
-		}
-	}
+	
 }
 
 std::list<TexturedModel*>* MH_RocketBase::getModels()

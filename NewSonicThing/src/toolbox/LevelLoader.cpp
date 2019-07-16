@@ -53,6 +53,8 @@
 #include "../entities/GreenHill/ghstagemanager.h"
 #include "../entities/beetle.h"
 #include "../entities/CityEscape/cestagemanager.h"
+#include "../entities/spring.h"
+#include "../water/watertile.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -529,6 +531,24 @@ void LevelLoader::loadLevel(std::string levelFilename)
 	getlineSafe(file, waterHeightLine);
 	Global::waterHeight = stof(waterHeightLine);
 
+    //Number of water tiles
+	std::string waterTilesCountLine;
+	getlineSafe(file, waterTilesCountLine);
+    int waterTilesCount = stoi(waterTilesCountLine);
+    for (WaterTile* tile : Global::gameWaterTiles)
+    {
+        delete tile; INCR_DEL("WaterTile")
+    }
+    Global::gameWaterTiles.clear();
+    float waterTileOffset = -WaterTile::TILE_SIZE*(waterTilesCount-1);
+    for (int r = 0; r < waterTilesCount; r++)
+	{
+		for (int c = 0; c < waterTilesCount; c++)
+		{
+			Global::gameWaterTiles.push_back(new WaterTile(r*WaterTile::TILE_SIZE*2 + waterTileOffset, c*WaterTile::TILE_SIZE*2 + waterTileOffset)); INCR_NEW("WaterTile");
+		}
+	}
+
 	GuiManager::clearGuisToRender();
 
 	Global::gameIsNormalMode = false;
@@ -783,9 +803,16 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 			return;
 		}
 
-        case 12: //spring
+        case 12: //Spring
         {
-            return;
+            Spring::loadStaticModels();
+			Spring* spring = new Spring(
+				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
+				toFloat(dat[4]), toFloat(dat[5]), toFloat(dat[6]), //rotation direction
+				toFloat(dat[7]), toFloat(dat[8]));                 //power, time
+			INCR_NEW("Entity");
+			chunkedEntities->push_back(spring);
+			return;
         }
 
         case 28: //Beetle
@@ -1099,6 +1126,7 @@ void LevelLoader::freeAllStaticModels()
     GH_StageManager::deleteStaticModels();
     Beetle::deleteStaticModels();
     CE_StageManager::deleteStaticModels();
+    Spring::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()

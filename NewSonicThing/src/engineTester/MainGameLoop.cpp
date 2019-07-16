@@ -109,7 +109,7 @@ int chunkedEntitiesHeight = 1;
 float Global::waterHeight = 0.0f;
 WaterRenderer* Global::gameWaterRenderer = nullptr;
 WaterFrameBuffers* Global::gameWaterFBOs = nullptr;
-std::list<WaterTile*>* Global::gameWaterTiles = nullptr;
+std::vector<WaterTile*> Global::gameWaterTiles;
 
 float dt = 0;
 double timeOld = 0;
@@ -324,12 +324,11 @@ int main(int argc, char** argv)
 		Global::gameWaterFBOs     = new WaterFrameBuffers; INCR_NEW("WaterFrameBuffers");
 		WaterShader* waterShader  = new WaterShader; INCR_NEW("WaterShader");
 		Global::gameWaterRenderer = new WaterRenderer(waterShader, Master_getProjectionMatrix(), Global::gameWaterFBOs, Master_getShadowRenderer()); INCR_NEW("WaterRenderer");
-		Global::gameWaterTiles    = new std::list<WaterTile*>; INCR_NEW("std::list<WaterTile*>");
-		for (int r = -6; r < 6; r++) //-9 , 9
+		for (int r = -1; r <= 2; r++)
 		{
-			for (int c = -8; c < 8; c++) //-12  12
+			for (int c = -1; c <= 2; c++)
 			{
-				Global::gameWaterTiles->push_back(new WaterTile(r*WaterTile::TILE_SIZE*2, c*WaterTile::TILE_SIZE*2)); INCR_NEW("WaterTile");
+				Global::gameWaterTiles.push_back(new WaterTile(r*WaterTile::TILE_SIZE*2-WaterTile::TILE_SIZE, c*WaterTile::TILE_SIZE*2-WaterTile::TILE_SIZE)); INCR_NEW("WaterTile");
 			}
 		}
 	}
@@ -705,7 +704,7 @@ int main(int argc, char** argv)
 
 		if (Global::useHighQualityWater && Global::stageUsesWater)
 		{
-			Global::gameWaterRenderer->render(Global::gameWaterTiles, &cam, &lightSun);
+			Global::gameWaterRenderer->render(&Global::gameWaterTiles, &cam, &lightSun);
 		}
 
 		if (Global::renderParticles)

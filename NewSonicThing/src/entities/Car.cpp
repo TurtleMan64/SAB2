@@ -64,11 +64,18 @@ Car::~Car()
 
 void Car::step()
 {
-	canMoveTimer      = std::fmaxf(0.0f, canMoveTimer      - dt);
-	hoverTimer        = std::fmaxf(0.0f, hoverTimer        - dt);
+	canMoveTimer      = std::fmaxf(0.0f,  canMoveTimer      - dt);
+    hitSpringTimer    = std::fmaxf(0.0f,  hitSpringTimer    - dt);
+	hoverTimer        = std::fmaxf(0.0f,  hoverTimer        - dt);
 	homingAttackTimer = std::fmaxf(-1.0f, homingAttackTimer - dt);
 
 	setInputs();
+
+    //to use later when doing running on water stuff
+    Vector3f posBefore = position;
+    Vector3f velBefore = vel;
+    Vector3f relativeUpBefore = relativeUp;
+    bool onGroundBefore = onGround;
 
     //Start Lightdash
     if (!isLightdashing)
@@ -109,12 +116,21 @@ void Car::step()
                 }
             }
 
-            if (closest < 45.0f*45.0f)
+            if (closest < lightdashStartRingMinDist*lightdashStartRingMinDist)
             {
                 isLightdashing = true;
                 lightdashTrailProgress = 0.0f;
                 lightdashTrail.push_back(closestPoint);
                 alreadyUsedRings.insert(closestEntity);
+
+                Vector3f currentLightdashDir = vel;
+
+                if (vel.lengthSquared() < 20.0f*20.0f)
+                {
+                    currentLightdashDir = (*closestPoint) - position;
+                }
+
+                currentLightdashDir.normalize();
 
                 bool keepGoing = true;
                 while (keepGoing)
@@ -123,8 +139,9 @@ void Car::step()
                     //search through close entities to find rings
                     Global::getNearbyEntities(center.x, center.z, 1, &entities);
 
-                    closest = 100000000.0f;
-                    closestPoint = nullptr;
+                    float bestScore = -100000000000.0f;
+                    Vector3f* bestPoint = nullptr;
+                    Entity* bestEntity = nullptr;
 
                     for (std::unordered_set<Entity*>* set : entities)
                     {
@@ -135,21 +152,32 @@ void Car::step()
                                 continue;
                             }
 
-                            Vector3f diff = center - e->position;
-                            float thisdist = diff.lengthSquared();
-                            if (thisdist < closest)
+                            Vector3f diff = e->position - center;
+                            float thisDistSquared = diff.lengthSquared();
+                            if (thisDistSquared < lightdashContinueRingMinDist*lightdashContinueRingMinDist)
                             {
-                                closest = thisdist;
-                                closestPoint = &e->position;
-                                closestEntity = e;
+                                float thisDist = sqrtf(thisDistSquared);
+
+                                Vector3f diffDir = diff;
+                                diffDir.normalize();
+                                float thisScore = (lightdashContinueRingMinDist - thisDist)*currentLightdashDir.dot(&diffDir);
+
+                                if (thisScore > bestScore)
+                                {
+                                    bestScore = thisScore;
+                                    bestPoint = &e->position;
+                                    bestEntity = e;
+                                }
                             }
                         }
                     }
 
-                    if (closest < 80.0f*80.0f)
+                    if (bestScore > 0.0f) //you at least must turn < 90 degrees to the next ring
                     {
-                        lightdashTrail.push_back(closestPoint);
-                        alreadyUsedRings.insert(closestEntity);
+                        lightdashTrail.push_back(bestPoint);
+                        alreadyUsedRings.insert(bestEntity);
+                        currentLightdashDir = (*bestPoint) - center;
+                        currentLightdashDir.normalize();
                     }
                     else
                     {
@@ -323,6 +351,11 @@ void Car::step()
 			canStartSpindash = false;
 		}
 
+        if (isRunningOnWater)
+        {
+            canStartSpindash = false;
+        }
+
 		if (spindashRestartDelay > 0)
 		{
 			if (inputAction  && !inputActionPrevious)
@@ -443,6 +476,12 @@ void Car::step()
     if (!onGround)
     {
         isSkidding = false;
+    }
+
+    //spring stuff
+    if (onGround)
+    {
+        hitSpringTimer = 0.0f;
     }
 
 	if (onGround)
@@ -633,29 +672,6 @@ void Car::step()
 		}
 	}
 
-    //wall sticking
-    if (!onGround)
-    {
-        wallStickTimer = 0.0f;
-    }
-    else
-    {
-        if ((currentTriangle->isWall() || currentTriangle->normal.y < wallStickThreshold) &&
-            vel.lengthSquared() < wallStickSpeedRequirement*wallStickSpeedRequirement)
-        {
-            wallStickTimer += dt;
-
-            if (wallStickTimer > wallStickTimerMax)
-            {
-                popOffWall();
-            }
-        }
-        else
-        {
-            wallStickTimer = 0.0f;
-        }
-    }
-
 	//smoothing
 	camDirSmooth = Maths::interpolateVector(&camDirSmooth, &camDir, 10*dt);
 	relativeUpSmooth = Maths::interpolateVector(&relativeUpSmooth, &relativeUp, 3*dt);
@@ -687,7 +703,7 @@ void Car::step()
 				}
 				else
 				{
-					if (CollisionChecker::getCollideTriangle()->isWall() || colNormal->y < wallStickThreshold)
+					if ((CollisionChecker::getCollideTriangle()->isWall() || colNormal->y < wallStickThreshold) && hitSpringTimer == 0.0f) //When you get launched off a spring, we can stick on walls
 					{
 						if (justBounced)
 						{
@@ -695,7 +711,6 @@ void Car::step()
 							Vector3f newDirection = Maths::projectOntoPlane(&vel, colNormal);
 							newDirection.setLength(spdBefore);
 							vel.set(&newDirection);
-
 							justBounced = false;
 
 							setPosition(CollisionChecker::getCollidePosition());
@@ -729,13 +744,17 @@ void Car::step()
 							onGround = false;
 							relativeUp.set(0, 1, 0);
 
-                            if (!(isHomingOnPoint && homingAttackTimer > 0))
+                            if (isHomingOnPoint && homingAttackTimer > 0)
                             {
-							    //vel.y = Maths::approach(vel.y, gravityTerminal, gravityApproach, dt);
+                            
+                            }
+                            else
+                            {
+							    vel.y = Maths::approach(vel.y, gravityTerminal, gravityApproach, dt);
 
-							    Vector3f velToAddFromGravity(relativeUp);
-							    velToAddFromGravity.setLength(-gravityForce*dt);
-                                vel = vel + velToAddFromGravity;
+							    //Vector3f velToAddFromGravity(relativeUp);
+							    //velToAddFromGravity.setLength(-gravityForce*dt);
+                                //vel = vel + velToAddFromGravity;
                             }
 
 
@@ -981,13 +1000,17 @@ void Car::step()
 
 				relativeUp.set(0, 1, 0);
 
-                if (!(isHomingOnPoint && homingAttackTimer > 0))
+                if (isHomingOnPoint && homingAttackTimer > 0)
                 {
-                    //vel.y = Maths::approach(vel.y, gravityTerminal, gravityApproach, dt);
+                    
+                }
+                else
+                {
+                    vel.y = Maths::approach(vel.y, gravityTerminal, gravityApproach, dt);
 
 				    Vector3f velToAddFromGravity(relativeUp);
 				    velToAddFromGravity.setLength(-gravityForce*dt);
-                    vel = vel + velToAddFromGravity;
+                    //vel = vel + velToAddFromGravity;
 				    if (Input::inputs.INPUT_RB)
 				    {
 					    vel = vel - velToAddFromGravity.scaleCopy(4);
@@ -998,6 +1021,82 @@ void Car::step()
 	}
 
 	camDir.normalize();
+
+    //wall sticking
+    if (!onGround)
+    {
+        wallStickTimer = 0.0f;
+    }
+    else
+    {
+        if ((currentTriangle->isWall() || currentTriangle->normal.y < wallStickThreshold) &&
+            vel.lengthSquared() < wallStickSpeedRequirement*wallStickSpeedRequirement)
+        {
+            wallStickTimer += dt;
+
+            if (wallStickTimer > wallStickTimerMax)
+            {
+                popOffWall();
+            }
+        }
+        else
+        {
+            wallStickTimer = 0.0f;
+        }
+    }
+
+    //transition from running on ground to water
+    if (onGroundBefore &&
+        posBefore.y >= Global::waterHeight && 
+        position.y  <= Global::waterHeight)
+    {
+        Vector3f waterNormal(0, 1, 0);
+        //when running fast, run on water
+        float currSpeedSquared = vel.lengthSquared();
+        if (currSpeedSquared >= runningOnWaterSpeedThreshold*runningOnWaterSpeedThreshold &&
+            relativeUp.dot(&waterNormal) >= smoothTransitionThreshold)
+        {
+            position.y = Global::waterHeight;
+            onGround = true;
+            isJumping = false;
+            isSpindashing = false;
+
+            if (isRunningOnWater)
+            {
+                if (relativeUp.x == 0 &&
+                    relativeUp.y == 1 &&
+                    relativeUp.z == 0) //since last frame, we didnt collide downward with the ground
+                {
+                    vel.y = 0;
+                }
+                else //the ground is right below us, ignore any speed changes from it
+                {
+                    vel.y = 0;
+                    //note: this also ignores speed changes from player stick input. too lazy to think of a fix
+                    // for that atm. maybe in the future TODO
+                    vel.setLength(velBefore.length());
+                }
+            }
+            else //we are running from the ground onto water for the first time
+            {
+                float newSpeed = sqrtf(currSpeedSquared);
+                vel.y = 0;
+                vel.setLength(newSpeed);
+            }
+
+            relativeUp.set(0, 1, 0);
+
+            isRunningOnWater = true;
+        }
+        else
+        {
+            isRunningOnWater = false;
+        }
+    }
+    else
+    {
+        isRunningOnWater = false;
+    }
 
 	//Animating us
 	updateAnimationValues();
@@ -1562,7 +1661,15 @@ void Car::updateAnimationValues()
 
             Vector3f partPos = position + relativeUp.scaleCopy(1.5f);
 
-            new Particle(ParticleResources::textureDust, &partPos, &spd, 0, 0.25f + (0.125f*Maths::nextGaussian()), 0, 5.0f+Maths::nextGaussian(), 0.0f, false, false);
+            if (isRunningOnWater)
+            {
+                //todo make this look good
+                new Particle(ParticleResources::textureBubble, &partPos, &spd, 0, 0.25f + (0.125f*Maths::nextGaussian()), 0, 5.0f+Maths::nextGaussian(), 0.0f, false, false);
+            }
+            else
+            {
+                new Particle(ParticleResources::textureDust, &partPos, &spd, 0, 0.25f + (0.125f*Maths::nextGaussian()), 0, 5.0f+Maths::nextGaussian(), 0.0f, false, false);
+            }
             //new Particle(ParticleResources::textureDust, &partPos, 0.25f, 6.0f, 2.8f, false);
         }
 	}
@@ -1909,6 +2016,25 @@ void Car::popOffWall()
 	    onGround = false;
 	    relativeUp.set(0, 1, 0);
     }
+}
+
+void Car::hitSpring(Vector3f* direction, float power, float lockInputTime)
+{
+    vel = direction->scaleCopy(power);
+    onGround = false;
+    //isBall = false;
+    //isJumping = false;
+    isSkidding = false;
+    isLightdashing = false;
+    isSpindashing = false;
+    isGrinding = false;
+    isStomping = false;
+    isBouncing = false;
+    isHomingOnPoint = false;
+    justBounced = false;
+    hoverTimer = 0.0f;
+    canMoveTimer = lockInputTime;
+    hitSpringTimer = lockInputTime;
 }
 
 Vector3f Car::getCenterPosition()

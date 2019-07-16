@@ -462,6 +462,9 @@
     <ClCompile Include="src\entities\CityEscape\CE_StageManager.cpp">
       <Filter>Source Files\entities\CityEscape</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\Spring.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.h">
@@ -814,6 +817,9 @@
     </ClInclude>
     <ClInclude Include="src\entities\CityEscape\cestagemanager.h">
       <Filter>Source Files\entities\CityEscape</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\spring.h">
+      <Filter>Source Files\entities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

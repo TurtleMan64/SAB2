@@ -65,7 +65,7 @@ void ParticleResources::loadParticles()
     INCR_NEW("ParticleTexture") textureGrayTrail         = new ParticleTexture(Loader::loadTexture("res/Images/Particles/SpTrailGray.png"),            1, 0.1f,  1);
     INCR_NEW("ParticleTexture") texturePinkTrail         = new ParticleTexture(Loader::loadTexture("res/Images/Particles/SpTrailPink.png"),            1, 0.1f,  1);
     INCR_NEW("ParticleTexture") textureDarkGreenTrail    = new ParticleTexture(Loader::loadTexture("res/Images/Particles/SpTrailDarkGreen.png"),       1, 0.1f,  1);
-    INCR_NEW("ParticleTexture") textureOrangeTrail       = new ParticleTexture(Loader::loadTexture("res/Images/Particles/SpTrailOrange.png"),          1, 0.1f,  1);
+    INCR_NEW("ParticleTexture") textureOrangeTrail       = new ParticleTexture(Loader::loadTexture("res/Images/Particles/SpTrailOrange.png"),          1, 0.025f,1);
     INCR_NEW("ParticleTexture") textureRedTrail          = new ParticleTexture(Loader::loadTexture("res/Images/Particles/SpTrailRed.png"),             1, 0.1f,  1);
     INCR_NEW("ParticleTexture") textureDust              = new ParticleTexture(Loader::loadTexture("res/Images/Particles/DustAtlas.png"),              4, 0.35f, 0);
     INCR_NEW("ParticleTexture") textureDirt              = new ParticleTexture(Loader::loadTexture("res/Images/Particles/DirtAtlas.png"),              4, 0.75f, 0);

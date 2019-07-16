@@ -103,7 +103,7 @@ public:
 	static float gameClock;
 	static WaterRenderer* gameWaterRenderer;
 	static WaterFrameBuffers* gameWaterFBOs;
-	static std::list<WaterTile*>* gameWaterTiles;
+	static std::vector<WaterTile*> gameWaterTiles;
 	static int gameMainVehicleSpeed;
 	static float finishStageTimer;
 	static Fbo* gameMultisampleFbo;

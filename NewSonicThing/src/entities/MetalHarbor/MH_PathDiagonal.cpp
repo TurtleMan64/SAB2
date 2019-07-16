@@ -34,7 +34,7 @@ MH_PathDiagonal::MH_PathDiagonal(float x, float y, float z, float rotY)
 	updateTransformationMatrix();
 
 	collideModelOriginal = MH_PathDiagonal::cmOriginal;
-	collideModelTransformed = loadCollisionModel("Models/Levels/MetalHarbor/", "PathDiagonalCollision");
+	collideModelTransformed = collideModelOriginal->duplicateMe();
 
 	CollisionChecker::addCollideModel(collideModelTransformed);
 
@@ -43,21 +43,7 @@ MH_PathDiagonal::MH_PathDiagonal(float x, float y, float z, float rotY)
 
 void MH_PathDiagonal::step()
 {
-	//if (abs(getX() - Global::gameCamera->eye.x) > ENTITY_RENDER_DIST)
-	{
-		//setVisible(false);
-	}
-	//else
-	{
-		//if (abs(getZ() - Global::gameCamera->eye.z) > ENTITY_RENDER_DIST)
-		{
-			//setVisible(false);
-		}
-		//else
-		{
-			//setVisible(true);
-		}
-	}
+	
 }
 
 std::list<TexturedModel*>* MH_PathDiagonal::getModels()

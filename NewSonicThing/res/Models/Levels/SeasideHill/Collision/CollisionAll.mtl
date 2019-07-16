@@ -1,13 +1,13 @@
-# Blender MTL File: 'None'
-# Material Count: 1
+# Blender MTL File: 'SeasideHillCollisionFix3.blend'
+# Material Count: 23
 
 newmtl None
-Ns 20.000000
+Ns 19.607843
 Ka 0.000000 0.000000 0.000000
 Kd 0.800000 0.800000 0.800000
 Ks 0.000000 0.000000 0.000000
 Ke 0.000000 0.000000 0.000000
-Ni 0.02
+Ni 1.000000
 d 0.770833
-illum 1
+illum 2
 map_Kd k1_kuj12.png

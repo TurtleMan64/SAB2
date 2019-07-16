@@ -34,8 +34,7 @@ MH_Tank::MH_Tank(float x, float y, float z)
 	updateTransformationMatrix();
 
 	collideModelOriginal = MH_Tank::cmOriginal;
-	collideModelTransformed = loadCollisionModel("Models/Levels/MetalHarbor/", "TankCollision");
-
+	collideModelTransformed = collideModelOriginal->duplicateMe();
 	CollisionChecker::addCollideModel(collideModelTransformed);
 
 	updateCollisionModel();
@@ -43,21 +42,7 @@ MH_Tank::MH_Tank(float x, float y, float z)
 
 void MH_Tank::step()
 {
-	//if (abs(getX() - Global::gameCamera->eye.x) > ENTITY_RENDER_DIST)
-	{
-		//setVisible(false);
-	}
-	//else
-	{
-		//if (abs(getZ() - Global::gameCamera->eye.z) > ENTITY_RENDER_DIST)
-		{
-			//setVisible(false);
-		}
-		//else
-		{
-			//setVisible(true);
-		}
-	}
+	
 }
 
 std::list<TexturedModel*>* MH_Tank::getModels()

@@ -189,13 +189,13 @@ void Ring::step()
 			updateTransformationMatrix();
 		}
 	}*/
-
-    increaseRotation(0, 5, 0);
+    extern float dt;
+    increaseRotation(0, 5*60*dt, 0);
     updateTransformationMatrix();
 
-    if (abs(getY() - Global::gameMainVehicle->position.y) < 40 &&
-		abs(getZ() - Global::gameMainVehicle->position.z) < 40 &&
-		abs(getX() - Global::gameMainVehicle->position.x) < 40 &&
+    if (fabsf(position.y - Global::gameMainVehicle->position.y) < 40 &&
+		fabsf(position.z - Global::gameMainVehicle->position.z) < 40 &&
+		fabsf(position.x - Global::gameMainVehicle->position.x) < 40 &&
 		grabTimer == 0)
 	{
 		if ((Global::gameMainVehicle->getCenterPosition() - position).lengthSquared() < (5.0f*5.0f + 9.0f*9.0f))
@@ -244,7 +244,7 @@ void Ring::loadStaticModels()
 	std::fprintf(stdout, "Loading ring static models...\n");
 	#endif
 
-	loadObjModel(&Ring::models, "res/Models/Objects/Ring/", "Ring.obj");
+    loadModel(&Ring::models, "res/Models/Objects/Ring/", "Ring");
 }
 
 void Ring::deleteStaticModels()
