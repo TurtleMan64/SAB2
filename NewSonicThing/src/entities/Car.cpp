@@ -459,6 +459,29 @@ void Car::step()
 		}
 	}
 
+    //Stomping
+    if (onGround)
+    {
+        isStomping = false;
+    }
+    else
+    {
+        if (inputAction2 && !inputAction2Previous && isJumping && !isBouncing && !justHomingAttacked && !isStomping)
+        {
+            if (sourceStomp != nullptr)
+            {
+                sourceStomp->stop();
+                sourceStomp = nullptr;
+            }
+            sourceStomp = AudioPlayer::play(16, getPosition());
+            isJumping = false;
+            isStomping = true;
+            vel.y = 0;
+            vel.setLength(1.0f);
+            vel.y = stompSpeed;
+        }
+    }
+
 	//Grinding
 	if (isGrinding)
 	{
@@ -1098,6 +1121,37 @@ void Car::step()
         isRunningOnWater = false;
     }
 
+    if (isStomping && onGround)
+    {
+        if (sourceStomp != nullptr)
+        {
+            sourceStomp->stop();
+            sourceStomp = nullptr;
+        }
+
+        AudioPlayer::play(17, getPosition());
+
+	    int numBubbles = ((int)abs((vel.y/60.0f) * 10)) + 18;
+	    for (int i = 0; i < numBubbles; i++)
+	    {
+		    float xOff = (18 * (Maths::random() - 0.5f));
+		    float zOff = (18 * (Maths::random() - 0.5f));
+
+		    Vector3f partPos = position;
+            partPos.x += xOff;
+            partPos.y += 2;
+            partPos.z += zOff;
+
+            Vector3f partVel(
+                (Maths::random() - 0.5f) * 3 + (vel.x/60.0f)*0.8f,
+                (Maths::random()*1.2f + 0.5f),
+                (Maths::random() - 0.5f) * 3 + (vel.z/60.0f)*0.8f);
+            partVel.scale(60.0f);
+
+            new Particle(ParticleResources::textureLightBlueTrail, &partPos, &partVel, 0.12f*60.0f*60.0f, 0.5f, 0, 14.0f, -28.0f, false, false, 2.0f);
+	    }
+    }
+
 	//Animating us
 	updateAnimationValues();
 	animate();
@@ -1607,6 +1661,10 @@ void Car::updateAnimationValues()
 	{
 		runAnimationCycle -= 3500*dt;
 	}
+    else if (isStomping)
+    {
+    
+    }
 	else if (isBall)
 	{
 		runAnimationCycle -= (8.0f*currSpeed + 300)*dt;
@@ -1657,18 +1715,19 @@ void Car::updateAnimationValues()
             rng.scale(75.0f);
             rng = Maths::projectOntoPlane(&rng, &relativeUp);
 
-            Vector3f spd = relativeUp.scaleCopy(55.0f) + rng;
-
-            Vector3f partPos = position + relativeUp.scaleCopy(1.5f);
-
             if (isRunningOnWater)
             {
+                float partScale = 5.0f+Maths::nextGaussian();
+                Vector3f spd = rng;
+                Vector3f partPos = position + relativeUp.scaleCopy(partScale/2);
                 //todo make this look good
-                new Particle(ParticleResources::textureBubble, &partPos, &spd, 0, 0.25f + (0.125f*Maths::nextGaussian()), 0, 5.0f+Maths::nextGaussian(), 0.0f, false, false);
+                new Particle(ParticleResources::textureSplash, &partPos, &spd, 0, 0.25f + (0.125f*Maths::nextGaussian()), 0, partScale, 0.0f, false, false, 1.0f);
             }
             else
             {
-                new Particle(ParticleResources::textureDust, &partPos, &spd, 0, 0.25f + (0.125f*Maths::nextGaussian()), 0, 5.0f+Maths::nextGaussian(), 0.0f, false, false);
+                Vector3f spd = relativeUp.scaleCopy(55.0f) + rng;
+                Vector3f partPos = position + relativeUp.scaleCopy(1.5f);
+                new Particle(ParticleResources::textureDust, &partPos, &spd, 0, 0.25f + (0.125f*Maths::nextGaussian()), 0, 5.0f+Maths::nextGaussian(), 0.0f, false, false, 1.0f);
             }
             //new Particle(ParticleResources::textureDust, &partPos, 0.25f, 6.0f, 2.8f, false);
         }
@@ -1683,9 +1742,10 @@ void Car::updateAnimationValues()
         density = 0.75f;
     }
     else if (homingAttackTimer > 0 ||
-             (isJumping && (hoverTimer > 0 && inputJump)) ||
-             (isBall && onGround) ||
-             isBouncing)
+            (isJumping && (hoverTimer > 0 && inputJump)) ||
+            (isBall && onGround) ||
+            isBouncing || 
+            isStomping)
     {
         trail = ParticleResources::textureLightBlueTrail;
         density = 0.75f;
@@ -1702,7 +1762,7 @@ void Car::updateAnimationValues()
         for (int i = 0; i < numParticles; i++)
         {
             Vector3f partPos = centerPosPrev + diff.scaleCopy(((float)i)/numParticles);
-            new Particle(trail, &partPos, &zero, 0, 0.25f, 0, 8.0f, -32.0f, false, false);
+            new Particle(trail, &partPos, &zero, 0, 0.25f, 0, 8.0f, -32.0f, false, false, 1.0f);
         }
     }
 }
@@ -1775,6 +1835,16 @@ void Car::animate()
 		maniaSonicModel->setOrientation(dspX, dspY, dspZ, diffAir, yawAngleAir, pitchAngleAir, runAnimationCycle);
 		maniaSonicModel->animate(12, 0);
 	}
+    else if (isStomping)
+    {
+        rotX = diffAir;
+		rotY = yawAngleAir;
+		rotZ = pitchAngleAir;
+		rotRoll = 0;
+
+		maniaSonicModel->setOrientation(getX(), getY(), getZ(), rotX, rotY, rotZ, rotRoll);
+		maniaSonicModel->animate(3, 0);
+    }
 	else if (isBall)
 	{
 		if (onGround)
@@ -1839,7 +1909,7 @@ void Car::animate()
 		rotZ = pitchAngleAir;
 		rotRoll = 0;
 
-		maniaSonicModel->setOrientation(getX(), getY(), getZ(), rotX, rotY, pitchAngleAir, rotRoll);
+		maniaSonicModel->setOrientation(getX(), getY(), getZ(), rotX, rotY, rotZ, rotRoll);
 		maniaSonicModel->animate(21, 0);
 	}
 	else //running animation

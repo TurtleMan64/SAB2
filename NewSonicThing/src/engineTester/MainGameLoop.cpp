@@ -747,7 +747,7 @@ int main(int argc, char** argv)
 			if (finishTimerBefore < 0.0166f && Global::finishStageTimer >= 0.0166f)
 			{
 				Vector3f partVel(0, 0, 0);
-				new Particle(ParticleResources::textureWhiteFadeOutAndIn, Global::gameCamera->getFadePosition1(), &partVel, 0, 2.0f, 0, 900, 0, true, false);
+				new Particle(ParticleResources::textureWhiteFadeOutAndIn, Global::gameCamera->getFadePosition1(), &partVel, 0, 2.0f, 0, 900, 0, true, false, 1.0f);
 			}
 			else if (finishTimerBefore < 1.0f && Global::finishStageTimer >= 1.0f)
 			{
@@ -757,7 +757,7 @@ int main(int argc, char** argv)
 			else if (finishTimerBefore < 8.166f && Global::finishStageTimer >= 8.166f)
 			{
 				Vector3f partVel(0, 0, 0);
-				new Particle(ParticleResources::textureBlackFadeOutAndIn, Global::gameCamera->getFadePosition1(), &partVel, 0, 2.0f, 0, 900, 0, true, false);
+				new Particle(ParticleResources::textureBlackFadeOutAndIn, Global::gameCamera->getFadePosition1(), &partVel, 0, 2.0f, 0, 900, 0, true, false, 1.0f);
 
 				//AudioPlayer::play(25, Global::gamePlayer->getPosition());
 			}
@@ -1467,7 +1467,7 @@ void Global::createTitleCard()
 	GuiManager::clearGuisToRender();
 
 	Vector3f vel(0,0,0);
-	new Particle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &vel, 0, 1.0f, 0.0f, 50.0f, 0, true, false);
+	new Particle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &vel, 0, 1.0f, 0.0f, 50.0f, 0, true, false, 1.0f);
 	GuiManager::addGuiToRender(GuiTextureResources::textureBlueLine);
 
 	if (titleCardLevelName != nullptr)

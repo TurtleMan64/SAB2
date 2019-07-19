@@ -82,7 +82,7 @@ void GF_StageManager::step()
 		const float scaleInitial = Maths::random()*2.0f + 0.5f;
 		const float scaleChange = -0.1f;
 
-		new Particle(ParticleResources::texturePollen, &pos, &vel, 0.0f, lifeLength, 0.0f, scaleInitial, scaleChange, false, false);
+		new Particle(ParticleResources::texturePollen, &pos, &vel, 0.0f, lifeLength, 0.0f, scaleInitial, scaleChange, false, false, 1.0f);
 	}
 }
 

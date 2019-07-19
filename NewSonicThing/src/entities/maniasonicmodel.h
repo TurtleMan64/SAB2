@@ -47,6 +47,7 @@ private:
     static std::list<TexturedModel*> modelSkid;
     static std::list<TexturedModel*> modelLightdash;
     static std::list<TexturedModel*> modelFreefall;
+    static std::list<TexturedModel*> modelStomp;
     static std::list<TexturedModel*> modelGrab;
 
 public:

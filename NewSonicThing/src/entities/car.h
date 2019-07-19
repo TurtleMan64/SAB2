@@ -8,6 +8,7 @@ class Source;
 class ManiaSonicModel;
 class Body;
 class Limb;
+class Source;
 
 #include <list>
 #include <vector>
@@ -121,8 +122,13 @@ private:
     bool isRunningOnWater = false;
     const float runningOnWaterSpeedThreshold = 100.0f;
 
+    bool isStomping = false;
+    const float stompSpeed = -350.0f;
+    Source* sourceStomp = nullptr;
+
 	bool isSkidding = false;
-	bool isStomping = false;
+    const float skidAudioThreshold = 150.0f;
+
 	bool isGrinding = false;
     bool onRocket = false;
 
@@ -160,9 +166,6 @@ private:
 	const float displayBallOffset = 3.0f;
 
     Vector3f centerPosPrev;
-
-    //variables who only are for audio
-    const float skidAudioThreshold = 150.0f;
 
     //input variables
 	bool  inputJump;
