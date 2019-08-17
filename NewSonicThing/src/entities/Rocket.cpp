@@ -7,7 +7,7 @@
 #include "../renderEngine/renderEngine.h"
 #include "../objLoader/objLoader.h"
 #include "../engineTester/main.h"
-#include "../entities/car.h"
+#include "../entities/controllableplayer.h"
 #include "../toolbox/maths.h"
 #include "../animation/body.h"
 #include "../entities/camera.h"
@@ -77,7 +77,7 @@ Rocket::Rocket(int point1ID, int point2ID)
 void Rocket::step()
 {
 	//The players current position as of this frame
-	Vector3f playerPos = Global::gameMainVehicle->getPosition();
+	Vector3f playerPos = Global::gameMainPlayer->getPosition();
 
 	playerToRocketPositionDifference = playerPos - position;
 
@@ -108,14 +108,11 @@ void Rocket::step()
 		playRocketLaunchSoundLoop();
 
 		//Rocket state disables player movement based on velocity, velocity here is set purely for camera reasons
-		Global::gameMainVehicle->setVelocity(
+		Global::gameMainPlayer->vel.set(
             rocketPathPositionDifferenceNormalized.x * 1000, 
             rocketPathPositionDifferenceNormalized.y * 1000, 
             rocketPathPositionDifferenceNormalized.z * 1000);
-		Global::gameMainVehicle->setOnRocket(true);
-
-		Global::gameMainVehicle->setIsBall(false);
-		Global::gameMainVehicle->setOnGround(false);
+		Global::gameMainPlayer->grabRocket();
 
 		if (!rocketStartedMoving()) //rocket is starting up
 		{
@@ -140,15 +137,15 @@ void Rocket::step()
 	if (fullPathTraveled()) //stop moving and deactivate rocket
 	{
 		//velocity here is set so the player faces the correct direction at the end of the rocket path
-		Global::gameMainVehicle->setVelocity(rocketPathPositionDifferenceNormalized.x, rocketPathPositionDifferenceNormalized.y, rocketPathPositionDifferenceNormalized.z);
-		Global::gameMainVehicle->setOnRocket(false);
+		Global::gameMainPlayer->vel.set(rocketPathPositionDifferenceNormalized.x, rocketPathPositionDifferenceNormalized.y, rocketPathPositionDifferenceNormalized.z);
+		Global::gameMainPlayer->releaseRocket();
 
 		resetRocketVariables();
 	}
 
 	updateTransformationMatrix();
-	Global::gameMainVehicle->animate();
-    Global::gameMainVehicle->refreshCamera();
+	Global::gameMainPlayer->animate();
+    Global::gameMainPlayer->refreshCamera();
 }
 
 std::list<TexturedModel*>* Rocket::getModels()
@@ -313,7 +310,7 @@ bool Rocket::rocketStartedMoving()
 
 void Rocket::setPlayerPositionToHoldRocketHandle()
 {
-	Global::gameMainVehicle->setPosition(
+	Global::gameMainPlayer->setPosition(
 			position.x - 6*rocketPathPositionDifferenceNormalized.x,
 			position.y - 5,
 			position.z - 6*rocketPathPositionDifferenceNormalized.z);

@@ -4,7 +4,7 @@
 #include "gfstagemanager.h"
 #include "../../engineTester/main.h"
 #include "../dummy.h"
-#include "../car.h"
+#include "../controllableplayer.h"
 #include "../../objLoader/objLoader.h"
 #include "../camera.h"
 #include "../../toolbox/maths.h"
@@ -21,28 +21,28 @@ GF_StageManager::GF_StageManager()
 void GF_StageManager::step()
 {
 	//setting the global water heights
-	if (Global::gameMainVehicle->getPosition()->x < 25 &&
-		Global::gameMainVehicle->getPosition()->z > 1800)
+	if (Global::gameMainPlayer->position.x < 25 &&
+		Global::gameMainPlayer->position.z > 1800)
 	{
 		Global::waterHeight = -10000.0f;
 	}
-	else if (Global::gameMainVehicle->getPosition()->x < 143 &&
-		     Global::gameMainVehicle->getPosition()->z > 2500 &&
-		     Global::gameMainVehicle->getPosition()->y < -1041)
+	else if (Global::gameMainPlayer->position.x < 143 &&
+		     Global::gameMainPlayer->position.z > 2500 &&
+		     Global::gameMainPlayer->position.y < -1041)
 	{
 		Global::waterHeight = -10000.0f;
 	}
-	else if (Global::gameMainVehicle->getPosition()->x < 447 &&
-		     Global::gameMainVehicle->getPosition()->z > 2849)
+	else if (Global::gameMainPlayer->position.x < 447 &&
+		     Global::gameMainPlayer->position.z > 2849)
 	{
 		Global::waterHeight = -10000.0f;
 	}
-	else if (Global::gameMainVehicle->getPosition()->x < 1058 &&
-		     Global::gameMainVehicle->getPosition()->z > 2912)
+	else if (Global::gameMainPlayer->position.x < 1058 &&
+		     Global::gameMainPlayer->position.z > 2912)
 	{
 		Global::waterHeight = -10000.0f;
 	}
-	else if (Global::gameMainVehicle->getPosition()->z > 5240.0f)
+	else if (Global::gameMainPlayer->position.z > 5240.0f)
 	{
 		Global::waterHeight = -2325.0f;
 	}
@@ -53,14 +53,14 @@ void GF_StageManager::step()
 
 	//set the position of the background sky dome
 	position.y = Global::waterHeight+1000.0f;
-	position.x = Global::gameMainVehicle->getX();
-	position.z = Global::gameMainVehicle->getZ();
+	position.x = Global::gameMainPlayer->getX();
+	position.z = Global::gameMainPlayer->getZ();
 	updateTransformationMatrix();
 
 
 	//generate pollen particles
-	Vector3f center = Global::gameMainVehicle->getPosition();
-	center = center + Global::gameMainVehicle->getVelocity()->scaleCopy(0.4f);
+	Vector3f center = Global::gameMainPlayer->position;
+	center = center + Global::gameMainPlayer->vel.scaleCopy(0.4f);
 	float radius2 = pollenRadius*2;
 	float basex = center.x - pollenRadius;
 	float basey = center.y - pollenRadius;

@@ -1,0 +1,22 @@
+# Material Count: 4
+
+newmtl WoodInside
+Ns 20
+Ni 0
+map_Kd WoodInside.png
+
+newmtl Wire
+Ns 20
+Ni 0
+map_Kd Wire.png
+
+newmtl Tile
+Ns 20
+Ni 0
+map_Kd Tile.png
+
+newmtl Bark
+Ns 20
+Ni 0
+map_Kd Bark.png
+

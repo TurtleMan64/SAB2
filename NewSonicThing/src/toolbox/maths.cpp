@@ -83,7 +83,7 @@ void Maths::createTransformationMatrix(Matrix4f* result, Vector2f* translation, 
 }
 
 //Based on how sadx calculates rotations
-void Maths::createTransformationMatrixSADX(Matrix4f* matrix, Vector3f* translation, float rx, float ry, float rz, float scale)
+void Maths::createTransformationMatrixYXZ(Matrix4f* matrix, Vector3f* translation, float rx, float ry, float rz, float scale)
 {
 	matrix->setIdentity();
 	matrix->translate(translation);
@@ -397,9 +397,8 @@ void Maths::rotatePoint(float result[],
 		+ l*(-b*u + a*v - v*x + u*y)*sinT) / l2;
 }
 
-//Point that axis goes through,
+//Point to rotate
 //direction of axis,
-//point to rotate, 
 //angle of rotation, in radians
 Vector3f Maths::rotatePoint(
 	Vector3f* pointToRotate,

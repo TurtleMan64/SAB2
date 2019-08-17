@@ -3,7 +3,7 @@
 #include "../entity.h"
 #include "cestagemanager.h"
 #include "../../engineTester/main.h"
-#include "../car.h"
+#include "../controllableplayer.h"
 #include "../../objLoader/objLoader.h"
 #include "../camera.h"
 
@@ -17,7 +17,7 @@ CE_StageManager::CE_StageManager()
 
 void CE_StageManager::step()
 {
-	position.set(&Global::gameMainVehicle->position);
+	position.set(&Global::gameMainPlayer->position);
 	updateTransformationMatrix();
 }
 

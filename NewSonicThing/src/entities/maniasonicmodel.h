@@ -2,15 +2,56 @@
 #define MANIASONICMODEL_H
 
 class TexturedModel;
+class Limb;
+class Body;
+class ParticleTexture;
 
 #include <list>
+#include <vector>
 #include "entity.h"
+#include "playermodel.h"
 
 
-class ManiaSonicModel : public Entity
+class ManiaSonicModel : public PlayerModel
 {
 private:
 	std::list<TexturedModel*>* models;
+
+    Vector3f up;
+
+    //const float displayHeightOffset = -0.25f;
+    const float displayHeightOffset = 0.63f;
+    const float displayBallOffset = 3.0f;
+
+    Body* myBody         = nullptr;
+	Limb* myHead         = nullptr;
+	Limb* myLeftHumerus  = nullptr;
+	Limb* myLeftForearm  = nullptr;
+	Limb* myLeftHand     = nullptr;
+	Limb* myLeftThigh    = nullptr;
+	Limb* myLeftShin     = nullptr;
+	Limb* myLeftFoot     = nullptr;
+	Limb* myRightHumerus = nullptr;
+	Limb* myRightForearm = nullptr;
+	Limb* myRightHand    = nullptr;
+	Limb* myRightThigh   = nullptr;
+	Limb* myRightShin    = nullptr;
+	Limb* myRightFoot    = nullptr;
+
+    static std::list<TexturedModel*> modelBody;
+    static std::list<TexturedModel*> modelHead;
+    static std::list<TexturedModel*> modelLeftHumerus;
+    static std::list<TexturedModel*> modelLeftForearm;
+    static std::list<TexturedModel*> modelLeftHand;
+    static std::list<TexturedModel*> modelLeftThigh;
+    static std::list<TexturedModel*> modelLeftShin;
+    static std::list<TexturedModel*> modelLeftFoot;
+    static std::list<TexturedModel*> modelRightHumerus;
+    static std::list<TexturedModel*> modelRightForearm;
+    static std::list<TexturedModel*> modelRightHand;
+    static std::list<TexturedModel*> modelRightThigh;
+    static std::list<TexturedModel*> modelRightShin;
+    static std::list<TexturedModel*> modelRightFoot;
 
 	static std::list<TexturedModel*> modelDash0;
 	static std::list<TexturedModel*> modelDash1;
@@ -50,6 +91,12 @@ private:
     static std::list<TexturedModel*> modelStomp;
     static std::list<TexturedModel*> modelGrab;
 
+    void setLimbsVisibility(bool newVisible);
+
+    void updateLimbs(int animIndex, float time);
+
+    void updateLimbsMatrix();
+
 public:
 	ManiaSonicModel();
 
@@ -57,7 +104,11 @@ public:
 
 	void animate(int animIndex, float time);
 
-	void setOrientation(float x, float y, float z, float xRot, float yRot, float zRot, float spinRot);
+	void setOrientation(float x, float y, float z, float xRot, float yRot, float zRot, float spinRot, Vector3f* up);
+
+    const float getDisplayBallOffset();
+
+    ParticleTexture* getBallTexture();
 
 	std::list<TexturedModel*>* getModels();
 

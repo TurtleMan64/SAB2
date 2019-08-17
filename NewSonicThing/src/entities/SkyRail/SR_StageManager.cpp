@@ -4,7 +4,7 @@
 #include "srstagemanager.h"
 #include "../../engineTester/main.h"
 #include "../dummy.h"
-#include "../car.h"
+#include "../controllableplayer.h"
 #include "../../objLoader/objLoader.h"
 #include "../../toolbox/maths.h"
 
@@ -33,7 +33,7 @@ SR_StageManager::SR_StageManager()
 void SR_StageManager::step()
 {
 	//set the position of the background sky dome
-	position.set(Global::gameMainVehicle->getPosition());
+	position.set(&Global::gameMainPlayer->position);
 	updateTransformationMatrix();
 
     skyPass2->setPosition(&position);

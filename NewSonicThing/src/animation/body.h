@@ -20,6 +20,7 @@ private:
 	float baseRotZ;
 	float baseRotX;
 	float baseRotS;
+    float baseScale;
 	float prevTime;
 
 	std::list<TexturedModel*>* myModels;
@@ -37,11 +38,9 @@ public:
 
 	void update(float time);
 
-	void setBaseOrientation(Vector3f* basePosition, float rotX, float rotY, float rotZ, float rotS);
+	void setBaseOrientation(Vector3f* basePosition, float rotX, float rotY, float rotZ, float rotS, float scale);
 
-	void setBaseOrientation(float baseX, float baseY, float baseZ, float rotX, float rotY, float rotZ, float rotS);
-
-	//void setBaseRotZ(float rotZ);
+	void setBaseOrientation(float baseX, float baseY, float baseZ, float rotX, float rotY, float rotZ, float rotS, float scale);
 
 	inline std::list<TexturedModel*>* getModels();
 

@@ -3,7 +3,7 @@
 #include <cstring>
 
 #include "rail.h"
-#include "car.h"
+#include "controllableplayer.h"
 #include "../toolbox/maths.h"
 #include "../toolbox/vector.h"
 #include "../engineTester/main.h"
@@ -166,29 +166,29 @@ void Rail::step()
 		if (timer < 0.0f)
 		{
             const float pad = 30.0f;
-            if (Global::gameMainVehicle->getX() >= minX-pad && Global::gameMainVehicle->getX() <= maxX+pad &&
-                Global::gameMainVehicle->getY() >= minY-pad && Global::gameMainVehicle->getY() <= maxY+pad &&
-                Global::gameMainVehicle->getZ() >= minZ-pad && Global::gameMainVehicle->getZ() <= maxZ+pad)
+            if (Global::gameMainPlayer->getX() >= minX-pad && Global::gameMainPlayer->getX() <= maxX+pad &&
+                Global::gameMainPlayer->getY() >= minY-pad && Global::gameMainPlayer->getY() <= maxY+pad &&
+                Global::gameMainPlayer->getZ() >= minZ-pad && Global::gameMainPlayer->getZ() <= maxZ+pad)
             {
 			    //Check if sonic should get on a rail
 			    for (RailSegment r : rails)
 			    {
-				    float dist = r.distanceToPoint(Global::gameMainVehicle->getPosition());
+				    float dist = r.distanceToPoint(Global::gameMainPlayer->getPosition());
 				    if (dist < 5) //radius of the rail
 				    {
-					    Vector3f landingPoint = r.closestPoint(Global::gameMainVehicle->getPosition());
-					    Global::gameMainVehicle->setPosition(&landingPoint);
-					    Global::gameMainVehicle->increasePosition(r.normalBegin.x*1.0f, r.normalBegin.y*1.0f, r.normalBegin.z*1.0f);
+					    Vector3f landingPoint = r.closestPoint(Global::gameMainPlayer->getPosition());
+					    Global::gameMainPlayer->setPosition(&landingPoint);
+					    Global::gameMainPlayer->increasePosition(r.normalBegin.x*1.0f, r.normalBegin.y*1.0f, r.normalBegin.z*1.0f);
 					    currentSegment = &rails[r.index];
 					    currentSegmentIndex = r.index;
-					    Global::gameMainVehicle->startGrinding();
-					    Vector3f newVel(Global::gameMainVehicle->getVelocity());
+					    Global::gameMainPlayer->startGrinding();
+					    Vector3f newVel(&Global::gameMainPlayer->vel);
                         float originalSpeed = newVel.length();
 					    newVel = Maths::projectAlongLine(&newVel, &r.pointsDiff);
                         float newSpeed = newVel.length();
                         float averageSpeed = (originalSpeed+newSpeed)*0.5f;
                         newVel.setLength(averageSpeed);
-					    Global::gameMainVehicle->setVelocity(newVel.x, newVel.y, newVel.z);
+					    Global::gameMainPlayer->vel = Vector3f(newVel.x, newVel.y, newVel.z);
 
 					    //sound effect start
 
@@ -220,8 +220,8 @@ void Rail::step()
 
 		if (Input::inputs.INPUT_ACTION1 && !Input::inputs.INPUT_PREVIOUS_ACTION1)
 		{
-			Global::gameMainVehicle->stopGrinding();
-			Global::gameMainVehicle->doJump();
+			Global::gameMainPlayer->stopGrinding();
+			Global::gameMainPlayer->jump();
 			currentSegment = nullptr;
 			currentSegmentIndex = -1;
 		}
@@ -236,7 +236,7 @@ void Rail::step()
 				Vector3f newVel(currentSegment->pointsDiff);
 				newVel.normalize();
 				newVel.scale(playerSpeed);
-				Global::gameMainVehicle->setVelocity(newVel.x, newVel.y, newVel.z);
+				Global::gameMainPlayer->vel = Vector3f(newVel.x, newVel.y, newVel.z);
 
                 //interpolate the normal vector between the start and end points
                 Vector3f interpolatedNormal = Maths::interpolateVector(&currentSegment->normalBegin, &currentSegment->normalEnd, newProgress);
@@ -244,7 +244,7 @@ void Rail::step()
                 //    currentSegment->normalBegin.x, currentSegment->normalBegin.y, currentSegment->normalBegin.z,
                 //    currentSegment->normalEnd.x, currentSegment->normalEnd.y, currentSegment->normalEnd.z);
                 //printf("prog = %f\n\n", newProgress);
-				Global::gameMainVehicle->setRelativeUp(&interpolatedNormal);
+				Global::gameMainPlayer->relativeUp = interpolatedNormal;
 
 				if (newProgress < 0) //go to previous rail segment
 				{
@@ -267,13 +267,13 @@ void Rail::step()
 						Vector3f progressVec = currentSegment->pointsDiff.scaleCopy(distanceRemaining);
 						progressVec.setLength(Maths::sign(distanceRemaining)*distanceRemaining);
 						Vector3f nP = currentSegment->pointBegin + progressVec;
-						Global::gameMainVehicle->setPosition(&nP);
-						Global::gameMainVehicle->increasePosition(currentSegment->normalBegin.x*1.0f, 
+						Global::gameMainPlayer->setPosition(&nP);
+						Global::gameMainPlayer->increasePosition(currentSegment->normalBegin.x*1.0f, 
 																  currentSegment->normalBegin.y*1.0f, 
 																  currentSegment->normalBegin.z*1.0f);
-						Global::gameMainVehicle->updateTransformationMatrix();
+						Global::gameMainPlayer->updateTransformationMatrix();
 
-						Global::gameMainVehicle->stopGrinding();
+						Global::gameMainPlayer->stopGrinding();
 						currentSegment = nullptr;
 						currentSegmentIndex = -1;
 						distanceRemaining = 0.0f;
@@ -284,11 +284,11 @@ void Rail::step()
 					currentSegment->playerProgress = newProgress;
 					Vector3f progressVec = currentSegment->pointsDiff.scaleCopy(newProgress);
 					Vector3f nP = currentSegment->pointBegin + progressVec;
-					Global::gameMainVehicle->setPosition(&nP);
-					Global::gameMainVehicle->increasePosition(currentSegment->normalBegin.x*1.0f, 
+					Global::gameMainPlayer->setPosition(&nP);
+					Global::gameMainPlayer->increasePosition(currentSegment->normalBegin.x*1.0f, 
 															  currentSegment->normalBegin.y*1.0f, 
 															  currentSegment->normalBegin.z*1.0f);
-					Global::gameMainVehicle->updateTransformationMatrix();
+					Global::gameMainPlayer->updateTransformationMatrix();
 
 					distanceRemaining = 0.0f;
 				}
@@ -313,13 +313,13 @@ void Rail::step()
 						Vector3f progressVec = currentSegment->pointsDiff.scaleCopy(distanceRemaining);
 						progressVec.setLength(Maths::sign(distanceRemaining)*distanceRemaining);
 						Vector3f nP = currentSegment->pointEnd + progressVec;
-						Global::gameMainVehicle->setPosition(&nP);
-						Global::gameMainVehicle->increasePosition(currentSegment->normalBegin.x*1.0f, 
+						Global::gameMainPlayer->setPosition(&nP);
+						Global::gameMainPlayer->increasePosition(currentSegment->normalBegin.x*1.0f, 
 																  currentSegment->normalBegin.y*1.0f, 
 																  currentSegment->normalBegin.z*1.0f);
-						Global::gameMainVehicle->updateTransformationMatrix();
+						Global::gameMainPlayer->updateTransformationMatrix();
 
-						Global::gameMainVehicle->stopGrinding();
+						Global::gameMainPlayer->stopGrinding();
 						currentSegment = nullptr;
 						currentSegmentIndex = -1;
 						distanceRemaining = 0.0f;
@@ -331,7 +331,7 @@ void Rail::step()
 
     if (currentSegment != nullptr)
     {
-        Global::gameMainVehicle->animate();
-        Global::gameMainVehicle->refreshCamera();
+        Global::gameMainPlayer->animate();
+        Global::gameMainPlayer->refreshCamera();
     }
 }

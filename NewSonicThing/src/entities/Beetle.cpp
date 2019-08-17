@@ -7,7 +7,7 @@
 #include "../renderEngine/renderEngine.h"
 #include "../objLoader/objLoader.h"
 #include "../engineTester/main.h"
-#include "../entities/car.h"
+#include "../entities/controllableplayer.h"
 #include "../toolbox/maths.h"
 #include "dummy.h"
 #include "../entities/camera.h"
@@ -61,13 +61,13 @@ void Beetle::updateBlades()
 
 void Beetle::step()
 {
-	if (fabsf(position.x - Global::gameMainVehicle->position.x) < 100 &&
-        fabsf(position.y - Global::gameMainVehicle->position.y) < 100 &&
-        fabsf(position.z - Global::gameMainVehicle->position.z) < 100)
+	if (fabsf(position.x - Global::gameMainPlayer->position.x) < 100 &&
+        fabsf(position.y - Global::gameMainPlayer->position.y) < 100 &&
+        fabsf(position.z - Global::gameMainPlayer->position.z) < 100)
 	{
-        float xDiff = position.x - Global::gameMainVehicle->position.x;
-        float yDiff = position.y - Global::gameMainVehicle->position.y;
-        float zDiff = position.z - Global::gameMainVehicle->position.z;
+        float xDiff = position.x - Global::gameMainPlayer->position.x;
+        float yDiff = position.y - Global::gameMainPlayer->position.y;
+        float zDiff = position.z - Global::gameMainPlayer->position.z;
 
         rotY = Maths::toDegrees(atan2f(zDiff, -xDiff));
         updateTransformationMatrix();
@@ -86,8 +86,8 @@ void Beetle::step()
 			//else
 			{
 				die();
-                Global::gameMainVehicle->doJump();
-				Global::gameMainVehicle->rebound(&position);
+                Global::gameMainPlayer->jump();
+				Global::gameMainPlayer->rebound(&position);
 			}
 		}
 	}
@@ -103,6 +103,9 @@ void Beetle::die()
     // there will be a visible entity that returns a nullptr for their models during rendering.
     // im assuming that the entity is either the beetle or the blades. setting boths visibility to
     // false should fix the problem, but the source of the bug remains a mystery...
+    // edit: this is because of the blades being in a different chunk than the one they were spawned in on,
+    // because the blades change position when the beetle spins. i have edited the deleteChunkedEntity
+    // function to deal with these special cases.
     //visible = false;
     //blades->visible = false;
 

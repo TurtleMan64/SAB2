@@ -13,8 +13,8 @@ class Body;
 class Limb : public Entity
 {
 private:
-	Body* body;
-	Limb* limb;
+	Body* body = nullptr;
+	Limb* limb = nullptr;
 
 	//We do not store our own models. It is up to 
 	// whoever created us to create the models and keep
@@ -36,7 +36,5 @@ public:
 	void update(float time);
 
 	std::list<TexturedModel*>* getModels();
-
-	//std::string getName();
 };
 #endif

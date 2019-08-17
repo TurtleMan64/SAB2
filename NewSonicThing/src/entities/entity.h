@@ -89,7 +89,7 @@ public:
 
 	void updateTransformationMatrix(float scaleX, float scaleY, float scaleZ);
 
-	void updateTransformationMatrixSADX();
+	void updateTransformationMatrixYXZ();
 
 	virtual const bool canLightdashOn();
 

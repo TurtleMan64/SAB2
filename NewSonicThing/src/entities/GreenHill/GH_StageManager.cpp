@@ -3,7 +3,7 @@
 #include "../entity.h"
 #include "ghstagemanager.h"
 #include "../../engineTester/main.h"
-#include "../car.h"
+#include "../playersonic.h"
 #include "../dummy.h"
 #include "../../objLoader/objLoader.h"
 #include "../../toolbox/maths.h"
@@ -44,7 +44,7 @@ void GH_StageManager::step()
     extern float dt;
 
 	//set the position of the background sky dome
-	position.set(Global::gameMainVehicle->getPosition());
+	position.set(Global::gameMainPlayer->getPosition());
     position.y = 0;
 	updateTransformationMatrix();
 

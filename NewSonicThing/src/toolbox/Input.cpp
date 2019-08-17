@@ -12,7 +12,7 @@
 #include "../renderEngine/skymanager.h"
 #include "../engineTester/main.h"
 #include "../entities/camera.h"
-#include "../entities/car.h"
+#include "../entities/controllableplayer.h"
 #include "maths.h"
 #include "../toolbox/split.h"
 #include "../toolbox/getline.h"
@@ -320,12 +320,12 @@ void Input::pollInputs()
 	#ifdef DEV_MODE
 	if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS)
 	{
-		if (Global::gameMainVehicle != nullptr)
+		if (Global::gameMainPlayer != nullptr)
 		{
 			extern float dt;
 			//Global::gameMainVehicle->getPosition()->y = Global::gameMainVehicle->getY()+600*dt;
-			Vector3f* v = Global::gameMainVehicle->getVelocity();
-			Global::gameMainVehicle->setVelocity(v->x, v->y+600*dt, v->z);
+			Vector3f* v = &Global::gameMainPlayer->vel;
+			Global::gameMainPlayer->vel.set(v->x, v->y+600*dt, v->z);
 		}
 	}
 	#endif
@@ -334,14 +334,15 @@ void Input::pollInputs()
 	#ifdef DEV_MODE
 	if (Input::inputs.INPUT_LB && !Input::inputs.INPUT_PREVIOUS_LB)
 	{
-		if (Global::gameMainVehicle != nullptr)
+		if (Global::gameMainPlayer != nullptr)
 		{
 			std::fprintf(stdout, "Time of day: %f\n", SkyManager::getTimeOfDay());
-			std::fprintf(stdout, "position = [%f, %f, %f]\n", Global::gameMainVehicle->getPosition()->x, Global::gameMainVehicle->getPosition()->y, Global::gameMainVehicle->getPosition()->z);
+			std::fprintf(stdout, "position = [%f, %f, %f]\n", Global::gameMainPlayer->getPosition()->x, Global::gameMainPlayer->getPosition()->y, Global::gameMainPlayer->getPosition()->z);
 			//std::fprintf(stdout, "normal   = [%f, %f, %f]\n", Global::gameMainVehicle->get);
 			//std::fprintf(stdout, "player rot = %f\n", Global::gamePlayer->getRotY());
 			//std::fprintf(stdout, "cam yaw: %f,   cam pitch: %f\n", Global::gameCamera->getYaw(), Global::gameCamera->getPitch());
-            std::fprintf(stdout, "cam dir = [%f, %f, %f]\n", Global::gameMainVehicle->getCameraDirection()->x, Global::gameMainVehicle->getCameraDirection()->y, Global::gameMainVehicle->getCameraDirection()->z);
+            std::fprintf(stdout, "cam pos = [%f, %f, %f]\n", Global::gameCamera->eye.x, Global::gameCamera->eye.y, Global::gameCamera->eye.z);
+            std::fprintf(stdout, "cam dir = [%f, %f, %f]\n", Global::gameMainPlayer->camDir.x, Global::gameMainPlayer->camDir.y, Global::gameMainPlayer->camDir.z);
 			std::fprintf(stdout, "\n");
 		}
         std::fprintf(stdout, "diff = %d\n", Global::countNew-Global::countDelete);

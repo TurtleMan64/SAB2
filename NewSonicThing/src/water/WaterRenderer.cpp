@@ -66,6 +66,7 @@ void WaterRenderer::prepareRender(Camera* camera, Light* sun)
 	glBindTexture  (GL_TEXTURE_2D, fbos->getRefractionDepthTexture());
 	glDepthMask(true);
 	glEnable(GL_CLIP_DISTANCE1);
+    glDisable(GL_CULL_FACE);
 }
 
 void WaterRenderer::unbind()

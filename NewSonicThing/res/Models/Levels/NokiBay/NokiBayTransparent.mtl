@@ -13,11 +13,11 @@ newmtl HAYAwave2a.png
 Ns 20
 Ni 0.0
 Tr 0
-d 1
-numImages 2
 animSpeed 2.0
-mixLinear
 scrollX 0.01
 scrollY -0.02
+mixLinear
+numImages 2
 map_Kd HAYAwave2a.png 
 HAYAwave2aShift.png 
+

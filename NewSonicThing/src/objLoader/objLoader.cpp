@@ -306,12 +306,18 @@ int loadVclModel(std::list<TexturedModel*>* models, std::string filePath, std::s
 	fread(&numVertices, sizeof(int), 1, file);
 	for (int i = 0; i < numVertices; i++)
 	{
-		float t[6];
-		fread(t, sizeof(float), 6, file);
+		float t[3];
+		fread(t, sizeof(float), 3, file);
 
 		Vector3f vertex(t[0], t[1], t[2]);
 		Vertex* newVertex = new Vertex((int)vertices.size(), &vertex); INCR_NEW("Vertex");
-        newVertex->color = Vector3f(t[3], t[4], t[5]);
+
+        unsigned char c[3];
+		fread(c, sizeof(unsigned char), 3, file);
+        float red   = ((float)c[0])/255.0f;
+        float green = ((float)c[1])/255.0f;
+        float blue  = ((float)c[2])/255.0f;
+        newVertex->color = Vector3f(red, green, blue);
 		vertices.push_back(newVertex);
 	}
 

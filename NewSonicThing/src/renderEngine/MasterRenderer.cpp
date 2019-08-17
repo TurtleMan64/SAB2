@@ -274,6 +274,15 @@ void prepare()
 
 	//glActiveTexture(GL_TEXTURE7);
 	//glBindTexture(GL_TEXTURE_2D, randomMap);
+
+    if (Global::renderWithCulling)
+    {
+        Master_enableCulling();
+    }
+    else
+    {
+        Master_disableCulling();
+    }
 }
 
 void prepareTransparentRender()
@@ -283,6 +292,15 @@ void prepareTransparentRender()
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthMask(false);
+
+    if (Global::renderWithCulling)
+    {
+        Master_enableCulling();
+    }
+    else
+    {
+        Master_disableCulling();
+    }
 }
 
 void prepareTransparentRenderDepthOnly()
@@ -294,6 +312,15 @@ void prepareTransparentRenderDepthOnly()
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthMask(true);
+
+    if (Global::renderWithCulling)
+    {
+        Master_enableCulling();
+    }
+    else
+    {
+        Master_disableCulling();
+    }
 }
 
 void Master_cleanUp()

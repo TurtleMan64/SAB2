@@ -1,0 +1,8 @@
+# Material Count: 1
+
+newmtl A_shadow03n.png
+Ns 20
+Ni 0.0
+Tr 0
+map_Kd A_shadow03n.png
+

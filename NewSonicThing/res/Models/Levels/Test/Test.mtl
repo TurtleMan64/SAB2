@@ -1,14 +1,13 @@
-# Blender MTL File: 'None'
 # Material Count: 1
 
 newmtl numbers
 Ns 20
 Ni 0
-d 1
-numImages 4
 animSpeed 1.0
 mixSinusoidal
+numImages 4
 map_Kd 100.png
 200.png
 300.png
 400.png
+

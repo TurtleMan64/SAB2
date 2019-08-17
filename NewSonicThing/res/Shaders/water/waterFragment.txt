@@ -91,8 +91,8 @@ void main(void)
 	}
 	//refractiveFactor = pow(refractiveFactor, 1.0);
 	
-	refractiveFactor*=1.5;
-	refractiveFactor = clamp(refractiveFactor, 0.3, 0.8); //possible post fx
+	refractiveFactor*=2.0; //1.5 //todo: make this stuff load from .lvl file
+	refractiveFactor = clamp(refractiveFactor, 0.4, 0.9); //0.3 0.8
 	//refractiveFactor = 1.0;
 	
 	

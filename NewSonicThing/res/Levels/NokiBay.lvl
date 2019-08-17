@@ -22,9 +22,13 @@ res/Audio/BGM/g_hill_loop.ogg
 -100
 water
 198
-12
+18
+true
 
 #Note: scale that im using from SMS -> SAB2 is 0.5
+
+#Stage manager
+91 5
 
 # Pass 2
 2 res/Models/Levels/NokiBay/ NokiBayTransparent

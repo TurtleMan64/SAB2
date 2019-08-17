@@ -3,7 +3,6 @@
 
 class Entity;
 class Camera;
-class Car;
 class Stage;
 class SkySphere;
 class Light;
@@ -16,6 +15,7 @@ class WaterTile;
 class FontType;
 class GUIText;
 class Timer;
+class ControllablePlayer;
 
 #include <string>
 #include <random>
@@ -61,8 +61,8 @@ void Main_deleteAllChunkedEntities();
 #define LVL_RADICAL_HIGHWAY  5
 #define LVL_GREEN_HILL_ZONE  6
 
-#define ENTITY_RENDER_DIST 2000.0f
-#define ENTITY_RENDER_DIST_HIGH 5000.0f
+//#define ENTITY_RENDER_DIST 2000.0f
+//#define ENTITY_RENDER_DIST_HIGH 5000.0f
 
 #define DEV_MODE
 
@@ -82,7 +82,7 @@ public:
 	static MenuManager menuManager;
     static Timer* mainHudTimer;
 	static Camera* gameCamera;
-	static Car* gameMainVehicle;
+	static ControllablePlayer* gameMainPlayer;
 	static Stage* gameStage;
 	static SkySphere* gameSkySphere;
 	static Light* gameLightSun;
@@ -123,6 +123,7 @@ public:
 	static float gameArcadePlaytime;
 	static bool stageUsesWater;
 	static FontType* fontVipnagorgialla;
+    static bool renderWithCulling; //if the stage uses backface culling or not
 
 	static bool  spawnAtCheckpoint;
 	static float checkpointX;

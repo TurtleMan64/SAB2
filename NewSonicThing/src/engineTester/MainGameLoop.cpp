@@ -62,7 +62,7 @@
 #include "../particles/particle.h"
 #include "../entities/skysphere.h"
 #include "../fontMeshCreator/guinumber.h"
-#include "../entities/car.h"
+#include "../entities/controllableplayer.h"
 #include "../entities/checkpoint.h"
 #include "../water/waterframebuffers.h"
 #include "../water/watershader.h"
@@ -114,12 +114,12 @@ std::vector<WaterTile*> Global::gameWaterTiles;
 float dt = 0;
 double timeOld = 0;
 double timeNew = 0;
-Camera*    Global::gameCamera      = nullptr;
-Car*       Global::gameMainVehicle = nullptr;
-Stage*     Global::gameStage       = nullptr;
-SkySphere* Global::gameSkySphere   = nullptr;
-Light*     Global::gameLightSun    = nullptr;
-Light*     Global::gameLightMoon   = nullptr;
+Camera*             Global::gameCamera      = nullptr;
+ControllablePlayer* Global::gameMainPlayer  = nullptr;
+Stage*              Global::gameStage       = nullptr;
+SkySphere*          Global::gameSkySphere   = nullptr;
+Light*              Global::gameLightSun    = nullptr;
+Light*              Global::gameLightMoon   = nullptr;
 
 float Global::finishStageTimer = -1;
 
@@ -190,6 +190,7 @@ std::vector<Level> Global::gameLevelData;
 std::unordered_map<std::string, std::string> Global::gameSaveData;
 bool Global::stageUsesWater = true;
 FontType* Global::fontVipnagorgialla = nullptr;
+bool Global::renderWithCulling = true;
 
 std::list<Checkpoint*> Global::gameCheckpointList;
 int Global::gameCheckpointLast;
@@ -292,7 +293,7 @@ int main(int argc, char** argv)
 	GuiTextureResources::loadGuiTextures();
 
 	CollisionChecker::initChecker();
-	//AnimationResources::createAnimations();
+	AnimationResources::createAnimations();
 
 	//This light never gets deleted.
 	Light lightSun;
@@ -497,9 +498,9 @@ int main(int argc, char** argv)
 					}
 				}
 
-                if (Global::gameMainVehicle != nullptr)
+                if (Global::gameMainPlayer != nullptr)
                 {
-                    Global::gameMainVehicle->step();
+                    Global::gameMainPlayer->step();
                 }
 				for (Entity* e : gameEntities)
 				{
@@ -575,7 +576,7 @@ int main(int argc, char** argv)
 
 			case STATE_DEBUG:
 			{
-				if (Global::gameMainVehicle != nullptr)
+				if (Global::gameMainPlayer != nullptr)
 				{
 					//Global::gamePlayer->debugAdjustCamera();
 				}
@@ -897,10 +898,10 @@ void Main_deleteAllEntites()
 	}
 	gameEntities.clear();
 
-    if (Global::gameMainVehicle != nullptr)
+    if (Global::gameMainPlayer != nullptr)
     {
-        delete Global::gameMainVehicle; INCR_DEL("Entity");
-        Global::gameMainVehicle = nullptr;
+        delete Global::gameMainPlayer; INCR_DEL("Entity");
+        Global::gameMainPlayer = nullptr;
     }
 }
 

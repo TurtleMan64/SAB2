@@ -219,9 +219,9 @@ void Entity::updateTransformationMatrix(float scaleX, float scaleY, float scaleZ
 	Maths::createTransformationMatrix(&transformationMatrix, &position, rotX, rotY, rotZ, rotRoll, scaleX, scaleY, scaleZ);
 }
 
-void Entity::updateTransformationMatrixSADX()
+void Entity::updateTransformationMatrixYXZ()
 {
-	Maths::createTransformationMatrixSADX(&transformationMatrix, &position, rotX, rotY, rotZ, scale);
+	Maths::createTransformationMatrixYXZ(&transformationMatrix, &position, rotX, rotY, rotZ, scale);
 }
 
 Matrix4f* Entity::getTransformationMatrix()

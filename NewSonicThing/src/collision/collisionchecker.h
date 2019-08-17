@@ -43,6 +43,9 @@ public:
 		float px1, float py1, float pz1,
 		float px2, float py2, float pz2);
 
+    static bool checkCollision(
+		Vector3f* p1, Vector3f* p2);
+
 	static bool checkPointInTriangle3D(
 		float checkx, float checky, float checkz,
 		Triangle3D* tri);

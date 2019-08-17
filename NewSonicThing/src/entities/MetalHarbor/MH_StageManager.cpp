@@ -3,7 +3,7 @@
 #include "../entity.h"
 #include "mhstagemanager.h"
 #include "../../engineTester/main.h"
-#include "../car.h"
+#include "../controllableplayer.h"
 #include "../../objLoader/objLoader.h"
 
 std::list<TexturedModel*> MH_StageManager::modelsSkydome;
@@ -18,8 +18,8 @@ void MH_StageManager::step()
 {
 	//set the position of the background sky dome
 	position.y = Global::waterHeight;
-	position.x = Global::gameMainVehicle->getX();
-	position.z = Global::gameMainVehicle->getZ();
+	position.x = Global::gameMainPlayer->getX();
+	position.z = Global::gameMainPlayer->getZ();
 	updateTransformationMatrix();
 }
 

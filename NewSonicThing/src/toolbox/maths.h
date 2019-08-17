@@ -33,8 +33,7 @@ public:
 	//For 2D GUI Images
 	static void createTransformationMatrix(Matrix4f* result, Vector2f* translation, float roation, Vector2f* scale);
 
-	//Based on how sadx calculates rotations
-	static void createTransformationMatrixSADX(Matrix4f* result, Vector3f* translation, float rX, float rY, float rZ, float scale);
+	static void createTransformationMatrixYXZ(Matrix4f* result, Vector3f* translation, float rX, float rY, float rZ, float scale);
 
 	static void createViewMatrix(Matrix4f* result, Camera* cam);
 

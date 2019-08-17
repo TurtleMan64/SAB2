@@ -23,6 +23,7 @@ res/Audio/BGM/g_hill_loop.ogg
 water
 -100
 2
+false
 
 # Player
 6 0 1 0

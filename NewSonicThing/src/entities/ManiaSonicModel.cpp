@@ -7,13 +7,33 @@
 #include "../renderEngine/renderEngine.h"
 #include "../objLoader/objLoader.h"
 #include "../engineTester/main.h"
-#include "../entities/car.h"
+#include "../entities/playersonic.h"
 #include "../toolbox/maths.h"
+#include "../animation/body.h"
+#include "../animation/limb.h"
+#include "../animation/animationresources.h"
+#include "../particles/particletexture.h"
+#include "../particles/particleresources.h"
 
 #include <list>
 #include <iostream>
 #include <algorithm>
 #include <cmath>
+
+std::list<TexturedModel*> ManiaSonicModel::modelBody;
+std::list<TexturedModel*> ManiaSonicModel::modelHead;
+std::list<TexturedModel*> ManiaSonicModel::modelLeftHumerus;
+std::list<TexturedModel*> ManiaSonicModel::modelLeftForearm;
+std::list<TexturedModel*> ManiaSonicModel::modelLeftHand;
+std::list<TexturedModel*> ManiaSonicModel::modelLeftThigh;
+std::list<TexturedModel*> ManiaSonicModel::modelLeftShin;
+std::list<TexturedModel*> ManiaSonicModel::modelLeftFoot;
+std::list<TexturedModel*> ManiaSonicModel::modelRightHumerus;
+std::list<TexturedModel*> ManiaSonicModel::modelRightForearm;
+std::list<TexturedModel*> ManiaSonicModel::modelRightHand;
+std::list<TexturedModel*> ManiaSonicModel::modelRightThigh;
+std::list<TexturedModel*> ManiaSonicModel::modelRightShin;
+std::list<TexturedModel*> ManiaSonicModel::modelRightFoot;
 
 std::list<TexturedModel*> ManiaSonicModel::modelDash0;
 std::list<TexturedModel*> ManiaSonicModel::modelDash1;
@@ -64,6 +84,42 @@ ManiaSonicModel::ManiaSonicModel()
 	scale = 0.27f;
 	visible = false;
 	models = &ManiaSonicModel::modelDash0;
+
+	myBody =         new Body(&modelBody);
+	myHead =         new Limb(&modelHead,         1.2f,  -0.3f,   0,     myBody,   nullptr);        INCR_NEW("Entity")
+	myLeftHumerus =  new Limb(&modelLeftHumerus,  0.9f,	  0,     -0.9f,  myBody,   nullptr);        INCR_NEW("Entity")
+	myLeftForearm =  new Limb(&modelLeftForearm,  0,     -1.3f,   0,     nullptr,  myLeftHumerus);  INCR_NEW("Entity")
+	myLeftHand =     new Limb(&modelLeftHand,     0,	 -1.3f,   0,     nullptr,  myLeftForearm);  INCR_NEW("Entity")
+	myLeftThigh =    new Limb(&modelLeftThigh,   -0.9f,   0,     -0.3f,  myBody,   nullptr);        INCR_NEW("Entity")
+	myLeftShin =     new Limb(&modelLeftShin,     0,	 -1.3f,   0,     nullptr,  myLeftThigh);    INCR_NEW("Entity")
+	myLeftFoot =     new Limb(&modelLeftFoot,     0,	 -1.1f,   0,     nullptr,  myLeftShin);     INCR_NEW("Entity")
+	myRightHumerus = new Limb(&modelRightHumerus, 0.9f,   0,      0.9f,  myBody,   nullptr);        INCR_NEW("Entity")
+	myRightForearm = new Limb(&modelRightForearm, 0,	 -1.3f,   0,     nullptr,  myRightHumerus); INCR_NEW("Entity")
+	myRightHand =    new Limb(&modelRightHand,    0,	 -1.3f,   0,     nullptr,  myRightForearm); INCR_NEW("Entity")
+	myRightThigh =   new Limb(&modelRightThigh,  -0.9f,   0,      0.3f,  myBody,   nullptr);        INCR_NEW("Entity")
+	myRightShin =    new Limb(&modelRightShin,    0,	 -1.3f,   0,     nullptr,  myRightThigh);   INCR_NEW("Entity")
+	myRightFoot =    new Limb(&modelRightFoot,    0,	 -1.1f,   0,     nullptr,  myRightShin);    INCR_NEW("Entity")
+
+    AnimationResources::assignAnimationsHuman(myBody, myHead,
+		myLeftHumerus, myLeftForearm, myLeftHand,
+		myRightHumerus, myRightForearm, myRightHand,
+		myLeftThigh, myLeftShin, myLeftFoot,
+		myRightThigh, myRightShin, myRightFoot);
+
+    Main_addEntity(myBody);
+	Main_addEntity(myHead);
+	Main_addEntity(myLeftHumerus);
+	Main_addEntity(myLeftForearm);
+	Main_addEntity(myLeftHand);
+	Main_addEntity(myLeftThigh);
+	Main_addEntity(myLeftShin);
+	Main_addEntity(myLeftFoot);
+	Main_addEntity(myRightHumerus);
+	Main_addEntity(myRightForearm);
+	Main_addEntity(myRightHand);
+	Main_addEntity(myRightThigh);
+	Main_addEntity(myRightShin);
+	Main_addEntity(myRightFoot);
 }
 
 void ManiaSonicModel::step()
@@ -71,54 +127,100 @@ void ManiaSonicModel::step()
 
 }
 
+const float ManiaSonicModel::getDisplayBallOffset()
+{
+    return displayBallOffset;
+}
+
+ParticleTexture* ManiaSonicModel::getBallTexture()
+{
+    return ParticleResources::textureLightBlueTrail;
+}
+
 void ManiaSonicModel::animate(int animIndex, float time)
 {
-	setScale(0.27f);
 	switch (animIndex)
 	{
+        case 0: //stand
+        {
+            const float limbsScale = 0.85f;
+            Vector3f off = up.scaleCopy(limbsScale*displayHeightOffset);
+            Vector3f pos = position + off;
+            myBody->setBaseOrientation(pos.x, pos.y, pos.z, rotX, rotY, rotZ, rotRoll, limbsScale);
+            updateLimbs(0, time);
+            updateLimbsMatrix();
+            setLimbsVisibility(true);
+            visible = false;
+            break;
+        }
+
 		case 1: //run
 		{
+            setScale(0.27f);
 			int index = (int)(time / 8.3333333f);
 			switch (index)
 			{
-				case 0:  models = &ManiaSonicModel::modelDash0;  break;
-				case 1:  models = &ManiaSonicModel::modelDash1;  break;
-				case 2:  models = &ManiaSonicModel::modelDash2;  break;
-				case 3:  models = &ManiaSonicModel::modelDash3;  break;
-				case 4:  models = &ManiaSonicModel::modelDash4;  break;
-				case 5:  models = &ManiaSonicModel::modelDash5;  break;
-				case 6:  models = &ManiaSonicModel::modelDash6;  break;
-				case 7:  models = &ManiaSonicModel::modelDash7;  break;
-				case 8:  models = &ManiaSonicModel::modelDash8;  break;
-				case 9:  models = &ManiaSonicModel::modelDash9;  break;
+				case  0: models = &ManiaSonicModel::modelDash0;  break;
+				case  1: models = &ManiaSonicModel::modelDash1;  break;
+				case  2: models = &ManiaSonicModel::modelDash2;  break;
+				case  3: models = &ManiaSonicModel::modelDash3;  break;
+				case  4: models = &ManiaSonicModel::modelDash4;  break;
+				case  5: models = &ManiaSonicModel::modelDash5;  break;
+				case  6: models = &ManiaSonicModel::modelDash6;  break;
+				case  7: models = &ManiaSonicModel::modelDash7;  break;
+				case  8: models = &ManiaSonicModel::modelDash8;  break;
+				case  9: models = &ManiaSonicModel::modelDash9;  break;
 				case 10: models = &ManiaSonicModel::modelDash10; break;
 				case 11: models = &ManiaSonicModel::modelDash11; break;
 				default: std::fprintf(stdout, "dash animation index out of bounds"); break;
 			}
+            updateTransformationMatrix();
+            setLimbsVisibility(false);
+            visible = true;
 			break;
 		}
 
         case 3: //stomp
 		{
+            setScale(0.27f);
 			models = &ManiaSonicModel::modelStomp;
+            updateTransformationMatrix();
+            setLimbsVisibility(false);
+            visible = true;
 			break;
 		}
 
         case 8: //skid
         {
+            setScale(0.27f);
             models = &ManiaSonicModel::modelSkid;
+            updateTransformationMatrix();
+            setLimbsVisibility(false);
+            visible = true;
 			break;
+        }
+
+        case 11: //hitstun
+        {
+            updateLimbs(11, 0);
+            updateLimbsMatrix();
+            setLimbsVisibility(true);
+            visible = false;
         }
 
 		case 12: //jump
 		{
+            setScale(0.32f);
 			models = &ManiaSonicModel::modelJump;
-			setScale(0.32f);
+            updateTransformationMatrix();
+            setLimbsVisibility(false);
+            visible = true;
 			break;
 		}
 
 		case 15: //jog
 		{
+            setScale(0.27f);
 			int index = (int)(time / 5.55555555f);
 			switch (index)
 			{
@@ -142,48 +244,76 @@ void ManiaSonicModel::animate(int animIndex, float time)
 				case 17: models = &ManiaSonicModel::modelJog17; break;
                 default: std::fprintf(stdout, "warning: jog animation index out of bounds\n"); break;
 			}
+            updateTransformationMatrix();
+            setLimbsVisibility(false);
+            visible = true;
 			break;
 		}
 
         case 18: //lightdash
 		{
+            setScale(0.27f);
 			models = &ManiaSonicModel::modelLightdash;
+            updateTransformationMatrix();
+            setLimbsVisibility(false);
+            visible = true;
 			break;
 		}
 
+        case 19: //die
+        {
+            updateLimbs(19, 0);
+            updateLimbsMatrix();
+            setLimbsVisibility(true);
+            visible = false;
+            break;
+        }
+
         case 21: //freefall
 		{
+            setScale(0.27f);
 			models = &ManiaSonicModel::modelFreefall;
+            updateTransformationMatrix();
+            setLimbsVisibility(false);
+            visible = true;
 			break;
 		}
 
         case 25: //grab
 		{
+            setScale(0.27f);
 			models = &ManiaSonicModel::modelGrab;
+            updateTransformationMatrix();
+            setLimbsVisibility(false);
+            visible = true;
 			break;
 		}
 
 		case 26: //grind
 		{
+            setScale(0.27f);
 			models = &ManiaSonicModel::modelGrind;
+            updateTransformationMatrix();
+            setLimbsVisibility(false);
+            visible = true;
 			break;
 		}
 
 		default:
 			break;
 	}
-	updateTransformationMatrix();
 }
 
-void ManiaSonicModel::setOrientation(float x, float y, float z, float xRot, float yRot, float zRot, float spinRot)
+void ManiaSonicModel::setOrientation(float x, float y, float z, float xRot, float yRot, float zRot, float spinRot, Vector3f* newUp)
 {
 	position.x = x;
 	position.y = y;
 	position.z = z;
-	setRotX(xRot);
-	setRotY(yRot);
-	setRotZ(zRot);
-	setRotSpin(spinRot);
+	rotX       = xRot;
+	rotY       = yRot;
+	rotZ       = zRot;
+	rotRoll    = spinRot;
+    up.set(newUp);
 }
 
 std::list<TexturedModel*>* ManiaSonicModel::getModels()
@@ -201,6 +331,21 @@ void ManiaSonicModel::loadStaticModels()
 	#ifdef DEV_MODE
 	std::fprintf(stdout, "Loading mania sonic static models...\n");
 	#endif
+
+    loadModel(&ManiaSonicModel::modelBody,         "res/Models/Characters/ManiaSonic/", "Body");
+	loadModel(&ManiaSonicModel::modelHead,         "res/Models/Characters/ManiaSonic/", "Head");
+	loadModel(&ManiaSonicModel::modelLeftHumerus,  "res/Models/Characters/ManiaSonic/", "Humerus");
+	loadModel(&ManiaSonicModel::modelLeftForearm,  "res/Models/Characters/ManiaSonic/", "Forearm");
+	loadModel(&ManiaSonicModel::modelLeftHand,     "res/Models/Characters/ManiaSonic/", "HandLeft");
+	loadModel(&ManiaSonicModel::modelLeftThigh,    "res/Models/Characters/ManiaSonic/", "Thigh");
+	loadModel(&ManiaSonicModel::modelLeftShin,     "res/Models/Characters/ManiaSonic/", "Shin");
+	loadModel(&ManiaSonicModel::modelLeftFoot,     "res/Models/Characters/ManiaSonic/", "ShoeLeft");
+	loadModel(&ManiaSonicModel::modelRightHumerus, "res/Models/Characters/ManiaSonic/", "Humerus");
+	loadModel(&ManiaSonicModel::modelRightForearm, "res/Models/Characters/ManiaSonic/", "Forearm");
+	loadModel(&ManiaSonicModel::modelRightHand,    "res/Models/Characters/ManiaSonic/", "HandRight");
+	loadModel(&ManiaSonicModel::modelRightThigh,   "res/Models/Characters/ManiaSonic/", "Thigh");
+	loadModel(&ManiaSonicModel::modelRightShin,    "res/Models/Characters/ManiaSonic/", "Shin");
+	loadModel(&ManiaSonicModel::modelRightFoot,    "res/Models/Characters/ManiaSonic/", "ShoeRight");
 
 	loadModel(&ManiaSonicModel::modelDash0    , "res/Models/Characters/ManiaSonic/", "Dash0");
 	loadModel(&ManiaSonicModel::modelDash1    , "res/Models/Characters/ManiaSonic/", "Dash1");
@@ -241,11 +386,94 @@ void ManiaSonicModel::loadStaticModels()
     loadModel(&ManiaSonicModel::modelGrab     , "res/Models/Characters/ManiaSonic/", "Grab");
 }
 
+void ManiaSonicModel::setLimbsVisibility(bool newVisible)
+{
+	myBody->setVisible(newVisible);
+	myHead->setVisible(newVisible);
+	myLeftHumerus->setVisible(newVisible);
+	myLeftForearm->setVisible(newVisible);
+	myLeftHand->setVisible(newVisible);
+	myLeftThigh->setVisible(newVisible);
+	myLeftShin->setVisible(newVisible);
+	myLeftFoot->setVisible(newVisible);
+	myRightHumerus->setVisible(newVisible);
+	myRightForearm->setVisible(newVisible);
+	myRightHand->setVisible(newVisible);
+	myRightThigh->setVisible(newVisible);
+	myRightShin->setVisible(newVisible);
+	myRightFoot->setVisible(newVisible);
+}
+
+void ManiaSonicModel::updateLimbs(int animIndex, float time)
+{
+	myBody->animationIndex = animIndex;
+	myHead->animationIndex = animIndex;
+	myLeftHumerus->animationIndex = animIndex;
+	myLeftForearm->animationIndex = animIndex;
+	myLeftHand->animationIndex = animIndex;
+	myLeftThigh->animationIndex = animIndex;
+	myLeftShin->animationIndex = animIndex;
+	myLeftFoot->animationIndex = animIndex;
+	myRightHumerus->animationIndex = animIndex;
+	myRightForearm->animationIndex = animIndex;
+	myRightHand->animationIndex = animIndex;
+	myRightThigh->animationIndex = animIndex;
+	myRightShin->animationIndex = animIndex;
+	myRightFoot->animationIndex = animIndex;
+	myBody->update(time);
+	myHead->update(time);
+	myLeftHumerus->update(time);
+	myLeftForearm->update(time);
+	myLeftHand->update(time);
+	myLeftThigh->update(time);
+	myLeftShin->update(time);
+	myLeftFoot->update(time);
+	myRightHumerus->update(time);
+	myRightForearm->update(time);
+	myRightHand->update(time);
+	myRightThigh->update(time);
+	myRightShin->update(time);
+	myRightFoot->update(time);
+}
+
+void ManiaSonicModel::updateLimbsMatrix()
+{
+	myBody->updateTransformationMatrix();
+	myHead->updateTransformationMatrix();
+	myLeftHumerus->updateTransformationMatrix();
+	myLeftForearm->updateTransformationMatrix();
+	myLeftHand->updateTransformationMatrix();
+	myLeftThigh->updateTransformationMatrix();
+	myLeftShin->updateTransformationMatrix();
+	myLeftFoot->updateTransformationMatrix();
+	myRightHumerus->updateTransformationMatrix();
+	myRightForearm->updateTransformationMatrix();
+	myRightHand->updateTransformationMatrix();
+	myRightThigh->updateTransformationMatrix();
+	myRightShin->updateTransformationMatrix();
+	myRightFoot->updateTransformationMatrix();
+}
+
 void ManiaSonicModel::deleteStaticModels()
 {
 	#ifdef DEV_MODE
 	std::fprintf(stdout, "Deleting mania sonic static models...\n");
 	#endif
+
+    Entity::deleteModels(&ManiaSonicModel::modelBody);
+	Entity::deleteModels(&ManiaSonicModel::modelHead);
+	Entity::deleteModels(&ManiaSonicModel::modelLeftHumerus);
+	Entity::deleteModels(&ManiaSonicModel::modelLeftForearm);
+	Entity::deleteModels(&ManiaSonicModel::modelLeftHand);
+	Entity::deleteModels(&ManiaSonicModel::modelLeftThigh);
+	Entity::deleteModels(&ManiaSonicModel::modelLeftShin);
+	Entity::deleteModels(&ManiaSonicModel::modelLeftFoot);
+	Entity::deleteModels(&ManiaSonicModel::modelRightHumerus);
+	Entity::deleteModels(&ManiaSonicModel::modelRightForearm);
+	Entity::deleteModels(&ManiaSonicModel::modelRightHand);
+	Entity::deleteModels(&ManiaSonicModel::modelRightThigh);
+	Entity::deleteModels(&ManiaSonicModel::modelRightShin);
+	Entity::deleteModels(&ManiaSonicModel::modelRightFoot);
 
 	Entity::deleteModels(&ManiaSonicModel::modelDash0);
 	Entity::deleteModels(&ManiaSonicModel::modelDash1);

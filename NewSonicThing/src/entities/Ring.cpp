@@ -8,7 +8,7 @@
 #include "../objLoader/objLoader.h"
 #include "../engineTester/main.h"
 #include "../entities/camera.h"
-#include "../entities/car.h"
+#include "../entities/playersonic.h"
 #include "../collision/collisionchecker.h"
 #include "../collision/triangle3d.h"
 #include "../toolbox/maths.h"
@@ -193,12 +193,12 @@ void Ring::step()
     increaseRotation(0, 5*60*dt, 0);
     updateTransformationMatrix();
 
-    if (fabsf(position.y - Global::gameMainVehicle->position.y) < 40 &&
-		fabsf(position.z - Global::gameMainVehicle->position.z) < 40 &&
-		fabsf(position.x - Global::gameMainVehicle->position.x) < 40 &&
+    if (fabsf(position.y - Global::gameMainPlayer->position.y) < 40 &&
+		fabsf(position.z - Global::gameMainPlayer->position.z) < 40 &&
+		fabsf(position.x - Global::gameMainPlayer->position.x) < 40 &&
 		grabTimer == 0)
 	{
-		if ((Global::gameMainVehicle->getCenterPosition() - position).lengthSquared() < (5.0f*5.0f + 9.0f*9.0f))
+		if ((Global::gameMainPlayer->getCenterPosition() - position).lengthSquared() < (5.0f*5.0f + 9.0f*9.0f))
 		{
 			AudioPlayer::play(4, getPosition());
 

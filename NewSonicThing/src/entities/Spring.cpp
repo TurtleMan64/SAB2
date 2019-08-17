@@ -7,7 +7,7 @@
 #include "../renderEngine/renderEngine.h"
 #include "../objLoader/objLoader.h"
 #include "../engineTester/main.h"
-#include "../entities/car.h"
+#include "../entities/controllableplayer.h"
 #include "../toolbox/maths.h"
 #include "../audio/audioplayer.h"
 
@@ -54,15 +54,15 @@ void Spring::step()
 {
 	cooldownTimer = std::fmaxf(cooldownTimer - dt, 0.0f);
 
-	if (fabsf(hitCenter.y - Global::gameMainVehicle->position.y) < 40 &&
-		fabsf(hitCenter.z - Global::gameMainVehicle->position.z) < 40 &&
-		fabsf(hitCenter.x - Global::gameMainVehicle->position.x) < 40 &&
+	if (fabsf(hitCenter.y - Global::gameMainPlayer->position.y) < 40 &&
+		fabsf(hitCenter.z - Global::gameMainPlayer->position.z) < 40 &&
+		fabsf(hitCenter.x - Global::gameMainPlayer->position.x) < 40 &&
 		cooldownTimer == 0.0f)
 	{
-        if ((Global::gameMainVehicle->getCenterPosition() - hitCenter).lengthSquared() < (10.83f*10.83f)+(4.0f*4.0f)) //10.83 = radius of spring, 4 = radius of sonic
+        if ((Global::gameMainPlayer->getCenterPosition() - hitCenter).lengthSquared() < (10.83f*10.83f)+(4.0f*4.0f)) //10.83 = radius of spring, 4 = radius of sonic
 		{
-            Global::gameMainVehicle->position = hitCenter;
-		    Global::gameMainVehicle->hitSpring(&dir, springPower, cooldownTimerMax);
+            Global::gameMainPlayer->position = hitCenter;
+		    Global::gameMainPlayer->hitSpring(&dir, springPower, cooldownTimerMax);
 		    AudioPlayer::play(6, &position, 1 + (springPower*0.00013333f));
 
 		    cooldownTimer = cooldownTimerMax;
