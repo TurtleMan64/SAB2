@@ -3,12 +3,19 @@
 
 class ParticleTexture;
 
+#include <vector>
+#include <string>
+
 #include "entity.h"
 #include "../toolbox/vector.h"
 
-
 class PlayerModel : public Entity
 {
+protected:
+    int currentAnimIndex;
+    float currentAnimTime;
+    Vector3f currentUpDirection;
+
 public:
 	virtual void animate(int animIndex, float time);
     
@@ -17,5 +24,7 @@ public:
     const virtual float getDisplayBallOffset();
 
     virtual ParticleTexture* getBallTexture();
+
+    void log(std::vector<std::string>* log);
 };
 #endif

@@ -175,7 +175,7 @@ void Master_render(Camera* camera, float clipX, float clipY, float clipZ, float 
 
 void Master_processEntity(Entity* entity)
 {
-	if (entity->getVisible() == false)
+	if (!entity->visible)
 	{
 		return;
 	}
@@ -190,7 +190,7 @@ void Master_processEntity(Entity* entity)
 
 void Master_processEntityPass2(Entity* entity)
 {
-	if (entity->getVisible() == false)
+	if (!entity->visible)
 	{
 		return;
 	}
@@ -205,7 +205,7 @@ void Master_processEntityPass2(Entity* entity)
 
 void Master_processEntityPass3(Entity* entity)
 {
-	if (entity->getVisible() == false)
+	if (!entity->visible)
 	{
 		return;
 	}
@@ -220,7 +220,7 @@ void Master_processEntityPass3(Entity* entity)
 
 void Master_processTransparentEntity(Entity* entity)
 {
-	if (entity->getVisible() == false)
+	if (!entity->visible)
 	{
 		return;
 	}

@@ -125,6 +125,9 @@ public:
 	static FontType* fontVipnagorgialla;
     static bool renderWithCulling; //if the stage uses backface culling or not
 
+    static std::vector<std::string> raceLog;
+    static bool shouldLogRace;
+
 	static bool  spawnAtCheckpoint;
 	static float checkpointX;
 	static float checkpointY;

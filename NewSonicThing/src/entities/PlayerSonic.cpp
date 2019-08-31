@@ -51,7 +51,7 @@ PlayerSonic::PlayerSonic(float x, float y, float z)
 	camDir.set(0, 0, -1);
 	camDirSmooth.set(0, 0, -1);
 
-	playerModel = new ManiaMightyModel; INCR_NEW("Entity");
+	playerModel = new ManiaSonicModel; INCR_NEW("Entity");
 	Main_addEntity(playerModel);
 
 	visible = false;
@@ -1156,6 +1156,12 @@ void PlayerSonic::step()
 	//Animating us
 	updateAnimationValues();
 	animate();
+
+    if (Global::shouldLogRace)
+    {
+        playerModel->log(&Global::raceLog);
+        fprintf(stdout, "log\n");
+    }
 
 	//Animating the camera
 	refreshCamera();

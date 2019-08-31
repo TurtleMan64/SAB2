@@ -57,6 +57,7 @@
 #include "../water/watertile.h"
 #include "../entities/playersonic.h"
 #include "../entities/DelfinoPlaza/dpstagemanager.h"
+#include "../entities/raceghost.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -839,6 +840,14 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 			return;
 		}
 
+        case 70: //Race Ghost
+		{
+			RaceGhost::loadStaticModels();
+			RaceGhost* raceGhost = new RaceGhost(dat[1]); INCR_NEW("Entity");
+			Main_addEntity(raceGhost);
+			return;
+		}
+
 		case 91: //General Purpose Stage Manager
 		{
 			int id2 = std::stoi(dat[1]);
@@ -1143,6 +1152,7 @@ void LevelLoader::freeAllStaticModels()
     CE_StageManager::deleteStaticModels();
     Spring::deleteStaticModels();
     DP_StageManager::deleteStaticModels();
+    RaceGhost::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()

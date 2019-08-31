@@ -83,6 +83,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -91,6 +92,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;SOIL.lib;OpenAL32.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -104,6 +106,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -120,6 +123,7 @@
       <ConformanceMode>true</ConformanceMode>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -170,6 +174,7 @@
     <ClCompile Include="src\entities\MetalHarbor\MH_StageManager.cpp" />
     <ClCompile Include="src\entities\MetalHarbor\MH_Tank.cpp" />
     <ClCompile Include="src\entities\Point.cpp" />
+    <ClCompile Include="src\entities\RaceGhost.cpp" />
     <ClCompile Include="src\entities\Rail.cpp" />
     <ClCompile Include="src\entities\Ring.cpp" />
     <ClCompile Include="src\entities\Rocket.cpp" />
@@ -299,6 +304,7 @@
     <ClInclude Include="src\entities\MetalHarbor\mhstagemanager.h" />
     <ClInclude Include="src\entities\MetalHarbor\mhtank.h" />
     <ClInclude Include="src\entities\point.h" />
+    <ClInclude Include="src\entities\raceghost.h" />
     <ClInclude Include="src\entities\rail.h" />
     <ClInclude Include="src\entities\ring.h" />
     <ClInclude Include="src\entities\rocket.h" />

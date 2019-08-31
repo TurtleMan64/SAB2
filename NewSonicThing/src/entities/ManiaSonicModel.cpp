@@ -139,12 +139,14 @@ ParticleTexture* ManiaSonicModel::getBallTexture()
 
 void ManiaSonicModel::animate(int animIndex, float time)
 {
+    currentAnimIndex = animIndex;
+    currentAnimTime = time;
 	switch (animIndex)
 	{
         case 0: //stand
         {
             const float limbsScale = 0.85f;
-            Vector3f off = up.scaleCopy(limbsScale*displayHeightOffset);
+            Vector3f off = currentUpDirection.scaleCopy(limbsScale*displayHeightOffset);
             Vector3f pos = position + off;
             myBody->setBaseOrientation(pos.x, pos.y, pos.z, rotX, rotY, rotZ, rotRoll, limbsScale);
             updateLimbs(0, time);
@@ -313,7 +315,7 @@ void ManiaSonicModel::setOrientation(float x, float y, float z, float xRot, floa
 	rotY       = yRot;
 	rotZ       = zRot;
 	rotRoll    = spinRot;
-    up.set(newUp);
+    currentUpDirection.set(newUp);
 }
 
 std::list<TexturedModel*>* ManiaSonicModel::getModels()

@@ -41,6 +41,8 @@ public:
 	//ang1 and ang2 should be in degrees
 	static float compareTwoAngles(float ang1, float ang2);
 
+    static float interpolate(float num1, float num2, float percent);
+
     //assumes the size of int and float are 32 bits
 	static int sign(float value);
 

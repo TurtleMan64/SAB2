@@ -15,10 +15,10 @@ private:
 	GUINumber* seconds;
 	GUINumber* centiseconds;
 
-	float totalTime;
-	bool frozen;
-	
 public:
+    float totalTime;
+	bool frozen;
+
 	Timer(FontType* font, float posX, float posY, float scale, int alignment, bool visible);
 	~Timer();
 	float getTime();

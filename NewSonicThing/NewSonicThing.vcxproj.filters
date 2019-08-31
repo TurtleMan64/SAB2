@@ -480,6 +480,9 @@
     <ClCompile Include="src\entities\Dashpad.cpp">
       <Filter>Source Files\entities</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\RaceGhost.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.h">
@@ -846,6 +849,9 @@
       <Filter>Source Files\entities</Filter>
     </ClInclude>
     <ClInclude Include="src\entities\dashpad.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\raceghost.h">
       <Filter>Source Files\entities</Filter>
     </ClInclude>
   </ItemGroup>

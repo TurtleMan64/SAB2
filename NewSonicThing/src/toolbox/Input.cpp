@@ -20,6 +20,11 @@
 #include <chrono>
 #include "../renderEngine/renderEngine.h"
 
+#ifdef DEV_MODE
+#include <iostream>
+#include <fstream>
+#endif
+
 extern GLFWwindow* window;
 
 InputStruct Input::inputs{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
@@ -285,6 +290,10 @@ void Input::pollInputs()
 	{
 		Input::inputs.INPUT_LB = true;
 	}
+    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+	{
+		Input::inputs.INPUT_RB = true;
+	}
 	if (glfwGetKey(window, GLFW_KEY_TAB) == GLFW_PRESS)
 	{
 		Input::inputs.INPUT_TAB = true;
@@ -356,7 +365,23 @@ void Input::pollInputs()
 		}
 
 		//Loader::printInfo();
+
+        if (Global::raceLog.size() > 0)
+        {
+            std::ofstream raceLogFile;
+            raceLogFile.open("RaceLog.txt", std::ios::out | std::ios::trunc);
+            for (std::string line : Global::raceLog)
+            {
+                raceLogFile << line;
+            }
+            raceLogFile.close();
+            Global::raceLog.clear();
+        }
 	}
+    if (Input::inputs.INPUT_RB && !Input::inputs.INPUT_PREVIOUS_RB)
+	{
+        Global::shouldLogRace = !Global::shouldLogRace;
+    }
 	#endif
 
 

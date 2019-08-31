@@ -192,6 +192,9 @@ bool Global::stageUsesWater = true;
 FontType* Global::fontVipnagorgialla = nullptr;
 bool Global::renderWithCulling = true;
 
+std::vector<std::string> Global::raceLog;
+bool Global::shouldLogRace = false;
+
 std::list<Checkpoint*> Global::gameCheckpointList;
 int Global::gameCheckpointLast;
 

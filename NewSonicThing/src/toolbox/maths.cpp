@@ -211,6 +211,11 @@ float Maths::compareTwoAngles(float origAng1, float origAng2)
 	return r;
 }
 
+float Maths::interpolate(float a, float b, float percent)
+{
+    return (a * (1.0f - percent)) + (b * percent);
+}
+
 int Maths::sign(float value)
 {
     //int v = *(int*)&value; //get bits of value casted as an int
