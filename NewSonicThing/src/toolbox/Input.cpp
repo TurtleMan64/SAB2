@@ -60,9 +60,9 @@ int   STICK_LX       = 0;
 float STICK_LX_SCALE = 1;
 int   STICK_LY       = 1;
 float STICK_LY_SCALE = 1;
-int   STICK_RX       = 3;
+int   STICK_RX       = 2;
 float STICK_RX_SCALE = 1;
-int   STICK_RY       = 4;
+int   STICK_RY       = 3;
 float STICK_RY_SCALE = 1;
 
 float STICK_LXDEADZONE = 0.1f;
@@ -70,7 +70,7 @@ float STICK_LYDEADZONE = 0.1f;
 float STICK_RXDEADZONE = 0.1f;
 float STICK_RYDEADZONE = 0.1f;
 
-int   TRIGGER_L  =  7;
+int   TRIGGER_L  =  4;
 float LT_NEUTRAL = -1;
 float LT_MAX     =  1;
 float LT_RANGE   =  2;
@@ -121,11 +121,48 @@ void Input::pollInputs()
 	Input::inputs.INPUT_L2 = 0;
 	Input::inputs.INPUT_R2 = 0;
 
+    bool joystickIsPresent = false;
 
+    if (glfwJoystickIsGamepad(CONTROLLER_ID)) //joystick is both present and has a pre defined mapping
+    {
+        GLFWgamepadstate state;
+        if (glfwGetGamepadState(CONTROLLER_ID, &state))
+        {
+            joystickIsPresent = true;
 
-	int present = glfwJoystickPresent(CONTROLLER_ID);
-	if (present == 1)
+            Input::inputs.INPUT_ACTION1 = state.buttons[BUTTON_A];
+            Input::inputs.INPUT_ACTION2 = state.buttons[BUTTON_X];
+            Input::inputs.INPUT_ACTION3 = state.buttons[BUTTON_B];
+            Input::inputs.INPUT_ACTION4 = state.buttons[BUTTON_Y];
+
+            Input::inputs.INPUT_LB      = state.buttons[BUTTON_LB];
+	        Input::inputs.INPUT_RB      = state.buttons[BUTTON_RB];
+	        Input::inputs.INPUT_SELECT  = state.buttons[BUTTON_SELECT];
+	        Input::inputs.INPUT_START   = state.buttons[BUTTON_START];
+
+            Input::inputs.INPUT_X  = state.axes[STICK_LX];
+	        Input::inputs.INPUT_Y  = state.axes[STICK_LY];
+	        Input::inputs.INPUT_X2 = state.axes[STICK_RX];
+	        Input::inputs.INPUT_Y2 = state.axes[STICK_RY];
+	        Input::inputs.INPUT_L2 = state.axes[TRIGGER_L];
+	        Input::inputs.INPUT_R2 = state.axes[TRIGGER_R];
+        }
+    }
+	else if (glfwJoystickPresent(CONTROLLER_ID))
 	{
+        joystickIsPresent = true;
+
+        int buttonCount;
+		const unsigned char *buttons = glfwGetJoystickButtons(CONTROLLER_ID, &buttonCount);
+
+		Input::inputs.INPUT_ACTION1  = buttons[BUTTON_A];
+		Input::inputs.INPUT_ACTION2  = buttons[BUTTON_B];
+		Input::inputs.INPUT_ACTION3  = buttons[BUTTON_X];
+		Input::inputs.INPUT_ACTION4  = buttons[BUTTON_Y];
+		Input::inputs.INPUT_RB       = buttons[BUTTON_RB];
+		Input::inputs.INPUT_LB       = buttons[BUTTON_LB];
+		Input::inputs.INPUT_START    = buttons[BUTTON_START];
+
 		int axesCount;
 		const float *axes = glfwGetJoystickAxes(CONTROLLER_ID, &axesCount);
 
@@ -135,7 +172,13 @@ void Input::pollInputs()
 		Input::inputs.INPUT_X2 = axes[STICK_RX];
 		Input::inputs.INPUT_Y2 = axes[STICK_RY];
 
-		if (abs(Input::inputs.INPUT_X)  < STICK_LXDEADZONE)
+        Input::inputs.INPUT_L2 = axes[TRIGGER_L];
+        Input::inputs.INPUT_R2 = axes[TRIGGER_R];
+	}
+
+    if (joystickIsPresent) //apply scaling and deadzones
+    {
+        if (abs(Input::inputs.INPUT_X)  < STICK_LXDEADZONE)
         { 
             Input::inputs.INPUT_X  = 0;
         }
@@ -209,18 +252,18 @@ void Input::pollInputs()
 		Input::inputs.INPUT_X2 *= STICK_RX_SCALE;
 		Input::inputs.INPUT_Y2 *= STICK_RY_SCALE;
 
-		Input::inputs.INPUT_X2 = Input::inputs.INPUT_X2 * stickSensitivityX;
-		Input::inputs.INPUT_Y2 = Input::inputs.INPUT_Y2 * stickSensitivityY;
+		Input::inputs.INPUT_X2 *= stickSensitivityX;
+		Input::inputs.INPUT_Y2 *= stickSensitivityY;
 
 
 		float triggerLValue = 0;
 		float triggerRValue = 0;
 
 
-		float rawValue = (axes[TRIGGER_L] - LT_NEUTRAL) / LT_RANGE;
+		float rawValue = (Input::inputs.INPUT_L2 - LT_NEUTRAL) / LT_RANGE;
 		if (rawValue >= TRIGGER_DEADZONE) { triggerLValue = rawValue; }
 
-		rawValue = (axes[TRIGGER_R] - RT_NEUTRAL) / RT_RANGE;
+		rawValue = (Input::inputs.INPUT_R2 - RT_NEUTRAL) / RT_RANGE;
 		if (rawValue >= TRIGGER_DEADZONE) { triggerRValue = rawValue; }
 
 
@@ -228,24 +271,7 @@ void Input::pollInputs()
 
 		Input::inputs.INPUT_L2 = triggerLValue;
 		Input::inputs.INPUT_R2 = triggerRValue;
-
-
-		int buttonCount;
-		const unsigned char *buttons = glfwGetJoystickButtons(CONTROLLER_ID, &buttonCount);
-
-		Input::inputs.INPUT_ACTION1  = buttons[BUTTON_A];
-		Input::inputs.INPUT_ACTION2  = buttons[BUTTON_B];
-		Input::inputs.INPUT_ACTION3  = buttons[BUTTON_X];
-		Input::inputs.INPUT_ACTION4  = buttons[BUTTON_Y];
-		Input::inputs.INPUT_RB       = buttons[BUTTON_RB];
-		Input::inputs.INPUT_LB       = buttons[BUTTON_LB];
-		Input::inputs.INPUT_START    = buttons[BUTTON_START];
-
-
-
-		//const char *name = glfwGetJoystickName(GLFW_JOYSTICK_1);
-		//std::fprintf(stdout, "joystick name: %s\n", name);
-	}
+    }
 
 	double xpos, ypos;
 	glfwGetCursorPos(window, &xpos, &ypos);
@@ -380,7 +406,7 @@ void Input::pollInputs()
 	}
     if (Input::inputs.INPUT_RB && !Input::inputs.INPUT_PREVIOUS_RB)
 	{
-        Global::shouldLogRace = !Global::shouldLogRace;
+        //Global::shouldLogRace = !Global::shouldLogRace;
     }
 	#endif
 
