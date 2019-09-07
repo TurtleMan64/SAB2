@@ -674,26 +674,19 @@ void PlayerSonic::step()
 	}
 	else //rotating the camera if youre grinding or on a rocket or lightdashing
 	{
-		//Twisting camera from user input
-		camDir = Maths::rotatePoint(&camDir, &relativeUp, -inputX2*dt);
+        //New idea: rotate a camera direction target vector instead, and then
+        // interpolate towards that once art the end
+        Vector3f camDirTarget(&vel);
 
-		camDir = Maths::interpolateVector(&camDir, &vel, vel.length()*0.05f*dt);
+        //point it a bit downwards
+        Vector3f perpen = camDirTarget.cross(&relativeUp);
+        camDirTarget = Maths::rotatePoint(&camDirTarget, &perpen, -0.15f);
+        //player input
+        camDirTarget = Maths::rotatePoint(&camDirTarget, &perpen,     -inputY2*0.05f);
+        camDirTarget = Maths::rotatePoint(&camDirTarget, &relativeUp, -inputX2*0.05f);
 
-
-		//player input
-		Vector3f perpen = camDir.cross(&relativeUp);
-		camDir = Maths::rotatePoint(&camDir, &perpen, -inputY2*dt);
-
-		//vertical check - rotate down if too high or too low
-		float dot = camDir.dot(&relativeUp);
-		if (dot < -0.325f)
-		{
-			camDir = Maths::rotatePoint(&camDir, &perpen, -((dot+0.325f)*12)*dt);
-		}
-		else if (dot > -0.2f)
-		{
-			camDir = Maths::rotatePoint(&camDir, &perpen, -((dot+0.2f)*20)*dt);
-		}
+        //the final actual moving of camDir to target
+        camDir = Maths::interpolateVector(&camDir, &camDirTarget, vel.length()*0.03f*dt);
 	}
 
 	//smoothing
