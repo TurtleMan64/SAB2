@@ -17,7 +17,7 @@ const float PlayerModel::getDisplayBallOffset() {return 0.0f;}
 
 ParticleTexture* PlayerModel::getBallTexture() {return nullptr;}
 
-void PlayerModel::log(std::vector<std::string>* log)
+void PlayerModel::log(std::list<std::string>* log)
 {
     std::string line = std::to_string(Global::mainHudTimer->totalTime) + " " +
                        std::to_string(currentAnimIndex) + " " +

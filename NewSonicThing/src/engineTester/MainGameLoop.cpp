@@ -192,7 +192,7 @@ bool Global::stageUsesWater = true;
 FontType* Global::fontVipnagorgialla = nullptr;
 bool Global::renderWithCulling = true;
 
-std::vector<std::string> Global::raceLog;
+std::list<std::string> Global::raceLog;
 bool Global::shouldLogRace = false;
 
 std::list<Checkpoint*> Global::gameCheckpointList;
@@ -1536,6 +1536,8 @@ void Global::debugNew(const char* name)
         int num = heapObjects[name];
         heapObjects[name] = num+1;
     }
+    #else
+    name;
     #endif
 }
 
@@ -1554,5 +1556,7 @@ void Global::debugDel(const char* name)
         int num = heapObjects[name];
         heapObjects[name] = num-1;
     }
+    #else
+    name;
     #endif
 }

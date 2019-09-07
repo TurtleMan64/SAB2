@@ -58,6 +58,8 @@
 #include "../entities/playersonic.h"
 #include "../entities/DelfinoPlaza/dpstagemanager.h"
 #include "../entities/raceghost.h"
+#include "../entities/help.h"
+#include "../entities/Tutorial/tstagemanager.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -698,6 +700,8 @@ void LevelLoader::loadLevel(std::string levelFilename)
 
 	Global::finishStageTimer = -1.0f;
 
+    Global::raceLog.clear();
+
 	//Vector3f partVel(0, 0, 0);
 	//new Particle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &partVel, 0.0f,
 	//	1.0f, 0.0f, 50.0f, 0.0f, true, false);
@@ -718,7 +722,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
 }
 
 
-void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>* chunkedEntities)
+void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chunkedEntities)
 {
 	if (dat[0][0] == '#')
 	{
@@ -831,6 +835,25 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 			return;
 		}
 
+        case 32: //NPC
+		{
+			Help::loadStaticModels();
+
+			std::string message = "";
+			for (int i = 4; i < datLength-1; i++)
+			{
+				message = message + dat[i] + " ";
+			}
+			message = message + dat[datLength-1];
+
+			Help* help = new Help(
+				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
+				message); //message
+			INCR_NEW("Entity");
+			chunkedEntities->push_back(help);
+			return;
+		}
+
         case 69: //GoalRing
 		{
 			GoalRing::loadStaticModels();
@@ -898,6 +921,14 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
                     DP_StageManager::loadStaticModels();
 					DP_StageManager* dp = new DP_StageManager; INCR_NEW("Entity");
 					Main_addEntity(dp);
+					break;
+                }
+
+                case 6:
+                {
+                    T_StageManager::loadStaticModels();
+					T_StageManager* tut = new T_StageManager; INCR_NEW("Entity");
+					Main_addEntity(tut);
 					break;
                 }
 
@@ -1153,6 +1184,8 @@ void LevelLoader::freeAllStaticModels()
     Spring::deleteStaticModels();
     DP_StageManager::deleteStaticModels();
     RaceGhost::deleteStaticModels();
+    Help::deleteStaticModels();
+    T_StageManager::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()

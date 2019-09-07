@@ -57,3 +57,28 @@ char** split(char* line, char delim, int* length)
 
 	return parsedData;
 }
+
+void split(char* line, char delim, int* numFound, char** tokenPointers, int maxNumTokensToFind)
+{
+	int numTokensFound = 0;
+	int index = 0;
+	bool inToken = false;
+
+	while (line[index] != 0 && numTokensFound < maxNumTokensToFind)
+	{
+		if (line[index] != delim && !inToken)
+		{
+			inToken = true;
+            line[index] = 0;
+            tokenPointers[numTokensFound] = &line[index];
+			numTokensFound += 1;
+		}
+		else if (line[index] == delim)
+		{
+			inToken = false;
+		}
+		index += 1;
+	}
+
+	*numFound = numTokensFound;
+}

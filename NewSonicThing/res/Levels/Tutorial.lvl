@@ -20,19 +20,19 @@ res/Audio/BGM/g_hill_loop.ogg
 -2997.882813 204.103973 -10584.179688
 103 3
 -100
-nowater
-0
-0
+water
+-1569.84
+12
 false
 
 #Stage Manager
-91 5
+91 6
 
 #Player
-6 -353.3321 1 -353.7559
+6 -350.3321 1 -359.7559
 
 #Goal Ring
-69 5950 -980 2566
+69 8184.53 -1400 3456.31
 
 #Race Ghost
 70 res/Models/Levels/Tutorial/RaceFrames.txt
@@ -51,8 +51,17 @@ false
 28 4144.504883 -1308.589844 -4679.001465
 28 4124.322266 -1330.694336 -4603.077148
 
-0 0 0 0
-0 -255 30 0
+#Help
+32 206.051956 0.100000 -126.951447 Press the A button to jump
+32 387.014343 100.241692 -111.562851 Hold X and release to peel-out
+32 1079.752563 100.241684 54.965832 Press B while going fast to roll down slopes
+32 4067.832764 -1458.528198 -3717.040771 Press X while in the air to bounce
+32 4078.416260 -1394.800537 -4389.109375 Press A after jumping to homing attack
+32 3958.115967 -1272.937500 -5276.970215 Press Y to light dash
+32 4966.359863 -1290.458496 2425.133789 Maintain a high speed to run on water
+
+#0 0 0 0
+#0 -255 30 0
 
 #Light Dash Rings
 0 2438.095703 133.662231 -2490.330811

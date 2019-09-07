@@ -406,7 +406,7 @@ void Input::pollInputs()
 	}
     if (Input::inputs.INPUT_RB && !Input::inputs.INPUT_PREVIOUS_RB)
 	{
-        //Global::shouldLogRace = !Global::shouldLogRace;
+        Global::shouldLogRace = !Global::shouldLogRace;
     }
 	#endif
 
@@ -448,7 +448,6 @@ void Input::pollInputs()
 		Input::inputs.MENU_Y = Input::inputs.approxYLeft - Input::inputs.approxYLeftPrevious;
 	}
 }
-
 
 void Input::init()
 {

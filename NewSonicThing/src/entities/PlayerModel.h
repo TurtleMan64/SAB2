@@ -25,6 +25,6 @@ public:
 
     virtual ParticleTexture* getBallTexture();
 
-    void log(std::vector<std::string>* log);
+    void log(std::list<std::string>* log);
 };
 #endif
