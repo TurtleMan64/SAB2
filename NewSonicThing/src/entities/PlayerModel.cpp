@@ -19,6 +19,11 @@ ParticleTexture* PlayerModel::getBallTexture() {return nullptr;}
 
 void PlayerModel::log(std::list<std::string>* log)
 {
+    if (Global::mainHudTimer == nullptr)
+    {
+        return;
+    }
+
     std::string line = std::to_string(Global::mainHudTimer->totalTime) + " " +
                        std::to_string(currentAnimIndex) + " " +
                        std::to_string(currentAnimTime) + " " +

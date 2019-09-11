@@ -17,10 +17,11 @@ private:
 	float speedometer;
 	float speedometerScale;
 
-	GUINumber* numberLives;
-	GUINumber* numberSpeed;
-	GUIText* textSpeedUnits;
-	Timer* timer;
+    GUINumber* numberFPS = nullptr;
+	GUINumber* numberLives = nullptr;
+	GUINumber* numberSpeed = nullptr;
+	GUIText* textSpeedUnits = nullptr;
+	Timer* timer = nullptr;
 
 public:
 	HUD();

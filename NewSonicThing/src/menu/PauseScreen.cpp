@@ -76,7 +76,7 @@ PauseScreen::~PauseScreen()
 
 	textQuit->deleteMe(); delete textQuit; INCR_DEL("GUIText");
 
-	Global::gameState = STATE_RUNNING;
+	//Global::gameState = STATE_RUNNING;
 }
 
 void PauseScreen::setVisible(bool visible)
@@ -156,6 +156,8 @@ Menu* PauseScreen::step()
 			// Pop menu. Unpause.
 			retVal = PopMenu::get();
 
+            Global::gameState = STATE_RUNNING;
+
 			//resume all sound effects
 			for (int i = 0; i < 14; i++)
 			{
@@ -177,7 +179,7 @@ Menu* PauseScreen::step()
                 this->gameHud->getTimer()->freeze(true);
 				Vector3f vel(0, 0, 0);
 				new Particle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &vel, 0, 1.0f, 0.0f, 50.0f, 0, 50.0f, 0, true, false);
-				Global::gameState = STATE_CUTSCENE;
+				Global::gameState = STATE_RUNNING;
 				retVal = PopMenu::get();
 				AudioPlayer::stopAllSFX();
 				for (int i = 0; i < 14; i++)

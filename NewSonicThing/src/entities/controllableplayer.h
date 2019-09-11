@@ -9,6 +9,11 @@
 
 class ControllablePlayer : public Entity
 {
+protected:
+    bool inWater = false;
+    bool inWaterPrevious = false;
+    float waterHeight = 0.0f;
+
 public:
     Vector3f vel;
     Vector3f camDir;
@@ -84,7 +89,7 @@ public:
 
 	//virtual void stopMoving();
 
-	virtual void setInWater(float height);
+	virtual void setInWater(float newWaterHeight);
 
 	virtual void takeDamage(Vector3f* damageSource);
 

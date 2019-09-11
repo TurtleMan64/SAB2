@@ -851,9 +851,6 @@
     <ClInclude Include="src\entities\DelfinoPlaza\dpstagemanager.h">
       <Filter>Source Files\entities\DelfinoPlaza</Filter>
     </ClInclude>
-    <ClInclude Include="src\entities\PlayerModel.h">
-      <Filter>Source Files\entities</Filter>
-    </ClInclude>
     <ClInclude Include="src\entities\maniamightymodel.h">
       <Filter>Source Files\entities</Filter>
     </ClInclude>
@@ -868,6 +865,9 @@
     </ClInclude>
     <ClInclude Include="src\entities\Tutorial\tstagemanager.h">
       <Filter>Source Files\entities\Tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\playermodel.h">
+      <Filter>Source Files\entities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

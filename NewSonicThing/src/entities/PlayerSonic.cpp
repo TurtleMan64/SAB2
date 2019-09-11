@@ -75,7 +75,7 @@ void PlayerSonic::step()
     //to use later when doing running on water stuff
     Vector3f posBefore = position;
     Vector3f velBefore = vel;
-    Vector3f relativeUpBefore = relativeUp;
+    //Vector3f relativeUpBefore = relativeUp;
     bool onGroundBefore = onGround;
 
     //Start Lightdash
@@ -520,12 +520,12 @@ void PlayerSonic::step()
     //camera stuff
 	if (!isGrinding && !onRocket && !isLightdashing)
 	{
-		//Twisting camera from user input
-		camDir = Maths::rotatePoint(&camDir, &relativeUp, -inputX2*dt);
-
 		//camera adjust to direction you are heading in
 		if (onGround)
 		{
+            //Twisting camera from user input
+		    camDir = Maths::rotatePoint(&camDir, &relativeUp, -inputX2*dt);
+
 			if (Global::isAutoCam)
 			{
                 //idea: dont adjust the camera if sonic is heading towards it
@@ -555,23 +555,6 @@ void PlayerSonic::step()
                         camDir = Maths::rotatePoint(&camDir, &relativeUp, angToRotate);
                     }
                 }
-			}
-			else
-			{
-				//camDir = Maths::interpolateVector(&camDir, &vel, fminf(vel.length()*0.004f*dt, 0.5f*dt));
-			}
-		}
-		else
-		{
-			Vector3f noY(vel);
-			if (noY.y > 0)
-			{
-				noY.y = 0;
-			}
-
-			if (Global::isAutoCam)
-			{
-				camDir = Maths::interpolateVector(&camDir, &noY, fminf(noY.length()*0.01f*dt, 30.0f*dt));
 			}
 			else
 			{
@@ -654,9 +637,24 @@ void PlayerSonic::step()
                 }
 			}
 		}
-		else
-		{
-			//player input
+
+        if (!onGround)
+        {
+            //Twisting camera from user input
+		    camDir = Maths::rotatePoint(&camDir, &relativeUp, -inputX2*dt);
+
+            Vector3f noY(vel);
+			if (noY.y > 0)
+			{
+				noY.y = 0;
+			}
+
+			if (Global::isAutoCam)
+			{
+				camDir = Maths::interpolateVector(&camDir, &noY, fminf(noY.length()*0.01f*dt, 30.0f*dt));
+			}
+
+            //player input
 			Vector3f perpen = camDir.cross(&relativeUp);
 			camDir = Maths::rotatePoint(&camDir, &perpen, -inputY2*dt);
 
@@ -670,7 +668,7 @@ void PlayerSonic::step()
 			{
 				camDir = Maths::rotatePoint(&camDir, &perpen, -((dot+0.2f)*20)*dt);
 			}
-		}
+        }
 	}
 	else //rotating the camera if youre grinding or on a rocket or lightdashing
 	{
@@ -1146,9 +1144,96 @@ void PlayerSonic::step()
 	    }
     }
 
+    //Water 
+    if (position.y < Global::waterHeight - 5 && Global::stageUsesWater)
+	{
+		inWater = true;
+		waterHeight = Global::waterHeight;
+	}
+
+	if (!inWater && inWaterPrevious)
+	{
+		AudioPlayer::play(5, &position);
+        Vector3f partPos(&position);
+        partPos.y = waterHeight + 5;
+		new Particle(ParticleResources::textureSplash, &partPos, 0.5f, 10.0f, false);
+
+        if (!onGround)
+        {
+		    vel.y += 50.0f; //waterExitBoost
+        }
+		
+		int numBubbles = ((int)abs((vel.y/60.0f) * 8)) + 18;
+		for (int i = 0; i < numBubbles; i++)
+		{
+			float xOff = (7*(Maths::random() - 0.5f));
+			float zOff = (7*(Maths::random() - 0.5f));
+
+			Vector3f bubPos(
+				position.x + xOff,
+				waterHeight + 2,
+				position.z + zOff);
+
+			Vector3f bubVel(
+				Maths::random() - 0.5f + (vel.x/60.0f)*0.4f,
+				Maths::random()*0.3f + 0.2f + (vel.y/60.0f)*0.3f,
+				Maths::random() - 0.5f + (vel.z/60.0f)*0.4f);
+
+            bubVel.scale(60.0f);
+            new Particle(ParticleResources::textureBubble, &bubPos, &bubVel, 60*60*0.25f, 1.0f, 0.0f, 4.0f, 0.0f, false, false, 1.0f);
+		}
+	}
+
+	if (inWater && !inWaterPrevious)
+	{
+		AudioPlayer::play(5, &position);
+        Vector3f partPos(&position);
+        partPos.y = waterHeight + 5;
+		new Particle(ParticleResources::textureSplash, &partPos, 0.5f, 10.0f, false);
+
+		int numBubbles = ((int)abs((vel.y/60.0f) * 8)) + 18;
+		for (int i = 0; i < numBubbles; i++)
+		{
+			float xOff = (7*(Maths::random() - 0.5f));
+			float zOff = (7*(Maths::random() - 0.5f));
+
+			Vector3f bubPos(
+				position.x + xOff,
+				waterHeight + 2,
+				position.z + zOff);
+
+			Vector3f bubVel(
+				Maths::random() - 0.5f + (vel.x/60.0f)*0.4f,
+				Maths::random()*0.3f + 0.2f - (vel.y/60.0f)*0.3f,
+				Maths::random() - 0.5f + (vel.z/60.0f)*0.4f);
+
+            bubVel.scale(60.0f);
+			new Particle(ParticleResources::textureBubble, &bubPos, &bubVel, 60*60*0.05f, 1.0f, 0.0f, 4.0f, 0.0f, false, false, 1.0f);
+		}
+
+		vel.y = fmaxf(vel.y, -200.0f); //waterEntryMaxYVel
+
+        Vector3f noY(&vel);
+        noY.y = 0;
+        float newSpeed = Maths::applyDrag(noY.length(), -0.35f, 1.0f); //waterEntrySlowdown
+        noY.setLength(newSpeed);
+        vel.x = noY.x;
+        vel.z = noY.z;
+	}
+
+    //underwater friction
+	if (inWater)
+	{
+        float newSpeed = Maths::applyDrag(vel.length(), -0.35f, dt); //waterDeceleration
+        vel.setLength(newSpeed);
+	}
+
 	//Animating us
 	updateAnimationValues();
 	animate();
+
+    inWaterPrevious = inWater;
+	inWater = false;
 
     if (Global::shouldLogRace)
     {
@@ -1993,6 +2078,12 @@ void PlayerSonic::grabRocket()
     onGround = false;
     isBall = false;
     isJumping = false;
+}
+
+void PlayerSonic::setInWater(float newWaterHeight)
+{
+    inWater = true;
+    waterHeight = newWaterHeight;
 }
 
 void PlayerSonic::releaseRocket()

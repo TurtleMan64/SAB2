@@ -200,6 +200,8 @@ public:
 
 	void setIsBall(bool newIsBall);
 
+    void setInWater(float newWaterHeight);
+
     void grabRocket();
 
     void releaseRocket();

@@ -124,6 +124,10 @@ public:
 	static bool stageUsesWater;
 	static FontType* fontVipnagorgialla;
     static bool renderWithCulling; //if the stage uses backface culling or not
+    static bool displayFPS;
+    static int currentCalculatedFPS;
+    static int renderCount;
+    //static const int syncToDisplayEveryXFrames = 1; //if for some reason you want to render at double, triple, etc. the fps of the monitor
 
     static std::list<std::string> raceLog;
     static bool shouldLogRace;

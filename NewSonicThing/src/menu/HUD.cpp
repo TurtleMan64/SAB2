@@ -16,14 +16,15 @@ HUD::HUD()
 	extern unsigned int SCR_HEIGHT;
 
 	this->aspectRatio = (float)SCR_WIDTH / (float)SCR_HEIGHT;
-	this->safeAreaY = 0.05f;
+	this->safeAreaY = 0.03f;
 	this->safeAreaX = safeAreaY / this->aspectRatio;
 
 	this->s = 0.05f;
 	this->w = 0.8f * s / this->aspectRatio; //width of a single text character
 
-	//this->fontVip = new FontType(Loader::loadTexture("res/Fonts/vipnagorgialla.png"), "res/Fonts/vipnagorgialla.fnt"); INCR_NEW
 	this->numberLives = new GUINumber(Global::gameLives, safeAreaX, 1.0f - safeAreaY, s, 6, true, 2); INCR_NEW("GUINumber");
+
+    this->numberFPS = new GUINumber(Global::currentCalculatedFPS, 1.0f, 0.0f, s, 2, Global::displayFPS, 0); INCR_NEW("GUINumber");
 
 	this->timer = new Timer(Global::fontVipnagorgialla, safeAreaX, safeAreaY, s, 0, true); INCR_NEW("Timer");
     Global::mainHudTimer = this->timer;
@@ -36,8 +37,8 @@ HUD::HUD()
 
 HUD::~HUD()
 {
-	//delete this->fontVip; INCR_DEL
 	delete this->timer; INCR_DEL("Timer");
+    this->numberFPS->deleteMe(); delete this->numberFPS; INCR_DEL("GUINumber");
 	this->numberLives->deleteMe(); delete this->numberLives; INCR_DEL("GUINumber");
 	this->numberSpeed->deleteMe(); delete this->numberSpeed; INCR_DEL("GUINumber");
 	this->textSpeedUnits->deleteMe(); delete this->textSpeedUnits; INCR_DEL("GUIText");
@@ -50,6 +51,16 @@ Timer* HUD::getTimer()
 
 void HUD::draw()
 {
+    if (Global::displayFPS)
+    {
+        this->numberFPS->visible = true;
+        this->numberFPS->displayNumber = Global::currentCalculatedFPS;
+	    this->numberFPS->refresh();
+    }
+    else
+    {
+        this->numberFPS->visible = false;
+    }
 	this->numberLives->displayNumber = Global::gameLives;
 	this->numberLives->refresh();
 	this->numberSpeed->displayNumber = Global::gameMainVehicleSpeed;

@@ -286,7 +286,7 @@
     <ClInclude Include="src\entities\DelfinoPlaza\dpstagemanager.h" />
     <ClInclude Include="src\entities\help.h" />
     <ClInclude Include="src\entities\maniamightymodel.h" />
-    <ClInclude Include="src\entities\PlayerModel.h" />
+    <ClInclude Include="src\entities\playermodel.h" />
     <ClInclude Include="src\entities\playersonic.h" />
     <ClInclude Include="src\entities\checkpoint.h" />
     <ClInclude Include="src\entities\CityEscape\cestagemanager.h" />

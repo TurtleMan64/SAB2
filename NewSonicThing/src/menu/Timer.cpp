@@ -34,6 +34,10 @@ Timer::Timer(FontType* font, float posX, float posY, float scale, int alignment,
 Timer::~Timer()
 {
 	std::cout << "Deleting timer\n";
+    if (Global::mainHudTimer == this)
+    {
+        Global::mainHudTimer = nullptr;
+    }
 	this->colon->deleteMe(); delete this->colon; INCR_DEL("GUIText");
 	this->dot->deleteMe(); delete this->dot; INCR_DEL("GUIText");
 	this->minutes->deleteMe(); delete this->minutes; INCR_DEL("GUINumber");

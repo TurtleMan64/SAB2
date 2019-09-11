@@ -14,6 +14,7 @@
 #include "../toolbox/maths.h"
 
 #include <list>
+#include <cstring>
 #include <fstream>
 
 
@@ -130,7 +131,12 @@ RaceGhost::RaceGhost(char* filePath)
 
 void RaceGhost::step()
 {
-    float currentTime = Global::mainHudTimer->totalTime;
+    float currentTime = 0.0f;
+    if (Global::mainHudTimer != nullptr)
+    {
+        currentTime = Global::mainHudTimer->totalTime;
+    }
+
     GhostFrame* lastFrame = &frames[frames.size()-1];
     if (currentTime >= lastFrame->time)
     {

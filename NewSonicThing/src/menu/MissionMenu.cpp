@@ -278,7 +278,6 @@ Menu* MissionMenu::step()
 
 		Global::isNewLevel = true;
 		Global::shouldLoadLevel = true;
-		Global::gameState = STATE_RUNNING;
 		retVal = SwitchStack::get();
 	}
 	else if (pressedBack)
