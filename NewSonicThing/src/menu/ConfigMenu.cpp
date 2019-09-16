@@ -107,20 +107,20 @@ std::string ConfigMenu::floatToString(float value)
 void ConfigMenu::unloadResources()
 {
 	std::cout << "Unloading Config Menu resources.\n";
-    if (buttonsNames.size() == 0)
+    if ((int)buttonsNames.size() == 0)
     {
         std::fprintf(stdout, "Warning: ConfigMenu unloading resources when they are empty.\n");
     }
 
 	GuiManager::clearGuisToRender();
 
-	for (int i = 0; i < buttonsNames.size(); i++)
+	for (int i = 0; i < (int)buttonsNames.size(); i++)
 	{
 		delete buttonsNames[i]; INCR_DEL("Button");
 	}
     buttonsNames.clear();
 
-    for (int i = 0; i < buttonsValues.size(); i++)
+    for (int i = 0; i < (int)buttonsValues.size(); i++)
 	{
 		delete buttonsValues[i]; INCR_DEL("Button");
 	}
@@ -145,7 +145,7 @@ void ConfigMenu::draw()
 	
 	if (visible)
 	{
-        for (int i = 0; i < buttonsNames.size(); i++)
+        for (int i = 0; i < (int)buttonsNames.size(); i++)
 	    {
             buttonsNames[i]->setPos(0.32f, 0.5f + offsetCurr + (0.1f*(i)));
             buttonsNames[i]->setVisible(true);
@@ -163,7 +163,7 @@ void ConfigMenu::draw()
 
 void ConfigMenu::setVisible(bool visibleStatus)
 {
-	for (int i = 0; i < buttonsNames.size(); i++)
+	for (int i = 0; i < (int)buttonsNames.size(); i++)
 	{
         buttonsNames[i]->setVisible(visibleStatus);
         buttonsNames[i]->setHighlight(visibleStatus);
@@ -321,7 +321,7 @@ Menu* ConfigMenu::step()
 	}
 	if (shouldGoDown)
 	{
-		if (currentButtonIndex < buttonsNames.size()-1)
+		if (currentButtonIndex < (int)buttonsNames.size()-1)
 		{
 			currentButtonIndex++;
 			AudioPlayer::play(36, Global::gameCamera->getFadePosition1());

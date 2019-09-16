@@ -5,6 +5,7 @@ class Button;
 
 #include <glad/glad.h>
 #include <vector>
+#include <string>
 #include "menu.h"
 
 class ConfigMenu : public Menu
