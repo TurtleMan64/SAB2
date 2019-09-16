@@ -72,14 +72,22 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>../Libraries/Include;$(IncludePath)</IncludePath>
     <LibraryPath>../Libraries/StaticCode;$(LibraryPath)</LibraryPath>
+    <OutDir>..\$(ProjectName)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>../Libraries/Include;$(IncludePath)</IncludePath>
     <LibraryPath>../Libraries/StaticCode;$(LibraryPath)</LibraryPath>
+    <OutDir>..\$(ProjectName)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>..\$(ProjectName)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>..\$(ProjectName)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
@@ -100,7 +108,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -210,6 +218,7 @@
     <ClCompile Include="src\guis\GuiTexture.cpp" />
     <ClCompile Include="src\guis\GuiTextureResources.cpp" />
     <ClCompile Include="src\menu\Button.cpp" />
+    <ClCompile Include="src\menu\ConfigMenu.cpp" />
     <ClCompile Include="src\menu\Extras.cpp" />
     <ClCompile Include="src\menu\HUD.cpp" />
     <ClCompile Include="src\menu\MainMenu.cpp" />
@@ -341,6 +350,7 @@
     <ClInclude Include="src\guis\guitexture.h" />
     <ClInclude Include="src\guis\guitextureresources.h" />
     <ClInclude Include="src\menu\button.h" />
+    <ClInclude Include="src\menu\configmenu.h" />
     <ClInclude Include="src\menu\extras.h" />
     <ClInclude Include="src\menu\hud.h" />
     <ClInclude Include="src\menu\mainmenu.h" />

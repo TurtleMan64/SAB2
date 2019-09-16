@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <algorithm>
+#include <iostream>
 
 #include "../fontMeshCreator/guitext.h"
 #include "../fontMeshCreator/fonttype.h"
@@ -21,7 +22,7 @@
 #include "../guis/guimanager.h"
 #include "../guis/guitexture.h"
 #include "missionmenu.h"
-#include <iostream>
+#include "configmenu.h"
 
 MainMenu::MainMenu()
 {
@@ -230,6 +231,9 @@ Menu* MainMenu::step()
 				break;
 
 			case config:
+                AudioPlayer::play(38, Global::gameCamera->getFadePosition1());
+				retVal = new ConfigMenu; INCR_NEW("Menu");
+				setVisible(false);
 				break;
 
 			case exit:

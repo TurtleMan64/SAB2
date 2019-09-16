@@ -143,6 +143,8 @@ bool Global::renderBloom = false;
 
 bool Global::framerateUnlock = false;
 
+bool Global::useFullscreen = false;
+
 bool Global::renderShadowsFar = false;
 bool Global::renderShadowsClose = false;
 int Global::shadowsFarQuality = 0;
@@ -247,9 +249,7 @@ int main(int argc, char** argv)
         Global::pathToEXE = Global::pathToEXE.substr(0, idx+1);
         #endif
     }
-
-    //uncomment this out when building+running from visual studio :)
-    Global::pathToEXE = "";
+    printf("%s\n", Global::pathToEXE.c_str());
 
 	#ifdef DEV_MODE
 	std::thread listenThread(doListenThread);

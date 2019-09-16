@@ -32,8 +32,6 @@ unsigned int AA_SAMPLES = 4;
 
 extern float VFOV_BASE;
 
-bool useFullscreeen = false;
-
 extern float input_zoom_buffer;
 
 GLFWwindow* window = nullptr;
@@ -68,7 +66,7 @@ int createDisplay()
 	glfwWindowHint(GLFW_SAMPLES, AA_SAMPLES);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	if (useFullscreeen)
+	if (Global::useFullscreen)
 	{
 		monitor = glfwGetPrimaryMonitor();
 
@@ -123,14 +121,15 @@ int createDisplay()
 	std::fprintf(stdout, "Vendor:         %s\n", glGetString(GL_VENDOR));
 	std::fprintf(stdout, "OpenGL version: %s\n", glGetString(GL_VERSION));
 	std::fprintf(stdout, "GLSL version:   %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+    std::fprintf(stdout, "GLFW Version: %s\n",   glfwGetVersionString());
 
 	glfwSwapInterval(1); //1 = vsync. 0 = off. 2 = half monitor refresh rate
 	glEnable(GL_MULTISAMPLE);
 
 	//Center the window
-	if (!useFullscreeen)
+	if (!Global::useFullscreen)
 	{
-		const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+		const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
 		int monitorWidth = mode->width;
 		int monitorHeight = mode->height;
@@ -241,7 +240,7 @@ void loadDisplaySettings()
 				}
 				else if (strcmp(lineSplit[0], "Fullscreen") == 0)
 				{
-					useFullscreeen = (strcmp(lineSplit[1], "on") == 0);
+					Global::useFullscreen = (strcmp(lineSplit[1], "on") == 0);
 				}
 				else if (strcmp(lineSplit[0], "F_Width") == 0)
 				{

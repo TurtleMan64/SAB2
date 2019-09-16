@@ -14,7 +14,7 @@ private:
 	bool visible;
 	bool visibleHighlight;
 
-	GUIText* text;
+	GUIText* text = nullptr;
 
 	GuiTexture texture;
 	GuiTexture textureHighlight; // For Arcade
@@ -27,6 +27,8 @@ public:
 	void setHighlight(bool makeVisible); // Toggles textureSet display
 
 	void setPos(float xPos, float yPos);
+
+    void generateText(std::string newText);
 
 	GUIText* getText();
 };

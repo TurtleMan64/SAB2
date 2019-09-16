@@ -123,6 +123,7 @@ void Input::pollInputs()
 
     bool joystickIsPresent = false;
 
+    #if GLFW_VERSION_MAJOR == 3 && GLFW_VERSION_MINOR == 3
     if (glfwJoystickIsGamepad(CONTROLLER_ID)) //joystick is both present and has a pre defined mapping
     {
         GLFWgamepadstate state;
@@ -148,7 +149,9 @@ void Input::pollInputs()
 	        Input::inputs.INPUT_R2 = state.axes[TRIGGER_R];
         }
     }
-	else if (glfwJoystickPresent(CONTROLLER_ID))
+    #endif
+
+	if (!joystickIsPresent && glfwJoystickPresent(CONTROLLER_ID))
 	{
         joystickIsPresent = true;
 

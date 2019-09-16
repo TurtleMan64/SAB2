@@ -1,4 +1,4 @@
-# Material Count: 4
+# Material Count: 5
 
 newmtl WoodInside
 Ns 20
@@ -19,4 +19,10 @@ newmtl Bark
 Ns 20
 Ni 0
 map_Kd Bark.png
+
+newmtl Shingles
+Ns 20
+Ni 0
+scrollX 6
+map_Kd Shingles.png
 

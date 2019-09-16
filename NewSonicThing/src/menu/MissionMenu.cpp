@@ -227,20 +227,20 @@ Menu* MissionMenu::step()
 	if (this->holdUpTimer >= 0.25f)
 	{
 		holdTick += dt;
-		if (holdTick >= 0.15f)
+		if (holdTick >= 0.1f)
 		{
 			shouldGoUp = true;
-			holdTick -= 0.15f;
+			holdTick -= 0.1f;
 		}
 	}
 
 	if (this->holdDownTimer >= 0.25f)
 	{
 		holdTick += dt;
-		if (holdTick >= 0.15f)
+		if (holdTick >= 0.1f)
 		{
 			shouldGoDown = true;
-			holdTick -= 0.15f;
+			holdTick -= 0.1f;
 		}
 	}
 

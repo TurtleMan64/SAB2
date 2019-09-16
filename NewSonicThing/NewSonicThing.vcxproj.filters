@@ -492,6 +492,9 @@
     <ClCompile Include="src\entities\Tutorial\T_StageManager.cpp">
       <Filter>Source Files\entities\Tutorial</Filter>
     </ClCompile>
+    <ClCompile Include="src\menu\ConfigMenu.cpp">
+      <Filter>Source Files\menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.h">
@@ -868,6 +871,9 @@
     </ClInclude>
     <ClInclude Include="src\entities\playermodel.h">
       <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\menu\configmenu.h">
+      <Filter>Source Files\menu</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

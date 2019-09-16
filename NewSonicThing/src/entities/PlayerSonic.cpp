@@ -1336,7 +1336,7 @@ void PlayerSonic::moveMeGround()
 
 			//rotate vel to where the stick is going
 			float ang = Maths::angleBetweenVectors(&vel, &velToAdd);
-			if (ang > Maths::toRadians(135.0f) && vel.length() > 30) //skid
+			if (ang > Maths::toRadians(120.0f) && vel.lengthSquared() > 30*30 ) //skid
 			{
 				vel = Maths::applyDrag(&vel, skidPower, dt);
 				skidded = true;

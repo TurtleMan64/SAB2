@@ -385,6 +385,11 @@ void Master_makeProjectionMatrix()
 	{
 		ParticleMaster::updateProjectionMatrix(projectionMatrix);
 	}
+
+    if (Global::useHighQualityWater && Global::gameWaterRenderer != nullptr)
+    {
+        Global::gameWaterRenderer->updateProjectionMatrix(projectionMatrix);
+    }
 }
 
 Matrix4f* Master_getProjectionMatrix()
