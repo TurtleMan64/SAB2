@@ -30,7 +30,7 @@ Beetle::Beetle()
 
 }
 
-Beetle::Beetle(float x, float y, float z)
+Beetle::Beetle(float x, float y, float z, std::list<Entity*>* entityListToAdd)
 {
 	position.x = x;
 	position.y = y;
@@ -46,7 +46,7 @@ Beetle::Beetle(float x, float y, float z)
 	blades->setVisible(true);
 	blades->setPosition(&position);
     updateBlades();
-	Main_addChunkedEntity(blades);
+	entityListToAdd->push_back(blades);
 }
 
 void Beetle::updateBlades()

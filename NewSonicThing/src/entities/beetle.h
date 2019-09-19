@@ -23,7 +23,7 @@ private:
 
 public:
 	Beetle();
-	Beetle(float x, float y, float z);
+	Beetle(float x, float y, float z, std::list<Entity*>* entityListToAdd);
 
 	void step();
 

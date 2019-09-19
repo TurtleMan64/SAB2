@@ -85,7 +85,7 @@ ManiaSonicModel::ManiaSonicModel()
 	visible = false;
 	models = &ManiaSonicModel::modelDash0;
 
-	myBody =         new Body(&modelBody);
+	myBody =         new Body(&modelBody); INCR_NEW("Entity")
 	myHead =         new Limb(&modelHead,         1.2f,  -0.3f,   0,     myBody,   nullptr);        INCR_NEW("Entity")
 	myLeftHumerus =  new Limb(&modelLeftHumerus,  0.9f,	  0,     -0.9f,  myBody,   nullptr);        INCR_NEW("Entity")
 	myLeftForearm =  new Limb(&modelLeftForearm,  0,     -1.3f,   0,     nullptr,  myLeftHumerus);  INCR_NEW("Entity")

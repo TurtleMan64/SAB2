@@ -60,6 +60,7 @@
 #include "../entities/raceghost.h"
 #include "../entities/help.h"
 #include "../entities/Tutorial/tstagemanager.h"
+#include "../entities/itemcapsule.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -83,9 +84,9 @@ void LevelLoader::loadTitle()
 	Global::gameMainPlayer = nullptr;
 
 	Main_deleteAllEntites();
-	Main_deleteAllEntitesPass2();
-	Main_deleteAllEntitesPass3();
-	Main_deleteAllTransparentEntites();
+	//Main_deleteAllEntitesPass2();
+	//Main_deleteAllEntitesPass3();
+	//Main_deleteAllTransparentEntites();
 	Main_deleteAllChunkedEntities();
 
 	for (Checkpoint* check : Global::gameCheckpointList)
@@ -183,9 +184,9 @@ void LevelLoader::loadLevel(std::string levelFilename)
 	Global::gameMainPlayer = nullptr;
 
 	Main_deleteAllEntites();
-	Main_deleteAllEntitesPass2();
-	Main_deleteAllEntitesPass3();
-	Main_deleteAllTransparentEntites();
+	//Main_deleteAllEntitesPass2();
+	//Main_deleteAllEntitesPass3();
+	//Main_deleteAllTransparentEntites();
 	Main_deleteAllChunkedEntities();
 
 	for (Checkpoint* check : Global::gameCheckpointList)
@@ -744,21 +745,21 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
 		case 2: //Stage Pass 2
 		{
 			StagePass2* pass2 = new StagePass2(dat[1], dat[2]); INCR_NEW("Entity");
-			Main_addEntityPass2(pass2);
+			Main_addEntity(pass2);
 			return;
 		}
 
 		case 3: //Stage Pass 3
 		{
 			StagePass3* pass3 = new StagePass3(dat[1], dat[2]); INCR_NEW("Entity");
-			Main_addEntityPass3(pass3);
+			Main_addEntity(pass3);
 			return;
 		}
 
 		case 4: //Stage Transparent
 		{
 			StageTransparent* trans = new StageTransparent(dat[1], dat[2]); INCR_NEW("Entity");
-			Main_addTransparentEntity(trans);
+			Main_addEntity(trans);
 			return;
 		}
 
@@ -811,7 +812,7 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
 			JumpRamp* ramp = new JumpRamp(
 				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]),
 				toFloat(dat[4])); INCR_NEW("Entity");
-			Main_addTransparentEntity(ramp);
+			Main_addEntity(ramp);
 			return;
 		}
 
@@ -827,10 +828,22 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
 			return;
         }
 
+        case 27: //Item Capsule
+		{
+			ItemCapsule::loadStaticModels();
+			ItemCapsule* capsule = new ItemCapsule(
+                toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]),   //position
+                toFloat(dat[4]), toFloat(dat[5]), toFloat(dat[6]),   //relative up direction
+                toInt(dat[7]), toInt(dat[8]), chunkedEntities);      //item type, box type
+            INCR_NEW("Entity");
+			chunkedEntities->push_back(capsule);
+			return;
+		}
+
         case 28: //Beetle
 		{
 			Beetle::loadStaticModels();
-			Beetle* beetle = new Beetle(toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3])); INCR_NEW("Entity");
+			Beetle* beetle = new Beetle(toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), chunkedEntities); INCR_NEW("Entity");
 			chunkedEntities->push_back(beetle);
 			return;
 		}
@@ -1186,6 +1199,7 @@ void LevelLoader::freeAllStaticModels()
     RaceGhost::deleteStaticModels();
     Help::deleteStaticModels();
     T_StageManager::deleteStaticModels();
+    ItemCapsule::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()

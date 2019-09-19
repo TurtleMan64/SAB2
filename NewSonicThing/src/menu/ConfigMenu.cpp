@@ -337,13 +337,13 @@ Menu* ConfigMenu::step()
         switch (currentButtonIndex)
         {
             case 0:
-                glfwSetWindowSize(getWindow(), SCR_WIDTH - 1*holdMultiplier, SCR_HEIGHT);
-                buttonsValues[0]->generateText(std::to_string(SCR_WIDTH));
+                //glfwSetWindowSize(getWindow(), SCR_WIDTH - 1*holdMultiplier, SCR_HEIGHT);
+                //buttonsValues[0]->generateText(std::to_string(SCR_WIDTH));
                 break;
 
             case 1:
-                glfwSetWindowSize(getWindow(), SCR_WIDTH, SCR_HEIGHT - 1*holdMultiplier);
-                buttonsValues[1]->generateText(std::to_string(SCR_HEIGHT));
+                //glfwSetWindowSize(getWindow(), SCR_WIDTH, SCR_HEIGHT - 1*holdMultiplier);
+                //buttonsValues[1]->generateText(std::to_string(SCR_HEIGHT));
                 break;
 
             case 2:
@@ -370,13 +370,13 @@ Menu* ConfigMenu::step()
         switch (currentButtonIndex)
         {
             case 0:
-                glfwSetWindowSize(getWindow(), SCR_WIDTH + 1*holdMultiplier, SCR_HEIGHT);
-                buttonsValues[0]->generateText(std::to_string(SCR_WIDTH));
+                //glfwSetWindowSize(getWindow(), SCR_WIDTH + 1*holdMultiplier, SCR_HEIGHT);
+                //buttonsValues[0]->generateText(std::to_string(SCR_WIDTH));
                 break;
 
             case 1:
-                glfwSetWindowSize(getWindow(), SCR_WIDTH, SCR_HEIGHT + 1*holdMultiplier);
-                buttonsValues[1]->generateText(std::to_string(SCR_HEIGHT));
+                //glfwSetWindowSize(getWindow(), SCR_WIDTH, SCR_HEIGHT + 1*holdMultiplier);
+                //buttonsValues[1]->generateText(std::to_string(SCR_HEIGHT));
                 break;
 
             case 2:

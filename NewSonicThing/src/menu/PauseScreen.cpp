@@ -178,7 +178,7 @@ Menu* PauseScreen::step()
 				this->gameHud->getTimer()->setTime(0.0f);
                 this->gameHud->getTimer()->freeze(true);
 				Vector3f vel(0, 0, 0);
-				new Particle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &vel, 0, 1.0f, 0.0f, 50.0f, 0, 50.0f, 0, true, false);
+				ParticleMaster::createParticle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &vel, 0, 1.0f, 0.0f, 50.0f, 0, 50.0f, 0, true, false);
 				Global::gameState = STATE_RUNNING;
 				retVal = PopMenu::get();
 				AudioPlayer::stopAllSFX();
@@ -213,7 +213,7 @@ Menu* PauseScreen::step()
 		case 3:
 		{
 			Vector3f vel(0, 0, 0);
-			new Particle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &vel, 0, 1.0f, 0.0f, 50.0f, 0, 50.0f, 0, true, false);
+			ParticleMaster::createParticle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &vel, 0, 1.0f, 0.0f, 50.0f, 0, 50.0f, 0, true, false);
 			LevelLoader::loadTitle();
 			retVal = ClearStack::get();
 			AudioPlayer::stopAllSFX();

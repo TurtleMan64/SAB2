@@ -198,6 +198,7 @@ void framebuffer_size_callback(GLFWwindow* /*windowHandle*/, int width, int heig
 	glViewport(0, 0, width, height);
 	SCR_WIDTH = width;
 	SCR_HEIGHT = height;
+    //Global::displaySizeChanged = 2; too hard, memory leaks
 	Master_makeProjectionMatrix();
 }
 

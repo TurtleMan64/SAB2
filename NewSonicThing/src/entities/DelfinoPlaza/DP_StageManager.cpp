@@ -21,12 +21,15 @@ DP_StageManager::DP_StageManager()
     skyPass2->visible = true;
     skyTransparent->visible = false;
 
+    skyPass2->renderOrder = 1;
+    skyTransparent->renderOrder = 3;
+
     scale = 3.0f;
     skyPass2->scale = 3.0f;
     skyTransparent->scale = 1.8f;
 
-    Main_addEntityPass2(skyPass2);
-    Main_addTransparentEntity(skyTransparent);
+    Main_addEntity(skyPass2);
+    Main_addEntity(skyTransparent);
 }
 
 void DP_StageManager::step()

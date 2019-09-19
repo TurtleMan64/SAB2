@@ -580,6 +580,13 @@ Vector3f Maths::spherePositionFromAngles(float angH, float angV, float radius)
 	return Vector3f(x, y, z);
 }
 
+void Maths::sphereAnglesFromPosition(Vector3f* dir, float* outAngY, float* outAngZ)
+{
+    *outAngY = Maths::toDegrees(atan2f(-dir->z, dir->x));
+    float distH = sqrtf(dir->z*dir->z + dir->x*dir->x);
+    *outAngZ = Maths::toDegrees(atan2f(dir->y, distH));
+}
+
 Vector3f Maths::randomPointOnSphere()
 {
 	float z   = Maths::nextUniform()*2 - 1;

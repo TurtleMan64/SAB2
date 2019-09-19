@@ -30,17 +30,17 @@ void Main_addEntity(Entity* entityToAdd);
 void Main_deleteEntity(Entity* entityToDelete);
 void Main_deleteAllEntites();
 
-void Main_addEntityPass2(Entity* entityToAdd);
-void Main_deleteEntityPass2(Entity* entityToDelete);
-void Main_deleteAllEntitesPass2();
+//void Main_addEntityPass2(Entity* entityToAdd);
+//void Main_deleteEntityPass2(Entity* entityToDelete);
+//void Main_deleteAllEntitesPass2();
 
-void Main_addEntityPass3(Entity* entityToAdd);
-void Main_deleteEntityPass3(Entity* entityToDelete);
-void Main_deleteAllEntitesPass3();
+//void Main_addEntityPass3(Entity* entityToAdd);
+//void Main_deleteEntityPass3(Entity* entityToDelete);
+//void Main_deleteAllEntitesPass3();
 
-void Main_addTransparentEntity(Entity* entityToAdd);
-void Main_deleteTransparentEntity(Entity* entityToDelete);
-void Main_deleteAllTransparentEntites();
+//void Main_addTransparentEntity(Entity* entityToAdd);
+//void Main_deleteTransparentEntity(Entity* entityToDelete);
+//void Main_deleteAllTransparentEntites();
 
 void Main_addChunkedEntity(Entity* entityToAdd);
 void Main_deleteChunkedEntity(Entity* entityToAdd);
@@ -129,6 +129,7 @@ public:
     static int renderCount;
     //static const int syncToDisplayEveryXFrames = 1; //if for some reason you want to render at double, triple, etc. the fps of the monitor
     static bool useFullscreen;
+    static int displaySizeChanged; //This will be 1 for a single frame after the size of the window changes (set in callback)
 
     static std::list<std::string> raceLog;
     static bool shouldLogRace;

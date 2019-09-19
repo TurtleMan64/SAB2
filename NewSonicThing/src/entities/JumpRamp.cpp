@@ -33,6 +33,7 @@ JumpRamp::JumpRamp(float x, float y, float z, float yRot)
 	position.y = y;
 	position.z = z;
 	scale = 1;
+    renderOrder = 3;
 	visible = true;
 	playerIsIn = false;
 

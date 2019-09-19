@@ -120,6 +120,9 @@ public:
 	*/
 	static Vector3f spherePositionFromAngles(float angH, float angV, float radius);
 
+    //outputs in degrees
+    static void sphereAnglesFromPosition(Vector3f* direction, float* outAngY, float* outAngZ);
+
 	//Generates a uniformly distributed random position on a sphere of radius 1
 	static Vector3f randomPointOnSphere();
 

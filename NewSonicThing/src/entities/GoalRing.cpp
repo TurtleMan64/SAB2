@@ -39,7 +39,8 @@ GoalRing::GoalRing(float x, float y, float z)
 	text = new Dummy(&GoalRing::modelsText); INCR_NEW("Entity");
 	text->setVisible(true);
 	text->setPosition(&position);
-	Main_addEntityPass2(text);
+    text->renderOrder = 1;
+	Main_addEntity(text);
 }
 
 void GoalRing::step()

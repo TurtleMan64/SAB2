@@ -62,9 +62,6 @@ false
 32 4966.359863 -1290.458496 2425.133789 Maintain a high speed to run on water
 32 3994.747070 -1272.937500 -5215.221191 Hold X to gain speed while grinding
 
-#0 0 0 0
-#0 -255 30 0
-
 #Rail
 92 res/Models/Levels/Tutorial/Rail.txt
 

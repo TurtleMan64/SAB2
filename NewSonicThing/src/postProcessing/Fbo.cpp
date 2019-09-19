@@ -15,6 +15,7 @@ Fbo::Fbo(int width, int height, int depthBufferType)
 	this->width = width;
 	this->height = height;
 	this->multisampleAndMultiTarget = false;
+    this->depthBufferType = depthBufferType;
 	initialiseFrameBuffer(depthBufferType);
 }
 
@@ -22,6 +23,7 @@ Fbo::Fbo(int width, int height)
 {
 	this->width = width;
 	this->height = height;
+    this->depthBufferType = DEPTH_RENDER_BUFFER;
 	this->multisampleAndMultiTarget = true;
 	initialiseFrameBuffer(DEPTH_RENDER_BUFFER);
 }
@@ -34,6 +36,14 @@ void Fbo::cleanUp()
 	glDeleteRenderbuffers(1, &depthBuffer);
 	glDeleteRenderbuffers(1, &colourBuffer);
 	glDeleteRenderbuffers(1, &colourBuffer2);
+}
+
+void Fbo::resize(int newWidth, int newHeight)
+{
+    cleanUp();
+    width = newWidth;
+    height = newHeight;
+    initialiseFrameBuffer(depthBufferType);
 }
 
 void Fbo::bindFrameBuffer()
@@ -154,6 +164,5 @@ void Fbo::createDepthBufferAttachment()
 		glRenderbufferStorageMultisample(GL_RENDERBUFFER, AA_SAMPLES, GL_DEPTH_COMPONENT24, width, height);  //depth bits
 	}
 	
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER,
-			depthBuffer);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);
 }

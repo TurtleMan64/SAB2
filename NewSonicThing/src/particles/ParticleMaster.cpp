@@ -77,6 +77,49 @@ void ParticleMaster::addParticle(Particle* particle)
 	list->push_back(particle);
 }
 
+void ParticleMaster::createParticle(ParticleTexture* texture, Vector3f* position, float lifeLength, float scale, bool onlyRendersOnce)
+{
+    if (Global::renderParticles)
+    {
+        new Particle(texture, position, lifeLength, scale, onlyRendersOnce); INCR_NEW("Particle");
+    }
+}
+
+void ParticleMaster::createParticle(ParticleTexture* texture, Vector3f* position, float lifeLength, float scale, float opacity, bool onlyRendersOnce)
+{
+    if (Global::renderParticles)
+    {
+        new Particle(texture, position, lifeLength, scale, opacity, onlyRendersOnce); INCR_NEW("Particle");
+    }
+}
+
+void ParticleMaster::createParticle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float lifeLength, float scale, bool onlyRendersOnce)
+{
+    if (Global::renderParticles)
+    {
+        new Particle(texture, position, velocity, lifeLength, scale, onlyRendersOnce); INCR_NEW("Particle");
+    }
+}
+
+void ParticleMaster::createParticle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float gravityEffect,
+	float lifeLength, float rotation, float scale, float scaleChange, bool posIsRef, bool onlyRendersOnce, float opacity)
+{
+    if (Global::renderParticles)
+    {
+        new Particle(texture, position, velocity, gravityEffect, lifeLength, rotation, scale, scaleChange, posIsRef, onlyRendersOnce, opacity); INCR_NEW("Particle");
+    }
+}
+
+void ParticleMaster::createParticle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float gravityEffect,
+	float lifeLength, float rotation, float scaleX, float scaleXChange, float scaleY, float scaleYChange, 
+	bool posIsRef, bool onlyRendersOnce)
+{
+    if (Global::renderParticles)
+    {
+        new Particle(texture, position, velocity, gravityEffect, lifeLength, rotation, scaleX, scaleXChange, scaleY, scaleYChange, posIsRef, onlyRendersOnce); INCR_NEW("Particle");
+    }
+}
+
 void ParticleMaster::updateProjectionMatrix(Matrix4f* projectionMatrix)
 {
 	if (ParticleMaster::renderer != nullptr)

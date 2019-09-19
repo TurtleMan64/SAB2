@@ -14,6 +14,7 @@
 #include "../audio/audioplayer.h"
 #include "../particles/particle.h"
 #include "../particles/particleresources.h"
+#include "../particles/particlemaster.h"
 #include "../toolbox/input.h"
 #include "../fontMeshCreator/guinumber.h"
 #include "../toolbox/split.h"
@@ -272,7 +273,7 @@ void PlayerSonic::step()
 	}
 	else
 	{
-		if (inputJump && !inputJumpPrevious && (isBall || isJumping) && !justHomingAttacked)
+		if (inputJump && !inputJumpPrevious && (isBall || isJumping) && !justHomingAttacked && !isLightdashing)
 		{
             homingAttack();
 		}
@@ -307,7 +308,7 @@ void PlayerSonic::step()
 		isJumping = false;
 		justHomingAttacked = false;
 
-		if (inputAction2 && !inputAction2Previous)
+		if (inputAction2 && !inputAction2Previous && !isLightdashing)
 		{
 			if (isBall)
 			{
@@ -453,7 +454,7 @@ void PlayerSonic::step()
 	}
 	else
 	{
-		if (inputAction && !inputActionPrevious && (isJumping || isBall) && !isBouncing && !justHomingAttacked && !isStomping)
+		if (inputAction && !inputActionPrevious && (isJumping || isBall) && !isBouncing && !justHomingAttacked && !isStomping && !isLightdashing)
 		{
 			vel.y = bounceVel;
 			isBouncing = true;
@@ -467,7 +468,7 @@ void PlayerSonic::step()
     }
     else
     {
-        if (inputAction2 && !inputAction2Previous && isJumping && !isBouncing && !justHomingAttacked && !isStomping)
+        if (inputAction2 && !inputAction2Previous && isJumping && !isBouncing && !justHomingAttacked && !isStomping && !isLightdashing)
         {
             if (sourceStomp != nullptr)
             {
@@ -1140,7 +1141,7 @@ void PlayerSonic::step()
                 (Maths::random() - 0.5f) * 3 + (vel.z/60.0f)*0.8f);
             partVel.scale(60.0f);
 
-            new Particle(playerModel->getBallTexture(), &partPos, &partVel, 0.12f*60.0f*60.0f, 0.5f, 0, 14.0f, -28.0f, false, false, 2.0f);
+            ParticleMaster::createParticle(playerModel->getBallTexture(), &partPos, &partVel, 0.12f*60.0f*60.0f, 0.5f, 0, 14.0f, -28.0f, false, false, 2.0f);
 	    }
     }
 
@@ -1156,7 +1157,7 @@ void PlayerSonic::step()
 		AudioPlayer::play(5, &position);
         Vector3f partPos(&position);
         partPos.y = waterHeight + 5;
-		new Particle(ParticleResources::textureSplash, &partPos, 0.5f, 10.0f, false);
+		ParticleMaster::createParticle(ParticleResources::textureSplash, &partPos, 0.5f, 10.0f, false);
 
         if (!onGround)
         {
@@ -1180,7 +1181,7 @@ void PlayerSonic::step()
 				Maths::random() - 0.5f + (vel.z/60.0f)*0.4f);
 
             bubVel.scale(60.0f);
-            new Particle(ParticleResources::textureBubble, &bubPos, &bubVel, 60*60*0.25f, 1.0f, 0.0f, 4.0f, 0.0f, false, false, 1.0f);
+            ParticleMaster::createParticle(ParticleResources::textureBubble, &bubPos, &bubVel, 60*60*0.25f, 1.0f, 0.0f, 4.0f, 0.0f, false, false, 1.0f);
 		}
 	}
 
@@ -1189,7 +1190,7 @@ void PlayerSonic::step()
 		AudioPlayer::play(5, &position);
         Vector3f partPos(&position);
         partPos.y = waterHeight + 5;
-		new Particle(ParticleResources::textureSplash, &partPos, 0.5f, 10.0f, false);
+		ParticleMaster::createParticle(ParticleResources::textureSplash, &partPos, 0.5f, 10.0f, false);
 
 		int numBubbles = ((int)abs((vel.y/60.0f) * 8)) + 18;
 		for (int i = 0; i < numBubbles; i++)
@@ -1208,7 +1209,7 @@ void PlayerSonic::step()
 				Maths::random() - 0.5f + (vel.z/60.0f)*0.4f);
 
             bubVel.scale(60.0f);
-			new Particle(ParticleResources::textureBubble, &bubPos, &bubVel, 60*60*0.05f, 1.0f, 0.0f, 4.0f, 0.0f, false, false, 1.0f);
+			ParticleMaster::createParticle(ParticleResources::textureBubble, &bubPos, &bubVel, 60*60*0.05f, 1.0f, 0.0f, 4.0f, 0.0f, false, false, 1.0f);
 		}
 
 		vel.y = fmaxf(vel.y, -200.0f); //waterEntryMaxYVel
@@ -1572,7 +1573,7 @@ void PlayerSonic::jump()
 
 void PlayerSonic::rebound(Vector3f* source)
 {
-	if (!onGround)
+	if (!onGround && !isGrinding && !isLightdashing)
 	{
         vel.y = 0;
         vel.setLength(5.0f);
@@ -1811,13 +1812,13 @@ void PlayerSonic::updateAnimationValues()
                 Vector3f spd = rng;
                 Vector3f partPos = position + relativeUp.scaleCopy(partScale/2);
                 //todo make this look good
-                new Particle(ParticleResources::textureSplash, &partPos, &spd, 0, 0.25f + (0.125f*Maths::nextGaussian()), 0, partScale, 0.0f, false, false, 1.0f);
+                ParticleMaster::createParticle(ParticleResources::textureSplash, &partPos, &spd, 0, 0.25f + (0.125f*Maths::nextGaussian()), 0, partScale, 0.0f, false, false, 1.0f);
             }
             else
             {
                 Vector3f spd = relativeUp.scaleCopy(55.0f) + rng;
                 Vector3f partPos = position + relativeUp.scaleCopy(1.5f);
-                new Particle(ParticleResources::textureDust, &partPos, &spd, 0, 0.25f + (0.125f*Maths::nextGaussian()), 0, 5.0f+Maths::nextGaussian(), 0.0f, false, false, 1.0f);
+                ParticleMaster::createParticle(ParticleResources::textureDust, &partPos, &spd, 0, 0.25f + (0.125f*Maths::nextGaussian()), 0, 5.0f+Maths::nextGaussian(), 0.0f, false, false, 1.0f);
             }
             //new Particle(ParticleResources::textureDust, &partPos, 0.25f, 6.0f, 2.8f, false);
         }
@@ -1852,7 +1853,7 @@ void PlayerSonic::updateAnimationValues()
         for (int i = 0; i < numParticles; i++)
         {
             Vector3f partPos = centerPosPrev + diff.scaleCopy(((float)i)/numParticles);
-            new Particle(trail, &partPos, &zero, 0, 0.25f, 0, 8.0f, -32.0f, false, false, 1.0f);
+            ParticleMaster::createParticle(trail, &partPos, &zero, 0, 0.25f, 0, 8.0f, -32.0f, false, false, 1.0f);
         }
     }
 }

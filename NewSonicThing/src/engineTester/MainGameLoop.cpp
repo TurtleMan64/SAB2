@@ -83,17 +83,17 @@ std::unordered_set<Entity*> gameEntities;
 std::list<Entity*> gameEntitiesToAdd;
 std::list<Entity*> gameEntitiesToDelete;
 
-std::unordered_set<Entity*> gameEntitiesPass2;
-std::list<Entity*> gameEntitiesPass2ToAdd;
-std::list<Entity*> gameEntitiesPass2ToDelete;
+//std::unordered_set<Entity*> gameEntitiesPass2;
+//std::list<Entity*> gameEntitiesPass2ToAdd;
+//std::list<Entity*> gameEntitiesPass2ToDelete;
 
-std::unordered_set<Entity*> gameEntitiesPass3;
-std::list<Entity*> gameEntitiesPass3ToAdd;
-std::list<Entity*> gameEntitiesPass3ToDelete;
+//std::unordered_set<Entity*> gameEntitiesPass3;
+//std::list<Entity*> gameEntitiesPass3ToAdd;
+//std::list<Entity*> gameEntitiesPass3ToDelete;
 
-std::unordered_set<Entity*> gameTransparentEntities;
-std::list<Entity*> gameTransparentEntitiesToAdd;
-std::list<Entity*> gameTransparentEntitiesToDelete;
+//std::unordered_set<Entity*> gameTransparentEntities;
+//std::list<Entity*> gameTransparentEntitiesToAdd;
+//std::list<Entity*> gameTransparentEntitiesToDelete;
 
 //vector that we treat as a 2D array. 
 std::vector<std::unordered_set<Entity*>> gameChunkedEntities;
@@ -196,6 +196,7 @@ bool Global::renderWithCulling = true;
 bool Global::displayFPS = true;
 int Global::currentCalculatedFPS = 0;
 int Global::renderCount = 0;
+int Global::displaySizeChanged = 0;
 
 std::list<std::string> Global::raceLog;
 bool Global::shouldLogRace = false;
@@ -249,7 +250,6 @@ int main(int argc, char** argv)
         Global::pathToEXE = Global::pathToEXE.substr(0, idx+1);
         #endif
     }
-    printf("%s\n", Global::pathToEXE.c_str());
 
 	#ifdef DEV_MODE
 	std::thread listenThread(doListenThread);
@@ -414,48 +414,48 @@ int main(int argc, char** argv)
 
 
 		//entities pass2 managment
-		for (auto entityToAdd : gameEntitiesPass2ToAdd)
-		{
-			gameEntitiesPass2.insert(entityToAdd);
-		}
-		gameEntitiesPass2ToAdd.clear();
+		//for (auto entityToAdd : gameEntitiesPass2ToAdd)
+		//{
+		//	gameEntitiesPass2.insert(entityToAdd);
+		//}
+		//gameEntitiesPass2ToAdd.clear();
 
-		for (auto entityToDelete : gameEntitiesPass2ToDelete)
-		{
-			gameEntitiesPass2.erase(entityToDelete);
-			delete entityToDelete; INCR_DEL("Entity");
-		}
-		gameEntitiesPass2ToDelete.clear();
+		//for (auto entityToDelete : gameEntitiesPass2ToDelete)
+		//{
+		//	gameEntitiesPass2.erase(entityToDelete);
+		//	delete entityToDelete; INCR_DEL("Entity");
+		//}
+		//gameEntitiesPass2ToDelete.clear();
 
 
 		//entities pass3 managment
-		for (auto entityToAdd : gameEntitiesPass3ToAdd)
-		{
-			gameEntitiesPass3.insert(entityToAdd);
-		}
-		gameEntitiesPass3ToAdd.clear();
+		//for (auto entityToAdd : gameEntitiesPass3ToAdd)
+		//{
+		//	gameEntitiesPass3.insert(entityToAdd);
+		//}
+		//gameEntitiesPass3ToAdd.clear();
 
-		for (auto entityToDelete : gameEntitiesPass3ToDelete)
-		{
-			gameEntitiesPass3.erase(entityToDelete);
-			delete entityToDelete; INCR_DEL("Entity");
-		}
-		gameEntitiesPass3ToDelete.clear();
+		//for (auto entityToDelete : gameEntitiesPass3ToDelete)
+		//{
+		//	gameEntitiesPass3.erase(entityToDelete);
+		//	delete entityToDelete; INCR_DEL("Entity");
+		//}
+		//gameEntitiesPass3ToDelete.clear();
 
 
 		//transnaprent entities managment
-		for (auto entityToAdd : gameTransparentEntitiesToAdd)
-		{
-			gameTransparentEntities.insert(entityToAdd);
-		}
-		gameTransparentEntitiesToAdd.clear();
+		//for (auto entityToAdd : gameTransparentEntitiesToAdd)
+		//{
+		//	gameTransparentEntities.insert(entityToAdd);
+		//}
+		//gameTransparentEntitiesToAdd.clear();
 
-		for (auto entityToDelete : gameTransparentEntitiesToDelete)
-		{
-			gameTransparentEntities.erase(entityToDelete);
-			delete entityToDelete; INCR_DEL("Entity");
-		}
-		gameTransparentEntitiesToDelete.clear();
+		//for (auto entityToDelete : gameTransparentEntitiesToDelete)
+		//{
+		//	gameTransparentEntities.erase(entityToDelete);
+		//	delete entityToDelete; INCR_DEL("Entity");
+		//}
+		//gameTransparentEntitiesToDelete.clear();
 
 
 		//chunked entities mamanegement
@@ -545,18 +545,18 @@ int main(int argc, char** argv)
 						}
 					}
 				}
-				for (Entity* e : gameEntitiesPass2)
-				{
-					e->step();
-				}
-				for (Entity* e : gameEntitiesPass3)
-				{
-					e->step();
-				}
-				for (Entity* e : gameTransparentEntities)
-				{
-					e->step();
-				}
+				//for (Entity* e : gameEntitiesPass2)
+				//{
+				//	e->step();
+				//}
+				//for (Entity* e : gameEntitiesPass3)
+				//{
+				//	e->step();
+				//}
+				//for (Entity* e : gameTransparentEntities)
+				//{
+				//	e->step();
+				//}
 				skySphere.step();
                 ModelTexture::updateAnimations(dt);
 				Global::gameCamera->refresh();
@@ -654,18 +654,18 @@ int main(int argc, char** argv)
 				}
 			}
 		}
-		for (Entity* e : gameEntitiesPass2)
-		{
-			Master_processEntityPass2(e);
-		}
-		for (Entity* e : gameEntitiesPass3)
-		{
-			Master_processEntityPass3(e);
-		}
-		for (Entity* e : gameTransparentEntities)
-		{
-			Master_processTransparentEntity(e);
-		}
+		//for (Entity* e : gameEntitiesPass2)
+		//{
+		//	Master_processEntityPass2(e);
+		//}
+		//for (Entity* e : gameEntitiesPass3)
+		//{
+		//	Master_processEntityPass3(e);
+		//}
+		//for (Entity* e : gameTransparentEntities)
+		//{
+		//	Master_processTransparentEntity(e);
+		//}
 		for (Checkpoint* check : Global::gameCheckpointList)
 		{
 			Master_processEntity(check);
@@ -756,10 +756,10 @@ int main(int argc, char** argv)
 			PostProcessing::doPostProcessing(Global::gameOutputFbo->getColourTexture(), Global::gameOutputFbo2->getColourTexture());
 		}
 
-		Master_clearEntities();
-		Master_clearEntitiesPass2();
-		Master_clearEntitiesPass3();
-		Master_clearTransparentEntities();
+		Master_clearAllEntities();
+		//Master_clearEntitiesPass2();
+		//Master_clearEntitiesPass3();
+		//Master_clearTransparentEntities();
 
 		GuiManager::refresh();
 		TextMaster::render();
@@ -783,7 +783,7 @@ int main(int argc, char** argv)
 			if (finishTimerBefore < 0.0166f && Global::finishStageTimer >= 0.0166f)
 			{
 				Vector3f partVel(0, 0, 0);
-				new Particle(ParticleResources::textureWhiteFadeOutAndIn, Global::gameCamera->getFadePosition1(), &partVel, 0, 2.0f, 0, 900, 0, true, false, 1.0f);
+				ParticleMaster::createParticle(ParticleResources::textureWhiteFadeOutAndIn, Global::gameCamera->getFadePosition1(), &partVel, 0, 2.0f, 0, 900, 0, true, false, 1.0f);
 			}
 			else if (finishTimerBefore < 1.0f && Global::finishStageTimer >= 1.0f)
 			{
@@ -793,7 +793,7 @@ int main(int argc, char** argv)
 			else if (finishTimerBefore < 8.166f && Global::finishStageTimer >= 8.166f)
 			{
 				Vector3f partVel(0, 0, 0);
-				new Particle(ParticleResources::textureBlackFadeOutAndIn, Global::gameCamera->getFadePosition1(), &partVel, 0, 2.0f, 0, 900, 0, true, false, 1.0f);
+				ParticleMaster::createParticle(ParticleResources::textureBlackFadeOutAndIn, Global::gameCamera->getFadePosition1(), &partVel, 0, 2.0f, 0, 900, 0, true, false, 1.0f);
 
 				//AudioPlayer::play(25, Global::gamePlayer->getPosition());
 			}
@@ -879,6 +879,17 @@ int main(int argc, char** argv)
 			previousTime = timeNew;
 		}
 
+        Global::displaySizeChanged = std::max(0, Global::displaySizeChanged - 1);
+        if (Global::displaySizeChanged == 1)
+        {
+            //recreate all fbos and other things to the new size of the window
+            //if (Global::renderBloom)
+		    {
+			    //Global::gameMultisampleFbo->resize(SCR_WIDTH, SCR_HEIGHT); //memory leaks
+                //Global::gameOutputFbo->resize(SCR_WIDTH, SCR_HEIGHT);
+                //Global::gameOutputFbo2->resize(SCR_WIDTH, SCR_HEIGHT);
+		    }
+        }
 		//std::fprintf(stdout, "dt: %f\n", dt);
 		//std::this_thread::sleep_for(std::chrono::milliseconds(8));
 	}
@@ -941,92 +952,92 @@ void Main_deleteAllEntites()
     }
 }
 
-void Main_addEntityPass2(Entity* entityToAdd)
-{
-	gameEntitiesPass2ToAdd.push_back(entityToAdd);
-}
+//void Main_addEntityPass2(Entity* entityToAdd)
+//{
+//	gameEntitiesPass2ToAdd.push_back(entityToAdd);
+//}
 
-void Main_deleteEntityPass2(Entity* entityToDelete)
-{
-	gameEntitiesPass2ToDelete.push_back(entityToDelete);
-}
+//void Main_deleteEntityPass2(Entity* entityToDelete)
+//{
+//	gameEntitiesPass2ToDelete.push_back(entityToDelete);
+//}
 
-void Main_deleteAllEntitesPass2()
-{
-	//Make sure no entities get left behind in transition
-	for (Entity* entityToAdd : gameEntitiesPass2ToAdd)
-	{
-		gameEntitiesPass2.insert(entityToAdd);
-	}
-	gameEntitiesPass2ToAdd.clear();
+//void Main_deleteAllEntitesPass2()
+//{
+//	//Make sure no entities get left behind in transition
+//	for (Entity* entityToAdd : gameEntitiesPass2ToAdd)
+//	{
+//		gameEntitiesPass2.insert(entityToAdd);
+//	}
+//	gameEntitiesPass2ToAdd.clear();
+//
+//	for (Entity* entityToDelete : gameEntitiesPass2ToDelete)
+//	{
+//		gameEntitiesPass2.erase(entityToDelete);
+//		delete entityToDelete; INCR_DEL("Entity");
+//	}
+//	gameEntitiesPass2ToDelete.clear();
+//
+//	for (Entity* entityToDelete : gameEntitiesPass2)
+//	{
+//		delete entityToDelete; INCR_DEL("Entity");
+//	}
+//	gameEntitiesPass2.clear();
+//}
 
-	for (Entity* entityToDelete : gameEntitiesPass2ToDelete)
-	{
-		gameEntitiesPass2.erase(entityToDelete);
-		delete entityToDelete; INCR_DEL("Entity");
-	}
-	gameEntitiesPass2ToDelete.clear();
+//void Main_addEntityPass3(Entity* entityToAdd)
+//{
+//	gameEntitiesPass3ToAdd.push_back(entityToAdd);
+//}
 
-	for (Entity* entityToDelete : gameEntitiesPass2)
-	{
-		delete entityToDelete; INCR_DEL("Entity");
-	}
-	gameEntitiesPass2.clear();
-}
+//void Main_deleteEntityPass3(Entity* entityToDelete)
+//{
+//	gameEntitiesPass3ToDelete.push_back(entityToDelete);
+//}
 
-void Main_addEntityPass3(Entity* entityToAdd)
-{
-	gameEntitiesPass3ToAdd.push_back(entityToAdd);
-}
-
-void Main_deleteEntityPass3(Entity* entityToDelete)
-{
-	gameEntitiesPass3ToDelete.push_back(entityToDelete);
-}
-
-void Main_deleteAllEntitesPass3()
-{
-	//Make sure no entities get left behind in transition
-	for (Entity* entityToAdd : gameEntitiesPass3ToAdd)
-	{
-		gameEntitiesPass3.insert(entityToAdd);
-	}
-	gameEntitiesPass3ToAdd.clear();
-
-	for (Entity* entityToDelete : gameEntitiesPass3ToDelete)
-	{
-		gameEntitiesPass3.erase(entityToDelete);
-		delete entityToDelete; INCR_DEL("Entity");
-	}
-	gameEntitiesPass3ToDelete.clear();
-
-	for (Entity* entityToDelete : gameEntitiesPass3)
-	{
-		delete entityToDelete; INCR_DEL("Entity");
-	}
-	gameEntitiesPass3.clear();
-}
+//void Main_deleteAllEntitesPass3()
+//{
+//	//Make sure no entities get left behind in transition
+//	for (Entity* entityToAdd : gameEntitiesPass3ToAdd)
+//	{
+//		gameEntitiesPass3.insert(entityToAdd);
+//	}
+//	gameEntitiesPass3ToAdd.clear();
+//
+//	for (Entity* entityToDelete : gameEntitiesPass3ToDelete)
+//	{
+//		gameEntitiesPass3.erase(entityToDelete);
+//		delete entityToDelete; INCR_DEL("Entity");
+//	}
+//	gameEntitiesPass3ToDelete.clear();
+//
+//	for (Entity* entityToDelete : gameEntitiesPass3)
+//	{
+//		delete entityToDelete; INCR_DEL("Entity");
+//	}
+//	gameEntitiesPass3.clear();
+//}
 
 //Transparent entities shouldn't create new transparent entities from within their step function
-void Main_addTransparentEntity(Entity* entityToAdd)
-{
-	gameTransparentEntities.insert(entityToAdd);
-}
+//void Main_addTransparentEntity(Entity* entityToAdd)
+//{
+//	gameTransparentEntities.insert(entityToAdd);
+//}
 
-void Main_deleteTransparentEntity(Entity* entityToDelete)
-{
-	gameTransparentEntities.erase(entityToDelete);
-	delete entityToDelete; INCR_DEL("Entity");
-}
+//void Main_deleteTransparentEntity(Entity* entityToDelete)
+//{
+//	gameTransparentEntities.erase(entityToDelete);
+//	delete entityToDelete; INCR_DEL("Entity");
+//}
 
-void Main_deleteAllTransparentEntites()
-{
-	for (Entity* entityToDelete : gameTransparentEntities)
-	{
-		delete entityToDelete; INCR_DEL("Entity");
-	}
-	gameTransparentEntities.clear();
-}
+//void Main_deleteAllTransparentEntites()
+//{
+//	for (Entity* entityToDelete : gameTransparentEntities)
+//	{
+//		delete entityToDelete; INCR_DEL("Entity");
+//	}
+//	gameTransparentEntities.clear();
+//}
 
 void increaseProcessPriority()
 {
@@ -1504,7 +1515,7 @@ void Global::createTitleCard()
 	GuiManager::clearGuisToRender();
 
 	Vector3f vel(0,0,0);
-	new Particle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &vel, 0, 1.0f, 0.0f, 50.0f, 0, true, false, 1.0f);
+	ParticleMaster::createParticle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &vel, 0, 1.0f, 0.0f, 50.0f, 0, true, false, 1.0f);
 	GuiManager::addGuiToRender(GuiTextureResources::textureBlueLine);
 
 	if (titleCardLevelName != nullptr)

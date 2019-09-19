@@ -25,8 +25,11 @@ T_StageManager::T_StageManager()
     skyPass2->scale = 3.0f*0.6f;
     skyTransparent->scale = 1.8f*0.6f;
 
-    Main_addEntityPass2(skyPass2);
-    Main_addTransparentEntity(skyTransparent);
+    skyPass2->renderOrder = 1;
+    skyTransparent->renderOrder = 3;
+
+    Main_addEntity(skyPass2);
+    Main_addEntity(skyTransparent);
 }
 
 void T_StageManager::step()

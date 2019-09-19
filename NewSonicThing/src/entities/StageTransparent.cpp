@@ -25,6 +25,7 @@ StageTransparent::StageTransparent(const char* objFolder, const char* objFilenam
 	rotY = 0;
 	rotZ = 0;
 	scale = 1;
+    renderOrder = 3;
 	visible = true;
 	
 	if (StageTransparent::models.size() == 0)
