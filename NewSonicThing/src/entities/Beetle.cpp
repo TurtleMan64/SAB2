@@ -86,7 +86,6 @@ void Beetle::step()
 			//else
 			{
 				die();
-                Global::gameMainPlayer->jump();
 				Global::gameMainPlayer->rebound(&position);
 			}
 		}

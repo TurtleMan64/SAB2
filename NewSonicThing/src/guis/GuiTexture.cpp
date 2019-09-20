@@ -91,6 +91,12 @@ Vector2f* GuiTexture::getSizeScaled()
 	return &sizeScaled;
 }
 
+void GuiTexture::setSizeScaled(float scaleX, float scaleY)
+{
+    sizeScaled.x = scaleX;
+	sizeScaled.y = scaleY;
+}
+
 float GuiTexture::getRotation()
 {
 	return rotation;

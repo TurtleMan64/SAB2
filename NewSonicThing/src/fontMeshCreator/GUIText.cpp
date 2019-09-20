@@ -12,7 +12,7 @@ GUIText::GUIText(std::string text, float fontSize, FontType* font, float x, floa
 	this->font = font;
 	this->position.set(x, y);
 	alignment = 0;
-	this->lineMaxSize = maxLineLength;
+	this->lineMaxSizeConstraint = maxLineLength;
 	if (centered)
 	{
 		alignment = 1;
@@ -36,7 +36,7 @@ GUIText::GUIText(std::string text, float fontSize, FontType* font, float x, floa
 	this->position.set(x, y);
 	this->alignment = alignment;
 	this->visible = visible;
-	this->lineMaxSize = 1000000.0f;
+	this->lineMaxSizeConstraint = 1000000.0f;
 	TextMaster::loadText(this);
 }
 
@@ -65,14 +65,9 @@ Vector3f* GUIText::getColour()
 	return &colour;
 }
 
-int GUIText::getNumberOfLines()
+float GUIText::getMaxLineSizeConstraint()
 {
-	return numberOfLines;
-}
-
-float GUIText::getMaxLineSize()
-{
-	return lineMaxSize;
+	return lineMaxSizeConstraint;
 }
 
 Vector2f* GUIText::getPosition()
@@ -118,11 +113,6 @@ int GUIText::getVertexCount()
 float GUIText::getFontSize()
 {
 	return fontSize;
-}
-
-void GUIText::setNumberOfLines(int number)
-{
-	numberOfLines = number;
 }
 
 int GUIText::getAlignment()

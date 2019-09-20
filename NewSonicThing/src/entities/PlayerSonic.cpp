@@ -1575,17 +1575,36 @@ void PlayerSonic::rebound(Vector3f* source)
 {
 	if (!onGround && !isGrinding && !isLightdashing)
 	{
-        vel.y = 0;
-        vel.setLength(5.0f);
+        if (inputJump)
+        {
+            vel.y = 0;
+            vel.setLength(5.0f);
+        }
+        else  //retain speed if you hold A during impact
+        {
+            if (homingAttackTimer > 0.0f) //if you came in from a homingAttack, cut speed a bit
+            {
+                vel.y = 0;
+                vel.setLength(vel.length()*0.45f);
+            }
+        }
 	    vel.y = 126.0f;
-	    setX(source->x);
-	    setZ(source->z);
-	    //setY(source->y + 3.5f);
-        setY(source->y + 0.01f);
+        position.set(source->x, source->y+0.01f, source->z);
 	    homingAttackTimer = -1.0f;
 	    justHomingAttacked = false;
         isHomingOnPoint = false;
 	    hoverTimer = hoverTimerThreshold/2;
+
+        isGrinding = false;
+	    isBouncing = false;
+	    isBall = false;
+	    isLightdashing = false;
+	    isSkidding = false;
+	    isSpindashing = false;
+	    isStomping = false;
+	    justBounced = false;
+	    onGround = false;
+	    isJumping = true;
 	}
 }
 

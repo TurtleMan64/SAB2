@@ -89,7 +89,7 @@ void PauseScreen::setVisible(bool visible)
 
 void PauseScreen::selectButton()
 {
-	GuiManager::clearGuisToRender();
+	//GuiManager::clearGuisToRender();
 
 	this->textResume->setColour(0.5f, 0.5f, 0.5f);
 	this->textRestart->setColour(0.5f, 0.5f, 0.5f);

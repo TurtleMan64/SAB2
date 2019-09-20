@@ -13,18 +13,20 @@
  * alignment: where to anchor the timer
  * visible: set timer visibility */
 
-Timer::Timer(FontType* font, float posX, float posY, float scale, int alignment, bool visible)
+Timer::Timer(FontType* font, float posX, float posY, float height, int alignment, bool visible)
 {
 	extern unsigned int SCR_WIDTH;
 	extern unsigned int SCR_HEIGHT;
 
 	float aspectRatio = (float)SCR_WIDTH / (float)SCR_HEIGHT;
 
-	this->minutes = new GUINumber(0, posX, posY, scale, alignment, visible, 2); INCR_NEW("GUINumber");
-	this->colon = new GUIText(":", scale, font, posX + (0.118f / aspectRatio), posY, alignment, true); INCR_NEW("GUIText");
-	this->seconds = new GUINumber(0, posX + (0.15f / aspectRatio), posY, scale, alignment, visible, 2); INCR_NEW("GUINumber");
-	this->dot = new GUIText(".", scale, font, posX + (0.268f / aspectRatio), posY, alignment, true); INCR_NEW("GUIText");
-	this->centiseconds = new GUINumber(0, posX + (0.30f / aspectRatio), posY, scale, alignment, visible, 2); INCR_NEW("GUINumber");
+    float width = height/aspectRatio; //width of a single text character
+
+	this->minutes      = new GUINumber(0,                 posX + (width*0),     posY, height, alignment, visible, 2, false); INCR_NEW("GUINumber");
+	this->colon        = new GUIText  (":", height, font, posX + (width*2.35f), posY,         alignment, true);              INCR_NEW("GUIText");
+	this->seconds      = new GUINumber(0,                 posX + (width*3),     posY, height, alignment, visible, 2, false); INCR_NEW("GUINumber");
+	this->dot          = new GUIText  (".", height, font, posX + (width*5.35f), posY,         alignment, true);              INCR_NEW("GUIText");
+	this->centiseconds = new GUINumber(0,                 posX + (width*6),     posY, height, alignment, visible, 2, false); INCR_NEW("GUINumber");
 
 	this->totalTime = 0;
 	this->frozen = false;

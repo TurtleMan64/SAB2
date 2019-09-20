@@ -7,8 +7,8 @@
 #include "../menu/pausescreen.h"
 #include "../toolbox/maths.h"
 
-GLuint    GUINumber::numberMeshIDs[10];
-GLuint    GUINumber::numberMeshVertexCounts[10];
+GLuint GUINumber::numberMeshIDs[10];
+GLuint GUINumber::numberMeshVertexCounts[10];
 
 void GUINumber::createNumber(int i, float x, float y, float w, float h)
 {
@@ -74,14 +74,15 @@ void GUINumber::loadMeshData()
 }
 
 //x and y are (0,0) being the top left of the screen, (1,1) being bottom right
-GUINumber::GUINumber(int number, float x, float y, float size, int alignment, bool visible, int totalDigits)
+GUINumber::GUINumber(int number, float x, float y, float size, int alignment, bool visible, int totalDigits, bool darkenPaddedDigits)
 {
-	colour.set(1, 1, 1);
+	colours.push_back(Vector3f(1, 1, 1));
 	this->position.set(x-0.5f, y-0.5f);
 	this->visible = visible;
 	this->alignment = alignment;
 	this->size = size;
 	this->totalDigits = totalDigits;
+    this->darkenPaddedDigits = darkenPaddedDigits;
 	displayNumber = number;
 	refresh();
 	TextMaster::loadNumber(this);
@@ -93,9 +94,40 @@ void GUINumber::refresh()
 	meshIDs.clear();
 	meshVertexCounts.clear();
 	meshPositions.clear();
+    colours.clear();
 
 	int numChars = Maths::numDigits(displayNumber);
-	if (totalDigits > 0)
+
+    if ((totalDigits > 0) && darkenPaddedDigits)
+    {
+        for (int i = 0; i < numChars; i++)
+		{
+            colours.push_back(Vector3f(1,1,1));
+        }
+        for (int i = numChars; i < totalDigits; i++)
+		{
+            colours.push_back(Vector3f(0.5f, 0.5f, 0.5f));
+        }
+    }
+    else
+    {
+        if (totalDigits > 0)
+        {
+            for (int i = 0; i < totalDigits; i++)
+		    {
+                colours.push_back(Vector3f(1,1,1));
+            }
+        }
+        else
+        {
+            for (int i = 0; i < numChars; i++)
+		    {
+                colours.push_back(Vector3f(1,1,1));
+            }
+        }
+    }
+
+    if (totalDigits > 0)
 	{
 		numChars = totalDigits;
 	}

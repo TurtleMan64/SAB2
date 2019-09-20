@@ -6,6 +6,8 @@ class GUIText;
 class Timer;
 
 #include "menu.h"
+#include "../guis/guitexture.h"
+#include <glad/glad.h>
 
 class HUD : public Menu
 {
@@ -19,6 +21,8 @@ private:
 
     GUINumber* numberFPS = nullptr;
 	GUINumber* numberLives = nullptr;
+    GUINumber* numberRings = nullptr;
+    GUINumber* numberScore = nullptr;
 	GUINumber* numberSpeed = nullptr;
 	GUIText* textSpeedUnits = nullptr;
 	Timer* timer = nullptr;

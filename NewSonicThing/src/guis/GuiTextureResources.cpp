@@ -4,6 +4,7 @@
 #include "../engineTester/main.h"
 
 GuiTexture* GuiTextureResources::textureRing        = nullptr;
+GuiTexture* GuiTextureResources::textureLifeIcon    = nullptr;
 GuiTexture* GuiTextureResources::textureBlueLine    = nullptr;
 GuiTexture* GuiTextureResources::textureRankDisplay = nullptr;
 
@@ -18,7 +19,8 @@ void GuiTextureResources::loadGuiTextures()
 	const float w = 0.02f;   //width of a single text character
 	const float o = 0.0008f; //horizontal offset to adjust for centered vs non centered
 
-	INCR_NEW("GuiTexture") textureRing        = new GuiTexture(Loader::loadTexture("res/Images/Ring.png"),     o + 0.5f*w + 16*px, 0.0212f+48*py,  32*px, 32*py, 0 );
+	INCR_NEW("GuiTexture") textureRing        = new GuiTexture(Loader::loadTexture("res/Images/Ring.png"),     o + 0.5f*w + 16*px, 0.0212f+48*py, 64*px, 64*py, 0);
+    INCR_NEW("GuiTexture") textureLifeIcon    = new GuiTexture(Loader::loadTexture("res/Images/LifeIcon.png"), 0.0f, 1.0f, 128*px, 128*py, 0);
 	INCR_NEW("GuiTexture") textureBlueLine    = new GuiTexture(Loader::loadTexture("res/Images/BlueLine.png"), 0.5f, 0.5f, 10*16*px, 10*128*py, 29.5f);
 	INCR_NEW("GuiTexture") textureRankDisplay = new GuiTexture(0, 0.5f, 0.8f, 128*px, 128*py, 0);
 }

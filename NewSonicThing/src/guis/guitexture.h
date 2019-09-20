@@ -37,6 +37,10 @@ public:
 
 	Vector2f* getSizeScaled();
 
+    //If you REALLY want control over the size that the image will actually be rendered, set that here.
+    //Note that changes here will be overwritten if you call setScale() after.
+    void setSizeScaled(float scaleX, float scaleY);
+
 	float getRotation();
 
 	void setRotation(float newRotation);

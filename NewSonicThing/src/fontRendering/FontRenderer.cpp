@@ -87,7 +87,7 @@ void FontRenderer::renderNumber(GUINumber* number)
 		glBindVertexArray(number->meshIDs[i]);
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
-		shader->loadColour(&number->colour);
+		shader->loadColour(&number->colours[i]);
 		shader->loadTranslation(&number->meshPositions[i]);
 		glDrawArrays(GL_TRIANGLES, 0, number->meshVertexCounts[i]);
 	}
