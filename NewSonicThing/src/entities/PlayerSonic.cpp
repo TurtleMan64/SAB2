@@ -2187,6 +2187,35 @@ void PlayerSonic::hitSpring(Vector3f* direction, float power, float lockInputTim
     camDir.normalize();
 }
 
+void PlayerSonic::hitSpringTriple(Vector3f* direction, float power, float lockInputTime)
+{
+    Vector3f dir(direction);
+    dir.y = 0;
+    dir.normalize();
+    dir.scale(-1.0f);
+    dir.setLength(5.0f);
+
+    vel.set(&dir);
+    vel.y = power;
+    camDir.set(&dir);
+    camDir.normalize();
+
+    onGround = false;
+    isBall = false;
+    isJumping = true;
+    isSkidding = false;
+    isLightdashing = false;
+    isSpindashing = false;
+    isGrinding = false;
+    isStomping = false;
+    isBouncing = false;
+    isHomingOnPoint = false;
+    justBounced = false;
+    hoverTimer = 0.0f;
+    canMoveTimer = lockInputTime;
+    hitSpringTimer = lockInputTime;
+}
+
 void PlayerSonic::hitDashpad()
 {
     isBall = false;

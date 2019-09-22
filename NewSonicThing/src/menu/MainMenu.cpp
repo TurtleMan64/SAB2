@@ -51,8 +51,8 @@ void MainMenu::init()
 	//font = new FontType(Loader::loadTexture("res/Fonts/vipnagorgialla.png"),
 	//	"res/Fonts/vipnagorgialla.fnt"); INCR_NEW
 
-	textureParallelogram = Loader::loadTextureNoInterpolation("res/Images/MainMenu/Parallelogram.png");
-	textureParallelogramBackdrop = Loader::loadTextureNoInterpolation("res/Images/MainMenu/ParallelogramBackdrop.png");
+	textureParallelogram = Loader::loadTexture("res/Images/MainMenu/Parallelogram.png");
+	textureParallelogramBackdrop = Loader::loadTexture("res/Images/MainMenu/ParallelogramBackdrop.png");
 	textureLogo = Loader::loadTexture("res/Images/MainMenu/Logo.png");
 	logo = GuiTexture(textureLogo, 0.5f, 0.4f, 0.6f * (767.0f / 784.0f) / aspectRatio, 0.6f, 0.0f);
 

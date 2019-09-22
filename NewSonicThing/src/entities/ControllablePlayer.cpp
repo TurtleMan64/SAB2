@@ -71,3 +71,4 @@ Vector3f      ControllablePlayer::getCenterPosition()                 {return Ve
 void          ControllablePlayer::grabRocket()                        {}
 void          ControllablePlayer::releaseRocket()                     {}
 void          ControllablePlayer::hitSpring(Vector3f*, float, float)  {}
+void          ControllablePlayer::hitSpringTriple(Vector3f*, float, float)  {}

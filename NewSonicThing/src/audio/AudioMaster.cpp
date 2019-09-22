@@ -157,7 +157,7 @@ ALuint AudioMaster::loadOGG(const char* fileName)
 void AudioMaster::cleanUp()
 {
 	AudioPlayer::deleteSources();
-	AudioPlayer::deleteBuffersSE();
+	AudioPlayer::deleteBuffersSFX();
 
 	alcMakeContextCurrent(nullptr);
 	alcDestroyContext(AudioMaster::context);

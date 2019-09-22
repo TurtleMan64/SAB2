@@ -61,6 +61,7 @@
 #include "../entities/help.h"
 #include "../entities/Tutorial/tstagemanager.h"
 #include "../entities/itemcapsule.h"
+#include "../entities/springtriple.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -828,6 +829,18 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
 			return;
         }
 
+        case 13: //SpringTriple
+        {
+            SpringTriple::loadStaticModels();
+			SpringTriple* spring = new SpringTriple(
+				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
+				toFloat(dat[4]), toFloat(dat[5]),                  //rotation direction
+				toFloat(dat[6]), toFloat(dat[7]));                 //power, time
+			INCR_NEW("Entity");
+			chunkedEntities->push_back(spring);
+			return;
+        }
+
         case 27: //Item Capsule
 		{
 			ItemCapsule::loadStaticModels();
@@ -1200,6 +1213,7 @@ void LevelLoader::freeAllStaticModels()
     Help::deleteStaticModels();
     T_StageManager::deleteStaticModels();
     ItemCapsule::deleteStaticModels();
+    SpringTriple::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()

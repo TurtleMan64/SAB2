@@ -23,6 +23,5 @@ map_Kd Bark.png
 newmtl Shingles
 Ns 20
 Ni 0
-scrollX 6
 map_Kd Shingles.png
 

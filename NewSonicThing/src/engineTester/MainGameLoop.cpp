@@ -634,8 +634,6 @@ int main(int argc, char** argv)
 				break;
 		}
 
-		Global::clearTitleCard();
-
 		Stage::updateVisibleChunks();
 		SkyManager::calculateValues();
 
@@ -862,6 +860,8 @@ int main(int argc, char** argv)
 				//AudioPlayer::play(44, Global::gamePlayer->getPosition());
 			}
 		}
+
+        Global::clearTitleCard();
 
         if (previousTime > timeNew)
         {

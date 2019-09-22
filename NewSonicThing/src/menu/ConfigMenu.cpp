@@ -72,19 +72,25 @@ void ConfigMenu::loadResources()
 
     buttonsNames.clear();
 
-    buttonsNames.push_back(new Button("Window Width",  Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(0)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
-    buttonsNames.push_back(new Button("Window Height", Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(1)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
-    buttonsNames.push_back(new Button("Fullscreen",    Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(2)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
-	buttonsNames.push_back(new Button("Unlock FPS",    Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(3)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
-    buttonsNames.push_back(new Button("FOV",           Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(4)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
-
+    buttonsNames.push_back(new Button("Window Width",     Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(0)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    buttonsNames.push_back(new Button("Window Height",    Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(1)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    buttonsNames.push_back(new Button("Fullscreen",       Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(2)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+	buttonsNames.push_back(new Button("Unlock FPS",       Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(3)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    buttonsNames.push_back(new Button("FOV",              Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(4)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    buttonsNames.push_back(new Button("SFX Volume",       Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(5)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    buttonsNames.push_back(new Button("BGM Volume",       Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(6)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    buttonsNames.push_back(new Button("Render Particles", Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(7)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    
     buttonsValues.clear();
     extern float VFOV_BASE;
-    buttonsValues.push_back(new Button(std::to_string(SCR_WIDTH),             Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(0)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
-    buttonsValues.push_back(new Button(std::to_string(SCR_HEIGHT),            Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(1)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
-    buttonsValues.push_back(new Button(boolToString(Global::useFullscreen),   Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(2)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
-	buttonsValues.push_back(new Button(boolToString(Global::framerateUnlock), Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(3)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
-    buttonsValues.push_back(new Button(floatToString(VFOV_BASE),              Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(4)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    buttonsValues.push_back(new Button(std::to_string(SCR_WIDTH),                         Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(0)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    buttonsValues.push_back(new Button(std::to_string(SCR_HEIGHT),                        Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(1)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    buttonsValues.push_back(new Button(boolToString(Global::useFullscreen),               Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(2)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+	buttonsValues.push_back(new Button(boolToString(Global::framerateUnlock),             Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(3)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    buttonsValues.push_back(new Button(floatToString(VFOV_BASE),                          Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(4)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    buttonsValues.push_back(new Button(floatToString(100*AudioPlayer::soundLevelSFX)+"%", Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(5)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    buttonsValues.push_back(new Button(floatToString(100*AudioPlayer::soundLevelBGM)+"%", Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(6)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    buttonsValues.push_back(new Button(boolToString(Global::renderParticles),             Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(7)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
 }
 
 std::string ConfigMenu::boolToString(bool value)
@@ -360,6 +366,31 @@ Menu* ConfigMenu::step()
                 Master_makeProjectionMatrix();
                 break;
 
+            case 5:
+                if (AudioPlayer::soundLevelSFX > 0.0f)
+                {
+                    AudioPlayer::play(36, Global::gameCamera->getFadePosition1());
+                }
+                AudioPlayer::soundLevelSFX = std::fmaxf(0.0f, AudioPlayer::soundLevelSFX - 0.01f);
+                AudioPlayer::soundLevelSFX = std::roundf(100*AudioPlayer::soundLevelSFX)/100.0f;
+                buttonsValues[5]->generateText(floatToString(std::roundf(100*AudioPlayer::soundLevelSFX))+"%");
+                break;
+
+            case 6:
+                if (AudioPlayer::soundLevelBGM > 0.0f)
+                {
+                    AudioPlayer::play(36, Global::gameCamera->getFadePosition1());
+                }
+                AudioPlayer::soundLevelBGM = std::fmaxf(0.0f, AudioPlayer::soundLevelBGM - 0.01f);
+                AudioPlayer::soundLevelBGM = std::roundf(100*AudioPlayer::soundLevelBGM)/100.0f;
+                buttonsValues[6]->generateText(floatToString(std::roundf(100*AudioPlayer::soundLevelBGM))+"%");
+                break;
+
+            case 7:
+                Global::renderParticles = !Global::renderParticles;
+                buttonsValues[7]->generateText(boolToString(Global::renderParticles));
+                break;
+
             default:
                 break;
         }
@@ -393,6 +424,31 @@ Menu* ConfigMenu::step()
                 Master_makeProjectionMatrix();
                 break;
 
+            case 5:
+                if (AudioPlayer::soundLevelSFX < 1.0f)
+                {
+                    AudioPlayer::play(36, Global::gameCamera->getFadePosition1());
+                }
+                AudioPlayer::soundLevelSFX = std::fminf(1.0f, AudioPlayer::soundLevelSFX + 0.01f);
+                AudioPlayer::soundLevelSFX = std::roundf(100*AudioPlayer::soundLevelSFX)/100.0f;
+                buttonsValues[5]->generateText(floatToString(std::roundf(100*AudioPlayer::soundLevelSFX))+"%");
+                break;
+
+            case 6:
+                if (AudioPlayer::soundLevelBGM < 1.0f)
+                {
+                    AudioPlayer::play(36, Global::gameCamera->getFadePosition1());
+                }
+                AudioPlayer::soundLevelBGM = std::fminf(1.0f, AudioPlayer::soundLevelBGM + 0.01f);
+                AudioPlayer::soundLevelBGM = std::roundf(100*AudioPlayer::soundLevelBGM)/100.0f;
+                buttonsValues[6]->generateText(floatToString(std::roundf(100*AudioPlayer::soundLevelBGM))+"%");
+                break;
+
+            case 7:
+                Global::renderParticles = !Global::renderParticles;
+                buttonsValues[7]->generateText(boolToString(Global::renderParticles));
+                break;
+
             default:
                 break;
         }
@@ -404,18 +460,14 @@ Menu* ConfigMenu::step()
 	{
         switch (currentButtonIndex)
         {
-            case 0:
-                break;
-
-            case 1:
-                break;
-
-            case 2:
-                break;
-
             case 3:
                 Global::framerateUnlock = !Global::framerateUnlock;
                 buttonsValues[3]->generateText(boolToString(Global::framerateUnlock));
+                break;
+
+            case 7:
+                Global::renderParticles = !Global::renderParticles;
+                buttonsValues[7]->generateText(boolToString(Global::renderParticles));
                 break;
 
             default:

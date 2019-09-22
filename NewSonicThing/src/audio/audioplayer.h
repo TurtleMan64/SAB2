@@ -10,13 +10,13 @@ class Vector3f;
 class AudioPlayer
 {
 private:
-	static float soundLevelSE;
-	static float soundLevelBGM;
 	static std::vector<Source*> sources;
-	static std::vector<ALuint> buffersSE;
+	static std::vector<ALuint> buffersSFX;
 	static std::vector<ALuint> buffersBGM;
 
 public:
+    static float soundLevelSFX; //The master SFX volume
+	static float soundLevelBGM; //The master BGM volume
 	static ALuint bgmIntro;
 	static ALuint bgmLoop;
 
@@ -29,7 +29,7 @@ public:
 
 	static void deleteSources();
 
-	static void deleteBuffersSE();
+	static void deleteBuffersSFX();
 
 	static void deleteBuffersBGM();
 
@@ -64,7 +64,7 @@ public:
 
 	static void stopAllSFX();
 
-	static ALuint getSEBuffer(int i);
+	static ALuint getSFXBuffer(int i);
 
 	//percent should be 0 ... 1
 	//this is then multiplied by soundLevelBGM

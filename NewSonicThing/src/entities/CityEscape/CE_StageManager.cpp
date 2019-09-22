@@ -6,6 +6,7 @@
 #include "../controllableplayer.h"
 #include "../../objLoader/objLoader.h"
 #include "../camera.h"
+#include "../../audio/audioplayer.h"
 
 std::list<TexturedModel*> CE_StageManager::modelsSkydome;
 
@@ -13,12 +14,24 @@ CE_StageManager::CE_StageManager()
 {
     scale = 1.5f;
 	visible = true;
+    playedBGM = false;
 }
 
 void CE_StageManager::step()
 {
 	position.set(&Global::gameMainPlayer->position);
 	updateTransformationMatrix();
+
+    if (!playedBGM)
+    {
+        if (Global::gameMainPlayer->position.z > 9189.12f && 
+            Global::gameMainPlayer->position.y < -15756.9f)
+        {
+            playedBGM = true;
+            AudioPlayer::stopBGM();
+		    AudioPlayer::playBGMWithIntro(2, 3);
+        }
+    }
 }
 
 std::list<TexturedModel*>* CE_StageManager::getModels()

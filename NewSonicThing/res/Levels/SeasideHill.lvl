@@ -25,8 +25,10 @@ CollisionAll 9
 0.0000000005 2.0
 90.0
 1 0 0
-0
-0
+1
+2
+res/Audio/BGM/sea_hill_intro.ogg
+res/Audio/BGM/sea_hill_loop.ogg
 0 0 0
 0 0
 -100

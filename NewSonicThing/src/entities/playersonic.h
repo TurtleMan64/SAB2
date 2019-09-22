@@ -186,6 +186,8 @@ public:
 
     void hitSpring(Vector3f* direction, float power, float lockInputTime);
 
+    void hitSpringTriple(Vector3f* direction, float power, float lockInputTime);
+
     void hitDashpad();
 
     bool isVulnerable();

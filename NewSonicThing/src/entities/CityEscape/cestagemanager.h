@@ -10,6 +10,7 @@ class CE_StageManager : public Entity
 {
 private:
 	static std::list<TexturedModel*> modelsSkydome;
+    bool playedBGM;
 
 public:
 	CE_StageManager();
