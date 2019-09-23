@@ -31,13 +31,22 @@ private:
     
     //initial position of the platform
     Vector3f positionInitial;
-    //controls whether the platform moves in the x axis (axis=0) or z axis (axis=1)
-    int axis;
+    //controls whether the platform moves in the x axis or z axis
+    bool platformMovesOnXAxis;
+	//determines the directions the wheels are rotated
+	//in step, changing the direction is a multiplation with -1, so to flip between forwards or backwards at the start, set to -1
+	int wheelMovementDirectionMultiplier;
     //the max displacement from the starting position, change direction w/ axis and postive/negative
     //example: axis=1 and displacement=-5 means move -5 units from starting position on the z axis
     float displacementMax;
     //speed at which the platform moves
     float speed;
+
+	//What fraction of the path has been completed, rather than actually moving the platform, it instead just
+	//teleports to the correct spot in the path, which simulates movement
+	float percentOfPathCompleted;
+	//Whether the platform is moving forward or backward
+	bool isMovingForward;
 
 	//Horizontal Offset of the Front Wheel
 	const float wheelOffsetFrontHorizontal = 8.86459;
@@ -52,6 +61,9 @@ private:
 	//Speed of the Back Wheel
 	const float wheelSpeedBack = 1.885;
 
+	//This function will return 1 if the platform is moving in the +x or +z directions, and -1 if going in the opposite direction
+	int initialMovementDirectionMultiplier();
+
 	//Functions for the constructor start here
 	
 	//Makes the body used for the front wheels model
@@ -61,8 +73,9 @@ private:
 	//Makes the body used for the transparent model
 	void setupModelTransparent();
 
+
 public:
-	MH_YellowMovingPlatform(float x, float y, float z, float rotY, int axis, float displacementMax, float speed);
+	MH_YellowMovingPlatform(float x, float y, float z, int platformMovesOnXAxis, float displacementMax, float speed);
 
 	void step();
 

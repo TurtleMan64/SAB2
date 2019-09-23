@@ -1,3 +1,12 @@
+/*
+ TODO
+ -Making the platform move
+	-perhaps use a state machine?
+ -Make the wheels properly rotate in the direction of movement
+	-basically done, multiply by -1 in step when reversing direction of movement
+ -Make sure collisions work properly
+*/
+
 #include "mhyellowmovingplatform.h"
 #include "../entity.h"
 #include "../camera.h"
@@ -18,21 +27,43 @@ std::list<TexturedModel*> MH_YellowMovingPlatform::modelsWheelBack;
 std::list<TexturedModel*> MH_YellowMovingPlatform::modelsTransparent;
 CollisionModel* MH_YellowMovingPlatform::cmOriginal;
 
-MH_YellowMovingPlatform::MH_YellowMovingPlatform(float x, float y, float z, float rotY, int axis, float displacementMax, float speed)
+MH_YellowMovingPlatform::MH_YellowMovingPlatform(float x, float y, float z, int platformMovesOnXAxis, float displacementMax, float speed)
 {
 	position.x = x;
 	position.y = y;
 	position.z = z;
 	rotX = 0;
-	this->rotY = rotY;
 	rotZ = 0;
+
+	this->wheelMovementDirectionMultiplier = 1;
+
+	this->platformMovesOnXAxis = platformMovesOnXAxis;
+    this->displacementMax = displacementMax;
+    this->speed = speed;
+
+	this->rotY = (this->platformMovesOnXAxis == true) ? 0 : 90;
+	//rotate 180 if going in opposite direction (decided by negative displacementMax value)
+	//also set the wheel movement direction multiplier to -1, so the wheels move in the right direction
+	if (displacementMax < 0) 
+	{
+		rotY += 180;
+		wheelMovementDirectionMultiplier = -1;
+	}
 
 	scale = 1;
 	visible = true;
 
+	percentOfPathCompleted = 0;
+	isMovingForward = true;
+
     positionInitial = &position;
 
-	this->axis = axis;
+	if (displacementMax == 0)
+	{
+		printf("ERROR! YellowMovingPlatform variable displacementMax has a value of 0, which is bad.");
+	}
+
+	this->platformMovesOnXAxis = platformMovesOnXAxis;
     this->displacementMax = displacementMax;
     this->speed = speed;
 
@@ -52,8 +83,8 @@ MH_YellowMovingPlatform::MH_YellowMovingPlatform(float x, float y, float z, floa
 
 void MH_YellowMovingPlatform::step() 
 {
-	wheelFront->rotX += wheelSpeedFront;
-	wheelBack->rotX += wheelSpeedBack;
+	wheelFront->rotX += wheelSpeedFront * wheelMovementDirectionMultiplier;
+	wheelBack->rotX += wheelSpeedBack * wheelMovementDirectionMultiplier;
 
 	updateTransformationMatrix();
 	wheelFront->updateTransformationMatrix();
@@ -110,7 +141,17 @@ void MH_YellowMovingPlatform::setupModelWheelFront()
 	INCR_NEW("Entity");
 	Main_addEntityPass2(wheelFront);
 	wheelFront->setPosition(&position);
-	wheelFront->position.z += wheelOffsetFrontHorizontal;
+	wheelFront->setRotY(rotY);
+	
+	//move wheel to correct position based on axis
+	if (platformMovesOnXAxis == true)
+	{
+		wheelFront->position.z += wheelOffsetFrontHorizontal * wheelMovementDirectionMultiplier;
+	}
+	else
+	{
+		wheelFront->position.x += wheelOffsetFrontHorizontal * wheelMovementDirectionMultiplier;
+	}
 	wheelFront->position.y += wheelOffsetFrontVertical;
 }
 
@@ -121,7 +162,18 @@ void MH_YellowMovingPlatform::setupModelWheelBack()
 	INCR_NEW("Entity");
 	Main_addEntityPass2(wheelBack);
 	wheelBack->setPosition(&position);
-    wheelBack->position.z += wheelOffsetBackHorizontal;
+	wheelBack->setRotY(rotY);
+	
+	//move wheel to correct position based on axis
+	if (platformMovesOnXAxis == true)
+	{
+		wheelBack->position.z += wheelOffsetBackHorizontal * wheelMovementDirectionMultiplier;
+	}
+	else
+	{
+		wheelBack->position.x += wheelOffsetBackHorizontal * wheelMovementDirectionMultiplier;
+	}
+	
 	wheelBack->position.y += wheelOffsetBackVertical;
 }
 
@@ -132,5 +184,5 @@ void MH_YellowMovingPlatform::setupModelTransparent()
 	INCR_NEW("Entity");
 	Main_addEntityPass3(bodyTransparent);
 	bodyTransparent->setPosition(&position);
-
+	bodyTransparent->setRotY(rotY);
 }
