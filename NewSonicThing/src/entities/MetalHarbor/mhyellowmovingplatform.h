@@ -82,49 +82,50 @@ private:
 	Vector3f collisionPositionFront2;
 	Vector3f collisionPositionBack1;
 	Vector3f collisionPositionBack2;
-	const float COLLISION_POSITION_SIDEWAYS = 5;
-	const float COLLISION_POSITION_FORWARD = 12;
-	const float COLLISION_RADIUS = 10; 
+	const float COLLISION_POSITION_SIDEWAYS = 9.9351;
+	const float COLLISION_POSITION_FORWARD = 20.407;
+	const float COLLISION_POSITION_BACKWARD_INNER = -23;
+	const float COLLISION_POSITION_BACKWARD_OUTER = -25;
+	const float COLLISION_POSITION_BACKSIDEWAYS_INNER = 5;
+	const float COLLISION_RADIUS = 5; 
 	const float COLLISION_HEIGHT = 11.5;
 
 
 	//Functions for the constructor start here
 	
 	//calculates the value of directionVector
-	Vector3f calculateDirectionVector();
+	inline Vector3f calculateDirectionVector();
 	//Makes the body used for the front wheels model
-	void setupModelWheelFront();
+	inline void setupModelWheelFront();
 	//Makes the body used for the back wheels model
-	void setupModelWheelBack();
+	inline void setupModelWheelBack();
 	//Makes the body used for the transparent model
-	void setupModelTransparent();
+	inline void setupModelTransparent();
 
 	//Functions for step() start here
 	
 	//Moves the platform towards the point specified in the arguments
-	Vector3f calculateMovementAmount(Vector3f displacementVectorLocal);
+	inline Vector3f calculateMovementAmount(Vector3f displacementVectorLocal);
 	//Ensures the wheels and other separate pieces have their correct positions
 	//Relative to last position
-	void syncBodyPositionsRelative(Vector3f movementAmount);
+	inline void syncBodyPositionsRelative(Vector3f movementAmount);
 	//Ensures the wheels and other separate pieces have their correct positions
 	//Based on the position of the platform, desync impossible, but more code
-	void syncBodyPositionsAbsolute();
+	inline void syncBodyPositionsAbsolute();
 	//Makes the wheels spin, based on the direction specified by wheelMovementDirectionMultiplier
-	void spinWheels();
+	inline void spinWheels();
 	//Moves the player to keep them in sync with the moving platform
-	void movePlayer(Vector3f movementAmount);
-	//Checks if the player is touching the front of the platform, and if so, pushes them away
-	//prevents clipping into the platform. 
-	//Uses collisionPositionFront1 and collisionPositionFront2 as positions to generate the circles, 
-	//and uses collisionRadius and collisionHeight for the other dimensions of the circles
-	void playerCollisionCheckFront();
-	//Checks if the player if touching the front of the platform, and if so, pushes them away
-	//prevents clipping into the platform. 
-	//Uses collisionPositionBack1 and collisionPositionBack2 as positions to generate the circles, 
-	//and uses collisionRadius and collisionHeight for the other dimensions of the circles
-	void playerCollisionCheckBack();
+	inline void movePlayer(Vector3f movementAmount);
+	//checks if sonic is near the front or back of the platform depending on the active hitboxes determined by the arguments
+	//if sonic is close to it, push him away based 
+	//sonic will clip through the platform otherwise
+	inline void pushSonicAway(bool frontHitboxes, bool backHitboxes);
+	//actual code for checking the collision cylinders against sonic's position
+	//used in pushSonicAway to determine if sonic is close to the front or back of the platform
+	inline bool collisionCheckCylinder(Vector3f pos, float radius, float height);
 	//Creates the shaking effect of the platform when it stops
-	Vector3f shakePlatform();
+	inline Vector3f shakePlatform();
+
 
 public:
 	MH_YellowMovingPlatform(float x, float y, float z, int platformMovesOnXAxis, float displacementMax, float speed);

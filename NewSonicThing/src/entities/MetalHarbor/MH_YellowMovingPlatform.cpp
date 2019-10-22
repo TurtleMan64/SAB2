@@ -16,7 +16,10 @@
 	-fix collisions on the front and back of the platfrom when moving
 	-use two circles to make the collision box, easier to calculate than rectangles
 	-move into place the same way as the wheels, then update positions as it moves
+	-functional, could be switched to a box check instead of cylinders,
+	this would require a fair bit of rewrite in the pushSonicAway function
  -Is there a sound?
+	-no
 */
 
 #include "mhyellowmovingplatform.h"
@@ -65,8 +68,10 @@ MH_YellowMovingPlatform::MH_YellowMovingPlatform(float x, float y, float z, int 
 	if (displacementMax < 0) 
 	{
 		rotY += 180;
-		wheelMovementDirectionMultiplier = -1;
 	}
+
+	//now that the direction of movement is figured out this is more useful as a positive number
+	displacementMax = fabs(displacementMax);
 
 	scale = 1;
 	visible = true;
@@ -87,6 +92,8 @@ MH_YellowMovingPlatform::MH_YellowMovingPlatform(float x, float y, float z, int 
 	setupModelWheelFront();
 	setupModelWheelBack();
 	setupModelTransparent();
+
+	syncBodyPositionsAbsolute();
 
 	updateTransformationMatrix();
 
@@ -111,12 +118,14 @@ void MH_YellowMovingPlatform::step()
 			syncBodyPositionsRelative(movementAmount);
 			spinWheels();
 
+			pushSonicAway(true, false);
+
 			if (collideModelTransformed->playerIsOn)
 			{
 				movePlayer(movementAmount);
 			}
 			
-			if (fabs(displacementCurrent) >= fabs(displacementMax))
+			if (displacementCurrent >= displacementMax)
 			{
 				displacementCurrent = displacementMax;
 				wheelMovementDirectionMultiplier *= -1;
@@ -134,12 +143,14 @@ void MH_YellowMovingPlatform::step()
 			syncBodyPositionsRelative(movementAmount);
 			spinWheels();
 
+			pushSonicAway(false, true);
+
 			if (collideModelTransformed->playerIsOn)
 			{
 				movePlayer(movementAmount);
 			}
 
-			if (fabs(displacementCurrent <= 0))
+			if (displacementCurrent <= 0)
 			{
 				displacementCurrent = 0;
 				position = positionInitial;
@@ -158,6 +169,15 @@ void MH_YellowMovingPlatform::step()
 			movementAmount = shakePlatform();
 			position = position + movementAmount;
 			syncBodyPositionsRelative(movementAmount);
+
+			if (shakeTimer < SHAKE_TIMER_MAX && sinf(shakeTimer)/shakeTimer * 5 > 0)
+			{
+				pushSonicAway(true, false);
+			}
+			else if (shakeTimer < SHAKE_TIMER_MAX && sinf(shakeTimer)/shakeTimer * 5 < 0)
+			{
+				pushSonicAway(false, true);
+			}
 
 			if (collideModelTransformed->playerIsOn)
 			{
@@ -229,7 +249,7 @@ void MH_YellowMovingPlatform::deleteStaticModels()
 	Entity::deleteCollisionModel(&MH_YellowMovingPlatform::cmOriginal);
 }
 
-Vector3f MH_YellowMovingPlatform::calculateDirectionVector()
+inline Vector3f MH_YellowMovingPlatform::calculateDirectionVector()
 {
 	Vector3f directionVectorLocal = Vector3f();
 	if (platformMovesOnXAxis)
@@ -240,10 +260,11 @@ Vector3f MH_YellowMovingPlatform::calculateDirectionVector()
 	{
 		directionVectorLocal.x = fabs(displacementMax) / displacementMax;
 	}
+	directionVector.normalize();
 	return directionVectorLocal;
 }
 
-void MH_YellowMovingPlatform::setupModelWheelFront()
+inline void MH_YellowMovingPlatform::setupModelWheelFront()
 {
 	wheelFront = new Body(&MH_YellowMovingPlatform::modelsWheelFront);
 	wheelFront->setVisible(true);
@@ -253,7 +274,7 @@ void MH_YellowMovingPlatform::setupModelWheelFront()
 	wheelFront->setRotY(rotY);
 }
 
-void MH_YellowMovingPlatform::setupModelWheelBack()
+inline void MH_YellowMovingPlatform::setupModelWheelBack()
 {
 	wheelBack = new Body(&MH_YellowMovingPlatform::modelsWheelBack);
 	wheelBack->setVisible(true);
@@ -263,22 +284,22 @@ void MH_YellowMovingPlatform::setupModelWheelBack()
 	wheelBack->setRotY(rotY);
 }
 
-void MH_YellowMovingPlatform::setupModelTransparent()
+inline void MH_YellowMovingPlatform::setupModelTransparent()
 {
 	bodyTransparent = new Body(&MH_YellowMovingPlatform::modelsTransparent);
 	bodyTransparent->setVisible(true);
 	INCR_NEW("Entity");
-	Main_addEntityPass3(bodyTransparent);
+	Main_addEntityPass2(bodyTransparent);
 	bodyTransparent->setRotY(rotY);
 }
 
-Vector3f MH_YellowMovingPlatform::calculateMovementAmount(Vector3f directionVectorLocal)
+inline Vector3f MH_YellowMovingPlatform::calculateMovementAmount(Vector3f directionVectorLocal)
 {
 	//return Vector3f();
 	return directionVectorLocal.scaleCopy(speed * dt);
 }
 
-void MH_YellowMovingPlatform::syncBodyPositionsRelative(Vector3f movementAmount)
+inline void MH_YellowMovingPlatform::syncBodyPositionsRelative(Vector3f movementAmount)
 {
 	bodyTransparent->position = position;
 	
@@ -286,7 +307,7 @@ void MH_YellowMovingPlatform::syncBodyPositionsRelative(Vector3f movementAmount)
 	wheelBack->position = wheelBack->position + movementAmount;
 }
 
-void MH_YellowMovingPlatform::syncBodyPositionsAbsolute()
+inline void MH_YellowMovingPlatform::syncBodyPositionsAbsolute()
 {
 	bodyTransparent->position = position;
 
@@ -297,19 +318,19 @@ void MH_YellowMovingPlatform::syncBodyPositionsAbsolute()
 	wheelBack->position.y += WHEEL_OFFSET_BACK_VERTICAL;
 }
 
-void MH_YellowMovingPlatform::spinWheels()
+inline void MH_YellowMovingPlatform::spinWheels()
 {
-	wheelFront->rotX += WHEEL_SPEED_FRONT * wheelMovementDirectionMultiplier;
-	wheelBack->rotX += WHEEL_SPEED_BACK * wheelMovementDirectionMultiplier;
+	wheelFront->rotX += WHEEL_SPEED_FRONT * wheelMovementDirectionMultiplier * speed/40;
+	wheelBack->rotX += WHEEL_SPEED_BACK * wheelMovementDirectionMultiplier * speed/40;
 }
 
-void MH_YellowMovingPlatform::movePlayer(Vector3f movementAmount)
+inline void MH_YellowMovingPlatform::movePlayer(Vector3f movementAmount)
 {
 	Vector3f newPlayerPos = movementAmount + Global::gameMainVehicle->getPosition();
 	Global::gameMainVehicle->position = newPlayerPos;
 }
 
-Vector3f MH_YellowMovingPlatform::shakePlatform()
+inline Vector3f MH_YellowMovingPlatform::shakePlatform()
 {
 	Vector3f distanceFromPositionStopped = positionStopped - position;
 
@@ -319,4 +340,49 @@ Vector3f MH_YellowMovingPlatform::shakePlatform()
 	}
 	shakeTimer += dt * 30;
 	return directionVector.scaleCopy(sinf(shakeTimer)/shakeTimer * 5) + distanceFromPositionStopped;
+}
+
+inline void MH_YellowMovingPlatform::pushSonicAway(bool frontHitboxes, bool backHitboxes)
+{
+	//first check if sonic is even close to the platform
+	if (collisionCheckCylinder(position, 100, 100))
+	{
+		Vector3f rotateAround = Vector3f(0, 1, 0);
+		Vector3f sidewaysVector = Maths::rotatePoint(&directionVector, &rotateAround, Maths::toRadians(90));
+		Vector3f collisionCenterPos1;
+		Vector3f collisionCenterPos2;
+		Vector3f collisionCenterPos3;
+		Vector3f collisionCenterPos4;
+
+		//collisions on front of platform
+		collisionCenterPos1 = position + directionVector.scaleCopy(COLLISION_POSITION_FORWARD) + sidewaysVector.scaleCopy(COLLISION_POSITION_SIDEWAYS);
+		collisionCenterPos2 = position + directionVector.scaleCopy(COLLISION_POSITION_FORWARD);
+		collisionCenterPos3 = position + directionVector.scaleCopy(COLLISION_POSITION_FORWARD) + sidewaysVector.scaleCopy(COLLISION_POSITION_SIDEWAYS * -1);
+		if (collisionCheckCylinder(collisionCenterPos1, COLLISION_RADIUS, COLLISION_HEIGHT) || collisionCheckCylinder(collisionCenterPos2, COLLISION_RADIUS, COLLISION_HEIGHT) || collisionCheckCylinder(collisionCenterPos3, COLLISION_RADIUS, COLLISION_HEIGHT))
+		{
+			Global::gameMainVehicle->increasePosition(directionVector.x * speed/40, directionVector.y * speed/40, directionVector.z * speed/40);
+		}
+
+		//collisions on back of platform
+		collisionCenterPos1 = position + directionVector.scaleCopy(COLLISION_POSITION_BACKWARD_OUTER) + sidewaysVector.scaleCopy(COLLISION_POSITION_SIDEWAYS);
+		collisionCenterPos2 = position + directionVector.scaleCopy(COLLISION_POSITION_BACKWARD_INNER) + sidewaysVector.scaleCopy(COLLISION_POSITION_BACKSIDEWAYS_INNER);
+		collisionCenterPos3 = position + directionVector.scaleCopy(COLLISION_POSITION_BACKWARD_INNER) + sidewaysVector.scaleCopy(COLLISION_POSITION_BACKSIDEWAYS_INNER * -1);
+		collisionCenterPos4 = position + directionVector.scaleCopy(COLLISION_POSITION_BACKWARD_OUTER) + sidewaysVector.scaleCopy(COLLISION_POSITION_SIDEWAYS * -1);
+		if (collisionCheckCylinder(collisionCenterPos1, COLLISION_RADIUS, COLLISION_HEIGHT) || collisionCheckCylinder(collisionCenterPos2, COLLISION_RADIUS, COLLISION_HEIGHT) || collisionCheckCylinder(collisionCenterPos3, COLLISION_RADIUS, COLLISION_HEIGHT) || collisionCheckCylinder(collisionCenterPos4, COLLISION_RADIUS, COLLISION_HEIGHT))
+		{
+			Global::gameMainVehicle->increasePosition(directionVector.x * -speed/40, directionVector.y * -speed/40, directionVector.z * -speed/40);
+		}
+	}	
+}
+
+inline bool MH_YellowMovingPlatform::collisionCheckCylinder(Vector3f collisionCenterPos, float hitboxRadius, float hitboxHeight)
+{
+	Vector3f playerPos = Global::gameMainVehicle->position;
+	Vector3f playerToCenterDistance = playerPos - collisionCenterPos;
+	float playerToCenterDistanceSquared = playerToCenterDistance.x * playerToCenterDistance.x + playerToCenterDistance.z * playerToCenterDistance.z;
+	if (playerToCenterDistanceSquared <= hitboxRadius * hitboxRadius && fabs(playerToCenterDistance.y) < hitboxHeight)
+	{
+		return true;
+	}
+	return false;
 }
