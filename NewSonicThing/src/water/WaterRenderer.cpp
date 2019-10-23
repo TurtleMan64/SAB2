@@ -66,6 +66,7 @@ void WaterRenderer::prepareRender(Camera* camera, Light* sun)
 	glBindTexture  (GL_TEXTURE_2D, fbos->getRefractionDepthTexture());
 	glDepthMask(true);
 	glEnable(GL_CLIP_DISTANCE1);
+    glDisable(GL_CULL_FACE);
 }
 
 void WaterRenderer::unbind()
@@ -96,13 +97,15 @@ void WaterRenderer::setUpVAO()
 	quad = new RawModel(Loader::loadToVAO(&vertices, 2)); INCR_NEW("RawModel");
 }
 
-void WaterRenderer::render(std::list<WaterTile*>* water, Camera* camera, Light* sun)
+void WaterRenderer::render(std::vector<WaterTile*>* water, Camera* camera, Light* sun)
 {
 	prepareRender(camera, sun);
+    float xOff = WaterTile::TILE_SIZE*((int)(camera->eye.x/WaterTile::TILE_SIZE));
+    float zOff = WaterTile::TILE_SIZE*((int)(camera->eye.z/WaterTile::TILE_SIZE));
 	for (WaterTile* tile : (*water))
 	{
 		Matrix4f modelMatrix;
-		Vector3f tilePosition(tile->getX(), Global::waterHeight, tile->getZ());
+		Vector3f tilePosition(tile->getX() + xOff, Global::waterHeight, tile->getZ() + zOff);
 		Maths::createTransformationMatrix(&modelMatrix, &tilePosition, 0, 0, 0, 0, WaterTile::TILE_SIZE);
 		shader->loadModelMatrix(&modelMatrix);
 		glDrawArrays(GL_TRIANGLES, 0, quad->getVertexCount());

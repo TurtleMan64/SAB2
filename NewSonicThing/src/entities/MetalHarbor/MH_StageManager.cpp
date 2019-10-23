@@ -3,8 +3,9 @@
 #include "../entity.h"
 #include "mhstagemanager.h"
 #include "../../engineTester/main.h"
-#include "../car.h"
+#include "../controllableplayer.h"
 #include "../../objLoader/objLoader.h"
+#include "../../audio/audioplayer.h"
 
 std::list<TexturedModel*> MH_StageManager::modelsSkydome;
 
@@ -12,15 +13,39 @@ MH_StageManager::MH_StageManager()
 {
 	visible = true;
     scale = 2;
+    playedBGM = false;
+	timer = 1.666666f;
 }
+
+extern float dt;
 
 void MH_StageManager::step()
 {
 	//set the position of the background sky dome
 	position.y = Global::waterHeight;
-	position.x = Global::gameMainVehicle->getX();
-	position.z = Global::gameMainVehicle->getZ();
+	position.x = Global::gameMainPlayer->getX();
+	position.z = Global::gameMainPlayer->getZ();
 	updateTransformationMatrix();
+
+    if (timer == 1.666666f)
+	{
+		if (Global::gameMainPlayer->position.y > 1500)
+		{
+			timer-=dt;
+		}
+	}
+	else if (timer > 0.0f)
+	{
+		timer-=dt;
+        timer = fmaxf(timer, 0.0f);
+		AudioPlayer::setBGMVolume(timer/1.666666f);
+	}
+	else if (!playedBGM && Global::gameMainPlayer->vel.y < -60.0f)
+	{
+		playedBGM = true;
+		AudioPlayer::stopBGM();
+		AudioPlayer::playBGMWithIntro(2, 3);
+	}
 }
 
 std::list<TexturedModel*>* MH_StageManager::getModels()

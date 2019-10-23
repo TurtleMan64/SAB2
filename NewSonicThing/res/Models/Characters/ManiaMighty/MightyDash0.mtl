@@ -1,0 +1,56 @@
+# Material Count: 9
+
+newmtl 75_74_72
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd 75_74_72.png
+
+newmtl 49_49_49
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd 49_49_49.png
+
+newmtl 196_196_196
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd 196_196_196.png
+
+newmtl 245_184_140
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd 245_184_140.png
+
+newmtl 255_255_255
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd 255_255_255.png
+
+newmtl 216_60_74
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd 216_60_74.png
+
+newmtl 0_0_0
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd 0_0_0.png
+
+newmtl 164_164_164
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd 164_164_164.png
+
+newmtl 208_0_0
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd 208_0_0.png
+

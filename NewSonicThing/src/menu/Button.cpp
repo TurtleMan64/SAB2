@@ -29,6 +29,18 @@ Button::~Button()
 	this->text->deleteMe(); delete this->text; INCR_DEL("GUIText");
 }
 
+void Button::generateText(std::string newText)
+{
+    float textScale = text->getFontSize();
+    FontType* textFont = text->getFont();
+    float textPosX = text->getPosition()->getX();
+    float textPosY = text->getPosition()->getY();
+
+    text->deleteMe(); delete text; INCR_DEL("GUIText");
+    text = nullptr;
+    text = new GUIText(newText, textScale, textFont, textPosX, textPosY, 4, true); INCR_NEW("GUIText");
+}
+
 // Changes the button poosition. Should be preceded by GuiManager::clearGuisToRender.
 void Button::setPos(float xPos, float yPos)
 {

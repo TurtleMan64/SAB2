@@ -4,7 +4,7 @@
 #include "srstagemanager.h"
 #include "../../engineTester/main.h"
 #include "../dummy.h"
-#include "../car.h"
+#include "../controllableplayer.h"
 #include "../../objLoader/objLoader.h"
 #include "../../toolbox/maths.h"
 
@@ -21,19 +21,23 @@ SR_StageManager::SR_StageManager()
     skyPass3       = new Dummy(&SR_StageManager::modelsSkyPass3);       INCR_NEW("Entity");
     skyTransparent = new Dummy(&SR_StageManager::modelsSkyTransparent); INCR_NEW("Entity");
 
-    skyPass2->setVisible(true);
-    skyPass3->setVisible(true);
-    skyTransparent->setVisible(true);
+    skyPass2->visible = true;
+    skyPass3->visible = true;
+    skyTransparent->visible = true;
 
-    Main_addEntityPass2(skyPass2);
-    Main_addEntityPass3(skyPass3);
-    Main_addTransparentEntity(skyTransparent);
+    skyPass2->renderOrder = 1;
+    skyPass3->renderOrder = 2;
+    skyTransparent->renderOrder = 3;
+
+    Main_addEntity(skyPass2);
+    Main_addEntity(skyPass3);
+    Main_addEntity(skyTransparent);
 }
 
 void SR_StageManager::step()
 {
 	//set the position of the background sky dome
-	position.set(Global::gameMainVehicle->getPosition());
+	position.set(&Global::gameMainPlayer->position);
 	updateTransformationMatrix();
 
     skyPass2->setPosition(&position);

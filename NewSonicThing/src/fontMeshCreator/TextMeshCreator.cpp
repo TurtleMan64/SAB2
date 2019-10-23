@@ -17,6 +17,17 @@ TextMeshCreator::TextMeshCreator(std::string metaFilename)
 TextMeshData* TextMeshCreator::createTextMesh(GUIText* text)
 {
 	std::vector<Line> lines = createStructure(text);
+    text->lineWidths.clear();
+    text->maxLineWidth = 0.0f;
+    for (int i = 0; i < lines.size(); i++)
+    {
+        float newLength = lines[i].getLineLength();
+        text->lineWidths.push_back(lines[i].getLineLength());
+        if (newLength > text->maxLineWidth)
+        {
+            text->maxLineWidth = newLength;
+        }
+    }
 	TextMeshData* data = createQuadVertices(text, &lines);
 	return data;
 }
@@ -26,7 +37,7 @@ std::vector<Line> TextMeshCreator::createStructure(GUIText* text)
 	const char* chars = text->getTextString()->c_str();
 	int charsLength = (int)(text->getTextString()->size());
 	std::vector<Line> lines;
-	Line currentLine(metaData->getSpaceWidth(), FONT_SIZE, text->getMaxLineSize());
+	Line currentLine(metaData->getSpaceWidth(), FONT_SIZE, text->getMaxLineSizeConstraint());
 	Word currentWord(FONT_SIZE);
 	for (int i = 0; i < charsLength; i++)
 	{
@@ -37,7 +48,7 @@ std::vector<Line> TextMeshCreator::createStructure(GUIText* text)
 			if (!added)
 			{
 				lines.push_back(currentLine);
-				currentLine = Line(metaData->getSpaceWidth(), FONT_SIZE, text->getMaxLineSize());
+				currentLine = Line(metaData->getSpaceWidth(), FONT_SIZE, text->getMaxLineSizeConstraint());
 				currentLine.attemptToAddWord(&currentWord);
 			}
 			currentWord = Word(FONT_SIZE);
@@ -52,7 +63,7 @@ std::vector<Line> TextMeshCreator::createStructure(GUIText* text)
 	if (!added)
 	{
 		lines.push_back(currentLine);
-		currentLine = Line(metaData->getSpaceWidth(), FONT_SIZE, text->getMaxLineSize());
+		currentLine = Line(metaData->getSpaceWidth(), FONT_SIZE, text->getMaxLineSizeConstraint());
 		currentLine.attemptToAddWord(&currentWord);
 	}
 	lines.push_back(currentLine);
@@ -76,7 +87,6 @@ void TextMeshCreator::completeStructure(std::vector<Line> lines, Line currentLin
 
 TextMeshData* TextMeshCreator::createQuadVertices(GUIText* text, std::vector<Line>* lines)
 {
-	text->setNumberOfLines((int)(lines->size()));
 	float curserX = 0.0f;
 	float curserY = 0.0f;
 	std::vector<float> vertices;

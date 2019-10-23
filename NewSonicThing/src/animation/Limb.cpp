@@ -15,7 +15,7 @@ Limb::Limb(std::list<TexturedModel*>* models, float pivotX, float pivotY, float 
 	this->pivotZ = pivotZ;
 	this->body = body;
 	this->limb = limb;
-	setVisible(true);
+	visible = true;
 }
 
 void Limb::step()
@@ -34,17 +34,17 @@ void Limb::update(float time)
 	float angleX, angleY, angleZ, angleS;
 	if (body != nullptr)
 	{
-		angleX = Maths::toRadians(body->getRotX());
-		angleY = Maths::toRadians(body->getRotY());
-		angleZ = Maths::toRadians(body->getRotZ());
-		angleS = Maths::toRadians(body->getRotSpin());
+		angleX = Maths::toRadians(body->rotX);
+		angleY = Maths::toRadians(body->rotY);
+		angleZ = Maths::toRadians(body->rotZ);
+		angleS = Maths::toRadians(body->rotRoll);
 	}
 	else
 	{
-		angleX = Maths::toRadians(limb->getRotX());
-		angleY = Maths::toRadians(limb->getRotY());
-		angleZ = Maths::toRadians(limb->getRotZ());
-		angleS = Maths::toRadians(limb->getRotSpin());
+		angleX = Maths::toRadians(limb->rotX);
+		angleY = Maths::toRadians(limb->rotY);
+		angleZ = Maths::toRadians(limb->rotZ);
+		angleS = Maths::toRadians(limb->rotRoll);
 	}
 
 
@@ -131,25 +131,31 @@ void Limb::update(float time)
 
 	if (body != nullptr)
 	{
-		position.x = (body->getX() + newX);
-		position.y = (body->getY() + newY);
-		position.z = (body->getZ() + newZ);
-		setRotX(body->getRotX() + newXRot); //twist
-		setRotY(body->getRotY() + newYRot);
-		setRotZ(body->getRotZ() + newZRot);
-		setRotSpin(body->getRotSpin() + newSRot); //spin
-		//super.setScale(newScale);
+        newX*=body->scale;
+        newY*=body->scale;
+        newZ*=body->scale;
+		position.x = (body->position.x + newX);
+		position.y = (body->position.y + newY);
+		position.z = (body->position.z + newZ);
+		rotX = (body->rotX + newXRot); //twist
+		rotY = (body->rotY + newYRot);
+		rotZ = (body->rotZ + newZRot);
+		rotRoll = (body->rotRoll + newSRot); //spin
+		scale = (body->scale*newScale);
 	}
 	else
 	{
-		position.x = (limb->getX() + newX);
-		position.y = (limb->getY() + newY);
-		position.z = (limb->getZ() + newZ);
-		setRotX(limb->getRotX() + newXRot); //twist
-		setRotY(limb->getRotY() + newYRot);
-		setRotZ(limb->getRotZ() + newZRot);
-		setRotSpin(limb->getRotSpin() + newSRot); //spin
-		setScale(getScale()*newScale);
+        newX*=limb->scale;
+        newY*=limb->scale;
+        newZ*=limb->scale;
+		position.x = (limb->position.x + newX);
+		position.y = (limb->position.y + newY);
+		position.z = (limb->position.z + newZ);
+		rotX = (limb->rotX + newXRot); //twist
+		rotY = (limb->rotY + newYRot);
+		rotZ = (limb->rotZ + newZRot);
+		rotRoll = (limb->rotRoll + newSRot); //spin
+		scale = (limb->scale*newScale);
 	}
 }
 

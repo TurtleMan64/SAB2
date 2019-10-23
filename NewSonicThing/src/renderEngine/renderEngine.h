@@ -97,14 +97,14 @@ void Master_render(Camera* camera, float clipX, float clipY, float clipZ, float 
 void Master_cleanUp();
 
 void Master_processEntity(Entity* entity);
-void Master_processEntityPass2(Entity* entity);
-void Master_processEntityPass3(Entity* entity);
-void Master_processTransparentEntity(Entity* entity);
+//void Master_processEntityPass2(Entity* entity);
+//void Master_processEntityPass3(Entity* entity);
+//void Master_processTransparentEntity(Entity* entity);
 
-void Master_clearEntities();
-void Master_clearEntitiesPass2();
-void Master_clearEntitiesPass3();
-void Master_clearTransparentEntities();
+void Master_clearAllEntities();
+//void Master_clearEntitiesPass2();
+//void Master_clearEntitiesPass3();
+//void Master_clearTransparentEntities();
 
 void Master_init();
 

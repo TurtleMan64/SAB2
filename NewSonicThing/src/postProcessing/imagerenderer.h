@@ -16,6 +16,8 @@ public:
 	void renderQuad();
 	
 	int getOutputTexture();
+
+    void resize(int newWidth, int newHeight);
 	
 	void cleanUp();
 };

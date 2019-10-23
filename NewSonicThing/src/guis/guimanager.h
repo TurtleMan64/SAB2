@@ -14,8 +14,6 @@ private:
 	static std::list<GuiTexture*> guisToRender;
 
 public:
-	static FontType* fontVip;
-
 	static void init();
 
 	static void refresh();

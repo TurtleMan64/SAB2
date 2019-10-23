@@ -9,7 +9,7 @@
 #include "../collision/collisionmodel.h"
 #include "../collision/collisionchecker.h"
 #include "../animation/body.h"
-#include "../entities/car.h"
+#include "../entities/controllableplayer.h"
 #include "../audio/audioplayer.h"
 #include "../audio/source.h"
 #include "../toolbox/input.h"
@@ -92,15 +92,15 @@ void Pulley::step()
 		position.y = pulleyTopYPosition - handleVerticalDisplacement;
 
 		//Make player attach to the pulleys position and not move
-		Global::gameMainVehicle->setPosition(position.x, position.y - 5, position.z);
-		Global::gameMainVehicle->setVelocity(cameraDirectionVector.x, 0, cameraDirectionVector.z);
+		Global::gameMainPlayer->position.set(position.x, position.y - 5, position.z);
+		Global::gameMainPlayer->vel.set(cameraDirectionVector.x, 0, cameraDirectionVector.z);
 
 		if (jumpInputPressed()) //get off the pulley, should also happen if damaged
 		{
-			Global::gameMainVehicle->setVelocity(0,0,0);
-			Global::gameMainVehicle->setVelocityMovesPlayer(true);
-			Global::gameMainVehicle->setOnPulley(false);
-			Global::gameMainVehicle->doJumpPulley(cameraDirectionVector);
+			Global::gameMainPlayer->vel.set(0,0,0);
+			Global::gameMainPlayer->setVelocityMovesPlayer(true);
+			Global::gameMainPlayer->setOnPulley(false);
+			Global::gameMainPlayer->jumpOffPulley(cameraDirectionVector);
 
 			playerIsOnPulley = false;
 
@@ -115,11 +115,11 @@ void Pulley::step()
 		//This below is all just setting up player variables in preparation for the movement
 
 		//Used for the animation of the player holding the pulley
-		Global::gameMainVehicle->setOnPulley(true);
+		Global::gameMainPlayer->setOnPulley(true);
 		//Make player unable to move so velocity only changes camera direction
-		Global::gameMainVehicle->setVelocityMovesPlayer(false);
+		Global::gameMainPlayer->setVelocityMovesPlayer(false);
 		//Make player face the right direction
-		Global::gameMainVehicle->setRotY(rotY);
+		Global::gameMainPlayer->setRotY(rotY);
 	}
 	else if (!handleAtBottom())
 	{
@@ -141,8 +141,8 @@ void Pulley::step()
 	updateTransformationMatrix();
 	//stretch the rope out to where the pulley is
 	rope->updateTransformationMatrix(1, handleVerticalDisplacement, 1);
-	Global::gameMainVehicle->animate();
-	Global::gameMainVehicle->refreshCamera();
+	Global::gameMainPlayer->animate();
+	Global::gameMainPlayer->refreshCamera();
 }
 
 std::list<TexturedModel*>* Pulley::getModels()
@@ -213,7 +213,7 @@ inline void Pulley::setupPulleyTop()
 
 inline bool Pulley::playerWithinHandleHitbox()
 {
-	Vector3f playerPosition = Global::gameMainVehicle->getPosition();
+	Vector3f playerPosition = Global::gameMainPlayer->getPosition();
 	Vector3f playerPulleyDistance = playerPosition - position;
 	float playerPulleyDistanceHorizontalSquared = pow(playerPulleyDistance.x, 2) + 
 														pow(playerPulleyDistance.z, 2);

@@ -35,8 +35,11 @@ public:
 	//height of the text, 1.0 being the entire screen height
 	float size;
 
-	//colour of the numbers. default is white
-	Vector3f colour;
+    //if you pad with 0's, set this to darken them
+    bool darkenPaddedDigits;
+
+	//colours of the numbers. default is white
+	std::vector<Vector3f> colours;
 
 	//0 = left, 1 = center, 2 = right
 	int alignment;
@@ -54,7 +57,8 @@ public:
 	//  6 7 8
 	//visible = is the number visible initially
 	//totalDigits = number of digits to display, padded with 0's if necessary. for no padding, set this to 0.
-	GUINumber(int number, float x, float y, float size, int alignment, bool visible, int totalDigits);
+    //darkenPaddedDigits = if you pad with 0's, set this to darken them
+	GUINumber(int number, float x, float y, float size, int alignment, bool visible, int totalDigits, bool darkenPaddedDigits);
 
 	//must be called after every time you change the number, or its position, or anything else
 	void refresh();

@@ -16,11 +16,12 @@ Body::Body(std::list<TexturedModel*>* models)
 	baseRotZ = 0;
 	baseRotX = 0;
 	baseRotS = 0;
+    baseScale = 1.0f;
 	animationIndex = 0;
 	time = 0;
 	prevTime = 0;
 	deltaTime = 0;
-	setVisible(true);
+	visible = true;
 }
 
 void Body::step()
@@ -44,7 +45,7 @@ void Body::update(float newTime)
 	float newYRot = 0;
 	float newZRot = 0;
 	float newSRot = 0;
-	//float newScale = 0;
+	float newScale = 0;
 
 	for (unsigned int i = 0; i < (*animations)[animationIndex].keyframes.size() - 1; i++)
 	{
@@ -68,7 +69,7 @@ void Body::update(float newTime)
 		float t = (newTime - key1->time) / (key2->time - key1->time);
 
 		//sinusoidal interpolation
-		t = 1 - (((float)cos(Maths::PI*t) + 1)*0.5f);
+		t = 1 - ((cosf(Maths::PI*t) + 1)*0.5f);
 
 		float ratio = t;
 
@@ -79,7 +80,7 @@ void Body::update(float newTime)
 		newYRot = key1->yRot + ratio*(key2->yRot - key1->yRot);
 		newZRot = key1->zRot + ratio*(key2->zRot - key1->zRot);
 		newSRot = key1->sRot + ratio*(key2->sRot - key1->sRot);
-		//newScale = key1->scale + ratio*(key2->scale - key1->scale);
+		newScale = key1->scale + ratio*(key2->scale - key1->scale);
 	}
 	else
 	{
@@ -90,7 +91,7 @@ void Body::update(float newTime)
 		newYRot = key2->yRot;
 		newZRot = key2->zRot;
 		newSRot = key2->sRot;
-		//newScale = key2->scale;
+		newScale = key2->scale;
 	}
 	
 	float newXOffset = newX;
@@ -132,17 +133,20 @@ void Body::update(float newTime)
 	newZ = (newZOffset * cosf(angleY) - newXOffset * sinf(angleY));
 
 
+    newX*=baseScale;
+    newY*=baseScale;
+    newZ*=baseScale;
 	position.x = (baseX + newX);
 	position.y = (baseY + newY);
 	position.z = (baseZ + newZ);
-	setRotX(baseRotX + newXRot);
-	setRotY(baseRotY + newYRot);
-	setRotZ(baseRotZ + newZRot);
-	setRotSpin(baseRotS + newSRot);
-	//setScale(newScale);
+	rotX = (baseRotX + newXRot);
+	rotY = (baseRotY + newYRot);
+	rotZ = (baseRotZ + newZRot);
+	rotRoll = (baseRotS + newSRot);
+	scale = (baseScale*newScale);
 }
 
-void Body::setBaseOrientation(Vector3f* basePosition, float newBRotX, float newBRotY, float newBRotZ, float newBRotS)
+void Body::setBaseOrientation(Vector3f* basePosition, float newBRotX, float newBRotY, float newBRotZ, float newBRotS, float newBaseScale)
 {
 	baseX = basePosition->x;
 	baseY = basePosition->y;
@@ -151,9 +155,10 @@ void Body::setBaseOrientation(Vector3f* basePosition, float newBRotX, float newB
 	baseRotY = newBRotY;
 	baseRotZ = newBRotZ;
 	baseRotS = newBRotS;
+    baseScale = newBaseScale;
 }
 
-void Body::setBaseOrientation(float newBaseX, float newBaseY, float newBaseZ, float newRotX, float newRotY, float newRotZ, float newRotS)
+void Body::setBaseOrientation(float newBaseX, float newBaseY, float newBaseZ, float newRotX, float newRotY, float newRotZ, float newRotS, float newBaseScale)
 {
 	baseX = newBaseX;
 	baseY = newBaseY;
@@ -162,12 +167,8 @@ void Body::setBaseOrientation(float newBaseX, float newBaseY, float newBaseZ, fl
 	baseRotY = newRotY;
 	baseRotZ = newRotZ;
 	baseRotS = newRotS;
+    baseScale = newBaseScale;
 }
-
-//void Body::setBaseRotZ(float rotZ)
-//{
-	//baseRotZ = rotZ;
-//}
 
 inline std::list<TexturedModel*>* Body::getModels()
 {

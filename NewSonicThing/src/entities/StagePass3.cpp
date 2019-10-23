@@ -25,6 +25,7 @@ StagePass3::StagePass3(const char* objFolder, const char* objFilename)
 	rotY = 0;
 	rotZ = 0;
 	scale = 1;
+    renderOrder = 2;
 	visible = true;
 	
 	if (StagePass3::models.size() == 0)

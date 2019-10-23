@@ -1,5 +1,3 @@
-//note: ported very poorly by NoThisIsStupider from SAB1
-
 #include <glad/glad.h>
 
 #include "entity.h"
@@ -9,16 +7,19 @@
 #include "../renderEngine/renderEngine.h"
 #include "../objLoader/objLoader.h"
 #include "../engineTester/main.h"
-#include "../entities/car.h"
+#include "../entities/controllableplayer.h"
 #include "../toolbox/maths.h"
+#include "dummy.h"
+#include "../entities/camera.h"
 #include "../audio/audioplayer.h"
+#include "../particles/particleresources.h"
+#include "../particles/particle.h"
+#include "../collision/collisionchecker.h"
 
 #include <list>
 #include <iostream>
 #include <algorithm>
 #include <cmath>
-
-extern float dt;
 
 std::list<TexturedModel*> Dashpad::models;
 
@@ -27,69 +28,82 @@ Dashpad::Dashpad()
 
 }
 
-Dashpad::Dashpad(float x, float y, float z, float rotX, float rotY, float rotZ, float myPower, float myCamYawTarget, float time)
+Dashpad::Dashpad(
+	float x,     float y,     float z,
+    float power, float controlLockTime,
+	float rotX, float rotY, float rotZ)
 {
-	this->position.x = x;
-	this->position.y = y;
-	this->position.z = z;
+	position.x = x;
+	position.y = y;
+	position.z = z;
+	scale = 1;
+	visible = true;
+	playerIsIn = false;
+
 	this->rotX = rotX;
 	this->rotY = rotY;
 	this->rotZ = rotZ;
-	this->hitRadius = 6.5f;
-	this->power = myPower;
-	this->cooldownTimer = 0;
-	this->cooldownTimerMax = time / 60;
-	this->scale = 1;
-	this->visible = true;
-	this->camYawTarget = myCamYawTarget;
-	updateTransformationMatrixSADX();
+	this->rotRoll = 0;
+    this->power = power;
+    this->controlLockTime = controlLockTime;
+	updateTransformationMatrixYXZ();
+
+    forward = Vector3f(0, 0, 1);
+    up = Vector3f(0, 1, 0);
+	Vector3f xAxis(1, 0, 0);
+	Vector3f yAxis(0, 1, 0);
+	Vector3f zAxis(0, 0, 1);
+	forward = Maths::rotatePoint(&forward, &yAxis, Maths::toRadians(rotY));
+	forward = Maths::rotatePoint(&forward, &xAxis, Maths::toRadians(rotX));
+	forward = Maths::rotatePoint(&forward, &zAxis, Maths::toRadians(rotZ));
+    up = Maths::rotatePoint(&up, &yAxis, Maths::toRadians(rotY));
+	up = Maths::rotatePoint(&up, &xAxis, Maths::toRadians(rotX));
+	up = Maths::rotatePoint(&up, &zAxis, Maths::toRadians(rotZ));
 }
 
 void Dashpad::step()
 {
-	cooldownTimer = std::fmaxf(cooldownTimer - dt, 0);
-
-	if (Global::gameMainVehicle->getX() > getX() - hitRadius - Global::gameMainVehicle->getHitboxHorizontal() && Global::gameMainVehicle->getX() < getX() + hitRadius + Global::gameMainVehicle->getHitboxHorizontal() &&
-		Global::gameMainVehicle->getZ() > getZ() - hitRadius - Global::gameMainVehicle->getHitboxHorizontal() && Global::gameMainVehicle->getZ() < getZ() + hitRadius + Global::gameMainVehicle->getHitboxHorizontal() &&
-		Global::gameMainVehicle->getY() > getY() - hitRadius - Global::gameMainVehicle->getHitboxVertical()   && Global::gameMainVehicle->getY() < getY() + hitRadius)
+	if (fabsf(position.x - Global::gameMainPlayer->position.x) < 50 && 
+        fabsf(position.z - Global::gameMainPlayer->position.z) < 50 && 
+        fabsf(position.y - Global::gameMainPlayer->position.y) < 50)
 	{
-		if (cooldownTimer == 0 && Global::gameMainVehicle->isOnGround())
+		Vector3f diff = Global::gameMainPlayer->position - position;
+
+		if (diff.lengthSquared() < 13.0f*13.0f && Global::gameMainPlayer->onGround)
 		{
-			float dx =  cosf(Maths::toRadians(getRotY()));
-			float dz = -sinf(Maths::toRadians(getRotY()));
-
-			float spindashPower = 0;
-
-			Global::gameMainVehicle->setX(getX());
-			Global::gameMainVehicle->setY(getY());
-			Global::gameMainVehicle->setZ(getZ());
-
-			Global::gameMainVehicle->setVelocity(0, 0, 0);
-			Global::gameMainVehicle->setHoverTimer(0);
-			//Global::gameMainVehicle->setCameraTargetYaw(-(camYawTarget)+90);
-
-			AudioPlayer::play(1, getPosition());
-
-			cooldownTimer = cooldownTimerMax;
-
-			Global::gameMainVehicle->setCanMoveTimer(cooldownTimerMax);
-
-			Global::gameMainVehicle->setIsBall(false);
-
-			/*if (Global::gameMainVehicle->isChargingSpindash())
+			if (!playerIsIn)
 			{
-				//spindashPower = Global::gameMainVehicle->calculateSpindashSpeed(Global::gameMainVehicle->getSpindashTimer());
-				Global::gameMainVehicle->setIsBall(true);
-				Global::gameMainVehicle->setSpindashTimer(0);
+				AudioPlayer::play(1, getPosition());
+                Global::gameMainPlayer->vel = forward.scaleCopy(power);
+                Global::gameMainPlayer->vel = Maths::projectOntoPlane(&Global::gameMainPlayer->vel, &Global::gameMainPlayer->relativeUp);
+                Global::gameMainPlayer->vel.setLength(power);
+                Global::gameMainPlayer->camDir = forward;
+                Global::gameMainPlayer->canMoveTimer = controlLockTime;
+                Global::gameMainPlayer->hitDashpad();
 
-				//TODO: get stored spindash speed and set if < that?
-			}*/
+                Vector3f pointUp = position + up.scaleCopy(5.0f);
+                Vector3f pointDown = position + up.scaleCopy(-5.0f);
+                if (CollisionChecker::checkCollision(&pointUp, &pointDown))
+                {
+                    Global::gameMainPlayer->position.set(CollisionChecker::getCollidePosition());
+                    Global::gameMainPlayer->position = Global::gameMainPlayer->position + Global::gameMainPlayer->relativeUp.scaleCopy(0.1f);
+                }
+                else
+                {
+                    Global::gameMainPlayer->position = position;
+                }
+			}
 
-			//Global::gameMainVehicle->setxVelAir(dx*power + dx*spindashPower);
-			//Global::gameMainVehicle->setzVelAir(dz*power + dz*spindashPower);
-			//Global::gameMainVehicle->setGroundSpeed(dx*power + dx*spindashPower, dz*power + dz*spindashPower);
-			Global::gameMainVehicle->setVelocity(dx*power + dx*spindashPower, 0, dz*power + dz*spindashPower);
+			playerIsIn = true;
 		}
+		else
+		{
+			playerIsIn = false;
+		}
+	}
+	else
+	{
+		playerIsIn = false;
 	}
 }
 
@@ -109,7 +123,7 @@ void Dashpad::loadStaticModels()
 	std::fprintf(stdout, "Loading Dashpad static models...\n");
 	#endif
 
-	loadModel(&Dashpad::models, "res/Models/Objects/Dashpad/", "Dashpad");
+	loadModel(&Dashpad::models,  "res/Models/Objects/Dashpad/", "Dashpad");
 }
 
 void Dashpad::deleteStaticModels()

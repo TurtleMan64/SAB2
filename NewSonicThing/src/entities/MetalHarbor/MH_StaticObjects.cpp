@@ -96,5 +96,6 @@ void MH_StaticObjects::setupModelTransparent()
 	modelTransparent = new Body(&MH_StaticObjects::modelsTransparent);
 	modelTransparent->setVisible(true);
 	INCR_NEW("Entity");
-	Main_addEntityPass2(modelTransparent);
+	Main_addEntity(modelTransparent);
+	modelTransparent->renderOrder = 1;
 }

@@ -14,6 +14,7 @@ class ShadowMapMasterRenderer;
 
 #include "../renderEngine/renderEngine.h"
 #include <list>
+#include <vector>
 #include <glad/glad.h>
 
 class WaterRenderer
@@ -40,7 +41,7 @@ public:
 
 	WaterRenderer(WaterShader* shader, Matrix4f* projectionMatrix, WaterFrameBuffers* fbos, ShadowMapMasterRenderer* shadowMapRenderer);
 
-	void render(std::list<WaterTile*>* water, Camera* camera, Light* sun);
+	void render(std::vector<WaterTile*>* water, Camera* camera, Light* sun);
 
 	void updateProjectionMatrix(Matrix4f* projectionMatrix);
 };

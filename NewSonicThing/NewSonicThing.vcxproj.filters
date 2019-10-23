@@ -91,6 +91,15 @@
     <Filter Include="Source Files\entities\GreenHill">
       <UniqueIdentifier>{c2e0e7b4-63f1-4fb5-87dc-fef8eb7f38f1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\entities\CityEscape">
+      <UniqueIdentifier>{00ee3630-0ee9-40b4-800f-2f8edf887ba5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entities\DelfinoPlaza">
+      <UniqueIdentifier>{d0aef4f7-da73-461e-b481-a2f3eb0bebda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entities\Tutorial">
+      <UniqueIdentifier>{4c5de964-236c-4857-8963-be35bc59474a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\glad.c">
@@ -141,13 +150,7 @@
     <ClCompile Include="src\engineTester\MainGameLoop.cpp">
       <Filter>Source Files\engineTester</Filter>
     </ClCompile>
-    <ClCompile Include="src\entities\Boostpad.cpp">
-      <Filter>Source Files\entities</Filter>
-    </ClCompile>
     <ClCompile Include="src\entities\Camera.cpp">
-      <Filter>Source Files\entities</Filter>
-    </ClCompile>
-    <ClCompile Include="src\entities\Car.cpp">
       <Filter>Source Files\entities</Filter>
     </ClCompile>
     <ClCompile Include="src\entities\Checkpoint.cpp">
@@ -453,6 +456,51 @@
     <ClCompile Include="src\entities\GreenHill\GH_StageManager.cpp">
       <Filter>Source Files\entities\GreenHill</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\Beetle.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\CityEscape\CE_StageManager.cpp">
+      <Filter>Source Files\entities\CityEscape</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\Spring.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\PlayerSonic.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\ControllablePlayer.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\DelfinoPlaza\DP_StageManager.cpp">
+      <Filter>Source Files\entities\DelfinoPlaza</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\PlayerModel.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\ManiaMightyModel.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\Dashpad.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\RaceGhost.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\Help.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\Tutorial\T_StageManager.cpp">
+      <Filter>Source Files\entities\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="src\menu\ConfigMenu.cpp">
+      <Filter>Source Files\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\ItemCapsule.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\SpringTriple.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.h">
@@ -500,13 +548,7 @@
     <ClInclude Include="src\engineTester\main.h">
       <Filter>Source Files\engineTester</Filter>
     </ClInclude>
-    <ClInclude Include="src\entities\boostpad.h">
-      <Filter>Source Files\entities</Filter>
-    </ClInclude>
     <ClInclude Include="src\entities\camera.h">
-      <Filter>Source Files\entities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\entities\car.h">
       <Filter>Source Files\entities</Filter>
     </ClInclude>
     <ClInclude Include="src\entities\checkpoint.h">
@@ -799,6 +841,51 @@
     </ClInclude>
     <ClInclude Include="src\entities\GreenHill\ghstagemanager.h">
       <Filter>Source Files\entities\GreenHill</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\beetle.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\CityEscape\cestagemanager.h">
+      <Filter>Source Files\entities\CityEscape</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\spring.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\playersonic.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\controllableplayer.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\DelfinoPlaza\dpstagemanager.h">
+      <Filter>Source Files\entities\DelfinoPlaza</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\maniamightymodel.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\dashpad.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\raceghost.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\help.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\Tutorial\tstagemanager.h">
+      <Filter>Source Files\entities\Tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\playermodel.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\menu\configmenu.h">
+      <Filter>Source Files\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\itemcapsule.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\springtriple.h">
+      <Filter>Source Files\entities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

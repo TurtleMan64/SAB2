@@ -40,7 +40,7 @@ public:
 	Particle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float lifeLength, float scale, bool onlyRendersOnce);
 
 	Particle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float gravityEffect,
-		float lifeLength, float rotation, float scale, float scaleChange, bool posIsRef, bool onlyRendersOnce);
+		float lifeLength, float rotation, float scale, float scaleChange, bool posIsRef, bool onlyRendersOnce, float opacity);
 
 	Particle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float gravityEffect,
 		float lifeLength, float rotation, float scaleX, float scaleXChange, float scaleY, float scaleYChange, 

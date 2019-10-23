@@ -33,14 +33,15 @@ public:
 	//For 2D GUI Images
 	static void createTransformationMatrix(Matrix4f* result, Vector2f* translation, float roation, Vector2f* scale);
 
-	//Based on how sadx calculates rotations
-	static void createTransformationMatrixSADX(Matrix4f* result, Vector3f* translation, float rX, float rY, float rZ, float scale);
+	static void createTransformationMatrixYXZ(Matrix4f* result, Vector3f* translation, float rX, float rY, float rZ, float scale);
 
 	static void createViewMatrix(Matrix4f* result, Camera* cam);
 
 	//Returns the difference between the two angles
 	//ang1 and ang2 should be in degrees
 	static float compareTwoAngles(float ang1, float ang2);
+
+    static float interpolate(float num1, float num2, float percent);
 
     //assumes the size of int and float are 32 bits
 	static int sign(float value);
@@ -73,6 +74,8 @@ public:
 	//Given two vectors, linear rotate from the A to B by percent and return that new vector.
 	//If the two vectors are too small or are too similar already, a copy of A is retured.
 	static Vector3f interpolateVector(Vector3f* A, Vector3f* B, float percent);
+
+    static Vector3f interpolateVectorDebug(Vector3f* A, Vector3f* B, float percent);
 
 	//calculates the angle in radians between two vectors
 	static float angleBetweenVectors(Vector3f* A, Vector3f* B);
@@ -116,6 +119,9 @@ public:
 	* @return
 	*/
 	static Vector3f spherePositionFromAngles(float angH, float angV, float radius);
+
+    //outputs in degrees
+    static void sphereAnglesFromPosition(Vector3f* direction, float* outAngY, float* outAngZ);
 
 	//Generates a uniformly distributed random position on a sphere of radius 1
 	static Vector3f randomPointOnSphere();

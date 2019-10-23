@@ -10,6 +10,8 @@ private:
 	int width;
 	int height;
 
+    int depthBufferType;
+
 	GLuint frameBuffer;
 
 	bool multisampleAndMultiTarget;
@@ -31,6 +33,8 @@ public:
 	Fbo(int width, int height);
 	
 	void cleanUp();
+
+    void resize(int newWidth, int newHeight);
 	
 	void bindFrameBuffer();
 	

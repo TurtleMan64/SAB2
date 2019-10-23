@@ -3,7 +3,6 @@
 
 class Entity;
 class Camera;
-class Car;
 class Stage;
 class SkySphere;
 class Light;
@@ -16,6 +15,7 @@ class WaterTile;
 class FontType;
 class GUIText;
 class Timer;
+class ControllablePlayer;
 
 #include <string>
 #include <random>
@@ -30,17 +30,17 @@ void Main_addEntity(Entity* entityToAdd);
 void Main_deleteEntity(Entity* entityToDelete);
 void Main_deleteAllEntites();
 
-void Main_addEntityPass2(Entity* entityToAdd);
-void Main_deleteEntityPass2(Entity* entityToDelete);
-void Main_deleteAllEntitesPass2();
+//void Main_addEntityPass2(Entity* entityToAdd);
+//void Main_deleteEntityPass2(Entity* entityToDelete);
+//void Main_deleteAllEntitesPass2();
 
-void Main_addEntityPass3(Entity* entityToAdd);
-void Main_deleteEntityPass3(Entity* entityToDelete);
-void Main_deleteAllEntitesPass3();
+//void Main_addEntityPass3(Entity* entityToAdd);
+//void Main_deleteEntityPass3(Entity* entityToDelete);
+//void Main_deleteAllEntitesPass3();
 
-void Main_addTransparentEntity(Entity* entityToAdd);
-void Main_deleteTransparentEntity(Entity* entityToDelete);
-void Main_deleteAllTransparentEntites();
+//void Main_addTransparentEntity(Entity* entityToAdd);
+//void Main_deleteTransparentEntity(Entity* entityToDelete);
+//void Main_deleteAllTransparentEntites();
 
 void Main_addChunkedEntity(Entity* entityToAdd);
 void Main_deleteChunkedEntity(Entity* entityToAdd);
@@ -61,8 +61,8 @@ void Main_deleteAllChunkedEntities();
 #define LVL_RADICAL_HIGHWAY  5
 #define LVL_GREEN_HILL_ZONE  6
 
-#define ENTITY_RENDER_DIST 2000.0f
-#define ENTITY_RENDER_DIST_HIGH 5000.0f
+//#define ENTITY_RENDER_DIST 2000.0f
+//#define ENTITY_RENDER_DIST_HIGH 5000.0f
 
 #define DEV_MODE
 
@@ -82,7 +82,7 @@ public:
 	static MenuManager menuManager;
     static Timer* mainHudTimer;
 	static Camera* gameCamera;
-	static Car* gameMainVehicle;
+	static ControllablePlayer* gameMainPlayer;
 	static Stage* gameStage;
 	static SkySphere* gameSkySphere;
 	static Light* gameLightSun;
@@ -103,7 +103,7 @@ public:
 	static float gameClock;
 	static WaterRenderer* gameWaterRenderer;
 	static WaterFrameBuffers* gameWaterFBOs;
-	static std::list<WaterTile*>* gameWaterTiles;
+	static std::vector<WaterTile*> gameWaterTiles;
 	static int gameMainVehicleSpeed;
 	static float finishStageTimer;
 	static Fbo* gameMultisampleFbo;
@@ -123,6 +123,16 @@ public:
 	static float gameArcadePlaytime;
 	static bool stageUsesWater;
 	static FontType* fontVipnagorgialla;
+    static bool renderWithCulling; //if the stage uses backface culling or not
+    static bool displayFPS;
+    static int currentCalculatedFPS;
+    static int renderCount;
+    //static const int syncToDisplayEveryXFrames = 1; //if for some reason you want to render at double, triple, etc. the fps of the monitor
+    static bool useFullscreen;
+    static int displaySizeChanged; //This will be 1 for a single frame after the size of the window changes (set in callback)
+
+    static std::list<std::string> raceLog;
+    static bool shouldLogRace;
 
 	static bool  spawnAtCheckpoint;
 	static float checkpointX;

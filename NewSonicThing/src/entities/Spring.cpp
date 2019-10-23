@@ -7,68 +7,70 @@
 #include "../renderEngine/renderEngine.h"
 #include "../objLoader/objLoader.h"
 #include "../engineTester/main.h"
-#include "../entities/car.h"
+#include "../entities/controllableplayer.h"
 #include "../toolbox/maths.h"
 #include "../audio/audioplayer.h"
 
 #include <list>
+#include <vector>
 #include <iostream>
 #include <algorithm>
 #include <cmath>
 
 std::list<TexturedModel*> Spring::models;
 
-extern float dt;
-
 Spring::Spring()
 {
 
 }
 
-Spring::Spring(float x, float y, float z, float rotY, float rotZ, float myPower, float cooldownMax)
+Spring::Spring(float x, float y, float z, float dirX, float dirY, float dirZ, float myPower, float cooldownMax)
 {
 	this->position.x = x;
 	this->position.y = y;
 	this->position.z = z;
-	this->rotX = 0;
-	this->rotY = rotY;
-	this->rotZ = rotZ;
-	this->springPower = myPower;
-	this->cooldownTimer = 0;
-	this->cooldownTimerInitialValue = cooldownMax;
+	this->dir.set(dirX, dirY, dirZ);
+    this->dir.normalize();
+	this->springPower = fmaxf(100.0f, myPower);
+	this->cooldownTimer = 0.0f;
+	this->cooldownTimerMax = fmaxf(0.1f, cooldownMax);
 	this->scale = 1;
 	this->visible = true;
 
+    hitCenter = position + dir.scaleCopy(10.0f);
+
+    //calculate angles
+    rotX = 0;
+    rotY = Maths::toDegrees(atan2f(-dir.z, dir.x));
+    rotZ = Maths::toDegrees(atan2f(dir.y, sqrtf(dir.x*dir.x + dir.z*dir.z)));
+    rotRoll = 0;
+
 	updateTransformationMatrix();
 }
+
+extern float dt;
 
 void Spring::step()
 {
-	cooldownTimer -= dt;
+	cooldownTimer = std::fmaxf(cooldownTimer - dt, 0.0f);
 
-	if (playerIsInRange() && cooldownTimer <= 0)
+	if (fabsf(hitCenter.y - Global::gameMainPlayer->position.y) < 40 &&
+		fabsf(hitCenter.z - Global::gameMainPlayer->position.z) < 40 &&
+		fabsf(hitCenter.x - Global::gameMainPlayer->position.x) < 40 &&
+		cooldownTimer == 0.0f)
 	{
-		directionOfMovement = calculateDirectionOfMovement();
+        if ((Global::gameMainPlayer->getCenterPosition() - hitCenter).lengthSquared() < (10.83f*10.83f)+(4.0f*4.0f)) //10.83 = radius of spring, 4 = radius of sonic
+		{
+            Global::gameMainPlayer->position = hitCenter;
+		    Global::gameMainPlayer->hitSpring(&dir, springPower, cooldownTimerMax);
+		    AudioPlayer::play(6, &position, 1 + (springPower*0.00013333f));
 
-		setPlayerPositionToAboveSpring();
-		setPlayerVelocityToSpringAway();
-
-		Global::gameMainVehicle->setOnGround(false);
-		Global::gameMainVehicle->setHoverTimer(0);
-		Global::gameMainVehicle->setCanMoveTimer(cooldownTimerInitialValue);
-
-		playSpringSound();
-
-		cooldownTimer = cooldownTimerInitialValue;
+		    cooldownTimer = cooldownTimerMax;
+        }
 	}
 
-	increaseRotation(1, 0, 0); //this makes the spring turn
-	updateTransformationMatrix();
-}
-
-float Spring::getSpringPower()
-{
-	return springPower;
+	//increaseRotation(1, 0, 0);
+	//updateTransformationMatrix();
 }
 
 std::list<TexturedModel*>* Spring::getModels()
@@ -87,7 +89,7 @@ void Spring::loadStaticModels()
 	std::fprintf(stdout, "Loading spring static models...\n");
 	#endif
 
-	loadModel(&Spring::models, "res/Models/Objects/Spring/", "Spring");
+    loadModel(&Spring::models, "res/Models/Objects/Spring/", "Spring");
 }
 
 void Spring::deleteStaticModels()
@@ -99,11 +101,6 @@ void Spring::deleteStaticModels()
 	Entity::deleteModels(&Spring::models);
 }
 
-std::string Spring::getName()
-{
-	return "spring";
-}
-
 const bool Spring::canHomingAttackOn()
 {
 	return true;
@@ -111,40 +108,5 @@ const bool Spring::canHomingAttackOn()
 
 const Vector3f Spring::getHomingCenter()
 {
-	return Vector3f(getPosition());
-}
-
-//functions for step() start here
-
-bool Spring::playerIsInRange()
-{
-	return Global::gameMainVehicle->getX() > getX() - SPRING_RADIUS - Global::gameMainVehicle->getHitboxHorizontal() && Global::gameMainVehicle->getX() < getX() + SPRING_RADIUS + Global::gameMainVehicle->getHitboxHorizontal() &&
-		Global::gameMainVehicle->getZ() > getZ() - SPRING_RADIUS - Global::gameMainVehicle->getHitboxHorizontal() && Global::gameMainVehicle->getZ() < getZ() + SPRING_RADIUS + Global::gameMainVehicle->getHitboxHorizontal() &&
-		Global::gameMainVehicle->getY() > getY() - SPRING_RADIUS - Global::gameMainVehicle->getHitboxVertical()   && Global::gameMainVehicle->getY() < getY() + SPRING_RADIUS;
-}
-
-Vector3f Spring::calculateDirectionOfMovement()
-{
-	Vector3f directionOfMovementToReturn = Vector3f(0,0,0);
-	directionOfMovementToReturn.x =  cosf(Maths::toRadians(getRotY()))*cosf(Maths::toRadians(getRotZ()));
-	directionOfMovementToReturn.z = -sinf(Maths::toRadians(getRotY()))*cosf(Maths::toRadians(getRotZ()));
-	directionOfMovementToReturn.y =  sinf(Maths::toRadians(getRotZ()));
-	return directionOfMovementToReturn;
-}
-
-void Spring::setPlayerPositionToAboveSpring()
-{
-	Global::gameMainVehicle->setX(getX() + directionOfMovement.x * 15);
-	Global::gameMainVehicle->setY(getY() + directionOfMovement.y * 15);
-	Global::gameMainVehicle->setZ(getZ() + directionOfMovement.z * 15);
-}
-
-void Spring::setPlayerVelocityToSpringAway()
-{
-	Global::gameMainVehicle->setVelocity(directionOfMovement.x * springPower, directionOfMovement.y * springPower, directionOfMovement.z * springPower);
-}
-
-void Spring::playSpringSound()
-{
-	AudioPlayer::play(6, getPosition(), 1 + ((springPower/60)*0.008f));
+	return hitCenter;
 }

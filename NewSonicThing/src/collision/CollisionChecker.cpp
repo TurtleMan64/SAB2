@@ -40,6 +40,12 @@ void CollisionChecker::falseAlarm()
 	}
 }
 
+bool CollisionChecker::checkCollision(Vector3f* p1, Vector3f* p2)
+{
+    return CollisionChecker::checkCollision(p1->x, p1->y, p1->z,
+	                                        p2->x, p2->y, p2->z);
+}
+
 bool CollisionChecker::checkCollision(
 	float px1, float py1, float pz1,
 	float px2, float py2, float pz2)

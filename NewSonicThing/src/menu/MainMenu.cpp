@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <algorithm>
+#include <iostream>
 
 #include "../fontMeshCreator/guitext.h"
 #include "../fontMeshCreator/fonttype.h"
@@ -21,7 +22,7 @@
 #include "../guis/guimanager.h"
 #include "../guis/guitexture.h"
 #include "missionmenu.h"
-#include <iostream>
+#include "configmenu.h"
 
 MainMenu::MainMenu()
 {
@@ -50,8 +51,8 @@ void MainMenu::init()
 	//font = new FontType(Loader::loadTexture("res/Fonts/vipnagorgialla.png"),
 	//	"res/Fonts/vipnagorgialla.fnt"); INCR_NEW
 
-	textureParallelogram = Loader::loadTextureNoInterpolation("res/Images/MainMenu/Parallelogram.png");
-	textureParallelogramBackdrop = Loader::loadTextureNoInterpolation("res/Images/MainMenu/ParallelogramBackdrop.png");
+	textureParallelogram = Loader::loadTexture("res/Images/MainMenu/Parallelogram.png");
+	textureParallelogramBackdrop = Loader::loadTexture("res/Images/MainMenu/ParallelogramBackdrop.png");
 	textureLogo = Loader::loadTexture("res/Images/MainMenu/Logo.png");
 	logo = GuiTexture(textureLogo, 0.5f, 0.4f, 0.6f * (767.0f / 784.0f) / aspectRatio, 0.6f, 0.0f);
 
@@ -230,6 +231,9 @@ Menu* MainMenu::step()
 				break;
 
 			case config:
+                AudioPlayer::play(38, Global::gameCamera->getFadePosition1());
+				retVal = new ConfigMenu; INCR_NEW("Menu");
+				setVisible(false);
 				break;
 
 			case exit:

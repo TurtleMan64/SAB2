@@ -13,15 +13,26 @@ NokiBay 8
 0.00000000005 2.0
 108
 1 0 0
+0
 1
-2
-res/Audio/BGM/g_hill_intro.ogg
-res/Audio/BGM/g_hill_loop.ogg
+res/Audio/BGM/noki_bay.ogg
 -2997.882813 204.103973 -10584.179688
 103 3
 -100
 water
 198
+18
+true
+
+#Note: scale that im using from SMS -> SAB2 is 0.5
+
+#Stage manager
+91 5
+
+# Pass 2
+2 res/Models/Levels/NokiBay/ NokiBayTransparent
 
 # Player
-6 0 7 0
+6 582.021912 1495.495972 -1033.597168
+0 0 0 0
+0 1000 0 0

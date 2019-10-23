@@ -72,17 +72,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>../Libraries/Include;$(IncludePath)</IncludePath>
     <LibraryPath>../Libraries/StaticCode;$(LibraryPath)</LibraryPath>
+    <OutDir>..\$(ProjectName)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>../Libraries/Include;$(IncludePath)</IncludePath>
     <LibraryPath>../Libraries/StaticCode;$(LibraryPath)</LibraryPath>
+    <OutDir>..\$(ProjectName)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>..\$(ProjectName)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>..\$(ProjectName)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -91,6 +100,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;SOIL.lib;OpenAL32.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -98,12 +108,13 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -120,6 +131,7 @@
       <ConformanceMode>true</ConformanceMode>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -143,10 +155,18 @@
     <ClCompile Include="src\collision\QuadTreeNode.cpp" />
     <ClCompile Include="src\collision\Triangle3D.cpp" />
     <ClCompile Include="src\engineTester\MainGameLoop.cpp" />
-    <ClCompile Include="src\entities\Boostpad.cpp" />
+    <ClCompile Include="src\entities\Beetle.cpp" />
+    <ClCompile Include="src\entities\Dashpad.cpp" />
     <ClCompile Include="src\entities\Camera.cpp" />
-    <ClCompile Include="src\entities\Car.cpp" />
+    <ClCompile Include="src\entities\ControllablePlayer.cpp" />
+    <ClCompile Include="src\entities\DelfinoPlaza\DP_StageManager.cpp" />
+    <ClCompile Include="src\entities\Help.cpp" />
+    <ClCompile Include="src\entities\ItemCapsule.cpp" />
+    <ClCompile Include="src\entities\ManiaMightyModel.cpp" />
+    <ClCompile Include="src\entities\PlayerModel.cpp" />
+    <ClCompile Include="src\entities\PlayerSonic.cpp" />
     <ClCompile Include="src\entities\Checkpoint.cpp" />
+    <ClCompile Include="src\entities\CityEscape\CE_StageManager.cpp" />
     <ClCompile Include="src\entities\CollideableObject.cpp" />
     <ClCompile Include="src\entities\Dummy.cpp" />
     <ClCompile Include="src\entities\Entity.cpp" />
@@ -164,15 +184,19 @@
     <ClCompile Include="src\entities\MetalHarbor\MH_StageManager.cpp" />
     <ClCompile Include="src\entities\MetalHarbor\MH_Tank.cpp" />
     <ClCompile Include="src\entities\Point.cpp" />
+    <ClCompile Include="src\entities\RaceGhost.cpp" />
     <ClCompile Include="src\entities\Rail.cpp" />
     <ClCompile Include="src\entities\Ring.cpp" />
     <ClCompile Include="src\entities\Rocket.cpp" />
     <ClCompile Include="src\entities\SkyRail\SR_StageManager.cpp" />
     <ClCompile Include="src\entities\SkySphere.cpp" />
+    <ClCompile Include="src\entities\Spring.cpp" />
+    <ClCompile Include="src\entities\SpringTriple.cpp" />
     <ClCompile Include="src\entities\Stage.cpp" />
     <ClCompile Include="src\entities\StagePass2.cpp" />
     <ClCompile Include="src\entities\StagePass3.cpp" />
     <ClCompile Include="src\entities\StageTransparent.cpp" />
+    <ClCompile Include="src\entities\Tutorial\T_StageManager.cpp" />
     <ClCompile Include="src\fontMeshCreator\Character.cpp" />
     <ClCompile Include="src\fontMeshCreator\FontType.cpp" />
     <ClCompile Include="src\fontMeshCreator\GUINumber.cpp" />
@@ -196,6 +220,7 @@
     <ClCompile Include="src\guis\GuiTexture.cpp" />
     <ClCompile Include="src\guis\GuiTextureResources.cpp" />
     <ClCompile Include="src\menu\Button.cpp" />
+    <ClCompile Include="src\menu\ConfigMenu.cpp" />
     <ClCompile Include="src\menu\Extras.cpp" />
     <ClCompile Include="src\menu\HUD.cpp" />
     <ClCompile Include="src\menu\MainMenu.cpp" />
@@ -265,10 +290,18 @@
     <ClInclude Include="src\collision\quadtreenode.h" />
     <ClInclude Include="src\collision\triangle3d.h" />
     <ClInclude Include="src\engineTester\main.h" />
-    <ClInclude Include="src\entities\boostpad.h" />
+    <ClInclude Include="src\entities\beetle.h" />
+    <ClInclude Include="src\entities\dashpad.h" />
     <ClInclude Include="src\entities\camera.h" />
-    <ClInclude Include="src\entities\car.h" />
+    <ClInclude Include="src\entities\controllableplayer.h" />
+    <ClInclude Include="src\entities\DelfinoPlaza\dpstagemanager.h" />
+    <ClInclude Include="src\entities\help.h" />
+    <ClInclude Include="src\entities\itemcapsule.h" />
+    <ClInclude Include="src\entities\maniamightymodel.h" />
+    <ClInclude Include="src\entities\playermodel.h" />
+    <ClInclude Include="src\entities\playersonic.h" />
     <ClInclude Include="src\entities\checkpoint.h" />
+    <ClInclude Include="src\entities\CityEscape\cestagemanager.h" />
     <ClInclude Include="src\entities\collideableobject.h" />
     <ClInclude Include="src\entities\dummy.h" />
     <ClInclude Include="src\entities\entity.h" />
@@ -286,15 +319,19 @@
     <ClInclude Include="src\entities\MetalHarbor\mhstagemanager.h" />
     <ClInclude Include="src\entities\MetalHarbor\mhtank.h" />
     <ClInclude Include="src\entities\point.h" />
+    <ClInclude Include="src\entities\raceghost.h" />
     <ClInclude Include="src\entities\rail.h" />
     <ClInclude Include="src\entities\ring.h" />
     <ClInclude Include="src\entities\rocket.h" />
     <ClInclude Include="src\entities\SkyRail\srstagemanager.h" />
     <ClInclude Include="src\entities\skysphere.h" />
+    <ClInclude Include="src\entities\spring.h" />
+    <ClInclude Include="src\entities\springtriple.h" />
     <ClInclude Include="src\entities\stage.h" />
     <ClInclude Include="src\entities\stagepass2.h" />
     <ClInclude Include="src\entities\stagepass3.h" />
     <ClInclude Include="src\entities\stagetransparent.h" />
+    <ClInclude Include="src\entities\Tutorial\tstagemanager.h" />
     <ClInclude Include="src\fontMeshCreator\character.h" />
     <ClInclude Include="src\fontMeshCreator\fonttype.h" />
     <ClInclude Include="src\fontMeshCreator\guinumber.h" />
@@ -317,6 +354,7 @@
     <ClInclude Include="src\guis\guitexture.h" />
     <ClInclude Include="src\guis\guitextureresources.h" />
     <ClInclude Include="src\menu\button.h" />
+    <ClInclude Include="src\menu\configmenu.h" />
     <ClInclude Include="src\menu\extras.h" />
     <ClInclude Include="src\menu\hud.h" />
     <ClInclude Include="src\menu\mainmenu.h" />

@@ -27,14 +27,7 @@ Particle::Particle(ParticleTexture* texture, Vector3f* position, float lifeLengt
 	this->scaleYChange = 0;
 	this->onlyRendersOnce = onlyRendersOnce;
     this->opacity = 1.0f;
-	if (Global::renderParticles)
-	{
-		ParticleMaster::addParticle(this); INCR_NEW("Particle");
-	}
-	else
-	{
-		delete this;
-	}
+	ParticleMaster::addParticle(this);
 }
 
 Particle::Particle(ParticleTexture* texture, Vector3f* position, float lifeLength, float scale, float opacity, bool onlyRendersOnce)
@@ -56,14 +49,7 @@ Particle::Particle(ParticleTexture* texture, Vector3f* position, float lifeLengt
 	this->scaleYChange = 0;
 	this->onlyRendersOnce = onlyRendersOnce;
     this->opacity = opacity;
-	if (Global::renderParticles)
-	{
-		ParticleMaster::addParticle(this); INCR_NEW("Particle");
-	}
-	else
-	{
-		delete this;
-	}
+	ParticleMaster::addParticle(this);
 }
 
 Particle::Particle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float lifeLength, float scale, bool onlyRendersOnce)
@@ -85,18 +71,11 @@ Particle::Particle(ParticleTexture* texture, Vector3f* position, Vector3f* veloc
 	this->scaleYChange = 0;
 	this->onlyRendersOnce = onlyRendersOnce;
     this->opacity = 1.0f;
-	if (Global::renderParticles)
-	{
-		ParticleMaster::addParticle(this); INCR_NEW("Particle");
-	}
-	else
-	{
-		delete this;
-	}
+	ParticleMaster::addParticle(this);
 }
 
 Particle::Particle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float gravityEffect,
-	float lifeLength, float rotation, float scale, float scaleChange, bool posIsRef, bool onlyRendersOnce)
+	float lifeLength, float rotation, float scale, float scaleChange, bool posIsRef, bool onlyRendersOnce, float opacity)
 {
 	this->texture = texture;
 	if (posIsRef)
@@ -121,15 +100,8 @@ Particle::Particle(ParticleTexture* texture, Vector3f* position, Vector3f* veloc
 	this->scaleY = scale;
 	this->scaleYChange = scaleChange;
 	this->onlyRendersOnce = onlyRendersOnce;
-    this->opacity = 1.0f;
-	if (Global::renderParticles)
-	{
-		ParticleMaster::addParticle(this); INCR_NEW("Particle");
-	}
-	else
-	{
-		delete this;
-	}
+    this->opacity = opacity;
+	ParticleMaster::addParticle(this);
 }
 
 Particle::Particle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float gravityEffect,
@@ -160,14 +132,7 @@ Particle::Particle(ParticleTexture* texture, Vector3f* position, Vector3f* veloc
 	this->scaleYChange = scaleYChange;
 	this->onlyRendersOnce = onlyRendersOnce;
     this->opacity = 1.0f;
-	if (Global::renderParticles)
-	{
-		ParticleMaster::addParticle(this); INCR_NEW("Particle");
-	}
-	else
-	{
-		delete this;
-	}
+    ParticleMaster::addParticle(this);
 }
 
 void Particle::updateTextureCoordInfo()

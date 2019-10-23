@@ -9,7 +9,7 @@
 #include "../objLoader/objLoader.h"
 #include "../engineTester/main.h"
 #include "dummy.h"
-#include "car.h"
+#include "controllableplayer.h"
 
 #include <list>
 #include <vector>
@@ -52,9 +52,9 @@ void Stage::updateVisibleChunks()
 		std::vector<Vector3f> maxs = Stage::chunkMax[i];
 
 		Vector3f t(0, 0, 0);
-		if (Global::gameMainVehicle != nullptr)
+		if (Global::gameMainPlayer != nullptr)
 		{
-			t.set(Global::gameMainVehicle->getPosition());
+			t.set(Global::gameMainPlayer->getPosition());
 		}
 
 		bool vis = false;

@@ -7,7 +7,7 @@
 #include "../renderEngine/renderEngine.h"
 #include "../objLoader/objLoader.h"
 #include "../engineTester/main.h"
-#include "../entities/car.h"
+#include "../entities/controllableplayer.h"
 #include "../toolbox/maths.h"
 #include "camera.h"
 #include "../collision/collisionmodel.h"
@@ -52,10 +52,9 @@ void SpeedRamp::step()
 	{
 		Vector3f newVelocity = calculateNewVelocity();
 
-		Global::gameMainVehicle->setOnGround(false);
-		Global::gameMainVehicle->increasePosition(0, 4, 0);
-		Global::gameMainVehicle->setVelocity(newVelocity.x, newVelocity.y, newVelocity.z);
-		Global::gameMainVehicle->setCanMoveTimer(inputLockDuration);
+		Global::gameMainPlayer->increasePosition(0, 4, 0);
+		Global::gameMainPlayer->vel.set(newVelocity.x, newVelocity.y, newVelocity.z);
+		Global::gameMainPlayer->setCanMoveTimer(inputLockDuration);
 
 		playSpeedRampSound();
 	}

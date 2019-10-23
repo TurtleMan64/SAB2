@@ -33,6 +33,14 @@ int ImageRenderer::getOutputTexture()
 	return fbo->getColourTexture();
 }
 
+void ImageRenderer::resize(int newWidth, int newHeight)
+{
+    if (fbo != nullptr)
+    {
+        fbo->resize(newWidth, newHeight);
+    }
+}
+
 void ImageRenderer::cleanUp()
 {
 	if (fbo != nullptr) 

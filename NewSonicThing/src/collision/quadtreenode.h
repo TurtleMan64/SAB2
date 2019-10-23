@@ -3,16 +3,16 @@
 
 class Triangle3D;
 
-#include <list>
+#include <vector>
 
 
 class QuadTreeNode
 {
 public:
-	QuadTreeNode* topLeft;
-	QuadTreeNode* topRight;
-	QuadTreeNode* botLeft;
-	QuadTreeNode* botRight;
+	QuadTreeNode* topLeft  = nullptr;
+	QuadTreeNode* topRight = nullptr;
+	QuadTreeNode* botLeft  = nullptr;
+	QuadTreeNode* botRight = nullptr;
 
 	float xMid;
 	float zMid;
@@ -24,11 +24,11 @@ public:
 	float yMax;
 	float zMin;
 	float zMax;
-	std::list<Triangle3D*> tris;
+	std::vector<Triangle3D*> tris;
 
 	int depth; //this can probably be a char instead
 
-	QuadTreeNode(float xBoundMin, float xBoundMax, float zBoundMin, float zBoundMax, std::list<Triangle3D*> pool, int depth, int depthMax);
+	QuadTreeNode(float xBoundMin, float xBoundMax, float zBoundMin, float zBoundMax, std::vector<Triangle3D*> pool, int depth, int depthMax);
 
 	//Deletes all children nodes and clears triangle list
 	void deleteMe();

@@ -28,8 +28,8 @@
 #include "../toolbox/maths.h"
 #include "split.h"
 #include "input.h"
-#include "../entities/car.h"
-#include "../entities/boostpad.h"
+#include "../entities/controllableplayer.h"
+#include "../entities/dashpad.h"
 #include "../entities/camera.h"
 #include "../entities/checkpoint.h"
 #include "../entities/jumpramp.h"
@@ -54,6 +54,17 @@
 #include "../entities/MetalHarbor/mhstagemanager.h"
 #include "../entities/GreenHill/ghstagemanager.h"
 #include "../entities/windgust.h"
+#include "../entities/beetle.h"
+#include "../entities/CityEscape/cestagemanager.h"
+#include "../entities/spring.h"
+#include "../water/watertile.h"
+#include "../entities/playersonic.h"
+#include "../entities/DelfinoPlaza/dpstagemanager.h"
+#include "../entities/raceghost.h"
+#include "../entities/help.h"
+#include "../entities/Tutorial/tstagemanager.h"
+#include "../entities/itemcapsule.h"
+#include "../entities/springtriple.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -70,16 +81,16 @@ void LevelLoader::loadTitle()
 
 	CollisionChecker::deleteAllCollideModels();
 
-    if (Global::gameMainVehicle != nullptr)
+    if (Global::gameMainPlayer != nullptr)
     {
-        delete Global::gameMainVehicle; INCR_DEL("Entity");
+        delete Global::gameMainPlayer; INCR_DEL("Entity");
     }
-	Global::gameMainVehicle = nullptr;
+	Global::gameMainPlayer = nullptr;
 
 	Main_deleteAllEntites();
-	Main_deleteAllEntitesPass2();
-	Main_deleteAllEntitesPass3();
-	Main_deleteAllTransparentEntites();
+	//Main_deleteAllEntitesPass2();
+	//Main_deleteAllEntitesPass3();
+	//Main_deleteAllTransparentEntites();
 	Main_deleteAllChunkedEntities();
 
 	for (Checkpoint* check : Global::gameCheckpointList)
@@ -170,16 +181,16 @@ void LevelLoader::loadLevel(std::string levelFilename)
 		freeAllStaticModels();
 	}
 
-    if (Global::gameMainVehicle != nullptr)
+    if (Global::gameMainPlayer != nullptr)
     {
-        delete Global::gameMainVehicle; INCR_DEL("Entity");
+        delete Global::gameMainPlayer; INCR_DEL("Entity");
     }
-	Global::gameMainVehicle = nullptr;
+	Global::gameMainPlayer = nullptr;
 
 	Main_deleteAllEntites();
-	Main_deleteAllEntitesPass2();
-	Main_deleteAllEntitesPass3();
-	Main_deleteAllTransparentEntites();
+	//Main_deleteAllEntitesPass2();
+	//Main_deleteAllEntitesPass3();
+	//Main_deleteAllTransparentEntites();
 	Main_deleteAllChunkedEntities();
 
 	for (Checkpoint* check : Global::gameCheckpointList)
@@ -530,6 +541,29 @@ void LevelLoader::loadLevel(std::string levelFilename)
 	getlineSafe(file, waterHeightLine);
 	Global::waterHeight = stof(waterHeightLine);
 
+    //Number of water tiles
+	std::string waterTilesCountLine;
+	getlineSafe(file, waterTilesCountLine);
+    int waterTilesCount = stoi(waterTilesCountLine);
+    for (WaterTile* tile : Global::gameWaterTiles)
+    {
+        delete tile; INCR_DEL("WaterTile")
+    }
+    Global::gameWaterTiles.clear();
+    float waterTileOffset = -WaterTile::TILE_SIZE*(waterTilesCount-1);
+    for (int r = 0; r < waterTilesCount; r++)
+	{
+		for (int c = 0; c < waterTilesCount; c++)
+		{
+			Global::gameWaterTiles.push_back(new WaterTile(r*WaterTile::TILE_SIZE*2 + waterTileOffset, c*WaterTile::TILE_SIZE*2 + waterTileOffset)); INCR_NEW("WaterTile");
+		}
+	}
+
+    //Does the stage use backface culling?
+    std::string backfaceCullingLine;
+	getlineSafe(file, backfaceCullingLine);
+    Global::renderWithCulling = (backfaceCullingLine == "true");
+
 	GuiManager::clearGuisToRender();
 
 	Global::gameIsNormalMode = false;
@@ -627,11 +661,11 @@ void LevelLoader::loadLevel(std::string levelFilename)
 		//Stage::loadModels((char*)modelFLoc.c_str(), (char*)modelFName.c_str()); //doing this earlier now
 	}
 
-	if (Global::gameMainVehicle != nullptr)
+	if (Global::gameMainPlayer != nullptr)
 	{
-		Global::gameMainVehicle->setCanMoveTimer(1.0f);
-        Global::gameMainVehicle->setCameraDirection(&initialCamDir);
-		//Global::bufferTime = 60;
+		Global::gameMainPlayer->canMoveTimer = 1.0f;
+        Global::gameMainPlayer->camDir.set(&initialCamDir);
+        Global::gameMainPlayer->camDirSmooth.set(&initialCamDir);
 	}
 
 	Global::raceStartTimer = 1.0f;
@@ -671,6 +705,8 @@ void LevelLoader::loadLevel(std::string levelFilename)
 
 	Global::finishStageTimer = -1.0f;
 
+    Global::raceLog.clear();
+
 	//Vector3f partVel(0, 0, 0);
 	//new Particle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &partVel, 0.0f,
 	//	1.0f, 0.0f, 50.0f, 0.0f, true, false);
@@ -691,7 +727,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
 }
 
 
-void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>* chunkedEntities)
+void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chunkedEntities)
 {
 	if (dat[0][0] == '#')
 	{
@@ -713,32 +749,32 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 		case 2: //Stage Pass 2
 		{
 			StagePass2* pass2 = new StagePass2(dat[1], dat[2]); INCR_NEW("Entity");
-			Main_addEntityPass2(pass2);
+			Main_addEntity(pass2);
 			return;
 		}
 
 		case 3: //Stage Pass 3
 		{
 			StagePass3* pass3 = new StagePass3(dat[1], dat[2]); INCR_NEW("Entity");
-			Main_addEntityPass3(pass3);
+			Main_addEntity(pass3);
 			return;
 		}
 
 		case 4: //Stage Transparent
 		{
 			StageTransparent* trans = new StageTransparent(dat[1], dat[2]); INCR_NEW("Entity");
-			Main_addTransparentEntity(trans);
+			Main_addEntity(trans);
 			return;
 		}
 
-		case 6: //Car
+		case 6: //Sonic
 		{
-			Car* car = new Car(toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3])); INCR_NEW("Entity");
-            if (Global::gameMainVehicle != nullptr)
+			PlayerSonic* player = new PlayerSonic(toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3])); INCR_NEW("Entity");
+            if (Global::gameMainPlayer != nullptr)
             {
-                delete Global::gameMainVehicle; INCR_DEL("Entity");
+                delete Global::gameMainPlayer; INCR_DEL("Entity");
             }
-			Global::gameMainVehicle = car;
+			Global::gameMainPlayer = player;
 			//Main_addEntity(car);
 			return;
 		}
@@ -754,12 +790,12 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 
 		case 8: //Boostpad
 		{
-			//Boostpad::loadStaticModels();
-			//Boostpad* pad = new Boostpad(
-			//	toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]),
-			//	toFloat(dat[4]), toFloat(dat[5]), toFloat(dat[6]),
-			//	toFloat(dat[7]), toFloat(dat[8]), toFloat(dat[9])); INCR_NEW("Entity");
-			//Main_addTransparentEntity(pad);
+			Dashpad::loadStaticModels();
+			Dashpad* pad = new Dashpad(
+				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]),
+				toFloat(dat[4]), toFloat(dat[5]),
+				toFloat(dat[6]), toFloat(dat[7]), toFloat(dat[8])); INCR_NEW("Entity");
+			chunkedEntities->push_back(pad);
 			return;
 		}
 
@@ -780,14 +816,72 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 			JumpRamp* ramp = new JumpRamp(
 				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]),
 				toFloat(dat[4])); INCR_NEW("Entity");
-			Main_addTransparentEntity(ramp);
+			Main_addEntity(ramp);
 			return;
 		}
 
-        case 12: //spring
+        case 12: //Spring
         {
-            return;
+            Spring::loadStaticModels();
+			Spring* spring = new Spring(
+				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
+				toFloat(dat[4]), toFloat(dat[5]), toFloat(dat[6]), //rotation direction
+				toFloat(dat[7]), toFloat(dat[8]));                 //power, time
+			INCR_NEW("Entity");
+			chunkedEntities->push_back(spring);
+			return;
         }
+
+        case 13: //SpringTriple
+        {
+            SpringTriple::loadStaticModels();
+			SpringTriple* spring = new SpringTriple(
+				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
+				toFloat(dat[4]), toFloat(dat[5]),                  //rotation direction
+				toFloat(dat[6]), toFloat(dat[7]));                 //power, time
+			INCR_NEW("Entity");
+			chunkedEntities->push_back(spring);
+			return;
+        }
+
+        case 27: //Item Capsule
+		{
+			ItemCapsule::loadStaticModels();
+			ItemCapsule* capsule = new ItemCapsule(
+                toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]),   //position
+                toFloat(dat[4]), toFloat(dat[5]), toFloat(dat[6]),   //relative up direction
+                toInt(dat[7]), toInt(dat[8]), chunkedEntities);      //item type, box type
+            INCR_NEW("Entity");
+			chunkedEntities->push_back(capsule);
+			return;
+		}
+
+        case 28: //Beetle
+		{
+			Beetle::loadStaticModels();
+			Beetle* beetle = new Beetle(toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), chunkedEntities); INCR_NEW("Entity");
+			chunkedEntities->push_back(beetle);
+			return;
+		}
+
+        case 32: //NPC
+		{
+			Help::loadStaticModels();
+
+			std::string message = "";
+			for (int i = 4; i < datLength-1; i++)
+			{
+				message = message + dat[i] + " ";
+			}
+			message = message + dat[datLength-1];
+
+			Help* help = new Help(
+				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
+				message); //message
+			INCR_NEW("Entity");
+			chunkedEntities->push_back(help);
+			return;
+		}
 
         case 69: //GoalRing
 		{
@@ -795,6 +889,14 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 			GoalRing* goal = new GoalRing(
 				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3])); INCR_NEW("Entity");
 			Main_addEntity(goal);
+			return;
+		}
+
+        case 70: //Race Ghost
+		{
+			RaceGhost::loadStaticModels();
+			RaceGhost* raceGhost = new RaceGhost(dat[1]); INCR_NEW("Entity");
+			Main_addEntity(raceGhost);
 			return;
 		}
 
@@ -835,6 +937,30 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 					break;
                 }
 
+                case 4:
+                {
+                    CE_StageManager::loadStaticModels();
+					CE_StageManager* ce = new CE_StageManager; INCR_NEW("Entity");
+					Main_addEntity(ce);
+					break;
+                }
+
+                case 5:
+                {
+                    DP_StageManager::loadStaticModels();
+					DP_StageManager* dp = new DP_StageManager; INCR_NEW("Entity");
+					Main_addEntity(dp);
+					break;
+                }
+
+                case 6:
+                {
+                    T_StageManager::loadStaticModels();
+					T_StageManager* tut = new T_StageManager; INCR_NEW("Entity");
+					Main_addEntity(tut);
+					break;
+                }
+
 				default: break;
 			}
 			return;
@@ -870,18 +996,6 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 				}
 			}
 			
-		}
-		
-		case 94: //Dashpad
-		{
-			Dashpad::loadStaticModels();
-			Dashpad* dashpad = new Dashpad(
-				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), 			//position
-				toFloat(dat[4]), toFloat(dat[5]), toFloat(dat[6]), 			//rotation
-				toFloat(dat[7]), toFloat(dat[8]), toFloat(dat[9]));   //power, camYaw, time 
-			INCR_NEW("Entity");
-			chunkedEntities->push_back(dashpad);
-			return;
 		}
 
 		case 95: //Speed Ramp
@@ -941,7 +1055,7 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 				Ring* ring = new Ring(pos1.x, pos1.y, pos1.z); INCR_NEW("Entity");
                 chunkedEntities->push_back(ring);
 			}
-			return;
+            return;
         }
 
         case 99: //Circle of rings
@@ -969,20 +1083,8 @@ void LevelLoader::processLine(char** dat, int /*datLength*/, std::list<Entity*>*
 				Ring* ring = new Ring(centerPos.x, centerPos.y, centerPos.z); INCR_NEW("Entity");
 				chunkedEntities->push_back(ring);
 			}
-			return;
+            return;
         }
-
-		case 100: //Spring
-		{
-			Spring::loadStaticModels();
-			Spring* spring = new Spring(
-					toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position x,y,z
-					toFloat(dat[4]), toFloat(dat[5]),                  //rotation y, rotation z
-					toFloat(dat[6]), toFloat(dat[7]));                   //power, control lock time in seconds
-			INCR_NEW("Entity");
-			chunkedEntities->push_back(spring);
-			return;
-		}
 
 		case 101: //Pulley
 		{
@@ -1104,8 +1206,8 @@ int LevelLoader::toInt(char* input)
 void LevelLoader::freeAllStaticModels()
 {
 	SkySphere::deleteModels();
-	Boostpad::deleteStaticModels();
-	Car::deleteStaticModels();
+	Dashpad::deleteStaticModels();
+	PlayerSonic::deleteStaticModels();
 	Checkpoint::deleteStaticModels();
 	JumpRamp::deleteStaticModels();
 	GF_StageManager::deleteStaticModels();
@@ -1122,6 +1224,15 @@ void LevelLoader::freeAllStaticModels()
     GoalRing::deleteStaticModels();
     Rocket::deleteStaticModels();
     GH_StageManager::deleteStaticModels();
+    Beetle::deleteStaticModels();
+    CE_StageManager::deleteStaticModels();
+    Spring::deleteStaticModels();
+    DP_StageManager::deleteStaticModels();
+    RaceGhost::deleteStaticModels();
+    Help::deleteStaticModels();
+    T_StageManager::deleteStaticModels();
+    ItemCapsule::deleteStaticModels();
+    SpringTriple::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()

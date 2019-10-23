@@ -11,16 +11,18 @@ class Dashpad : public Entity
 {
 private:
 	static std::list<TexturedModel*> models;
-
-	float power;
-	float hitRadius;
-	float camYawTarget;
-	float cooldownTimer;
-	float cooldownTimerMax;
+	bool playerIsIn;
+    float power;
+	float controlLockTime;
+    Vector3f forward;
+    Vector3f up;
 
 public:
 	Dashpad();
-	Dashpad(float x, float y, float z, float rotX, float rotY, float rotZ, float myPower, float myCamYawTarget, float time);
+	Dashpad(
+		float x,     float y,     float z,
+        float power, float controlLockTime,
+		float rotX, float rotY, float rotZ);
 
 	void step();
 

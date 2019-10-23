@@ -1,31 +1,25 @@
-# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
-# File Created: 15.01.2017 04:08:57
+# Blender MTL File: 'None'
+# Material Count: 2
 
-newmtl b68ae7f3_png
-	Ns 10.0000
-	Ni 0.0
-	d 1.0000
-	Tr 0.0000
-	Tf 1.0000 1.0000 1.0000 
-	illum 2
-	Ka 0.0000 0.0000 0.0000
-	Kd 0.5880 0.5880 0.5880
-	Ks 0.0000 0.0000 0.0000
-	Ke 0.0000 0.0000 0.0000
-	map_Ka b68ae7f3.png
-	map_Kd b68ae7f3.png
+newmtl Mesh_1177.rip
+Ns 20
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 0.1
+d 1.000000
+scrollY 10
+illum 2
+map_Kd 07bdaebd.png
 
-newmtl 07bdaebd_png
-	Ns 10.0000
-	Ni 0.0
-	d 1.0000
-	Tr 0.0000
-	scrollY 9.0
-	Tf 1.0000 1.0000 1.0000 
-	illum 2
-	Ka 0.0000 0.0000 0.0000
-	Kd 0.5880 0.5880 0.5880
-	Ks 0.0000 0.0000 0.0000
-	Ke 0.0000 0.0000 0.0000
-	map_Ka 07bdaebd.png
-	map_Kd 07bdaebd.png
+newmtl Mesh_1178.rip
+Ns 20
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 0.1
+d 1.000000
+illum 2
+map_Kd b68ae7f3.png

@@ -1,0 +1,7 @@
+# Material Count: 1
+
+newmtl k1_umi02.png
+Ns 20
+Ni 0.0
+map_Kd k1_umi02.png
+

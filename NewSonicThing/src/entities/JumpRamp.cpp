@@ -7,7 +7,7 @@
 #include "../renderEngine/renderEngine.h"
 #include "../objLoader/objLoader.h"
 #include "../engineTester/main.h"
-#include "../entities/car.h"
+#include "../entities/controllableplayer.h"
 #include "../toolbox/maths.h"
 #include "../entities/camera.h"
 #include "../audio/audioplayer.h"
@@ -33,6 +33,7 @@ JumpRamp::JumpRamp(float x, float y, float z, float yRot)
 	position.y = y;
 	position.z = z;
 	scale = 1;
+    renderOrder = 3;
 	visible = true;
 	playerIsIn = false;
 
@@ -45,13 +46,13 @@ JumpRamp::JumpRamp(float x, float y, float z, float yRot)
 
 void JumpRamp::step()
 {
-	if (abs(getX() - Global::gameCamera->eye.x) > ENTITY_RENDER_DIST)
+	if (abs(getX() - Global::gameCamera->eye.x) > 1000)
 	{
 		setVisible(false);
 	}
 	else
 	{
-		if (abs(getZ() - Global::gameCamera->eye.z) > ENTITY_RENDER_DIST)
+		if (abs(getZ() - Global::gameCamera->eye.z) > 1000)
 		{
 			setVisible(false);
 		}
@@ -59,14 +60,14 @@ void JumpRamp::step()
 		{
 			setVisible(true);
 
-			if (abs(getX() - Global::gameMainVehicle->getPosition()->x) < 10 &&
-				abs(getZ() - Global::gameMainVehicle->getPosition()->z) < 10 &&
-				abs(getY() - Global::gameMainVehicle->getPosition()->y) < 10)
+			if (abs(getX() - Global::gameMainPlayer->getPosition()->x) < 10 &&
+				abs(getZ() - Global::gameMainPlayer->getPosition()->z) < 10 &&
+				abs(getY() - Global::gameMainPlayer->getPosition()->y) < 10)
 			{
 				Vector3f diff(
-					getX()-Global::gameMainVehicle->getPosition()->x, 
-					getY()-Global::gameMainVehicle->getPosition()->y,
-					getZ()-Global::gameMainVehicle->getPosition()->z);
+					getX()-Global::gameMainPlayer->getPosition()->x, 
+					getY()-Global::gameMainPlayer->getPosition()->y,
+					getZ()-Global::gameMainPlayer->getPosition()->z);
 
 				if (diff.lengthSquared() < (8.0f*8.0f))
 				{

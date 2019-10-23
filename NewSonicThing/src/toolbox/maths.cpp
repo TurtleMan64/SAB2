@@ -83,7 +83,7 @@ void Maths::createTransformationMatrix(Matrix4f* result, Vector2f* translation, 
 }
 
 //Based on how sadx calculates rotations
-void Maths::createTransformationMatrixSADX(Matrix4f* matrix, Vector3f* translation, float rx, float ry, float rz, float scale)
+void Maths::createTransformationMatrixYXZ(Matrix4f* matrix, Vector3f* translation, float rx, float ry, float rz, float scale)
 {
 	matrix->setIdentity();
 	matrix->translate(translation);
@@ -209,6 +209,11 @@ float Maths::compareTwoAngles(float origAng1, float origAng2)
 	r *= sign;
 
 	return r;
+}
+
+float Maths::interpolate(float a, float b, float percent)
+{
+    return (a * (1.0f - percent)) + (b * percent);
 }
 
 int Maths::sign(float value)
@@ -397,9 +402,8 @@ void Maths::rotatePoint(float result[],
 		+ l*(-b*u + a*v - v*x + u*y)*sinT) / l2;
 }
 
-//Point that axis goes through,
+//Point to rotate
 //direction of axis,
-//point to rotate, 
 //angle of rotation, in radians
 Vector3f Maths::rotatePoint(
 	Vector3f* pointToRotate,
@@ -441,6 +445,30 @@ Vector3f Maths::interpolateVector(Vector3f* A, Vector3f* B, float percent)
 	return Maths::rotatePoint(A, &perpen, angle*percent);
 }
 
+Vector3f Maths::interpolateVectorDebug(Vector3f* A, Vector3f* B, float percent)
+{
+	Vector3f perpen = A->cross(B);
+	float dotProduct = A->dot(B);
+	float mag = A->length()*B->length();
+
+	if (mag < 0.0000001f)
+	{
+		std::fprintf(stdout, "1\n");
+		return Vector3f(A);
+	}
+
+	if (dotProduct/mag > 0.99999f)
+	{
+        std::fprintf(stdout, "2\n");
+		return Vector3f(A);
+	}
+
+	float angle = acos(dotProduct/mag);
+	percent = fminf(1.0f, fmaxf(0.0f, percent));
+    std::fprintf(stdout, "percent=%f\n", percent);
+	return Maths::rotatePoint(A, &perpen, angle*percent);
+}
+
 float Maths::angleBetweenVectors(Vector3f* A, Vector3f* B)
 {
 	float dotProduct = A->dot(B);
@@ -450,13 +478,13 @@ float Maths::angleBetweenVectors(Vector3f* A, Vector3f* B)
 	{
 		return 0;
 	}
-
-	if (dotProduct/mag > 0.99999f) //Vectors are extremely similar already, just return 0
+    float range = dotProduct/mag;
+	if (range > 0.99999f) //Vectors are extremely similar already, just return 0
 	{
 		return 0;
 	}
 
-	return acosf(dotProduct/mag);
+	return acosf(range);
 }
 
 Vector3f Maths::getCloserPoint(Vector3f* A, Vector3f* B, Vector3f* testPoint)
@@ -550,6 +578,13 @@ Vector3f Maths::spherePositionFromAngles(float angH, float angV, float radius)
 	float z = (hpt*sinf(angH));
 
 	return Vector3f(x, y, z);
+}
+
+void Maths::sphereAnglesFromPosition(Vector3f* dir, float* outAngY, float* outAngZ)
+{
+    *outAngY = Maths::toDegrees(atan2f(-dir->z, dir->x));
+    float distH = sqrtf(dir->z*dir->z + dir->x*dir->x);
+    *outAngZ = Maths::toDegrees(atan2f(dir->y, distH));
 }
 
 Vector3f Maths::randomPointOnSphere()

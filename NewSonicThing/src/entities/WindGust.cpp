@@ -5,10 +5,11 @@
 #include "windgust.h"
 #include "../renderEngine/renderEngine.h"
 #include "../engineTester/main.h"
-#include "../entities/car.h"
+#include "../entities/controllableplayer.h"
 #include "../toolbox/maths.h"
 #include "../particles/particle.h"
 #include "../particles/particleresources.h"
+#include "../particles/particlemaster.h"
 
 #include <list>
 #include <iostream>
@@ -42,9 +43,8 @@ void WindGust::step()
 {
     if (checkForPlayerCollision())
     {
-        Vector3f playerVelocity = Global::gameMainVehicle->getVelocity();
-        Global::gameMainVehicle->setVelocity(playerVelocity.x, playerVelocity.y + 10, playerVelocity.z);
-        Global::gameMainVehicle->setOnGround(false);
+        Vector3f playerVelocity = Global::gameMainPlayer->vel;
+        Global::gameMainPlayer->vel.set(playerVelocity.x, playerVelocity.y + 10, playerVelocity.z);
     }
 
     Vector3f pos(
@@ -53,13 +53,13 @@ void WindGust::step()
 		getZ() + radius * (Maths::random() - 0.5f));
 
 	Vector3f vel(0, 5.5f, 0);
-
-    new Particle(ParticleResources::textureDust, &pos, &vel, 0, (int)(height/2.0f), 0, 10 * Maths::random() + 3, 0, false, true);
+    		
+    ParticleMaster::createParticle(ParticleResources::textureDust, &pos, &vel, 0, (int)(height/2.0f), 0, 10 * Maths::random() + 3, 0, false, true, 1.0f);
 }
 
 bool WindGust::checkForPlayerCollision()
 {
-    Vector3f playerPosition = Global::gameMainVehicle->getPosition();
+    Vector3f playerPosition = Global::gameMainPlayer->getPosition();
     Vector3f distanceVectorFromCenters = Vector3f(playerPosition.x - position.x, playerPosition.y - position.y, playerPosition.z - position.z);
     float distanceFromCentersSquared = distanceVectorFromCenters.x * distanceVectorFromCenters.x + distanceVectorFromCenters.z * distanceVectorFromCenters.z;
 

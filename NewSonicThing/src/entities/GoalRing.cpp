@@ -7,7 +7,7 @@
 #include "../renderEngine/renderEngine.h"
 #include "../objLoader/objLoader.h"
 #include "../engineTester/main.h"
-#include "../entities/car.h"
+#include "../entities/controllableplayer.h"
 #include "../toolbox/maths.h"
 #include "dummy.h"
 #include "../entities/camera.h"
@@ -39,7 +39,8 @@ GoalRing::GoalRing(float x, float y, float z)
 	text = new Dummy(&GoalRing::modelsText); INCR_NEW("Entity");
 	text->setVisible(true);
 	text->setPosition(&position);
-	Main_addEntityPass2(text);
+    text->renderOrder = 1;
+	Main_addEntity(text);
 }
 
 void GoalRing::step()
@@ -48,9 +49,9 @@ void GoalRing::step()
 	increaseRotation(0, dt*100, 0);
     text->setRotation(0, getRotY(), 0, 0);
 
-    float xDiff = Global::gameMainVehicle->getX()-position.x;
-    float yDiff = Global::gameMainVehicle->getY()-position.y;
-    float zDiff = Global::gameMainVehicle->getZ()-position.z;
+    float xDiff = Global::gameMainPlayer->getX()-position.x;
+    float yDiff = Global::gameMainPlayer->getY()-position.y;
+    float zDiff = Global::gameMainPlayer->getZ()-position.z;
 
     const float pad = 35.0f;
     if (fabsf(xDiff) < pad &&

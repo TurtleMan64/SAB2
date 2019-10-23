@@ -1,7 +1,15 @@
-13
+15
 
-Test.lvl
-Epic Test Level
+Tutorial.lvl
+Tutorial
+4
+Normal;100;Complete as Blue Falcon
+Ring;100;100;Complete as Twin Norita
+Chao;100;Complete as Soic Phantom
+Hard;100;Complete as Black Shadow
+
+CityEscape.lvl
+City Escape
 4
 Normal;100;Complete as Blue Falcon
 Ring;100;100;Complete as Twin Norita
@@ -98,6 +106,14 @@ Hard;100;Complete as Black Shadow
 
 WindyValley.lvl
 Windy Valley
+4
+Normal;100;Complete as Blue Falcon
+Ring;100;100;Complete as Twin Norita
+Chao;100;Complete as Soic Phantom
+Hard;100;Complete as Black Shadow
+
+DelfinoPlaza.lvl
+Delfino Plaza
 4
 Normal;100;Complete as Blue Falcon
 Ring;100;100;Complete as Twin Norita

@@ -9,6 +9,7 @@ class GuiTextureResources
 {
 public:
 	static GuiTexture* textureRing;
+    static GuiTexture* textureLifeIcon;
 	static GuiTexture* textureBlueLine;
 	static GuiTexture* textureRankDisplay;
 

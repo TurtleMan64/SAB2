@@ -32,11 +32,9 @@ unsigned int AA_SAMPLES = 4;
 
 extern float VFOV_BASE;
 
-bool useFullscreeen = false;
-
 extern float input_zoom_buffer;
 
-GLFWwindow* window;
+GLFWwindow* window = nullptr;
 
 void loadDisplaySettings();
 void loadGraphicsSettings();
@@ -45,7 +43,11 @@ int createDisplay()
 {
 	// glfw: initialize and configure
 	// ------------------------------
-	glfwInit();
+    if (glfwInit() == GL_FALSE)
+    {
+        std::fprintf(stdout, "Error: GLFW could not be initialized (glfwInit() failed).\n");
+        return -1;
+    }
 	//glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	//glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -64,7 +66,7 @@ int createDisplay()
 	glfwWindowHint(GLFW_SAMPLES, AA_SAMPLES);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	if (useFullscreeen)
+	if (Global::useFullscreen)
 	{
 		monitor = glfwGetPrimaryMonitor();
 
@@ -86,25 +88,30 @@ int createDisplay()
 
 	// glfw window creation
 	// --------------------
-	window = glfwCreateWindow(screenWidth, screenHeight, "Sonic thing", monitor, nullptr);
+	window = glfwCreateWindow(screenWidth, screenHeight, "Sonic Adventure Blast 2", monitor, nullptr);
 	if (window == nullptr)
 	{
 		std::cout << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
 		return -1;
 	}
+
 	glfwMakeContextCurrent(window);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glfwSetWindowCloseCallback(window, window_close_callback);
 
-	GLFWimage icons[3];
-	icons[0].pixels = SOIL_load_image("res/Images/Icon16.png", &icons[0].width, &icons[0].height, 0, SOIL_LOAD_RGBA);
-	icons[1].pixels = SOIL_load_image("res/Images/Icon32.png", &icons[1].width, &icons[1].height, 0, SOIL_LOAD_RGBA);
-	icons[2].pixels = SOIL_load_image("res/Images/Icon64.png", &icons[2].width, &icons[2].height, 0, SOIL_LOAD_RGBA);
-	glfwSetWindowIcon(window, 3, icons);
+	GLFWimage icons[5];
+	icons[0].pixels = SOIL_load_image((Global::pathToEXE+"res/Images/Icon16.png").c_str(), &icons[0].width, &icons[0].height, 0, SOIL_LOAD_RGBA);
+    icons[1].pixels = SOIL_load_image((Global::pathToEXE+"res/Images/Icon24.png").c_str(), &icons[1].width, &icons[1].height, 0, SOIL_LOAD_RGBA);
+	icons[2].pixels = SOIL_load_image((Global::pathToEXE+"res/Images/Icon32.png").c_str(), &icons[2].width, &icons[2].height, 0, SOIL_LOAD_RGBA);
+    icons[3].pixels = SOIL_load_image((Global::pathToEXE+"res/Images/Icon48.png").c_str(), &icons[3].width, &icons[3].height, 0, SOIL_LOAD_RGBA);
+	icons[4].pixels = SOIL_load_image((Global::pathToEXE+"res/Images/Icon64.png").c_str(), &icons[4].width, &icons[4].height, 0, SOIL_LOAD_RGBA);
+	glfwSetWindowIcon(window, 5, icons);
 	SOIL_free_image_data(icons[0].pixels);
 	SOIL_free_image_data(icons[1].pixels);
 	SOIL_free_image_data(icons[2].pixels);
+    SOIL_free_image_data(icons[3].pixels);
+    SOIL_free_image_data(icons[4].pixels);
 
 	// glad: load all OpenGL function pointers
 	// ---------------------------------------
@@ -118,14 +125,15 @@ int createDisplay()
 	std::fprintf(stdout, "Vendor:         %s\n", glGetString(GL_VENDOR));
 	std::fprintf(stdout, "OpenGL version: %s\n", glGetString(GL_VERSION));
 	std::fprintf(stdout, "GLSL version:   %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+    std::fprintf(stdout, "GLFW Version: %s\n",   glfwGetVersionString());
 
 	glfwSwapInterval(1); //1 = vsync. 0 = off. 2 = half monitor refresh rate
 	glEnable(GL_MULTISAMPLE);
 
 	//Center the window
-	if (!useFullscreeen)
+	if (!Global::useFullscreen)
 	{
-		const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+		const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
 		int monitorWidth = mode->width;
 		int monitorHeight = mode->height;
@@ -194,6 +202,7 @@ void framebuffer_size_callback(GLFWwindow* /*windowHandle*/, int width, int heig
 	glViewport(0, 0, width, height);
 	SCR_WIDTH = width;
 	SCR_HEIGHT = height;
+    //Global::displaySizeChanged = 2; too hard, memory leaks
 	Master_makeProjectionMatrix();
 }
 
@@ -236,7 +245,7 @@ void loadDisplaySettings()
 				}
 				else if (strcmp(lineSplit[0], "Fullscreen") == 0)
 				{
-					useFullscreeen = (strcmp(lineSplit[1], "on") == 0);
+					Global::useFullscreen = (strcmp(lineSplit[1], "on") == 0);
 				}
 				else if (strcmp(lineSplit[0], "F_Width") == 0)
 				{

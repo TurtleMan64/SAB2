@@ -30,7 +30,7 @@
 #include "../../renderEngine/renderEngine.h"
 #include "../../objLoader/objLoader.h"
 #include "../../toolbox/maths.h"
-#include "../car.h"
+#include "../controllableplayer.h"
 #include "../../collision/collisionmodel.h"
 #include "../../collision/collisionchecker.h"
 #include "../../animation/body.h"
@@ -204,8 +204,8 @@ void MH_YellowMovingPlatform::step()
 	bodyTransparent->updateTransformationMatrix();
 	updateCollisionModel();
 
-	Global::gameMainVehicle->animate();
-	Global::gameMainVehicle->refreshCamera();
+	Global::gameMainPlayer->animate();
+	Global::gameMainPlayer->refreshCamera();
 }
 
 std::list<TexturedModel*>* MH_YellowMovingPlatform::getModels()
@@ -269,7 +269,8 @@ inline void MH_YellowMovingPlatform::setupModelWheelFront()
 	wheelFront = new Body(&MH_YellowMovingPlatform::modelsWheelFront);
 	wheelFront->setVisible(true);
 	INCR_NEW("Entity");
-	Main_addEntityPass2(wheelFront);
+	Main_addEntity(wheelFront);
+	wheelFront->renderOrder = 1;
 	wheelFront->setPosition(&position);
 	wheelFront->setRotY(rotY);
 }
@@ -279,7 +280,8 @@ inline void MH_YellowMovingPlatform::setupModelWheelBack()
 	wheelBack = new Body(&MH_YellowMovingPlatform::modelsWheelBack);
 	wheelBack->setVisible(true);
 	INCR_NEW("Entity");
-	Main_addEntityPass2(wheelBack);
+	Main_addEntity(wheelBack);
+	wheelBack->renderOrder = 1;
 	wheelBack->setPosition(&position);
 	wheelBack->setRotY(rotY);
 }
@@ -289,7 +291,8 @@ inline void MH_YellowMovingPlatform::setupModelTransparent()
 	bodyTransparent = new Body(&MH_YellowMovingPlatform::modelsTransparent);
 	bodyTransparent->setVisible(true);
 	INCR_NEW("Entity");
-	Main_addEntityPass2(bodyTransparent);
+	Main_addEntity(bodyTransparent);
+	bodyTransparent->renderOrder = 1;
 	bodyTransparent->setRotY(rotY);
 }
 
@@ -326,8 +329,8 @@ inline void MH_YellowMovingPlatform::spinWheels()
 
 inline void MH_YellowMovingPlatform::movePlayer(Vector3f movementAmount)
 {
-	Vector3f newPlayerPos = movementAmount + Global::gameMainVehicle->getPosition();
-	Global::gameMainVehicle->position = newPlayerPos;
+	Vector3f newPlayerPos = movementAmount + Global::gameMainPlayer->getPosition();
+	Global::gameMainPlayer->position = newPlayerPos;
 }
 
 inline Vector3f MH_YellowMovingPlatform::shakePlatform()
@@ -360,7 +363,7 @@ inline void MH_YellowMovingPlatform::pushSonicAway(bool frontHitboxes, bool back
 		collisionCenterPos3 = position + directionVector.scaleCopy(COLLISION_POSITION_FORWARD) + sidewaysVector.scaleCopy(COLLISION_POSITION_SIDEWAYS * -1);
 		if (collisionCheckCylinder(collisionCenterPos1, COLLISION_RADIUS, COLLISION_HEIGHT) || collisionCheckCylinder(collisionCenterPos2, COLLISION_RADIUS, COLLISION_HEIGHT) || collisionCheckCylinder(collisionCenterPos3, COLLISION_RADIUS, COLLISION_HEIGHT))
 		{
-			Global::gameMainVehicle->increasePosition(directionVector.x * speed/40, directionVector.y * speed/40, directionVector.z * speed/40);
+			Global::gameMainPlayer->increasePosition(directionVector.x * speed/40, directionVector.y * speed/40, directionVector.z * speed/40);
 		}
 
 		//collisions on back of platform
@@ -370,14 +373,14 @@ inline void MH_YellowMovingPlatform::pushSonicAway(bool frontHitboxes, bool back
 		collisionCenterPos4 = position + directionVector.scaleCopy(COLLISION_POSITION_BACKWARD_OUTER) + sidewaysVector.scaleCopy(COLLISION_POSITION_SIDEWAYS * -1);
 		if (collisionCheckCylinder(collisionCenterPos1, COLLISION_RADIUS, COLLISION_HEIGHT) || collisionCheckCylinder(collisionCenterPos2, COLLISION_RADIUS, COLLISION_HEIGHT) || collisionCheckCylinder(collisionCenterPos3, COLLISION_RADIUS, COLLISION_HEIGHT) || collisionCheckCylinder(collisionCenterPos4, COLLISION_RADIUS, COLLISION_HEIGHT))
 		{
-			Global::gameMainVehicle->increasePosition(directionVector.x * -speed/40, directionVector.y * -speed/40, directionVector.z * -speed/40);
+			Global::gameMainPlayer->increasePosition(directionVector.x * -speed/40, directionVector.y * -speed/40, directionVector.z * -speed/40);
 		}
 	}	
 }
 
 inline bool MH_YellowMovingPlatform::collisionCheckCylinder(Vector3f collisionCenterPos, float hitboxRadius, float hitboxHeight)
 {
-	Vector3f playerPos = Global::gameMainVehicle->position;
+	Vector3f playerPos = Global::gameMainPlayer->position;
 	Vector3f playerToCenterDistance = playerPos - collisionCenterPos;
 	float playerToCenterDistanceSquared = playerToCenterDistance.x * playerToCenterDistance.x + playerToCenterDistance.z * playerToCenterDistance.z;
 	if (playerToCenterDistanceSquared <= hitboxRadius * hitboxRadius && fabs(playerToCenterDistance.y) < hitboxHeight)

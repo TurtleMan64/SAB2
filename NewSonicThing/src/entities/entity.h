@@ -19,6 +19,7 @@ public:
 	bool visible;
 	Vector3f baseColour;
 	Matrix4f transformationMatrix;
+    char renderOrder = 0; //0 = rendered first (default), 1 = second, 2 = third, 3 = fourth + transparent (no depth testing)
 
 	static void deleteModels(std::list<TexturedModel*>* modelsToDelete);
 	static void deleteCollisionModel(CollisionModel** colModelToDelete);
@@ -89,7 +90,7 @@ public:
 
 	void updateTransformationMatrix(float scaleX, float scaleY, float scaleZ);
 
-	void updateTransformationMatrixSADX();
+	void updateTransformationMatrixYXZ();
 
 	virtual const bool canLightdashOn();
 

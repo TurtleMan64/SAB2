@@ -62,7 +62,7 @@
 #include "../particles/particle.h"
 #include "../entities/skysphere.h"
 #include "../fontMeshCreator/guinumber.h"
-#include "../entities/car.h"
+#include "../entities/controllableplayer.h"
 #include "../entities/checkpoint.h"
 #include "../water/waterframebuffers.h"
 #include "../water/watershader.h"
@@ -83,17 +83,17 @@ std::unordered_set<Entity*> gameEntities;
 std::list<Entity*> gameEntitiesToAdd;
 std::list<Entity*> gameEntitiesToDelete;
 
-std::unordered_set<Entity*> gameEntitiesPass2;
-std::list<Entity*> gameEntitiesPass2ToAdd;
-std::list<Entity*> gameEntitiesPass2ToDelete;
+//std::unordered_set<Entity*> gameEntitiesPass2;
+//std::list<Entity*> gameEntitiesPass2ToAdd;
+//std::list<Entity*> gameEntitiesPass2ToDelete;
 
-std::unordered_set<Entity*> gameEntitiesPass3;
-std::list<Entity*> gameEntitiesPass3ToAdd;
-std::list<Entity*> gameEntitiesPass3ToDelete;
+//std::unordered_set<Entity*> gameEntitiesPass3;
+//std::list<Entity*> gameEntitiesPass3ToAdd;
+//std::list<Entity*> gameEntitiesPass3ToDelete;
 
-std::unordered_set<Entity*> gameTransparentEntities;
-std::list<Entity*> gameTransparentEntitiesToAdd;
-std::list<Entity*> gameTransparentEntitiesToDelete;
+//std::unordered_set<Entity*> gameTransparentEntities;
+//std::list<Entity*> gameTransparentEntitiesToAdd;
+//std::list<Entity*> gameTransparentEntitiesToDelete;
 
 //vector that we treat as a 2D array. 
 std::vector<std::unordered_set<Entity*>> gameChunkedEntities;
@@ -109,17 +109,17 @@ int chunkedEntitiesHeight = 1;
 float Global::waterHeight = 0.0f;
 WaterRenderer* Global::gameWaterRenderer = nullptr;
 WaterFrameBuffers* Global::gameWaterFBOs = nullptr;
-std::list<WaterTile*>* Global::gameWaterTiles = nullptr;
+std::vector<WaterTile*> Global::gameWaterTiles;
 
 float dt = 0;
 double timeOld = 0;
 double timeNew = 0;
-Camera*    Global::gameCamera      = nullptr;
-Car*       Global::gameMainVehicle = nullptr;
-Stage*     Global::gameStage       = nullptr;
-SkySphere* Global::gameSkySphere   = nullptr;
-Light*     Global::gameLightSun    = nullptr;
-Light*     Global::gameLightMoon   = nullptr;
+Camera*             Global::gameCamera      = nullptr;
+ControllablePlayer* Global::gameMainPlayer  = nullptr;
+Stage*              Global::gameStage       = nullptr;
+SkySphere*          Global::gameSkySphere   = nullptr;
+Light*              Global::gameLightSun    = nullptr;
+Light*              Global::gameLightMoon   = nullptr;
 
 float Global::finishStageTimer = -1;
 
@@ -142,6 +142,8 @@ bool Global::renderParticles = true;
 bool Global::renderBloom = false;
 
 bool Global::framerateUnlock = false;
+
+bool Global::useFullscreen = false;
 
 bool Global::renderShadowsFar = false;
 bool Global::renderShadowsClose = false;
@@ -190,6 +192,14 @@ std::vector<Level> Global::gameLevelData;
 std::unordered_map<std::string, std::string> Global::gameSaveData;
 bool Global::stageUsesWater = true;
 FontType* Global::fontVipnagorgialla = nullptr;
+bool Global::renderWithCulling = true;
+bool Global::displayFPS = true;
+int Global::currentCalculatedFPS = 0;
+int Global::renderCount = 0;
+int Global::displaySizeChanged = 0;
+
+std::list<std::string> Global::raceLog;
+bool Global::shouldLogRace = false;
 
 std::list<Checkpoint*> Global::gameCheckpointList;
 int Global::gameCheckpointLast;
@@ -241,9 +251,6 @@ int main(int argc, char** argv)
         #endif
     }
 
-    //uncomment this out when building+running from visual studio :)
-    Global::pathToEXE = "";
-
 	#ifdef DEV_MODE
 	std::thread listenThread(doListenThread);
 	#endif
@@ -292,7 +299,7 @@ int main(int argc, char** argv)
 	GuiTextureResources::loadGuiTextures();
 
 	CollisionChecker::initChecker();
-	//AnimationResources::createAnimations();
+	AnimationResources::createAnimations();
 
 	//This light never gets deleted.
 	Light lightSun;
@@ -324,12 +331,11 @@ int main(int argc, char** argv)
 		Global::gameWaterFBOs     = new WaterFrameBuffers; INCR_NEW("WaterFrameBuffers");
 		WaterShader* waterShader  = new WaterShader; INCR_NEW("WaterShader");
 		Global::gameWaterRenderer = new WaterRenderer(waterShader, Master_getProjectionMatrix(), Global::gameWaterFBOs, Master_getShadowRenderer()); INCR_NEW("WaterRenderer");
-		Global::gameWaterTiles    = new std::list<WaterTile*>; INCR_NEW("std::list<WaterTile*>");
-		for (int r = -6; r < 6; r++) //-9 , 9
+		for (int r = -1; r <= 2; r++)
 		{
-			for (int c = -8; c < 8; c++) //-12  12
+			for (int c = -1; c <= 2; c++)
 			{
-				Global::gameWaterTiles->push_back(new WaterTile(r*WaterTile::TILE_SIZE*2, c*WaterTile::TILE_SIZE*2)); INCR_NEW("WaterTile");
+				Global::gameWaterTiles.push_back(new WaterTile(r*WaterTile::TILE_SIZE*2-WaterTile::TILE_SIZE, c*WaterTile::TILE_SIZE*2-WaterTile::TILE_SIZE)); INCR_NEW("WaterTile");
 			}
 		}
 	}
@@ -357,6 +363,7 @@ int main(int argc, char** argv)
 	while (Global::gameState != STATE_EXITING && displayWantsToClose() == 0)
 	{
 		frameCount++;
+        Global::renderCount++;
 		timeNew = glfwGetTime();
 		dt = (float)(timeNew - timeOld);
 		dt = std::fminf(dt, 0.04f); //Anything lower than 25fps will slow the gameplay down
@@ -407,48 +414,48 @@ int main(int argc, char** argv)
 
 
 		//entities pass2 managment
-		for (auto entityToAdd : gameEntitiesPass2ToAdd)
-		{
-			gameEntitiesPass2.insert(entityToAdd);
-		}
-		gameEntitiesPass2ToAdd.clear();
+		//for (auto entityToAdd : gameEntitiesPass2ToAdd)
+		//{
+		//	gameEntitiesPass2.insert(entityToAdd);
+		//}
+		//gameEntitiesPass2ToAdd.clear();
 
-		for (auto entityToDelete : gameEntitiesPass2ToDelete)
-		{
-			gameEntitiesPass2.erase(entityToDelete);
-			delete entityToDelete; INCR_DEL("Entity");
-		}
-		gameEntitiesPass2ToDelete.clear();
+		//for (auto entityToDelete : gameEntitiesPass2ToDelete)
+		//{
+		//	gameEntitiesPass2.erase(entityToDelete);
+		//	delete entityToDelete; INCR_DEL("Entity");
+		//}
+		//gameEntitiesPass2ToDelete.clear();
 
 
 		//entities pass3 managment
-		for (auto entityToAdd : gameEntitiesPass3ToAdd)
-		{
-			gameEntitiesPass3.insert(entityToAdd);
-		}
-		gameEntitiesPass3ToAdd.clear();
+		//for (auto entityToAdd : gameEntitiesPass3ToAdd)
+		//{
+		//	gameEntitiesPass3.insert(entityToAdd);
+		//}
+		//gameEntitiesPass3ToAdd.clear();
 
-		for (auto entityToDelete : gameEntitiesPass3ToDelete)
-		{
-			gameEntitiesPass3.erase(entityToDelete);
-			delete entityToDelete; INCR_DEL("Entity");
-		}
-		gameEntitiesPass3ToDelete.clear();
+		//for (auto entityToDelete : gameEntitiesPass3ToDelete)
+		//{
+		//	gameEntitiesPass3.erase(entityToDelete);
+		//	delete entityToDelete; INCR_DEL("Entity");
+		//}
+		//gameEntitiesPass3ToDelete.clear();
 
 
 		//transnaprent entities managment
-		for (auto entityToAdd : gameTransparentEntitiesToAdd)
-		{
-			gameTransparentEntities.insert(entityToAdd);
-		}
-		gameTransparentEntitiesToAdd.clear();
+		//for (auto entityToAdd : gameTransparentEntitiesToAdd)
+		//{
+		//	gameTransparentEntities.insert(entityToAdd);
+		//}
+		//gameTransparentEntitiesToAdd.clear();
 
-		for (auto entityToDelete : gameTransparentEntitiesToDelete)
-		{
-			gameTransparentEntities.erase(entityToDelete);
-			delete entityToDelete; INCR_DEL("Entity");
-		}
-		gameTransparentEntitiesToDelete.clear();
+		//for (auto entityToDelete : gameTransparentEntitiesToDelete)
+		//{
+		//	gameTransparentEntities.erase(entityToDelete);
+		//	delete entityToDelete; INCR_DEL("Entity");
+		//}
+		//gameTransparentEntitiesToDelete.clear();
 
 
 		//chunked entities mamanegement
@@ -462,7 +469,23 @@ int main(int argc, char** argv)
 		for (auto entityToDelete : gameChunkedEntitiesToDelete)
 		{
 			int realIndex = Global::getChunkIndex(entityToDelete->getX(), entityToDelete->getZ());
-			gameChunkedEntities[realIndex].erase(entityToDelete);
+			size_t numDeleted = gameChunkedEntities[realIndex].erase(entityToDelete);
+            if (numDeleted == 0)
+            {
+                for (int i = 0; i < (int)gameChunkedEntities.size(); i++)
+                {
+                    numDeleted = gameChunkedEntities[i].erase(entityToDelete);
+                    if (numDeleted > 0)
+                    {
+                        break;
+                    }
+                }
+
+                if (numDeleted == 0)
+                {
+                    std::fprintf(stdout, "Error: Tried to delete a chunked entity that wasn't in the lists.\n");
+                }
+            }
 			delete entityToDelete; INCR_DEL("Entity");
 		}
 		gameChunkedEntitiesToDelete.clear();
@@ -473,6 +496,27 @@ int main(int argc, char** argv)
 			{
 				//game logic
 
+                //unlock framerate during gameplay
+                if (Global::framerateUnlock)
+                {
+                    //idea to make it possible to render at 120, 180, 240fps, etc.
+                    // works, but frame dt's are so different that it doesn't feel good.
+                    // example: at 180fps on 60hz monitor, youd maybe get dt's of 2ms, 2ms, and then 12.66ms to finish off the next monitor refresh.
+                    // 3 frames were rendered per 1 monitor refresh, but they wont feel good.
+                    //if (Global::renderCount%(Global::syncToDisplayEveryXFrames) == 0)
+                    //{
+                    //    glfwSwapInterval(1);
+                    //}
+                    //else
+                    //{
+                        glfwSwapInterval(0);
+                    //}
+                }
+                else
+                {
+                    glfwSwapInterval(1);
+                }
+
 				if (Global::raceStartTimer >= 0)
 				{
 					Global::raceStartTimer -= dt;
@@ -482,9 +526,9 @@ int main(int argc, char** argv)
 					}
 				}
 
-                if (Global::gameMainVehicle != nullptr)
+                if (Global::gameMainPlayer != nullptr)
                 {
-                    Global::gameMainVehicle->step();
+                    Global::gameMainPlayer->step();
                 }
 				for (Entity* e : gameEntities)
 				{
@@ -501,18 +545,18 @@ int main(int argc, char** argv)
 						}
 					}
 				}
-				for (Entity* e : gameEntitiesPass2)
-				{
-					e->step();
-				}
-				for (Entity* e : gameEntitiesPass3)
-				{
-					e->step();
-				}
-				for (Entity* e : gameTransparentEntities)
-				{
-					e->step();
-				}
+				//for (Entity* e : gameEntitiesPass2)
+				//{
+				//	e->step();
+				//}
+				//for (Entity* e : gameEntitiesPass3)
+				//{
+				//	e->step();
+				//}
+				//for (Entity* e : gameTransparentEntities)
+				//{
+				//	e->step();
+				//}
 				skySphere.step();
                 ModelTexture::updateAnimations(dt);
 				Global::gameCamera->refresh();
@@ -539,17 +583,22 @@ int main(int argc, char** argv)
 
 			case STATE_PAUSED:
 			{
+                //vsync during pausing. no need to stress the system.
+                glfwSwapInterval(1);
 				break;
 			}
 
 			case STATE_CUTSCENE:
 			{
+                glfwSwapInterval(1);
 				Global::gameCamera->refresh();
 				break;
 			}
 
 			case STATE_TITLE:
 			{
+                //vsync during title. no need to stress the system.
+                glfwSwapInterval(1);
 				Global::gameCamera->refresh();
 				if (Global::renderParticles)
 				{
@@ -560,7 +609,9 @@ int main(int argc, char** argv)
 
 			case STATE_DEBUG:
 			{
-				if (Global::gameMainVehicle != nullptr)
+                glfwSwapInterval(1);
+
+				if (Global::gameMainPlayer != nullptr)
 				{
 					//Global::gamePlayer->debugAdjustCamera();
 				}
@@ -583,8 +634,6 @@ int main(int argc, char** argv)
 				break;
 		}
 
-		Global::clearTitleCard();
-
 		Stage::updateVisibleChunks();
 		SkyManager::calculateValues();
 
@@ -603,18 +652,18 @@ int main(int argc, char** argv)
 				}
 			}
 		}
-		for (Entity* e : gameEntitiesPass2)
-		{
-			Master_processEntityPass2(e);
-		}
-		for (Entity* e : gameEntitiesPass3)
-		{
-			Master_processEntityPass3(e);
-		}
-		for (Entity* e : gameTransparentEntities)
-		{
-			Master_processTransparentEntity(e);
-		}
+		//for (Entity* e : gameEntitiesPass2)
+		//{
+		//	Master_processEntityPass2(e);
+		//}
+		//for (Entity* e : gameEntitiesPass3)
+		//{
+		//	Master_processEntityPass3(e);
+		//}
+		//for (Entity* e : gameTransparentEntities)
+		//{
+		//	Master_processTransparentEntity(e);
+		//}
 		for (Checkpoint* check : Global::gameCheckpointList)
 		{
 			Master_processEntity(check);
@@ -689,7 +738,7 @@ int main(int argc, char** argv)
 
 		if (Global::useHighQualityWater && Global::stageUsesWater)
 		{
-			Global::gameWaterRenderer->render(Global::gameWaterTiles, &cam, &lightSun);
+			Global::gameWaterRenderer->render(&Global::gameWaterTiles, &cam, &lightSun);
 		}
 
 		if (Global::renderParticles)
@@ -705,10 +754,10 @@ int main(int argc, char** argv)
 			PostProcessing::doPostProcessing(Global::gameOutputFbo->getColourTexture(), Global::gameOutputFbo2->getColourTexture());
 		}
 
-		Master_clearEntities();
-		Master_clearEntitiesPass2();
-		Master_clearEntitiesPass3();
-		Master_clearTransparentEntities();
+		Master_clearAllEntities();
+		//Master_clearEntitiesPass2();
+		//Master_clearEntitiesPass3();
+		//Master_clearTransparentEntities();
 
 		GuiManager::refresh();
 		TextMaster::render();
@@ -732,7 +781,7 @@ int main(int argc, char** argv)
 			if (finishTimerBefore < 0.0166f && Global::finishStageTimer >= 0.0166f)
 			{
 				Vector3f partVel(0, 0, 0);
-				new Particle(ParticleResources::textureWhiteFadeOutAndIn, Global::gameCamera->getFadePosition1(), &partVel, 0, 2.0f, 0, 900, 0, true, false);
+				ParticleMaster::createParticle(ParticleResources::textureWhiteFadeOutAndIn, Global::gameCamera->getFadePosition1(), &partVel, 0, 2.0f, 0, 900, 0, true, false, 1.0f);
 			}
 			else if (finishTimerBefore < 1.0f && Global::finishStageTimer >= 1.0f)
 			{
@@ -742,7 +791,7 @@ int main(int argc, char** argv)
 			else if (finishTimerBefore < 8.166f && Global::finishStageTimer >= 8.166f)
 			{
 				Vector3f partVel(0, 0, 0);
-				new Particle(ParticleResources::textureBlackFadeOutAndIn, Global::gameCamera->getFadePosition1(), &partVel, 0, 2.0f, 0, 900, 0, true, false);
+				ParticleMaster::createParticle(ParticleResources::textureBlackFadeOutAndIn, Global::gameCamera->getFadePosition1(), &partVel, 0, 2.0f, 0, 900, 0, true, false, 1.0f);
 
 				//AudioPlayer::play(25, Global::gamePlayer->getPosition());
 			}
@@ -812,6 +861,8 @@ int main(int argc, char** argv)
 			}
 		}
 
+        Global::clearTitleCard();
+
         if (previousTime > timeNew)
         {
             previousTime = timeNew;
@@ -819,6 +870,7 @@ int main(int argc, char** argv)
 
 		if (timeNew - previousTime >= 1.0)
 		{
+            Global::currentCalculatedFPS = (int)(std::round(frameCount/(timeNew - previousTime)));
 			//std::fprintf(stdout, "fps: %f\n", frameCount / (timeNew - previousTime));
 			//std::fprintf(stdout, "diff: %d\n", Global::countNew - Global::countDelete);
 			//Loader::printInfo();
@@ -827,6 +879,17 @@ int main(int argc, char** argv)
 			previousTime = timeNew;
 		}
 
+        Global::displaySizeChanged = std::max(0, Global::displaySizeChanged - 1);
+        if (Global::displaySizeChanged == 1)
+        {
+            //recreate all fbos and other things to the new size of the window
+            //if (Global::renderBloom)
+		    {
+			    //Global::gameMultisampleFbo->resize(SCR_WIDTH, SCR_HEIGHT); //memory leaks
+                //Global::gameOutputFbo->resize(SCR_WIDTH, SCR_HEIGHT);
+                //Global::gameOutputFbo2->resize(SCR_WIDTH, SCR_HEIGHT);
+		    }
+        }
 		//std::fprintf(stdout, "dt: %f\n", dt);
 		//std::this_thread::sleep_for(std::chrono::milliseconds(8));
 	}
@@ -882,106 +945,106 @@ void Main_deleteAllEntites()
 	}
 	gameEntities.clear();
 
-    if (Global::gameMainVehicle != nullptr)
+    if (Global::gameMainPlayer != nullptr)
     {
-        delete Global::gameMainVehicle; INCR_DEL("Entity");
-        Global::gameMainVehicle = nullptr;
+        delete Global::gameMainPlayer; INCR_DEL("Entity");
+        Global::gameMainPlayer = nullptr;
     }
 }
 
-void Main_addEntityPass2(Entity* entityToAdd)
-{
-	gameEntitiesPass2ToAdd.push_back(entityToAdd);
-}
+//void Main_addEntityPass2(Entity* entityToAdd)
+//{
+//	gameEntitiesPass2ToAdd.push_back(entityToAdd);
+//}
 
-void Main_deleteEntityPass2(Entity* entityToDelete)
-{
-	gameEntitiesPass2ToDelete.push_back(entityToDelete);
-}
+//void Main_deleteEntityPass2(Entity* entityToDelete)
+//{
+//	gameEntitiesPass2ToDelete.push_back(entityToDelete);
+//}
 
-void Main_deleteAllEntitesPass2()
-{
-	//Make sure no entities get left behind in transition
-	for (Entity* entityToAdd : gameEntitiesPass2ToAdd)
-	{
-		gameEntitiesPass2.insert(entityToAdd);
-	}
-	gameEntitiesPass2ToAdd.clear();
+//void Main_deleteAllEntitesPass2()
+//{
+//	//Make sure no entities get left behind in transition
+//	for (Entity* entityToAdd : gameEntitiesPass2ToAdd)
+//	{
+//		gameEntitiesPass2.insert(entityToAdd);
+//	}
+//	gameEntitiesPass2ToAdd.clear();
+//
+//	for (Entity* entityToDelete : gameEntitiesPass2ToDelete)
+//	{
+//		gameEntitiesPass2.erase(entityToDelete);
+//		delete entityToDelete; INCR_DEL("Entity");
+//	}
+//	gameEntitiesPass2ToDelete.clear();
+//
+//	for (Entity* entityToDelete : gameEntitiesPass2)
+//	{
+//		delete entityToDelete; INCR_DEL("Entity");
+//	}
+//	gameEntitiesPass2.clear();
+//}
 
-	for (Entity* entityToDelete : gameEntitiesPass2ToDelete)
-	{
-		gameEntitiesPass2.erase(entityToDelete);
-		delete entityToDelete; INCR_DEL("Entity");
-	}
-	gameEntitiesPass2ToDelete.clear();
+//void Main_addEntityPass3(Entity* entityToAdd)
+//{
+//	gameEntitiesPass3ToAdd.push_back(entityToAdd);
+//}
 
-	for (Entity* entityToDelete : gameEntitiesPass2)
-	{
-		delete entityToDelete; INCR_DEL("Entity");
-	}
-	gameEntitiesPass2.clear();
-}
+//void Main_deleteEntityPass3(Entity* entityToDelete)
+//{
+//	gameEntitiesPass3ToDelete.push_back(entityToDelete);
+//}
 
-void Main_addEntityPass3(Entity* entityToAdd)
-{
-	gameEntitiesPass3ToAdd.push_back(entityToAdd);
-}
-
-void Main_deleteEntityPass3(Entity* entityToDelete)
-{
-	gameEntitiesPass3ToDelete.push_back(entityToDelete);
-}
-
-void Main_deleteAllEntitesPass3()
-{
-	//Make sure no entities get left behind in transition
-	for (Entity* entityToAdd : gameEntitiesPass3ToAdd)
-	{
-		gameEntitiesPass3.insert(entityToAdd);
-	}
-	gameEntitiesPass3ToAdd.clear();
-
-	for (Entity* entityToDelete : gameEntitiesPass3ToDelete)
-	{
-		gameEntitiesPass3.erase(entityToDelete);
-		delete entityToDelete; INCR_DEL("Entity");
-	}
-	gameEntitiesPass3ToDelete.clear();
-
-	for (Entity* entityToDelete : gameEntitiesPass3)
-	{
-		delete entityToDelete; INCR_DEL("Entity");
-	}
-	gameEntitiesPass3.clear();
-}
+//void Main_deleteAllEntitesPass3()
+//{
+//	//Make sure no entities get left behind in transition
+//	for (Entity* entityToAdd : gameEntitiesPass3ToAdd)
+//	{
+//		gameEntitiesPass3.insert(entityToAdd);
+//	}
+//	gameEntitiesPass3ToAdd.clear();
+//
+//	for (Entity* entityToDelete : gameEntitiesPass3ToDelete)
+//	{
+//		gameEntitiesPass3.erase(entityToDelete);
+//		delete entityToDelete; INCR_DEL("Entity");
+//	}
+//	gameEntitiesPass3ToDelete.clear();
+//
+//	for (Entity* entityToDelete : gameEntitiesPass3)
+//	{
+//		delete entityToDelete; INCR_DEL("Entity");
+//	}
+//	gameEntitiesPass3.clear();
+//}
 
 //Transparent entities shouldn't create new transparent entities from within their step function
-void Main_addTransparentEntity(Entity* entityToAdd)
-{
-	gameTransparentEntities.insert(entityToAdd);
-}
+//void Main_addTransparentEntity(Entity* entityToAdd)
+//{
+//	gameTransparentEntities.insert(entityToAdd);
+//}
 
-void Main_deleteTransparentEntity(Entity* entityToDelete)
-{
-	gameTransparentEntities.erase(entityToDelete);
-	delete entityToDelete; INCR_DEL("Entity");
-}
+//void Main_deleteTransparentEntity(Entity* entityToDelete)
+//{
+//	gameTransparentEntities.erase(entityToDelete);
+//	delete entityToDelete; INCR_DEL("Entity");
+//}
 
-void Main_deleteAllTransparentEntites()
-{
-	for (Entity* entityToDelete : gameTransparentEntities)
-	{
-		delete entityToDelete; INCR_DEL("Entity");
-	}
-	gameTransparentEntities.clear();
-}
+//void Main_deleteAllTransparentEntites()
+//{
+//	for (Entity* entityToDelete : gameTransparentEntities)
+//	{
+//		delete entityToDelete; INCR_DEL("Entity");
+//	}
+//	gameTransparentEntities.clear();
+//}
 
 void increaseProcessPriority()
 {
 	#ifdef _WIN32
-	//DWORD dwError;//, dwPriClass;
+	DWORD dwError;
 
-	/*
+	
 	if (!SetPriorityClass(GetCurrentProcess(), ABOVE_NORMAL_PRIORITY_CLASS))
 	{
 		dwError = GetLastError();
@@ -993,19 +1056,19 @@ void increaseProcessPriority()
 		dwError = GetLastError();
 		_tprintf(TEXT("Failed to enter above normal mode (%d)\n"), (int)dwError);
 	}
-	*/
+	
 
 	/*
 	if (!SetPriorityClass(GetCurrentProcess(), BELOW_NORMAL_PRIORITY_CLASS))
 	{
 		dwError = GetLastError();
-		_tprintf(TEXT("Failed to enter above normal mode (%d)\n"), (int)dwError);
+		_tprintf(TEXT("Failed to enter below normal mode (%d)\n"), (int)dwError);
 	}
 
 	if (!SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_BELOW_NORMAL))
 	{
 		dwError = GetLastError();
-		_tprintf(TEXT("Failed to enter above normal mode (%d)\n"), (int)dwError);
+		_tprintf(TEXT("Failed to enter below normal mode (%d)\n"), (int)dwError);
 	}
 	*/
 
@@ -1188,12 +1251,12 @@ int Global::calculateRankAndUpdate()
 			Global::saveSaveData();
 		}
 
-		float savedTime = 6000.0f;
+		//float savedTime = 6000.0f;
 
-		if (Global::gameSaveData.find(currentLevel->displayName+missionTimeString) != Global::gameSaveData.end())
+		//if (Global::gameSaveData.find(currentLevel->displayName+missionTimeString) != Global::gameSaveData.end())
 		{
-			std::string savedTimeString = Global::gameSaveData[currentLevel->displayName+missionTimeString];
-			savedTime = std::stof(savedTimeString);
+			//std::string savedTimeString = Global::gameSaveData[currentLevel->displayName+missionTimeString];
+			//savedTime = std::stof(savedTimeString);
 		}
 	}
 
@@ -1319,12 +1382,12 @@ int Global::getChunkIndex(float x, float z)
 	if (realIndex >= (int)gameChunkedEntities.size())
 	{
 		std::fprintf(stderr, "Error: Index out of bounds on gameNearbyEntities. THIS IS VERY BAD.\n");
-		//std::fprintf(stdout, "	x = %f       z = %f\n", x, z);
-		//std::fprintf(stdout, "	relativeX = %f      relativeZ = %f\n", relativeX, relativeZ);
-		//std::fprintf(stdout, "	iX = %d        iZ = %d\n", iX, iZ);
-		//std::fprintf(stdout, "	chunkedEntitiesWidth = %d             chunkedEntitiesHeight = %d\n", chunkedEntitiesWidth, chunkedEntitiesHeight);
-		//std::fprintf(stdout, "	chunkedEntitiesChunkSize = %f\n", chunkedEntitiesChunkSize);
-		//std::fprintf(stdout, "	realIndex = %d          gameChunkedEntities.size() = %d\n", realIndex, (int)gameChunkedEntities.size());
+		std::fprintf(stdout, "	x = %f       z = %f\n", x, z);
+		std::fprintf(stdout, "	relativeX = %f      relativeZ = %f\n", relativeX, relativeZ);
+		std::fprintf(stdout, "	iX = %d        iZ = %d\n", iX, iZ);
+		std::fprintf(stdout, "	chunkedEntitiesWidth = %d             chunkedEntitiesHeight = %d\n", chunkedEntitiesWidth, chunkedEntitiesHeight);
+		std::fprintf(stdout, "	chunkedEntitiesChunkSize = %f\n", chunkedEntitiesChunkSize);
+		std::fprintf(stdout, "	realIndex = %d          gameChunkedEntities.size() = %d\n", realIndex, (int)gameChunkedEntities.size());
 		return 0;
 	}
 
@@ -1429,17 +1492,10 @@ void Main_deleteAllChunkedEntities()
 	//Make sure no entities get left behind in transition
 	for (Entity* entityToAdd : gameChunkedEntitiesToAdd)
 	{
-		int realIndex = Global::getChunkIndex(entityToAdd->getX(), entityToAdd->getZ());
-		gameChunkedEntities[realIndex].insert(entityToAdd);
+		delete entityToAdd; INCR_DEL("Entity");
 	}
 	gameChunkedEntitiesToAdd.clear();
 
-	for (Entity* entityToDelete : gameChunkedEntitiesToDelete)
-	{
-		int realIndex = Global::getChunkIndex(entityToDelete->getX(), entityToDelete->getZ());
-		gameChunkedEntities[realIndex].erase(entityToDelete);
-		delete entityToDelete; INCR_DEL("Entity");
-	}
 	gameChunkedEntitiesToDelete.clear();
 
 	for (std::unordered_set<Entity*> set : gameChunkedEntities)
@@ -1459,7 +1515,7 @@ void Global::createTitleCard()
 	GuiManager::clearGuisToRender();
 
 	Vector3f vel(0,0,0);
-	new Particle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &vel, 0, 1.0f, 0.0f, 50.0f, 0, true, false);
+	ParticleMaster::createParticle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &vel, 0, 1.0f, 0.0f, 50.0f, 0, true, false, 1.0f);
 	GuiManager::addGuiToRender(GuiTextureResources::textureBlueLine);
 
 	if (titleCardLevelName != nullptr)
@@ -1524,6 +1580,8 @@ void Global::debugNew(const char* name)
         int num = heapObjects[name];
         heapObjects[name] = num+1;
     }
+    #else
+    name;
     #endif
 }
 
@@ -1542,5 +1600,7 @@ void Global::debugDel(const char* name)
         int num = heapObjects[name];
         heapObjects[name] = num-1;
     }
+    #else
+    name;
     #endif
 }

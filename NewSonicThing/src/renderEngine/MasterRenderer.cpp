@@ -29,7 +29,7 @@ ShadowMapMasterRenderer2* shadowMapRenderer2;
 std::unordered_map<TexturedModel*, std::list<Entity*>> entitiesMap;
 std::unordered_map<TexturedModel*, std::list<Entity*>> entitiesMapPass2;
 std::unordered_map<TexturedModel*, std::list<Entity*>> entitiesMapPass3;
-std::unordered_map<TexturedModel*, std::list<Entity*>> entitiesTransparentMap;
+std::unordered_map<TexturedModel*, std::list<Entity*>> entitiesMapTransparent;
 
 Matrix4f* projectionMatrix;
 
@@ -164,9 +164,9 @@ void Master_render(Camera* camera, float clipX, float clipY, float clipZ, float 
 	renderer->renderNEW(&entitiesMapPass3, shadowMapRenderer->getToShadowMapSpaceMatrix(), shadowMapRenderer2->getToShadowMapSpaceMatrix());
 
 	prepareTransparentRender();
-	renderer->renderNEW(&entitiesTransparentMap, shadowMapRenderer->getToShadowMapSpaceMatrix(), shadowMapRenderer2->getToShadowMapSpaceMatrix());
+	renderer->renderNEW(&entitiesMapTransparent, shadowMapRenderer->getToShadowMapSpaceMatrix(), shadowMapRenderer2->getToShadowMapSpaceMatrix());
 	prepareTransparentRenderDepthOnly();
-	renderer->renderNEW(&entitiesTransparentMap, shadowMapRenderer->getToShadowMapSpaceMatrix(), shadowMapRenderer2->getToShadowMapSpaceMatrix());
+	renderer->renderNEW(&entitiesMapTransparent, shadowMapRenderer->getToShadowMapSpaceMatrix(), shadowMapRenderer2->getToShadowMapSpaceMatrix());
 
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 
@@ -175,82 +175,36 @@ void Master_render(Camera* camera, float clipX, float clipY, float clipZ, float 
 
 void Master_processEntity(Entity* entity)
 {
-	if (entity->getVisible() == false)
+	if (!entity->visible)
 	{
 		return;
 	}
 
-	std::list<TexturedModel*>* modellist = entity->getModels();
+    std::list<TexturedModel*>* modellist = entity->getModels();
+    std::unordered_map<TexturedModel*, std::list<Entity*>>* mapToUse = nullptr;
+
+    switch (entity->renderOrder)
+    {
+        case 0: mapToUse = &entitiesMap;            break;
+        case 1: mapToUse = &entitiesMapPass2;       break;
+        case 2: mapToUse = &entitiesMapPass3;       break;
+        case 3: mapToUse = &entitiesMapTransparent; break;
+        default: break;
+    }
+
 	for (TexturedModel* entityModel : (*modellist))
 	{
-		std::list<Entity*>* list = &entitiesMap[entityModel];
+		std::list<Entity*>* list = &(*mapToUse)[entityModel];
 		list->push_back(entity);
 	}
 }
 
-void Master_processEntityPass2(Entity* entity)
-{
-	if (entity->getVisible() == false)
-	{
-		return;
-	}
-
-	std::list<TexturedModel*>* modellist = entity->getModels();
-	for (TexturedModel* entityModel : (*modellist))
-	{
-		std::list<Entity*>* list = &entitiesMapPass2[entityModel];
-		list->push_back(entity);
-	}
-}
-
-void Master_processEntityPass3(Entity* entity)
-{
-	if (entity->getVisible() == false)
-	{
-		return;
-	}
-
-	std::list<TexturedModel*>* modellist = entity->getModels();
-	for (TexturedModel* entityModel : (*modellist))
-	{
-		std::list<Entity*>* list = &entitiesMapPass3[entityModel];
-		list->push_back(entity);
-	}
-}
-
-void Master_processTransparentEntity(Entity* entity)
-{
-	if (entity->getVisible() == false)
-	{
-		return;
-	}
-
-	std::list<TexturedModel*>* modellist = entity->getModels();
-	for (TexturedModel* entityModel : (*modellist))
-	{
-		std::list<Entity*>* list = &entitiesTransparentMap[entityModel];
-		list->push_back(entity);
-	}
-}
-
-void Master_clearEntities()
+void Master_clearAllEntities()
 {
 	entitiesMap.clear();
-}
-
-void Master_clearEntitiesPass2()
-{
-	entitiesMapPass2.clear();
-}
-
-void Master_clearEntitiesPass3()
-{
-	entitiesMapPass3.clear();
-}
-
-void Master_clearTransparentEntities()
-{
-	entitiesTransparentMap.clear();
+    entitiesMapPass2.clear();
+    entitiesMapPass3.clear();
+    entitiesMapTransparent.clear();
 }
 
 void prepare()
@@ -274,6 +228,15 @@ void prepare()
 
 	//glActiveTexture(GL_TEXTURE7);
 	//glBindTexture(GL_TEXTURE_2D, randomMap);
+
+    if (Global::renderWithCulling)
+    {
+        Master_enableCulling();
+    }
+    else
+    {
+        Master_disableCulling();
+    }
 }
 
 void prepareTransparentRender()
@@ -283,6 +246,15 @@ void prepareTransparentRender()
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthMask(false);
+
+    if (Global::renderWithCulling)
+    {
+        Master_enableCulling();
+    }
+    else
+    {
+        Master_disableCulling();
+    }
 }
 
 void prepareTransparentRenderDepthOnly()
@@ -294,6 +266,15 @@ void prepareTransparentRenderDepthOnly()
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthMask(true);
+
+    if (Global::renderWithCulling)
+    {
+        Master_enableCulling();
+    }
+    else
+    {
+        Master_disableCulling();
+    }
 }
 
 void Master_cleanUp()
@@ -358,6 +339,11 @@ void Master_makeProjectionMatrix()
 	{
 		ParticleMaster::updateProjectionMatrix(projectionMatrix);
 	}
+
+    if (Global::useHighQualityWater && Global::gameWaterRenderer != nullptr)
+    {
+        Global::gameWaterRenderer->updateProjectionMatrix(projectionMatrix);
+    }
 }
 
 Matrix4f* Master_getProjectionMatrix()

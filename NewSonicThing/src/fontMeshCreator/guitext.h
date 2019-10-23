@@ -16,7 +16,7 @@ class FontType;
 */
 class GUIText
 {
-private:
+public:
 	std::string textString;
 	float fontSize;
 
@@ -27,8 +27,10 @@ private:
 	bool visible;
 
 	Vector2f position;
-	float lineMaxSize;
-	int numberOfLines;
+	float lineMaxSizeConstraint; //constraint on how big the biggest line can be
+
+    std::vector<float> lineWidths;
+    float maxLineWidth; //the largest width of all the calculated text lines
 
 	FontType* font;
 
@@ -101,13 +103,6 @@ public:
 	Vector3f* getColour();
 
 	/**
-	* @return The number of lines of text. This is determined when the text is
-	*         loaded, based on the length of the text and the max line length
-	*         that is set.
-	*/
-	int getNumberOfLines();
-
-	/**
 	* @return The position of the top-left corner of the text in screen-space.
 	*         (0, 0) is the top left corner of the screen, (1, 1) is the bottom
 	*         right.
@@ -147,15 +142,7 @@ public:
 	*/
 	float getFontSize();
 
-	/**
-	* Sets the number of lines that this text covers (method used only in
-	* loading).
-	*
-	* @param number
-	*/
-	void setNumberOfLines(int number);
-
-	float getMaxLineSize();
+	float getMaxLineSizeConstraint();
 
 	int getAlignment();
 

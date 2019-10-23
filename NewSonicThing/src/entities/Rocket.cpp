@@ -7,7 +7,7 @@
 #include "../renderEngine/renderEngine.h"
 #include "../objLoader/objLoader.h"
 #include "../engineTester/main.h"
-#include "../entities/car.h"
+#include "../entities/controllableplayer.h"
 #include "../toolbox/maths.h"
 #include "../animation/body.h"
 #include "../entities/camera.h"
@@ -19,6 +19,7 @@
 #include "../audio/source.h"
 #include "../particles/particle.h"
 #include "../particles/particleresources.h"
+#include "../particles/particlemaster.h"
 
 #include <list>
 #include <iostream>
@@ -30,6 +31,11 @@ extern float dt;
 std::list<TexturedModel*> Rocket::modelsRocket;
 std::list<TexturedModel*> Rocket::modelsBase;
 CollisionModel* Rocket::cmBase;
+
+Rocket::Rocket()
+{
+
+}
 
 Rocket::Rocket(int point1ID, int point2ID)
 {
@@ -72,7 +78,7 @@ Rocket::Rocket(int point1ID, int point2ID)
 void Rocket::step()
 {
 	//The players current position as of this frame
-	Vector3f playerPos = Global::gameMainVehicle->getPosition();
+	Vector3f playerPos = Global::gameMainPlayer->getPosition();
 
 	playerToRocketPositionDifference = playerPos - position;
 
@@ -96,10 +102,6 @@ void Rocket::step()
 		canActivate = false;
 
 		playRocketLaunchSoundStart();
-
-		//Set the player to have a rocket state (for animation) and to have velocity only change angle and camera direction
-		Global::gameMainVehicle->setOnRocket(true);
-		Global::gameMainVehicle->setVelocityMovesPlayer(false);
 	}
 
 	if (isActive)
@@ -107,20 +109,19 @@ void Rocket::step()
 		playRocketLaunchSoundLoop();
 
 		//Rocket state disables player movement based on velocity, velocity here is set purely for camera reasons
-		Global::gameMainVehicle->setVelocity(rocketPathPositionDifferenceNormalized.x * 1000, rocketPathPositionDifferenceNormalized.y * 1000, rocketPathPositionDifferenceNormalized.z * 1000);
-		
-		//ensure the player can't move themselves at all or turn into a ball or anything weird like that
-		Global::gameMainVehicle->setOnGround(false);
-		Global::gameMainVehicle->setIsBall(false);
+		Global::gameMainPlayer->vel.set(
+            rocketPathPositionDifferenceNormalized.x * 1000, 
+            rocketPathPositionDifferenceNormalized.y * 1000, 
+            rocketPathPositionDifferenceNormalized.z * 1000);
+		Global::gameMainPlayer->grabRocket();
 
 		if (!rocketStartedMoving()) //rocket is starting up
 		{
 			//exhaust fumes
 			makeDirtParticles(PARTICLE_POSITION_OFFSET_ROCKET_STARTUP);
 
-			//make sure the player is holding onto the rocket in the right spot
 			Vector3f newPlayerPos = calculateNewPlayerPosition();
-			Global::gameMainVehicle->setPosition(&newPlayerPos);
+			Global::gameMainPlayer->setPosition(&newPlayerPos);
 
 			startupTimer -= dt;
 		}
@@ -136,23 +137,22 @@ void Rocket::step()
 
 			//make sure the player is holding onto the rocket in the right spot
 			Vector3f newPlayerPos = calculateNewPlayerPosition();
-			Global::gameMainVehicle->setPosition(&newPlayerPos);
+			Global::gameMainPlayer->setPosition(&newPlayerPos);
 		}	
 	}
 	
 	if (fullPathTraveled()) //stop moving and deactivate rocket
 	{
 		//velocity here is set so the player faces the correct direction at the end of the rocket path
-		Global::gameMainVehicle->setVelocity(rocketPathPositionDifferenceNormalized.x, rocketPathPositionDifferenceNormalized.y, rocketPathPositionDifferenceNormalized.z);
-		Global::gameMainVehicle->setOnRocket(false);
-		Global::gameMainVehicle->setVelocityMovesPlayer(true);
+		Global::gameMainPlayer->vel.set(rocketPathPositionDifferenceNormalized.x, rocketPathPositionDifferenceNormalized.y, rocketPathPositionDifferenceNormalized.z);
+		Global::gameMainPlayer->releaseRocket();
 
 		resetRocketVariables();
 	}
 
 	updateTransformationMatrix();
-	Global::gameMainVehicle->animate();
-	Global::gameMainVehicle->refreshCamera();
+	Global::gameMainPlayer->animate();
+	Global::gameMainPlayer->refreshCamera();
 }
 
 std::list<TexturedModel*>* Rocket::getModels()
@@ -188,6 +188,7 @@ void Rocket::deleteStaticModels()
 
 	Entity::deleteModels(&Rocket::modelsRocket);
 	Entity::deleteModels(&Rocket::modelsBase);
+	Entity::deleteCollisionModel(&Rocket::cmBase);
 }
 
 //functions used for the constructor start here
@@ -213,9 +214,8 @@ Vector3f Rocket::getPointPosition(int pointID)
 
 void Rocket::setupRocketBase()
 {
-    base = new Body(&Rocket::modelsBase);
+    base = new Body(&Rocket::modelsBase); INCR_NEW("Entity");
 	base->setVisible(true);
-	INCR_NEW("Entity");
 	Main_addEntity(base);
 	base->setPosition(&position);
 
@@ -282,8 +282,8 @@ void Rocket::makeDirtParticles(float particlePositionOffset)
 			particlePosition.z += 4*(Maths::random() - 0.5f);
 
 			//create the particle using these calculated values
-			new Particle(ParticleResources::textureDust, &particlePosition, &particleVelocity, 0.08f, 60, 0, 4 * Maths::random() + 0.5f, 0, false, true);
-			new Particle(ParticleResources::textureDust, &particlePosition, &particleVelocity, 0.08f, 60, 0, 4 * Maths::random() + 0.5f, 0, false, true);
+			ParticleMaster::createParticle(ParticleResources::textureDust, &particlePosition, &particleVelocity, 0.08f, 60, 0, 4 * Maths::random() + 0.5f, 0, false, true, 1.0f);
+			ParticleMaster::createParticle(ParticleResources::textureDust, &particlePosition, &particleVelocity, 0.08f, 60, 0, 4 * Maths::random() + 0.5f, 0, false, true, 1.0f);
 
 			dirtToMake--;
 		}
@@ -316,11 +316,11 @@ bool Rocket::rocketStartedMoving()
 
 Vector3f Rocket::calculateNewPlayerPosition()
 {
-	Vector3f newPos = Vector3f();
-	newPos.x = position.x - 6*rocketPathPositionDifferenceNormalized.x;
-	newPos.y = position.y - 5;
-	newPos.z = position.z - 6*rocketPathPositionDifferenceNormalized.z;
-	return newPos;
+	Vector3f newPlayerPos = Vector3f(
+			position.x - 6*rocketPathPositionDifferenceNormalized.x,
+			position.y - 5,
+			position.z - 6*rocketPathPositionDifferenceNormalized.z);
+	return newPlayerPos;
 }
 
 Vector3f Rocket::calculateNewRocketPosition()

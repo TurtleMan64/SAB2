@@ -10,6 +10,8 @@ class MH_StageManager : public Entity
 {
 private:
 	static std::list<TexturedModel*> modelsSkydome;
+    float timer;
+	bool playedBGM;
 
 public:
 	MH_StageManager();
