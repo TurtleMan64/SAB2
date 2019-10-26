@@ -101,6 +101,8 @@ void Rocket::step()
 		isActive = true;
 		canActivate = false;
 
+		Global::gameMainPlayer->grabRocket();
+
 		playRocketLaunchSoundStart();
 	}
 
@@ -113,7 +115,7 @@ void Rocket::step()
             rocketPathPositionDifferenceNormalized.x * 1000, 
             rocketPathPositionDifferenceNormalized.y * 1000, 
             rocketPathPositionDifferenceNormalized.z * 1000);
-		Global::gameMainPlayer->grabRocket();
+		
 
 		if (!rocketStartedMoving()) //rocket is starting up
 		{

@@ -92,14 +92,13 @@ void Pulley::step()
 		position.y = pulleyTopYPosition - handleVerticalDisplacement;
 
 		//Make player attach to the pulleys position and not move
-		Global::gameMainPlayer->position.set(position.x, position.y - 5, position.z);
+		Global::gameMainPlayer->setPosition(position.x, position.y - 5, position.z);
 		Global::gameMainPlayer->vel.set(cameraDirectionVector.x, 0, cameraDirectionVector.z);
 
 		if (jumpInputPressed()) //get off the pulley, should also happen if damaged
 		{
 			Global::gameMainPlayer->vel.set(0,0,0);
-			Global::gameMainPlayer->setVelocityMovesPlayer(true);
-			Global::gameMainPlayer->setOnPulley(false);
+			Global::gameMainPlayer->releasePulley();
 			Global::gameMainPlayer->jumpOffPulley(cameraDirectionVector);
 
 			playerIsOnPulley = false;
@@ -113,11 +112,8 @@ void Pulley::step()
 		playerIsOnPulley = true;
 
 		//This below is all just setting up player variables in preparation for the movement
+		Global::gameMainPlayer->grabPulley();
 
-		//Used for the animation of the player holding the pulley
-		Global::gameMainPlayer->setOnPulley(true);
-		//Make player unable to move so velocity only changes camera direction
-		Global::gameMainPlayer->setVelocityMovesPlayer(false);
 		//Make player face the right direction
 		Global::gameMainPlayer->setRotY(rotY);
 	}

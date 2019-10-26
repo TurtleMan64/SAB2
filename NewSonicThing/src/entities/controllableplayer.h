@@ -154,6 +154,10 @@ public:
 
     virtual void releaseRocket();
 
+	virtual void grabPulley();
+
+	virtual void releasePulley();
+
     virtual void hitSpring(Vector3f* direction, float power, float lockInputTime);
 
     virtual void hitSpringTriple(Vector3f* direction, float power, float lockInputTime);

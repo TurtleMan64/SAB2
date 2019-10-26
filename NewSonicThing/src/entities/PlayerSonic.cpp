@@ -519,7 +519,7 @@ void PlayerSonic::step()
 	}
 
     //camera stuff
-	if (!isGrinding && !onRocket && !isLightdashing)
+	if (velocityMovesPlayer && !isGrinding && !onRocket && !isLightdashing)
 	{
 		//camera adjust to direction you are heading in
 		if (onGround)
@@ -1483,7 +1483,7 @@ void PlayerSonic::moveMeGround()
 
 void PlayerSonic::moveMeAir()
 {
-	if (isGrinding || onRocket || isLightdashing || (isHomingOnPoint && homingAttackTimer > 0))
+	if (!velocityMovesPlayer || isGrinding || onRocket || isLightdashing || (isHomingOnPoint && homingAttackTimer > 0))
 	{
 		return;
 	}
@@ -2159,6 +2159,27 @@ void PlayerSonic::grabRocket()
     isJumping = false;
 }
 
+void PlayerSonic::releaseRocket()
+{
+	velocityMovesPlayer = true;
+    onRocket = false;
+}
+
+void PlayerSonic::grabPulley()
+{
+	onPulley = true;
+    onGround = false;
+    isBall = false;
+    isJumping = false;
+	velocityMovesPlayer = false;
+}
+
+void PlayerSonic::releasePulley()
+{
+	onPulley = false;
+	velocityMovesPlayer = true;
+}
+
 float PlayerSonic::getHitboxHorizontal()
 {
 	return 6;
@@ -2189,12 +2210,6 @@ void PlayerSonic::setCameraDirection(Vector3f* newDirection)
     camDir.set(newDirection);
     camDirSmooth.set(newDirection);
     inWater = true;
-}
-
-void PlayerSonic::releaseRocket()
-{
-	velocityMovesPlayer = true;
-    onRocket = false;
 }
 
 void PlayerSonic::refreshCamera()

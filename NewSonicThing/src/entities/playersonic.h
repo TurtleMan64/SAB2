@@ -212,6 +212,10 @@ public:
 
     void releaseRocket();
 
+	void grabPulley();
+
+	void releasePulley();
+
 	void setOnGround(bool newOnGround);
 
 	//called by Rail when sonic jumps off

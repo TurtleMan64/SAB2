@@ -70,6 +70,8 @@ Vector3f      ControllablePlayer::getCenterPosition()                 {return Ve
 //void          ControllablePlayer::setSpeedshoesTimer(int)             {}
 void          ControllablePlayer::grabRocket()                        {}
 void          ControllablePlayer::releaseRocket()                     {}
+void          ControllablePlayer::grabPulley()                        {}
+void          ControllablePlayer::releasePulley()                     {}
 void          ControllablePlayer::hitSpring(Vector3f*, float, float)  {}
 void          ControllablePlayer::hitSpringTriple(Vector3f*, float, float)  {}
 void          ControllablePlayer::setVelocityMovesPlayer(bool newVelocityMovesPlayer) {}
