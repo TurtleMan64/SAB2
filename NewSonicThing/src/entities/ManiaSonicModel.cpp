@@ -300,13 +300,7 @@ void ManiaSonicModel::animate(int animIndex, float time)
             visible = true;
 			break;
 		}
-
-		case 27: //grabbing Rocket
-		{
-			models = &ManiaSonicModel::modelGrab;
-			break;
-		}
-
+		
 		default:
 			break;
 	}

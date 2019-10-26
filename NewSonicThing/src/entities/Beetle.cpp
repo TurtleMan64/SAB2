@@ -61,9 +61,9 @@ void Beetle::updateBlades()
 
 void Beetle::step()
 {
-	if (fabsf(position.x - Global::gameMainPlayer->position.x) < 100 &&
-        fabsf(position.y - Global::gameMainPlayer->position.y) < 100 &&
-        fabsf(position.z - Global::gameMainPlayer->position.z) < 100)
+	if (fabsf(position.x - Global::gameMainPlayer->position.x) < 1000 &&
+        fabsf(position.y - Global::gameMainPlayer->position.y) < 1000 &&
+        fabsf(position.z - Global::gameMainPlayer->position.z) < 1000)
 	{
         float xDiff = position.x - Global::gameMainPlayer->position.x;
         float yDiff = position.y - Global::gameMainPlayer->position.y;

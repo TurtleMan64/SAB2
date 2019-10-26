@@ -1987,8 +1987,8 @@ void PlayerSonic::animate()
 
 	if (onPulley)
 	{
-		playerModel->setOrientation(dspX, dspY, dspZ, diffGround, yawAngleGround, pitchAngleGround, 0, &relativeUpAnim);
-		playerModel->animate(27, 0);
+		playerModel->setOrientation(dspX, dspY, dspZ, 0, airYaw, 90, airPitch, &relativeUpAnim);
+		playerModel->animate(25, 0);
 	}
     else if (isLightdashing)
     {
