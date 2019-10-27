@@ -989,7 +989,8 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
 					MH_YellowMovingPlatform::loadStaticModels();
 					MH_YellowMovingPlatform* yellowMovingPlatform = new MH_YellowMovingPlatform(
 						toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]), 			//position
-						toFloat(dat[5]), toInt(dat[6]), toFloat(dat[7])); 			//axis, displacementMax, speed
+						toFloat(dat[5]), toFloat(dat[6]),							//dirX, dirZ
+						toInt(dat[7]), toFloat(dat[8])); 						    //displacementMax, speed
 					INCR_NEW("Entity");
 					Main_addEntity(yellowMovingPlatform);
 					return;

@@ -54,10 +54,11 @@ private:
 	//Body used to be able to display the transparent model
 	Body* bodyTransparent;
     
+	//if false, the platform doesn't need to update at all after being initialized since it doesn't move
+	//set by having a displacementMax of 0
+	bool platformMoves;
     //initial position of the platform
     Vector3f positionInitial;
-    //controls whether the platform moves in the x axis or z axis
-    bool platformMovesOnXAxis;
 	//determines the directions the wheels are rotated
 	//in step, changing the direction is a multiplation with -1, so to flip between forwards or backwards at the start, set to -1
 	int wheelMovementDirectionMultiplier;
@@ -92,9 +93,7 @@ private:
 
 
 	//Functions for the constructor start here
-	
-	//calculates the value of directionVector
-	inline Vector3f calculateDirectionVector();
+
 	//Makes the body used for the front wheels model
 	inline void setupModelWheelFront();
 	//Makes the body used for the back wheels model
@@ -128,7 +127,9 @@ private:
 
 
 public:
-	MH_YellowMovingPlatform(float x, float y, float z, int platformMovesOnXAxis, float displacementMax, float speed);
+	MH_YellowMovingPlatform();
+
+	MH_YellowMovingPlatform(float x, float y, float z, float dirX, float dirZ, float displacementMax, float speed);
 
 	void step();
 

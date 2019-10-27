@@ -45,7 +45,9 @@ std::list<TexturedModel*> MH_YellowMovingPlatform::modelsWheelBack;
 std::list<TexturedModel*> MH_YellowMovingPlatform::modelsTransparent;
 CollisionModel* MH_YellowMovingPlatform::cmOriginal;
 
-MH_YellowMovingPlatform::MH_YellowMovingPlatform(float x, float y, float z, int platformMovesOnXAxis, float displacementMax, float speed)
+MH_YellowMovingPlatform::MH_YellowMovingPlatform() {}
+
+MH_YellowMovingPlatform::MH_YellowMovingPlatform(float x, float y, float z, float dirX, float dirZ, float displacementMax, float speed)
 {
 	position.x = x;
 	position.y = y;
@@ -53,39 +55,25 @@ MH_YellowMovingPlatform::MH_YellowMovingPlatform(float x, float y, float z, int 
 	rotX = 0;
 	rotZ = 0;
 
-	this->wheelMovementDirectionMultiplier = 1;
-
-	this->platformMovesOnXAxis = platformMovesOnXAxis;
-    this->displacementMax = displacementMax;
-	this->displacementCurrent = 0;
-    this->speed = speed;
-
-	directionVector = calculateDirectionVector();
-
-	this->rotY = (this->platformMovesOnXAxis == true) ? 0 : 90;
-	//rotate 180 if going in opposite direction (decided by negative displacementMax value)
-	//also set the wheel movement direction multiplier to -1, so the wheels move in the right direction
-	if (displacementMax < 0) 
-	{
-		rotY += 180;
-	}
-
-	//now that the direction of movement is figured out this is more useful as a positive number
-	displacementMax = fabs(displacementMax);
-
 	scale = 1;
 	visible = true;
 
-    positionInitial = &position;
+	platformMoves = true;
+	this->speed = speed;
+	this->displacementMax = displacementMax;
+	displacementCurrent = 0;
+	wheelMovementDirectionMultiplier = 1;
+	positionInitial = &position;
+
+	directionVector.set(dirX, 0.0f, dirZ);
+	directionVector.normalize();
+
+	rotY = Maths::toDegrees(atan2f(directionVector.x, directionVector.z));
 
 	if (displacementMax == 0)
 	{
-		printf("ERROR! YellowMovingPlatform variable displacementMax has a value of 0, which is bad.");
+		platformMoves = false;
 	}
-
-	this->platformMovesOnXAxis = platformMovesOnXAxis;
-    this->displacementMax = displacementMax;
-    this->speed = speed;
 
 	stateCurrent = MOVING_FORWARD;
 
@@ -107,105 +95,107 @@ MH_YellowMovingPlatform::MH_YellowMovingPlatform(float x, float y, float z, int 
 
 void MH_YellowMovingPlatform::step() 
 {
-	Vector3f movementAmount;
+	if (platformMoves == true)
+	{	
+		Vector3f movementAmount;
+		switch (stateCurrent)
+		{
+			case MOVING_FORWARD:
+				movementAmount = calculateMovementAmount(directionVector);
+				position = position + movementAmount;
+				displacementCurrent += movementAmount.length();
+				syncBodyPositionsRelative(movementAmount);
+				spinWheels();
 
-	switch (stateCurrent)
-	{
-		case MOVING_FORWARD:
-			movementAmount = calculateMovementAmount(directionVector);
-			position = position + movementAmount;
-			displacementCurrent += movementAmount.length();
-			syncBodyPositionsRelative(movementAmount);
-			spinWheels();
-
-			pushSonicAway(true, false);
-
-			if (collideModelTransformed->playerIsOn)
-			{
-				movePlayer(movementAmount);
-			}
-			
-			if (displacementCurrent >= displacementMax)
-			{
-				displacementCurrent = displacementMax;
-				wheelMovementDirectionMultiplier *= -1;
-				
-				stateCurrent = STOPPED;
-				positionStopped = position;
-				stoppedTimer = 0;
-				shakeTimer = SHAKE_TIMER_MIN;
-			}
-			break;				
-		case MOVING_BACKWARDS:
-			movementAmount = calculateMovementAmount(Vector3f() - directionVector);
-			position = position + movementAmount;
-			displacementCurrent -= movementAmount.length();
-			syncBodyPositionsRelative(movementAmount);
-			spinWheels();
-
-			pushSonicAway(false, true);
-
-			if (collideModelTransformed->playerIsOn)
-			{
-				movePlayer(movementAmount);
-			}
-
-			if (displacementCurrent <= 0)
-			{
-				displacementCurrent = 0;
-				position = positionInitial;
-				syncBodyPositionsAbsolute();
-				wheelMovementDirectionMultiplier *= -1;
-				
-				stateCurrent = STOPPED;
-				positionStopped = position;
-				stoppedTimer = 0;
-				shakeTimer = SHAKE_TIMER_MIN;
-			}
-			break;
-		case STOPPED:
-			stoppedTimer += dt;
-
-			movementAmount = shakePlatform();
-			position = position + movementAmount;
-			syncBodyPositionsRelative(movementAmount);
-
-			if (shakeTimer < SHAKE_TIMER_MAX && sinf(shakeTimer)/shakeTimer * 5 > 0)
-			{
 				pushSonicAway(true, false);
-			}
-			else if (shakeTimer < SHAKE_TIMER_MAX && sinf(shakeTimer)/shakeTimer * 5 < 0)
-			{
+
+				if (collideModelTransformed->playerIsOn)
+				{
+					movePlayer(movementAmount);
+				}
+				
+				if (displacementCurrent >= displacementMax)
+				{
+					displacementCurrent = displacementMax;
+					wheelMovementDirectionMultiplier *= -1;
+					
+					stateCurrent = STOPPED;
+					positionStopped = position;
+					stoppedTimer = 0;
+					shakeTimer = SHAKE_TIMER_MIN;
+				}
+				break;				
+			case MOVING_BACKWARDS:
+				movementAmount = calculateMovementAmount(Vector3f() - directionVector);
+				position = position + movementAmount;
+				displacementCurrent -= movementAmount.length();
+				syncBodyPositionsRelative(movementAmount);
+				spinWheels();
+
 				pushSonicAway(false, true);
-			}
 
-			if (collideModelTransformed->playerIsOn)
-			{
-				movePlayer(movementAmount);
-			}
+				if (collideModelTransformed->playerIsOn)
+				{
+					movePlayer(movementAmount);
+				}
 
-			if (stoppedTimer > 2)
-			{
-				if (displacementCurrent == displacementMax)
+				if (displacementCurrent <= 0)
 				{
-					stateCurrent = MOVING_BACKWARDS;
+					displacementCurrent = 0;
+					position = positionInitial;
+					syncBodyPositionsAbsolute();
+					wheelMovementDirectionMultiplier *= -1;
+					
+					stateCurrent = STOPPED;
+					positionStopped = position;
+					stoppedTimer = 0;
+					shakeTimer = SHAKE_TIMER_MIN;
 				}
-				else
+				break;
+			case STOPPED:
+				stoppedTimer += dt;
+
+				movementAmount = shakePlatform();
+				position = position + movementAmount;
+				syncBodyPositionsRelative(movementAmount);
+
+				if (shakeTimer < SHAKE_TIMER_MAX && sinf(shakeTimer)/shakeTimer * 5 > 0)
 				{
-					stateCurrent = MOVING_FORWARD;
+					pushSonicAway(true, false);
 				}
-			}
-			break;
+				else if (shakeTimer < SHAKE_TIMER_MAX && sinf(shakeTimer)/shakeTimer * 5 < 0)
+				{
+					pushSonicAway(false, true);
+				}
+
+				if (collideModelTransformed->playerIsOn)
+				{
+					movePlayer(movementAmount);
+				}
+
+				if (stoppedTimer > 2)
+				{
+					if (displacementCurrent == displacementMax)
+					{
+						stateCurrent = MOVING_BACKWARDS;
+					}
+					else
+					{
+						stateCurrent = MOVING_FORWARD;
+					}
+				}
+				break;
+		}
+
+		updateTransformationMatrix();
+		wheelFront->updateTransformationMatrix();
+		wheelBack->updateTransformationMatrix();
+		bodyTransparent->updateTransformationMatrix();
+		updateCollisionModel();
+
+		Global::gameMainPlayer->animate();
+		Global::gameMainPlayer->refreshCamera();
 	}
-
-	updateTransformationMatrix();
-	wheelFront->updateTransformationMatrix();
-	wheelBack->updateTransformationMatrix();
-	bodyTransparent->updateTransformationMatrix();
-	updateCollisionModel();
-
-	Global::gameMainPlayer->animate();
-	Global::gameMainPlayer->refreshCamera();
 }
 
 std::list<TexturedModel*>* MH_YellowMovingPlatform::getModels()
@@ -249,21 +239,6 @@ void MH_YellowMovingPlatform::deleteStaticModels()
 	Entity::deleteCollisionModel(&MH_YellowMovingPlatform::cmOriginal);
 }
 
-inline Vector3f MH_YellowMovingPlatform::calculateDirectionVector()
-{
-	Vector3f directionVectorLocal = Vector3f();
-	if (platformMovesOnXAxis)
-	{
-		directionVectorLocal.z = fabs(displacementMax) / displacementMax;
-	}
-	else
-	{
-		directionVectorLocal.x = fabs(displacementMax) / displacementMax;
-	}
-	directionVector.normalize();
-	return directionVectorLocal;
-}
-
 inline void MH_YellowMovingPlatform::setupModelWheelFront()
 {
 	wheelFront = new Body(&MH_YellowMovingPlatform::modelsWheelFront);
@@ -298,7 +273,6 @@ inline void MH_YellowMovingPlatform::setupModelTransparent()
 
 inline Vector3f MH_YellowMovingPlatform::calculateMovementAmount(Vector3f directionVectorLocal)
 {
-	//return Vector3f();
 	return directionVectorLocal.scaleCopy(speed * dt);
 }
 
