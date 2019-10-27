@@ -1608,6 +1608,8 @@ void PlayerSonic::jumpOffPulley(Vector3f forwardDirectionVector)
 	justBounced = false;
 	justHomingAttacked = false;
 	homingAttackTimer = -1.0f;
+	onGround = false;
+	isJumping = true;
 
 	forwardDirectionVector.normalize();
 	if (inputX == 0 and inputY == 0)

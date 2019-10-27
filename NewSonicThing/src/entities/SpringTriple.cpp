@@ -37,8 +37,14 @@ SpringTriple::SpringTriple(float x, float y, float z, float dirX, float dirZ, fl
 	this->scale = 1;
 	this->visible = true;
 
-    hitCenter = position + dir.scaleCopy(5.88928f);
-    hitCenter.y += 5.29734f;
+    hitCenter = position + dir.scaleCopy(HITBOX_DISTANCE_FROM_ORIGIN_HORIZONTAL);
+    hitCenter.y += HITBOX_DISTANCE_FROM_ORIGIN_VERTICAL;
+
+	Vector3f upVector = Vector3f(0,1,0);
+	Vector3f dirSideways = dir;
+	dirSideways = Maths::rotatePoint(&dir, &upVector, Maths::toRadians(90));
+	hitRight = hitCenter + dirSideways.scaleCopy(SIDE_SPRING_OFFSET);
+	hitLeft = hitCenter + dirSideways.scaleCopy(-SIDE_SPRING_OFFSET);
 
     //calculate angles
     rotX = 0;
@@ -55,19 +61,23 @@ void SpringTriple::step()
 {
 	cooldownTimer = std::fmaxf(cooldownTimer - dt, 0.0f);
 
-	if (fabsf(hitCenter.y - Global::gameMainPlayer->position.y) < 40 &&
-		fabsf(hitCenter.z - Global::gameMainPlayer->position.z) < 40 &&
-		fabsf(hitCenter.x - Global::gameMainPlayer->position.x) < 40 &&
+	if (fabsf(hitCenter.y - Global::gameMainPlayer->position.y) < 100 &&
+		fabsf(hitCenter.z - Global::gameMainPlayer->position.z) < 100 &&
+		fabsf(hitCenter.x - Global::gameMainPlayer->position.x) < 100 &&
 		cooldownTimer == 0.0f)
 	{
-        if ((Global::gameMainPlayer->getCenterPosition() - hitCenter).lengthSquared() < (8.44f*8.44f)+(4.0f*4.0f)) //8.44 = radius of spring, 4 = radius of sonic
+        if (collisionCheckCylinder(hitCenter, HITBOX_RADIUS, HITBOX_HEIGHT))
 		{
-            Global::gameMainPlayer->position = hitCenter;
-		    Global::gameMainPlayer->hitSpringTriple(&dir, springPower, cooldownTimerMax);
-		    AudioPlayer::play(6, &position, 1 + (springPower*0.00013333f));
-
-		    cooldownTimer = cooldownTimerMax;
+            doSpringBounce(hitCenter);
         }
+		else if (collisionCheckCylinder(hitRight, HITBOX_RADIUS, HITBOX_HEIGHT))
+		{
+			doSpringBounce(hitRight);
+		}
+		else if (collisionCheckCylinder(hitLeft, HITBOX_RADIUS, HITBOX_HEIGHT))
+		{
+			doSpringBounce(hitLeft);
+		}
 	}
 }
 
@@ -107,4 +117,25 @@ const bool SpringTriple::canHomingAttackOn()
 const Vector3f SpringTriple::getHomingCenter()
 {
 	return hitCenter;
+}
+
+inline bool SpringTriple::collisionCheckCylinder(Vector3f collisionCenterPos, float hitboxRadius, float hitboxHeight)
+{
+	Vector3f playerPos = Global::gameMainPlayer->position;
+	Vector3f playerToCenterDistance = playerPos - collisionCenterPos;
+	float playerToCenterDistanceSquared = playerToCenterDistance.x * playerToCenterDistance.x + playerToCenterDistance.z * playerToCenterDistance.z;
+	if (playerToCenterDistanceSquared <= hitboxRadius * hitboxRadius && fabs(playerToCenterDistance.y) < hitboxHeight)
+	{
+		return true;
+	}
+	return false;
+}
+
+inline void SpringTriple::doSpringBounce(Vector3f hitboxPoint)
+{
+	Global::gameMainPlayer->position = hitboxPoint;
+	Global::gameMainPlayer->hitSpringTriple(&dir, springPower, cooldownTimerMax);
+	AudioPlayer::play(6, &position, 1 + (springPower*0.00013333f));
+
+	cooldownTimer = cooldownTimerMax;
 }
