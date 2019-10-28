@@ -81,7 +81,8 @@ void AudioPlayer::loadSoundEffects()
 	AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/RocketAppear.ogg"));         //54
 	AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/RocketTakeOffStart.ogg"));   //55
 	AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/RocketTakeOffLoop.ogg"));    //56
-	AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/Pulley.ogg"));			   //57 	
+	AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/Pulley.ogg"));			   //57
+	AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/MetalHarbor/CratePlatformStop.ogg"));//58	
 }
 
 void AudioPlayer::loadBGM(char* fileName)

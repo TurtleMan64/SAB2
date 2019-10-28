@@ -1,5 +1,5 @@
-#ifndef MH_YELLOWMOVINGPLATFORM
-#define MH_YELLOWMOVINGPLATFORM
+#ifndef MH_AIRCRAFTCARRIERCART
+#define MH_AIRCRAFTCARRIERCART
 
 #include <list>
 #include "../entity.h"
@@ -8,7 +8,7 @@
 class TexturedModel;
 class Body;
 
-class MH_YellowMovingPlatform : public CollideableObject
+class MH_AircraftCarrierCart : public CollideableObject
 {
 private:
 	enum states
@@ -30,6 +30,13 @@ private:
 	//The collision model
 	static CollisionModel* cmOriginal;
 
+	//Body used to be able to display the front wheels model
+	Body* wheelFront;
+	//Body used to be able to display the back wheels model
+	Body* wheelBack;
+	//Body used to be able to display the transparent model
+	Body* bodyTransparent;
+
 	//Horizontal Offset of the Front Wheel
 	const float WHEEL_OFFSET_FRONT_HORIZONTAL = 8.86459;
 	//Horizontal Offset of the Back Wheel
@@ -47,13 +54,15 @@ private:
 	//maximum value of the shake timer
 	const float SHAKE_TIMER_MAX = 31.4159265359;
 
-	//Body used to be able to display the front wheels model
-	Body* wheelFront;
-	//Body used to be able to display the back wheels model
-	Body* wheelBack;
-	//Body used to be able to display the transparent model
-	Body* bodyTransparent;
-    
+	//used for player collisions with the front and back of the platform when moving
+	const float COLLISION_POSITION_SIDEWAYS = 9.9351;
+	const float COLLISION_POSITION_FORWARD = 20.407;
+	const float COLLISION_POSITION_BACKWARD_INNER = -23;
+	const float COLLISION_POSITION_BACKWARD_OUTER = -25;
+	const float COLLISION_POSITION_BACKSIDEWAYS_INNER = 5;
+	const float COLLISION_RADIUS = 5; 
+	const float COLLISION_HEIGHT = 11.5;
+
 	//if false, the platform doesn't need to update at all after being initialized since it doesn't move
 	//set by having a displacementMax of 0
 	bool platformMoves;
@@ -77,20 +86,6 @@ private:
 	Vector3f positionStopped;
 	//used for the shaking of the platform, dt * 20 is added to it to speed up the shaking animation
 	float shakeTimer;
-
-	//used for player collisions with the front and back of the platform when moving
-	Vector3f collisionPositionFront1;
-	Vector3f collisionPositionFront2;
-	Vector3f collisionPositionBack1;
-	Vector3f collisionPositionBack2;
-	const float COLLISION_POSITION_SIDEWAYS = 9.9351;
-	const float COLLISION_POSITION_FORWARD = 20.407;
-	const float COLLISION_POSITION_BACKWARD_INNER = -23;
-	const float COLLISION_POSITION_BACKWARD_OUTER = -25;
-	const float COLLISION_POSITION_BACKSIDEWAYS_INNER = 5;
-	const float COLLISION_RADIUS = 5; 
-	const float COLLISION_HEIGHT = 11.5;
-
 
 	//Functions for the constructor start here
 
@@ -127,9 +122,9 @@ private:
 
 
 public:
-	MH_YellowMovingPlatform();
+	MH_AircraftCarrierCart();
 
-	MH_YellowMovingPlatform(float x, float y, float z, float dirX, float dirZ, float displacementMax, float speed);
+	MH_AircraftCarrierCart(float x, float y, float z, float dirX, float dirZ, float displacementMax, float speed);
 
 	void step();
 

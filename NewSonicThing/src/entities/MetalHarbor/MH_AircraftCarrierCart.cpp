@@ -20,9 +20,10 @@
 	this would require a fair bit of rewrite in the pushSonicAway function
  -Is there a sound?
 	-no
+ -make framerate independant
 */
 
-#include "mhyellowmovingplatform.h"
+#include "mhaircraftcarriercart.h"
 #include "../entity.h"
 #include "../camera.h"
 #include "../../engineTester/main.h"
@@ -39,15 +40,15 @@
 
 extern float dt;
 
-std::list<TexturedModel*> MH_YellowMovingPlatform::models;
-std::list<TexturedModel*> MH_YellowMovingPlatform::modelsWheelFront;
-std::list<TexturedModel*> MH_YellowMovingPlatform::modelsWheelBack;
-std::list<TexturedModel*> MH_YellowMovingPlatform::modelsTransparent;
-CollisionModel* MH_YellowMovingPlatform::cmOriginal;
+std::list<TexturedModel*> MH_AircraftCarrierCart::models;
+std::list<TexturedModel*> MH_AircraftCarrierCart::modelsWheelFront;
+std::list<TexturedModel*> MH_AircraftCarrierCart::modelsWheelBack;
+std::list<TexturedModel*> MH_AircraftCarrierCart::modelsTransparent;
+CollisionModel* MH_AircraftCarrierCart::cmOriginal;
 
-MH_YellowMovingPlatform::MH_YellowMovingPlatform() {}
+MH_AircraftCarrierCart::MH_AircraftCarrierCart() {}
 
-MH_YellowMovingPlatform::MH_YellowMovingPlatform(float x, float y, float z, float dirX, float dirZ, float displacementMax, float speed)
+MH_AircraftCarrierCart::MH_AircraftCarrierCart(float x, float y, float z, float dirX, float dirZ, float displacementMax, float speed)
 {
 	position.x = x;
 	position.y = y;
@@ -85,15 +86,15 @@ MH_YellowMovingPlatform::MH_YellowMovingPlatform(float x, float y, float z, floa
 
 	updateTransformationMatrix();
 
-	collideModelOriginal = MH_YellowMovingPlatform::cmOriginal;
-	collideModelTransformed = loadCollisionModel("Models/Objects/MetalHarbor/YellowMovingPlatform/", "YellowMovingPlatformCollision");
+	collideModelOriginal = MH_AircraftCarrierCart::cmOriginal;
+	collideModelTransformed = loadCollisionModel("Models/Objects/MetalHarbor/AircraftCarrierCart/", "AircraftCarrierCartCollision");
 
 	CollisionChecker::addCollideModel(collideModelTransformed);
 
 	updateCollisionModel();
 }
 
-void MH_YellowMovingPlatform::step() 
+void MH_AircraftCarrierCart::step() 
 {
 	if (platformMoves == true)
 	{	
@@ -198,50 +199,50 @@ void MH_YellowMovingPlatform::step()
 	}
 }
 
-std::list<TexturedModel*>* MH_YellowMovingPlatform::getModels()
+std::list<TexturedModel*>* MH_AircraftCarrierCart::getModels()
 {
-	return &MH_YellowMovingPlatform::models;
+	return &MH_AircraftCarrierCart::models;
 }
 
-void MH_YellowMovingPlatform::loadStaticModels()
+void MH_AircraftCarrierCart::loadStaticModels()
 {
-	if (MH_YellowMovingPlatform::models.size() > 0)
+	if (MH_AircraftCarrierCart::models.size() > 0)
 	{
 		return;
 	}
 
 	#ifdef DEV_MODE
-	std::fprintf(stdout, "Loading MH_YellowMovingPlatform static models...\n");
+	std::fprintf(stdout, "Loading MH_AircraftCarrierCart static models...\n");
 	#endif
 
-	loadModel(&MH_YellowMovingPlatform::models, "res/Models/Objects/MetalHarbor/YellowMovingPlatform/", "YellowMovingPlatform");
-	loadModel(&MH_YellowMovingPlatform::modelsWheelFront, "res/Models/Objects/MetalHarbor/YellowMovingPlatform/", "YellowMovingPlatformWheelFront");
-	loadModel(&MH_YellowMovingPlatform::modelsWheelBack, "res/Models/Objects/MetalHarbor/YellowMovingPlatform/", "YellowMovingPlatformWheelBack");
-    loadModel(&MH_YellowMovingPlatform::modelsTransparent, "res/Models/Objects/MetalHarbor/YellowMovingPlatform/", "YellowMovingPlatformTransparent");
+	loadModel(&MH_AircraftCarrierCart::models, "res/Models/Objects/MetalHarbor/AircraftCarrierCart/", "AircraftCarrierCart");
+	loadModel(&MH_AircraftCarrierCart::modelsWheelFront, "res/Models/Objects/MetalHarbor/AircraftCarrierCart/", "AircraftCarrierCartWheelFront");
+	loadModel(&MH_AircraftCarrierCart::modelsWheelBack, "res/Models/Objects/MetalHarbor/AircraftCarrierCart/", "AircraftCarrierCartWheelBack");
+    loadModel(&MH_AircraftCarrierCart::modelsTransparent, "res/Models/Objects/MetalHarbor/AircraftCarrierCart/", "AircraftCarrierCartTransparent");
 
 
-	if (MH_YellowMovingPlatform::cmOriginal == nullptr)
+	if (MH_AircraftCarrierCart::cmOriginal == nullptr)
 	{
-		MH_YellowMovingPlatform::cmOriginal = loadCollisionModel("Models/Objects/MetalHarbor/YellowMovingPlatform/", "YellowMovingPlatformCollision");
+		MH_AircraftCarrierCart::cmOriginal = loadCollisionModel("Models/Objects/MetalHarbor/AircraftCarrierCart/", "AircraftCarrierCartCollision");
 	}
 }
 
-void MH_YellowMovingPlatform::deleteStaticModels()
+void MH_AircraftCarrierCart::deleteStaticModels()
 {
 	#ifdef DEV_MODE
-	std::fprintf(stdout, "Deleting MH_YellowMovingPlatform static models...\n");
+	std::fprintf(stdout, "Deleting MH_AircraftCarrierCart static models...\n");
 	#endif
 
-	Entity::deleteModels(&MH_YellowMovingPlatform::models);
-	Entity::deleteModels(&MH_YellowMovingPlatform::modelsWheelFront);
-	Entity::deleteModels(&MH_YellowMovingPlatform::modelsWheelBack);
-	Entity::deleteModels(&MH_YellowMovingPlatform::modelsTransparent);
-	Entity::deleteCollisionModel(&MH_YellowMovingPlatform::cmOriginal);
+	Entity::deleteModels(&MH_AircraftCarrierCart::models);
+	Entity::deleteModels(&MH_AircraftCarrierCart::modelsWheelFront);
+	Entity::deleteModels(&MH_AircraftCarrierCart::modelsWheelBack);
+	Entity::deleteModels(&MH_AircraftCarrierCart::modelsTransparent);
+	Entity::deleteCollisionModel(&MH_AircraftCarrierCart::cmOriginal);
 }
 
-inline void MH_YellowMovingPlatform::setupModelWheelFront()
+inline void MH_AircraftCarrierCart::setupModelWheelFront()
 {
-	wheelFront = new Body(&MH_YellowMovingPlatform::modelsWheelFront);
+	wheelFront = new Body(&MH_AircraftCarrierCart::modelsWheelFront);
 	wheelFront->setVisible(true);
 	INCR_NEW("Entity");
 	Main_addEntity(wheelFront);
@@ -250,9 +251,9 @@ inline void MH_YellowMovingPlatform::setupModelWheelFront()
 	wheelFront->setRotY(rotY);
 }
 
-inline void MH_YellowMovingPlatform::setupModelWheelBack()
+inline void MH_AircraftCarrierCart::setupModelWheelBack()
 {
-	wheelBack = new Body(&MH_YellowMovingPlatform::modelsWheelBack);
+	wheelBack = new Body(&MH_AircraftCarrierCart::modelsWheelBack);
 	wheelBack->setVisible(true);
 	INCR_NEW("Entity");
 	Main_addEntity(wheelBack);
@@ -261,9 +262,9 @@ inline void MH_YellowMovingPlatform::setupModelWheelBack()
 	wheelBack->setRotY(rotY);
 }
 
-inline void MH_YellowMovingPlatform::setupModelTransparent()
+inline void MH_AircraftCarrierCart::setupModelTransparent()
 {
-	bodyTransparent = new Body(&MH_YellowMovingPlatform::modelsTransparent);
+	bodyTransparent = new Body(&MH_AircraftCarrierCart::modelsTransparent);
 	bodyTransparent->setVisible(true);
 	INCR_NEW("Entity");
 	Main_addEntity(bodyTransparent);
@@ -271,12 +272,12 @@ inline void MH_YellowMovingPlatform::setupModelTransparent()
 	bodyTransparent->setRotY(rotY);
 }
 
-inline Vector3f MH_YellowMovingPlatform::calculateMovementAmount(Vector3f directionVectorLocal)
+inline Vector3f MH_AircraftCarrierCart::calculateMovementAmount(Vector3f directionVectorLocal)
 {
 	return directionVectorLocal.scaleCopy(speed * dt);
 }
 
-inline void MH_YellowMovingPlatform::syncBodyPositionsRelative(Vector3f movementAmount)
+inline void MH_AircraftCarrierCart::syncBodyPositionsRelative(Vector3f movementAmount)
 {
 	bodyTransparent->position = position;
 	
@@ -284,7 +285,7 @@ inline void MH_YellowMovingPlatform::syncBodyPositionsRelative(Vector3f movement
 	wheelBack->position = wheelBack->position + movementAmount;
 }
 
-inline void MH_YellowMovingPlatform::syncBodyPositionsAbsolute()
+inline void MH_AircraftCarrierCart::syncBodyPositionsAbsolute()
 {
 	bodyTransparent->position = position;
 
@@ -295,19 +296,19 @@ inline void MH_YellowMovingPlatform::syncBodyPositionsAbsolute()
 	wheelBack->position.y += WHEEL_OFFSET_BACK_VERTICAL;
 }
 
-inline void MH_YellowMovingPlatform::spinWheels()
+inline void MH_AircraftCarrierCart::spinWheels()
 {
-	wheelFront->rotX += WHEEL_SPEED_FRONT * wheelMovementDirectionMultiplier * speed/40;
-	wheelBack->rotX += WHEEL_SPEED_BACK * wheelMovementDirectionMultiplier * speed/40;
+	wheelFront->rotX += WHEEL_SPEED_FRONT * wheelMovementDirectionMultiplier * speed/40*60 * dt;
+	wheelBack->rotX += WHEEL_SPEED_BACK * wheelMovementDirectionMultiplier * speed/40*60 * dt;
 }
 
-inline void MH_YellowMovingPlatform::movePlayer(Vector3f movementAmount)
+inline void MH_AircraftCarrierCart::movePlayer(Vector3f movementAmount)
 {
 	Vector3f newPlayerPos = movementAmount + Global::gameMainPlayer->getPosition();
 	Global::gameMainPlayer->position = newPlayerPos;
 }
 
-inline Vector3f MH_YellowMovingPlatform::shakePlatform()
+inline Vector3f MH_AircraftCarrierCart::shakePlatform()
 {
 	Vector3f distanceFromPositionStopped = positionStopped - position;
 
@@ -319,7 +320,7 @@ inline Vector3f MH_YellowMovingPlatform::shakePlatform()
 	return directionVector.scaleCopy(sinf(shakeTimer)/shakeTimer * 5) + distanceFromPositionStopped;
 }
 
-inline void MH_YellowMovingPlatform::pushSonicAway(bool frontHitboxes, bool backHitboxes)
+inline void MH_AircraftCarrierCart::pushSonicAway(bool frontHitboxes, bool backHitboxes)
 {
 	//first check if sonic is even close to the platform
 	if (collisionCheckCylinder(position, 100, 100))
@@ -337,7 +338,7 @@ inline void MH_YellowMovingPlatform::pushSonicAway(bool frontHitboxes, bool back
 		collisionCenterPos3 = position + directionVector.scaleCopy(COLLISION_POSITION_FORWARD) + sidewaysVector.scaleCopy(COLLISION_POSITION_SIDEWAYS * -1);
 		if (collisionCheckCylinder(collisionCenterPos1, COLLISION_RADIUS, COLLISION_HEIGHT) || collisionCheckCylinder(collisionCenterPos2, COLLISION_RADIUS, COLLISION_HEIGHT) || collisionCheckCylinder(collisionCenterPos3, COLLISION_RADIUS, COLLISION_HEIGHT))
 		{
-			Global::gameMainPlayer->increasePosition(directionVector.x * speed/40, directionVector.y * speed/40, directionVector.z * speed/40);
+			Global::gameMainPlayer->increasePosition(directionVector.x * speed/30, directionVector.y * speed/30, directionVector.z * speed/30);
 		}
 
 		//collisions on back of platform
@@ -347,12 +348,12 @@ inline void MH_YellowMovingPlatform::pushSonicAway(bool frontHitboxes, bool back
 		collisionCenterPos4 = position + directionVector.scaleCopy(COLLISION_POSITION_BACKWARD_OUTER) + sidewaysVector.scaleCopy(COLLISION_POSITION_SIDEWAYS * -1);
 		if (collisionCheckCylinder(collisionCenterPos1, COLLISION_RADIUS, COLLISION_HEIGHT) || collisionCheckCylinder(collisionCenterPos2, COLLISION_RADIUS, COLLISION_HEIGHT) || collisionCheckCylinder(collisionCenterPos3, COLLISION_RADIUS, COLLISION_HEIGHT) || collisionCheckCylinder(collisionCenterPos4, COLLISION_RADIUS, COLLISION_HEIGHT))
 		{
-			Global::gameMainPlayer->increasePosition(directionVector.x * -speed/40, directionVector.y * -speed/40, directionVector.z * -speed/40);
+			Global::gameMainPlayer->increasePosition(directionVector.x * -speed/30, directionVector.y * -speed/30, directionVector.z * -speed/30);
 		}
 	}	
 }
 
-inline bool MH_YellowMovingPlatform::collisionCheckCylinder(Vector3f collisionCenterPos, float hitboxRadius, float hitboxHeight)
+inline bool MH_AircraftCarrierCart::collisionCheckCylinder(Vector3f collisionCenterPos, float hitboxRadius, float hitboxHeight)
 {
 	Vector3f playerPos = Global::gameMainPlayer->position;
 	Vector3f playerToCenterDistance = playerPos - collisionCenterPos;

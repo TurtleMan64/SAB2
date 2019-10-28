@@ -43,6 +43,13 @@
         "tuple": "cpp",
         "typeinfo": "cpp",
         "utility": "cpp",
-        "unordered_set": "cpp"
+        "unordered_set": "cpp",
+        "atomic": "cpp",
+        "algorithm": "cpp",
+        "functional": "cpp",
+        "iterator": "cpp",
+        "memory_resource": "cpp",
+        "random": "cpp",
+        "string": "cpp"
     }
 }

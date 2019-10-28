@@ -37,7 +37,8 @@
 #include "../particles/particle.h"
 #include "../entities/GreenForest/gfstagemanager.h"
 #include "../entities/MetalHarbor/mhstaticobjects.h"
-#include "../entities/MetalHarbor/mhyellowmovingplatform.h"
+#include "../entities/MetalHarbor/mhaircraftcarriercart.h"
+#include "../entities/MetalHarbor/mhcrateplatform.h"
 #include "../entities/rail.h"
 #include "../entities/ring.h"
 #include "../entities/dashpad.h"
@@ -984,15 +985,27 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
 					Main_addEntity(staticObjects);
 					return;
 				}
-				case 1: //Yellow Moving Platform
+				case 1: //Aircraft Carrier Cart
 				{
-					MH_YellowMovingPlatform::loadStaticModels();
-					MH_YellowMovingPlatform* yellowMovingPlatform = new MH_YellowMovingPlatform(
+					MH_AircraftCarrierCart::loadStaticModels();
+					MH_AircraftCarrierCart* yellowMovingPlatform = new MH_AircraftCarrierCart(
 						toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]), 			//position
 						toFloat(dat[5]), toFloat(dat[6]),							//dirX, dirZ
 						toInt(dat[7]), toFloat(dat[8])); 						    //displacementMax, speed
 					INCR_NEW("Entity");
 					Main_addEntity(yellowMovingPlatform);
+					return;
+				}
+				case 2: //Crate Platform
+				{
+					MH_CratePlatform::loadStaticModels();
+					MH_CratePlatform* cratePlatform = new MH_CratePlatform(
+						toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]), 			//position
+						toFloat(dat[5]), toFloat(dat[6]),							//dirX, dirZ
+						toInt(dat[7]), toFloat(dat[8]),								//displacementMax, speed
+						toFloat(dat[9])); 						    				//Type: 0: long, 1: with box, 2: without box
+					INCR_NEW("Entity");
+					Main_addEntity(cratePlatform);
 					return;
 				}
 			}
@@ -1218,7 +1231,8 @@ void LevelLoader::freeAllStaticModels()
 	Rocket::deleteStaticModels();
 	Spring::deleteStaticModels();
 	MH_StaticObjects::deleteStaticModels();
-	MH_YellowMovingPlatform::deleteStaticModels();
+	MH_AircraftCarrierCart::deleteStaticModels();
+	MH_CratePlatform::deleteStaticModels();
 	Pulley::deleteStaticModels();
     SR_StageManager::deleteStaticModels();
     MH_StageManager::deleteStaticModels();
