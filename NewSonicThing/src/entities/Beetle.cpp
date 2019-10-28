@@ -79,11 +79,11 @@ void Beetle::step()
 
 		if ((xDiff*xDiff + yDiff*yDiff + zDiff*zDiff) < hitRadius*hitRadius)
 		{
-			//if (Global::gameMainVehicle->isVulnerable())
+			if (Global::gameMainPlayer->isVulnerable())
 			{
-				//Global::gameMainVehicle->takeDamage(&position);
+				Global::gameMainPlayer->takeDamage(&position);
 			}
-			//else
+			else
 			{
 				die();
 				Global::gameMainPlayer->rebound(&position);

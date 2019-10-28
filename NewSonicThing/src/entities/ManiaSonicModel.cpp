@@ -145,7 +145,6 @@ void ManiaSonicModel::animate(int animIndex, float time)
 	{
         case 0: //stand
         {
-            const float limbsScale = 0.85f;
             Vector3f off = currentUpDirection.scaleCopy(limbsScale*displayHeightOffset);
             Vector3f pos = position + off;
             myBody->setBaseOrientation(pos.x, pos.y, pos.z, rotX, rotY, rotZ, rotRoll, limbsScale);
@@ -206,8 +205,16 @@ void ManiaSonicModel::animate(int animIndex, float time)
         {
             updateLimbs(11, 0);
             updateLimbsMatrix();
-            setLimbsVisibility(true);
+            if (fmodf(time, 0.1f) > 0.05f)
+            {
+                setLimbsVisibility(true);
+            }
+            else
+            {
+                setLimbsVisibility(false);
+            }
             visible = false;
+            break;
         }
 
 		case 12: //jump
@@ -316,6 +323,7 @@ void ManiaSonicModel::setOrientation(float x, float y, float z, float xRot, floa
 	rotZ       = zRot;
 	rotRoll    = spinRot;
     currentUpDirection.set(newUp);
+    myBody->setBaseOrientation(x, y, z, rotX, rotY, rotZ, rotRoll, limbsScale);
 }
 
 std::list<TexturedModel*>* ManiaSonicModel::getModels()

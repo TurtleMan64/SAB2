@@ -194,6 +194,8 @@ bool Global::stageUsesWater = true;
 FontType* Global::fontVipnagorgialla = nullptr;
 bool Global::renderWithCulling = true;
 bool Global::displayFPS = true;
+//float Global::fpsTarget = 120.0f;
+float Global::fpsTargetBusy = 120.0f;
 int Global::currentCalculatedFPS = 0;
 int Global::renderCount = 0;
 int Global::displaySizeChanged = 0;
@@ -362,22 +364,66 @@ int main(int argc, char** argv)
 
 	while (Global::gameState != STATE_EXITING && displayWantsToClose() == 0)
 	{
-		frameCount++;
-        Global::renderCount++;
-		timeNew = glfwGetTime();
+        Input::pollInputs();
+
+        timeNew = glfwGetTime();
+
+        #ifndef WIN32
+        //this actually works really well at meeting the target fps, and
+        // gives extremely consistent dt's. however for some reason it 
+        // still looks choppy, not sure why. also of course uses a ton of cpu.
+        //if (Global::gameState == STATE_RUNNING && Global::framerateUnlock)
+        //{
+        //    double dtFrameNeedsToTake = 1.0/((double)Global::fpsTargetBusy);
+        //    while ((timeNew - timeOld) < dtFrameNeedsToTake)
+        //    {
+        //        timeNew = glfwGetTime();
+        //    }
+        //}
+        #else
+        //another idea: windows only. if you put the thread/process into a above normal priority,
+        // and call Sleep, it will actually sleep and return pretty consistently close
+        // to the amount you slept for. in my testing, it would never sleep for more
+        // than 2 milliseconds longer than what it was given (max was 1.5323 ms more than
+        // the sleep amount). So, we can sleep for 2ms less than the time needed, and then
+        // busy wait loop for the remaining time.
+        // This actually works really well but also has the same problem as the busy wait loop,
+        // which is the video looks choppy at bad fps targets. For example, if you set the target to 
+        // 60fps on a 60fps monitor, then it looks fine. But, if you set the target to 90fps, then
+        // it looks very choppy.
+        //if (Global::gameState == STATE_RUNNING && Global::framerateUnlock)
+        //{
+        //    double dtFrameNeedsToTake = 1.0/((double)Global::fpsTargetBusy);
+        //    timeNew = glfwGetTime();
+        //
+        //    const double sleepBuffer = 0.00175; //sleep will hopefully never take longer than this to return
+        //    double sleepTime = (dtFrameNeedsToTake - (timeNew - timeOld)) - sleepBuffer;
+        //    int msToSleep = (int)(sleepTime*1000);
+        //    if (msToSleep >= 1)
+        //    {
+        //        Sleep(msToSleep);
+        //    }
+        //
+        //    timeNew = glfwGetTime();
+        //    while ((timeNew - timeOld) < dtFrameNeedsToTake)
+        //    {
+        //        timeNew = glfwGetTime();
+        //    }
+        //}
+        #endif
+
 		dt = (float)(timeNew - timeOld);
 		dt = std::fminf(dt, 0.04f); //Anything lower than 25fps will slow the gameplay down
+        timeOld = timeNew;
 
-		timeOld = timeNew;
-
+        frameCount++;
+        Global::renderCount++;
 		Global::gameTotalPlaytime+=dt;
 
 		if (Global::gameIsArcadeMode)
 		{
 			Global::gameArcadePlaytime+=dt;
 		}
-
-		Input::pollInputs();
 
         Global::menuManager.step();
 
@@ -892,6 +938,19 @@ int main(int argc, char** argv)
         }
 		//std::fprintf(stdout, "dt: %f\n", dt);
 		//std::this_thread::sleep_for(std::chrono::milliseconds(8));
+
+        //sort of works, but looks choppy. not really worth it over just vsync
+        //if (Global::gameState == STATE_RUNNING && Global::framerateUnlock)
+        //{
+        //    float frameNeedsToTake = 1000.0f/Global::fpsTarget;
+        //    float millisThisFrameTook = 1000.0f*dt;
+        //    int milliToSleep = (int)(frameNeedsToTake - millisThisFrameTook);
+        //    if (milliToSleep > 0)
+        //    {
+        //        std::this_thread::sleep_for(std::chrono::milliseconds(milliToSleep));
+        //        printf("%d\n", milliToSleep);
+        //    }
+        //}
 	}
 
 	Global::saveSaveData();
@@ -1048,29 +1107,29 @@ void increaseProcessPriority()
 	if (!SetPriorityClass(GetCurrentProcess(), ABOVE_NORMAL_PRIORITY_CLASS))
 	{
 		dwError = GetLastError();
-		_tprintf(TEXT("Failed to enter above normal mode (%d)\n"), (int)dwError);
+		std::fprintf(stdout, "Failed to enter above normal mode (%d)\n", (int)dwError);
 	}
 
 	if (!SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_ABOVE_NORMAL))
 	{
 		dwError = GetLastError();
-		_tprintf(TEXT("Failed to enter above normal mode (%d)\n"), (int)dwError);
+		std::fprintf(stdout, "Failed to enter above normal mode (%d)\n", (int)dwError);
 	}
 	
 
-	/*
-	if (!SetPriorityClass(GetCurrentProcess(), BELOW_NORMAL_PRIORITY_CLASS))
-	{
-		dwError = GetLastError();
-		_tprintf(TEXT("Failed to enter below normal mode (%d)\n"), (int)dwError);
-	}
-
-	if (!SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_BELOW_NORMAL))
-	{
-		dwError = GetLastError();
-		_tprintf(TEXT("Failed to enter below normal mode (%d)\n"), (int)dwError);
-	}
-	*/
+	
+	//if (!SetPriorityClass(GetCurrentProcess(), IDLE_PRIORITY_CLASS))
+	//{
+	//	dwError = GetLastError();
+	//	_tprintf(TEXT("Failed to enter below normal mode (%d)\n"), (int)dwError);
+	//}
+    //
+	//if (!SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_IDLE))
+	//{
+	//	dwError = GetLastError();
+	//	_tprintf(TEXT("Failed to enter below normal mode (%d)\n"), (int)dwError);
+	//}
+	
 
 	#endif
 }

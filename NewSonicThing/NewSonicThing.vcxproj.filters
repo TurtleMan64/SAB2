@@ -501,6 +501,9 @@
     <ClCompile Include="src\entities\SpringTriple.cpp">
       <Filter>Source Files\entities</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\RingMoving.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.h">
@@ -885,6 +888,9 @@
       <Filter>Source Files\entities</Filter>
     </ClInclude>
     <ClInclude Include="src\entities\springtriple.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\ringmoving.h">
       <Filter>Source Files\entities</Filter>
     </ClInclude>
   </ItemGroup>

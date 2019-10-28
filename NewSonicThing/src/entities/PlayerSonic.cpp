@@ -24,6 +24,7 @@
 #include "playermodel.h"
 #include "maniasonicmodel.h"
 #include "maniamightymodel.h"
+#include "ringmoving.h"
 
 #include <list>
 #include <vector>
@@ -70,6 +71,7 @@ void PlayerSonic::step()
     hitSpringTimer    = std::fmaxf(0.0f,  hitSpringTimer    - dt);
 	hoverTimer        = std::fmaxf(0.0f,  hoverTimer        - dt);
 	homingAttackTimer = std::fmaxf(-1.0f, homingAttackTimer - dt);
+    hitTimer          = std::fmaxf(0.0f,  hitTimer          - dt);
 
 	setInputs();
 
@@ -495,7 +497,50 @@ void PlayerSonic::step()
 		isSkidding = false;
 		isSpindashing = false;
 		isStomping = false;
+
+        //sparks
+        if (vel.lengthSquared() > 140.0f*140.0f)
+        {
+            Vector3f partVel(&vel);
+            partVel.scale(0.75f);
+            partVel = partVel + relativeUp.scaleCopy(5.0f);
+            Vector3f rand(Maths::nextUniform()-0.5f, Maths::nextUniform()-0.5f, Maths::nextUniform()-0.5f);
+            rand.scale(30.0f);
+            partVel = partVel + rand;
+            ParticleMaster::createParticle(ParticleResources::textureSparkleYellow, &position, &partVel, 0.2f, 1.0f, false);
+        }
+
+        float grindAudioPitch = 0.65f + vel.length()/1000.0f;
+        int audioIdLoop = 57;
+        int audioIdLand = 59;
+
+        if (Global::levelID == LVL_GREEN_FOREST || 
+            Global::levelID == LVL_FROG_FOREST)
+        {
+            audioIdLoop = 58;
+            audioIdLand = 60;
+        }
+
+        if (sourceGrind == nullptr)
+        {
+            sourceGrind = AudioPlayer::play(audioIdLoop, &position, grindAudioPitch, true);
+            AudioPlayer::play(audioIdLand, &position);
+        }
+
+        if (sourceGrind != nullptr)
+        {
+            sourceGrind->setPosition(position.x, position.y, position.z);
+            sourceGrind->setPitch(grindAudioPitch);
+        }
 	}
+    else
+    {
+        if (sourceGrind != nullptr)
+        {
+            sourceGrind->stop();
+            sourceGrind = nullptr;
+        }
+    }
 
     //Skidding (more logic done in moveMeGround)
     if (!onGround)
@@ -507,6 +552,12 @@ void PlayerSonic::step()
     if (onGround)
     {
         hitSpringTimer = 0.0f;
+    }
+
+    //hit timer stuff
+    if (onGround)
+    {
+        hitTimer = 0.0f;
     }
 
 	if (onGround)
@@ -650,7 +701,7 @@ void PlayerSonic::step()
 				noY.y = 0;
 			}
 
-			if (Global::isAutoCam)
+			if (Global::isAutoCam && hitTimer == 0.0f)
 			{
 				camDir = Maths::interpolateVector(&camDir, &noY, fminf(noY.length()*0.01f*dt, 30.0f*dt));
 			}
@@ -1608,14 +1659,90 @@ void PlayerSonic::rebound(Vector3f* source)
 	}
 }
 
+void PlayerSonic::takeDamage(Vector3f* source)
+{
+    //if (hitTimer == 0.0f && invincibleTimer == 0)
+    if (hitTimer == 0.0f)
+	{
+        Vector3f posDiff = position - source;
+        posDiff.y = 0;
+        posDiff.setLength(90.0f);
+		onGround = false;
+        vel.x = posDiff.x;
+        vel.z = posDiff.z;
+		vel.y = 60*1.5f;
+		hitTimer = 2.0f;
+		isJumping = false;
+		isSpindashing = false;
+		isSkidding = false;
+		isBall = false;
+		isBouncing = false;
+		isStomping = false;
+		isLightdashing = false;
+		spindashReleaseTimer = 0;
+		spindashRestartDelay = 0;
+
+		//if (myShieldGreen != nullptr || myShieldMagnet != nullptr)
+		//{
+		//	if (myShieldMagnet != nullptr)
+		//	{
+		//		Main_deleteTransparentEntity(myShieldMagnet);
+		//		myShieldMagnet = nullptr;
+		//	}
+		//	if (myShieldGreen != nullptr)
+		//	{
+		//		Main_deleteTransparentEntity(myShieldGreen);
+		//		myShieldGreen = nullptr;
+		//	}
+		//}
+		//else
+		{
+			int ringsToScatter = Global::gameRingCount;
+			Global::gameRingCount = 0;
+
+			if (ringsToScatter == 0)
+			{
+				die();
+			}
+			else
+			{
+				AudioPlayer::play(10, getPosition());
+			}
+
+			ringsToScatter = std::min(ringsToScatter, 50);
+
+			while (ringsToScatter > 0)
+			{
+				float spoutSpd = 3.5f*60.0f;
+				float anglH = (float)(Maths::PI * 2 * Maths::random());
+				float anglV = (Maths::toRadians(Maths::nextGaussian() * 42 + 90));
+            
+				float yspd = (spoutSpd*sin(anglV));
+				float hpt = (spoutSpd*cos(anglV));
+            
+				float xspd = (hpt*cos(anglH));
+				float zspd = (hpt*sin(anglH));
+            
+				RingMoving* ring = new RingMoving(position.x, position.y+5, position.z, xspd, yspd, zspd); INCR_NEW("Entity")
+            
+				Main_addEntity(ring);
+            
+				ringsToScatter--;
+			}
+		}
+	}
+}
+
 bool PlayerSonic::isVulnerable()
 {
-	return !(homingAttackTimer > 0 ||
+	return !(
+        homingAttackTimer > 0 ||
 		isBouncing ||
 		isJumping ||
 		isBall ||
 		isSpindashing ||
-		isStomping);
+		isStomping ||
+        hitTimer > 0.0f);
 		//invincibleTimer != 0);
 }
 
@@ -1778,6 +1905,10 @@ void PlayerSonic::updateAnimationValues()
 	{
 
 	}
+    else if (hitTimer > 0.0f)
+    {
+    
+    }
 	else if (isSpindashing)
 	{
 		if (spindashTimer >= spindashTimerMax)
@@ -1967,6 +2098,12 @@ void PlayerSonic::animate()
 		playerModel->setOrientation(dspX-nXAir, dspY-nYAir, dspZ-nZAir, diffGround, yawAngleGround, pitchAngleGround, 0, &relativeUpAnim);
 		playerModel->animate(26, 0);
 	}
+    else if (hitTimer > 0.0f)
+    {
+        Vector3f yAxis(0, 1, 0);
+        playerModel->setOrientation(dspX, dspY, dspZ, 0, airYaw, 90, airPitch/8.0f, &yAxis);
+		playerModel->animate(11, hitTimer);
+    }
 	else if (isSpindashing)
 	{
 		Vector3f groundSpeedsSpnd = Maths::calculatePlaneSpeed(spindashDirection.x, spindashDirection.y, spindashDirection.z, &relativeUpAnim);
@@ -2033,7 +2170,7 @@ void PlayerSonic::setInputs()
 	inputAction2Previous = Input::inputs.INPUT_PREVIOUS_ACTION3;
     inputAction3Previous = Input::inputs.INPUT_PREVIOUS_ACTION4;
 
-	if (canMoveTimer > 0.0f || Global::finishStageTimer >= 0.0f)
+	if (canMoveTimer > 0.0f || Global::finishStageTimer >= 0.0f || hitTimer > 0.0f)
 	{
 		inputJump    = false;
 		inputAction  = false;
@@ -2166,7 +2303,7 @@ void PlayerSonic::popOffWall()
     }
 }
 
-void PlayerSonic::hitSpring(Vector3f* direction, float power, float lockInputTime)
+void PlayerSonic::hitSpring(Vector3f* direction, float power, float lockInputTime, bool resetsCamera)
 {
     vel = direction->scaleCopy(power);
     onGround = false;
@@ -2183,8 +2320,12 @@ void PlayerSonic::hitSpring(Vector3f* direction, float power, float lockInputTim
     hoverTimer = 0.0f;
     canMoveTimer = lockInputTime;
     hitSpringTimer = lockInputTime;
-    camDir.set(direction);
-    camDir.normalize();
+
+    if (resetsCamera)
+    {
+        camDir.set(direction);
+        camDir.normalize();
+    }
 }
 
 void PlayerSonic::hitSpringTriple(Vector3f* direction, float power, float lockInputTime)

@@ -187,6 +187,7 @@
     <ClCompile Include="src\entities\RaceGhost.cpp" />
     <ClCompile Include="src\entities\Rail.cpp" />
     <ClCompile Include="src\entities\Ring.cpp" />
+    <ClCompile Include="src\entities\RingMoving.cpp" />
     <ClCompile Include="src\entities\Rocket.cpp" />
     <ClCompile Include="src\entities\SkyRail\SR_StageManager.cpp" />
     <ClCompile Include="src\entities\SkySphere.cpp" />
@@ -322,6 +323,7 @@
     <ClInclude Include="src\entities\raceghost.h" />
     <ClInclude Include="src\entities\rail.h" />
     <ClInclude Include="src\entities\ring.h" />
+    <ClInclude Include="src\entities\ringmoving.h" />
     <ClInclude Include="src\entities\rocket.h" />
     <ClInclude Include="src\entities\SkyRail\srstagemanager.h" />
     <ClInclude Include="src\entities\skysphere.h" />

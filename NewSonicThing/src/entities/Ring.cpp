@@ -15,6 +15,7 @@
 #include "../audio/audioplayer.h"
 #include "../particles/particle.h"
 #include "../particles/particleresources.h"
+#include "../particles/particlemaster.h"
 //#include "shieldmagnet.h"
 
 #include <list>
@@ -202,18 +203,18 @@ void Ring::step()
 		{
 			AudioPlayer::play(4, getPosition());
 
-			//for (int i = 0; i < 10; i++)
-			//{
-			//	Vector3f pos(
-			//		getX() + Maths::random() * 8 - 4,
-			//		getY() + Maths::random() * 8 - 4,
-			//		getZ() + Maths::random() * 8 - 4);
-            //
-			//	Vector3f vel(0, 0.4f, 0);
-            //
-			//	new Particle(ParticleResources::textureSparkleYellow, &pos, &vel,
-			//		0.025f, 30, 0, 7, -(7.0f / 30.0f), false);
-			//}
+			for (int i = 0; i < 10; i++)
+			{
+				Vector3f pos(
+					position.x + Maths::random() * 8 - 4,
+					position.y + Maths::random() * 8 - 4,
+					position.z + Maths::random() * 8 - 4);
+            
+				Vector3f partVel(0, 0.4f*60, 0);
+            
+				ParticleMaster::createParticle(ParticleResources::textureSparkleYellow, &pos, &partVel,
+					0.025f*60*60, 0.5f, 0, 4, -(4.0f / 0.5f), false, false, 0.5f);
+			}
 
 			Global::increaseRingCount(1);
 

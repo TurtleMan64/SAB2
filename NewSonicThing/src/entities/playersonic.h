@@ -55,7 +55,7 @@ private:
 	const float airRunPush = 25.0f; //30.0
 	const float airRunFrictionUp = 0.75f; //0.25    //maybe make another variable for this to use when vel.y < 0?
 	const float airRunFrictionDown = 0.25f; //For when sonic is falling down
-    const float airFrictionThreshold = 40.0f; //When youre going slower than this horizontally, doing apply friction
+    const float airFrictionThreshold = 40.0f; //When youre going slower than this horizontally, don't apply friction
 	const float airNeutralFriction = 1.25f;
 	const float slopeRunAccel = 9000.0f;
 
@@ -99,6 +99,8 @@ private:
     const float skidAudioThreshold = 150.0f;
 
 	bool isGrinding = false;
+    Source* sourceGrind = nullptr;
+
     bool onRocket = false;
 
     bool isLightdashing = false;
@@ -125,6 +127,7 @@ private:
 	const float camRadius        = 75.0;  //Camera radius at zero speed
 	const float camHeightOffset  = 5.0f; //Point above the vehicle that the camera focuses on
 
+    float hitTimer = 0.0f; //when you get hit by something, like an enemy or spikes
 	//float canMoveTimer = 0.0f;
     float hitSpringTimer = 0.0f;
 
@@ -184,13 +187,15 @@ public:
 
     void popOffWall();
 
-    void hitSpring(Vector3f* direction, float power, float lockInputTime);
+    void hitSpring(Vector3f* direction, float power, float lockInputTime, bool resetsCamera);
 
     void hitSpringTriple(Vector3f* direction, float power, float lockInputTime);
 
     void hitDashpad();
 
     bool isVulnerable();
+
+    void takeDamage(Vector3f* source);
 
     void rebound(Vector3f* source);
 

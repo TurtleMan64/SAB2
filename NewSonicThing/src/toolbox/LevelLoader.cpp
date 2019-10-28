@@ -160,6 +160,36 @@ void LevelLoader::loadLevel(std::string levelFilename)
 		stageFault = 1;
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 
+        //Set the Global levelID based on the name of the level
+        Level* currLvl = nullptr;
+        for (int i = 0; i < Global::gameLevelData.size(); i++)
+        {
+            Level* t = &Global::gameLevelData[i];
+            if (t->fileName == fname)
+            {
+                currLvl = t;
+                break;
+            }
+        }
+        if (currLvl != nullptr)
+        {
+            if      (currLvl->displayName == "Tutorial")        Global::levelID = LVL_TUTORIAL;
+            else if (currLvl->displayName == "City Escape")     Global::levelID = LVL_CITY_ESCAPE;
+            else if (currLvl->displayName == "Seaside Hill")    Global::levelID = LVL_SEASIDE_HILL;
+            else if (currLvl->displayName == "Green Forest")    Global::levelID = LVL_GREEN_FOREST;
+            else if (currLvl->displayName == "Metal Harbor")    Global::levelID = LVL_METAL_HARBOR;
+            else if (currLvl->displayName == "Pyramid Cave")    Global::levelID = LVL_PYRAMID_CAVE;
+            else if (currLvl->displayName == "Speed Highway")   Global::levelID = LVL_SPEED_HIGHWAY;
+            else if (currLvl->displayName == "Radical Highway") Global::levelID = LVL_RADICAL_HIGHWAY;
+            else if (currLvl->displayName == "Frog Forest")     Global::levelID = LVL_FROG_FOREST;
+            else if (currLvl->displayName == "Epic Test Level") Global::levelID = LVL_TEST;
+            else if (currLvl->displayName == "Sky Rail")        Global::levelID = LVL_SKY_RAIL;
+            else if (currLvl->displayName == "Noki Bay")        Global::levelID = LVL_NOKI_BAY;
+            else if (currLvl->displayName == "Green Hill Zone") Global::levelID = LVL_GREEN_HILL_ZONE;
+            else if (currLvl->displayName == "Windy Valley")    Global::levelID = LVL_WINDY_VALLEY;
+            else if (currLvl->displayName == "Delfino Plaza")   Global::levelID = LVL_DELFINO_PLAZA;
+        }
+
 		Global::spawnAtCheckpoint  = false;
 		Global::checkpointX        = 0;
 		Global::checkpointY        = 0;
@@ -821,9 +851,9 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
         {
             Spring::loadStaticModels();
 			Spring* spring = new Spring(
-				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
-				toFloat(dat[4]), toFloat(dat[5]), toFloat(dat[6]), //rotation direction
-				toFloat(dat[7]), toFloat(dat[8]));                 //power, time
+				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]),      //position
+				toFloat(dat[4]), toFloat(dat[5]), toFloat(dat[6]),      //rotation direction
+				toFloat(dat[7]), toFloat(dat[8]), (bool)toInt(dat[9])); //power, time, reset camera
 			INCR_NEW("Entity");
 			chunkedEntities->push_back(spring);
 			return;

@@ -60,6 +60,14 @@ void Main_deleteAllChunkedEntities();
 #define LVL_SPEED_HIGHWAY    4
 #define LVL_RADICAL_HIGHWAY  5
 #define LVL_GREEN_HILL_ZONE  6
+#define LVL_CITY_ESCAPE      7
+#define LVL_TUTORIAL         8
+#define LVL_SEASIDE_HILL     9
+#define LVL_FROG_FOREST     10
+#define LVL_TEST            11
+#define LVL_SKY_RAIL        12
+#define LVL_NOKI_BAY        13
+#define LVL_DELFINO_PLAZA   14
 
 //#define ENTITY_RENDER_DIST 2000.0f
 //#define ENTITY_RENDER_DIST_HIGH 5000.0f
@@ -128,6 +136,8 @@ public:
     static int currentCalculatedFPS;
     static int renderCount;
     //static const int syncToDisplayEveryXFrames = 1; //if for some reason you want to render at double, triple, etc. the fps of the monitor
+    //static float fpsTarget; //experiment to try to sleep to maintain a target fps
+    static float fpsTargetBusy; //experiment to try to busy wait to maintain a target fps
     static bool useFullscreen;
     static int displaySizeChanged; //This will be 1 for a single frame after the size of the window changes (set in callback)
 

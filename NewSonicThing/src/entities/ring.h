@@ -8,9 +8,10 @@ class TexturedModel;
 
 class Ring : public Entity
 {
-private:
+public:
 	static std::list<TexturedModel*> models;
 
+private:
 	static float hitboxH;
 	static float hitboxV;
 

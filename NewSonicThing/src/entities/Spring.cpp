@@ -24,18 +24,19 @@ Spring::Spring()
 
 }
 
-Spring::Spring(float x, float y, float z, float dirX, float dirY, float dirZ, float myPower, float cooldownMax)
+Spring::Spring(float x, float y, float z, float dirX, float dirY, float dirZ, float myPower, float cooldownMax, bool setsCam)
 {
-	this->position.x = x;
-	this->position.y = y;
-	this->position.z = z;
-	this->dir.set(dirX, dirY, dirZ);
-    this->dir.normalize();
-	this->springPower = fmaxf(100.0f, myPower);
-	this->cooldownTimer = 0.0f;
-	this->cooldownTimerMax = fmaxf(0.1f, cooldownMax);
-	this->scale = 1;
-	this->visible = true;
+	position.x = x;
+	position.y = y;
+	position.z = z;
+	dir.set(dirX, dirY, dirZ);
+    dir.normalize();
+	springPower = fmaxf(100.0f, myPower);
+	cooldownTimer = 0.0f;
+	cooldownTimerMax = fmaxf(0.1f, cooldownMax);
+	scale = 1;
+	visible = true;
+    resetsCamera = setsCam;
 
     hitCenter = position + dir.scaleCopy(10.0f);
 
@@ -62,15 +63,12 @@ void Spring::step()
         if ((Global::gameMainPlayer->getCenterPosition() - hitCenter).lengthSquared() < (10.83f*10.83f)+(4.0f*4.0f)) //10.83 = radius of spring, 4 = radius of sonic
 		{
             Global::gameMainPlayer->position = hitCenter;
-		    Global::gameMainPlayer->hitSpring(&dir, springPower, cooldownTimerMax);
+		    Global::gameMainPlayer->hitSpring(&dir, springPower, cooldownTimerMax, resetsCamera);
 		    AudioPlayer::play(6, &position, 1 + (springPower*0.00013333f));
 
 		    cooldownTimer = cooldownTimerMax;
         }
 	}
-
-	//increaseRotation(1, 0, 0);
-	//updateTransformationMatrix();
 }
 
 std::list<TexturedModel*>* Spring::getModels()

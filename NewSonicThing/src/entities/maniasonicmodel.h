@@ -21,6 +21,8 @@ private:
     const float displayHeightOffset = 0.63f;
     const float displayBallOffset = 3.0f;
 
+    const float limbsScale = 0.85f;
+
     Body* myBody         = nullptr;
 	Limb* myHead         = nullptr;
 	Limb* myLeftHumerus  = nullptr;
