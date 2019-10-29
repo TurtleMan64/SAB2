@@ -11,17 +11,17 @@
 class TextMeshData
 {
 private:
-	std::vector<float> vertexPositions;
-	std::vector<float> textureCoords;
+    std::vector<float> vertexPositions;
+    std::vector<float> textureCoords;
 
 public:
-	TextMeshData(std::vector<float>* vertexPositions, std::vector<float>* textureCoords);
+    TextMeshData(std::vector<float>* vertexPositions, std::vector<float>* textureCoords);
 
-	std::vector<float>* getVertexPositions();
+    std::vector<float>* getVertexPositions();
 
-	std::vector<float>* getTextureCoords();
+    std::vector<float>* getTextureCoords();
 
-	int getVertexCount();
+    int getVertexCount();
 };
 
 #endif

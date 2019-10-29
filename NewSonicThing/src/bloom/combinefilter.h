@@ -9,14 +9,14 @@ class CombineShader;
 class CombineFilter 
 {
 private:
-	ImageRenderer* renderer;
-	CombineShader* shader;
-	
+    ImageRenderer* renderer;
+    CombineShader* shader;
+    
 public:
-	CombineFilter();
-	
-	void render(GLuint colourTexture, GLuint highlightTexture);
-	
-	void cleanUp();
+    CombineFilter();
+    
+    void render(GLuint colourTexture, GLuint highlightTexture);
+    
+    void cleanUp();
 };
 #endif

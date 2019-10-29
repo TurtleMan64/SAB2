@@ -30,23 +30,23 @@ GoalRing::GoalRing()
 
 GoalRing::GoalRing(float x, float y, float z)
 {
-	position.x = x;
-	position.y = y;
-	position.z = z;
-	scale = 1;
-	visible = true;
+    position.x = x;
+    position.y = y;
+    position.z = z;
+    scale = 1;
+    visible = true;
 
-	text = new Dummy(&GoalRing::modelsText); INCR_NEW("Entity");
-	text->setVisible(true);
-	text->setPosition(&position);
+    text = new Dummy(&GoalRing::modelsText); INCR_NEW("Entity");
+    text->setVisible(true);
+    text->setPosition(&position);
     text->renderOrder = 1;
-	Main_addEntity(text);
+    Main_addEntity(text);
 }
 
 void GoalRing::step()
 {
     extern float dt;
-	increaseRotation(0, dt*100, 0);
+    increaseRotation(0, dt*100, 0);
     text->setRotation(0, getRotY(), 0, 0);
 
     float xDiff = Global::gameMainPlayer->getX()-position.x;
@@ -76,30 +76,30 @@ void GoalRing::step()
 
 std::list<TexturedModel*>* GoalRing::getModels()
 {
-	return &GoalRing::modelsRing;
+    return &GoalRing::modelsRing;
 }
 
 void GoalRing::loadStaticModels()
 {
-	if (GoalRing::modelsRing.size() > 0)
-	{
-		return;
-	}
+    if (GoalRing::modelsRing.size() > 0)
+    {
+        return;
+    }
 
-	#ifdef DEV_MODE
-	std::fprintf(stdout, "Loading Boostpad static models...\n");
-	#endif
+    #ifdef DEV_MODE
+    std::fprintf(stdout, "Loading Boostpad static models...\n");
+    #endif
 
-	loadModel(&GoalRing::modelsRing, "res/Models/Objects/GoalRing/", "Pass1");
-	loadModel(&GoalRing::modelsText, "res/Models/Objects/GoalRing/", "Pass2");
+    loadModel(&GoalRing::modelsRing, "res/Models/Objects/GoalRing/", "Pass1");
+    loadModel(&GoalRing::modelsText, "res/Models/Objects/GoalRing/", "Pass2");
 }
 
 void GoalRing::deleteStaticModels()
 {
-	#ifdef DEV_MODE
-	std::fprintf(stdout, "Deleting Boostpad static models...\n");
-	#endif
+    #ifdef DEV_MODE
+    std::fprintf(stdout, "Deleting Boostpad static models...\n");
+    #endif
 
-	Entity::deleteModels(&GoalRing::modelsRing);
-	Entity::deleteModels(&GoalRing::modelsText);
+    Entity::deleteModels(&GoalRing::modelsRing);
+    Entity::deleteModels(&GoalRing::modelsText);
 }

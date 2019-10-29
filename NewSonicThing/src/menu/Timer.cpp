@@ -15,76 +15,76 @@
 
 Timer::Timer(FontType* font, float posX, float posY, float height, int alignment, bool visible)
 {
-	extern unsigned int SCR_WIDTH;
-	extern unsigned int SCR_HEIGHT;
+    extern unsigned int SCR_WIDTH;
+    extern unsigned int SCR_HEIGHT;
 
-	float aspectRatio = (float)SCR_WIDTH / (float)SCR_HEIGHT;
+    float aspectRatio = (float)SCR_WIDTH / (float)SCR_HEIGHT;
 
     float width = height/aspectRatio; //width of a single text character
 
-	this->minutes      = new GUINumber(0,                 posX + (width*0),     posY, height, alignment, visible, 2, false); INCR_NEW("GUINumber");
-	this->colon        = new GUIText  (":", height, font, posX + (width*2.35f), posY,         alignment, true);              INCR_NEW("GUIText");
-	this->seconds      = new GUINumber(0,                 posX + (width*3),     posY, height, alignment, visible, 2, false); INCR_NEW("GUINumber");
-	this->dot          = new GUIText  (".", height, font, posX + (width*5.35f), posY,         alignment, true);              INCR_NEW("GUIText");
-	this->centiseconds = new GUINumber(0,                 posX + (width*6),     posY, height, alignment, visible, 2, false); INCR_NEW("GUINumber");
+    this->minutes      = new GUINumber(0,                 posX + (width*0),     posY, height, alignment, visible, 2, false); INCR_NEW("GUINumber");
+    this->colon        = new GUIText  (":", height, font, posX + (width*2.35f), posY,         alignment, true);              INCR_NEW("GUIText");
+    this->seconds      = new GUINumber(0,                 posX + (width*3),     posY, height, alignment, visible, 2, false); INCR_NEW("GUINumber");
+    this->dot          = new GUIText  (".", height, font, posX + (width*5.35f), posY,         alignment, true);              INCR_NEW("GUIText");
+    this->centiseconds = new GUINumber(0,                 posX + (width*6),     posY, height, alignment, visible, 2, false); INCR_NEW("GUINumber");
 
-	this->totalTime = 0;
-	this->frozen = false;
+    this->totalTime = 0;
+    this->frozen = false;
 }
 
 
 Timer::~Timer()
 {
-	std::cout << "Deleting timer\n";
+    std::cout << "Deleting timer\n";
     if (Global::mainHudTimer == this)
     {
         Global::mainHudTimer = nullptr;
     }
-	this->colon->deleteMe(); delete this->colon; INCR_DEL("GUIText");
-	this->dot->deleteMe(); delete this->dot; INCR_DEL("GUIText");
-	this->minutes->deleteMe(); delete this->minutes; INCR_DEL("GUINumber");
-	this->seconds->deleteMe(); delete this->seconds; INCR_DEL("GUINumber");
-	this->centiseconds->deleteMe(); delete this->centiseconds; INCR_DEL("GUINumber");
+    this->colon->deleteMe(); delete this->colon; INCR_DEL("GUIText");
+    this->dot->deleteMe(); delete this->dot; INCR_DEL("GUIText");
+    this->minutes->deleteMe(); delete this->minutes; INCR_DEL("GUINumber");
+    this->seconds->deleteMe(); delete this->seconds; INCR_DEL("GUINumber");
+    this->centiseconds->deleteMe(); delete this->centiseconds; INCR_DEL("GUINumber");
 }
 
 void Timer::increment()
 {
-	extern float dt;
-	if (!this->frozen)
-	{
-		this->totalTime += dt;
-	}
+    extern float dt;
+    if (!this->frozen)
+    {
+        this->totalTime += dt;
+    }
 }
 
 void Timer::refresh()
 {
-	// Convert float timer to ints of mm:ss:cc
-	int toMinutesSeconds = (int)totalTime;
-	int minuteDisplay = toMinutesSeconds / 60;
-	int secondDisplay = toMinutesSeconds % 60;
-	float toCentiseconds = totalTime * 100.0f;
-	int centisecondDisplay = (int)toCentiseconds % 100;
+    // Convert float timer to ints of mm:ss:cc
+    int toMinutesSeconds = (int)totalTime;
+    int minuteDisplay = toMinutesSeconds / 60;
+    int secondDisplay = toMinutesSeconds % 60;
+    float toCentiseconds = totalTime * 100.0f;
+    int centisecondDisplay = (int)toCentiseconds % 100;
 
-	this->minutes->displayNumber = minuteDisplay;
-	this->seconds->displayNumber = secondDisplay;
-	this->centiseconds->displayNumber = centisecondDisplay;
+    this->minutes->displayNumber = minuteDisplay;
+    this->seconds->displayNumber = secondDisplay;
+    this->centiseconds->displayNumber = centisecondDisplay;
 
-	this->minutes->refresh();
-	this->seconds->refresh();
-	this->centiseconds->refresh();
+    this->minutes->refresh();
+    this->seconds->refresh();
+    this->centiseconds->refresh();
 }
 
 float Timer::getTime()
 {
-	return this->totalTime;
+    return this->totalTime;
 }
 
 void Timer::setTime(float newTime)
 {
-	this->totalTime = newTime;
+    this->totalTime = newTime;
 }
 
 void Timer::freeze(bool freezeStatus)
 {
-	this->frozen = freezeStatus;
+    this->frozen = freezeStatus;
 }

@@ -8,24 +8,24 @@ class FontType;
 class Timer
 {
 private:
-	// Parts of the timer
-	GUIText* colon;
-	GUIText* dot;
-	GUINumber* minutes;
-	GUINumber* seconds;
-	GUINumber* centiseconds;
+    // Parts of the timer
+    GUIText* colon;
+    GUIText* dot;
+    GUINumber* minutes;
+    GUINumber* seconds;
+    GUINumber* centiseconds;
 
 public:
     float totalTime;
-	bool frozen;
+    bool frozen;
 
-	Timer(FontType* font, float posX, float posY, float scale, int alignment, bool visible);
-	~Timer();
-	float getTime();
-	void setTime(float newTime);
-	void refresh();
-	void increment();
-	void freeze(bool freezeStatus);
+    Timer(FontType* font, float posX, float posY, float scale, int alignment, bool visible);
+    ~Timer();
+    float getTime();
+    void setTime(float newTime);
+    void refresh();
+    void increment();
+    void freeze(bool freezeStatus);
 };
 
 #endif

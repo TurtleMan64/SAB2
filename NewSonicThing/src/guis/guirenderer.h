@@ -10,15 +10,15 @@ class GuiShader;
 class GuiRenderer
 {
 private:
-	static RawModel quadModel;
-	static GuiShader* shader;
+    static RawModel quadModel;
+    static GuiShader* shader;
 
 public:
-	static void init();
-	
-	static void render(std::list<GuiTexture*>* guis);
-	
-	static void cleanUp();
+    static void init();
+    
+    static void render(std::list<GuiTexture*>* guis);
+    
+    static void cleanUp();
 };
 
 #endif

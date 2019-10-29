@@ -30,136 +30,136 @@ ALCcontext* AudioMaster::context = nullptr;
 
 void AudioMaster::init()
 {
-	alDistanceModel(AL_LINEAR_DISTANCE_CLAMPED);
-	alListenerf(AL_GAIN, 0.1f);
+    alDistanceModel(AL_LINEAR_DISTANCE_CLAMPED);
+    alListenerf(AL_GAIN, 0.1f);
 
-	AudioMaster::device = alcOpenDevice(nullptr);
-	if (AudioMaster::device == nullptr)
-	{
-		fprintf(stderr, "no sound device\n");
-		return;
-	}
+    AudioMaster::device = alcOpenDevice(nullptr);
+    if (AudioMaster::device == nullptr)
+    {
+        fprintf(stderr, "no sound device\n");
+        return;
+    }
 
-	AudioMaster::context = alcCreateContext(AudioMaster::device, nullptr);
-	alcMakeContextCurrent(AudioMaster::context);
-	if (AudioMaster::context == nullptr)
-	{
-		fprintf(stderr, "no sound context\n");
-		return;
-	}
+    AudioMaster::context = alcCreateContext(AudioMaster::device, nullptr);
+    alcMakeContextCurrent(AudioMaster::context);
+    if (AudioMaster::context == nullptr)
+    {
+        fprintf(stderr, "no sound context\n");
+        return;
+    }
 
-	AudioPlayer::loadSettings();
-	AudioPlayer::createSources();
-	AudioPlayer::loadSoundEffects();
+    AudioPlayer::loadSettings();
+    AudioPlayer::createSources();
+    AudioPlayer::loadSoundEffects();
 }
 
 void AudioMaster::updateListenerData(Vector3f* eye, Vector3f* target, Vector3f* up, Vector3f* vel)
 {
-	Vector3f at(target);
-	at = at - eye;
-	at.normalize();
+    Vector3f at(target);
+    at = at - eye;
+    at.normalize();
 
-	Vector3f perpen = at.cross(up);
+    Vector3f perpen = at.cross(up);
 
-	float u3 = perpen.x;
-	float v3 = perpen.y;
-	float w3 = perpen.z;
-	float x3 = at.x;
-	float y3 = at.y;
-	float z3 = at.z;
-	float buf[3];
-	Maths::rotatePoint(buf, 0, 0, 0, u3, v3, w3, x3, y3, z3, Maths::toRadians(90));
+    float u3 = perpen.x;
+    float v3 = perpen.y;
+    float w3 = perpen.z;
+    float x3 = at.x;
+    float y3 = at.y;
+    float z3 = at.z;
+    float buf[3];
+    Maths::rotatePoint(buf, 0, 0, 0, u3, v3, w3, x3, y3, z3, Maths::toRadians(90));
 
-	Vector3f up2(buf[0], buf[1], buf[2]);
-	up2.normalize();
+    Vector3f up2(buf[0], buf[1], buf[2]);
+    up2.normalize();
 
-	ALfloat listenerPos[] = { eye->x, eye->y, eye->z };
-	ALfloat listenerVel[] = { vel->x/3.0f, vel->y/3.0f, vel->z/3.0f }; // over 3 to scale down doppler effect
-	ALfloat listenerOri[] = { at.x, at.y, at.z, up2.x, up2.y, up2.z };
+    ALfloat listenerPos[] = { eye->x, eye->y, eye->z };
+    ALfloat listenerVel[] = { vel->x/3.0f, vel->y/3.0f, vel->z/3.0f }; // over 3 to scale down doppler effect
+    ALfloat listenerOri[] = { at.x, at.y, at.z, up2.x, up2.y, up2.z };
 
-	alListenerfv(AL_POSITION,    listenerPos);
-	alListenerfv(AL_VELOCITY,    listenerVel);
-	alListenerfv(AL_ORIENTATION, listenerOri);
+    alListenerfv(AL_POSITION,    listenerPos);
+    alListenerfv(AL_VELOCITY,    listenerVel);
+    alListenerfv(AL_ORIENTATION, listenerOri);
 }
 
 ALuint AudioMaster::loadOGG(const char* fileName)
 {
-	FILE* fp = nullptr;
+    FILE* fp = nullptr;
 
-	#ifdef _WIN32
-	int er = fopen_s(&fp, (Global::pathToEXE+fileName).c_str(), "rb");
-	if (fp == nullptr || er != 0)
-	{
-		fprintf(stderr, "Error when trying to open '%s'\n", (Global::pathToEXE+fileName).c_str());
-		if (er != 0)
-		{
-			fprintf(stderr, "fopen_s return value: %d\n", er);
-		}
-		return AL_NONE;
-	}
-	#else
-	fp = fopen(fileName, "rb");
-	if (fp == nullptr)
-	{
-		fprintf(stderr, "Error when trying to open '%s'\n", (Global::pathToEXE+fileName).c_str());
-		perror("error");
-		return AL_NONE;
-	}
-	#endif
+    #ifdef _WIN32
+    int er = fopen_s(&fp, (Global::pathToEXE+fileName).c_str(), "rb");
+    if (fp == nullptr || er != 0)
+    {
+        fprintf(stderr, "Error when trying to open '%s'\n", (Global::pathToEXE+fileName).c_str());
+        if (er != 0)
+        {
+            fprintf(stderr, "fopen_s return value: %d\n", er);
+        }
+        return AL_NONE;
+    }
+    #else
+    fp = fopen(fileName, "rb");
+    if (fp == nullptr)
+    {
+        fprintf(stderr, "Error when trying to open '%s'\n", (Global::pathToEXE+fileName).c_str());
+        perror("error");
+        return AL_NONE;
+    }
+    #endif
 
-	int endian = 0; //0 = little
-	int bitStream;
-	long bytes;
-	char array[32768];
+    int endian = 0; //0 = little
+    int bitStream;
+    long bytes;
+    char array[32768];
 
-	std::vector<char> buf;
+    std::vector<char> buf;
 
-	ALuint frequency;
-	ALenum format;
+    ALuint frequency;
+    ALenum format;
 
-	vorbis_info* pInfo;
-	OggVorbis_File oggFile;
+    vorbis_info* pInfo;
+    OggVorbis_File oggFile;
 
-	ov_open(fp, &oggFile, NULL, 0);
+    ov_open(fp, &oggFile, NULL, 0);
 
-	pInfo = ov_info(&oggFile, -1);
+    pInfo = ov_info(&oggFile, -1);
 
-	if (pInfo->channels == 1)
-	{
-		format = AL_FORMAT_MONO16;
-	}
-	else
-	{
-		format = AL_FORMAT_STEREO16;
-	}
+    if (pInfo->channels == 1)
+    {
+        format = AL_FORMAT_MONO16;
+    }
+    else
+    {
+        format = AL_FORMAT_STEREO16;
+    }
 
-	frequency = pInfo->rate;
+    frequency = pInfo->rate;
 
-	do
-	{
-		bytes = ov_read(&oggFile, array, 32768, endian, 2, 1, &bitStream);
-		buf.insert(buf.end(), array, array + bytes);
-	}
-	while (bytes > 0);
+    do
+    {
+        bytes = ov_read(&oggFile, array, 32768, endian, 2, 1, &bitStream);
+        buf.insert(buf.end(), array, array + bytes);
+    }
+    while (bytes > 0);
 
-	ov_clear(&oggFile);
+    ov_clear(&oggFile);
 
-	ALuint buffer;
-	alGenBuffers(1, &buffer);
-	alBufferData(buffer, format, &buf[0], (ALsizei)buf.size(), frequency);
+    ALuint buffer;
+    alGenBuffers(1, &buffer);
+    alBufferData(buffer, format, &buf[0], (ALsizei)buf.size(), frequency);
 
-	buf.clear();
-	buf.shrink_to_fit();
+    buf.clear();
+    buf.shrink_to_fit();
 
-	return buffer;
+    return buffer;
 }
 
 void AudioMaster::cleanUp()
 {
-	AudioPlayer::deleteSources();
-	AudioPlayer::deleteBuffersSFX();
+    AudioPlayer::deleteSources();
+    AudioPlayer::deleteBuffersSFX();
 
-	alcMakeContextCurrent(nullptr);
-	alcDestroyContext(AudioMaster::context);
-	alcCloseDevice(AudioMaster::device);
+    alcMakeContextCurrent(nullptr);
+    alcDestroyContext(AudioMaster::context);
+    alcCloseDevice(AudioMaster::device);
 }

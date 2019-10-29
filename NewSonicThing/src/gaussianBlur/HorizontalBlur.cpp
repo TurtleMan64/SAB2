@@ -7,31 +7,31 @@
 
 HorizontalBlur::HorizontalBlur(int targetFboWidth, int targetFboHeight)
 {
-	shader = new HorizontalBlurShader("res/Shaders/gaussianBlur/horizontalBlurVertex.txt", "res/Shaders/gaussianBlur/blurFragment.txt"); INCR_NEW("HorizontalBlurShader");
-	shader->start();
-	shader->loadTargetWidth((float)targetFboWidth);
-	shader->stop();
-	renderer = new ImageRenderer(targetFboWidth, targetFboHeight); INCR_NEW("ImageRenderer");
+    shader = new HorizontalBlurShader("res/Shaders/gaussianBlur/horizontalBlurVertex.txt", "res/Shaders/gaussianBlur/blurFragment.txt"); INCR_NEW("HorizontalBlurShader");
+    shader->start();
+    shader->loadTargetWidth((float)targetFboWidth);
+    shader->stop();
+    renderer = new ImageRenderer(targetFboWidth, targetFboHeight); INCR_NEW("ImageRenderer");
 }
 
 void HorizontalBlur::render(GLuint texture)
 {
-	shader->start();
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	renderer->renderQuad();
-	shader->stop();
+    shader->start();
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    renderer->renderQuad();
+    shader->stop();
 }
 
 int HorizontalBlur::getOutputTexture()
 {
-	return renderer->getOutputTexture();
+    return renderer->getOutputTexture();
 }
 
 void HorizontalBlur::cleanUp()
 {
-	renderer->cleanUp();
-	shader->cleanUp();
-	delete shader; INCR_DEL("HorizontalBlurShader");
-	delete renderer; INCR_DEL("ImageRenderer");
+    renderer->cleanUp();
+    shader->cleanUp();
+    delete shader; INCR_DEL("HorizontalBlurShader");
+    delete renderer; INCR_DEL("ImageRenderer");
 }

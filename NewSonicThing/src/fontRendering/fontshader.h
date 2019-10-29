@@ -12,51 +12,51 @@ class Vector3f;
 class FontShader
 {
 private:
-	GLuint programID;
-	GLuint vertexShaderID;
-	GLuint fragmentShaderID;
+    GLuint programID;
+    GLuint vertexShaderID;
+    GLuint fragmentShaderID;
 
-	int location_colour;
-	int location_translation;
-	int location_scale;
+    int location_colour;
+    int location_translation;
+    int location_scale;
 
-	float matrixBuffer[16];
+    float matrixBuffer[16];
 
 public:
-	FontShader(const char*, const char*);
+    FontShader(const char*, const char*);
 
-	void start();
+    void start();
 
-	void stop();
+    void stop();
 
-	void cleanUp();
+    void cleanUp();
 
-	void loadColour(Vector3f* colour);
+    void loadColour(Vector3f* colour);
 
-	void loadTranslation(Vector2f* translation);
+    void loadTranslation(Vector2f* translation);
 
-	void loadScale(float scale);
+    void loadScale(float scale);
 
 protected:
-	void bindAttributes();
+    void bindAttributes();
 
-	void bindAttribute(int, const char*);
+    void bindAttribute(int, const char*);
 
-	void getAllUniformLocations();
+    void getAllUniformLocations();
 
-	int getUniformLocation(const char*);
+    int getUniformLocation(const char*);
 
-	void loadFloat(int, float);
+    void loadFloat(int, float);
 
-	void loadVector(int, Vector3f*);
+    void loadVector(int, Vector3f*);
 
-	void load2DVector(int location, Vector2f* vect);
+    void load2DVector(int location, Vector2f* vect);
 
-	void loadBoolean(int, float);
+    void loadBoolean(int, float);
 
-	void loadMatrix(int, Matrix4f*);
+    void loadMatrix(int, Matrix4f*);
 
-	GLuint loadShader(const char*, int);
+    GLuint loadShader(const char*, int);
 };
 
 #endif

@@ -29,93 +29,93 @@ JumpRamp::JumpRamp()
 
 JumpRamp::JumpRamp(float x, float y, float z, float yRot)
 {
-	position.x = x;
-	position.y = y;
-	position.z = z;
-	scale = 1;
+    position.x = x;
+    position.y = y;
+    position.z = z;
+    scale = 1;
     renderOrder = 3;
-	visible = true;
-	playerIsIn = false;
+    visible = true;
+    playerIsIn = false;
 
-	rotX = 0;
-	rotY = yRot;
-	rotZ = 0;
-	rotRoll = 0;
-	updateTransformationMatrix();
+    rotX = 0;
+    rotY = yRot;
+    rotZ = 0;
+    rotRoll = 0;
+    updateTransformationMatrix();
 }
 
 void JumpRamp::step()
 {
-	if (abs(getX() - Global::gameCamera->eye.x) > 1000)
-	{
-		setVisible(false);
-	}
-	else
-	{
-		if (abs(getZ() - Global::gameCamera->eye.z) > 1000)
-		{
-			setVisible(false);
-		}
-		else
-		{
-			setVisible(true);
+    if (abs(getX() - Global::gameCamera->eye.x) > 1000)
+    {
+        setVisible(false);
+    }
+    else
+    {
+        if (abs(getZ() - Global::gameCamera->eye.z) > 1000)
+        {
+            setVisible(false);
+        }
+        else
+        {
+            setVisible(true);
 
-			if (abs(getX() - Global::gameMainPlayer->getPosition()->x) < 10 &&
-				abs(getZ() - Global::gameMainPlayer->getPosition()->z) < 10 &&
-				abs(getY() - Global::gameMainPlayer->getPosition()->y) < 10)
-			{
-				Vector3f diff(
-					getX()-Global::gameMainPlayer->getPosition()->x, 
-					getY()-Global::gameMainPlayer->getPosition()->y,
-					getZ()-Global::gameMainPlayer->getPosition()->z);
+            if (abs(getX() - Global::gameMainPlayer->getPosition()->x) < 10 &&
+                abs(getZ() - Global::gameMainPlayer->getPosition()->z) < 10 &&
+                abs(getY() - Global::gameMainPlayer->getPosition()->y) < 10)
+            {
+                Vector3f diff(
+                    getX()-Global::gameMainPlayer->getPosition()->x, 
+                    getY()-Global::gameMainPlayer->getPosition()->y,
+                    getZ()-Global::gameMainPlayer->getPosition()->z);
 
-				if (diff.lengthSquared() < (8.0f*8.0f))
-				{
-					if (!playerIsIn)
-					{
-						AudioPlayer::play(0, getPosition());
-						//Global::gameMainVehicle->giveMeAJump();
-					}
+                if (diff.lengthSquared() < (8.0f*8.0f))
+                {
+                    if (!playerIsIn)
+                    {
+                        AudioPlayer::play(0, getPosition());
+                        //Global::gameMainVehicle->giveMeAJump();
+                    }
 
-					playerIsIn = true;
-				}
-				else
-				{
-					playerIsIn = false;
-				}
-			}
-			else
-			{
-				playerIsIn = false;
-			}
-		}
-	}
+                    playerIsIn = true;
+                }
+                else
+                {
+                    playerIsIn = false;
+                }
+            }
+            else
+            {
+                playerIsIn = false;
+            }
+        }
+    }
 }
 
 std::list<TexturedModel*>* JumpRamp::getModels()
 {
-	return &JumpRamp::models;
+    return &JumpRamp::models;
 }
 
 void JumpRamp::loadStaticModels()
 {
-	if (JumpRamp::models.size() > 0)
-	{
-		return;
-	}
+    if (JumpRamp::models.size() > 0)
+    {
+        return;
+    }
 
-	#ifdef DEV_MODE
-	std::fprintf(stdout, "Loading JumpRamp static models...\n");
-	#endif
+    #ifdef DEV_MODE
+    std::fprintf(stdout, "Loading JumpRamp static models...\n");
+    #endif
 
-	loadModel(&JumpRamp::models,  "res/Models/Misc/JumpRamp/", "JumpRamp");
+    loadModel(&JumpRamp::models,  "res/Models/Misc/JumpRamp/", "JumpRamp");
 }
 
 void JumpRamp::deleteStaticModels()
 {
-	#ifdef DEV_MODE
-	std::fprintf(stdout, "Deleting JumpRamp static models...\n");
-	#endif
+    #ifdef DEV_MODE
+    std::fprintf(stdout, "Deleting JumpRamp static models...\n");
+    #endif
 
-	Entity::deleteModels(&JumpRamp::models);
+    Entity::deleteModels(&JumpRamp::models);
 }

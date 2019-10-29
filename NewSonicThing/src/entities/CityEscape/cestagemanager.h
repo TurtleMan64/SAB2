@@ -9,18 +9,18 @@ class TexturedModel;
 class CE_StageManager : public Entity
 {
 private:
-	static std::list<TexturedModel*> modelsSkydome;
+    static std::list<TexturedModel*> modelsSkydome;
     bool playedBGM;
 
 public:
-	CE_StageManager();
+    CE_StageManager();
 
-	void step();
+    void step();
 
-	std::list<TexturedModel*>* getModels();
+    std::list<TexturedModel*>* getModels();
 
-	static void loadStaticModels();
+    static void loadStaticModels();
 
-	static void deleteStaticModels();
+    static void deleteStaticModels();
 };
 #endif

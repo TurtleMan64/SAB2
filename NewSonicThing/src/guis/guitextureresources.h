@@ -8,11 +8,11 @@ class GuiTexture;
 class GuiTextureResources
 {
 public:
-	static GuiTexture* textureRing;
+    static GuiTexture* textureRing;
     static GuiTexture* textureLifeIcon;
-	static GuiTexture* textureBlueLine;
-	static GuiTexture* textureRankDisplay;
+    static GuiTexture* textureBlueLine;
+    static GuiTexture* textureRankDisplay;
 
-	static void loadGuiTextures();
+    static void loadGuiTextures();
 };
 #endif

@@ -6,33 +6,33 @@
 class VerticalBlurShader
 {
 private:
-	GLuint programID;
-	GLuint vertexShaderID;
-	GLuint fragmentShaderID;
+    GLuint programID;
+    GLuint vertexShaderID;
+    GLuint fragmentShaderID;
 
-	int location_targetHeight;
+    int location_targetHeight;
 
 public:
-	VerticalBlurShader(const char* vFile, const char* fFile);
+    VerticalBlurShader(const char* vFile, const char* fFile);
 
-	void start();
+    void start();
 
-	void stop();
+    void stop();
 
-	void cleanUp();
+    void cleanUp();
 
-	void loadTargetHeight(float height);
+    void loadTargetHeight(float height);
 
 protected:
-	void bindAttributes();
+    void bindAttributes();
 
-	void bindAttribute(int attribute, const char* variableName);
+    void bindAttribute(int attribute, const char* variableName);
 
-	void getAllUniformLocations();
+    void getAllUniformLocations();
 
-	int getUniformLocation(const char* uniformName);
+    int getUniformLocation(const char* uniformName);
 
-	void loadFloat(int location, float value);
+    void loadFloat(int location, float value);
 };
 
 #endif

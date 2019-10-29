@@ -34,10 +34,10 @@ T_StageManager::T_StageManager()
 
 void T_StageManager::step()
 {
-	//set the position of the background sky dome
-	position.set(&Global::gameMainPlayer->position);
+    //set the position of the background sky dome
+    position.set(&Global::gameMainPlayer->position);
     position.y = Global::waterHeight;
-	updateTransformationMatrix();
+    updateTransformationMatrix();
 
     skyPass2->setPosition(&position);
     skyTransparent->setPosition(&position);
@@ -48,32 +48,32 @@ void T_StageManager::step()
 
 std::list<TexturedModel*>* T_StageManager::getModels()
 {
-	return &T_StageManager::modelsSkyPass1;
+    return &T_StageManager::modelsSkyPass1;
 }
 
 void T_StageManager::loadStaticModels()
 {
-	if (T_StageManager::modelsSkyPass1.size() > 0)
-	{
-		return;
-	}
+    if (T_StageManager::modelsSkyPass1.size() > 0)
+    {
+        return;
+    }
 
-	#ifdef DEV_MODE
-	std::fprintf(stdout, "Loading T_StageManager static models...\n");
-	#endif
+    #ifdef DEV_MODE
+    std::fprintf(stdout, "Loading T_StageManager static models...\n");
+    #endif
 
-	loadModel(&T_StageManager::modelsSkyPass1,       "res/Models/Levels/DelfinoPlaza/Sky/", "Blue");
+    loadModel(&T_StageManager::modelsSkyPass1,       "res/Models/Levels/DelfinoPlaza/Sky/", "Blue");
     loadModel(&T_StageManager::modelsSkyPass2,       "res/Models/Levels/DelfinoPlaza/Sky/", "Pass2");
     loadModel(&T_StageManager::modelsSkyTransparent, "res/Models/Levels/DelfinoPlaza/Sky/", "Trans");
 }
 
 void T_StageManager::deleteStaticModels()
 {
-	#ifdef DEV_MODE
-	std::fprintf(stdout, "Deleting T_StageManager static models...\n");
-	#endif
+    #ifdef DEV_MODE
+    std::fprintf(stdout, "Deleting T_StageManager static models...\n");
+    #endif
 
-	Entity::deleteModels(&T_StageManager::modelsSkyPass1);
+    Entity::deleteModels(&T_StageManager::modelsSkyPass1);
     Entity::deleteModels(&T_StageManager::modelsSkyPass2);
     Entity::deleteModels(&T_StageManager::modelsSkyTransparent);
 }

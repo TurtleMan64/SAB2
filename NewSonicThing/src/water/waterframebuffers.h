@@ -6,43 +6,43 @@
 class WaterFrameBuffers
 {
 private:
-	GLuint reflectionFrameBuffer;
-	GLuint reflectionTexture;
-	GLuint reflectionDepthBuffer;
+    GLuint reflectionFrameBuffer;
+    GLuint reflectionTexture;
+    GLuint reflectionDepthBuffer;
 
-	GLuint refractionFrameBuffer;
-	GLuint refractionTexture;
-	GLuint refractionDepthTexture;
+    GLuint refractionFrameBuffer;
+    GLuint refractionTexture;
+    GLuint refractionDepthTexture;
 
-	void initialiseReflectionFrameBuffer();
+    void initialiseReflectionFrameBuffer();
 
-	void initialiseRefractionFrameBuffer();
+    void initialiseRefractionFrameBuffer();
 
-	void bindFrameBuffer(GLuint frameBuffer, int width, int height);
+    void bindFrameBuffer(GLuint frameBuffer, int width, int height);
 
-	GLuint createFrameBuffer();
+    GLuint createFrameBuffer();
 
-	GLuint createTextureAttachment(int width, int height);
+    GLuint createTextureAttachment(int width, int height);
 
-	GLuint createDepthTextureAttachment(int width, int height);
+    GLuint createDepthTextureAttachment(int width, int height);
 
-	GLuint createDepthBufferAttachment(int width, int height);
+    GLuint createDepthBufferAttachment(int width, int height);
 
 public:
-	WaterFrameBuffers();
+    WaterFrameBuffers();
 
-	void cleanUp();
+    void cleanUp();
 
-	void bindReflectionFrameBuffer();
+    void bindReflectionFrameBuffer();
 
-	void bindRefractionFrameBuffer();
+    void bindRefractionFrameBuffer();
 
-	void unbindCurrentFrameBuffer();
+    void unbindCurrentFrameBuffer();
 
-	GLuint getReflectionTexture();
+    GLuint getReflectionTexture();
 
-	GLuint getRefractionTexture();
+    GLuint getRefractionTexture();
 
-	GLuint getRefractionDepthTexture();
+    GLuint getRefractionDepthTexture();
 };
 #endif

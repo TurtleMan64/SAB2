@@ -28,67 +28,67 @@ GLFWwindow* getWindow();
 
 struct TextureEntry
 {
-	GLuint id;
-	int count;
+    GLuint id;
+    int count;
 };
 
 //Loader
 class Loader
 {
 private:
-	static std::list<GLuint> vaos;
-	static std::list<GLuint> vbos;
-	//static std::list<GLuint> textures;
+    static std::list<GLuint> vaos;
+    static std::list<GLuint> vbos;
+    //static std::list<GLuint> textures;
 
-	static std::unordered_map<std::string, TextureEntry> textures;
-	static std::unordered_map<GLuint, std::string> texIdToFilename;
+    static std::unordered_map<std::string, TextureEntry> textures;
+    static std::unordered_map<GLuint, std::string> texIdToFilename;
 
-	static int vaoNumber;
-	static int vboNumber;
-	//static int texNumber;
+    static int vaoNumber;
+    static int vboNumber;
+    //static int texNumber;
 
-	static GLuint createVAO();
+    static GLuint createVAO();
 
-	static GLuint storeDataInAttributeList(int, int, std::vector<float>*);
+    static GLuint storeDataInAttributeList(int, int, std::vector<float>*);
 
-	static void unbindVAO();
+    static void unbindVAO();
 
-	static GLuint bindIndiciesBuffer(std::vector<int>*);
+    static GLuint bindIndiciesBuffer(std::vector<int>*);
 
 public:
-	//For 3D Models
-	static RawModel loadToVAO(std::vector<float>* positions, 
-							  std::vector<float>* textureCoords, 
-							  std::vector<float>* normals, 
-							  std::vector<float>* vertexColors, 
-							  std::vector<int>* indices);
+    //For 3D Models
+    static RawModel loadToVAO(std::vector<float>* positions, 
+                              std::vector<float>* textureCoords, 
+                              std::vector<float>* normals, 
+                              std::vector<float>* vertexColors, 
+                              std::vector<int>* indices);
 
-	//for text
-	//returns a std::vector<int> where the first entry is the vao and the rest are vbos
-	static std::vector<int> loadToVAO(std::vector<float>* positions, std::vector<float>* textureCoords);
+    //for text
+    //returns a std::vector<int> where the first entry is the vao and the rest are vbos
+    static std::vector<int> loadToVAO(std::vector<float>* positions, std::vector<float>* textureCoords);
 
-	//for water
-	static RawModel loadToVAO(std::vector<float>* positions, int dimensions);
+    //for water
+    static RawModel loadToVAO(std::vector<float>* positions, int dimensions);
 
-	//Loads a texture into GPU memory, returns the GLuint id
-	static GLuint loadTexture(const char* filename);
+    //Loads a texture into GPU memory, returns the GLuint id
+    static GLuint loadTexture(const char* filename);
 
-	//Loads a texture without any interpolation
-	static GLuint loadTextureNoInterpolation(const char* fileName);
+    //Loads a texture without any interpolation
+    static GLuint loadTextureNoInterpolation(const char* fileName);
 
-	static void cleanUp();
+    static void cleanUp();
 
-	static void deleteVAO(GLuint vaoID);
+    static void deleteVAO(GLuint vaoID);
 
-	static void deleteVBO(GLuint vboID);
+    static void deleteVBO(GLuint vboID);
 
-	static void deleteTexture(GLuint texID);
+    static void deleteTexture(GLuint texID);
 
-	static void deleteTexturedModels(std::list<TexturedModel*>* tm);
+    static void deleteTexturedModels(std::list<TexturedModel*>* tm);
 
-	static void printInfo();
+    static void printInfo();
 
-	static GLuint loadShader(const char* file, int shaderType);
+    static GLuint loadShader(const char* file, int shaderType);
 };
 
 //Master Renderer
@@ -136,24 +136,24 @@ void Master_renderShadowMaps(Light* sun);
 class EntityRenderer
 {
 private:
-	float clockTime;
+    float clockTime;
 
-	ShaderProgram* shader;
+    ShaderProgram* shader;
 
-	void prepareTexturedModel(TexturedModel* model);
+    void prepareTexturedModel(TexturedModel* model);
 
-	void unbindTexturedModel();
+    void unbindTexturedModel();
 
-	void prepareInstance(Entity* entity);
+    void prepareInstance(Entity* entity);
 
 public:
-	EntityRenderer(ShaderProgram* shader, Matrix4f* projectionMatrix);
+    EntityRenderer(ShaderProgram* shader, Matrix4f* projectionMatrix);
 
-	void render(Entity*);
+    void render(Entity*);
 
-	void renderNEW(std::unordered_map<TexturedModel*, std::list<Entity*>>* entities, Matrix4f* toShadowSpaceFar, Matrix4f* toShadowSpaceClose);
+    void renderNEW(std::unordered_map<TexturedModel*, std::list<Entity*>>* entities, Matrix4f* toShadowSpaceFar, Matrix4f* toShadowSpaceClose);
 
-	void updateProjectionMatrix(Matrix4f* projectionMatrix);
+    void updateProjectionMatrix(Matrix4f* projectionMatrix);
 
 };
 #endif

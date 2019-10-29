@@ -75,62 +75,62 @@ void Main_deleteAllChunkedEntities();
 #define DEV_MODE
 
 #ifdef DEV_MODE
-	#include <thread>
-	#define INCR_NEW(NAME) Global::debugNew(NAME);
-	#define INCR_DEL(NAME) Global::debugDel(NAME);
+    #include <thread>
+    #define INCR_NEW(NAME) Global::debugNew(NAME);
+    #define INCR_DEL(NAME) Global::debugDel(NAME);
 #else
-	#define INCR_NEW(NAME) ;
-	#define INCR_DEL(NAME) ;
+    #define INCR_NEW(NAME) ;
+    #define INCR_DEL(NAME) ;
 #endif
 
 class Global
 {
 public:
     static std::string pathToEXE;
-	static MenuManager menuManager;
+    static MenuManager menuManager;
     static Timer* mainHudTimer;
-	static Camera* gameCamera;
-	static ControllablePlayer* gameMainPlayer;
-	static Stage* gameStage;
-	static SkySphere* gameSkySphere;
-	static Light* gameLightSun;
-	static Light* gameLightMoon;
-	static int countNew;
-	static int countDelete;
-	static int gameState;
-	static int levelID;
-	static std::string levelName;
-	static std::string levelNameDisplay;
-	static float raceStartTimer;
-	static bool shouldLoadLevel;
-	static bool isNewLevel;
-	static bool isAutoCam;
-	static int gameRingCount;
-	static int gameScore;
-	static int gameLives;
-	static float gameClock;
-	static WaterRenderer* gameWaterRenderer;
-	static WaterFrameBuffers* gameWaterFBOs;
-	static std::vector<WaterTile*> gameWaterTiles;
-	static int gameMainVehicleSpeed;
-	static float finishStageTimer;
-	static Fbo* gameMultisampleFbo;
-	static Fbo* gameOutputFbo;
-	static Fbo* gameOutputFbo2;
-	static float deathHeight;
-	static float waterHeight;
-	static int gameMissionNumber;
-	static bool gameIsNormalMode;
-	static bool gameIsHardMode;
-	static bool gameIsChaoMode;
-	static bool gameIsRingMode;
-	static std::string gameMissionDescription;
-	static int gameRingTarget; //How many rings you have to collect to finish the stage in Ring mode
-	static bool gameIsArcadeMode;
-	static float gameTotalPlaytime;
-	static float gameArcadePlaytime;
-	static bool stageUsesWater;
-	static FontType* fontVipnagorgialla;
+    static Camera* gameCamera;
+    static ControllablePlayer* gameMainPlayer;
+    static Stage* gameStage;
+    static SkySphere* gameSkySphere;
+    static Light* gameLightSun;
+    static Light* gameLightMoon;
+    static int countNew;
+    static int countDelete;
+    static int gameState;
+    static int levelID;
+    static std::string levelName;
+    static std::string levelNameDisplay;
+    static float raceStartTimer;
+    static bool shouldLoadLevel;
+    static bool isNewLevel;
+    static bool isAutoCam;
+    static int gameRingCount;
+    static int gameScore;
+    static int gameLives;
+    static float gameClock;
+    static WaterRenderer* gameWaterRenderer;
+    static WaterFrameBuffers* gameWaterFBOs;
+    static std::vector<WaterTile*> gameWaterTiles;
+    static int gameMainVehicleSpeed;
+    static float finishStageTimer;
+    static Fbo* gameMultisampleFbo;
+    static Fbo* gameOutputFbo;
+    static Fbo* gameOutputFbo2;
+    static float deathHeight;
+    static float waterHeight;
+    static int gameMissionNumber;
+    static bool gameIsNormalMode;
+    static bool gameIsHardMode;
+    static bool gameIsChaoMode;
+    static bool gameIsRingMode;
+    static std::string gameMissionDescription;
+    static int gameRingTarget; //How many rings you have to collect to finish the stage in Ring mode
+    static bool gameIsArcadeMode;
+    static float gameTotalPlaytime;
+    static float gameArcadePlaytime;
+    static bool stageUsesWater;
+    static FontType* fontVipnagorgialla;
     static bool renderWithCulling; //if the stage uses backface culling or not
     static bool displayFPS;
     static int currentCalculatedFPS;
@@ -144,82 +144,82 @@ public:
     static std::list<std::string> raceLog;
     static bool shouldLogRace;
 
-	static bool  spawnAtCheckpoint;
-	static float checkpointX;
-	static float checkpointY;
-	static float checkpointZ;
-	static float checkpointRotY;
-	static float checkpointCamYaw;
-	static float checkpointCamPitch;
-	static int   checkpointTimeCen;
-	static int   checkpointTimeSec;
-	static int   checkpointTimeMin;
+    static bool  spawnAtCheckpoint;
+    static float checkpointX;
+    static float checkpointY;
+    static float checkpointZ;
+    static float checkpointRotY;
+    static float checkpointCamYaw;
+    static float checkpointCamPitch;
+    static int   checkpointTimeCen;
+    static int   checkpointTimeSec;
+    static int   checkpointTimeMin;
 
-	//texts for the title card
-	static GUIText* titleCardLevelName;
-	static GUIText* titleCardMission;
-	static GUIText* titleCardMissionDescription;
+    //texts for the title card
+    static GUIText* titleCardLevelName;
+    static GUIText* titleCardMission;
+    static GUIText* titleCardMissionDescription;
 
-	static std::list<Checkpoint*> gameCheckpointList;
-	static int gameCheckpointLast;
+    static std::list<Checkpoint*> gameCheckpointList;
+    static int gameCheckpointLast;
 
-	static std::vector<Level> gameLevelData;
-	static std::unordered_map<std::string, std::string> gameSaveData;
+    static std::vector<Level> gameLevelData;
+    static std::unordered_map<std::string, std::string> gameSaveData;
 
-	//Debug display
-	static bool debugDisplay;
-	static bool frozen;
-	static bool step;
+    //Debug display
+    static bool debugDisplay;
+    static bool frozen;
+    static bool step;
 
-	//Graphics settings
-	static bool useHighQualityWater;
-	static unsigned HQWaterReflectionWidth;
-	static unsigned HQWaterReflectionHeight;
-	static unsigned HQWaterRefractionWidth;
-	static unsigned HQWaterRefractionHeight;
+    //Graphics settings
+    static bool useHighQualityWater;
+    static unsigned HQWaterReflectionWidth;
+    static unsigned HQWaterReflectionHeight;
+    static unsigned HQWaterRefractionWidth;
+    static unsigned HQWaterRefractionHeight;
 
-	static bool renderParticles;
+    static bool renderParticles;
 
-	static bool renderBloom;
+    static bool renderBloom;
 
     static bool framerateUnlock;
 
-	static bool renderShadowsFar;
-	static bool renderShadowsClose;
-	static int shadowsFarQuality;
+    static bool renderShadowsFar;
+    static bool renderShadowsClose;
+    static int shadowsFarQuality;
 
-	static bool unlockedSonicDoll;
-	static bool unlockedMechaSonic;
-	static bool unlockedDage4;
-	static bool unlockedManiaSonic;
-	static bool unlockedAmy;
+    static bool unlockedSonicDoll;
+    static bool unlockedMechaSonic;
+    static bool unlockedDage4;
+    static bool unlockedManiaSonic;
+    static bool unlockedAmy;
 
-	static std::vector<std::string> npcList;
+    static std::vector<std::string> npcList;
 
-	static void checkErrorAL(const char* description);
+    static void checkErrorAL(const char* description);
 
-	static void loadSaveData();
+    static void loadSaveData();
 
-	static void saveSaveData();
+    static void saveSaveData();
 
-	static int calculateRankAndUpdate();
+    static int calculateRankAndUpdate();
 
-	static void increaseRingCount(int rings);
+    static void increaseRingCount(int rings);
 
-	//Return a list of nearby entity sets. renderDistance is number of layers to go outwards.
-	//0 = only the exact chunk.
-	//1 = 4 chunks
-	//2 = 9 chunks
-	static void getNearbyEntities(float x, float z, int renderDistance, std::list<std::unordered_set<Entity*>*>* list);
+    //Return a list of nearby entity sets. renderDistance is number of layers to go outwards.
+    //0 = only the exact chunk.
+    //1 = 4 chunks
+    //2 = 9 chunks
+    static void getNearbyEntities(float x, float z, int renderDistance, std::list<std::unordered_set<Entity*>*>* list);
 
-	//Returns the index of 'gameChunkedEntities' for the (x, z) location
-	static int getChunkIndex(float x, float z);
+    //Returns the index of 'gameChunkedEntities' for the (x, z) location
+    static int getChunkIndex(float x, float z);
 
-	static void recalculateEntityChunks(float minX, float maxX, float minZ, float maxZ, float chunkSize);
+    static void recalculateEntityChunks(float minX, float maxX, float minZ, float maxZ, float chunkSize);
 
-	static void createTitleCard();
+    static void createTitleCard();
 
-	static void clearTitleCard();
+    static void clearTitleCard();
 
     static void debugNew(const char* name);
 

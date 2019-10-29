@@ -11,25 +11,25 @@ class FontType;
 class Button
 {
 private:
-	bool visible;
-	bool visibleHighlight;
+    bool visible;
+    bool visibleHighlight;
 
-	GUIText* text = nullptr;
+    GUIText* text = nullptr;
 
-	GuiTexture texture;
-	GuiTexture textureHighlight; // For Arcade
+    GuiTexture texture;
+    GuiTexture textureHighlight; // For Arcade
 
 public:
-	Button(std::string label, FontType* font, GLuint texture, GLuint highlight, float posX, float posY, float scaleX, float scaleY, bool visible);
-	~Button();
+    Button(std::string label, FontType* font, GLuint texture, GLuint highlight, float posX, float posY, float scaleX, float scaleY, bool visible);
+    ~Button();
 
-	void setVisible(bool makeVisible);
-	void setHighlight(bool makeVisible); // Toggles textureSet display
+    void setVisible(bool makeVisible);
+    void setHighlight(bool makeVisible); // Toggles textureSet display
 
-	void setPos(float xPos, float yPos);
+    void setPos(float xPos, float yPos);
 
     void generateText(std::string newText);
 
-	GUIText* getText();
+    GUIText* getText();
 };
 #endif

@@ -11,20 +11,20 @@ class TexturedModel;
 class RingMoving : public Entity
 {
 private:
-	Vector3f vel;
-	bool moves;
-	float ageTimer;
-	bool trackingPlayer;
+    Vector3f vel;
+    bool moves;
+    float ageTimer;
+    bool trackingPlayer;
 
 public:
-	RingMoving();
+    RingMoving();
     RingMoving(float x, float y, float z); //create if normal ring gets close enough to trigger magnet shield
-	RingMoving(float x, float y, float z, float xVel, float yVel, float zVel);
+    RingMoving(float x, float y, float z, float xVel, float yVel, float zVel);
 
-	void step();
+    void step();
 
-	std::list<TexturedModel*>* getModels();
+    std::list<TexturedModel*>* getModels();
 
-	const inline bool canLightdashOn();
+    const inline bool canLightdashOn();
 };
 #endif

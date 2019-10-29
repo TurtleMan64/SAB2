@@ -11,34 +11,34 @@ class Dummy;
 class Beetle : public Entity
 {
 private:
-	static std::list<TexturedModel*> modelsBody;
-	static std::list<TexturedModel*> modelsBlades;
-	
-	static float hitRadius;
+    static std::list<TexturedModel*> modelsBody;
+    static std::list<TexturedModel*> modelsBlades;
+    
+    static float hitRadius;
 
-	Dummy* blades = nullptr;
+    Dummy* blades = nullptr;
 
     //calculate new blades position
     void updateBlades();
 
 public:
-	Beetle();
-	Beetle(float x, float y, float z, std::list<Entity*>* entityListToAdd);
+    Beetle();
+    Beetle(float x, float y, float z, std::list<Entity*>* entityListToAdd);
 
-	void step();
+    void step();
 
-	void die();
+    void die();
 
-	std::list<TexturedModel*>* getModels();
+    std::list<TexturedModel*>* getModels();
 
-	static void loadStaticModels();
+    static void loadStaticModels();
 
-	static void deleteStaticModels();
+    static void deleteStaticModels();
 
-	const bool canHomingAttackOn();
+    const bool canHomingAttackOn();
 
-	const Vector3f getHomingCenter();
+    const Vector3f getHomingCenter();
 
-	const bool isEnemy();
+    const bool isEnemy();
 };
 #endif

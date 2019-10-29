@@ -9,16 +9,16 @@ class HorizontalBlurShader;
 class HorizontalBlur 
 {
 private:
-	ImageRenderer* renderer;
-	HorizontalBlurShader* shader;
-	
+    ImageRenderer* renderer;
+    HorizontalBlurShader* shader;
+    
 public:
-	HorizontalBlur(int targetFboWidth, int targetFboHeight);
-	
-	void render(GLuint texture);
-	
-	int getOutputTexture();
-	
-	void cleanUp();
+    HorizontalBlur(int targetFboWidth, int targetFboHeight);
+    
+    void render(GLuint texture);
+    
+    int getOutputTexture();
+    
+    void cleanUp();
 };
 #endif

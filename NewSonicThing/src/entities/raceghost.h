@@ -10,14 +10,14 @@ class PlayerModel;
 class GhostFrame
 {
 public:
-	float time;
+    float time;
     int animIndex;
     float animTime;
     Vector3f pos;
     Vector4f rot;
     Vector3f up;
 
-	GhostFrame(float time, int animIndex, float animTime, Vector3f* pos, Vector4f* rot, Vector3f* up);
+    GhostFrame(float time, int animIndex, float animTime, Vector3f* pos, Vector4f* rot, Vector3f* up);
 
     GhostFrame(GhostFrame* other);
 
@@ -33,15 +33,15 @@ private:
     float averageFramesPerSecond;
 
 public:
-	RaceGhost();
-	RaceGhost(char* filePath);
+    RaceGhost();
+    RaceGhost(char* filePath);
 
-	void step();
+    void step();
 
-	std::list<TexturedModel*>* getModels();
+    std::list<TexturedModel*>* getModels();
 
-	static void loadStaticModels();
+    static void loadStaticModels();
 
-	static void deleteStaticModels();
+    static void deleteStaticModels();
 };
 #endif

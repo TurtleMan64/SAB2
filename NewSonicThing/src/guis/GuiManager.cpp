@@ -18,26 +18,26 @@ std::list<GuiTexture*> GuiManager::guisToRender;
 
 void GuiManager::init()
 {
-	GuiRenderer::init();
+    GuiRenderer::init();
 }
 
 void GuiManager::refresh()
 {
-	//Render images
-	GuiRenderer::render(&GuiManager::guisToRender);
+    //Render images
+    GuiRenderer::render(&GuiManager::guisToRender);
 }
 
 void GuiManager::addGuiToRender(GuiTexture* newImage)
 {
-	GuiManager::guisToRender.push_back(newImage);
+    GuiManager::guisToRender.push_back(newImage);
 }
 
 void GuiManager::removeGui(GuiTexture* imageToRemove)
 {
-	GuiManager::guisToRender.remove(imageToRemove);
+    GuiManager::guisToRender.remove(imageToRemove);
 }
 
 void GuiManager::clearGuisToRender()
 {
-	GuiManager::guisToRender.clear();
+    GuiManager::guisToRender.clear();
 }

@@ -13,34 +13,34 @@ class TexturedModel;
 class Stage : public Entity
 {
 private:
-	static std::vector<std::list<TexturedModel*>> chunkModels;
-	static std::vector<Dummy*> chunkDummies;
-	static std::vector<std::vector<Vector3f>> chunkMin;
-	static std::vector<std::vector<Vector3f>> chunkMax;
+    static std::vector<std::list<TexturedModel*>> chunkModels;
+    static std::vector<Dummy*> chunkDummies;
+    static std::vector<std::vector<Vector3f>> chunkMin;
+    static std::vector<std::vector<Vector3f>> chunkMax;
 
 public:
-	Vector3f finishPlayerPosition;
-	float finishPlayerRotY;
-	float finishCameraPitch;
+    Vector3f finishPlayerPosition;
+    float finishPlayerRotY;
+    float finishCameraPitch;
 
-	Stage();
+    Stage();
 
-	void step();
+    void step();
 
-	std::list<TexturedModel*>* getModels();
+    std::list<TexturedModel*>* getModels();
 
-	static void loadModels(
-		const char* folder, 
-		std::vector<std::string>* fnames, 
-		std::vector<std::vector<Vector3f>>* mins,  
-		std::vector<std::vector<Vector3f>>* maxs);
+    static void loadModels(
+        const char* folder, 
+        std::vector<std::string>* fnames, 
+        std::vector<std::vector<Vector3f>>* mins,  
+        std::vector<std::vector<Vector3f>>* maxs);
 
-	static void respawnChunks();
+    static void respawnChunks();
 
-	static void updateVisibleChunks();
+    static void updateVisibleChunks();
 
-	static void deleteModels();
+    static void deleteModels();
 
-	std::string getName();
+    std::string getName();
 };
 #endif

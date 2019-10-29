@@ -11,45 +11,45 @@ class Dummy;
 class ItemCapsule : public Entity
 {
 private:
-	static std::list<TexturedModel*> modelsAnchoredBase;
-	static std::list<TexturedModel*> modelsAnchoredGlass;
+    static std::list<TexturedModel*> modelsAnchoredBase;
+    static std::list<TexturedModel*> modelsAnchoredGlass;
     static std::list<TexturedModel*> modelsFloatingBase;
-	static std::list<TexturedModel*> modelsFloatingGlass;
+    static std::list<TexturedModel*> modelsFloatingGlass;
 
-	static std::list<TexturedModel*> modelsItem1Up;
-	static std::list<TexturedModel*> modelsItemBomb;
-	static std::list<TexturedModel*> modelsItemInvincible;
-	static std::list<TexturedModel*> modelsItemBarrierG;
-	static std::list<TexturedModel*> modelsItemRing5;
-	static std::list<TexturedModel*> modelsItemRing10;
-	static std::list<TexturedModel*> modelsItemRing20;
-	static std::list<TexturedModel*> modelsItemSpeedUp;
-	static std::list<TexturedModel*> modelsItemBarrierB;
+    static std::list<TexturedModel*> modelsItem1Up;
+    static std::list<TexturedModel*> modelsItemBomb;
+    static std::list<TexturedModel*> modelsItemInvincible;
+    static std::list<TexturedModel*> modelsItemBarrierG;
+    static std::list<TexturedModel*> modelsItemRing5;
+    static std::list<TexturedModel*> modelsItemRing10;
+    static std::list<TexturedModel*> modelsItemRing20;
+    static std::list<TexturedModel*> modelsItemSpeedUp;
+    static std::list<TexturedModel*> modelsItemBarrierB;
 
-	Vector3f centerPos;
+    Vector3f centerPos;
     Vector3f upDir;
 
-	int itemType;
+    int itemType;
     int boxType;
-	Dummy* entityGlass = nullptr;
-	Dummy* entityItem = nullptr;
+    Dummy* entityGlass = nullptr;
+    Dummy* entityItem = nullptr;
 
 public:
-	ItemCapsule();
-	ItemCapsule(float x, float y, float z, float upX, float upY, float upZ, int itemType, int boxType, std::list<Entity*>* entityListToAdd);
+    ItemCapsule();
+    ItemCapsule(float x, float y, float z, float upX, float upY, float upZ, int itemType, int boxType, std::list<Entity*>* entityListToAdd);
 
-	void step();
+    void step();
 
-	void die();
+    void die();
 
-	std::list<TexturedModel*>* getModels();
+    std::list<TexturedModel*>* getModels();
 
-	static void loadStaticModels();
+    static void loadStaticModels();
 
-	static void deleteStaticModels();
+    static void deleteStaticModels();
 
-	const bool canHomingAttackOn();
+    const bool canHomingAttackOn();
 
-	const Vector3f getHomingCenter();
+    const Vector3f getHomingCenter();
 };
 #endif

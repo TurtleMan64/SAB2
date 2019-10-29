@@ -4,123 +4,123 @@
 #include "fonttype.h"
 
 GUIText::GUIText(std::string text, float fontSize, FontType* font, float x, float y, float maxLineLength,
-	bool centered, bool rightAligned, bool visible)
+    bool centered, bool rightAligned, bool visible)
 {
-	this->colour.set(1, 1, 1);
-	this->textString.assign(text);
-	this->fontSize = fontSize;
-	this->font = font;
-	this->position.set(x, y);
-	alignment = 0;
-	this->lineMaxSizeConstraint = maxLineLength;
-	if (centered)
-	{
-		alignment = 1;
-		position.x += maxLineLength/2;
-	}
-	else if (rightAligned)
-	{
-		alignment = 2;
-		position.x += maxLineLength;
-	}
-	this->visible = visible;
-	TextMaster::loadText(this);
+    this->colour.set(1, 1, 1);
+    this->textString.assign(text);
+    this->fontSize = fontSize;
+    this->font = font;
+    this->position.set(x, y);
+    alignment = 0;
+    this->lineMaxSizeConstraint = maxLineLength;
+    if (centered)
+    {
+        alignment = 1;
+        position.x += maxLineLength/2;
+    }
+    else if (rightAligned)
+    {
+        alignment = 2;
+        position.x += maxLineLength;
+    }
+    this->visible = visible;
+    TextMaster::loadText(this);
 }
 
 GUIText::GUIText(std::string text, float fontSize, FontType* font, float x, float y, int alignment, bool visible)
 {
-	this->colour.set(1, 1, 1);
-	this->textString.assign(text);
-	this->fontSize = fontSize;
-	this->font = font;
-	this->position.set(x, y);
-	this->alignment = alignment;
-	this->visible = visible;
-	this->lineMaxSizeConstraint = 1000000.0f;
-	TextMaster::loadText(this);
+    this->colour.set(1, 1, 1);
+    this->textString.assign(text);
+    this->fontSize = fontSize;
+    this->font = font;
+    this->position.set(x, y);
+    this->alignment = alignment;
+    this->visible = visible;
+    this->lineMaxSizeConstraint = 1000000.0f;
+    TextMaster::loadText(this);
 }
 
 void GUIText::deleteMe()
 {
-	TextMaster::removeText(this);
-	for (int vboID : textMeshVbos)
-	{
-		Loader::deleteVBO(vboID);
-	}
-	Loader::deleteVAO(textMeshVao);
+    TextMaster::removeText(this);
+    for (int vboID : textMeshVbos)
+    {
+        Loader::deleteVBO(vboID);
+    }
+    Loader::deleteVAO(textMeshVao);
 }
 
 FontType* GUIText::getFont()
 {
-	return font;
+    return font;
 }
 
 void GUIText::setColour(float r, float g, float b)
 {
-	colour.set(r, g, b);
+    colour.set(r, g, b);
 }
 
 Vector3f* GUIText::getColour()
 {
-	return &colour;
+    return &colour;
 }
 
 float GUIText::getMaxLineSizeConstraint()
 {
-	return lineMaxSizeConstraint;
+    return lineMaxSizeConstraint;
 }
 
 Vector2f* GUIText::getPosition()
 {
-	return &position;
+    return &position;
 }
 
 void GUIText::setPosition(Vector2f* newPos)
 {
-	position.set(newPos);
+    position.set(newPos);
 }
 
 void GUIText::setVisibility(bool newVisible)
 {
-	visible = newVisible;
+    visible = newVisible;
 }
 
 bool GUIText::isVisible()
 {
-	return visible;
+    return visible;
 }
 
 int GUIText::getMesh()
 {
-	return textMeshVao;
+    return textMeshVao;
 }
 
 void GUIText::setMeshInfo(int vao, std::vector<int>* vbos, int verticesCount)
 {
-	this->textMeshVao = vao;
-	for (int vbo : (*vbos))
-	{
-		this->textMeshVbos.push_back(vbo);
-	}
-	this->vertexCount = verticesCount;
+    this->textMeshVao = vao;
+    for (int vbo : (*vbos))
+    {
+        this->textMeshVbos.push_back(vbo);
+    }
+    this->vertexCount = verticesCount;
 }
 
 int GUIText::getVertexCount()
 {
-	return vertexCount;
+    return vertexCount;
 }
 
 float GUIText::getFontSize()
 {
-	return fontSize;
+    return fontSize;
 }
 
 int GUIText::getAlignment()
 {
-	return alignment;
+    return alignment;
 }
 
 std::string* GUIText::getTextString()
 {
-	return &textString;
+    return &textString;
 }

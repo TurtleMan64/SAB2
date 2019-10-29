@@ -11,24 +11,24 @@ class CombineFilter;
 class PostProcessing 
 {
 private:
-	static std::vector<float> POSITIONS;
-	static RawModel quadModel;
-	static HorizontalBlur* hBlur;
-	static VerticalBlur*   vBlur;
-	static HorizontalBlur* hBlur2;
-	static VerticalBlur*   vBlur2;
-	static CombineFilter* combineFilter;
-	
+    static std::vector<float> POSITIONS;
+    static RawModel quadModel;
+    static HorizontalBlur* hBlur;
+    static VerticalBlur*   vBlur;
+    static HorizontalBlur* hBlur2;
+    static VerticalBlur*   vBlur2;
+    static CombineFilter* combineFilter;
+    
 public:
 
-	static void init();
-	
-	static void doPostProcessing(int colourTexture, int brightTexture);
-	
-	static void cleanUp();
-	
-	static void start();
-	
-	static void end();
+    static void init();
+    
+    static void doPostProcessing(int colourTexture, int brightTexture);
+    
+    static void cleanUp();
+    
+    static void start();
+    
+    static void end();
 };
 #endif

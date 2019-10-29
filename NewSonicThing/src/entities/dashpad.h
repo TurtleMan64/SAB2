@@ -10,26 +10,26 @@ class TexturedModel;
 class Dashpad : public Entity
 {
 private:
-	static std::list<TexturedModel*> models;
-	bool playerIsIn;
+    static std::list<TexturedModel*> models;
+    bool playerIsIn;
     float power;
-	float controlLockTime;
+    float controlLockTime;
     Vector3f forward;
     Vector3f up;
 
 public:
-	Dashpad();
-	Dashpad(
-		float x,     float y,     float z,
+    Dashpad();
+    Dashpad(
+        float x,     float y,     float z,
         float power, float controlLockTime,
-		float rotX, float rotY, float rotZ);
+        float rotX, float rotY, float rotZ);
 
-	void step();
+    void step();
 
-	std::list<TexturedModel*>* getModels();
+    std::list<TexturedModel*>* getModels();
 
-	static void loadStaticModels();
+    static void loadStaticModels();
 
-	static void deleteStaticModels();
+    static void deleteStaticModels();
 };
 #endif

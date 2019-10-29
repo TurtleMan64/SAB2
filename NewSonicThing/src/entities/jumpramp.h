@@ -9,20 +9,20 @@ class TexturedModel;
 class JumpRamp : public Entity
 {
 private:
-	static std::list<TexturedModel*> models;
+    static std::list<TexturedModel*> models;
 
-	bool playerIsIn;
+    bool playerIsIn;
 
 public:
-	JumpRamp();
-	JumpRamp(float x, float y, float z, float yRot);
+    JumpRamp();
+    JumpRamp(float x, float y, float z, float yRot);
 
-	void step();
+    void step();
 
-	std::list<TexturedModel*>* getModels();
+    std::list<TexturedModel*>* getModels();
 
-	static void loadStaticModels();
+    static void loadStaticModels();
 
-	static void deleteStaticModels();
+    static void deleteStaticModels();
 };
 #endif

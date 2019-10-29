@@ -9,12 +9,12 @@ class GUIText;
 class Extras : public Menu
 {
 private:
-	GUIText* timeText;
-	GUIText* jebaited;
+    GUIText* timeText;
+    GUIText* jebaited;
 public:
-	Extras();
-	~Extras();
-	Menu* step();
+    Extras();
+    ~Extras();
+    Menu* step();
 };
 
 #endif

@@ -6,16 +6,16 @@
 class Point : public Entity
 {
 private:
-	int id;
+    int id;
 
 public:
-	Point();
-	Point(float x, float y, float z, int id);
+    Point();
+    Point(float x, float y, float z, int id);
 
     void step();
 
-	int getID();
+    int getID();
 
-	const bool isPoint();
+    const bool isPoint();
 };
 #endif

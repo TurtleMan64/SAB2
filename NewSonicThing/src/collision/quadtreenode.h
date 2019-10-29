@@ -9,29 +9,29 @@ class Triangle3D;
 class QuadTreeNode
 {
 public:
-	QuadTreeNode* topLeft  = nullptr;
-	QuadTreeNode* topRight = nullptr;
-	QuadTreeNode* botLeft  = nullptr;
-	QuadTreeNode* botRight = nullptr;
+    QuadTreeNode* topLeft  = nullptr;
+    QuadTreeNode* topRight = nullptr;
+    QuadTreeNode* botLeft  = nullptr;
+    QuadTreeNode* botRight = nullptr;
 
-	float xMid;
-	float zMid;
+    float xMid;
+    float zMid;
 
-	//used for bounds checking. NOT the total size of the entire node, JUST of the node's triangles.
-	float xMin;
-	float xMax;
-	float yMin;
-	float yMax;
-	float zMin;
-	float zMax;
-	std::vector<Triangle3D*> tris;
+    //used for bounds checking. NOT the total size of the entire node, JUST of the node's triangles.
+    float xMin;
+    float xMax;
+    float yMin;
+    float yMax;
+    float zMin;
+    float zMax;
+    std::vector<Triangle3D*> tris;
 
-	int depth; //this can probably be a char instead
+    int depth; //this can probably be a char instead
 
-	QuadTreeNode(float xBoundMin, float xBoundMax, float zBoundMin, float zBoundMax, std::vector<Triangle3D*> pool, int depth, int depthMax);
+    QuadTreeNode(float xBoundMin, float xBoundMax, float zBoundMin, float zBoundMax, std::vector<Triangle3D*> pool, int depth, int depthMax);
 
-	//Deletes all children nodes and clears triangle list
-	void deleteMe();
+    //Deletes all children nodes and clears triangle list
+    void deleteMe();
 };
 
 #endif

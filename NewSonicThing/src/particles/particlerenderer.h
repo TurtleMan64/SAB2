@@ -18,22 +18,22 @@ class Camera;
 class ParticleRenderer
 {
 private:
-	RawModel* quad;
-	ParticleShader* shader;
+    RawModel* quad;
+    ParticleShader* shader;
 
-	void prepare();
+    void prepare();
 
-	void finishRendering();
+    void finishRendering();
 
-	void updateModelViewMatrix(Vector3f* position, float rotation, float scaleX, float scaleY, Matrix4f* viewMatrix);
+    void updateModelViewMatrix(Vector3f* position, float rotation, float scaleX, float scaleY, Matrix4f* viewMatrix);
 
 public:
-	ParticleRenderer(Matrix4f* projectionMatrix);
+    ParticleRenderer(Matrix4f* projectionMatrix);
 
-	void render(std::unordered_map<ParticleTexture*, std::list<Particle*>>* particles, Camera* camera, float brightness, int clipSide);
+    void render(std::unordered_map<ParticleTexture*, std::list<Particle*>>* particles, Camera* camera, float brightness, int clipSide);
 
-	void updateProjectionMatrix(Matrix4f* projectionMatrix);
+    void updateProjectionMatrix(Matrix4f* projectionMatrix);
 
-	void cleanUp();
+    void cleanUp();
 };
 #endif

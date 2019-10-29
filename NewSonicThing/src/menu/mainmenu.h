@@ -12,48 +12,48 @@ class Button;
 class MainMenu : public Menu
 {
 private:
-	enum ButtonID { mission, config, exit };
+    enum ButtonID { mission, config, exit };
 
-	int menuSelectionID;	// Current menu selection highlighted
+    int menuSelectionID;    // Current menu selection highlighted
 
-	// Title card text graphics
-	GLuint textureParallelogram; // Texture for button
-	GLuint textureParallelogramBackdrop; // Texture for button highlight
-	GLuint textureLogo; // Texture for logo
+    // Title card text graphics
+    GLuint textureParallelogram; // Texture for button
+    GLuint textureParallelogramBackdrop; // Texture for button highlight
+    GLuint textureLogo; // Texture for logo
 
-	GuiTexture logo;
+    GuiTexture logo;
 
     std::vector<Button*> menuButtons;
 
-	int buttonCount;
+    int buttonCount;
 
-	float aspectRatio;
+    float aspectRatio;
 
-	void unloadResources();
+    void unloadResources();
 
-	void setVisible(bool visibleStatus);
+    void setVisible(bool visibleStatus);
 
-	bool visible;
+    bool visible;
 
-	// Animation
-	int oldSelection;
-	float animationTime;
-	bool animating;
-	int animationDirection;
-	void resetAnimation();
+    // Animation
+    int oldSelection;
+    float animationTime;
+    bool animating;
+    int animationDirection;
+    void resetAnimation();
 
 public:
-	MainMenu();
+    MainMenu();
 
-	~MainMenu();
+    ~MainMenu();
 
-	void init();
+    void init();
 
-	Menu* step();
+    Menu* step();
 
-	void loadResources();
+    void loadResources();
 
-	void draw();
+    void draw();
 };
 
 #endif

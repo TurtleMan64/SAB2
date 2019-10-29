@@ -4,16 +4,16 @@
 class WaterTile
 {
 private:
-	float x;
-	float z;
+    float x;
+    float z;
 
 public:
-	static const float TILE_SIZE;
+    static const float TILE_SIZE;
 
-	WaterTile(float centerX, float centerZ);
+    WaterTile(float centerX, float centerZ);
 
-	float getX();
+    float getX();
 
-	float getZ();
+    float getZ();
 };
 #endif

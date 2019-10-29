@@ -34,230 +34,230 @@ Ring::Ring()
 
 Ring::Ring(float x, float y, float z)
 {
-	this->position.x = x;
-	this->position.y = y;
-	this->position.z = z;
-	moves = false;
-	xVel = 0;
-	yVel = 0;
-	zVel = 0;
-	grabTimer = 0;
-	givesPoints = true;
-	trackingPlayer = false;
-	updateTransformationMatrix();
+    this->position.x = x;
+    this->position.y = y;
+    this->position.z = z;
+    moves = false;
+    xVel = 0;
+    yVel = 0;
+    zVel = 0;
+    grabTimer = 0;
+    givesPoints = true;
+    trackingPlayer = false;
+    updateTransformationMatrix();
 }
 
 Ring::Ring(float x, float y, float z, float xVel, float yVel, float zVel)
 {
-	this->position.x = x;
-	this->position.y = y;
-	this->position.z = z;
-	moves = true;
-	this->xVel = xVel;
-	this->yVel = yVel;
-	this->zVel = zVel;
-	grabTimer = 60;
-	givesPoints = false;
-	trackingPlayer = false;
-	updateTransformationMatrix();
+    this->position.x = x;
+    this->position.y = y;
+    this->position.z = z;
+    moves = true;
+    this->xVel = xVel;
+    this->yVel = yVel;
+    this->zVel = zVel;
+    grabTimer = 60;
+    givesPoints = false;
+    trackingPlayer = false;
+    updateTransformationMatrix();
 }
 
 void Ring::step()
 {/*
-	increaseRotation(0, 5, 0);
+    increaseRotation(0, 5, 0);
 
-	if (abs(getX() - Global::gameCamera->eye.x) > ENTITY_RENDER_DIST)
-	{
-		setVisible(false);
-	}
-	else
-	{
-		if (abs(getZ() - Global::gameCamera->eye.z) > ENTITY_RENDER_DIST)
-		{
-			setVisible(false);
-		}
-		else
-		{
-			setVisible(true);
+    if (abs(getX() - Global::gameCamera->eye.x) > ENTITY_RENDER_DIST)
+    {
+        setVisible(false);
+    }
+    else
+    {
+        if (abs(getZ() - Global::gameCamera->eye.z) > ENTITY_RENDER_DIST)
+        {
+            setVisible(false);
+        }
+        else
+        {
+            setVisible(true);
 
-			if (abs(getY() - Global::gameMainVehicle->getPosition()->y) < 40 &&
-				abs(getZ() - Global::gameMainVehicle->getPosition()->z) < 40 &&
-				abs(getX() - Global::gameMainVehicle->getPosition()->x) < 40 &&
-				grabTimer == 0)
-			{
-				if ((Global::gameMainVehicle->getCenterPosition()-getPosition()).lengthSquared() < (5.0f*5.0f + 9.0f*9.0f))
-				{
-			//if (grabTimer == 0 &&
-			//	Global::gamePlayer->getX() > getX() - hitboxH - Global::gamePlayer->getHitboxHorizontal() && Global::gamePlayer->getX() < getX() + hitboxH + Global::gamePlayer->getHitboxHorizontal() &&
-			//	Global::gamePlayer->getZ() > getZ() - hitboxH - Global::gamePlayer->getHitboxHorizontal() && Global::gamePlayer->getZ() < getZ() + hitboxH + Global::gamePlayer->getHitboxHorizontal() &&
-			//	Global::gamePlayer->getY() > getY() - hitboxV - Global::gamePlayer->getHitboxVertical()   && Global::gamePlayer->getY() < getY() + hitboxV)
-			//{
-					AudioPlayer::play(4, getPosition());
+            if (abs(getY() - Global::gameMainVehicle->getPosition()->y) < 40 &&
+                abs(getZ() - Global::gameMainVehicle->getPosition()->z) < 40 &&
+                abs(getX() - Global::gameMainVehicle->getPosition()->x) < 40 &&
+                grabTimer == 0)
+            {
+                if ((Global::gameMainVehicle->getCenterPosition()-getPosition()).lengthSquared() < (5.0f*5.0f + 9.0f*9.0f))
+                {
+            //if (grabTimer == 0 &&
+            //    Global::gamePlayer->getX() > getX() - hitboxH - Global::gamePlayer->getHitboxHorizontal() && Global::gamePlayer->getX() < getX() + hitboxH + Global::gamePlayer->getHitboxHorizontal() &&
+            //    Global::gamePlayer->getZ() > getZ() - hitboxH - Global::gamePlayer->getHitboxHorizontal() && Global::gamePlayer->getZ() < getZ() + hitboxH + Global::gamePlayer->getHitboxHorizontal() &&
+            //    Global::gamePlayer->getY() > getY() - hitboxV - Global::gamePlayer->getHitboxVertical()   && Global::gamePlayer->getY() < getY() + hitboxV)
+            //{
+                    AudioPlayer::play(4, getPosition());
 
-					for (int i = 0; i < 10; i++)
-					{
-						Vector3f pos(
-							getX() + Maths::random() * 8 - 4,
-							getY() + Maths::random() * 8 - 4,
-							getZ() + Maths::random() * 8 - 4);
+                    for (int i = 0; i < 10; i++)
+                    {
+                        Vector3f pos(
+                            getX() + Maths::random() * 8 - 4,
+                            getY() + Maths::random() * 8 - 4,
+                            getZ() + Maths::random() * 8 - 4);
 
-						Vector3f vel(0, 0.4f, 0);
+                        Vector3f vel(0, 0.4f, 0);
 
-						new Particle(ParticleResources::textureSparkleYellow, &pos, &vel,
-							0.025f, 30, 0, 7, -(7.0f / 30.0f), false);
-					}
+                        new Particle(ParticleResources::textureSparkleYellow, &pos, &vel,
+                            0.025f, 30, 0, 7, -(7.0f / 30.0f), false);
+                    }
 
-					Global::increaseRingCount(1);
+                    Global::increaseRingCount(1);
 
-					if (givesPoints)
-					{
-						Global::gameScore += 10;
-					}
+                    if (givesPoints)
+                    {
+                        Global::gameScore += 10;
+                    }
 
-					Main_deleteEntity(this);
-					return;
-				}
-			}
+                    Main_deleteEntity(this);
+                    return;
+                }
+            }
 
-			if (moves)
-			{
-				grabTimer = std::max(0, grabTimer - 1);
+            if (moves)
+            {
+                grabTimer = std::max(0, grabTimer - 1);
 
-				yVel -= 0.1f; //gravity
+                yVel -= 0.1f; //gravity
 
-				Vector3f velVec(xVel, yVel, zVel);
-				velVec.scale(0.99f); //air friction
-				xVel = velVec.x;
-				yVel = velVec.y;
-				zVel = velVec.z;
+                Vector3f velVec(xVel, yVel, zVel);
+                velVec.scale(0.99f); //air friction
+                xVel = velVec.x;
+                yVel = velVec.y;
+                zVel = velVec.z;
 
-				if (CollisionChecker::checkCollision(getX(), getY() - 5.0f, getZ(), getX() + xVel, getY() + yVel - 5.0f, getZ() + zVel))
-				{
-					setPosition(CollisionChecker::getCollidePosition());
-					increasePosition(0, 5.0f, 0);
+                if (CollisionChecker::checkCollision(getX(), getY() - 5.0f, getZ(), getX() + xVel, getY() + yVel - 5.0f, getZ() + zVel))
+                {
+                    setPosition(CollisionChecker::getCollidePosition());
+                    increasePosition(0, 5.0f, 0);
 
-					Vector3f normal = CollisionChecker::getCollideTriangle()->normal;
-					float speed = sqrtf(xVel*xVel + yVel*yVel + zVel*zVel);
+                    Vector3f normal = CollisionChecker::getCollideTriangle()->normal;
+                    float speed = sqrtf(xVel*xVel + yVel*yVel + zVel*zVel);
 
-					if (speed > 0.5f)
-					{
-						Vector3f vel(xVel, yVel, zVel);
-						Vector3f newVel = bounceVector(&vel, &normal, 0.7f);
-						xVel = newVel.x;
-						yVel = newVel.y;
-						zVel = newVel.z;
-						increasePosition(normal.x*0.01f, normal.y*0.01f, normal.z*0.01f);
-					}
-					else
-					{
-						moves = false;
-						grabTimer = 0;
-					}
-				}
-				else
-				{
-					increasePosition(xVel, yVel, zVel);
-				}
+                    if (speed > 0.5f)
+                    {
+                        Vector3f vel(xVel, yVel, zVel);
+                        Vector3f newVel = bounceVector(&vel, &normal, 0.7f);
+                        xVel = newVel.x;
+                        yVel = newVel.y;
+                        zVel = newVel.z;
+                        increasePosition(normal.x*0.01f, normal.y*0.01f, normal.z*0.01f);
+                    }
+                    else
+                    {
+                        moves = false;
+                        grabTimer = 0;
+                    }
+                }
+                else
+                {
+                    increasePosition(xVel, yVel, zVel);
+                }
 
-				if (getY() < -100)
-				{
-					Main_deleteEntity(this);
-				}
-			}
-			else
-			{
-				if (Global::gamePlayer->getShieldMagnet() != nullptr)
-				{
-					Vector3f diff = (*getPosition()) - Global::gamePlayer->getCenterPosition();
+                if (getY() < -100)
+                {
+                    Main_deleteEntity(this);
+                }
+            }
+            else
+            {
+                if (Global::gamePlayer->getShieldMagnet() != nullptr)
+                {
+                    Vector3f diff = (*getPosition()) - Global::gamePlayer->getCenterPosition();
 
-					if (diff.lengthSquared() < 60*60)
-					{
-						trackingPlayer = true;
-					}
+                    if (diff.lengthSquared() < 60*60)
+                    {
+                        trackingPlayer = true;
+                    }
 
-					if (trackingPlayer)
-					{
-						diff.scale(-0.35f);
-						increasePosition(diff.x, diff.y, diff.z);
-					}
-				}
-				else
-				{
-					trackingPlayer = false;
-				}
-			}
+                    if (trackingPlayer)
+                    {
+                        diff.scale(-0.35f);
+                        increasePosition(diff.x, diff.y, diff.z);
+                    }
+                }
+                else
+                {
+                    trackingPlayer = false;
+                }
+            }
 
-			updateTransformationMatrix();
-		}
-	}*/
+            updateTransformationMatrix();
+        }
+    }*/
     extern float dt;
     increaseRotation(0, 5*60*dt, 0);
     updateTransformationMatrix();
 
     if (fabsf(position.y - Global::gameMainPlayer->position.y) < 40 &&
-		fabsf(position.z - Global::gameMainPlayer->position.z) < 40 &&
-		fabsf(position.x - Global::gameMainPlayer->position.x) < 40 &&
-		grabTimer == 0)
-	{
-		if ((Global::gameMainPlayer->getCenterPosition() - position).lengthSquared() < (5.0f*5.0f + 9.0f*9.0f))
-		{
-			AudioPlayer::play(4, getPosition());
+        fabsf(position.z - Global::gameMainPlayer->position.z) < 40 &&
+        fabsf(position.x - Global::gameMainPlayer->position.x) < 40 &&
+        grabTimer == 0)
+    {
+        if ((Global::gameMainPlayer->getCenterPosition() - position).lengthSquared() < (5.0f*5.0f + 9.0f*9.0f))
+        {
+            AudioPlayer::play(4, getPosition());
 
-			for (int i = 0; i < 10; i++)
-			{
-				Vector3f pos(
-					position.x + Maths::random() * 8 - 4,
-					position.y + Maths::random() * 8 - 4,
-					position.z + Maths::random() * 8 - 4);
+            for (int i = 0; i < 10; i++)
+            {
+                Vector3f pos(
+                    position.x + Maths::random() * 8 - 4,
+                    position.y + Maths::random() * 8 - 4,
+                    position.z + Maths::random() * 8 - 4);
             
-				Vector3f partVel(0, 0.4f*60, 0);
+                Vector3f partVel(0, 0.4f*60, 0);
             
-				ParticleMaster::createParticle(ParticleResources::textureSparkleYellow, &pos, &partVel,
-					0.025f*60*60, 0.5f, 0, 4, -(4.0f / 0.5f), false, false, 0.5f);
-			}
+                ParticleMaster::createParticle(ParticleResources::textureSparkleYellow, &pos, &partVel,
+                    0.025f*60*60, 0.5f, 0, 4, -(4.0f / 0.5f), false, false, 0.5f);
+            }
 
-			Global::increaseRingCount(1);
+            Global::increaseRingCount(1);
 
-			if (givesPoints)
-			{
-				Global::gameScore += 10;
-			}
+            if (givesPoints)
+            {
+                Global::gameScore += 10;
+            }
 
-			Main_deleteChunkedEntity(this);
-			return;
-		}
-	}
+            Main_deleteChunkedEntity(this);
+            return;
+        }
+    }
 }
 
 std::list<TexturedModel*>* Ring::getModels()
 {
-	return &Ring::models;
+    return &Ring::models;
 }
 
 void Ring::loadStaticModels()
 {
-	if (Ring::models.size() > 0)
-	{
-		return;
-	}
+    if (Ring::models.size() > 0)
+    {
+        return;
+    }
 
-	#ifdef DEV_MODE
-	std::fprintf(stdout, "Loading ring static models...\n");
-	#endif
+    #ifdef DEV_MODE
+    std::fprintf(stdout, "Loading ring static models...\n");
+    #endif
 
     loadModel(&Ring::models, "res/Models/Objects/Ring/", "Ring");
 }
 
 void Ring::deleteStaticModels()
 {
-	#ifdef DEV_MODE
-	std::fprintf(stdout, "Deleting ring static models...\n");
-	#endif
+    #ifdef DEV_MODE
+    std::fprintf(stdout, "Deleting ring static models...\n");
+    #endif
 
-	Entity::deleteModels(&Ring::models);
+    Entity::deleteModels(&Ring::models);
 }
 
 const inline bool Ring::canLightdashOn()
 {
-	return true;
+    return true;
 }

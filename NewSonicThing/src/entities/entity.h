@@ -13,91 +13,91 @@ class CollisionModel;
 class Entity
 {
 public:
-	Vector3f position;
-	float rotX, rotY, rotZ, rotRoll;
-	float scale;
-	bool visible;
-	Vector3f baseColour;
-	Matrix4f transformationMatrix;
+    Vector3f position;
+    float rotX, rotY, rotZ, rotRoll;
+    float scale;
+    bool visible;
+    Vector3f baseColour;
+    Matrix4f transformationMatrix;
     char renderOrder = 0; //0 = rendered first (default), 1 = second, 2 = third, 3 = fourth + transparent (no depth testing)
 
-	static void deleteModels(std::list<TexturedModel*>* modelsToDelete);
-	static void deleteCollisionModel(CollisionModel** colModelToDelete);
+    static void deleteModels(std::list<TexturedModel*>* modelsToDelete);
+    static void deleteCollisionModel(CollisionModel** colModelToDelete);
 
 public:
-	Entity();
-	Entity(Vector3f* initialPosition, float rotX, float rotY, float rotZ, float scale);
-	virtual ~Entity();
+    Entity();
+    Entity(Vector3f* initialPosition, float rotX, float rotY, float rotZ, float scale);
+    virtual ~Entity();
 
-	virtual void step();
+    virtual void step();
 
-	virtual const bool isVehicle();
+    virtual const bool isVehicle();
 
-	virtual const bool isEmeraldPiece();
+    virtual const bool isEmeraldPiece();
 
-	virtual const bool isGoalTrigger();
+    virtual const bool isGoalTrigger();
 
-	virtual const bool isEnemy();
+    virtual const bool isEnemy();
 
     virtual const bool isPoint();
 
-	void increasePosition(float dx, float dy, float dz);
+    void increasePosition(float dx, float dy, float dz);
 
-	void increaseRotation(float dx, float dy, float dz);
+    void increaseRotation(float dx, float dy, float dz);
 
-	virtual std::list<TexturedModel*>* getModels();
+    virtual std::list<TexturedModel*>* getModels();
 
-	Vector3f* getPosition();
-	void setPosition(Vector3f* newPosition);
-	void setPosition(float newX, float newY, float newZ);
+    Vector3f* getPosition();
+    void setPosition(Vector3f* newPosition);
+    void setPosition(float newX, float newY, float newZ);
 
-	Vector3f* getBaseColour();
-	void setBaseColour(float red, float green, float blue);
+    Vector3f* getBaseColour();
+    void setBaseColour(float red, float green, float blue);
 
-	const float getRotX();
-	void setRotX(float newRotX);
+    const float getRotX();
+    void setRotX(float newRotX);
 
-	const float getRotY();
-	void setRotY(float newRotY);
+    const float getRotY();
+    void setRotY(float newRotY);
 
-	const float getRotZ();
-	void setRotZ(float newRotZ);
+    const float getRotZ();
+    void setRotZ(float newRotZ);
 
-	const float getRotSpin();
-	void setRotSpin(float newRotSpin);
+    const float getRotSpin();
+    void setRotSpin(float newRotSpin);
 
-	const float getScale();
-	void setScale(float newScale);
+    const float getScale();
+    void setScale(float newScale);
 
-	const bool getVisible();
-	void setVisible(bool newVisible);
+    const bool getVisible();
+    void setVisible(bool newVisible);
 
-	const float getX();
+    const float getX();
 
-	const float getY();
+    const float getY();
 
-	const float getZ();
+    const float getZ();
 
-	void setX(float newX);
+    void setX(float newX);
 
-	void setY(float newY);
+    void setY(float newY);
 
-	void setZ(float newZ);
+    void setZ(float newZ);
 
-	Matrix4f* getTransformationMatrix();
+    Matrix4f* getTransformationMatrix();
 
-	void updateTransformationMatrix();
+    void updateTransformationMatrix();
 
-	void updateTransformationMatrix(float scaleX, float scaleY, float scaleZ);
+    void updateTransformationMatrix(float scaleX, float scaleY, float scaleZ);
 
-	void updateTransformationMatrixYXZ();
+    void updateTransformationMatrixYXZ();
 
-	virtual const bool canLightdashOn();
+    virtual const bool canLightdashOn();
 
-	virtual const bool canHomingAttackOn();
+    virtual const bool canHomingAttackOn();
 
-	virtual const Vector3f getHomingCenter();
+    virtual const Vector3f getHomingCenter();
 
-	virtual void die();
+    virtual void die();
 };
 #endif

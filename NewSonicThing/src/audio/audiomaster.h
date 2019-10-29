@@ -9,16 +9,16 @@ class Vector3f;
 class AudioMaster
 {
 private:
-	static ALCdevice* device;
-	static ALCcontext* context;
+    static ALCdevice* device;
+    static ALCcontext* context;
 
 public:
-	static void init();
+    static void init();
 
-	static void updateListenerData(Vector3f* eye, Vector3f* target, Vector3f* up, Vector3f* vel);
+    static void updateListenerData(Vector3f* eye, Vector3f* target, Vector3f* up, Vector3f* vel);
 
-	static ALuint loadOGG(const char* fileName);
-	
-	static void cleanUp();
+    static ALuint loadOGG(const char* fileName);
+    
+    static void cleanUp();
 };
 #endif

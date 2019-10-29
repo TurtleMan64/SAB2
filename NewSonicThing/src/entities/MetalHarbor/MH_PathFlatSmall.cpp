@@ -21,61 +21,61 @@ MH_PathFlatSmall::MH_PathFlatSmall()
 
 MH_PathFlatSmall::MH_PathFlatSmall(float x, float y, float z, float rotY)
 {
-	position.x = x;
-	position.y = y;
-	position.z = z;
-	rotX = 0;
-	this->rotY = rotY;
-	rotZ = 0;
+    position.x = x;
+    position.y = y;
+    position.z = z;
+    rotX = 0;
+    this->rotY = rotY;
+    rotZ = 0;
 
-	scale = 1;
-	visible = true;
-	
-	updateTransformationMatrix();
+    scale = 1;
+    visible = true;
+    
+    updateTransformationMatrix();
 
-	collideModelOriginal = MH_PathFlatSmall::cmOriginal;
-	collideModelTransformed = collideModelOriginal->duplicateMe();
+    collideModelOriginal = MH_PathFlatSmall::cmOriginal;
+    collideModelTransformed = collideModelOriginal->duplicateMe();
 
-	CollisionChecker::addCollideModel(collideModelTransformed);
+    CollisionChecker::addCollideModel(collideModelTransformed);
 
-	updateCollisionModel();
+    updateCollisionModel();
 }
 
 void MH_PathFlatSmall::step()
 {
-	
+    
 }
 
 std::list<TexturedModel*>* MH_PathFlatSmall::getModels()
 {
-	return &MH_PathFlatSmall::models;
+    return &MH_PathFlatSmall::models;
 }
 
 void MH_PathFlatSmall::loadStaticModels()
 {
-	if (MH_PathFlatSmall::models.size() > 0)
-	{
-		return;
-	}
+    if (MH_PathFlatSmall::models.size() > 0)
+    {
+        return;
+    }
 
-	#ifdef DEV_MODE
-	std::fprintf(stdout, "Loading MH_PathFlatSmall static models...\n");
-	#endif
+    #ifdef DEV_MODE
+    std::fprintf(stdout, "Loading MH_PathFlatSmall static models...\n");
+    #endif
 
-	loadModel(&MH_PathFlatSmall::models, "res/Models/Levels/MetalHarbor/", "PathFlatSmall");
+    loadModel(&MH_PathFlatSmall::models, "res/Models/Levels/MetalHarbor/", "PathFlatSmall");
 
-	if (MH_PathFlatSmall::cmOriginal == nullptr)
-	{
-		MH_PathFlatSmall::cmOriginal = loadCollisionModel("Models/Levels/MetalHarbor/", "PathFlatSmallCollision");
-	}
+    if (MH_PathFlatSmall::cmOriginal == nullptr)
+    {
+        MH_PathFlatSmall::cmOriginal = loadCollisionModel("Models/Levels/MetalHarbor/", "PathFlatSmallCollision");
+    }
 }
 
 void MH_PathFlatSmall::deleteStaticModels()
 {
-	#ifdef DEV_MODE
-	std::fprintf(stdout, "Deleting MH_PathFlatSmall static models...\n");
-	#endif
+    #ifdef DEV_MODE
+    std::fprintf(stdout, "Deleting MH_PathFlatSmall static models...\n");
+    #endif
 
-	Entity::deleteModels(&MH_PathFlatSmall::models);
-	Entity::deleteCollisionModel(&MH_PathFlatSmall::cmOriginal);
+    Entity::deleteModels(&MH_PathFlatSmall::models);
+    Entity::deleteCollisionModel(&MH_PathFlatSmall::cmOriginal);
 }

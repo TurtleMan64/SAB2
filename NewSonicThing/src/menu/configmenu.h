@@ -11,49 +11,49 @@ class Button;
 class ConfigMenu : public Menu
 {
 private:
-	GLuint textureParallelogram;
-	GLuint textureParallelogramBackdrop;
-	GLuint textureParallelogramHalf;
-	GLuint textureParallelogramHalfBackdrop;
-	GLuint textureParallelogramHalf2;
-	GLuint textureParallelogramHalf2Backdrop;
+    GLuint textureParallelogram;
+    GLuint textureParallelogramBackdrop;
+    GLuint textureParallelogramHalf;
+    GLuint textureParallelogramHalfBackdrop;
+    GLuint textureParallelogramHalf2;
+    GLuint textureParallelogramHalf2Backdrop;
 
-	int moveXPrevious;
-	int moveYPrevious;
-	bool selectInputPrevious;
-	bool backInputPrevious;
+    int moveXPrevious;
+    int moveYPrevious;
+    bool selectInputPrevious;
+    bool backInputPrevious;
 
-	float holdDownTimer;
-	float holdUpTimer;
+    float holdDownTimer;
+    float holdUpTimer;
     float holdLeftTimer;
-	float holdRightTimer;
+    float holdRightTimer;
 
     int currentButtonIndex = 0;
     std::vector<Button*> buttonsNames;
     std::vector<Button*> buttonsValues;
 
-	bool visible;
+    bool visible;
 
-	// Animation
-	float offsetTarget;
-	float offsetCurr;
+    // Animation
+    float offsetTarget;
+    float offsetCurr;
 
 private:
-	void draw();
-	void setVisible(bool visibleStatus);
+    void draw();
+    void setVisible(bool visibleStatus);
 
     static std::string boolToString(bool value);
     static std::string floatToString(float value);
 
 public:
-	ConfigMenu();
-	~ConfigMenu();
-	void init();
-	void loadResources();
-	void unloadResources();
-	Menu* step();
-	
-	float fontSize;
+    ConfigMenu();
+    ~ConfigMenu();
+    void init();
+    void loadResources();
+    void unloadResources();
+    Menu* step();
+    
+    float fontSize;
 };
 
 #endif

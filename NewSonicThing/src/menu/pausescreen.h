@@ -9,34 +9,34 @@ class HUD;
 class PauseScreen : public Menu
 {
 private:
-	int menuSelection;
-	int menuSelectionMAX;
-	int menuDisplayID;
+    int menuSelection;
+    int menuSelectionMAX;
+    int menuDisplayID;
 
-	int moveYPrevious;
-	bool selectInputPrevious;
-	bool backInputPrevious;
+    int moveYPrevious;
+    bool selectInputPrevious;
+    bool backInputPrevious;
 
-	GUIText* textCursor;
-	GUIText* textResume;
-	GUIText* textCamera;
-	GUIText* textRestart;
-	GUIText* textQuit;
+    GUIText* textCursor;
+    GUIText* textResume;
+    GUIText* textCamera;
+    GUIText* textRestart;
+    GUIText* textQuit;
 
-	bool pausedSounds[14];
+    bool pausedSounds[14];
 
-	float size;
-	void selectButton();
-	void setVisible(bool visible);
+    float size;
+    void selectButton();
+    void setVisible(bool visible);
 
-	HUD* gameHud;
+    HUD* gameHud;
 
 public:
-	PauseScreen(HUD* gameHud);
+    PauseScreen(HUD* gameHud);
 
-	~PauseScreen();
+    ~PauseScreen();
 
-	Menu* step();
+    Menu* step();
 };
 
 #endif

@@ -22,20 +22,20 @@ public:
     bool onGround = false;
     float canMoveTimer = 0.0f;
 
-	//Functions that every player must be able to handle in some way
+    //Functions that every player must be able to handle in some way
 public:
 
-	//virtual void setCameraAngles(float newYaw, float newPitch);
+    //virtual void setCameraAngles(float newYaw, float newPitch);
 
-	//virtual void setCameraTargetYaw(float yaw);
+    //virtual void setCameraTargetYaw(float yaw);
 
-	//virtual void setCameraTargetPitch(float pitch);
+    //virtual void setCameraTargetPitch(float pitch);
 
-	//virtual void increaseGroundSpeed(float dx, float dz);
+    //virtual void increaseGroundSpeed(float dx, float dz);
 
-	//virtual float getSpeed();
+    //virtual float getSpeed();
 
-	virtual void goUp();
+    virtual void goUp();
 
     virtual void jump();
 
@@ -49,108 +49,108 @@ public:
 
     virtual void refreshCamera();
 
-	//virtual void setCanMoveTimer(int newMoveTimer);
+    //virtual void setCanMoveTimer(int newMoveTimer);
 
-	//virtual void setGroundSpeed(float newXspd, float newZspd);
+    //virtual void setGroundSpeed(float newXspd, float newZspd);
 
-	//virtual float getXVelGround();
+    //virtual float getXVelGround();
 
-	//virtual float getZVelGround();
+    //virtual float getZVelGround();
 
-	//virtual float getxVel();
+    //virtual float getxVel();
 
-	//virtual void setxVel(float xVel);
+    //virtual void setxVel(float xVel);
 
-	//virtual float getyVel();
+    //virtual float getyVel();
 
-	//virtual void setyVel(float yVel);
+    //virtual void setyVel(float yVel);
 
-	//virtual float getzVel();
+    //virtual float getzVel();
 
-	//virtual void setzVel(float zVel);
+    //virtual void setzVel(float zVel);
 
-	//virtual void setxVelAir(float xVelAir);
+    //virtual void setxVelAir(float xVelAir);
 
-	//virtual float getXVelAir();
+    //virtual float getXVelAir();
 
-	//virtual void setzVelAir(float zVelAir);
+    //virtual void setzVelAir(float zVelAir);
 
-	//virtual float getZVelAir();
+    //virtual float getZVelAir();
 
-	virtual void setHoverTimer(float newTime);
+    virtual void setHoverTimer(float newTime);
 
-	virtual float getHoverTimer();
+    virtual float getHoverTimer();
 
-	//virtual void setOnPlane(bool on);
+    //virtual void setOnPlane(bool on);
 
-	//virtual float getHitboxHorizontal();
+    //virtual float getHitboxHorizontal();
 
-	//virtual float getHitboxVertical();
+    //virtual float getHitboxVertical();
 
-	//virtual void stopMoving();
+    //virtual void stopMoving();
 
-	virtual void setInWater(float newWaterHeight);
+    virtual void setInWater(float newWaterHeight);
 
-	virtual void takeDamage(Vector3f* damageSource);
+    virtual void takeDamage(Vector3f* damageSource);
 
-	virtual void rebound(Vector3f* source);
+    virtual void rebound(Vector3f* source);
 
-	virtual bool isVulnerable();
+    virtual bool isVulnerable();
 
-	virtual void die();
+    virtual void die();
 
-	//virtual Vector3f getOverallVel();
+    //virtual Vector3f getOverallVel();
 
-	//virtual float getSpindashSpeed();
+    //virtual float getSpindashSpeed();
 
-	//virtual void debugAdjustCamera();
+    //virtual void debugAdjustCamera();
 
-	//virtual void boostMe(float amount);
+    //virtual void boostMe(float amount);
 
-	//virtual void setDisplacement(float x, float y, float z);
+    //virtual void setDisplacement(float x, float y, float z);
 
-	//virtual void setGravity(float newGrav);
+    //virtual void setGravity(float newGrav);
 
-	virtual bool isDying();
+    virtual bool isDying();
 
-	//virtual void setOnPlanePrevious(bool on);
+    //virtual void setOnPlanePrevious(bool on);
 
-	//virtual int getSpindashTimer();
+    //virtual int getSpindashTimer();
 
-	//virtual void setSpindashTimer(int newTimer);
+    //virtual void setSpindashTimer(int newTimer);
 
-	//virtual bool isChargingSpindash();
+    //virtual bool isChargingSpindash();
 
-	//virtual void setIsBall(bool newisBall);
+    //virtual void setIsBall(bool newisBall);
 
-	//returns the speed player goes after releasing a spindash
-	//virtual float calculateSpindashSpeed(int spindashCharge);
+    //returns the speed player goes after releasing a spindash
+    //virtual float calculateSpindashSpeed(int spindashCharge);
 
-	//virtual bool isOnGround();
+    //virtual bool isOnGround();
 
-	//Returns the normal of the triangle that the player has collided with
-	//virtual Vector3f* getCurrNorm();
+    //Returns the normal of the triangle that the player has collided with
+    //virtual Vector3f* getCurrNorm();
 
-	//Returns the center position of where the player is being drawn.
-	virtual Vector3f getCenterPosition();
+    //Returns the center position of where the player is being drawn.
+    virtual Vector3f getCenterPosition();
 
-	//virtual ShieldMagnet* getShieldMagnet();
+    //virtual ShieldMagnet* getShieldMagnet();
 
-	//virtual void setShieldMagnet(ShieldMagnet* newMagnet);
+    //virtual void setShieldMagnet(ShieldMagnet* newMagnet);
 
-	//virtual ShieldGreen* getShieldGreen();
+    //virtual ShieldGreen* getShieldGreen();
 
-	//virtual void setShieldGreen(ShieldGreen* newGreen);
+    //virtual void setShieldGreen(ShieldGreen* newGreen);
 
-	//virtual int getDiggingTimer();
+    //virtual int getDiggingTimer();
 
-	//virtual void increaseCombo();
+    //virtual void increaseCombo();
 
-	//virtual void setInvincibleTimer(int newTimer);
+    //virtual void setInvincibleTimer(int newTimer);
 
-	//virtual void setSpeedshoesTimer(int newTimer);
+    //virtual void setSpeedshoesTimer(int newTimer);
 
-	virtual void grabRocket();
+    virtual void grabRocket();
 
     virtual void releaseRocket();
 

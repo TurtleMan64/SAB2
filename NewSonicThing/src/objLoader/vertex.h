@@ -6,43 +6,43 @@
 class Vertex
 {
 public:
-	const int NO_INDEX = -1;
+    const int NO_INDEX = -1;
 
-	Vector3f position;
-	Vector3f color;
-	int textureIndex = NO_INDEX;
-	int normalIndex = NO_INDEX;
-	Vertex* duplicateVertex;
-	int index;
-	float length;
+    Vector3f position;
+    Vector3f color;
+    int textureIndex = NO_INDEX;
+    int normalIndex = NO_INDEX;
+    Vertex* duplicateVertex;
+    int index;
+    float length;
 
 public:
 
-	Vertex(int index, Vector3f* position, Vector3f* color);
+    Vertex(int index, Vector3f* position, Vector3f* color);
 
-	Vertex(int index, Vector3f* position);
+    Vertex(int index, Vector3f* position);
 
-	int getIndex();
+    int getIndex();
 
-	float getLength();
+    float getLength();
 
-	int isSet();
+    int isSet();
 
-	int hasSameTextureAndNormal(int textureIndexOther, int normalIndexOther);
+    int hasSameTextureAndNormal(int textureIndexOther, int normalIndexOther);
 
-	void setTextureIndex(int textureIndex);
+    void setTextureIndex(int textureIndex);
 
-	void setNormalIndex(int normalIndex);
+    void setNormalIndex(int normalIndex);
 
-	Vector3f* getPosition();
+    Vector3f* getPosition();
 
-	int getTextureIndex();
+    int getTextureIndex();
 
-	int getNormalIndex();
+    int getNormalIndex();
 
-	Vertex* getDuplicateVertex();
+    Vertex* getDuplicateVertex();
 
-	void setDuplicateVertex(Vertex* duplicateVertex);
+    void setDuplicateVertex(Vertex* duplicateVertex);
 
 };
 #endif

@@ -13,63 +13,63 @@ class Vector2f;
 class ParticleShader
 {
 private:
-	GLuint programID;
-	GLuint vertexShaderID;
-	GLuint fragmentShaderID;
+    GLuint programID;
+    GLuint vertexShaderID;
+    GLuint fragmentShaderID;
 
-	int location_modelViewMatrix;
-	int location_projectionMatrix;
-	int location_texOffset1;
-	int location_texOffset2;
-	int location_texCoordInfo;
-	int location_brightness;
-	int location_opacity;
-	int location_glow;
+    int location_modelViewMatrix;
+    int location_projectionMatrix;
+    int location_texOffset1;
+    int location_texOffset2;
+    int location_texCoordInfo;
+    int location_brightness;
+    int location_opacity;
+    int location_glow;
 
-	float matrixBuffer[16];
+    float matrixBuffer[16];
 
 public:
-	ParticleShader();
+    ParticleShader();
 
-	void start();
+    void start();
 
-	void stop();
+    void stop();
 
-	void cleanUp();
+    void cleanUp();
 
-	void loadTextureCoordInfo(Vector2f* offset1, Vector2f* offset2, float numRows, float blend);
+    void loadTextureCoordInfo(Vector2f* offset1, Vector2f* offset2, float numRows, float blend);
 
-	void loadBrightness(float brightness);
+    void loadBrightness(float brightness);
 
-	void loadOpacity(float opacity);
+    void loadOpacity(float opacity);
 
-	void loadGlow(float glow);
+    void loadGlow(float glow);
 
-	void loadProjectionMatrix(Matrix4f* projectionMatrix);
+    void loadProjectionMatrix(Matrix4f* projectionMatrix);
 
-	void loadModelViewMatrix(Matrix4f* modelView);
+    void loadModelViewMatrix(Matrix4f* modelView);
 
 
 protected:
-	void bindAttributes();
+    void bindAttributes();
 
-	void bindAttribute(int attatchment, const char* variableName);
+    void bindAttribute(int attatchment, const char* variableName);
 
-	void getAllUniformLocations();
+    void getAllUniformLocations();
 
-	int getUniformLocation(const char* uniformName);
+    int getUniformLocation(const char* uniformName);
 
-	void loadInt(int location, int value);
+    void loadInt(int location, int value);
 
-	void loadFloat(int, float);
+    void loadFloat(int, float);
 
-	void loadVector(int, Vector3f*);
+    void loadVector(int, Vector3f*);
 
-	void load2DVector(int location, Vector2f* vector);
+    void load2DVector(int location, Vector2f* vector);
 
-	void loadBoolean(int, float);
+    void loadBoolean(int, float);
 
-	void loadMatrix(int, Matrix4f*);
+    void loadMatrix(int, Matrix4f*);
 };
 
 #endif

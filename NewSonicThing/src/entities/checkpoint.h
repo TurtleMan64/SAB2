@@ -9,32 +9,32 @@ class TexturedModel;
 class Checkpoint : public Entity
 {
 private:
-	static std::list<TexturedModel*> models;
+    static std::list<TexturedModel*> models;
 
-	float scaleX;
-	float scaleY;
-	float scaleZ;
+    float scaleX;
+    float scaleY;
+    float scaleZ;
 
-	float sinT;
-	float cosT;
+    float sinT;
+    float cosT;
 
 public:
-	int ID;
+    int ID;
 
-	Checkpoint();
-	Checkpoint(
-		float rotationY, float x, float y, float z,
-		float scaleX, float scaleY, float scaleZ,
-		int number);
+    Checkpoint();
+    Checkpoint(
+        float rotationY, float x, float y, float z,
+        float scaleX, float scaleY, float scaleZ,
+        int number);
 
-	void step();
+    void step();
 
-	bool isPointInsideMe(Vector3f* test);
+    bool isPointInsideMe(Vector3f* test);
 
-	std::list<TexturedModel*>* getModels();
+    std::list<TexturedModel*>* getModels();
 
-	static void loadStaticModels();
+    static void loadStaticModels();
 
-	static void deleteStaticModels();
+    static void deleteStaticModels();
 };
 #endif

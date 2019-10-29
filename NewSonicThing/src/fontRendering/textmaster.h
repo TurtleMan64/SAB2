@@ -14,26 +14,26 @@ class Matrix4f;
 class TextMaster
 {
 private:
-	static std::unordered_map<FontType*, std::list<GUIText*>> texts;
-	static std::unordered_map<FontType*, std::list<GUINumber*>> numbers;
-	static FontRenderer* renderer;
+    static std::unordered_map<FontType*, std::list<GUIText*>> texts;
+    static std::unordered_map<FontType*, std::list<GUINumber*>> numbers;
+    static FontRenderer* renderer;
 
-	TextMaster();
+    TextMaster();
 
 public:
-	static void init();
+    static void init();
 
-	static void render();
+    static void render();
 
-	static void loadText(GUIText* text);
+    static void loadText(GUIText* text);
 
-	static void removeText(GUIText* text);
+    static void removeText(GUIText* text);
 
-	static void loadNumber(GUINumber* number);
+    static void loadNumber(GUINumber* number);
 
-	static void removeNumber(GUINumber* number);
+    static void removeNumber(GUINumber* number);
 
-	static void cleanUp();
+    static void cleanUp();
 };
 
 #endif
