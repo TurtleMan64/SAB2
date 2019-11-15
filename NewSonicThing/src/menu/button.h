@@ -29,6 +29,7 @@ public:
     void setPos(float xPos, float yPos);
 
     void generateText(std::string newText);
+    void generateText(std::string newText, bool darkText);
 
     GUIText* getText();
 };

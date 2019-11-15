@@ -37,11 +37,11 @@ Rocket::Rocket()
 
 }
 
-Rocket::Rocket(int point1ID, int point2ID)
+Rocket::Rocket(Vector3f* point1, Vector3f* point2)
 {
-    //get the positions of the start and end points
-    pointPositionStart = getPointPosition(point1ID);
-    pointPositionEnd = getPointPosition(point2ID);
+    //set the positions of the start and end points
+    pointPositionStart.set(point1);
+    pointPositionEnd.set(point2);
 
     //set some variables to their initial values
     position = pointPositionStart;
@@ -187,25 +187,6 @@ void Rocket::deleteStaticModels()
 }
 
 //functions used for the constructor start here
-
-Vector3f Rocket::getPointPosition(int pointID)
-{
-    Vector3f pointPos;
-    extern std::list<Entity*> gameEntitiesToAdd;
-    for (auto e : gameEntitiesToAdd)
-    {
-        if (e->isPoint())
-        {
-            Point* thisPoint = (Point*)e;
-            if (thisPoint->getID() == pointID)
-            {
-                pointPos = thisPoint->getPosition();
-                break;
-            }
-        }
-    }
-    return pointPos;
-}
 
 void Rocket::setupRocketBase()
 {

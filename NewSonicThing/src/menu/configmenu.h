@@ -11,12 +11,12 @@ class Button;
 class ConfigMenu : public Menu
 {
 private:
-    GLuint textureParallelogram;
-    GLuint textureParallelogramBackdrop;
-    GLuint textureParallelogramHalf;
-    GLuint textureParallelogramHalfBackdrop;
-    GLuint textureParallelogramHalf2;
-    GLuint textureParallelogramHalf2Backdrop;
+    static GLuint textureParallelogram;
+    static GLuint textureParallelogramBackdrop;
+    static GLuint textureParallelogramHalf;
+    static GLuint textureParallelogramHalfBackdrop ;
+    static GLuint textureParallelogramHalf2;
+    static GLuint textureParallelogramHalf2Backdrop;
 
     int moveXPrevious;
     int moveYPrevious;

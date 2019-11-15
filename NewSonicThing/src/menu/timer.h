@@ -25,6 +25,7 @@ public:
     void setTime(float newTime);
     void refresh();
     void increment();
+    void setVisible(bool newVisible);
     void freeze(bool freezeStatus);
 };
 

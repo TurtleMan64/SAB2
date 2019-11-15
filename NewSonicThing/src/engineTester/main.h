@@ -25,6 +25,7 @@ class ControllablePlayer;
 #include <unordered_set>
 #include "../toolbox/level.h"
 #include "../menu/menumanager.h"
+#include "../toolbox/vector.h"
 
 void Main_addEntity(Entity* entityToAdd);
 void Main_deleteEntity(Entity* entityToDelete);
@@ -53,19 +54,19 @@ void Main_deleteAllChunkedEntities();
 #define STATE_TITLE 4
 #define STATE_DEBUG 5
 
-#define LVL_WINDY_VALLEY     0
+#define LVL_TUTORIAL         0
 #define LVL_GREEN_FOREST     1
 #define LVL_METAL_HARBOR     2
 #define LVL_PYRAMID_CAVE     3
-#define LVL_SPEED_HIGHWAY    4
+#define LVL_SKY_RAIL         4
 #define LVL_RADICAL_HIGHWAY  5
 #define LVL_GREEN_HILL_ZONE  6
 #define LVL_CITY_ESCAPE      7
-#define LVL_TUTORIAL         8
+#define LVL_WINDY_VALLEY     8
 #define LVL_SEASIDE_HILL     9
 #define LVL_FROG_FOREST     10
 #define LVL_TEST            11
-#define LVL_SKY_RAIL        12
+#define LVL_SPEED_HIGHWAY   12
 #define LVL_NOKI_BAY        13
 #define LVL_DELFINO_PLAZA   14
 
@@ -101,7 +102,6 @@ public:
     static int levelID;
     static std::string levelName;
     static std::string levelNameDisplay;
-    static float raceStartTimer;
     static bool shouldLoadLevel;
     static bool isNewLevel;
     static bool isAutoCam;
@@ -113,6 +113,7 @@ public:
     static WaterFrameBuffers* gameWaterFBOs;
     static std::vector<WaterTile*> gameWaterTiles;
     static int gameMainVehicleSpeed;
+    static float startStageTimer;
     static float finishStageTimer;
     static Fbo* gameMultisampleFbo;
     static Fbo* gameOutputFbo;
@@ -137,34 +138,29 @@ public:
     static int renderCount;
     //static const int syncToDisplayEveryXFrames = 1; //if for some reason you want to render at double, triple, etc. the fps of the monitor
     //static float fpsTarget; //experiment to try to sleep to maintain a target fps
-    static float fpsTargetBusy; //experiment to try to busy wait to maintain a target fps
+    static float fpsLimit; //experiment to try to busy wait to maintain a target fps
     static bool useFullscreen;
     static int displaySizeChanged; //This will be 1 for a single frame after the size of the window changes (set in callback)
 
     static std::list<std::string> raceLog;
     static bool shouldLogRace;
 
-    static bool  spawnAtCheckpoint;
-    static float checkpointX;
-    static float checkpointY;
-    static float checkpointZ;
-    static float checkpointRotY;
-    static float checkpointCamYaw;
-    static float checkpointCamPitch;
-    static int   checkpointTimeCen;
-    static int   checkpointTimeSec;
-    static int   checkpointTimeMin;
+    static bool spawnAtCheckpoint;
+    static Vector3f checkpointPlayerPos;
+    static Vector3f checkpointPlayerDir;
+    static Vector3f checkpointCamDir;
+    static float checkpointTime;
 
     //texts for the title card
     static GUIText* titleCardLevelName;
     static GUIText* titleCardMission;
     static GUIText* titleCardMissionDescription;
 
-    static std::list<Checkpoint*> gameCheckpointList;
-    static int gameCheckpointLast;
-
     static std::vector<Level> gameLevelData;
     static std::unordered_map<std::string, std::string> gameSaveData;
+
+    static int gameArcadeIndex;
+    static std::vector<int> gameArcadeLevelIds;
 
     //Debug display
     static bool debugDisplay;

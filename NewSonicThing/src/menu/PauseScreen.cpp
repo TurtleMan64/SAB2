@@ -42,7 +42,7 @@ PauseScreen::PauseScreen(HUD* gameHud)
         }
     }
 
-    printf("Pause Screen initializing...\n");
+    //printf("Pause Screen initializing...\n");
     //this->font = new FontType(Loader::loadTexture("res/Fonts/vipnagorgialla.png"), "res/Fonts/vipnagorgialla.fnt"); INCR_NEW
 
     Global::gameState = STATE_PAUSED;
@@ -63,7 +63,7 @@ PauseScreen::PauseScreen(HUD* gameHud)
 
     this->textQuit = new GUIText("Quit", size, Global::fontVipnagorgialla, 0.5f, 0.65f, 4, true); INCR_NEW("GUIText");
 
-    printf("Pause Screen initialized!\n");
+    //printf("Pause Screen initialized!\n");
 }
 
 PauseScreen::~PauseScreen()
@@ -175,8 +175,6 @@ Menu* PauseScreen::step()
             if (Global::gameLives > 0)
             {
                 Global::shouldLoadLevel = true;
-                this->gameHud->getTimer()->setTime(0.0f);
-                this->gameHud->getTimer()->freeze(true);
                 Vector3f vel(0, 0, 0);
                 ParticleMaster::createParticle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &vel, 0, 1.0f, 0.0f, 50.0f, 0, 50.0f, 0, true, false);
                 Global::gameState = STATE_RUNNING;

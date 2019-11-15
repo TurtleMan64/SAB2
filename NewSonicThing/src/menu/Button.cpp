@@ -41,6 +41,15 @@ void Button::generateText(std::string newText)
     text = new GUIText(newText, textScale, textFont, textPosX, textPosY, 4, true); INCR_NEW("GUIText");
 }
 
+void Button::generateText(std::string newText, bool darkText)
+{
+    generateText(newText);
+    if (darkText)
+    {
+        text->colour.set(0.5f, 0.5f, 0.5f);
+    }
+}
+
 // Changes the button poosition. Should be preceded by GuiManager::clearGuisToRender.
 void Button::setPos(float xPos, float yPos)
 {

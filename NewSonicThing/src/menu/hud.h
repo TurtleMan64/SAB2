@@ -25,6 +25,7 @@ private:
     GUINumber* numberScore = nullptr;
     GUINumber* numberSpeed = nullptr;
     GUIText* textSpeedUnits = nullptr;
+    GUIText* textLivesMission = nullptr;
     Timer* timer = nullptr;
 
 public:

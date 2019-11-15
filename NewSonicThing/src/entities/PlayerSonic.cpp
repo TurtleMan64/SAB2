@@ -25,6 +25,7 @@
 #include "maniasonicmodel.h"
 #include "maniamightymodel.h"
 #include "ringmoving.h"
+#include "../menu/timer.h"
 
 #include <list>
 #include <vector>
@@ -72,6 +73,23 @@ void PlayerSonic::step()
     hoverTimer        = std::fmaxf(0.0f,  hoverTimer        - dt);
     homingAttackTimer = std::fmaxf(-1.0f, homingAttackTimer - dt);
     hitTimer          = std::fmaxf(0.0f,  hitTimer          - dt);
+    float deadTimerOld = deadTimer;
+    if (deadTimer >= -0.5f)
+    {
+        deadTimer -= dt;
+    }
+
+    if (deadTimerOld >  1.0f && 
+        deadTimer    <= 1.0f)
+	{
+		Vector3f partVel(0, 0, 0);
+        ParticleMaster::createParticle(ParticleResources::textureBlackFadeOutAndIn, Global::gameCamera->getFadePosition1(), &partVel, 0, 2.0f, 0, 400, 0, true, false, 1);
+	}
+	else if (deadTimerOld >  0.0f &&
+             deadTimer    <= 0.0f)
+	{
+		Global::shouldLoadLevel = true;
+	}
 
     setInputs();
 
@@ -767,6 +785,8 @@ void PlayerSonic::step()
                     isHomingOnPoint = false;
                     hoverTimer = 0.0f;
                     AudioPlayer::play(8, getPosition());
+                    setPosition(CollisionChecker::getCollidePosition());
+                    increasePosition(colNormal->x*FLOOR_OFFSET, colNormal->y*FLOOR_OFFSET, colNormal->z*FLOOR_OFFSET);
                 }
                 else
                 {
@@ -1280,6 +1300,11 @@ void PlayerSonic::step()
         vel.setLength(newSpeed);
     }
 
+    if (position.y < Global::deathHeight)
+    {
+        die();
+    }
+
     //Animating us
     updateAnimationValues();
     animate();
@@ -1289,8 +1314,8 @@ void PlayerSonic::step()
 
     if (Global::shouldLogRace)
     {
-        playerModel->log(&Global::raceLog);
-        fprintf(stdout, "log\n");
+        //playerModel->log(&Global::raceLog);
+        //fprintf(stdout, "log\n");
     }
 
     //Animating the camera
@@ -1338,7 +1363,7 @@ void PlayerSonic::calcSpindashDirection()
     {
         spindashDirection.set(&newDir);
     }
-    else if (vel.length() > 50.0f)
+    else if (vel.length() > 10.0f)
     {
         spindashDirection.set(&vel);
     }
@@ -1509,7 +1534,7 @@ void PlayerSonic::moveMeGround()
 
 void PlayerSonic::moveMeAir()
 {
-    if (isGrinding || isLightdashing || (isHomingOnPoint && homingAttackTimer > 0))
+    if (isGrinding || isLightdashing || (isHomingOnPoint && homingAttackTimer > 0) || onRocket)
     {
         return;
     }
@@ -1877,7 +1902,11 @@ void PlayerSonic::updateAnimationValues()
 {
     float currSpeed = vel.length();
 
-    if (isLightdashing)
+    if (deadTimer > -1.0f)
+    {
+        
+    }
+    else if (isLightdashing)
     {
 
     }
@@ -1952,25 +1981,30 @@ void PlayerSonic::updateAnimationValues()
 
         if (currSpeed > spindashPowerMax-20.0f)
         {
-            Vector3f rng(Maths::nextUniform()-0.5f, Maths::nextUniform()-0.5f, Maths::nextUniform()-0.5f);
-            rng.scale(75.0f);
-            rng = Maths::projectOntoPlane(&rng, &relativeUp);
+            float chanceToSpawn = dt*60.0f;
 
-            if (isRunningOnWater)
+            if (Maths::nextUniform() < chanceToSpawn) //on higher than 60fps, dont spawn every frame
             {
-                float partScale = 5.0f+Maths::nextGaussian();
-                Vector3f spd = rng;
-                Vector3f partPos = position + relativeUp.scaleCopy(partScale/2);
-                //todo make this look good
-                ParticleMaster::createParticle(ParticleResources::textureSplash, &partPos, &spd, 0, 0.25f + (0.125f*Maths::nextGaussian()), 0, partScale, 0.0f, false, false, 1.0f);
+                Vector3f rng(Maths::nextUniform()-0.5f, Maths::nextUniform()-0.5f, Maths::nextUniform()-0.5f);
+                rng.scale(75.0f);
+                rng = Maths::projectOntoPlane(&rng, &relativeUp);
+
+                if (isRunningOnWater)
+                {
+                    float partScale = 5.0f+Maths::nextGaussian();
+                    Vector3f spd = rng;
+                    Vector3f partPos = position + relativeUp.scaleCopy(partScale/2);
+                    //todo make this look good
+                    ParticleMaster::createParticle(ParticleResources::textureSplash, &partPos, &spd, 0, 0.25f + (0.125f*Maths::nextGaussian()), 0, partScale, 0.0f, false, false, 1.0f);
+                }
+                else
+                {
+                    Vector3f spd = relativeUp.scaleCopy(55.0f) + rng;
+                    Vector3f partPos = position + relativeUp.scaleCopy(1.5f);
+                    ParticleMaster::createParticle(ParticleResources::textureDust, &partPos, &spd, 0, 0.25f + (0.125f*Maths::nextGaussian()), 0, 5.0f+Maths::nextGaussian(), 0.0f, false, false, 1.0f);
+                }
+                //new Particle(ParticleResources::textureDust, &partPos, 0.25f, 6.0f, 2.8f, false);
             }
-            else
-            {
-                Vector3f spd = relativeUp.scaleCopy(55.0f) + rng;
-                Vector3f partPos = position + relativeUp.scaleCopy(1.5f);
-                ParticleMaster::createParticle(ParticleResources::textureDust, &partPos, &spd, 0, 0.25f + (0.125f*Maths::nextGaussian()), 0, 5.0f+Maths::nextGaussian(), 0.0f, false, false, 1.0f);
-            }
-            //new Particle(ParticleResources::textureDust, &partPos, 0.25f, 6.0f, 2.8f, false);
         }
     }
 
@@ -1996,7 +2030,14 @@ void PlayerSonic::updateAnimationValues()
     {
         Vector3f centerNew = getCenterPosition();
         Vector3f diff = centerNew - centerPosPrev;
-        int numParticles = (int)(diff.length()/density);
+        float diffLength = diff.length();
+        int numParticles = (int)(diffLength/density);
+        float remainder = fmodf(diffLength/density, 1.0f);
+
+        if (Maths::nextUniform() < remainder)
+        {
+            numParticles++;
+        }
 
         Vector3f zero(0, 0, 0);
 
@@ -2056,7 +2097,12 @@ void PlayerSonic::animate()
         }
     }
 
-    if (isLightdashing)
+    if (deadTimer > -1.0f)
+    {
+        playerModel->setOrientation(dspX, dspY, dspZ, 0, airYaw, 0, 0, &relativeUpAnim);
+        playerModel->animate(19, 0);
+    }
+    else if (isLightdashing)
     {
         playerModel->setOrientation(dspX, dspY, dspZ, 0, airYaw, 90, airPitch, &relativeUpAnim);
         playerModel->animate(18, 0);
@@ -2170,7 +2216,7 @@ void PlayerSonic::setInputs()
     inputAction2Previous = Input::inputs.INPUT_PREVIOUS_ACTION3;
     inputAction3Previous = Input::inputs.INPUT_PREVIOUS_ACTION4;
 
-    if (canMoveTimer > 0.0f || Global::finishStageTimer >= 0.0f || hitTimer > 0.0f)
+    if (canMoveTimer > 0.0f || Global::finishStageTimer >= 0.0f || hitTimer > 0.0f || deadTimer > -1.0f)
     {
         inputJump    = false;
         inputAction  = false;
@@ -2252,42 +2298,56 @@ void PlayerSonic::refreshCamera()
 {
     //Animating the camera
 
-    //only need this in case of FOV change
-    //Master_makeProjectionMatrix();
-
-    Vector3f camOffset(&camDirSmooth);
-    camOffset.setLength(camRadius);
-
-    Vector3f camHeight(&relativeUpSmooth);
-    camHeight.setLength(camHeightOffset);
-
-    Vector3f eye(&position);
-    eye = eye - camOffset;
-    eye = eye + camHeight;
-
-    Vector3f target(&position);
-    target = target + camHeight;
-
-    Vector3f up(&relativeUpSmooth);
-    up.normalize();
-
-    Vector3f camDelta = eye - target;
-    camDelta.setLength(5); //this is what causes metal harbor to go through cam at beginning
-    Vector3f camStart = target + camDelta;
-    //CollisionChecker::debug = Input::inputs.INPUT_ACTION4;
-    //std::fprintf(stdout, "camStart = (%f, %f, %f)  \ncamEnd = (%f, %f, %f)\n", camStart.x, camStart.y, camStart.z, eye.x, eye.y, eye.z);
-    if (CollisionChecker::checkCollision(camStart.x, camStart.y, camStart.z, eye.x, eye.y, eye.z))
+    if (deadTimer == -1.0f)
     {
-        //std::fprintf(stdout, "there was a collision");
-        Vector3f delta = eye - target;
-        delta.setLength(3);
-        Vector3f newPos(CollisionChecker::getCollidePosition());
-        newPos = newPos - delta;
-        eye.set(&newPos);
-    }
-    //CollisionChecker::debug = false;
+        //only need this in case of FOV change
+        //Master_makeProjectionMatrix();
 
-    Global::gameCamera->setViewMatrixValues(&eye, &target, &up);
+        Vector3f camOffset(&camDirSmooth);
+        camOffset.setLength(camRadius);
+
+        Vector3f camHeight(&relativeUpSmooth);
+        camHeight.setLength(camHeightOffset);
+
+        Vector3f eye(&position);
+        eye = eye - camOffset;
+        eye = eye + camHeight;
+
+        Vector3f target(&position);
+        target = target + camHeight;
+
+        Vector3f up(&relativeUpSmooth);
+        up.normalize();
+
+        Vector3f camDelta = eye - target;
+        camDelta.setLength(5); //this is what causes metal harbor to go through cam at beginning
+        Vector3f camStart = target + camDelta;
+        if (CollisionChecker::checkCollision(camStart.x, camStart.y, camStart.z, eye.x, eye.y, eye.z))
+        {
+            Vector3f delta = eye - target;
+            delta.setLength(3);
+            Vector3f newPos(CollisionChecker::getCollidePosition());
+            newPos = newPos - delta;
+            eye.set(&newPos);
+        }
+
+        Global::gameCamera->setViewMatrixValues(&eye, &target, &up);
+    }
+    else
+	{
+		Camera* cam = Global::gameCamera;
+
+        Vector3f target = getCenterPosition();
+
+        Vector3f yAxis(0, 1, 0);
+
+        Vector3f diff = cam->eye - target;
+
+        Vector3f perpen = diff.cross(&yAxis);
+        Vector3f up = Maths::rotatePoint(&diff, &perpen, Maths::PI/2);
+
+		Global::gameCamera->setViewMatrixValues(&Global::gameCamera->eye, &target, &up);
+	}
 }
 
 //Do a small 'pop off' off the wall
@@ -2301,6 +2361,29 @@ void PlayerSonic::popOffWall()
         onGround = false;
         relativeUp.set(0, 1, 0);
     }
+}
+
+void PlayerSonic::die()
+{
+	if (deadTimer == -1.0f && Global::finishStageTimer == -1.0f)
+	{
+		AudioPlayer::play(9, getPosition());
+		deadTimer = 3.0f;
+        if (Global::mainHudTimer != nullptr)
+        {
+            Global::mainHudTimer->freeze(true);
+        }
+	}
+}
+
+bool PlayerSonic::isDying()
+{
+    return (deadTimer > -1.0f);
+}
+
+bool PlayerSonic::canDealDamage()
+{
+    return (hitTimer == 0.0f);
 }
 
 void PlayerSonic::hitSpring(Vector3f* direction, float power, float lockInputTime, bool resetsCamera)
@@ -2352,9 +2435,34 @@ void PlayerSonic::hitSpringTriple(Vector3f* direction, float power, float lockIn
     isBouncing = false;
     isHomingOnPoint = false;
     justBounced = false;
+    justHomingAttacked = false;
     hoverTimer = 0.0f;
     canMoveTimer = lockInputTime;
     hitSpringTimer = lockInputTime;
+}
+
+void PlayerSonic::hitSpeedRamp(Vector3f* direction, float speed, float lockInputTime)
+{
+    vel.set(direction);
+    vel.setLength(speed);
+    onGround = false;
+    isBall = false;
+    isJumping = false;
+    isSkidding = false;
+    isLightdashing = false;
+    isSpindashing = false;
+    isGrinding = false;
+    isStomping = false;
+    isBouncing = false;
+    isHomingOnPoint = false;
+    justBounced = false;
+    hoverTimer = 0.0f;
+    canMoveTimer = lockInputTime;
+
+    camDir.set(direction);
+    camDir.normalize();
+
+    position.y += 4;
 }
 
 void PlayerSonic::hitDashpad()

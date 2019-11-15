@@ -12,7 +12,7 @@ class Button;
 class MainMenu : public Menu
 {
 private:
-    enum ButtonID { mission, config, exit };
+    enum ButtonID { arcade, mission, extra, config, exit };
 
     int menuSelectionID;    // Current menu selection highlighted
 
@@ -31,6 +31,8 @@ private:
 
     void unloadResources();
 
+    void loadResources();
+
     void setVisible(bool visibleStatus);
 
     bool visible;
@@ -47,11 +49,7 @@ public:
 
     ~MainMenu();
 
-    void init();
-
     Menu* step();
-
-    void loadResources();
 
     void draw();
 };

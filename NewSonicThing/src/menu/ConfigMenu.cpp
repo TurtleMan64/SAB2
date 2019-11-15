@@ -24,39 +24,43 @@
 #include "mainmenu.h"
 #include "../toolbox/maths.h"
 
+GLuint ConfigMenu::textureParallelogram              = GL_NONE;
+GLuint ConfigMenu::textureParallelogramBackdrop      = GL_NONE;
+GLuint ConfigMenu::textureParallelogramHalf          = GL_NONE;
+GLuint ConfigMenu::textureParallelogramHalfBackdrop  = GL_NONE;
+GLuint ConfigMenu::textureParallelogramHalf2         = GL_NONE;
+GLuint ConfigMenu::textureParallelogramHalf2Backdrop = GL_NONE;
+
 ConfigMenu::ConfigMenu()
 {
-    std::cout << "Initializing Config Menu\n";
+    //std::cout << "Initializing Config Menu\n";
     this->init();
     this->loadResources();
     this->visible = true;
     this->offsetCurr = 0.0f;
     this->offsetTarget = 0.0f;
-    std::cout << "Config Menu initialized\n";
+    //std::cout << "Config Menu initialized\n";
 }
 
 void ConfigMenu::init()
 {
     fontSize = 0.05f;
-    textureParallelogram = Loader::loadTextureNoInterpolation(
-        "res/Images/MainMenu/Parallelogram.png");
-    textureParallelogramBackdrop = Loader::loadTextureNoInterpolation(
-        "res/Images/MainMenu/ParallelogramBackdrop.png");
-    textureParallelogramHalf = Loader::loadTextureNoInterpolation(
-        "res/Images/MainMenu/ParallelogramHalf.png");
-    textureParallelogramHalfBackdrop = Loader::loadTextureNoInterpolation(
-        "res/Images/MainMenu/ParallelogramHalfBackdrop.png");
-    textureParallelogramHalf2 = Loader::loadTextureNoInterpolation(
-        "res/Images/MainMenu/ParallelogramHalf2.png");
-    textureParallelogramHalf2Backdrop = Loader::loadTextureNoInterpolation(
-        "res/Images/MainMenu/ParallelogramHalf2Backdrop.png");
+    if (ConfigMenu::textureParallelogram == GL_NONE)
+    {
+        ConfigMenu::textureParallelogram              = Loader::loadTextureNoInterpolation("res/Images/MainMenu/Parallelogram.png");
+        ConfigMenu::textureParallelogramBackdrop      = Loader::loadTextureNoInterpolation("res/Images/MainMenu/ParallelogramBackdrop.png");
+        ConfigMenu::textureParallelogramHalf          = Loader::loadTextureNoInterpolation("res/Images/MainMenu/ParallelogramHalf.png");
+        ConfigMenu::textureParallelogramHalfBackdrop  = Loader::loadTextureNoInterpolation("res/Images/MainMenu/ParallelogramHalfBackdrop.png");
+        ConfigMenu::textureParallelogramHalf2         = Loader::loadTextureNoInterpolation("res/Images/MainMenu/ParallelogramHalf2.png");
+        ConfigMenu::textureParallelogramHalf2Backdrop = Loader::loadTextureNoInterpolation("res/Images/MainMenu/ParallelogramHalf2Backdrop.png");
+    }
 }
 
 ConfigMenu::~ConfigMenu()
 {
-    std::cout << "Deleting Config Menu\n";
+    //std::cout << "Deleting Config Menu\n";
     this->unloadResources();
-    std::cout << "Config Menu deleted.\n";
+    //std::cout << "Config Menu deleted.\n";
 }
 
 void ConfigMenu::loadResources()
@@ -72,25 +76,32 @@ void ConfigMenu::loadResources()
 
     buttonsNames.clear();
 
-    buttonsNames.push_back(new Button("Window Width",     Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(0)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
-    buttonsNames.push_back(new Button("Window Height",    Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(1)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
-    buttonsNames.push_back(new Button("Fullscreen",       Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(2)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
-    buttonsNames.push_back(new Button("Unlock FPS",       Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(3)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
-    buttonsNames.push_back(new Button("FOV",              Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(4)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
-    buttonsNames.push_back(new Button("SFX Volume",       Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(5)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
-    buttonsNames.push_back(new Button("BGM Volume",       Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(6)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
-    buttonsNames.push_back(new Button("Render Particles", Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(7)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
-    
+    //buttonsNames.push_back(new Button("Window Width",     Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(0)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    //buttonsNames.push_back(new Button("Window Height",    Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(1)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    //buttonsNames.push_back(new Button("Fullscreen",       Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(0)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    buttonsNames.push_back(new Button("V-Sync",           Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(0)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    buttonsNames.push_back(new Button("FPS Limit",        Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(1)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    buttonsNames.push_back(new Button("FOV",              Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(2)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    buttonsNames.push_back(new Button("SFX Volume",       Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(3)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    buttonsNames.push_back(new Button("BGM Volume",       Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(4)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    buttonsNames.push_back(new Button("Render Particles", Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(5)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    buttonsNames.push_back(new Button("Show FPS",         Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(6)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+
     buttonsValues.clear();
     extern float VFOV_BASE;
-    buttonsValues.push_back(new Button(std::to_string(SCR_WIDTH),                         Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(0)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
-    buttonsValues.push_back(new Button(std::to_string(SCR_HEIGHT),                        Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(1)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
-    buttonsValues.push_back(new Button(boolToString(Global::useFullscreen),               Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(2)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
-    buttonsValues.push_back(new Button(boolToString(Global::framerateUnlock),             Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(3)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
-    buttonsValues.push_back(new Button(floatToString(VFOV_BASE),                          Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(4)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
-    buttonsValues.push_back(new Button(floatToString(100*AudioPlayer::soundLevelSFX)+"%", Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(5)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
-    buttonsValues.push_back(new Button(floatToString(100*AudioPlayer::soundLevelBGM)+"%", Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(6)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
-    buttonsValues.push_back(new Button(boolToString(Global::renderParticles),             Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(7)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    //buttonsValues.push_back(new Button(std::to_string(SCR_WIDTH),                         Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(0)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    //buttonsValues.push_back(new Button(std::to_string(SCR_HEIGHT),                        Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(1)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    //buttonsValues.push_back(new Button(boolToString(Global::useFullscreen),               Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(0)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    buttonsValues.push_back(new Button(boolToString(!Global::framerateUnlock),            Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(0)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    buttonsValues.push_back(new Button(std::to_string((int)Global::fpsLimit),             Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(1)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    buttonsValues.push_back(new Button(floatToString(VFOV_BASE),                          Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(2)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    buttonsValues.push_back(new Button(floatToString(100*AudioPlayer::soundLevelSFX)+"%", Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(3)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    buttonsValues.push_back(new Button(floatToString(100*AudioPlayer::soundLevelBGM)+"%", Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(4)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    buttonsValues.push_back(new Button(boolToString(Global::renderParticles),             Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(5)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    buttonsValues.push_back(new Button(boolToString(Global::displayFPS),                  Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(6)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+
+    buttonsNames[1]->generateText("FPS Limit", !Global::framerateUnlock);
+    buttonsValues[1]->generateText(std::to_string((int)Global::fpsLimit), !Global::framerateUnlock);
 }
 
 std::string ConfigMenu::boolToString(bool value)
@@ -112,7 +123,7 @@ std::string ConfigMenu::floatToString(float value)
 
 void ConfigMenu::unloadResources()
 {
-    std::cout << "Unloading Config Menu resources.\n";
+    //std::cout << "Unloading Config Menu resources.\n";
     if ((int)buttonsNames.size() == 0)
     {
         std::fprintf(stdout, "Warning: ConfigMenu unloading resources when they are empty.\n");
@@ -133,7 +144,7 @@ void ConfigMenu::unloadResources()
     buttonsValues.clear();
 
     currentButtonIndex = 0;
-    std::cout << "Config Menu resources deleted.\n";
+    //std::cout << "Config Menu resources deleted.\n";
 }
 
 void ConfigMenu::draw()
@@ -343,52 +354,58 @@ Menu* ConfigMenu::step()
         switch (currentButtonIndex)
         {
             case 0:
-                //glfwSetWindowSize(getWindow(), SCR_WIDTH - 1*holdMultiplier, SCR_HEIGHT);
-                //buttonsValues[0]->generateText(std::to_string(SCR_WIDTH));
+                Global::framerateUnlock = !Global::framerateUnlock;
+                buttonsValues[0]->generateText(boolToString(!Global::framerateUnlock));
+                buttonsValues[1]->generateText(std::to_string((int)Global::fpsLimit), !Global::framerateUnlock);
+                buttonsNames[1]->generateText("FPS Limit", !Global::framerateUnlock);
                 break;
 
             case 1:
-                //glfwSetWindowSize(getWindow(), SCR_WIDTH, SCR_HEIGHT - 1*holdMultiplier);
-                //buttonsValues[1]->generateText(std::to_string(SCR_HEIGHT));
+                if (Global::framerateUnlock)
+                {
+                    Global::fpsLimit -= 1.0f;
+                    if (Global::fpsLimit < 30)
+                    {
+                        Global::fpsLimit = 30;
+                    }
+                    buttonsValues[1]->generateText(std::to_string((int)Global::fpsLimit), false);
+                }
                 break;
 
             case 2:
-                break;
-
-            case 3:
-                Global::framerateUnlock = !Global::framerateUnlock;
-                buttonsValues[3]->generateText(boolToString(Global::framerateUnlock));
-                break;
-
-            case 4:
                 VFOV_BASE = VFOV_BASE - 1.0f;
-                buttonsValues[4]->generateText(floatToString(VFOV_BASE));
+                buttonsValues[2]->generateText(floatToString(VFOV_BASE));
                 Master_makeProjectionMatrix();
                 break;
 
-            case 5:
+            case 3:
                 if (AudioPlayer::soundLevelSFX > 0.0f)
                 {
                     AudioPlayer::play(36, Global::gameCamera->getFadePosition1());
                 }
                 AudioPlayer::soundLevelSFX = std::fmaxf(0.0f, AudioPlayer::soundLevelSFX - 0.01f);
                 AudioPlayer::soundLevelSFX = std::roundf(100*AudioPlayer::soundLevelSFX)/100.0f;
-                buttonsValues[5]->generateText(floatToString(std::roundf(100*AudioPlayer::soundLevelSFX))+"%");
+                buttonsValues[3]->generateText(floatToString(std::roundf(100*AudioPlayer::soundLevelSFX))+"%");
                 break;
 
-            case 6:
+            case 4:
                 if (AudioPlayer::soundLevelBGM > 0.0f)
                 {
                     AudioPlayer::play(36, Global::gameCamera->getFadePosition1());
                 }
                 AudioPlayer::soundLevelBGM = std::fmaxf(0.0f, AudioPlayer::soundLevelBGM - 0.01f);
                 AudioPlayer::soundLevelBGM = std::roundf(100*AudioPlayer::soundLevelBGM)/100.0f;
-                buttonsValues[6]->generateText(floatToString(std::roundf(100*AudioPlayer::soundLevelBGM))+"%");
+                buttonsValues[4]->generateText(floatToString(std::roundf(100*AudioPlayer::soundLevelBGM))+"%");
                 break;
 
-            case 7:
+            case 5:
                 Global::renderParticles = !Global::renderParticles;
-                buttonsValues[7]->generateText(boolToString(Global::renderParticles));
+                buttonsValues[5]->generateText(boolToString(Global::renderParticles));
+                break;
+
+            case 6:
+                Global::displayFPS = !Global::displayFPS;
+                buttonsValues[6]->generateText(boolToString(Global::displayFPS));
                 break;
 
             default:
@@ -401,52 +418,58 @@ Menu* ConfigMenu::step()
         switch (currentButtonIndex)
         {
             case 0:
-                //glfwSetWindowSize(getWindow(), SCR_WIDTH + 1*holdMultiplier, SCR_HEIGHT);
-                //buttonsValues[0]->generateText(std::to_string(SCR_WIDTH));
+                Global::framerateUnlock = !Global::framerateUnlock;
+                buttonsValues[0]->generateText(boolToString(!Global::framerateUnlock));
+                buttonsValues[1]->generateText(std::to_string((int)Global::fpsLimit), !Global::framerateUnlock);
+                buttonsNames[1]->generateText("FPS Limit", !Global::framerateUnlock);
                 break;
 
             case 1:
-                //glfwSetWindowSize(getWindow(), SCR_WIDTH, SCR_HEIGHT + 1*holdMultiplier);
-                //buttonsValues[1]->generateText(std::to_string(SCR_HEIGHT));
+                if (Global::framerateUnlock)
+                {
+                    Global::fpsLimit += 1.0f;
+                    if (Global::fpsLimit > 720)
+                    {
+                        Global::fpsLimit = 720;
+                    }
+                    buttonsValues[1]->generateText(std::to_string((int)Global::fpsLimit), false);
+                }
                 break;
 
             case 2:
-                break;
-
-            case 3:
-                Global::framerateUnlock = !Global::framerateUnlock;
-                buttonsValues[3]->generateText(boolToString(Global::framerateUnlock));
-                break;
-
-            case 4:
                 VFOV_BASE = VFOV_BASE + 1.0f;
-                buttonsValues[4]->generateText(floatToString(VFOV_BASE));
+                buttonsValues[2]->generateText(floatToString(VFOV_BASE));
                 Master_makeProjectionMatrix();
                 break;
 
-            case 5:
+            case 3:
                 if (AudioPlayer::soundLevelSFX < 1.0f)
                 {
                     AudioPlayer::play(36, Global::gameCamera->getFadePosition1());
                 }
                 AudioPlayer::soundLevelSFX = std::fminf(1.0f, AudioPlayer::soundLevelSFX + 0.01f);
                 AudioPlayer::soundLevelSFX = std::roundf(100*AudioPlayer::soundLevelSFX)/100.0f;
-                buttonsValues[5]->generateText(floatToString(std::roundf(100*AudioPlayer::soundLevelSFX))+"%");
+                buttonsValues[3]->generateText(floatToString(std::roundf(100*AudioPlayer::soundLevelSFX))+"%");
                 break;
 
-            case 6:
+            case 4:
                 if (AudioPlayer::soundLevelBGM < 1.0f)
                 {
                     AudioPlayer::play(36, Global::gameCamera->getFadePosition1());
                 }
                 AudioPlayer::soundLevelBGM = std::fminf(1.0f, AudioPlayer::soundLevelBGM + 0.01f);
                 AudioPlayer::soundLevelBGM = std::roundf(100*AudioPlayer::soundLevelBGM)/100.0f;
-                buttonsValues[6]->generateText(floatToString(std::roundf(100*AudioPlayer::soundLevelBGM))+"%");
+                buttonsValues[4]->generateText(floatToString(std::roundf(100*AudioPlayer::soundLevelBGM))+"%");
                 break;
 
-            case 7:
+            case 5:
                 Global::renderParticles = !Global::renderParticles;
-                buttonsValues[7]->generateText(boolToString(Global::renderParticles));
+                buttonsValues[5]->generateText(boolToString(Global::renderParticles));
+                break;
+
+            case 6:
+                Global::displayFPS = !Global::displayFPS;
+                buttonsValues[6]->generateText(boolToString(Global::displayFPS));
                 break;
 
             default:
@@ -460,14 +483,21 @@ Menu* ConfigMenu::step()
     {
         switch (currentButtonIndex)
         {
-            case 3:
+            case 0:
                 Global::framerateUnlock = !Global::framerateUnlock;
-                buttonsValues[3]->generateText(boolToString(Global::framerateUnlock));
+                buttonsValues[0]->generateText(boolToString(!Global::framerateUnlock));
+                buttonsValues[1]->generateText(std::to_string((int)Global::fpsLimit), !Global::framerateUnlock);
+                buttonsNames[1]->generateText("FPS Limit", !Global::framerateUnlock);
                 break;
 
-            case 7:
+            case 5:
                 Global::renderParticles = !Global::renderParticles;
-                buttonsValues[7]->generateText(boolToString(Global::renderParticles));
+                buttonsValues[5]->generateText(boolToString(Global::renderParticles));
+                break;
+
+            case 6:
+                Global::displayFPS = !Global::displayFPS;
+                buttonsValues[6]->generateText(boolToString(Global::displayFPS));
                 break;
 
             default:

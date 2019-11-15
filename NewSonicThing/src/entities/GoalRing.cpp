@@ -56,7 +56,8 @@ void GoalRing::step()
     const float pad = 35.0f;
     if (fabsf(xDiff) < pad &&
         fabsf(yDiff) < pad &&
-        fabsf(zDiff) < pad)
+        fabsf(zDiff) < pad &&
+        Global::finishStageTimer < 0.0f)
     {
         float radDiff = xDiff*xDiff + yDiff*yDiff + zDiff*zDiff;
         const float ringRadius = 30.0f;
@@ -64,9 +65,10 @@ void GoalRing::step()
         {
             Global::mainHudTimer->freeze(true);
             Global::finishStageTimer = 0.0f;
-            //Global::menuManager.
             visible = false;
             text->setVisible(false);
+            //Main_deleteEntity(this);
+            //Main_deleteEntity(text);
         }
     }
 

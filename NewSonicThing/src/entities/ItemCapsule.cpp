@@ -100,6 +100,11 @@ ItemCapsule::ItemCapsule(float x, float y, float z, float upX, float upY, float 
         case 10:  entityItem = new Dummy(&ItemCapsule::modelsItemInvincible); INCR_NEW("Entity") break;
         default:  break;
     }
+    if (entityItem == nullptr)
+    {
+        entityItem = new Dummy(&ItemCapsule::modelsItemRing5); INCR_NEW("Entity")
+    }
+
     entityItem->visible = true;
     entityListToAdd->push_back(entityItem);
     entityItem->setPosition(&centerPos);

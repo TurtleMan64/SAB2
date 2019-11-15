@@ -6,6 +6,7 @@
 #include "../controllableplayer.h"
 #include "../../objLoader/objLoader.h"
 #include "../../audio/audioplayer.h"
+#include "../camera.h"
 
 std::list<TexturedModel*> MH_StageManager::modelsSkydome;
 
@@ -23,9 +24,25 @@ void MH_StageManager::step()
 {
     //set the position of the background sky dome
     position.y = Global::waterHeight;
-    position.x = Global::gameMainPlayer->getX();
-    position.z = Global::gameMainPlayer->getZ();
+    position.x = Global::gameCamera->eye.x;
+    position.z = Global::gameCamera->eye.z;
     updateTransformationMatrix();
+
+    //kill sonic
+    if (Global::gameMainPlayer->position.y < Global::waterHeight-150)
+    {
+        Global::gameMainPlayer->die();
+    }
+
+    //make skybox invis if cam is too high
+    if (Global::gameCamera->eye.y > 1775*scale + Global::waterHeight)
+    {
+        visible = false;
+    }
+    else
+    {
+        visible = true;
+    }
 
     if (timer == 1.666666f)
     {

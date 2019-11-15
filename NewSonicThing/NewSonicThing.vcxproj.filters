@@ -165,9 +165,6 @@
     <ClCompile Include="src\entities\Entity.cpp">
       <Filter>Source Files\entities</Filter>
     </ClCompile>
-    <ClCompile Include="src\entities\JumpRamp.cpp">
-      <Filter>Source Files\entities</Filter>
-    </ClCompile>
     <ClCompile Include="src\entities\Light.cpp">
       <Filter>Source Files\entities</Filter>
     </ClCompile>
@@ -504,6 +501,12 @@
     <ClCompile Include="src\entities\RingMoving.cpp">
       <Filter>Source Files\entities</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\SpeedRamp.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\menu\ResultsScreen.cpp">
+      <Filter>Source Files\menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.h">
@@ -564,9 +567,6 @@
       <Filter>Source Files\entities</Filter>
     </ClInclude>
     <ClInclude Include="src\entities\entity.h">
-      <Filter>Source Files\entities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\entities\jumpramp.h">
       <Filter>Source Files\entities</Filter>
     </ClInclude>
     <ClInclude Include="src\entities\light.h">
@@ -892,6 +892,12 @@
     </ClInclude>
     <ClInclude Include="src\entities\ringmoving.h">
       <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\speedramp.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\menu\resultsscreen.h">
+      <Filter>Source Files\menu</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

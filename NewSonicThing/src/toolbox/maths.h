@@ -159,6 +159,9 @@ public:
     //Given a basis {v1, v2, v3}, computes the coordinate vector
     // of a point a in the new basis
     static Vector3f coordinatesRelativeToBasis(Vector3f* v1, Vector3f* v2, Vector3f* v3, Vector3f* a);
+
+    //tests if a point is inside a cylinder
+    static bool pointIsInCylinder(Vector3f* point, Vector3f* cylinderEnd1, Vector3f* cylinderEnd2, float cylinderRadius);
 };
 
 #endif

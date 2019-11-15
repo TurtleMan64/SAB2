@@ -45,7 +45,6 @@ private:
 public:
     MissionMenu();
     ~MissionMenu();
-    void init();
     void loadResources();
     void unloadResources();
     Menu* step();

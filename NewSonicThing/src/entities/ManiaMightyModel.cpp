@@ -87,7 +87,7 @@ ManiaMightyModel::ManiaMightyModel()
 
     myBody =         new Body(&modelBody); INCR_NEW("Entity")
     myHead =         new Limb(&modelHead,         1.2f,  -0.3f,   0,     myBody,   nullptr);        INCR_NEW("Entity")
-    myLeftHumerus =  new Limb(&modelLeftHumerus,  0.9f,      0,     -0.9f,  myBody,   nullptr);        INCR_NEW("Entity")
+    myLeftHumerus =  new Limb(&modelLeftHumerus,  0.9f,   0,     -0.9f,  myBody,   nullptr);        INCR_NEW("Entity")
     myLeftForearm =  new Limb(&modelLeftForearm,  0,     -1.3f,   0,     nullptr,  myLeftHumerus);  INCR_NEW("Entity")
     myLeftHand =     new Limb(&modelLeftHand,     0,     -1.3f,   0,     nullptr,  myLeftForearm);  INCR_NEW("Entity")
     myLeftThigh =    new Limb(&modelLeftThigh,   -0.9f,   0,     -0.3f,  myBody,   nullptr);        INCR_NEW("Entity")

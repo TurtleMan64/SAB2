@@ -12,7 +12,6 @@
 #include "../renderEngine/renderEngine.h"
 #include "timer.h"
 
-
 HUD::HUD()
 {
     extern unsigned int SCR_WIDTH;
@@ -25,19 +24,20 @@ HUD::HUD()
     this->s = 0.045f; //height of a character
     this->w = s / this->aspectRatio; //width of a single text character
 
-    this->numberLives = new GUINumber(Global::gameLives, safeAreaX + w*2, 1.0f - (safeAreaY + s*0.4f), s, 6, true, 2, false); INCR_NEW("GUINumber");
+    this->numberLives = new GUINumber(Global::gameLives, safeAreaX + w*2, 1.0f - (safeAreaY + s*0.4f), s, 6, false, 2, false); INCR_NEW("GUINumber");
+    this->textLivesMission = new GUIText("Inf", s, Global::fontVipnagorgialla, safeAreaX + w*2, 1.0f - (safeAreaY + s*0.4f), 6, false);
 
-    this->numberFPS = new GUINumber(Global::currentCalculatedFPS, 1.0f, 0.0f, s, 2, Global::displayFPS, 0, false); INCR_NEW("GUINumber");
+    this->numberFPS = new GUINumber(Global::currentCalculatedFPS, 1.0f, 0.0f, s, 2, false, 0, false); INCR_NEW("GUINumber");
 
-    this->numberScore = new GUINumber(Global::gameScore,      safeAreaX,       safeAreaY,       s, 0, true, 8, true);  INCR_NEW("GUINumber");
-    this->timer       = new Timer(Global::fontVipnagorgialla, safeAreaX,       safeAreaY + s,   s, 0, true);           INCR_NEW("Timer");
-    this->numberRings = new GUINumber(Global::gameRingCount,  safeAreaX + w*2, safeAreaY + s*3, s, 0, true, 3, false); INCR_NEW("GUINumber");
+    this->numberScore = new GUINumber(Global::gameScore,      safeAreaX,       safeAreaY,       s, 0, false, 8, true);  INCR_NEW("GUINumber");
+    this->timer       = new Timer(Global::fontVipnagorgialla, safeAreaX,       safeAreaY + s,   s, 0, false);           INCR_NEW("Timer");
+    this->numberRings = new GUINumber(Global::gameRingCount,  safeAreaX + w*2, safeAreaY + s*3, s, 0, false, 3, false); INCR_NEW("GUINumber");
     Global::mainHudTimer = this->timer;
 
     this->speedometerScale = 1.5f;
 
-    this->textSpeedUnits = new GUIText("km/h", s, Global::fontVipnagorgialla, 1 - safeAreaX, 1.0f - safeAreaY, 8, true); INCR_NEW("GUIText");
-    this->numberSpeed = new GUINumber(Global::gameMainVehicleSpeed, 1.0f - safeAreaX - this->textSpeedUnits->maxLineWidth - 0.003f, 1.0f - safeAreaY, speedometerScale * s, 8, true, 0, false); INCR_NEW("GUINumber");
+    this->textSpeedUnits = new GUIText("km/h", s, Global::fontVipnagorgialla, 1 - safeAreaX, 1.0f - safeAreaY, 8, false); INCR_NEW("GUIText");
+    this->numberSpeed = new GUINumber(Global::gameMainVehicleSpeed, 1.0f - safeAreaX - this->textSpeedUnits->maxLineWidth - 0.003f, 1.0f - safeAreaY, speedometerScale * s, 8, false, 0, false); INCR_NEW("GUINumber");
 
     GuiTextureResources::textureRing->setX(safeAreaX + w);
     GuiTextureResources::textureRing->setY(safeAreaY + s*3);
@@ -57,6 +57,7 @@ HUD::~HUD()
     this->numberRings->deleteMe(); delete this->numberRings; INCR_DEL("GUINumber");
     this->numberSpeed->deleteMe(); delete this->numberSpeed; INCR_DEL("GUINumber");
     this->textSpeedUnits->deleteMe(); delete this->textSpeedUnits; INCR_DEL("GUIText");
+    this->textLivesMission->deleteMe(); delete this->textLivesMission; INCR_DEL("GUIText");
 }
 
 Timer* HUD::getTimer()
@@ -66,30 +67,64 @@ Timer* HUD::getTimer()
 
 void HUD::draw()
 {
-    if (Global::displayFPS)
+    if (Global::startStageTimer > 0.999f)
     {
-        this->numberFPS->visible = true;
-        this->numberFPS->displayNumber = Global::currentCalculatedFPS;
-        this->numberFPS->refresh();
+        this->timer->setVisible(false);
+        this->numberFPS->visible = false;
+        this->numberLives->visible = false;
+        this->numberScore->visible = false;
+        this->numberRings->visible = false;
+        this->numberSpeed->visible = false;
+        this->textSpeedUnits->visible = false;
+        this->textLivesMission->visible = false;
     }
     else
     {
-        this->numberFPS->visible = false;
+        this->timer->setVisible(true);
+        this->numberFPS->visible = true;
+        this->numberLives->visible = true;
+        this->numberScore->visible = true;
+        this->numberRings->visible = true;
+        this->numberSpeed->visible = true;
+        this->textSpeedUnits->visible = true;
+        this->textLivesMission->visible = true;
+
+        if (Global::displayFPS)
+        {
+            this->numberFPS->visible = true;
+            this->numberFPS->displayNumber = Global::currentCalculatedFPS;
+            this->numberFPS->refresh();
+        }
+        else
+        {
+            this->numberFPS->visible = false;
+        }
+        this->numberLives->displayNumber = Global::gameLives;
+        this->numberLives->refresh();
+        this->numberRings->displayNumber = Global::gameRingCount;
+        this->numberRings->refresh();
+        this->numberScore->displayNumber = Global::gameScore;
+        this->numberScore->refresh();
+        this->numberSpeed->displayNumber = Global::gameMainVehicleSpeed;
+        this->numberSpeed->refresh();
+
+        if (Global::gameIsArcadeMode)
+        {
+            this->textLivesMission->visible = false;
+            this->numberLives->visible = true;
+        }
+        else
+        {
+            this->textLivesMission->visible = true;
+            this->numberLives->visible = false;
+        }
+
+        this->timer->refresh();
+
+        GuiManager::clearGuisToRender();
+        GuiManager::addGuiToRender(GuiTextureResources::textureLifeIcon);
+        GuiManager::addGuiToRender(GuiTextureResources::textureRing);
     }
-    this->numberLives->displayNumber = Global::gameLives;
-    this->numberLives->refresh();
-    this->numberRings->displayNumber = Global::gameRingCount;
-    this->numberRings->refresh();
-    this->numberScore->displayNumber = Global::gameScore;
-    this->numberScore->refresh();
-    this->numberSpeed->displayNumber = Global::gameMainVehicleSpeed;
-    this->numberSpeed->refresh();
-
-    this->timer->refresh();
-
-    GuiManager::clearGuisToRender();
-    GuiManager::addGuiToRender(GuiTextureResources::textureLifeIcon);
-    GuiManager::addGuiToRender(GuiTextureResources::textureRing);
 }
 
 Menu* HUD::step()
@@ -101,15 +136,8 @@ Menu* HUD::step()
     {
         retVal = new PauseScreen(this); INCR_NEW("Menu");
     }
-    else if (Global::finishStageTimer >= 9.05f)
-    {
-        if (!Global::gameIsArcadeMode)
-        {
-            retVal = ClearStack::get();
-        }
-    }
 
-    if (Global::raceStartTimer <= 0.0f)
+    if (Global::startStageTimer <= 0.0f)
     {
         this->timer->increment();
     }

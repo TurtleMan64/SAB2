@@ -9,8 +9,11 @@ class GUIText;
 class Extras : public Menu
 {
 private:
-    GUIText* timeText;
-    GUIText* jebaited;
+    GUIText* textTime = nullptr;
+    GUIText* timeBro = nullptr;
+    bool selectInputPrevious;
+    bool backInputPrevious;
+
 public:
     Extras();
     ~Extras();

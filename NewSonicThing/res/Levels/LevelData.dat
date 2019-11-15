@@ -3,23 +3,7 @@
 Tutorial.lvl
 Tutorial
 4
-Normal;100;Complete as Blue Falcon
-Ring;100;100;Complete as Twin Norita
-Chao;100;Complete as Soic Phantom
-Hard;100;Complete as Black Shadow
-
-CityEscape.lvl
-City Escape
-4
-Normal;100;Complete as Blue Falcon
-Ring;100;100;Complete as Twin Norita
-Chao;100;Complete as Soic Phantom
-Hard;100;Complete as Black Shadow
-
-SeasideHill.lvl
-Seaside Hill
-4
-Normal;100;Complete as Blue Falcon
+Normal;100;Learn how to play the game so you don't get mad at simple things
 Ring;100;100;Complete as Twin Norita
 Chao;100;Complete as Soic Phantom
 Hard;100;Complete as Black Shadow
@@ -34,11 +18,10 @@ Hard;100;Complete as Black Shadow
 
 MetalHarbor.lvl
 Metal Harbor
-4
-Normal;100;Complete as Blue Falcon
-Ring;100;100;Complete as Twin Norita
-Chao;100;Complete as Soic Phantom
-Hard;100;Complete as Black Shadow
+3
+Normal;14000;Escape from the military base!
+Ring;4800;150;Collect 150 Rings!
+Chao;2700;Find the lost chao!
 
 PyramidCave.lvl
 Pyramid Cave
@@ -48,8 +31,8 @@ Ring;100;100;Complete as Twin Norita
 Chao;100;Complete as Soic Phantom
 Hard;100;Complete as Black Shadow
 
-SpeedHighway.lvl
-Speed Highway
+SkyRail.lvl
+Sky Rail
 4
 Normal;100;Complete as Blue Falcon
 Ring;100;100;Complete as Twin Norita
@@ -58,6 +41,36 @@ Hard;100;Complete as Black Shadow
 
 RadicalHighway.lvl
 Radical Highway
+3
+Normal;12500;Break through the besieging military!
+Ring;5400;150;Collect 150 Rings!
+Chao;5400;Find the lost chao!
+
+GreenHillZone.lvl
+Green Hill Zone
+3
+Normal;14000;Pursue Eggman
+Ring;3600;150;Collect 150 Rings!
+Chao;2400;Find the lost chao!
+
+CityEscape.lvl
+City Escape
+4
+Normal;100;Complete as Blue Falcon
+Ring;100;100;Complete as Twin Norita
+Chao;100;Complete as Soic Phantom
+Hard;100;Complete as Black Shadow
+
+WindyValley.lvl
+Windy Valley
+4
+Normal;100;Complete as Blue Falcon
+Ring;100;100;Complete as Twin Norita
+Chao;100;Complete as Soic Phantom
+Hard;100;Complete as Black Shadow
+
+SeasideHill.lvl
+Seaside Hill
 4
 Normal;100;Complete as Blue Falcon
 Ring;100;100;Complete as Twin Norita
@@ -80,8 +93,8 @@ Ring;100;100;Complete as Twin Norita
 Chao;100;Complete as Soic Phantom
 Hard;100;Complete as Black Shadow
 
-SkyRail.lvl
-Sky Rail
+SpeedHighway.lvl
+Speed Highway
 4
 Normal;100;Complete as Blue Falcon
 Ring;100;100;Complete as Twin Norita
@@ -90,22 +103,6 @@ Hard;100;Complete as Black Shadow
 
 NokiBay.lvl
 Noki Bay
-4
-Normal;100;Complete as Blue Falcon
-Ring;100;100;Complete as Twin Norita
-Chao;100;Complete as Soic Phantom
-Hard;100;Complete as Black Shadow
-
-GreenHillZone.lvl
-Green Hill Zone
-4
-Normal;100;Complete as Blue Falcon
-Ring;100;100;Complete as Twin Norita
-Chao;100;Complete as Soic Phantom
-Hard;100;Complete as Black Shadow
-
-WindyValley.lvl
-Windy Valley
 4
 Normal;100;Complete as Blue Falcon
 Ring;100;100;Complete as Twin Norita

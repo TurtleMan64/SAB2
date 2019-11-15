@@ -23,41 +23,21 @@
 
 MissionMenu::MissionMenu()
 {
-    std::cout << "Initializing Mission Menu\n";
-    this->init();
+    //std::cout << "Initializing Mission Menu\n";
+    this->fontSize = 0.05f;
     this->loadResources();
     this->visible = true;
     this->offsetCurr = 0.0f;
     this->offsetTarget = 0.0f;
     this->index = 0;
-    std::cout << "Mission Menu initialized\n";
-}
-
-void MissionMenu::init()
-{
-    fontSize = 0.05f;
-    textureParallelogram = Loader::loadTextureNoInterpolation(
-        "res/Images/MainMenu/Parallelogram.png");
-    textureParallelogramBackdrop = Loader::loadTextureNoInterpolation(
-        "res/Images/MainMenu/ParallelogramBackdrop.png");
-    textureParallelogramHalf = Loader::loadTextureNoInterpolation(
-        "res/Images/MainMenu/ParallelogramHalf.png");
-    textureParallelogramHalfBackdrop = Loader::loadTextureNoInterpolation(
-        "res/Images/MainMenu/ParallelogramHalfBackdrop.png");
-    textureParallelogramHalf2 = Loader::loadTextureNoInterpolation(
-        "res/Images/MainMenu/ParallelogramHalf2.png");
-    textureParallelogramHalf2Backdrop = Loader::loadTextureNoInterpolation(
-        "res/Images/MainMenu/ParallelogramHalf2Backdrop.png");
-
-    //font = new FontType(Loader::loadTexture("res/Fonts/vipnagorgialla.png"),
-    //    "res/Fonts/vipnagorgialla.fnt"); INCR_NEW
+    //std::cout << "Mission Menu initialized\n";
 }
 
 MissionMenu::~MissionMenu()
 {
-    std::cout << "Deleting Mission Menu\n";
+    //std::cout << "Deleting Mission Menu\n";
     this->unloadResources();
-    std::cout << "Mission Menu deleted.\n";
+    //std::cout << "Mission Menu deleted.\n";
 }
 
 void MissionMenu::loadResources()
@@ -66,6 +46,13 @@ void MissionMenu::loadResources()
     {
         std::fprintf(stdout, "Warning: MissionMenu loading resources when they are already loaded.\n");
     }
+
+    textureParallelogram              = Loader::loadTextureNoInterpolation("res/Images/MainMenu/Parallelogram.png");
+    textureParallelogramBackdrop      = Loader::loadTextureNoInterpolation("res/Images/MainMenu/ParallelogramBackdrop.png");
+    textureParallelogramHalf          = Loader::loadTextureNoInterpolation("res/Images/MainMenu/ParallelogramHalf.png");
+    textureParallelogramHalfBackdrop  = Loader::loadTextureNoInterpolation("res/Images/MainMenu/ParallelogramHalfBackdrop.png");
+    textureParallelogramHalf2         = Loader::loadTextureNoInterpolation("res/Images/MainMenu/ParallelogramHalf2.png");
+    textureParallelogramHalf2Backdrop = Loader::loadTextureNoInterpolation("res/Images/MainMenu/ParallelogramHalf2Backdrop.png");
 
     extern unsigned int SCR_WIDTH;
     extern unsigned int SCR_HEIGHT;
@@ -83,7 +70,7 @@ void MissionMenu::loadResources()
 
 void MissionMenu::unloadResources()
 {
-    std::cout << "Unloading Mission Menu resources.\n";
+    //std::cout << "Unloading Mission Menu resources.\n";
     if (this->counter == 0)
     {
         std::fprintf(stdout, "Warning: MissionMenu unloading resources when they are empty.\n");
@@ -96,7 +83,21 @@ void MissionMenu::unloadResources()
     }
     delete[] this->levelButton; INCR_DEL("Button");
     this->counter = 0;
-    std::cout << "Mission Menu resources deleted.\n";
+
+    Loader::deleteTexture(textureParallelogram);
+    Loader::deleteTexture(textureParallelogramBackdrop);
+    Loader::deleteTexture(textureParallelogramHalf);
+    Loader::deleteTexture(textureParallelogramHalfBackdrop);
+    Loader::deleteTexture(textureParallelogramHalf2);
+    Loader::deleteTexture(textureParallelogramHalf2Backdrop);
+    textureParallelogram              = GL_NONE;
+    textureParallelogramBackdrop      = GL_NONE;
+    textureParallelogramHalf          = GL_NONE;
+    textureParallelogramHalfBackdrop  = GL_NONE;
+    textureParallelogramHalf2         = GL_NONE;
+    textureParallelogramHalf2Backdrop = GL_NONE;
+
+    //std::cout << "Mission Menu resources deleted.\n";
 }
 
 void MissionMenu::draw()
@@ -267,7 +268,7 @@ Menu* MissionMenu::step()
     if (pressedSelect)
     {
         this->setVisible(false);
-         AudioPlayer::play(38, Global::gameCamera->getFadePosition1());
+        AudioPlayer::play(38, Global::gameCamera->getFadePosition1());
 
         Level* currentLevel = &Global::gameLevelData[this->index];
         Global::levelName = currentLevel->fileName;

@@ -213,7 +213,7 @@ float Maths::compareTwoAngles(float origAng1, float origAng2)
 
 float Maths::interpolate(float a, float b, float percent)
 {
-    return (a * (1.0f - percent)) + (b * percent);
+    return (a*(1.0f - percent)) + (b*percent);
 }
 
 int Maths::sign(float value)
@@ -226,7 +226,7 @@ int Maths::sign(float value)
     {
         return 1;
     }
-    else if(value < 0)
+    else if (value < 0)
     {
         return -1;
     }
@@ -650,4 +650,37 @@ Vector4f Maths::calcPlaneValues(Vector3f* point, Vector3f* normal)
     p3 = p3 + perp2;
 
     return Maths::calcPlaneValues(&p1, &p2, &p3);
+}
+
+bool Maths::pointIsInCylinder(Vector3f* point, Vector3f* c1, Vector3f* c2, float cRadius)
+{
+    Vector3f xAxis(1, 0, 0);
+    Vector3f cDiff(c2);
+    cDiff = cDiff - c1;
+
+    float cLength = cDiff.length();
+    float angDiff = Maths::angleBetweenVectors(&cDiff, &xAxis);
+
+    Vector3f p(point);
+    p = p - c1; //move c1 to origin
+
+    if (fabsf(angDiff) < 0.0001f)
+    {
+        //skip rotate if the cylinder already is aligned with x axis
+    }
+    else if (fabsf(angDiff) > Maths::PI - 0.0001f)
+    {
+        //rotate 180 degrees
+        Vector3f yAxis(0, 1, 0);
+        p = Maths::rotatePoint(&p, &yAxis, Maths::toRadians(180));
+    }
+    else
+    {
+        Vector3f perpen = xAxis.cross(&cDiff);
+        p = Maths::rotatePoint(&p, &perpen, -angDiff); //rotate so cylinder faces xAxis
+    }
+
+    return (p.x >= 0 &&
+            p.x < cLength &&
+            p.y*p.y + p.z*p.z < cRadius*cRadius);
 }

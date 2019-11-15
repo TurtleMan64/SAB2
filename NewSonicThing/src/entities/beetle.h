@@ -14,12 +14,18 @@ private:
     static std::list<TexturedModel*> modelsBody;
     static std::list<TexturedModel*> modelsBlades;
     
-    static float hitRadius;
+    const float activationRange = 140.0f;
+    const float hitRadius = 12.0f;
+    const float bobHeight = 1.0f;
+    const float bobPeriodScale = 2.0f;
+    const float lookSpeed = 6.0f;
 
     Dummy* blades = nullptr;
+    float bobTimer = 0.0f;
+    Vector3f lookDir;
 
     //calculate new blades position
-    void updateBlades();
+    void updateBlades(Vector3f* pos);
 
 public:
     Beetle();

@@ -32,7 +32,7 @@
 #include "../entities/dashpad.h"
 #include "../entities/camera.h"
 #include "../entities/checkpoint.h"
-#include "../entities/jumpramp.h"
+#include "../entities/speedramp.h"
 #include "../particles/particleresources.h"
 #include "../particles/particle.h"
 #include "../entities/GreenForest/gfstagemanager.h"
@@ -62,6 +62,7 @@
 #include "../entities/Tutorial/tstagemanager.h"
 #include "../entities/itemcapsule.h"
 #include "../entities/springtriple.h"
+#include "../menu/timer.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -90,17 +91,11 @@ void LevelLoader::loadTitle()
     //Main_deleteAllTransparentEntites();
     Main_deleteAllChunkedEntities();
 
-    for (Checkpoint* check : Global::gameCheckpointList)
-    {
-        delete check; INCR_DEL("Entity");
-    }
-    Global::gameCheckpointList.clear();
-
     AudioPlayer::stopBGM();
     AudioPlayer::deleteBuffersBGM();
 
     Global::finishStageTimer = -1;
-    Global::raceStartTimer = -1;
+    Global::startStageTimer = -1;
 
     Global::stageUsesWater = true;
 
@@ -117,15 +112,10 @@ void LevelLoader::loadTitle()
     Global::gameIsRingMode = false;
 
     Global::spawnAtCheckpoint  = false;
-    Global::checkpointX        = 0;
-    Global::checkpointY        = 0;
-    Global::checkpointZ        = 0;
-    Global::checkpointRotY     = 0;
-    Global::checkpointCamYaw   = 0;
-    Global::checkpointCamPitch = 0;
-    Global::checkpointTimeCen  = 0;
-    Global::checkpointTimeSec  = 0;
-    Global::checkpointTimeMin  = 0;
+    Global::checkpointPlayerPos.set(0,0,0);
+    Global::checkpointPlayerDir.set(1,0,0);
+    Global::checkpointCamDir.set(1,0,0);
+    Global::checkpointTime = 0.0f;
 
     //use vsync on the title screen
     glfwSwapInterval(1); 
@@ -191,15 +181,10 @@ void LevelLoader::loadLevel(std::string levelFilename)
         }
 
         Global::spawnAtCheckpoint  = false;
-        Global::checkpointX        = 0;
-        Global::checkpointY        = 0;
-        Global::checkpointZ        = 0;
-        Global::checkpointRotY     = 0;
-        Global::checkpointCamYaw   = 0;
-        Global::checkpointCamPitch = 0;
-        Global::checkpointTimeCen  = 0;
-        Global::checkpointTimeSec  = 0;
-        Global::checkpointTimeMin  = 0;
+        Global::checkpointPlayerPos.set(0,0,0);
+        Global::checkpointPlayerDir.set(1,0,0);
+        Global::checkpointCamDir.set(1,0,0);
+        Global::checkpointTime = 0.0f;
     }
     Global::isNewLevel = false;
 
@@ -219,12 +204,6 @@ void LevelLoader::loadLevel(std::string levelFilename)
     //Main_deleteAllEntitesPass3();
     //Main_deleteAllTransparentEntites();
     Main_deleteAllChunkedEntities();
-
-    for (Checkpoint* check : Global::gameCheckpointList)
-    {
-        delete check; INCR_DEL("Entity");
-    }
-    Global::gameCheckpointList.clear();
 
     if (stageFault == 1)
     {
@@ -695,28 +674,38 @@ void LevelLoader::loadLevel(std::string levelFilename)
         Global::gameMainPlayer->camDirSmooth.set(&initialCamDir);
     }
 
-    Global::raceStartTimer = 1.0f;
+    Global::startStageTimer = 1.0f;
 
 
     Global::gameRingCount = 0;
     Global::gameScore = 0;
 
-    int maxNumber = -1;
-    for (Checkpoint* check : Global::gameCheckpointList)
-    {
-        if (check->ID > maxNumber)
-        {
-            maxNumber = check->ID;
-        }
-    }
-    Global::gameCheckpointLast = maxNumber;
-
     if (Global::spawnAtCheckpoint)
     {
-        //GuiManager::setTimer(Global::checkpointTimeMin, Global::checkpointTimeSec, Global::checkpointTimeCen);
+        if (Global::mainHudTimer != nullptr)
+        {
+            Global::mainHudTimer->totalTime = Global::checkpointTime;
+            Global::mainHudTimer->freeze(true);
+        }
+
+        if (Global::gameMainPlayer != nullptr)
+        {
+            Global::gameMainPlayer->position = Global::checkpointPlayerPos;
+            Global::gameMainPlayer->vel = Global::checkpointPlayerDir;
+            Global::gameMainPlayer->camDir = Global::checkpointPlayerDir;
+            Global::gameMainPlayer->camDirSmooth = Global::checkpointPlayerDir;
+            Global::gameMainPlayer->camDir.normalize();
+            Global::gameMainPlayer->camDirSmooth.normalize();
+        }
     }
     else
     {
+        if (Global::mainHudTimer != nullptr)
+        {
+            Global::mainHudTimer->totalTime = 0.0f;
+            Global::mainHudTimer->freeze(true);
+        }
+
         if (bgmHasLoop != 0)
         {
             //By default, first 2 buffers are the intro and loop, respectively
@@ -828,22 +817,23 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
 
         case 10: //Checkpoint
         {
-            //Checkpoint::loadStaticModels();
-            //Checkpoint* checkpoint = new Checkpoint(
-            //    toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]),
-            //    toFloat(dat[4]), toFloat(dat[5]), toFloat(dat[6]),
-            //    toFloat(dat[7]), toInt(dat[8])); INCR_NEW("Entity");
-            //Global::gameCheckpointList.push_back(checkpoint);
+            Checkpoint::loadStaticModels();
+            Checkpoint* checkpoint = new Checkpoint(
+                toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]),
+                toFloat(dat[4])); INCR_NEW("Entity");
+            chunkedEntities->push_back(checkpoint);
             return;
         }
 
         case 11: //JumpPad
         {
-            JumpRamp::loadStaticModels();
-            JumpRamp* ramp = new JumpRamp(
-                toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]),
-                toFloat(dat[4])); INCR_NEW("Entity");
-            Main_addEntity(ramp);
+            SpeedRamp::loadStaticModels();
+            SpeedRamp* ramp = new SpeedRamp(
+                toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
+                toFloat(dat[4]), toFloat(dat[5]), toFloat(dat[6]), //rotation direction
+                toFloat(dat[7]), toFloat(dat[8]));                 //power, input lock time
+            INCR_NEW("Entity");
+            chunkedEntities->push_back(ramp);
             return;
         }
 
@@ -1065,7 +1055,9 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
         case 97: //Rocket
         {
             Rocket::loadStaticModels();
-            Rocket* rocket = new Rocket(toInt(dat[1]), toInt(dat[2])); //Point IDs for start and end of path, position of rocket initialized to where point ID 1 is
+            Vector3f pos1(toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]));
+            Vector3f pos2(toFloat(dat[4]), toFloat(dat[5]), toFloat(dat[6]));
+            Rocket* rocket = new Rocket(&pos1, &pos2);
             INCR_NEW("Entity");
             Main_addEntity(rocket);
             return;
@@ -1221,7 +1213,7 @@ void LevelLoader::freeAllStaticModels()
     Dashpad::deleteStaticModels();
     PlayerSonic::deleteStaticModels();
     Checkpoint::deleteStaticModels();
-    JumpRamp::deleteStaticModels();
+    SpeedRamp::deleteStaticModels();
     GF_StageManager::deleteStaticModels();
     Ring::deleteStaticModels();
     MH_StageManager::deleteStaticModels();

@@ -72,6 +72,7 @@
 #include "../menu/menumanager.h"
 #include "../menu/mainmenu.h"
 #include "../menu/timer.h"
+#include "../menu/hud.h"
 #ifdef _WIN32
 #include <windows.h>
 #include <tchar.h>
@@ -165,7 +166,7 @@ int Global::countNew = 0;
 int Global::countDelete = 0;
 int Global::gameState = 0;
 int Global::levelID = 0;
-float Global::raceStartTimer = -1;
+float Global::startStageTimer = -1;
 bool Global::shouldLoadLevel = false;
 bool Global::isNewLevel = false;
 bool Global::isAutoCam = true;
@@ -195,27 +196,22 @@ FontType* Global::fontVipnagorgialla = nullptr;
 bool Global::renderWithCulling = true;
 bool Global::displayFPS = true;
 //float Global::fpsTarget = 120.0f;
-float Global::fpsTargetBusy = 120.0f;
+float Global::fpsLimit = 60.0f;
 int Global::currentCalculatedFPS = 0;
 int Global::renderCount = 0;
 int Global::displaySizeChanged = 0;
 
+int Global::gameArcadeIndex = 0;
+std::vector<int> Global::gameArcadeLevelIds;
+
 std::list<std::string> Global::raceLog;
 bool Global::shouldLogRace = false;
 
-std::list<Checkpoint*> Global::gameCheckpointList;
-int Global::gameCheckpointLast;
-
-bool   Global::spawnAtCheckpoint  = false;
-float  Global::checkpointX        = 0;
-float  Global::checkpointY        = 0;
-float  Global::checkpointZ        = 0;
-float  Global::checkpointRotY     = 0;
-float  Global::checkpointCamYaw   = 0;
-float  Global::checkpointCamPitch = 0;
-int    Global::checkpointTimeCen  = 0;
-int    Global::checkpointTimeSec  = 0;
-int    Global::checkpointTimeMin  = 0;
+bool Global::spawnAtCheckpoint = false;
+Vector3f Global::checkpointPlayerPos;
+Vector3f Global::checkpointPlayerDir;
+Vector3f Global::checkpointCamDir;
+float Global::checkpointTime = 0;
 
 GUIText* Global::titleCardLevelName          = nullptr;
 GUIText* Global::titleCardMission            = nullptr;
@@ -267,6 +263,13 @@ int main(int argc, char** argv)
     createDisplay();
 
     Global::loadSaveData();
+
+    //The levels you play in arcade mode, in order
+    Global::gameArcadeLevelIds.push_back(LVL_TUTORIAL);
+    Global::gameArcadeLevelIds.push_back(LVL_METAL_HARBOR);
+    Global::gameArcadeLevelIds.push_back(LVL_RADICAL_HIGHWAY);
+    Global::gameArcadeLevelIds.push_back(LVL_GREEN_FOREST);
+    Global::gameArcadeLevelIds.push_back(LVL_SKY_RAIL);
 
     #if !defined(DEV_MODE) && defined(_WIN32)
     FreeConsole();
@@ -364,8 +367,6 @@ int main(int argc, char** argv)
 
     while (Global::gameState != STATE_EXITING && displayWantsToClose() == 0)
     {
-        Input::pollInputs();
-
         timeNew = glfwGetTime();
 
         #ifndef WIN32
@@ -374,7 +375,7 @@ int main(int argc, char** argv)
         // still looks choppy, not sure why. also of course uses a ton of cpu.
         //if (Global::gameState == STATE_RUNNING && Global::framerateUnlock)
         //{
-        //    double dtFrameNeedsToTake = 1.0/((double)Global::fpsTargetBusy);
+        //    double dtFrameNeedsToTake = 1.0/((double)Global::fpsLimit);
         //    while ((timeNew - timeOld) < dtFrameNeedsToTake)
         //    {
         //        timeNew = glfwGetTime();
@@ -391,30 +392,32 @@ int main(int argc, char** argv)
         // which is the video looks choppy at bad fps targets. For example, if you set the target to 
         // 60fps on a 60fps monitor, then it looks fine. But, if you set the target to 90fps, then
         // it looks very choppy.
-        //if (Global::gameState == STATE_RUNNING && Global::framerateUnlock)
-        //{
-        //    double dtFrameNeedsToTake = 1.0/((double)Global::fpsTargetBusy);
-        //    timeNew = glfwGetTime();
-        //
-        //    const double sleepBuffer = 0.00175; //sleep will hopefully never take longer than this to return
-        //    double sleepTime = (dtFrameNeedsToTake - (timeNew - timeOld)) - sleepBuffer;
-        //    int msToSleep = (int)(sleepTime*1000);
-        //    if (msToSleep >= 1)
-        //    {
-        //        Sleep(msToSleep);
-        //    }
-        //
-        //    timeNew = glfwGetTime();
-        //    while ((timeNew - timeOld) < dtFrameNeedsToTake)
-        //    {
-        //        timeNew = glfwGetTime();
-        //    }
-        //}
+        if (Global::gameState == STATE_RUNNING && Global::framerateUnlock)
+        {
+            double dtFrameNeedsToTake = 1.0/((double)Global::fpsLimit);
+            timeNew = glfwGetTime();
+        
+            const double sleepBuffer = 0.00175; //sleep will hopefully never take longer than this to return
+            double sleepTime = (dtFrameNeedsToTake - (timeNew - timeOld)) - sleepBuffer;
+            int msToSleep = (int)(sleepTime*1000);
+            if (msToSleep >= 1)
+            {
+                Sleep(msToSleep);
+            }
+        
+            timeNew = glfwGetTime();
+            while ((timeNew - timeOld) < dtFrameNeedsToTake)
+            {
+                timeNew = glfwGetTime();
+            }
+        }
         #endif
 
         dt = (float)(timeNew - timeOld);
         dt = std::fminf(dt, 0.04f); //Anything lower than 25fps will slow the gameplay down
         timeOld = timeNew;
+
+        Input::pollInputs();
 
         frameCount++;
         Global::renderCount++;
@@ -563,10 +566,10 @@ int main(int argc, char** argv)
                     glfwSwapInterval(1);
                 }
 
-                if (Global::raceStartTimer >= 0)
+                if (Global::startStageTimer >= 0)
                 {
-                    Global::raceStartTimer -= dt;
-                    if (Global::raceStartTimer < 0)
+                    Global::startStageTimer -= dt;
+                    if (Global::startStageTimer < 0)
                     {
                         Global::mainHudTimer->freeze(false);
                     }
@@ -619,7 +622,7 @@ int main(int argc, char** argv)
 
                 if (Global::gameIsRingMode)
                 {
-                    if (Global::gameRingCount >= Global::gameRingTarget && Global::finishStageTimer < -0.5f)
+                    if (Global::gameRingCount >= Global::gameRingTarget && Global::finishStageTimer < 0)
                     {
                         Global::finishStageTimer = 0;
                     }
@@ -710,10 +713,6 @@ int main(int argc, char** argv)
         //{
         //    Master_processTransparentEntity(e);
         //}
-        for (Checkpoint* check : Global::gameCheckpointList)
-        {
-            Master_processEntity(check);
-        }
         
         Master_processEntity(&stage);
         Master_renderShadowMaps(&lightSun);
@@ -812,6 +811,8 @@ int main(int argc, char** argv)
 
         AudioPlayer::refreshBGM();
 
+        Global::clearTitleCard();
+
         if (Global::shouldLoadLevel)
         {
             Global::shouldLoadLevel = false;
@@ -852,16 +853,19 @@ int main(int argc, char** argv)
             {
                 if (Global::gameIsArcadeMode)
                 {
-                    Global::levelID+=1;
+                    Global::gameArcadeIndex+=1;
 
-                    if (Global::levelID <= LVL_GREEN_HILL_ZONE)
+                    if (Global::gameArcadeIndex < Global::gameArcadeLevelIds.size())
                     {
-                        Level* nextLevel = &Global::gameLevelData[Global::levelID];
+                        Global::levelID = Global::gameArcadeLevelIds[Global::gameArcadeIndex];
+                        Level* currentLevel = &Global::gameLevelData[Global::levelID];
                         Global::shouldLoadLevel = true;
                         Global::isNewLevel = true;
-                        Global::levelName = nextLevel->fileName;
-                        Global::levelNameDisplay = nextLevel->displayName;
-                        Global::gameMissionDescription = (nextLevel->missionData[Global::gameMissionNumber])[(nextLevel->missionData[Global::gameMissionNumber]).size()-1];
+                        Global::levelName = currentLevel->fileName;
+                        Global::levelNameDisplay = currentLevel->displayName;
+                        Global::gameMissionDescription = (currentLevel->missionData[Global::gameMissionNumber])[(currentLevel->missionData[Global::gameMissionNumber]).size() - 1];
+                    
+                        Global::createTitleCard();
                     }
                     else
                     {
@@ -901,13 +905,15 @@ int main(int argc, char** argv)
 
             if (finishTimerBefore < 6.166f && Global::finishStageTimer >= 6.166f)
             {
+                if (Global::gameIsArcadeMode && Global::gameArcadeIndex+1 >= Global::gameArcadeLevelIds.size())
+                {
+                    MenuManager::arcadeModeIsDone = true;
+                }
                 // int rank = Global::calculateRankAndUpdate();
                 GuiManager::addGuiToRender(GuiTextureResources::textureRankDisplay);
                 //AudioPlayer::play(44, Global::gamePlayer->getPosition());
             }
         }
-
-        Global::clearTitleCard();
 
         if (previousTime > timeNew)
         {
@@ -1570,6 +1576,8 @@ void Main_deleteAllChunkedEntities()
 
 void Global::createTitleCard()
 {
+    Global::startStageTimer = 1.0f;
+
     ParticleMaster::deleteAllParticles();
     GuiManager::clearGuisToRender();
 
@@ -1577,24 +1585,7 @@ void Global::createTitleCard()
     ParticleMaster::createParticle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &vel, 0, 1.0f, 0.0f, 50.0f, 0, true, false, 1.0f);
     GuiManager::addGuiToRender(GuiTextureResources::textureBlueLine);
 
-    if (titleCardLevelName != nullptr)
-    {
-        titleCardLevelName->deleteMe();
-        delete titleCardLevelName; INCR_DEL("GUIText");
-        titleCardLevelName = nullptr;
-    }
-    if (titleCardMission != nullptr)
-    {
-        titleCardMission->deleteMe();
-        delete titleCardMission; INCR_DEL("GUIText");
-        titleCardMission = nullptr;
-    }
-    if (titleCardMissionDescription != nullptr)
-    {
-        titleCardMissionDescription->deleteMe();
-        delete titleCardMissionDescription; INCR_DEL("GUIText");
-        titleCardMissionDescription = nullptr;
-    }
+    Global::clearTitleCard();
 
     titleCardLevelName          = new GUIText(Global::levelNameDisplay, 0.09f, Global::fontVipnagorgialla, 0.5f, 0.6f, 4, true); INCR_NEW("GUIText");
     titleCardMission            = new GUIText("Mission "+std::to_string(Global::gameMissionNumber+1)+":", 0.075f, Global::fontVipnagorgialla, 0.5f, 0.7f, 4, true); INCR_NEW("GUIText");

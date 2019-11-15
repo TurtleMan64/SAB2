@@ -58,6 +58,12 @@ void GF_StageManager::step()
     position.z = Global::gameMainPlayer->getZ();
     updateTransformationMatrix();
 
+    //kill sonic
+    if (Global::gameMainPlayer->position.y < Global::waterHeight-150)
+    {
+        Global::gameMainPlayer->die();
+    }
+
 
     //generate pollen particles
     Vector3f center = Global::gameMainPlayer->position;

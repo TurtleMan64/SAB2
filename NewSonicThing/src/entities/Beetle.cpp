@@ -14,6 +14,7 @@
 #include "../audio/audioplayer.h"
 #include "../particles/particleresources.h"
 #include "../particles/particle.h"
+#include "../particles/particlemaster.h"
 
 #include <list>
 #include <iostream>
@@ -22,8 +23,6 @@
 
 std::list<TexturedModel*> Beetle::modelsBody;
 std::list<TexturedModel*> Beetle::modelsBlades;
-
-float Beetle::hitRadius = 12.0f;
 
 Beetle::Beetle()
 {
@@ -40,56 +39,70 @@ Beetle::Beetle(float x, float y, float z, std::list<Entity*>* entityListToAdd)
     rotZ = 0;
     scale = 1;
     visible = true;
+
+    Vector3f yAxis(0, 1, 0);
+    lookDir.set(1, 0, 0);
+    lookDir = Maths::rotatePoint(&lookDir, &yAxis, Maths::random()*Maths::PI*2);
+    rotY = Maths::toDegrees(atan2f(-lookDir.z, lookDir.x));
+
     updateTransformationMatrix();
+
+    bobTimer = Maths::nextUniform()*2;
 
     blades = new Dummy(&Beetle::modelsBlades); INCR_NEW("Entity");
     blades->setVisible(true);
     blades->setPosition(&position);
-    updateBlades();
+    updateBlades(&position);
     entityListToAdd->push_back(blades);
 }
 
-void Beetle::updateBlades()
+void Beetle::updateBlades(Vector3f* pos)
 {
     //calculate new blades position
     Vector3f spinOff(-5.87751f, 0, 0);
     Vector3f yAxis(0, 1, 0);
     spinOff = Maths::rotatePoint(&spinOff, &yAxis, Maths::toRadians(rotY));
-    blades->position = position + spinOff;
+    blades->position = spinOff + pos;
     blades->updateTransformationMatrix();
 }
 
 void Beetle::step()
 {
-    if (fabsf(position.x - Global::gameMainPlayer->position.x) < 100 &&
-        fabsf(position.y - Global::gameMainPlayer->position.y) < 100 &&
-        fabsf(position.z - Global::gameMainPlayer->position.z) < 100)
+    extern float dt;
+    bobTimer += dt;
+    
+    Vector3f posBob(&position);
+    posBob.y += Beetle::bobHeight*sinf((bobTimer*Maths::PI)*Beetle::bobPeriodScale);
+    blades->rotY += 360*dt;
+
+    if (fabsf(position.x - Global::gameMainPlayer->position.x) < Beetle::activationRange &&
+        fabsf(position.y - Global::gameMainPlayer->position.y) < Beetle::activationRange &&
+        fabsf(position.z - Global::gameMainPlayer->position.z) < Beetle::activationRange)
     {
-        float xDiff = position.x - Global::gameMainPlayer->position.x;
-        float yDiff = position.y - Global::gameMainPlayer->position.y;
-        float zDiff = position.z - Global::gameMainPlayer->position.z;
+        Vector3f toPlayerDiff = Global::gameMainPlayer->position - position;
 
-        rotY = Maths::toDegrees(atan2f(zDiff, -xDiff));
-        updateTransformationMatrix();
-
-        extern float dt;
-
-        blades->rotY += 360*dt;
-        updateBlades();
-
-        if ((xDiff*xDiff + yDiff*yDiff + zDiff*zDiff) < hitRadius*hitRadius)
+        if ((toPlayerDiff.lengthSquared()) < hitRadius*hitRadius)
         {
             if (Global::gameMainPlayer->isVulnerable())
             {
                 Global::gameMainPlayer->takeDamage(&position);
             }
-            else
+            else if (Global::gameMainPlayer->canDealDamage())
             {
                 die();
                 Global::gameMainPlayer->rebound(&position);
             }
         }
+
+        //rotate toward player
+        toPlayerDiff.y = 0;
+        toPlayerDiff.normalize();
+        lookDir = Maths::interpolateVector(&lookDir, &toPlayerDiff, Beetle::lookSpeed*dt);
+        rotY = Maths::toDegrees(atan2f(-lookDir.z, lookDir.x));
     }
+
+    Maths::createTransformationMatrix(&transformationMatrix, &posBob, 0, rotY, 0, 0, 1);
+    updateBlades(&posBob);
 }
 
 void Beetle::die()
@@ -111,33 +124,32 @@ void Beetle::die()
     Main_deleteChunkedEntity(this);
     Main_deleteChunkedEntity(blades);
 
-    //float height = 10.0f;
-    //float spread = 20.0f;
-    //
-    //for (int i = 7; i != 0; i--)
-    //{
-    //    Vector3f pos(
-    //        getX() + spread*(Maths::random() - 0.5f),
-    //        getY() + spread*(Maths::random() - 0.5f) + height,
-    //        getZ() + spread*(Maths::random() - 0.5f));
-    //
-    //    Vector3f vel(0, 0, 0);
-    //
-    //    new Particle(ParticleResources::textureExplosion1, &pos, &vel,
-    //        0, 45, 0, 3 * Maths::random() + 6, 0, false);
-    //}
-    //
-    //Vector3f pos(
-    //    getX(),
-    //    getY() + height,
-    //    getZ());
-    //
-    //Vector3f vel(0, 0, 0);
-    //
-    //new Particle(ParticleResources::textureExplosion2, &pos, &vel,
-    //    0, 55, 0, 20, 0, false);
-    //
-    //Global::gameScore += 100;
+    float height = 10.0f;
+    float spread = 20.0f;
+
+    Vector3f vel(0, 0, 0);
+    Vector3f toCamDiff = Global::gameCamera->eye - position;
+    toCamDiff.setLength(20);
+    
+    for (int i = 7; i != 0; i--)
+    {
+        Vector3f pos(
+            getX() + spread*(Maths::random() - 0.5f),
+            getY() + spread*(Maths::random() - 0.5f) + height,
+            getZ() + spread*(Maths::random() - 0.5f));
+        pos = pos + toCamDiff; //so that these aren't behind the big explosion
+
+        ParticleMaster::createParticle(ParticleResources::textureExplosion1, &pos, &vel, 0, 0.75f, 0, 3*Maths::random() + 6, 0, false, false, 0.5f);
+    }
+    
+    Vector3f pos(
+        getX(),
+        getY() + height,
+        getZ());
+    
+    ParticleMaster::createParticle(ParticleResources::textureExplosion2, &pos, &vel, 0, 0.916f, 0, 20, 0, false, false, 0.75f);
+    
+    Global::gameScore += 100;
 }
 
 std::list<TexturedModel*>* Beetle::getModels()

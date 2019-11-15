@@ -21,7 +21,7 @@ private:
     static CollisionModel* cmBase;
 
     //Used to make making the base a separate entity possible
-    Body* base;
+    Body* base = nullptr;
 
     //Position of the start point of the path
     Vector3f pointPositionStart;
@@ -36,7 +36,7 @@ private:
     bool canActivate;
 
     //Radius of the Rocket's hitbox
-    const float HITBOX_RADIUS = 5.0f;
+    const float HITBOX_RADIUS = 8.0f;
     //Height of the Rocket's hitbox
     const float HITBOX_HEIGHT = 15.0f;
 
@@ -68,12 +68,10 @@ private:
     //Whether the sound that plays when you get close to the Rocket has played
     bool rocketAppearSoundPlayed;
     //The audio source used to play the Rocket's audio
-    Source* rocketAudioSource;
+    Source* rocketAudioSource = nullptr;
 
     //Functions for the constructor start here
 
-    //Returns the position of the point with the specified ID
-    Vector3f getPointPosition(int pointID);
     //Sets the rocket base's collision up and also adds it as an entity since it has to move separately from the Rocket
     void setupRocketBase();
     //Calculate the Y rotation value of the Rocket so it horizontally faces the end path
@@ -113,7 +111,7 @@ private:
 
 public:
     Rocket();
-    Rocket(int point1ID, int point2ID);
+    Rocket(Vector3f* point1, Vector3f* point2);
 
     void step();
 

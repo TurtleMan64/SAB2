@@ -344,6 +344,18 @@ void loadGraphicsSettings()
                         Global::framerateUnlock = false;
                     }
                 }
+                else if (strcmp(lineSplit[0], "FPS_Limit") == 0)
+                {
+                    Global::fpsLimit = (float)((int)std::stof(lineSplit[1], nullptr));
+                    if (Global::fpsLimit < 30)
+                    {
+                        Global::fpsLimit = 30;
+                    }
+                    else if (Global::fpsLimit > 720)
+                    {
+                        Global::fpsLimit = 720;
+                    }
+                }
                 else if (strcmp(lineSplit[0], "Anti-Aliasing_Samples") == 0)
                 {
                     AA_SAMPLES = std::stoi(lineSplit[1], nullptr, 10);

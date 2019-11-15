@@ -26,25 +26,38 @@ SpringTriple::SpringTriple()
 
 SpringTriple::SpringTriple(float x, float y, float z, float dirX, float dirZ, float myPower, float cooldownMax)
 {
-    this->position.x = x;
-    this->position.y = y;
-    this->position.z = z;
-    this->dir.set(dirX, 0.0f, dirZ);
-    this->dir.normalize();
-    this->springPower = fmaxf(100.0f, myPower);
-    this->cooldownTimer = 0.0f;
-    this->cooldownTimerMax = fmaxf(0.1f, cooldownMax);
-    this->scale = 1;
-    this->visible = true;
-
-    hitCenter = position + dir.scaleCopy(5.88928f);
-    hitCenter.y += 5.29734f;
+    position.x = x;
+    position.y = y;
+    position.z = z;
+    dir.set(dirX, 0.0f, dirZ);
+    dir.normalize();
+    springPower = fmaxf(100.0f, myPower);
+    cooldownTimer = 0.0f;
+    cooldownTimerMax = fmaxf(0.1f, cooldownMax);
+    scale = 1;
+    visible = true;
 
     //calculate angles
     rotX = 0;
     rotY = Maths::toDegrees(atan2f(-dir.z, dir.x));
     rotZ = 0;
     rotRoll = 0;
+
+    Vector3f yAxis(0, 1, 0);
+    Vector3f side(0, 0, 1);
+    side = Maths::rotatePoint(&side, &yAxis, atan2f(-dir.z, dir.x));
+
+    hitCenter1 = position + dir.scaleCopy(5.88928f) + side.scaleCopy(15.0f);
+    hitCenter2 = position + dir.scaleCopy(5.88928f);
+    hitCenter3 = position + dir.scaleCopy(5.88928f) + side.scaleCopy(-15.0f);
+    hitCenter1.y += 5.29734f;
+    hitCenter2.y += 5.29734f;
+    hitCenter3.y += 5.29734f;
+
+    const float playerRadius = 4.0f;
+
+    end1 = position + dir.scaleCopy(4.6f) + yAxis.scaleCopy(2.65f) + side.scaleCopy(23.5f + playerRadius);
+    end2 = position + dir.scaleCopy(4.6f) + yAxis.scaleCopy(2.65f) + side.scaleCopy(-23.5f - playerRadius);
 
     updateTransformationMatrix();
 }
@@ -55,14 +68,16 @@ void SpringTriple::step()
 {
     cooldownTimer = std::fmaxf(cooldownTimer - dt, 0.0f);
 
-    if (fabsf(hitCenter.y - Global::gameMainPlayer->position.y) < 40 &&
-        fabsf(hitCenter.z - Global::gameMainPlayer->position.z) < 40 &&
-        fabsf(hitCenter.x - Global::gameMainPlayer->position.x) < 40 &&
+    if (fabsf(hitCenter2.y - Global::gameMainPlayer->position.y) < 40 &&
+        fabsf(hitCenter2.z - Global::gameMainPlayer->position.z) < 40 &&
+        fabsf(hitCenter2.x - Global::gameMainPlayer->position.x) < 40 &&
         cooldownTimer == 0.0f)
     {
-        if ((Global::gameMainPlayer->getCenterPosition() - hitCenter).lengthSquared() < (8.44f*8.44f)+(4.0f*4.0f)) //8.44 = radius of spring, 4 = radius of sonic
+        Vector3f playerCenter = Global::gameMainPlayer->getCenterPosition();
+        if (Maths::pointIsInCylinder(&playerCenter, &end1, &end2, 8.25f + 4.0f)) //8.25 = radius of cylinder, 4 = radius of sonic
         {
-            Global::gameMainPlayer->position = hitCenter;
+            Vector3f closestOf1and2 = Maths::getCloserPoint(&hitCenter1, &hitCenter2, &playerCenter);
+            Global::gameMainPlayer->position = Maths::getCloserPoint(&closestOf1and2, &hitCenter3, &playerCenter);
             Global::gameMainPlayer->hitSpringTriple(&dir, springPower, cooldownTimerMax);
             AudioPlayer::play(6, &position, 1 + (springPower*0.00013333f));
 
@@ -106,5 +121,5 @@ const bool SpringTriple::canHomingAttackOn()
 
 const Vector3f SpringTriple::getHomingCenter()
 {
-    return hitCenter;
+    return hitCenter2;
 }

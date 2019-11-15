@@ -23,6 +23,7 @@
 #include "../guis/guitexture.h"
 #include "missionmenu.h"
 #include "configmenu.h"
+#include "extras.h"
 
 MainMenu::MainMenu()
 {
@@ -35,47 +36,37 @@ MainMenu::MainMenu()
     textureParallelogram = GL_NONE;
     textureParallelogramBackdrop = GL_NONE;
     textureLogo = GL_NONE;
-    init();
-    setVisible(true);
+    loadResources();
+    setVisible(false);
 }
 
 MainMenu::~MainMenu()
 {
-    MainMenu::unloadResources();
-}
-
-void MainMenu::init()
-{
-    printf("Main Menu initializing...\n");
-
-    //font = new FontType(Loader::loadTexture("res/Fonts/vipnagorgialla.png"),
-    //    "res/Fonts/vipnagorgialla.fnt"); INCR_NEW
-
-    textureParallelogram = Loader::loadTexture("res/Images/MainMenu/Parallelogram.png");
-    textureParallelogramBackdrop = Loader::loadTexture("res/Images/MainMenu/ParallelogramBackdrop.png");
-    textureLogo = Loader::loadTexture("res/Images/MainMenu/Logo.png");
-    logo = GuiTexture(textureLogo, 0.5f, 0.4f, 0.6f * (767.0f / 784.0f) / aspectRatio, 0.6f, 0.0f);
-
-    MainMenu::loadResources();
-
-    printf("Main Menu initialized!\n");
+    unloadResources();
 }
 
 void MainMenu::loadResources()
 {
-    printf("Loading resources\n");
+    //printf("Loading MainMenu resources\n");
     if (menuButtons.size() != 0)
     {
         std::fprintf(stdout, "Main Menu trying to load resources when they are already loaded!\n");
         return;
     }
 
+    textureParallelogram = Loader::loadTexture("res/Images/MainMenu/Parallelogram.png");
+    textureParallelogramBackdrop = Loader::loadTexture("res/Images/MainMenu/ParallelogramBackdrop.png");
+    textureLogo = Loader::loadTexture("res/Images/MainMenu/Logo.png");
+    logo = GuiTexture(textureLogo, 0.5f, 0.4f, 0.6f * (767.0f / 784.0f) / aspectRatio, 0.6f, 0.0f);
+
     float fontScale = 0.08f;
 
     // Adding a string here *should* add a button.
     std::vector<std::string> buttonNames(
         {
+        "ARCADE",
         "MISSION",
+        "EXTRA",
         "CONFIG",
         "EXIT"
         }
@@ -93,7 +84,7 @@ void MainMenu::loadResources()
 
     buttonCount = numButtonsToMake;
 
-    printf("Resources loaded\n");
+    //printf("MainMenu Resources loaded\n");
 }
 
 void MainMenu::draw()
@@ -127,10 +118,10 @@ void MainMenu::draw()
 
     GuiManager::clearGuisToRender();
 
-    GuiManager::addGuiToRender(&logo);
-
     if (visible)
     {
+        GuiManager::addGuiToRender(&logo);
+
         float animationOffset = animationDirection * 12 * (animationTime) * (animationTime);
 
         for (int i = 0; i < buttonCount; i++)
@@ -139,9 +130,10 @@ void MainMenu::draw()
             menuButtons[i]->setVisible(true);
             menuButtons[i]->setHighlight(false);
         }
+
+        menuButtons[menuSelectionID]->setHighlight(true);
     }
 
-    menuButtons[menuSelectionID]->setHighlight(true);
     oldSelection = menuSelectionID;
 }
 
@@ -156,7 +148,7 @@ void MainMenu::setVisible(bool visibleStatus)
 
 void MainMenu::unloadResources()
 {
-    std::cout << "Unloading resources...\n";
+    //std::cout << "Unloading Main Menu resources...\n";
     if (menuButtons.size() == 0)
     {
         std::fprintf(stdout, "Main Menu trying to unload resources when they are already unloaded!\n");
@@ -172,8 +164,16 @@ void MainMenu::unloadResources()
 
     menuButtons.clear();
 
+    Loader::deleteTexture(textureParallelogram);
+    Loader::deleteTexture(textureParallelogramBackdrop);
+    Loader::deleteTexture(textureLogo);
+    textureParallelogram         = GL_NONE;
+    textureParallelogramBackdrop = GL_NONE;
+    textureLogo                  = GL_NONE;
+    logo.setTexture(GL_NONE);
+
     GuiManager::clearGuisToRender();
-    std::cout << "Resources unloaded!\n";
+    //std::cout << "Main Menu resources unloaded!\n";
 }
 
 void MainMenu::resetAnimation()
@@ -224,9 +224,40 @@ Menu* MainMenu::step()
         resetAnimation();
         switch (menuSelectionID)
         {
+            case arcade:
+            {
+                Global::gameIsArcadeMode = true;
+                AudioPlayer::play(38, Global::gameCamera->getFadePosition1());
+
+                Global::gameMissionNumber = 0;
+                Global::gameArcadeIndex = 0;
+
+                Global::levelID = Global::gameArcadeLevelIds[Global::gameArcadeIndex];
+                Level* currentLevel = &Global::gameLevelData[Global::levelID];
+                Global::levelName = currentLevel->fileName;
+                Global::levelNameDisplay = currentLevel->displayName;
+                Global::gameMissionDescription = (currentLevel->missionData[Global::gameMissionNumber])[(currentLevel->missionData[Global::gameMissionNumber]).size() - 1];
+                
+                Global::createTitleCard();
+
+                Global::isNewLevel = true;
+                Global::shouldLoadLevel = true;
+
+                retVal = SwitchStack::get();
+                setVisible(false);
+                return retVal;
+            }
+
             case mission:
+                Global::gameIsArcadeMode = false;
                 AudioPlayer::play(38, Global::gameCamera->getFadePosition1());
                 retVal = new MissionMenu; INCR_NEW("Menu");
+                setVisible(false);
+                break;
+
+            case extra:
+                AudioPlayer::play(38, Global::gameCamera->getFadePosition1());
+                retVal = new Extras; INCR_NEW("Menu");
                 setVisible(false);
                 break;
 
@@ -241,7 +272,7 @@ Menu* MainMenu::step()
                 break;
         }
     }
-    
+
     draw();
 
     return retVal;

@@ -41,6 +41,7 @@ void          ControllablePlayer::setInWater(float)                   {}
 void          ControllablePlayer::takeDamage(Vector3f*)               {}
 void          ControllablePlayer::rebound(Vector3f*)                  {}
 bool          ControllablePlayer::isVulnerable()                      {return false;}
+bool          ControllablePlayer::canDealDamage()                     {return false;}
 void          ControllablePlayer::die()                               {}
 void          ControllablePlayer::startGrinding()                     {}
 void          ControllablePlayer::stopGrinding()                      {}
@@ -72,3 +73,4 @@ void          ControllablePlayer::grabRocket()                        {}
 void          ControllablePlayer::releaseRocket()                     {}
 void          ControllablePlayer::hitSpring(Vector3f*, float, float, bool)  {}
 void          ControllablePlayer::hitSpringTriple(Vector3f*, float, float)  {}
+void          ControllablePlayer::hitSpeedRamp(Vector3f*, float, float) {}

@@ -131,6 +131,8 @@ private:
     //float canMoveTimer = 0.0f;
     float hitSpringTimer = 0.0f;
 
+    float deadTimer = -1.0f;
+
     //animation variables
     float runAnimationCycle = 0.0f;
 
@@ -187,13 +189,21 @@ public:
 
     void popOffWall();
 
+    void die();
+
+    bool isDying();
+
     void hitSpring(Vector3f* direction, float power, float lockInputTime, bool resetsCamera);
 
     void hitSpringTriple(Vector3f* direction, float power, float lockInputTime);
 
+    void hitSpeedRamp(Vector3f* direction, float speed, float lockInputTime);
+
     void hitDashpad();
 
     bool isVulnerable();
+
+    bool canDealDamage();
 
     void takeDamage(Vector3f* source);
 

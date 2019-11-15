@@ -9,36 +9,48 @@
 
 Extras::Extras()
 {
-    FontType * font = new FontType(Loader::loadTexture("res/Fonts/vipnagorgialla.png"),
-        "res/Fonts/vipnagorgialla.fnt"); INCR_NEW("FontType");
+    selectInputPrevious = false;
+    backInputPrevious = false;
 
-    timeText = new GUIText("Total Playtime:", 0.1f, font, 0.0f, 0.45f, 1.0f, true, false, true); INCR_NEW("GUIText");
-    jebaited = new GUIText("bro...........................", 0.01f, font, 0.0f, 0.6f, 1.0f, true, false, true); INCR_NEW("GUIText");
+    textTime = new GUIText("Total Playtime:", 0.1f, Global::fontVipnagorgialla, 0.0f, 0.45f, 1.0f, true, false, false); INCR_NEW("GUIText");
+    timeBro  = new GUIText("bro...........................", 0.1f, Global::fontVipnagorgialla, 0.0f, 0.6f, 1.0f, true, false, false); INCR_NEW("GUIText");
 }
 
 Extras::~Extras()
 {
-    this->timeText->deleteMe(); delete this->timeText; INCR_DEL("GUIText");
-    this->jebaited->deleteMe(); delete this->jebaited; INCR_DEL("GUIText");
+    textTime->deleteMe(); delete textTime; INCR_DEL("GUIText");
+    timeBro->deleteMe(); delete timeBro; INCR_DEL("GUIText");
 }
 
 Menu* Extras::step()
 {
-    //todo
-    //bool shouldGoUp = false;
-    //bool shouldGoDown = false;
-    //bool shouldGoLeft = false;
-    //bool shouldGoRight = false;
-    //bool pressedSelect = (Input::inputs.INPUT_ACTION1 && !Input::inputs.INPUT_PREVIOUS_ACTION1) || (Input::inputs.INPUT_START && !Input::inputs.INPUT_PREVIOUS_START);
-    //bool pressedBack = (Input::inputs.INPUT_ACTION2 && !Input::inputs.INPUT_PREVIOUS_ACTION2);
-    //
-    //int moveX = (int)round(Input::inputs.INPUT_X);
-    //int moveY = (int)round(Input::inputs.INPUT_Y);
-    //
-    //if (pressedBack)
-    //{
-    //    
-    //}
+    Menu* retVal = nullptr;
 
-    return nullptr;
+    bool pressedSelect = false;
+    bool pressedBack = false;
+
+    if ((Input::inputs.INPUT_ACTION1 && !Input::inputs.INPUT_PREVIOUS_ACTION1) || 
+        (Input::inputs.INPUT_START && !Input::inputs.INPUT_PREVIOUS_START))
+    {
+        pressedSelect = true;
+    }
+
+    if (Input::inputs.INPUT_ACTION2 && !Input::inputs.INPUT_PREVIOUS_ACTION2)
+    {
+        pressedBack = true;
+    }
+
+    textTime->visible = true;
+    timeBro->visible = true;
+
+    if ((pressedSelect && !selectInputPrevious) ||
+        (pressedBack && !backInputPrevious))
+    {
+        retVal = PopMenu::get();
+    }
+
+    selectInputPrevious = pressedSelect;
+    backInputPrevious = pressedBack;
+
+    return retVal;
 }

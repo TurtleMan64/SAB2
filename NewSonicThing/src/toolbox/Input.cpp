@@ -281,8 +281,14 @@ void Input::pollInputs()
 
     if (freeMouse == false)
     {
-        Input::inputs.INPUT_X2 += (float)(mouseSensitivityX*(xpos - mousePreviousX));
-        Input::inputs.INPUT_Y2 += (float)(mouseSensitivityY*(ypos - mousePreviousY));
+        float mouseDiffX = (float)(mouseSensitivityX*(xpos - mousePreviousX));
+        float mouseDiffY = (float)(mouseSensitivityY*(ypos - mousePreviousY));
+
+        extern float dt;
+        float fpsFactor = 1/(dt*60);
+
+        Input::inputs.INPUT_X2 += mouseDiffX*fpsFactor;
+        Input::inputs.INPUT_Y2 += mouseDiffY*fpsFactor;
     }
     mousePreviousX = xpos;
     mousePreviousY = ypos;
