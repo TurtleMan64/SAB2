@@ -38,70 +38,70 @@ Checkpoint::Checkpoint()
 
 Checkpoint::Checkpoint(float x, float y, float z, float yRot)
 {
-	position.x = x;
-	position.y = y;
-	position.z = z;
-	rotX = 0;
-	rotY = yRot;
-	rotZ = 0;
-	scale = 1;
-	visible = true;
-	isHit = false;
-	updateTransformationMatrix();
+    position.x = x;
+    position.y = y;
+    position.z = z;
+    rotX = 0;
+    rotY = yRot;
+    rotZ = 0;
+    scale = 1;
+    visible = true;
+    isHit = false;
+    updateTransformationMatrix();
 
-	if (Global::spawnAtCheckpoint)
-	{
+    if (Global::spawnAtCheckpoint)
+    {
         Vector3f diff = Global::checkpointPlayerPos - position;
 
-		if (diff.length() < 50)
-		{
-			isHit = true;
-			if (Checkpoint::savedBGMIntro != AL_NONE)
-			{
-				AudioPlayer::playBGMWithIntro(Checkpoint::savedBGMIntro, Checkpoint::savedBGMLoop);
-			}
-			else
-			{
-				AudioPlayer::playBGM(Checkpoint::savedBGMLoop);
-			}
-		}
-	}
+        if (diff.length() < 50)
+        {
+            isHit = true;
+            if (Checkpoint::savedBGMIntro != AL_NONE)
+            {
+                AudioPlayer::playBGMWithIntro(Checkpoint::savedBGMIntro, Checkpoint::savedBGMLoop);
+            }
+            else
+            {
+                AudioPlayer::playBGM(Checkpoint::savedBGMLoop);
+            }
+        }
+    }
 
-	float rot = Maths::toRadians(rotY);
+    float rot = Maths::toRadians(rotY);
 
-	Vector3f off(0, 8.6f, -15.12f);
-	float newX =   off.x*cosf(rot) - off.z*sinf(rot);
-	float newZ = -(off.z*cosf(rot) + off.x*sinf(rot));
-	Vector3f ball1Pos(newX, off.y, newZ);
-	ball1Pos = ball1Pos + position;
+    Vector3f off(0, 8.6f, -15.12f);
+    float newX =   off.x*cosf(rot) - off.z*sinf(rot);
+    float newZ = -(off.z*cosf(rot) + off.x*sinf(rot));
+    Vector3f ball1Pos(newX, off.y, newZ);
+    ball1Pos = ball1Pos + position;
 
-	off.set(0, 8.6f, 15.12f);
-	newX =   off.x*cosf(rot) - off.z*sinf(rot);
-	newZ = -(off.z*cosf(rot) + off.x*sinf(rot));
-	Vector3f ball2Pos(newX, off.y, newZ);
-	ball2Pos = ball2Pos + position;
+    off.set(0, 8.6f, 15.12f);
+    newX =   off.x*cosf(rot) - off.z*sinf(rot);
+    newZ = -(off.z*cosf(rot) + off.x*sinf(rot));
+    Vector3f ball2Pos(newX, off.y, newZ);
+    ball2Pos = ball2Pos + position;
 
-	ball1 = new Dummy(&Checkpoint::modelsBall); INCR_NEW("Entity")
-	Main_addEntity(ball1);
-	ball1->setVisible(true);
-	ball1->setPosition(&ball1Pos);
-	ball1->setRotY(rotY+90);
-	ball1->updateTransformationMatrix();
+    ball1 = new Dummy(&Checkpoint::modelsBall); INCR_NEW("Entity")
+    Main_addEntity(ball1);
+    ball1->setVisible(true);
+    ball1->setPosition(&ball1Pos);
+    ball1->setRotY(rotY+90);
+    ball1->updateTransformationMatrix();
 
-	ball2 = new Dummy(&Checkpoint::modelsBall); INCR_NEW("Entity")
-	Main_addEntity(ball2);
-	ball2->setVisible(true);
-	ball2->setPosition(&ball2Pos);
-	ball2->setRotY(rotY-90);
-	ball2->updateTransformationMatrix();
+    ball2 = new Dummy(&Checkpoint::modelsBall); INCR_NEW("Entity")
+    Main_addEntity(ball2);
+    ball2->setVisible(true);
+    ball2->setPosition(&ball2Pos);
+    ball2->setRotY(rotY-90);
+    ball2->updateTransformationMatrix();
 
-	if (isHit)
-	{
-		ball1->setRotZ(90);
-		ball2->setRotZ(90);
-		ball1->updateTransformationMatrix();
-		ball2->updateTransformationMatrix();
-	}
+    if (isHit)
+    {
+        ball1->setRotZ(90);
+        ball2->setRotZ(90);
+        ball1->updateTransformationMatrix();
+        ball2->updateTransformationMatrix();
+    }
 }
 
 void Checkpoint::step()
@@ -113,74 +113,74 @@ void Checkpoint::step()
         fabsf(position.z - Global::gameMainPlayer->position.z) < 40 &&
         fabsf(position.x - Global::gameMainPlayer->position.x) < 40)
     {
-		if (!isHit &&
+        if (!isHit &&
             Global::gameMainPlayer->getX() > position.x - colHorizontal - playerColH && Global::gameMainPlayer->getX() < position.x + colHorizontal + playerColH &&
-			Global::gameMainPlayer->getZ() > position.z - colHorizontal - playerColH && Global::gameMainPlayer->getZ() < position.z + colHorizontal + playerColH &&
-			Global::gameMainPlayer->getY() > position.y - colVertical   - playerColV && Global::gameMainPlayer->getY() < position.y + colVertical   + playerColV)
-		{
-			AudioPlayer::play(45, getPosition());
+            Global::gameMainPlayer->getZ() > position.z - colHorizontal - playerColH && Global::gameMainPlayer->getZ() < position.z + colHorizontal + playerColH &&
+            Global::gameMainPlayer->getY() > position.y - colVertical   - playerColV && Global::gameMainPlayer->getY() < position.y + colVertical   + playerColV)
+        {
+            AudioPlayer::play(45, getPosition());
 
-			Checkpoint::savedBGMIntro = AudioPlayer::bgmIntro;
-			Checkpoint::savedBGMLoop  = AudioPlayer::bgmLoop;
+            Checkpoint::savedBGMIntro = AudioPlayer::bgmIntro;
+            Checkpoint::savedBGMLoop  = AudioPlayer::bgmLoop;
 
             Vector3f playerDir(&Global::gameMainPlayer->vel);
             playerDir.y = 0;
             playerDir.setLength(0.001f);
 
-			isHit = true;
-			Global::spawnAtCheckpoint  = true;
+            isHit = true;
+            Global::spawnAtCheckpoint  = true;
 
-			Global::checkpointPlayerPos.set(&Global::gameMainPlayer->position);
+            Global::checkpointPlayerPos.set(&Global::gameMainPlayer->position);
             Global::checkpointPlayerDir.set(&playerDir);
-			Global::checkpointCamDir.set(&Global::gameMainPlayer->camDir);
+            Global::checkpointCamDir.set(&Global::gameMainPlayer->camDir);
 
             if (Global::mainHudTimer != nullptr)
             {
                 Global::checkpointTime = Global::mainHudTimer->totalTime;
             }
 
-			if (!CollisionChecker::checkCollision(
-				Global::checkpointPlayerPos.x, Global::checkpointPlayerPos.y,    Global::checkpointPlayerPos.z,
-				Global::checkpointPlayerPos.x, Global::checkpointPlayerPos.y-30, Global::checkpointPlayerPos.z))
-			{
-				Global::checkpointPlayerPos = position;
-				Global::checkpointPlayerPos.y += 5;
-			}
+            if (!CollisionChecker::checkCollision(
+                Global::checkpointPlayerPos.x, Global::checkpointPlayerPos.y,    Global::checkpointPlayerPos.z,
+                Global::checkpointPlayerPos.x, Global::checkpointPlayerPos.y-30, Global::checkpointPlayerPos.z))
+            {
+                Global::checkpointPlayerPos = position;
+                Global::checkpointPlayerPos.y += 5;
+            }
 
-			ball1->setRotZ(90);
-			ball2->setRotZ(90);
-			ball1->updateTransformationMatrix();
-			ball2->updateTransformationMatrix();
-		}
-	}
+            ball1->setRotZ(90);
+            ball2->setRotZ(90);
+            ball1->updateTransformationMatrix();
+            ball2->updateTransformationMatrix();
+        }
+    }
 }
 
 std::list<TexturedModel*>* Checkpoint::getModels()
 {
-	return &Checkpoint::modelsBase;
+    return &Checkpoint::modelsBase;
 }
 
 void Checkpoint::loadStaticModels()
 {
-	if (Checkpoint::modelsBase.size() > 0)
-	{
-		return;
-	}
+    if (Checkpoint::modelsBase.size() > 0)
+    {
+        return;
+    }
 
-	#ifdef DEV_MODE
-	std::fprintf(stdout, "Loading Checkpoint static models...\n");
-	#endif
+    #ifdef DEV_MODE
+    std::fprintf(stdout, "Loading Checkpoint static models...\n");
+    #endif
 
-	loadModel(&Checkpoint::modelsBase, "res/Models/Objects/Checkpoint/", "Base");
-	loadModel(&Checkpoint::modelsBall, "res/Models/Objects/Checkpoint/", "Ball");
+    loadModel(&Checkpoint::modelsBase, "res/Models/Objects/Checkpoint/", "Base");
+    loadModel(&Checkpoint::modelsBall, "res/Models/Objects/Checkpoint/", "Ball");
 }
 
 void Checkpoint::deleteStaticModels()
 {
-	#ifdef DEV_MODE
-	std::fprintf(stdout, "Deleting Checkpoint static models...\n");
-	#endif
+    #ifdef DEV_MODE
+    std::fprintf(stdout, "Deleting Checkpoint static models...\n");
+    #endif
 
-	Entity::deleteModels(&Checkpoint::modelsBase);
-	Entity::deleteModels(&Checkpoint::modelsBall);
+    Entity::deleteModels(&Checkpoint::modelsBase);
+    Entity::deleteModels(&Checkpoint::modelsBall);
 }

@@ -81,15 +81,15 @@ void PlayerSonic::step()
 
     if (deadTimerOld >  1.0f && 
         deadTimer    <= 1.0f)
-	{
-		Vector3f partVel(0, 0, 0);
+    {
+        Vector3f partVel(0, 0, 0);
         ParticleMaster::createParticle(ParticleResources::textureBlackFadeOutAndIn, Global::gameCamera->getFadePosition1(), &partVel, 0, 2.0f, 0, 400, 0, true, false, 1);
-	}
-	else if (deadTimerOld >  0.0f &&
+    }
+    else if (deadTimerOld >  0.0f &&
              deadTimer    <= 0.0f)
-	{
-		Global::shouldLoadLevel = true;
-	}
+    {
+        Global::shouldLoadLevel = true;
+    }
 
     setInputs();
 
@@ -2334,8 +2334,8 @@ void PlayerSonic::refreshCamera()
         Global::gameCamera->setViewMatrixValues(&eye, &target, &up);
     }
     else
-	{
-		Camera* cam = Global::gameCamera;
+    {
+        Camera* cam = Global::gameCamera;
 
         Vector3f target = getCenterPosition();
 
@@ -2346,8 +2346,8 @@ void PlayerSonic::refreshCamera()
         Vector3f perpen = diff.cross(&yAxis);
         Vector3f up = Maths::rotatePoint(&diff, &perpen, Maths::PI/2);
 
-		Global::gameCamera->setViewMatrixValues(&Global::gameCamera->eye, &target, &up);
-	}
+        Global::gameCamera->setViewMatrixValues(&Global::gameCamera->eye, &target, &up);
+    }
 }
 
 //Do a small 'pop off' off the wall
@@ -2365,15 +2365,15 @@ void PlayerSonic::popOffWall()
 
 void PlayerSonic::die()
 {
-	if (deadTimer == -1.0f && Global::finishStageTimer == -1.0f)
-	{
-		AudioPlayer::play(9, getPosition());
-		deadTimer = 3.0f;
+    if (deadTimer == -1.0f && Global::finishStageTimer == -1.0f)
+    {
+        AudioPlayer::play(9, getPosition());
+        deadTimer = 3.0f;
         if (Global::mainHudTimer != nullptr)
         {
             Global::mainHudTimer->freeze(true);
         }
-	}
+    }
 }
 
 bool PlayerSonic::isDying()

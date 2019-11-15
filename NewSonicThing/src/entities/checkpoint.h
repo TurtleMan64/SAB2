@@ -12,29 +12,29 @@ class Dummy;
 class Checkpoint : public Entity
 {
 private:
-	static std::list<TexturedModel*> modelsBase;
-	static std::list<TexturedModel*> modelsBall;
+    static std::list<TexturedModel*> modelsBase;
+    static std::list<TexturedModel*> modelsBall;
 
-	Dummy* ball1 = nullptr;
-	Dummy* ball2 = nullptr;
-	static float colHorizontal;
-	static float colVertical;
+    Dummy* ball1 = nullptr;
+    Dummy* ball2 = nullptr;
+    static float colHorizontal;
+    static float colVertical;
 
-	bool isHit;
+    bool isHit;
 
-	static ALuint savedBGMIntro;
-	static ALuint savedBGMLoop;
+    static ALuint savedBGMIntro;
+    static ALuint savedBGMLoop;
 
 public:
-	Checkpoint();
-	Checkpoint(float x, float y, float z, float rotY);
+    Checkpoint();
+    Checkpoint(float x, float y, float z, float rotY);
 
-	void step();
+    void step();
 
-	std::list<TexturedModel*>* getModels();
+    std::list<TexturedModel*>* getModels();
 
-	static void loadStaticModels();
+    static void loadStaticModels();
 
-	static void deleteStaticModels();
+    static void deleteStaticModels();
 };
 #endif

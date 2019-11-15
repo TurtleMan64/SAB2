@@ -10,23 +10,23 @@ class TexturedModel;
 class SpeedRamp : public CollideableObject
 {
 private:
-	static std::list<TexturedModel*> models;
-	static CollisionModel* cmOriginal;
+    static std::list<TexturedModel*> models;
+    static CollisionModel* cmOriginal;
 
     Vector3f launchDirection;
-	float power;
-	float inputLockDuration;
+    float power;
+    float inputLockDuration;
 
 public:
-	SpeedRamp();
-	SpeedRamp(float x, float y, float z, float dirX, float dirY, float dirZ, float myPower, float inputLockDuration);
+    SpeedRamp();
+    SpeedRamp(float x, float y, float z, float dirX, float dirY, float dirZ, float myPower, float inputLockDuration);
 
-	void step();
+    void step();
 
-	std::list<TexturedModel*>* getModels();
+    std::list<TexturedModel*>* getModels();
 
-	static void loadStaticModels();
+    static void loadStaticModels();
 
-	static void deleteStaticModels();
+    static void deleteStaticModels();
 };
 #endif

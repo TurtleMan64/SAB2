@@ -29,13 +29,13 @@ SpeedRamp::SpeedRamp()
 
 SpeedRamp::SpeedRamp(float x, float y, float z, float dirX, float dirY, float dirZ, float myPower, float inputLock)
 {
-	position.x = x;
-	position.y = y;
-	position.z = z;
-	scale = 1;
-	visible = true;
-	power = myPower;
-	inputLockDuration = inputLock;
+    position.x = x;
+    position.y = y;
+    position.z = z;
+    scale = 1;
+    visible = true;
+    power = myPower;
+    inputLockDuration = inputLock;
 
     Vector3f forward(dirX, dirY, dirZ);
     forward.normalize();
@@ -51,56 +51,56 @@ SpeedRamp::SpeedRamp(float x, float y, float z, float dirX, float dirY, float di
     rotZ = Maths::toDegrees(atan2f(forward.y, sqrtf(forward.x*forward.x + forward.z*forward.z)));
     rotRoll = 0;
 
-	updateTransformationMatrix();
+    updateTransformationMatrix();
 
-	collideModelOriginal = SpeedRamp::cmOriginal;
-	collideModelTransformed = collideModelOriginal->duplicateMe();
+    collideModelOriginal = SpeedRamp::cmOriginal;
+    collideModelTransformed = collideModelOriginal->duplicateMe();
 
-	CollisionChecker::addCollideModel(collideModelTransformed);
+    CollisionChecker::addCollideModel(collideModelTransformed);
 
-	updateCollisionModelWithZ();
+    updateCollisionModelWithZ();
 }
 
 void SpeedRamp::step()
 {
-	if (collideModelTransformed->playerIsOn)
-	{
-		Global::gameMainPlayer->hitSpeedRamp(&launchDirection, power, inputLockDuration);
+    if (collideModelTransformed->playerIsOn)
+    {
+        Global::gameMainPlayer->hitSpeedRamp(&launchDirection, power, inputLockDuration);
 
-		AudioPlayer::play(21, getPosition());
-	}
+        AudioPlayer::play(21, getPosition());
+    }
 }
 
 std::list<TexturedModel*>* SpeedRamp::getModels()
 {
-	return &SpeedRamp::models;
+    return &SpeedRamp::models;
 }
 
 void SpeedRamp::loadStaticModels()
 {
-	if (SpeedRamp::models.size() > 0)
-	{
-		return;
-	}
+    if (SpeedRamp::models.size() > 0)
+    {
+        return;
+    }
 
-	#ifdef DEV_MODE
-	std::fprintf(stdout, "Loading SpeedRamp static models...\n");
-	#endif
+    #ifdef DEV_MODE
+    std::fprintf(stdout, "Loading SpeedRamp static models...\n");
+    #endif
 
-	loadModel(&SpeedRamp::models, "res/Models/Objects/BigJump/", "BigJump");
+    loadModel(&SpeedRamp::models, "res/Models/Objects/BigJump/", "BigJump");
 
-	if (SpeedRamp::cmOriginal == nullptr)
-	{
-		SpeedRamp::cmOriginal = loadCollisionModel("Models/Objects/BigJump/", "Collision");
-	}
+    if (SpeedRamp::cmOriginal == nullptr)
+    {
+        SpeedRamp::cmOriginal = loadCollisionModel("Models/Objects/BigJump/", "Collision");
+    }
 }
 
 void SpeedRamp::deleteStaticModels()
 {
-	#ifdef DEV_MODE
-	std::fprintf(stdout, "Deleting SpeedRamp static models...\n");
-	#endif
+    #ifdef DEV_MODE
+    std::fprintf(stdout, "Deleting SpeedRamp static models...\n");
+    #endif
 
-	Entity::deleteModels(&SpeedRamp::models);
-	Entity::deleteCollisionModel(&SpeedRamp::cmOriginal);
+    Entity::deleteModels(&SpeedRamp::models);
+    Entity::deleteCollisionModel(&SpeedRamp::cmOriginal);
 }
