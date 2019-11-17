@@ -11,7 +11,11 @@ public:
     static GuiTexture* textureRing;
     static GuiTexture* textureLifeIcon;
     static GuiTexture* textureBlueLine;
-    static GuiTexture* textureRankDisplay;
+    static GuiTexture* textureRankA;
+    static GuiTexture* textureRankB;
+    static GuiTexture* textureRankC;
+    static GuiTexture* textureRankD;
+    static GuiTexture* textureRankE;
 
     static void loadGuiTextures();
 };

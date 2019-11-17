@@ -10,6 +10,7 @@
 #include "resultsscreen.h"
 
 bool MenuManager::arcadeModeIsDone = false;
+bool MenuManager::playerFailedArcadeMode = false;
 
 MenuManager::MenuManager()
 {
@@ -73,7 +74,15 @@ void MenuManager::switchStack()
 
 void MenuManager::step()
 {
-    if (Global::finishStageTimer >= 9.05f)
+    if (MenuManager::playerFailedArcadeMode) //end of arcade mode, return to main menu
+    {
+        MenuManager::playerFailedArcadeMode = false;
+        clearMenuStack();
+        clearGameStack();
+        currentStack = &menuStack;
+        currentStack->push(new MainMenu); INCR_NEW("Menu");
+    }
+    else if (Global::finishStageTimer >= 9.05f)
     {
         if (!Global::gameIsArcadeMode) //end of a mission, return to mission select
         {

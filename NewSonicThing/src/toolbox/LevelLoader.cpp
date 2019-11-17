@@ -140,15 +140,19 @@ void LevelLoader::loadLevel(std::string levelFilename)
             if (Global::gameLives < 0)
             {
                 LevelLoader::loadTitle();
+                MenuManager::playerFailedArcadeMode = true;
                 return;
             }
         }
     }
 
+    std::chrono::high_resolution_clock::time_point timeStart = std::chrono::high_resolution_clock::now();
+    bool waitForSomeTime = false;
+
     if (Global::isNewLevel)
     {
         stageFault = 1;
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        waitForSomeTime = true;
 
         //Set the Global levelID based on the name of the level
         Level* currLvl = nullptr;
@@ -520,13 +524,36 @@ void LevelLoader::loadLevel(std::string levelFilename)
     Global::gameStage->finishPlayerPosition.z = toFloat(finishSplit[2]);
     free(finishSplit);
 
-    std::string finishCamVars;
-    getlineSafe(file, finishCamVars);
-    memcpy(finishBuf, finishCamVars.c_str(), finishCamVars.size()+1);
+    std::string finishPlayerDir;
+    getlineSafe(file, finishPlayerDir);
+    memcpy(finishBuf, finishPlayerDir.c_str(), finishPlayerDir.size()+1);
+    finishLength = 0;
     finishSplit = split(finishBuf, ' ', &finishLength);
-    Global::gameStage->finishPlayerRotY  = toFloat(finishSplit[0]);
-    Global::gameStage->finishCameraPitch = toFloat(finishSplit[1]);
+    Global::gameStage->finishPlayerDir.x = toFloat(finishSplit[0]);
+    Global::gameStage->finishPlayerDir.y = toFloat(finishSplit[1]);
+    Global::gameStage->finishPlayerDir.z = toFloat(finishSplit[2]);
     free(finishSplit);
+
+    std::string finishPlayerUp;
+    getlineSafe(file, finishPlayerUp);
+    memcpy(finishBuf, finishPlayerUp.c_str(), finishPlayerUp.size()+1);
+    finishLength = 0;
+    finishSplit = split(finishBuf, ' ', &finishLength);
+    Global::gameStage->finishPlayerUp.x = toFloat(finishSplit[0]);
+    Global::gameStage->finishPlayerUp.y = toFloat(finishSplit[1]);
+    Global::gameStage->finishPlayerUp.z = toFloat(finishSplit[2]);
+    free(finishSplit);
+
+    std::string finishCameraDir;
+    getlineSafe(file, finishCameraDir);
+    memcpy(finishBuf, finishCameraDir.c_str(), finishCameraDir.size()+1);
+    finishLength = 0;
+    finishSplit = split(finishBuf, ' ', &finishLength);
+    Global::gameStage->finishCameraDir.x = toFloat(finishSplit[0]);
+    Global::gameStage->finishCameraDir.y = toFloat(finishSplit[1]);
+    Global::gameStage->finishCameraDir.z = toFloat(finishSplit[2]);
+    free(finishSplit);
+
 
     //Global death height
     std::string deathHeightLine;
@@ -672,6 +699,25 @@ void LevelLoader::loadLevel(std::string levelFilename)
         Global::gameMainPlayer->canMoveTimer = 1.0f;
         Global::gameMainPlayer->camDir.set(&initialCamDir);
         Global::gameMainPlayer->camDirSmooth.set(&initialCamDir);
+        Vector3f startingDir = initialCamDir;
+        startingDir.y = 0;
+        startingDir.setLength(0.001f);
+        Global::gameMainPlayer->vel.set(&startingDir);
+    }
+
+    if (waitForSomeTime)
+    {
+        int waitTargetMillis = 10; //how long loading screen should show at least (in milliseconds)
+
+        std::chrono::high_resolution_clock::time_point timeEnd = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double, std::milli> time_span = timeEnd - timeStart;
+        double durationMillis = time_span.count();
+
+        int waitForMs = waitTargetMillis - (int)durationMillis;
+        if (waitForMs > 0)
+        {
+            std::this_thread::sleep_for(std::chrono::milliseconds(waitForMs));
+        }
     }
 
     Global::startStageTimer = 1.0f;

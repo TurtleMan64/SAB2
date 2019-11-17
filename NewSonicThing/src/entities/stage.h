@@ -20,8 +20,9 @@ private:
 
 public:
     Vector3f finishPlayerPosition;
-    float finishPlayerRotY;
-    float finishCameraPitch;
+    Vector3f finishPlayerDir;
+    Vector3f finishPlayerUp;
+    Vector3f finishCameraDir;
 
     Stage();
 

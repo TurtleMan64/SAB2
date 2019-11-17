@@ -240,6 +240,8 @@ Menu* MainMenu::step()
                 
                 Global::createTitleCard();
 
+                Global::gameArcadePlaytime = 0.0f;
+
                 Global::isNewLevel = true;
                 Global::shouldLoadLevel = true;
 

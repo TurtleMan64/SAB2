@@ -18,7 +18,9 @@ private:
     float fontSize;
     bool selectInputPrevious;
     bool backInputPrevious;
+
     GUIText* textArcadeModeClear = nullptr;
+    GUIText* textClearTime = nullptr;
 
 public:
     ResultsScreen();

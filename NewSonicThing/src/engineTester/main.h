@@ -128,7 +128,7 @@ public:
     static std::string gameMissionDescription;
     static int gameRingTarget; //How many rings you have to collect to finish the stage in Ring mode
     static bool gameIsArcadeMode;
-    static float gameTotalPlaytime;
+    static int gameTotalPlaytime; //in seconds
     static float gameArcadePlaytime;
     static bool stageUsesWater;
     static FontType* fontVipnagorgialla;

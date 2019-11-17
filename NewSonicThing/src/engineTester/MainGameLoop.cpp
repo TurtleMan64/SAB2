@@ -14,6 +14,7 @@
 #include <unordered_set>
 #include <list>
 
+#include <chrono>
 #include <ctime>
 #include <random>
 
@@ -176,7 +177,7 @@ int Global::gameRingCount = 0;
 int Global::gameScore = 0;
 int Global::gameLives = 4;
 float Global::gameClock = 0.0f;
-float Global::gameTotalPlaytime = 0;
+int Global::gameTotalPlaytime = 0;
 float Global::gameArcadePlaytime = 0;
 float Global::deathHeight = -100.0f;
 int Global::gameMainVehicleSpeed = 0;
@@ -231,7 +232,7 @@ void doListenThread();
 
 void listen();
 
-MenuManager Global::menuManager = MenuManager();
+MenuManager Global::menuManager;
 Timer* Global::mainHudTimer = nullptr;
 
 int main(int argc, char** argv)
@@ -355,6 +356,7 @@ int main(int argc, char** argv)
 
     ParticleMaster::init(Master_getProjectionMatrix());
 
+    long long secSinceEpoch = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 
     glfwSetTime(0);
 
@@ -362,6 +364,8 @@ int main(int argc, char** argv)
     double previousTime = 0;
 
     Global::gameState = STATE_TITLE;
+
+    GuiTexture* rankDisplay = nullptr;
 
     std::list<std::unordered_set<Entity*>*> entityChunkedList;
 
@@ -421,7 +425,11 @@ int main(int argc, char** argv)
 
         frameCount++;
         Global::renderCount++;
-        Global::gameTotalPlaytime+=dt;
+
+        long long nextSecSinceEpoch = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+        int epocSecDiff = (int)(nextSecSinceEpoch - secSinceEpoch);
+        secSinceEpoch = nextSecSinceEpoch;
+        Global::gameTotalPlaytime+=epocSecDiff;
 
         if (Global::gameIsArcadeMode)
         {
@@ -804,6 +812,12 @@ int main(int argc, char** argv)
         //Master_clearEntitiesPass3();
         //Master_clearTransparentEntities();
 
+        if (rankDisplay != nullptr)
+        {
+            //HUD clears the GUI every frame, so we need to add it back every frame before it gets drawn and erased.
+            GuiManager::addGuiToRender(rankDisplay);
+        }
+
         GuiManager::refresh();
         TextMaster::render();
 
@@ -830,23 +844,33 @@ int main(int argc, char** argv)
                 Vector3f partVel(0, 0, 0);
                 ParticleMaster::createParticle(ParticleResources::textureWhiteFadeOutAndIn, Global::gameCamera->getFadePosition1(), &partVel, 0, 2.0f, 0, 900, 0, true, false, 1.0f);
             }
-            else if (finishTimerBefore < 1.0f && Global::finishStageTimer >= 1.0f)
+
+            if (finishTimerBefore < 1.0f && Global::finishStageTimer >= 1.0f)
             {
                 AudioPlayer::stopBGM();
-                //AudioPlayer::play(24, Global::gamePlayer->getPosition());
+                AudioPlayer::play(24, &Global::gameMainPlayer->position);
+
+                //Add score based on timer
+                float currTime = 0;
+                if (Global::mainHudTimer != nullptr)
+                {
+                    currTime = Global::mainHudTimer->totalTime;
+                }
+                Global::gameScore += std::max(0, 11200 - 20*((int)currTime)); //20 per second
             }
-            else if (finishTimerBefore < 8.166f && Global::finishStageTimer >= 8.166f)
+
+            if (finishTimerBefore < 8.166f && Global::finishStageTimer >= 8.166f)
             {
                 Vector3f partVel(0, 0, 0);
                 ParticleMaster::createParticle(ParticleResources::textureBlackFadeOutAndIn, Global::gameCamera->getFadePosition1(), &partVel, 0, 2.0f, 0, 900, 0, true, false, 1.0f);
 
-                //AudioPlayer::play(25, Global::gamePlayer->getPosition());
+                AudioPlayer::play(25, &Global::gameMainPlayer->position);
             }
 
             if (Global::finishStageTimer >= 0 &&
                 Global::finishStageTimer < 1)
             {
-                AudioPlayer::setBGMVolume(1-Global::finishStageTimer);
+                AudioPlayer::setBGMVolume(1 - Global::finishStageTimer);
             }
 
             if (finishTimerBefore < 9.166f && Global::finishStageTimer >= 9.166f)
@@ -903,15 +927,29 @@ int main(int argc, char** argv)
                 Global::gameRingCount = 0;
             }
 
+            if (finishTimerBefore < 8.5f && Global::finishStageTimer >= 8.5f)
+            {
+                rankDisplay = nullptr;
+            }
+
             if (finishTimerBefore < 6.166f && Global::finishStageTimer >= 6.166f)
             {
                 if (Global::gameIsArcadeMode && Global::gameArcadeIndex+1 >= Global::gameArcadeLevelIds.size())
                 {
                     MenuManager::arcadeModeIsDone = true;
                 }
-                // int rank = Global::calculateRankAndUpdate();
-                GuiManager::addGuiToRender(GuiTextureResources::textureRankDisplay);
-                //AudioPlayer::play(44, Global::gamePlayer->getPosition());
+                int rank = Global::calculateRankAndUpdate();
+                rankDisplay = nullptr;
+                switch (rank)
+                {
+                    case 0: rankDisplay = GuiTextureResources::textureRankE; break;
+                    case 1: rankDisplay = GuiTextureResources::textureRankD; break;
+                    case 2: rankDisplay = GuiTextureResources::textureRankC; break;
+                    case 3: rankDisplay = GuiTextureResources::textureRankB; break;
+                    case 4: rankDisplay = GuiTextureResources::textureRankA; break;
+                    default: break;
+                }
+                AudioPlayer::play(44, &Global::gameMainPlayer->position);
             }
         }
 
@@ -943,20 +981,6 @@ int main(int argc, char** argv)
             }
         }
         //std::fprintf(stdout, "dt: %f\n", dt);
-        //std::this_thread::sleep_for(std::chrono::milliseconds(8));
-
-        //sort of works, but looks choppy. not really worth it over just vsync
-        //if (Global::gameState == STATE_RUNNING && Global::framerateUnlock)
-        //{
-        //    float frameNeedsToTake = 1000.0f/Global::fpsTarget;
-        //    float millisThisFrameTook = 1000.0f*dt;
-        //    int milliToSleep = (int)(frameNeedsToTake - millisThisFrameTook);
-        //    if (milliToSleep > 0)
-        //    {
-        //        std::this_thread::sleep_for(std::chrono::milliseconds(milliToSleep));
-        //        printf("%d\n", milliToSleep);
-        //    }
-        //}
     }
 
     Global::saveSaveData();
@@ -1189,7 +1213,7 @@ void Global::loadSaveData()
 
     if (Global::gameSaveData.find("PLAYTIME") != Global::gameSaveData.end())
     {
-        Global::gameTotalPlaytime = std::stof(Global::gameSaveData["PLAYTIME"]);
+        Global::gameTotalPlaytime = std::stoi(Global::gameSaveData["PLAYTIME"]);
     }
 
     if (Global::gameSaveData.find("CAMERA") != Global::gameSaveData.end())
@@ -1316,12 +1340,85 @@ int Global::calculateRankAndUpdate()
             Global::saveSaveData();
         }
 
-        //float savedTime = 6000.0f;
-
-        //if (Global::gameSaveData.find(currentLevel->displayName+missionTimeString) != Global::gameSaveData.end())
+        float newTime = 60000.0f;
+        if (Global::mainHudTimer != nullptr)
         {
-            //std::string savedTimeString = Global::gameSaveData[currentLevel->displayName+missionTimeString];
-            //savedTime = std::stof(savedTimeString);
+            newTime = Global::mainHudTimer->totalTime;
+        }
+        float savedTime = 600000.0f;
+
+        if (Global::gameSaveData.find(currentLevel->displayName+missionTimeString) != Global::gameSaveData.end())
+        {
+            std::string savedTimeString = Global::gameSaveData[currentLevel->displayName+missionTimeString];
+            savedTime = std::stof(savedTimeString);
+        }
+
+        if (newTime < savedTime)
+        {
+            std::string newTimeString = std::to_string(newTime);
+            Global::gameSaveData[currentLevel->displayName+missionTimeString] = newTimeString;
+            Global::saveSaveData();
+        }
+
+        if (missionType == "Normal" || missionType == "Hard")
+        {
+            int scoreForRankA = std::stoi((currentLevel->missionData[Global::gameMissionNumber])[1]);
+            int scoreForRankB = (3*scoreForRankA)/4;
+            int scoreForRankC = (2*scoreForRankA)/3;
+            int scoreForRankD = (1*scoreForRankA)/2;
+
+            if      (newScore >= scoreForRankA) newRank = 4;
+            else if (newScore >= scoreForRankB) newRank = 3;
+            else if (newScore >= scoreForRankC) newRank = 2;
+            else if (newScore >= scoreForRankD) newRank = 1;
+
+            if (newScore > savedScore)
+            {
+                std::string newRankString = "ERROR";
+                switch (newRank)
+                {
+                    case 0: newRankString = "E"; break;
+                    case 1: newRankString = "D"; break;
+                    case 2: newRankString = "C"; break;
+                    case 3: newRankString = "B"; break;
+                    case 4: newRankString = "A"; break;
+                    default: break;
+                }
+
+                Global::gameSaveData[currentLevel->displayName+missionRankString]  = newRankString;
+
+                Global::saveSaveData();
+            }
+        }
+        else if (missionType == "Ring" || missionType == "Chao")
+        {
+            int timeForRankA = std::stoi((currentLevel->missionData[Global::gameMissionNumber])[1]);
+            int timeForRankB = (4*timeForRankA)/3;
+            int timeForRankC = (3*timeForRankA)/2;
+            int timeForRankD = (2*timeForRankA)/1;
+
+            if      (newTime <= timeForRankA) newRank = 4;
+            else if (newTime <= timeForRankB) newRank = 3;
+            else if (newTime <= timeForRankC) newRank = 2;
+            else if (newTime <= timeForRankD) newRank = 1;
+
+            if (newTime < savedTime)
+            {
+                std::string newRankString = "ERROR";
+                switch (newRank)
+                {
+                    case 0: newRankString = "E"; break;
+                    case 1: newRankString = "D"; break;
+                    case 2: newRankString = "C"; break;
+                    case 3: newRankString = "B"; break;
+                    case 4: newRankString = "A"; break;
+                    default: break;
+                }
+
+                Global::gameSaveData[currentLevel->displayName+missionRankString] = newRankString;
+
+                Global::saveSaveData();
+            }
         }
     }
 
@@ -1589,7 +1686,11 @@ void Global::createTitleCard()
 
     titleCardLevelName          = new GUIText(Global::levelNameDisplay, 0.09f, Global::fontVipnagorgialla, 0.5f, 0.6f, 4, true); INCR_NEW("GUIText");
     titleCardMission            = new GUIText("Mission "+std::to_string(Global::gameMissionNumber+1)+":", 0.075f, Global::fontVipnagorgialla, 0.5f, 0.7f, 4, true); INCR_NEW("GUIText");
-    titleCardMissionDescription = new GUIText(Global::gameMissionDescription, 0.06f, Global::fontVipnagorgialla, 0.5f, 0.8f, 4, true); INCR_NEW("GUIText");
+    //titleCardMissionDescription = new GUIText(Global::gameMissionDescription, 0.06f, Global::fontVipnagorgialla, 0.5f, 0.8f, 4, true); INCR_NEW("GUIText");
+    titleCardMissionDescription = new GUIText(Global::gameMissionDescription, 0.06f, Global::fontVipnagorgialla, 0.0f, 0.8f, 1.0f, true, false, true); INCR_NEW("GUIText");
+    
+    //GUIText::GUIText(std::string text, float fontSize, FontType* font, float x, float y, float maxLineLength,
+    //bool centered, bool rightAligned, bool visible)
 }
 
 void Global::clearTitleCard()

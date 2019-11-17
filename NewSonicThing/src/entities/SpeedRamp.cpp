@@ -91,7 +91,7 @@ void SpeedRamp::loadStaticModels()
 
     if (SpeedRamp::cmOriginal == nullptr)
     {
-        SpeedRamp::cmOriginal = loadCollisionModel("Models/Objects/BigJump/", "Collision");
+        SpeedRamp::cmOriginal = loadCollisionModel("Models/Objects/BigJump/", "BigJump");
     }
 }
 

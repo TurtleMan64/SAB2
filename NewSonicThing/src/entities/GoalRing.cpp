@@ -67,8 +67,6 @@ void GoalRing::step()
             Global::finishStageTimer = 0.0f;
             visible = false;
             text->setVisible(false);
-            //Main_deleteEntity(this);
-            //Main_deleteEntity(text);
         }
     }
 

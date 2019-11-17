@@ -18,8 +18,10 @@ Collision 7
 res/Audio/BGM/p_cave_intro.ogg
 res/Audio/BGM/p_cave_loop.ogg
 927 323.9218 -942
-88 6
--200
+0.001043 0 0.002698
+0 1 0
+-0.355725 -0.189540 -0.915169
+-4560
 nowater
 0
 0

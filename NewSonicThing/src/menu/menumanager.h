@@ -22,6 +22,7 @@ private:
 
 public:
     static bool arcadeModeIsDone;
+    static bool playerFailedArcadeMode;
     MenuManager(); // Constructor initializes
     void push(Menu* menu); // Push a menu to the current stack
     void step(); // Run the step function for the menu at the top of the current stack

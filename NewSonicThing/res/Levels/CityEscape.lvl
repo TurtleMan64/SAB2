@@ -19,8 +19,10 @@ res/Audio/BGM/c_escap1_intro.ogg
 res/Audio/BGM/c_escap1_loop.ogg
 res/Audio/BGM/c_escap2_intro.ogg
 res/Audio/BGM/c_escap2_loop.ogg
--2997.882813 204.103973 -10584.179688
-103 3
+3964.916260 -22174.910156 16141.628906
+0.002172 0.000000 -0.001898
+0 1 0
+-0.737833 -0.200000 0.644672
 -22222
 nowater
 0
@@ -32,6 +34,9 @@ false
 
 #Stage Manager
 91 4
+
+#Goal Ring
+69 3964.916260 -22139.910156 16141.628906
 
 # Player
 6 0 -50.988007 175.837097

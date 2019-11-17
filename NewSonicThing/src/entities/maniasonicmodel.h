@@ -17,7 +17,6 @@ class ManiaSonicModel : public PlayerModel
 private:
     std::list<TexturedModel*>* models;
 
-    //const float displayHeightOffset = -0.25f;
     const float displayHeightOffset = 0.63f;
     const float displayBallOffset = 3.0f;
 

@@ -227,6 +227,18 @@ void ManiaSonicModel::animate(int animIndex, float time)
             break;
         }
 
+        case 14: //dab
+        {
+            Vector3f off = currentUpDirection.scaleCopy(limbsScale*displayHeightOffset);
+            Vector3f pos = position + off;
+            myBody->setBaseOrientation(pos.x, pos.y, pos.z, rotX, rotY, rotZ, rotRoll, limbsScale);
+            updateLimbs(14, time);
+            updateLimbsMatrix();
+            setLimbsVisibility(true);
+            visible = false;
+            break;
+        }
+
         case 15: //jog
         {
             setScale(0.27f);

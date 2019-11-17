@@ -17,6 +17,7 @@ std::list<TexturedModel*> GF_StageManager::modelsSkydome;
 GF_StageManager::GF_StageManager()
 {
     visible = true;
+    firstFrame = true;
 }
 
 void GF_StageManager::step()
@@ -64,6 +65,13 @@ void GF_StageManager::step()
         Global::gameMainPlayer->die();
     }
 
+    //if first frame, spawn black fadein
+    if (firstFrame)
+    {
+        firstFrame = false;
+        Vector3f partVel(0, 0, 0);
+        ParticleMaster::createParticle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &partVel, 0, 1.0f, 0, 900, 0, true, false, 2.0f);
+    }
 
     //generate pollen particles
     Vector3f center = Global::gameMainPlayer->position;

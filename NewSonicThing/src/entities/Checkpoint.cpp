@@ -101,6 +101,8 @@ Checkpoint::Checkpoint(float x, float y, float z, float yRot)
         ball2->setRotZ(90);
         ball1->updateTransformationMatrix();
         ball2->updateTransformationMatrix();
+        ball1->baseColour.set(1, 0, 0);
+        ball2->baseColour.set(1, 0, 0);
     }
 }
 
@@ -151,6 +153,8 @@ void Checkpoint::step()
             ball2->setRotZ(90);
             ball1->updateTransformationMatrix();
             ball2->updateTransformationMatrix();
+            ball1->baseColour.set(1, 0, 0);
+            ball2->baseColour.set(1, 0, 0);
         }
     }
 }

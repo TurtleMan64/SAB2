@@ -29,8 +29,10 @@ CollisionAll 9
 2
 res/Audio/BGM/sea_hill_intro.ogg
 res/Audio/BGM/sea_hill_loop.ogg
-0 0 0
-0 0
+1406.568726 1074.631348 -42711.144531
+0.002094 -0.0000 -0.002355
+0 1 0
+-0.652636 -0.184685 0.734818
 -100
 water
 0
@@ -39,6 +41,9 @@ false
 
 #Stage manager
 91 5
+
+#Goal Ring
+69 1406.568726 1100.631348 -42711.144531
 
 6 0 60 2600
 0 0 0 0 

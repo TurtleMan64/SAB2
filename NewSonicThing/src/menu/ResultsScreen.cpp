@@ -49,6 +49,15 @@ void ResultsScreen::loadResources()
     //float aspectRatio = (float)SCR_WIDTH / SCR_HEIGHT;
 
     textArcadeModeClear = new GUIText("Congrats bro", 0.2f, Global::fontVipnagorgialla, 0.5f, 0.5f, 4, false); INCR_NEW("GUIText")
+
+    int totalTime = (int)Global::gameArcadePlaytime;
+    int hours = totalTime/3600;
+    int minutes = (totalTime%3600)/60;
+    int seconds = totalTime%60;
+    int decimal = (int)(100*fmodf(Global::gameArcadePlaytime, 1.0f));
+    std::string playtime = "Clear time: "+std::to_string(hours)+":"+std::to_string(minutes)+":"+std::to_string(seconds)+"."+std::to_string(decimal);
+
+    textClearTime = new GUIText(playtime, 0.2f, Global::fontVipnagorgialla, 0.5f, 0.25f, 4, false); INCR_NEW("GUIText")
 }
 
 void ResultsScreen::unloadResources()
@@ -58,9 +67,8 @@ void ResultsScreen::unloadResources()
         std::fprintf(stdout, "Warning: ResultsScreen unloading resources when they are empty.\n");
     }
 
-    textArcadeModeClear->deleteMe();
-    delete textArcadeModeClear; INCR_DEL("GUIText")
-    textArcadeModeClear = nullptr;
+    textArcadeModeClear->deleteMe(); delete textArcadeModeClear; textArcadeModeClear = nullptr; INCR_DEL("GUIText")
+    textClearTime->deleteMe(); delete textClearTime; textClearTime = nullptr; INCR_DEL("GUIText")
 }
 
 Menu* ResultsScreen::step()
@@ -82,6 +90,7 @@ Menu* ResultsScreen::step()
     }
 
     textArcadeModeClear->visible = true;
+    textClearTime->visible = true;
 
     if ((pressedSelect && !selectInputPrevious) ||
         (pressedBack && !backInputPrevious))

@@ -26,6 +26,7 @@
 #include "maniamightymodel.h"
 #include "ringmoving.h"
 #include "../menu/timer.h"
+#include "stage.h"
 
 #include <list>
 #include <vector>
@@ -74,7 +75,7 @@ void PlayerSonic::step()
     homingAttackTimer = std::fmaxf(-1.0f, homingAttackTimer - dt);
     hitTimer          = std::fmaxf(0.0f,  hitTimer          - dt);
     float deadTimerOld = deadTimer;
-    if (deadTimer >= -0.5f)
+    if (deadTimer >= 0.0f)
     {
         deadTimer -= dt;
     }
@@ -2011,7 +2012,11 @@ void PlayerSonic::updateAnimationValues()
     ParticleTexture* trail = nullptr;
     float density = 2.0f; //1 particle every 2 units
 
-    if (isLightdashing)
+    if (deadTimer >= 0)
+    {
+        
+    }
+    else if (isLightdashing)
     {
         trail = ParticleResources::textureOrangeTrail;
         density = 0.75f;
@@ -2198,6 +2203,44 @@ void PlayerSonic::animate()
             playerModel->animate(1, runAnimationCycle);
         }
     }
+
+    if (Global::finishStageTimer >= 1.0f)
+    {
+        position.set(&Global::gameStage->finishPlayerPosition);
+        vel.set(&Global::gameStage->finishPlayerDir);
+        vel.setLength(0.001f);
+        relativeUp.set(&Global::gameStage->finishPlayerUp);
+        relativeUp.normalize();
+
+        camDir.set(&Global::gameStage->finishCameraDir);
+        camDir.normalize();
+        camDirSmooth.set(&camDir);
+
+        isJumping = false;
+        isSpindashing = false;
+        isSkidding = false;
+        isBall = false;
+        isBouncing = false;
+        isStomping = false;
+        isLightdashing = false;
+        onRocket = false;
+        isGrinding = false;
+
+        groundSpeeds = Maths::calculatePlaneSpeed(vel.x, vel.y, vel.z, &relativeUp);
+        twistAngleGround = Maths::toDegrees(atan2f(-groundSpeeds.z, groundSpeeds.x));
+        nXGround = relativeUpAnim.x;
+        nYGround = relativeUpAnim.y;
+        nZGround = relativeUpAnim.z;
+        normHLengthGround = sqrtf(nXGround*nXGround + nZGround*nZGround);
+        pitchAngleGround = Maths::toDegrees(atan2f(nYGround, normHLengthGround));
+        yawAngleGround = Maths::toDegrees(atan2f(-nZGround, nXGround));
+        diffGround = Maths::compareTwoAngles(twistAngleGround, yawAngleGround);
+
+        float finishTimeAnim = fmaxf(0, fminf((float)(Global::finishStageTimer-1.666f)*2.0f*60.0f, 99.99f));
+
+        playerModel->setOrientation(position.x, position.y, position.z, diffGround, yawAngleGround, pitchAngleGround, 0, &relativeUp);
+        playerModel->animate(14, finishTimeAnim);
+    }
 }
 
 void PlayerSonic::setInputs()
@@ -2304,7 +2347,17 @@ void PlayerSonic::refreshCamera()
         //Master_makeProjectionMatrix();
 
         Vector3f camOffset(&camDirSmooth);
-        camOffset.setLength(camRadius);
+
+        if (Global::finishStageTimer < 1.0f)
+        {
+            camOffset.setLength(camRadius);
+        }
+        else
+        {
+            float tim = Global::finishStageTimer-1.0f;
+            float newRad = Maths::approach(camRadius, 30.0f, 2.0f, tim);
+            camOffset.setLength(newRad);
+        }
 
         Vector3f camHeight(&relativeUpSmooth);
         camHeight.setLength(camHeightOffset);
