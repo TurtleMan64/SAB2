@@ -2,13 +2,12 @@
 #define PARTICLE_H
 
 class ParticleTexture;
-class Camera;
 
 #include "../toolbox/vector.h"
 
 class Particle
 {
-private:
+protected:
     Vector3f position;
     Vector3f* positionRef;
     Vector3f velocity;
@@ -33,18 +32,20 @@ private:
     void setTextureOffset(Vector2f* offset, int index);
 
 public:
-    Particle(ParticleTexture* texture, Vector3f* position, float lifeLength, float scale, bool onlyRendersOnce);
+    Particle();
 
-    Particle(ParticleTexture* texture, Vector3f* position, float lifeLength, float scale, float opacity, bool onlyRendersOnce);
-
-    Particle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float lifeLength, float scale, bool onlyRendersOnce);
-
-    Particle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float gravityEffect,
-        float lifeLength, float rotation, float scale, float scaleChange, bool posIsRef, bool onlyRendersOnce, float opacity);
-
-    Particle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float gravityEffect,
-        float lifeLength, float rotation, float scaleX, float scaleXChange, float scaleY, float scaleYChange, 
-        bool posIsRef, bool onlyRendersOnce);
+    //Particle(ParticleTexture* texture, Vector3f* position, float lifeLength, float scale, bool onlyRendersOnce);
+    //
+    //Particle(ParticleTexture* texture, Vector3f* position, float lifeLength, float scale, float opacity, bool onlyRendersOnce);
+    //
+    //Particle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float lifeLength, float scale, bool onlyRendersOnce);
+    //
+    //Particle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float gravityEffect,
+    //    float lifeLength, float rotation, float scale, float scaleChange, bool posIsRef, bool onlyRendersOnce, float opacity);
+    //
+    //Particle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float gravityEffect,
+    //    float lifeLength, float rotation, float scaleX, float scaleXChange, float scaleY, float scaleYChange, 
+    //    bool posIsRef, bool onlyRendersOnce);
 
     float getDistance();
 
@@ -66,6 +67,26 @@ public:
 
     float getBlend();
 
-    bool update(Camera* camera);
+    virtual bool update();
 };
+
+class ParticleStandard : public Particle
+{
+public:
+    ParticleStandard(ParticleTexture* texture, Vector3f* position, float lifeLength, float scale, bool onlyRendersOnce);
+
+    ParticleStandard(ParticleTexture* texture, Vector3f* position, float lifeLength, float scale, float opacity, bool onlyRendersOnce);
+
+    ParticleStandard(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float lifeLength, float scale, bool onlyRendersOnce);
+
+    ParticleStandard(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float gravityEffect,
+        float lifeLength, float rotation, float scale, float scaleChange, bool posIsRef, bool onlyRendersOnce, float opacity);
+
+    ParticleStandard(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float gravityEffect,
+        float lifeLength, float rotation, float scaleX, float scaleXChange, float scaleY, float scaleYChange, 
+        bool posIsRef, bool onlyRendersOnce);
+
+    bool update();
+};
+
 #endif

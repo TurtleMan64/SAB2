@@ -4,8 +4,8 @@
 #include "entity.h"
 #include "../toolbox/vector.h"
 
-//class ShieldMagnet;
-//class ShieldGreen;
+class ShieldMagnet;
+class ShieldGreen;
 
 class ControllablePlayer : public Entity
 {
@@ -136,21 +136,21 @@ public:
     //Returns the center position of where the player is being drawn.
     virtual Vector3f getCenterPosition();
 
-    //virtual ShieldMagnet* getShieldMagnet();
+    virtual ShieldMagnet* getShieldMagnet();
 
-    //virtual void setShieldMagnet(ShieldMagnet* newMagnet);
+    virtual void setShieldMagnet(ShieldMagnet* newMagnet);
 
-    //virtual ShieldGreen* getShieldGreen();
+    virtual ShieldGreen* getShieldGreen();
 
-    //virtual void setShieldGreen(ShieldGreen* newGreen);
+    virtual void setShieldGreen(ShieldGreen* newGreen);
 
     //virtual int getDiggingTimer();
 
-    //virtual void increaseCombo();
+    virtual void increaseCombo();
 
-    //virtual void setInvincibleTimer(int newTimer);
+    virtual void setInvincibleTimer(float newTimer);
 
-    //virtual void setSpeedshoesTimer(int newTimer);
+    virtual void setSpeedshoesTimer(float newTimer);
 
     virtual void grabRocket();
 

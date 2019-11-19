@@ -7,6 +7,8 @@ class ParticleTexture;
 class Source;
 class PlayerModel;
 class Source;
+class ShieldGreen;
+class ShieldMagnet;
 
 #include <list>
 #include <vector>
@@ -133,13 +135,20 @@ private:
 
     float deadTimer = -1.0f;
 
+    float invincibleTimer = 0.0f;
+
+    float speedShoesTimer = 0.0f;
+
+    ShieldMagnet* myShieldMagnet = nullptr;
+    ShieldGreen*  myShieldGreen  = nullptr;
+
+    int combo = 0;
+
     //animation variables
     float runAnimationCycle = 0.0f;
-
-    //const float displayHeightOffset = 0.6f;
-    //const float displayBallOffset = 3.0f;
-
     Vector3f centerPosPrev;
+    Vector3f invincibleColor1;
+    Vector3f invincibleColor2;
 
     //input variables
     bool  inputJump;
@@ -219,11 +228,25 @@ public:
 
     void setInWater(float newWaterHeight);
 
+    void increaseCombo();
+
     void grabRocket();
 
     void releaseRocket();
 
     void setOnGround(bool newOnGround);
+
+    ShieldMagnet* getShieldMagnet();
+
+    void setShieldMagnet(ShieldMagnet* newMagnet);
+
+    ShieldGreen* getShieldGreen();
+
+    void setShieldGreen(ShieldGreen* newGreen);
+
+    void setInvincibleTimer(float newTimer);
+
+    void setSpeedShoesTimer(float newTimer);
 
     //called by Rail when sonic jumps off
     void jump();

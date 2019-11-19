@@ -2,6 +2,35 @@
 #include "triangle3d.h"
 #include "../toolbox/vector.h"
 
+//Loads in all data from 91 bytes
+Triangle3D::Triangle3D(char* buf)
+{
+    p1X      = *((float*)(&buf[ 0]));
+    p1Y      = *((float*)(&buf[ 4]));
+    p1Z      = *((float*)(&buf[ 8]));
+    p2X      = *((float*)(&buf[12]));
+    p2Y      = *((float*)(&buf[16]));
+    p2Z      = *((float*)(&buf[20]));
+    p3X      = *((float*)(&buf[24]));
+    p3Y      = *((float*)(&buf[28]));
+    p3Z      = *((float*)(&buf[32]));
+    normal.x = *((float*)(&buf[36]));
+    normal.y = *((float*)(&buf[40]));
+    normal.z = *((float*)(&buf[44]));
+    A        = *((float*)(&buf[48]));
+    B        = *((float*)(&buf[52]));
+    C        = *((float*)(&buf[56]));
+    D        = *((float*)(&buf[60]));
+    maxX     = *((float*)(&buf[64]));
+    minX     = *((float*)(&buf[68]));
+    maxY     = *((float*)(&buf[72]));
+    minY     = *((float*)(&buf[76]));
+    maxZ     = *((float*)(&buf[80]));
+    minZ     = *((float*)(&buf[84]));
+    type     = buf[88];
+    sound    = buf[89];
+    particle = buf[90];
+}
 
 Triangle3D::Triangle3D(Vector3f* newP1, Vector3f* newP2, Vector3f* newP3, char type, char sound, char particle)
 {

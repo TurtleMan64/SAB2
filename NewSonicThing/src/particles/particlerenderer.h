@@ -8,6 +8,7 @@ class Vector3f;
 class Particle;
 class ParticleTexture;
 class Camera;
+class GF_Particle;
 
 
 #include "../renderEngine/renderEngine.h"
@@ -30,7 +31,9 @@ private:
 public:
     ParticleRenderer(Matrix4f* projectionMatrix);
 
-    void render(std::unordered_map<ParticleTexture*, std::list<Particle*>>* particles, Camera* camera, float brightness, int clipSide);
+    void render(std::unordered_map<ParticleTexture*, std::list<ParticleStandard*>>* particlesStandard, 
+                std::unordered_map<ParticleTexture*, std::list<GF_Particle*>>* particlesGF,
+                Camera* camera, float brightness, int clipSide);
 
     void updateProjectionMatrix(Matrix4f* projectionMatrix);
 

@@ -106,6 +106,7 @@ void LevelLoader::loadTitle()
     GuiManager::clearGuisToRender();
 
     Global::gameState = STATE_TITLE;
+    Global::levelID = -1;
     Global::gameIsNormalMode = false;
     Global::gameIsHardMode = false;
     Global::gameIsChaoMode = false;
@@ -323,10 +324,22 @@ void LevelLoader::loadLevel(std::string levelFilename)
             int splitLength = 0;
             char** lineSplit = split(lineBuf, ' ', &splitLength);
 
+            //std::chrono::high_resolution_clock::time_point colTimeStart = std::chrono::high_resolution_clock::now();
+            //printf("About to load collision.\n");
+            //try to load a pre generated quad tree first
+            CollisionModel* colModel = nullptr;//loadBinaryQuadTree("Models/" + colFLoc + "/", lineSplit[0]);
+            if (colModel == nullptr)
+            {
+                //if there is none, load the .bincol and generate a quad tree from scratch
+                colModel = loadBinaryCollisionModel("Models/" + colFLoc + "/", lineSplit[0]);
+                colModel->generateQuadTree(std::stoi(lineSplit[1]));
+            }
+            //printf("Done loading collision.\n");
+            //std::chrono::high_resolution_clock::time_point colTimeEnd = std::chrono::high_resolution_clock::now();
+            //std::chrono::duration<double, std::milli> colTimeSpan = colTimeEnd - colTimeStart;
+            //double colDurationMillis = colTimeSpan.count();
+            //printf("Loading collision took %f milliseconds.\n", (float)(colDurationMillis));
 
-
-            CollisionModel* colModel = loadBinaryCollisionModel("Models/" + colFLoc + "/", lineSplit[0]);
-            colModel->generateQuadTree(std::stoi(lineSplit[1]));
             CollisionChecker::addCollideModel(colModel);
 
             numCollChunks--;
@@ -707,7 +720,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
 
     if (waitForSomeTime)
     {
-        int waitTargetMillis = 10; //how long loading screen should show at least (in milliseconds)
+        int waitTargetMillis = 1; //how long loading screen should show at least (in milliseconds)
 
         std::chrono::high_resolution_clock::time_point timeEnd = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double, std::milli> time_span = timeEnd - timeStart;

@@ -507,6 +507,15 @@
     <ClCompile Include="src\menu\ResultsScreen.cpp">
       <Filter>Source Files\menu</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\ShieldGreen.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\ShieldMagnet.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\GreenForest\GF_Particle.cpp">
+      <Filter>Source Files\entities\GreenForest</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.h">
@@ -898,6 +907,15 @@
     </ClInclude>
     <ClInclude Include="src\menu\resultsscreen.h">
       <Filter>Source Files\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\shieldgreen.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\shieldmagnet.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\GreenForest\gfparticle.h">
+      <Filter>Source Files\entities\GreenForest</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

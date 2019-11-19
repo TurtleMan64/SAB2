@@ -5,7 +5,8 @@ class Matrix4f;
 class Camera;
 class Vector3f;
 class ParticleTexture;
-class Particle;
+class ParticleStandard;
+class GF_Particle;
 class ParticleRenderer;
 
 #include <unordered_map>
@@ -14,7 +15,8 @@ class ParticleRenderer;
 class ParticleMaster
 {
 private:
-    static std::unordered_map<ParticleTexture*, std::list<Particle*>> particles;
+    static std::unordered_map<ParticleTexture*, std::list<ParticleStandard*>> particlesStandard;
+    static std::unordered_map<ParticleTexture*, std::list<GF_Particle*>> particlesGF;
     static ParticleRenderer* renderer;
 
 public:
@@ -39,7 +41,9 @@ public:
         float lifeLength, float rotation, float scaleX, float scaleXChange, float scaleY, float scaleYChange, 
         bool posIsRef, bool onlyRendersOnce);
 
-    static void addParticle(Particle* particle);
+    static void addParticleStandard(ParticleStandard* particle);
+
+    static void addParticleGF(GF_Particle* particle);
 
     static void updateProjectionMatrix(Matrix4f* projectionMatrix);
 

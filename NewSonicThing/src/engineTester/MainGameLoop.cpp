@@ -633,6 +633,7 @@ int main(int argc, char** argv)
                     if (Global::gameRingCount >= Global::gameRingTarget && Global::finishStageTimer < 0)
                     {
                         Global::finishStageTimer = 0;
+                        Global::mainHudTimer->freeze(true);
                     }
                 }
                 break;
@@ -1392,10 +1393,10 @@ int Global::calculateRankAndUpdate()
         }
         else if (missionType == "Ring" || missionType == "Chao")
         {
-            int timeForRankA = std::stoi((currentLevel->missionData[Global::gameMissionNumber])[1]);
-            int timeForRankB = (4*timeForRankA)/3;
-            int timeForRankC = (3*timeForRankA)/2;
-            int timeForRankD = (2*timeForRankA)/1;
+            float timeForRankA = std::stof((currentLevel->missionData[Global::gameMissionNumber])[1]);
+            float timeForRankB = (4*timeForRankA)/3;
+            float timeForRankC = (3*timeForRankA)/2;
+            float timeForRankD = (2*timeForRankA)/1;
 
             if      (newTime <= timeForRankA) newRank = 4;
             else if (newTime <= timeForRankB) newRank = 3;

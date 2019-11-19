@@ -28,6 +28,10 @@ public:
 
     int depth; //this can probably be a char instead
 
+    //This is for when you need to load in quad tree data manually
+    QuadTreeNode();
+
+    //This is for when you are having the quadtree do the work automatically
     QuadTreeNode(float xBoundMin, float xBoundMax, float zBoundMin, float zBoundMax, std::vector<Triangle3D*> pool, int depth, int depthMax);
 
     //Deletes all children nodes and clears triangle list

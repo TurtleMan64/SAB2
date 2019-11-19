@@ -61,14 +61,14 @@ bool          ControllablePlayer::isDying()                           {return fa
 //bool          ControllablePlayer::isOnGround()                        {return false;}
 //Vector3f*     ControllablePlayer::getCurrNorm()                       {return nullptr;}
 Vector3f      ControllablePlayer::getCenterPosition()                 {return Vector3f(0,0,0);}
-//ShieldMagnet* ControllablePlayer::getShieldMagnet()                   {return nullptr;}
-//void          ControllablePlayer::setShieldMagnet(ShieldMagnet*)      {}
-//ShieldGreen*  ControllablePlayer::getShieldGreen()                    {return nullptr;}
-//void          ControllablePlayer::setShieldGreen(ShieldGreen*)        {}
+ShieldMagnet* ControllablePlayer::getShieldMagnet()                   {return nullptr;}
+void          ControllablePlayer::setShieldMagnet(ShieldMagnet*)      {}
+ShieldGreen*  ControllablePlayer::getShieldGreen()                    {return nullptr;}
+void          ControllablePlayer::setShieldGreen(ShieldGreen*)        {}
 //int           ControllablePlayer::getDiggingTimer()                   {return 0;}
-//void          ControllablePlayer::increaseCombo()                     {}
-//void          ControllablePlayer::setInvincibleTimer(int)             {}
-//void          ControllablePlayer::setSpeedshoesTimer(int)             {}
+void          ControllablePlayer::increaseCombo()                     {}
+void          ControllablePlayer::setInvincibleTimer(float)           {}
+void          ControllablePlayer::setSpeedshoesTimer(float)           {}
 void          ControllablePlayer::grabRocket()                        {}
 void          ControllablePlayer::releaseRocket()                     {}
 void          ControllablePlayer::hitSpring(Vector3f*, float, float, bool)  {}

@@ -13,6 +13,8 @@ void PlayerModel::animate(int, float) {}
 
 void PlayerModel::setOrientation(float, float, float, float, float, float, float, Vector3f*) {}
 
+void PlayerModel::setBaseColor(float, float, float) {}
+
 const float PlayerModel::getDisplayBallOffset() {return 0.0f;}
 
 ParticleTexture* PlayerModel::getBallTexture() {return nullptr;}

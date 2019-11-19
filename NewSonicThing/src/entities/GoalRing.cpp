@@ -12,6 +12,7 @@
 #include "dummy.h"
 #include "../entities/camera.h"
 #include "../audio/audioplayer.h"
+#include "../audio/source.h"
 #include "../particles/particleresources.h"
 #include "../particles/particle.h"
 #include "../menu/timer.h"
@@ -26,6 +27,15 @@ std::list<TexturedModel*> GoalRing::modelsText;
 GoalRing::GoalRing()
 {
 
+}
+
+GoalRing::~GoalRing()
+{
+    if (sourceRing != nullptr)
+    {
+        sourceRing->stop();
+        sourceRing = nullptr;
+    }
 }
 
 GoalRing::GoalRing(float x, float y, float z)
@@ -45,28 +55,61 @@ GoalRing::GoalRing(float x, float y, float z)
 
 void GoalRing::step()
 {
+    if (Global::gameIsRingMode ||
+        Global::gameIsChaoMode)
+    {
+        Main_deleteEntity(this);
+        Main_deleteEntity(text);
+    }
+
     extern float dt;
     increaseRotation(0, dt*100, 0);
-    text->setRotation(0, getRotY(), 0, 0);
+    text->setRotation(0, rotY, 0, 0);
+    
+    float distToPlayerSquared = (Global::gameMainPlayer->position - position).lengthSquared();
 
-    float xDiff = Global::gameMainPlayer->getX()-position.x;
-    float yDiff = Global::gameMainPlayer->getY()-position.y;
-    float zDiff = Global::gameMainPlayer->getZ()-position.z;
+    if (distToPlayerSquared < 800.0f*800.0f)
+    {
+        if (sourceRing == nullptr)
+        {
+            sourceRing = AudioPlayer::play(42, &position, 1.0f, true);
+        }
+    }
+    else
+    {
+        if (sourceRing != nullptr)
+        {
+            sourceRing->stop();
+            sourceRing = nullptr;
+        }
+    }
 
-    const float pad = 35.0f;
-    if (fabsf(xDiff) < pad &&
-        fabsf(yDiff) < pad &&
-        fabsf(zDiff) < pad &&
+    if (distToPlayerSquared < 30.0f*30.0f &&
         Global::finishStageTimer < 0.0f)
     {
-        float radDiff = xDiff*xDiff + yDiff*yDiff + zDiff*zDiff;
-        const float ringRadius = 30.0f;
-        if (radDiff <= ringRadius*ringRadius)
+        Global::mainHudTimer->freeze(true);
+        Global::finishStageTimer = 0.0f;
+    }
+
+    if (Global::finishStageTimer >= 0.0f)
+    {
+        visible = false;
+        text->setVisible(false);
+
+        if (Global::finishStageTimer < 1.0f)
         {
-            Global::mainHudTimer->freeze(true);
-            Global::finishStageTimer = 0.0f;
-            visible = false;
-            text->setVisible(false);
+            if (sourceRing != nullptr)
+            {
+                sourceRing->setVolume(AudioPlayer::soundLevelSFX*(1.0f - Global::finishStageTimer));
+            }
+        }
+        else
+        {
+            if (sourceRing != nullptr)
+            {
+                sourceRing->stop();
+                sourceRing = nullptr;
+            }
         }
     }
 

@@ -14,9 +14,10 @@
 #include "../audio/audioplayer.h"
 #include "../particles/particleresources.h"
 #include "../particles/particle.h"
+#include "../particles/particlemaster.h"
 #include "dummy.h"
-//#include "shieldmagnet.h"
-//#include "shieldgreen.h"
+#include "shieldmagnet.h"
+#include "shieldgreen.h"
 
 #include <list>
 #include <iostream>
@@ -103,6 +104,7 @@ ItemCapsule::ItemCapsule(float x, float y, float z, float upX, float upY, float 
     if (entityItem == nullptr)
     {
         entityItem = new Dummy(&ItemCapsule::modelsItemRing5); INCR_NEW("Entity")
+        this->itemType = 1;
     }
 
     entityItem->visible = true;
@@ -161,7 +163,7 @@ void ItemCapsule::die()
 
     float height = 6.0f;
     float spread = 10.0f;
-
+    Vector3f vel(0,0,0);
     for (int i = 4; i != 0; i--)
     {
         Vector3f pos(
@@ -169,10 +171,7 @@ void ItemCapsule::die()
             getY() + spread*(Maths::random() - 0.5f) + height,
             getZ() + spread*(Maths::random() - 0.5f));
 
-        Vector3f vel(0, 0, 0);
-
-        //new Particle(ParticleResources::textureExplosion1, &pos, &vel,
-        //    0, 45, 0, 3 * Maths::random() + 6, 0, false);
+        ParticleMaster::createParticle(ParticleResources::textureExplosion1, &pos, &vel, 0, 0.75f, 0, 3*Maths::random() + 6, 0, false, false, 0.5f);
     }
     
     Global::gameMainPlayer->rebound(&centerPos);
@@ -182,19 +181,20 @@ void ItemCapsule::die()
         case 0:
             //speed shoes
             Global::gameScore += 100;
-            //Global::gameMainPlayer->setSpeedshoesTimer(1500);
+            Global::gameMainPlayer->setSpeedshoesTimer(25.0f);
             break;
 
         case 1:
-            //invincible
-            Global::gameScore += 100;
-            //Global::gameMainPlayer->setInvincibleTimer(1500);
-            break;
-
-        case 2:
             //increase rings by 5
             Global::increaseRingCount(5);
             Global::gameScore += 50;
+            break;
+
+        case 2:
+            //1 up
+            Global::gameScore += 300;
+            Global::gameLives++;
+            AudioPlayer::play(35, getPosition());
             break;
 
         case 3:
@@ -212,21 +212,14 @@ void ItemCapsule::die()
         case 5:
         {
             //green shield
-            //Global::gameScore += 100;
-            //ShieldGreen* shield = new ShieldGreen; INCR_NEW
-            //Main_addTransparentEntity(shield);
-            //Global::gamePlayer->setShieldGreen(shield);
+            Global::gameScore += 100;
+            ShieldGreen* shield = new ShieldGreen; INCR_NEW("Entity")
+            Main_addEntity(shield);
+            Global::gameMainPlayer->setShieldGreen(shield);
             break;
         }
 
         case 6:
-            //1 up
-            Global::gameScore += 300;
-            Global::gameLives++;
-            AudioPlayer::play(35, getPosition());
-            break;
-
-        case 7:
         {
             //bomb
             Global::gameScore += 100;
@@ -264,13 +257,25 @@ void ItemCapsule::die()
             break;
         }
 
-        default:
+        case 8:
         {
             //electric shield
-            //Global::gameScore += 100;
-            //ShieldMagnet* shield = new ShieldMagnet; INCR_NEW
-            //Main_addTransparentEntity(shield);
-            //Global::gamePlayer->setShieldMagnet(shield);
+            Global::gameScore += 100;
+            ShieldMagnet* shield = new ShieldMagnet; INCR_NEW("Entity")
+            Main_addEntity(shield);
+            Global::gameMainPlayer->setShieldMagnet(shield);
+            break;
+        }
+
+        case 10:
+            //invincible
+            Global::gameScore += 100;
+            Global::gameMainPlayer->setInvincibleTimer(25.0f);
+            break;
+
+
+        default:
+        {
             break;
         }
     }

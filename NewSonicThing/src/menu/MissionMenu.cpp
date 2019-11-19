@@ -29,7 +29,7 @@ MissionMenu::MissionMenu()
     this->visible = true;
     this->offsetCurr = 0.0f;
     this->offsetTarget = 0.0f;
-    this->index = 0;
+    this->currLevel = 0;
     //std::cout << "Mission Menu initialized\n";
 }
 
@@ -42,47 +42,68 @@ MissionMenu::~MissionMenu()
 
 void MissionMenu::loadResources()
 {
-    if (this->counter != 0)
+    if (this->numButtons != 0)
     {
         std::fprintf(stdout, "Warning: MissionMenu loading resources when they are already loaded.\n");
     }
 
-    textureParallelogram              = Loader::loadTextureNoInterpolation("res/Images/MainMenu/Parallelogram.png");
-    textureParallelogramBackdrop      = Loader::loadTextureNoInterpolation("res/Images/MainMenu/ParallelogramBackdrop.png");
-    textureParallelogramHalf          = Loader::loadTextureNoInterpolation("res/Images/MainMenu/ParallelogramHalf.png");
-    textureParallelogramHalfBackdrop  = Loader::loadTextureNoInterpolation("res/Images/MainMenu/ParallelogramHalfBackdrop.png");
-    textureParallelogramHalf2         = Loader::loadTextureNoInterpolation("res/Images/MainMenu/ParallelogramHalf2.png");
-    textureParallelogramHalf2Backdrop = Loader::loadTextureNoInterpolation("res/Images/MainMenu/ParallelogramHalf2Backdrop.png");
+    textureParallelogram              = Loader::loadTexture("res/Images/MainMenu/Parallelogram.png");
+    textureParallelogramBackdrop      = Loader::loadTexture("res/Images/MainMenu/ParallelogramBackdrop.png");
+    textureParallelogramHalf          = Loader::loadTexture("res/Images/MainMenu/ParallelogramHalf.png");
+    textureParallelogramHalfBackdrop  = Loader::loadTexture("res/Images/MainMenu/ParallelogramHalfBackdrop.png");
+    textureParallelogramHalf2         = Loader::loadTexture("res/Images/MainMenu/ParallelogramHalf2.png");
+    textureParallelogramHalf2Backdrop = Loader::loadTexture("res/Images/MainMenu/ParallelogramHalf2Backdrop.png");
 
     extern unsigned int SCR_WIDTH;
     extern unsigned int SCR_HEIGHT;
     float aspectRatio = (float)SCR_WIDTH / SCR_HEIGHT;
     this->levelButton = new Button*[Global::gameLevelData.size()]; INCR_NEW("Button");
-    this->counter = 0;
+    this->numButtons = 0;
     for (Level level : Global::gameLevelData)
     {
         std::string buttonText = "";
         buttonText = level.displayName;
-        levelButton[this->counter] = new Button(level.displayName, Global::fontVipnagorgialla, this->textureParallelogram, this->textureParallelogramBackdrop, 0.5f, 0.5f + (0.2f * this->counter), 0.56f / aspectRatio, 0.07f, true); INCR_NEW("Button");
-        this->counter++;
+        levelButton[this->numButtons] = new Button(level.displayName, Global::fontVipnagorgialla, this->textureParallelogram, this->textureParallelogramBackdrop, 0.31f, 0.5f + (0.2f * this->numButtons), 0.56f / aspectRatio, 0.07f, true); INCR_NEW("Button");
+        this->numButtons++;
     }
+
+    textureRankA  = Loader::loadTexture("res/Images/MainMenu/RankA.png");
+    textureRankB  = Loader::loadTexture("res/Images/MainMenu/RankB.png");
+    textureRankC  = Loader::loadTexture("res/Images/MainMenu/RankC.png");
+    textureRankD  = Loader::loadTexture("res/Images/MainMenu/RankD.png");
+    textureRankE  = Loader::loadTexture("res/Images/MainMenu/RankE.png");
+    textureBlank  = Loader::loadTexture("res/Images/MainMenu/NoRank.png");
+    textureSelect = Loader::loadTexture("res/Images/MainMenu/MissionSelect.png");
+
+    const float rankWidth = 0.07f/aspectRatio;
+    missionButton = new Button("_____", Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.69f, 0.5f, 0.56f / aspectRatio, 0.07f, true); INCR_NEW("Button");
+    rankM1        = new GuiTexture(textureRankA,  0.69f-rankWidth*1.5f, 0.4967f, rankWidth,      rankWidth*aspectRatio,      0); INCR_NEW("GuiTexture")
+    rankM2        = new GuiTexture(textureRankB,  0.69f-rankWidth*0.5f, 0.4967f, rankWidth,      rankWidth*aspectRatio,      0); INCR_NEW("GuiTexture")
+    rankM3        = new GuiTexture(textureRankC,  0.69f+rankWidth*0.5f, 0.4967f, rankWidth,      rankWidth*aspectRatio,      0); INCR_NEW("GuiTexture")
+    rankM4        = new GuiTexture(textureRankD,  0.69f+rankWidth*1.5f, 0.4967f, rankWidth,      rankWidth*aspectRatio,      0); INCR_NEW("GuiTexture")
+    missionSelect = new GuiTexture(textureSelect, 0.69f-rankWidth*1.5f, 0.4967f, rankWidth*1.5f, rankWidth*aspectRatio*1.5f, 0); INCR_NEW("GuiTexture")
+
+    timeButton  = new Button("Time: ", Global::fontVipnagorgialla, textureParallelogramHalf2, textureParallelogramHalf2Backdrop, 0.69f + 0.56f/4, 0.65f, 1.12f / aspectRatio, 0.07f, true, true); INCR_NEW("Button");
+    scoreButton = new Button("Score:", Global::fontVipnagorgialla, textureParallelogramHalf2, textureParallelogramHalf2Backdrop, 0.69f + 0.56f/4, 0.8f,  1.12f / aspectRatio, 0.07f, true, true); INCR_NEW("Button");
 }
 
 void MissionMenu::unloadResources()
 {
     //std::cout << "Unloading Mission Menu resources.\n";
-    if (this->counter == 0)
+    if (this->numButtons == 0)
     {
         std::fprintf(stdout, "Warning: MissionMenu unloading resources when they are empty.\n");
     }
 
     GuiManager::clearGuisToRender();
-    for (int i = 0; i < this->counter; i++)
+    for (int i = 0; i < this->numButtons; i++)
     {
         delete this->levelButton[i]; INCR_DEL("Button");
     }
     delete[] this->levelButton; INCR_DEL("Button");
-    this->counter = 0;
+    this->numButtons = 0;
+
+    delete missionButton; missionButton = nullptr; INCR_DEL("Button");
 
     Loader::deleteTexture(textureParallelogram);
     Loader::deleteTexture(textureParallelogramBackdrop);
@@ -97,73 +118,210 @@ void MissionMenu::unloadResources()
     textureParallelogramHalf2         = GL_NONE;
     textureParallelogramHalf2Backdrop = GL_NONE;
 
+    Loader::deleteTexture(textureRankA);
+    Loader::deleteTexture(textureRankB);
+    Loader::deleteTexture(textureRankC);
+    Loader::deleteTexture(textureRankD);
+    Loader::deleteTexture(textureRankE);
+    Loader::deleteTexture(textureBlank);
+    Loader::deleteTexture(textureSelect);
+    textureRankA  = GL_NONE;
+    textureRankB  = GL_NONE;
+    textureRankC  = GL_NONE;
+    textureRankD  = GL_NONE;
+    textureRankE  = GL_NONE;
+    textureBlank  = GL_NONE;
+    textureSelect = GL_NONE;
+
+    delete rankM1;        rankM1        = nullptr; INCR_DEL("GuiTexture")
+    delete rankM2;        rankM2        = nullptr; INCR_DEL("GuiTexture")
+    delete rankM3;        rankM3        = nullptr; INCR_DEL("GuiTexture")
+    delete rankM4;        rankM4        = nullptr; INCR_DEL("GuiTexture")
+    delete missionSelect; missionSelect = nullptr; INCR_DEL("GuiTexture")
+
+    delete timeButton;  timeButton  = nullptr; INCR_DEL("Button")
+    delete scoreButton; scoreButton = nullptr; INCR_DEL("Button")
+
     //std::cout << "Mission Menu resources deleted.\n";
 }
 
-void MissionMenu::draw()
+void MissionMenu::draw(bool updateMissionText)
 {
     extern float dt;
 
-    this->offsetTarget = -this->index*0.15f;
+    this->offsetTarget = -this->currLevel*0.15f;
     this->offsetCurr = Maths::approach(this->offsetCurr, this->offsetTarget, 15.0f, dt);
     if (fabsf(this->offsetTarget-this->offsetCurr) < 0.002f)
     {
         this->offsetCurr = this->offsetTarget;
     }
 
-    //if (oldSelection != this->index)
-    {
-        //animationTime = 0.0f;
-        //animating = true;
-        //if (oldSelection < this->index)
-        {
-            //animationDirection = 1;
-        }
-        //else
-        {
-            //animationDirection = -1;
-        }
-    }
-
-    //if (animating)
-    {
-        //animationTime += dt;
-    }
-
-    //if (animationTime >= 0.25f)
-    {
-        //animationTime = 0.25f;
-        //animating = false;
-    }
-
     GuiManager::clearGuisToRender();
     
     if (this->visible)
     {
-        //float animationOffset = animationDirection * 2.4f * (animationTime - 0.25f) * (animationTime - 0.25f);
-
-        for (int i = 0; i < this->counter; i++)
+        for (int i = 0; i < this->numButtons; i++)
         {
-            //this->levelButton[i]->setPos(0.5f, 0.5f + animationOffset + (0.15f * (i - this->index))); offsetCurr
-            this->levelButton[i]->setPos(0.5f, 0.5f + this->offsetCurr + 0.15f*i);
+            this->levelButton[i]->setPos(0.31f, 0.5f + this->offsetCurr + 0.15f*i);
             this->levelButton[i]->setVisible(true);
             this->levelButton[i]->setHighlight(false);
         }
+
+        levelButton[currLevel]->setHighlight(true);
+
+        missionButton->setVisible(true);
+        missionButton->setHighlight(false);
+        missionButton->setHighlight(true);
+        missionButton->getText()->visible = false;
+
+        timeButton->setVisible(true);
+        timeButton->setHighlight(false);
+        timeButton->setHighlight(true);
+
+        scoreButton->setVisible(true);
+        scoreButton->setHighlight(false);
+        scoreButton->setHighlight(true);
+
+        int numMissions = Global::gameLevelData[currLevel].numMissions;
+        switch (numMissions)
+        {
+            case 4: GuiManager::addGuiToRender(rankM4);
+            case 3: GuiManager::addGuiToRender(rankM3);
+            case 2: GuiManager::addGuiToRender(rankM2);
+            case 1: GuiManager::addGuiToRender(rankM1);
+            default: break;
+        }
+
+        if (numMissions >= 4)
+        {
+            std::string rank = "";
+            rankM4->setTexture(textureBlank);
+            if (Global::gameSaveData.find(Global::gameLevelData[currLevel].displayName+"_M4_RANK") != Global::gameSaveData.end())
+            {
+                rank = Global::gameSaveData[Global::gameLevelData[currLevel].displayName+"_M4_RANK"];
+                if (rank == "A") rankM4->setTexture(textureRankA);
+                if (rank == "B") rankM4->setTexture(textureRankB);
+                if (rank == "C") rankM4->setTexture(textureRankC);
+                if (rank == "D") rankM4->setTexture(textureRankD);
+                if (rank == "E") rankM4->setTexture(textureRankE);
+            }
+        }
+        if (numMissions >= 3)
+        {
+            std::string rank = "";
+            rankM3->setTexture(textureBlank);
+            if (Global::gameSaveData.find(Global::gameLevelData[currLevel].displayName+"_M3_RANK") != Global::gameSaveData.end())
+            {
+                rank = Global::gameSaveData[Global::gameLevelData[currLevel].displayName+"_M3_RANK"];
+                if (rank == "A") rankM3->setTexture(textureRankA);
+                if (rank == "B") rankM3->setTexture(textureRankB);
+                if (rank == "C") rankM3->setTexture(textureRankC);
+                if (rank == "D") rankM3->setTexture(textureRankD);
+                if (rank == "E") rankM3->setTexture(textureRankE);
+            }
+        }
+        if (numMissions >= 2)
+        {
+            std::string rank = "";
+            rankM2->setTexture(textureBlank);
+            if (Global::gameSaveData.find(Global::gameLevelData[currLevel].displayName+"_M2_RANK") != Global::gameSaveData.end())
+            {
+                rank = Global::gameSaveData[Global::gameLevelData[currLevel].displayName+"_M2_RANK"];
+                if (rank == "A") rankM2->setTexture(textureRankA);
+                if (rank == "B") rankM2->setTexture(textureRankB);
+                if (rank == "C") rankM2->setTexture(textureRankC);
+                if (rank == "D") rankM2->setTexture(textureRankD);
+                if (rank == "E") rankM2->setTexture(textureRankE);
+            }
+        }
+        if (numMissions >= 1)
+        {
+            std::string rank = "";
+            rankM1->setTexture(textureBlank);
+            if (Global::gameSaveData.find(Global::gameLevelData[currLevel].displayName+"_M1_RANK") != Global::gameSaveData.end())
+            {
+                rank = Global::gameSaveData[Global::gameLevelData[currLevel].displayName+"_M1_RANK"];
+                if (rank == "A") rankM1->setTexture(textureRankA);
+                if (rank == "B") rankM1->setTexture(textureRankB);
+                if (rank == "C") rankM1->setTexture(textureRankC);
+                if (rank == "D") rankM1->setTexture(textureRankD);
+                if (rank == "E") rankM1->setTexture(textureRankE);
+            }
+        }
+
+        extern unsigned int SCR_WIDTH;
+        extern unsigned int SCR_HEIGHT;
+        float aspectRatio = (float)SCR_WIDTH / SCR_HEIGHT;
+        const float rankWidth = 0.07f/aspectRatio;
+        missionSelect->setX(0.69f - rankWidth*1.5f + (Global::gameMissionNumber*rankWidth));
+        GuiManager::addGuiToRender(missionSelect);
+
+        if (updateMissionText)
+        {
+            std::string missionTimeString  = "ERROR";
+            std::string missionScoreString = "ERROR";
+            switch (Global::gameMissionNumber)
+            {
+                case 0: missionTimeString = "_M1_TIME"; missionScoreString = "_M1_SCORE"; break;
+                case 1: missionTimeString = "_M2_TIME"; missionScoreString = "_M2_SCORE"; break;
+                case 2: missionTimeString = "_M3_TIME"; missionScoreString = "_M3_SCORE"; break;
+                case 3: missionTimeString = "_M4_TIME"; missionScoreString = "_M4_SCORE"; break;
+                default: break;
+            }
+
+            if (Global::gameSaveData.find(Global::gameLevelData[currLevel].displayName+missionTimeString) != Global::gameSaveData.end())
+            {
+                std::string timeString = Global::gameSaveData[Global::gameLevelData[currLevel].displayName+missionTimeString];
+                float time = std::stof(timeString);
+
+                // Convert float timer to ints of mm:ss:cc
+                int toMinutesSeconds = (int)time;
+                float toCentiseconds = time * 100.0f;
+                int minuteDisplay = toMinutesSeconds / 60;
+                int secondDisplay = toMinutesSeconds % 60;
+                int centisecondDisplay = (int)toCentiseconds % 100;
+                std::string minStr = std::to_string(minuteDisplay);
+                std::string secStr = std::to_string(secondDisplay);
+                std::string cenStr = std::to_string(centisecondDisplay);
+
+                //pad with 0 if needed
+                if (minStr.length() == 1) { minStr = "0" + minStr; }
+                if (secStr.length() == 1) { secStr = "0" + secStr; }
+                if (cenStr.length() == 1) { cenStr = "0" + cenStr; }
+
+                std::string niceTime = minStr+":"+secStr+"."+cenStr;
+                
+                timeButton->generateText("Time: "+niceTime);
+            }
+            else
+            {
+                timeButton->generateText("Time: ");
+            }
+
+            if (Global::gameSaveData.find(Global::gameLevelData[currLevel].displayName+missionScoreString) != Global::gameSaveData.end())
+            {
+                std::string score = Global::gameSaveData[Global::gameLevelData[currLevel].displayName+missionScoreString];
+                scoreButton->generateText("Score: "+score);
+            }
+            else
+            {
+                scoreButton->generateText("Score: ");
+            }
+        }
     }
-
-    this->levelButton[index]->setHighlight(true);
-
-    //oldSelection = this->index;
 }
 
 void MissionMenu::setVisible(bool visibleStatus)
 {
-    for (int i = 0; i < this->counter; i++)
+    for (int i = 0; i < numButtons; i++)
     {
-        this->levelButton[i]->setVisible(visibleStatus);
-        this->levelButton[i]->setHighlight(visibleStatus);
+        levelButton[i]->setVisible(visibleStatus);
+        levelButton[i]->setHighlight(visibleStatus);
     }
-    this->visible = visibleStatus;
+    missionButton->setVisible(visibleStatus);
+    timeButton->setVisible(visibleStatus);
+    scoreButton->setVisible(visibleStatus);
+    visible = visibleStatus;
 }
 
 Menu* MissionMenu::step()
@@ -175,15 +333,20 @@ Menu* MissionMenu::step()
 
     bool shouldGoUp = false;
     bool shouldGoDown = false;
+    bool shouldGoLeft = false;
+    bool shouldGoRight = false;
     bool pressedSelect = false;
     bool pressedBack = false;
 
+    bool shouldUpdateMissionText = false;
+
+    int moveX = (int)round(Input::inputs.INPUT_X);
     int moveY = (int)round(Input::inputs.INPUT_Y);
 
     this->setVisible(true);
 
     if ((Input::inputs.INPUT_ACTION1 && !Input::inputs.INPUT_PREVIOUS_ACTION1) || 
-        (Input::inputs.INPUT_START && !Input::inputs.INPUT_PREVIOUS_START))
+        (Input::inputs.INPUT_START   && !Input::inputs.INPUT_PREVIOUS_START))
     {
         pressedSelect = true;
     }
@@ -191,6 +354,18 @@ Menu* MissionMenu::step()
     if (Input::inputs.INPUT_ACTION2 && !Input::inputs.INPUT_PREVIOUS_ACTION2)
     {
         pressedBack = true;
+    }
+
+    if (moveX != moveXPrevious)
+    {
+        if (moveX == -1)
+        {
+            shouldGoLeft = true;
+        }
+        else if (moveX == 1)
+        {
+            shouldGoRight = true;
+        }
     }
 
     if (moveY != moveYPrevious)
@@ -205,6 +380,7 @@ Menu* MissionMenu::step()
         }
     }
 
+    moveXPrevious = moveX;
     moveYPrevious = moveY;
 
     if (moveY == -1)
@@ -248,29 +424,54 @@ Menu* MissionMenu::step()
 
     if (shouldGoUp)
     {
-        if (this->index > 0)
+        if (this->currLevel > 0)
         {
-            this->index = this->index - 1;
+            shouldUpdateMissionText = true;
+            this->currLevel = this->currLevel - 1;
+            Global::gameMissionNumber = 0;
             AudioPlayer::play(36, Global::gameCamera->getFadePosition1());
         }
     }
     if (shouldGoDown)
     {
-        if (this->index < (this->counter - 1))
+        if (this->currLevel < (this->numButtons - 1))
         {
-            this->index = this->index + 1;
+            shouldUpdateMissionText = true;
+            this->currLevel = this->currLevel + 1;
+            Global::gameMissionNumber = 0;
             AudioPlayer::play(36, Global::gameCamera->getFadePosition1());
         }
     }
 
-    this->draw();
+    if (shouldGoLeft)
+    {
+        if (Global::gameMissionNumber > 0)
+        {
+            shouldUpdateMissionText = true;
+            Global::gameMissionNumber--;
+            AudioPlayer::play(37, Global::gameCamera->getFadePosition1());
+        }
+    }
+    if (shouldGoRight)
+    {
+        int numMissions = Global::gameLevelData[currLevel].numMissions;
+        if (Global::gameMissionNumber < numMissions-1)
+        {
+            shouldUpdateMissionText = true;
+            Global::gameMissionNumber++;
+            AudioPlayer::play(37, Global::gameCamera->getFadePosition1());
+        }
+    }
+
+    //have to do true every time in case of getting a new record, it will update when the menu is reloaded
+    this->draw(true);//shouldUpdateMissionText);
 
     if (pressedSelect)
     {
         this->setVisible(false);
         AudioPlayer::play(38, Global::gameCamera->getFadePosition1());
 
-        Level* currentLevel = &Global::gameLevelData[this->index];
+        Level* currentLevel = &Global::gameLevelData[this->currLevel];
         Global::levelName = currentLevel->fileName;
         Global::levelNameDisplay = currentLevel->displayName;
         Global::gameMissionDescription = (currentLevel->missionData[Global::gameMissionNumber])[(currentLevel->missionData[Global::gameMissionNumber]).size() - 1];

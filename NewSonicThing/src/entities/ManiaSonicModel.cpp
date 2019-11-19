@@ -338,6 +338,25 @@ void ManiaSonicModel::setOrientation(float x, float y, float z, float xRot, floa
     myBody->setBaseOrientation(x, y, z, rotX, rotY, rotZ, rotRoll, limbsScale);
 }
 
+void ManiaSonicModel::setBaseColor(float r, float g, float b)
+{
+    baseColour.set(r, g, b);
+    myBody->baseColour.set(r, g, b);
+    myHead->baseColour.set(r, g, b);
+    myLeftHumerus->baseColour.set(r, g, b);
+    myLeftForearm->baseColour.set(r, g, b);
+    myLeftHand->baseColour.set(r, g, b);
+    myLeftThigh->baseColour.set(r, g, b);
+    myLeftShin->baseColour.set(r, g, b);
+    myLeftFoot->baseColour.set(r, g, b);
+    myRightHumerus->baseColour.set(r, g, b);
+    myRightForearm->baseColour.set(r, g, b);
+    myRightHand->baseColour.set(r, g, b);
+    myRightThigh->baseColour.set(r, g, b);
+    myRightShin->baseColour.set(r, g, b);
+    myRightFoot->baseColour.set(r, g, b);
+}
+
 std::list<TexturedModel*>* ManiaSonicModel::getModels()
 {
     return models;

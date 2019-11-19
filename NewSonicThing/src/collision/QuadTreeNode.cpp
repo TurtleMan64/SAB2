@@ -4,7 +4,10 @@
 #include "../engineTester/main.h"
 #include "triangle3d.h"
 
-//int iwfviub = 1;
+QuadTreeNode::QuadTreeNode()
+{
+    
+}
 
 QuadTreeNode::QuadTreeNode(float xBoundMin, float xBoundMax, float zBoundMin, float zBoundMax, std::vector<Triangle3D*> pool, int depth, int depthMax)
 {

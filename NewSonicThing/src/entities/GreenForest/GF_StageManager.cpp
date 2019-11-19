@@ -11,6 +11,7 @@
 #include "../../particles/particle.h"
 #include "../../particles/particleresources.h"
 #include "../../particles/particlemaster.h"
+#include "gfparticle.h"
 
 std::list<TexturedModel*> GF_StageManager::modelsSkydome;
 
@@ -18,6 +19,14 @@ GF_StageManager::GF_StageManager()
 {
     visible = true;
     firstFrame = true;
+    if (Global::renderParticles)
+    {
+        int numToSpawn = 4000 - GF_Particle::currentPopulation;
+        for (int i = 0; i < numToSpawn; i++)
+        {
+            new GF_Particle; INCR_NEW("GF_Particle")
+        }
+    }
 }
 
 void GF_StageManager::step()
@@ -73,32 +82,13 @@ void GF_StageManager::step()
         ParticleMaster::createParticle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &partVel, 0, 1.0f, 0, 900, 0, true, false, 2.0f);
     }
 
-    //generate pollen particles
+    //set pollen particles center point
     Vector3f center = Global::gameMainPlayer->position;
     center = center + Global::gameMainPlayer->vel.scaleCopy(0.4f);
-    float radius2 = pollenRadius*2;
-    float basex = center.x - pollenRadius;
-    float basey = center.y - pollenRadius;
-    float basez = center.z - pollenRadius;
-
-    extern float dt;
-    pollenSpawnTimer += dt;
-    while (pollenSpawnTimer > 0)
-    {
-        pollenSpawnTimer -= pollenSparseness;
-
-        Vector3f pos(basex + radius2*Maths::random(),
-                     basey + radius2*Maths::random(),
-                     basez + radius2*Maths::random());
-
-        Vector3f vel((Maths::random()-0.5f)*30, (Maths::random()-0.5f)*30, (Maths::random()-0.5f)*30);
-
-        const float lifeLength = 4.0f;
-        const float scaleInitial = Maths::random()*2.0f + 0.5f;
-        const float scaleChange = -0.1f;
-
-        ParticleMaster::createParticle(ParticleResources::texturePollen, &pos, &vel, 0.0f, lifeLength, 0.0f, scaleInitial, scaleChange, false, false, 1.0f);
-    }
+    float basex = center.x - GF_Particle::pollenRadius;
+    float basey = center.y - GF_Particle::pollenRadius;
+    float basez = center.z - GF_Particle::pollenRadius;
+    GF_Particle::centerSpawnPos.set(basex, basey, basez);
 }
 
 std::list<TexturedModel*>* GF_StageManager::getModels()

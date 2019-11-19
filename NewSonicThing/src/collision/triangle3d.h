@@ -40,6 +40,9 @@ public:
     float maxZ;
     float minZ;
 
+    //Loads in all data from 91 bytes
+    Triangle3D(char* buf);
+
     Triangle3D(Vector3f* newP1, Vector3f* newP2, Vector3f* newP3, char type, char sound, char particle);
 
     void generateValues();

@@ -20,6 +20,33 @@ Button::Button(std::string label, FontType* font, GLuint texture, GLuint highlig
     this->text = new GUIText(label, scaleY, font, posX, posY, 4, true); INCR_NEW("GUIText");
     this->texture = GuiTexture(texture, posX, posY, scaleX, scaleY, 0);
     this->textureHighlight = GuiTexture(highlight, posX, posY, scaleX, scaleY, 0);
+    this->textIsLeftAnchored = false;
+    this->scaleX = scaleX;
+
+    Button::setVisible(visible);
+}
+
+Button::Button(std::string label, FontType* font, GLuint textureId, GLuint highlight, float posX, float posY, float scaleX, float scaleY, bool visible, bool leftAnchored)
+{
+    extern unsigned int SCR_WIDTH;
+    extern unsigned int SCR_HEIGHT;
+    float aspectRatio = (float)SCR_WIDTH / SCR_HEIGHT;
+    anchorOffset = 0.02f*aspectRatio;
+
+    if (!leftAnchored)
+    {
+        text = new GUIText(label, scaleY, font, posX, posY, 4, true); INCR_NEW("GUIText");
+    }
+    else
+    {
+        text = new GUIText(label, scaleY, font, posX - scaleX/2 + anchorOffset, posY, 3, true); INCR_NEW("GUIText");
+    }
+
+    this->scaleX = scaleX;
+    textIsLeftAnchored = leftAnchored;
+
+    texture = GuiTexture(textureId, posX, posY, scaleX, scaleY, 0);
+    textureHighlight = GuiTexture(highlight, posX, posY, scaleX, scaleY, 0);
 
     Button::setVisible(visible);
 }
@@ -38,7 +65,14 @@ void Button::generateText(std::string newText)
 
     text->deleteMe(); delete text; INCR_DEL("GUIText");
     text = nullptr;
-    text = new GUIText(newText, textScale, textFont, textPosX, textPosY, 4, true); INCR_NEW("GUIText");
+    if (textIsLeftAnchored)
+    {
+        text = new GUIText(newText, textScale, textFont, textPosX, textPosY, 3, true); INCR_NEW("GUIText");
+    }
+    else
+    {
+        text = new GUIText(newText, textScale, textFont, textPosX, textPosY, 4, true); INCR_NEW("GUIText");
+    }
 }
 
 void Button::generateText(std::string newText, bool darkText)
@@ -50,11 +84,19 @@ void Button::generateText(std::string newText, bool darkText)
     }
 }
 
-// Changes the button poosition. Should be preceded by GuiManager::clearGuisToRender.
+// Changes the button position. Should be preceded by GuiManager::clearGuisToRender.
 void Button::setPos(float xPos, float yPos)
 {
-    this->text->getPosition()->x = xPos;
-    this->text->getPosition()->y = yPos;
+    if (textIsLeftAnchored)
+    {
+        text->getPosition()->x = xPos - scaleX/2 + anchorOffset;
+        text->getPosition()->y = yPos;
+    }
+    else
+    {
+        text->getPosition()->x = xPos;
+        text->getPosition()->y = yPos;
+    }
 
     this->texture.setX(xPos);
     this->texture.setY(yPos);

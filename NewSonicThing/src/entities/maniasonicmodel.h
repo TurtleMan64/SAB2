@@ -105,6 +105,8 @@ public:
 
     void setOrientation(float x, float y, float z, float xRot, float yRot, float zRot, float spinRot, Vector3f* up);
 
+    void setBaseColor(float r, float g, float b);
+
     const float getDisplayBallOffset();
 
     ParticleTexture* getBallTexture();

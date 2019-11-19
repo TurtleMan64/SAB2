@@ -17,6 +17,7 @@
 #include "../collision/collisionmodel.h"
 #include "../collision/triangle3d.h"
 #include "fakeTexture.h"
+#include "../collision/quadtreenode.h"
 
 void parseMtl(std::string filePath, std::string fileName);
 
@@ -1420,10 +1421,114 @@ CollisionModel* loadCollisionModel(std::string filePath, std::string fileName)
     return collisionModel;
 }
 
-CollisionModel* loadBinaryCollisionModel(std::string filePath, std::string fileName)
+void workOnQuadTreeNode(FILE* file, QuadTreeNode* node)
 {
+    //read in header for this node
+    fread(&node->depth, sizeof(int),   1, file);
+    fread(&node->xMid,  sizeof(float), 1, file);
+    fread(&node->zMid,  sizeof(float), 1, file);
+    fread(&node->xMin,  sizeof(float), 1, file);
+    fread(&node->xMax,  sizeof(float), 1, file);
+    fread(&node->yMin,  sizeof(float), 1, file);
+    fread(&node->yMax,  sizeof(float), 1, file);
+    fread(&node->zMin,  sizeof(float), 1, file);
+    fread(&node->zMax,  sizeof(float), 1, file);
+    int numTriangles;
+    fread(&numTriangles, sizeof(int),   1, file);
+    node->tris.reserve(numTriangles+1); //not sure if i need to +1 but might as well
+
+    //read in all the triangles
+    for (int i = 0; i < numTriangles; i++)
+    {
+        char triBuf[92];
+        fread(triBuf, sizeof(char), 92, file);
+        Triangle3D* newTri = new Triangle3D(triBuf); INCR_NEW("Triangle3D");
+        node->tris.push_back(newTri);
+    }
+
+    char children[4];
+    fread(children, sizeof(char), 4, file);
+
+    if (children[0] != 0) //top left
+    {
+        QuadTreeNode* topLeftChild = new QuadTreeNode; INCR_NEW("QuadTreeNode");
+        workOnQuadTreeNode(file, topLeftChild);
+        node->topLeft = topLeftChild;
+    }
+
+    if (children[1] != 0) //top right
+    {
+        QuadTreeNode* topRightChild = new QuadTreeNode; INCR_NEW("QuadTreeNode");
+        workOnQuadTreeNode(file, topRightChild);
+        node->topRight = topRightChild;
+    }
+
+    if (children[2] != 0) //bot left
+    {
+        QuadTreeNode* botLeftChild = new QuadTreeNode; INCR_NEW("QuadTreeNode");
+        workOnQuadTreeNode(file, botLeftChild);
+        node->botLeft = botLeftChild;
+    }
+
+    if (children[3] != 0) //bot right
+    {
+        QuadTreeNode* botRightChild = new QuadTreeNode; INCR_NEW("QuadTreeNode");
+        workOnQuadTreeNode(file, botRightChild);
+        node->botRight = botRightChild;
+    }
+}
+
+CollisionModel* loadBinaryQuadTree(std::string filePath, std::string fileName)
+{
+    FILE* file = nullptr;
+    int err = fopen_s(&file, (Global::pathToEXE + "res/" + filePath+fileName+".qtree").c_str(), "rb");
+    if (file == nullptr || err != 0)
+    {
+        //std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE + "res/" + filePath+fileName+".qtree").c_str());
+        return nullptr;
+    }
+
     CollisionModel* collisionModel = new CollisionModel; INCR_NEW("CollisionModel");
 
+    char fileType[4];
+    fread(fileType, sizeof(char), 4, file);
+    if (fileType[0] != 'q' || 
+        fileType[1] != 't' ||
+        fileType[2] != 'r' ||
+        fileType[3] != 'e')
+    {
+        std::fprintf(stdout, "Error: File '%s' is not a valid .qtree file\n", (Global::pathToEXE + "res/" + filePath+fileName+".qtree").c_str());
+        return collisionModel;
+    }
+
+    //collision model header
+    fread(&collisionModel->treeMaxDepth,   sizeof(int),   1, file);
+    fread(&collisionModel->leafNodeWidth,  sizeof(float), 1, file);
+    fread(&collisionModel->leafNodeHeight, sizeof(float), 1, file);
+    fread(&collisionModel->maxX,           sizeof(float), 1, file);
+    fread(&collisionModel->minX,           sizeof(float), 1, file);
+    fread(&collisionModel->maxY,           sizeof(float), 1, file);
+    fread(&collisionModel->minY,           sizeof(float), 1, file);
+    fread(&collisionModel->maxZ,           sizeof(float), 1, file);
+    fread(&collisionModel->minZ,           sizeof(float), 1, file);
+    int hasRootNode;
+    fread(&hasRootNode,                    sizeof(int),   1, file);
+
+    //read rest of file recursively in helper function
+    if (hasRootNode)
+    {
+        QuadTreeNode* root = new QuadTreeNode; INCR_NEW("QuadTreeNode");
+        workOnQuadTreeNode(file, root);
+        collisionModel->quadTreeRoot = root;
+    }
+
+    fclose(file);
+
+    return collisionModel;
+}
+
+CollisionModel* loadBinaryCollisionModel(std::string filePath, std::string fileName)
+{
     std::list<FakeTexture> fakeTextures;
     std::vector<Vector3f> vertices;
 
@@ -1436,8 +1541,10 @@ CollisionModel* loadBinaryCollisionModel(std::string filePath, std::string fileN
     if (file == nullptr || err != 0)
     {
         std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE + "res/" + filePath+fileName+".bincol").c_str());
-        return collisionModel;
+        return nullptr;
     }
+
+    CollisionModel* collisionModel = new CollisionModel; INCR_NEW("CollisionModel");
 
     char fileType[4];
     fread(fileType, sizeof(char), 4, file);

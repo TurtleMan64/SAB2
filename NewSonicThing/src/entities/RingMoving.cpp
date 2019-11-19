@@ -17,7 +17,7 @@
 #include "../particles/particle.h"
 #include "../particles/particleresources.h"
 #include "../particles/particlemaster.h"
-//#include "shieldmagnet.h"
+#include "shieldmagnet.h"
 
 #include <list>
 #include <iostream>
@@ -61,19 +61,19 @@ void RingMoving::step()
 
     if (ageTimer < 0) //if we were spawned in to move toward blue shield
     {
-        //if (Global::gameMainPlayer->getShieldMagnet() != nullptr)
-        //{
-        //    Vector3f diff = (*getPosition()) - Global::gameMainPlayer->getCenterPosition();
-        //
-        //    if (diff.lengthSquared() < 60*60)
-        //    {
-        //        trackingPlayer = true;
-        //    }
-        //}
-        //else
-        //{
-        //    trackingPlayer = false;
-        //}
+        if (Global::gameMainPlayer->getShieldMagnet() != nullptr)
+        {
+            Vector3f diff = (*getPosition()) - Global::gameMainPlayer->getCenterPosition();
+        
+            if (diff.lengthSquared() < 60*60)
+            {
+                trackingPlayer = true;
+            }
+        }
+        else
+        {
+            trackingPlayer = false;
+        }
     }
     else //if we were spawned to spread out after getting hit
     {

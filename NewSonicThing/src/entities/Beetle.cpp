@@ -54,6 +54,9 @@ Beetle::Beetle(float x, float y, float z, std::list<Entity*>* entityListToAdd)
     blades->setPosition(&position);
     updateBlades(&position);
     entityListToAdd->push_back(blades);
+
+    baseColour.set(Maths::nextUniform()*5, Maths::nextUniform()*5, Maths::nextUniform()*5);
+    blades->baseColour.set(&baseColour);
 }
 
 void Beetle::updateBlades(Vector3f* pos)
@@ -91,6 +94,7 @@ void Beetle::step()
             {
                 die();
                 Global::gameMainPlayer->rebound(&position);
+                Global::gameMainPlayer->increaseCombo();
             }
         }
 

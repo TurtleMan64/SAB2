@@ -8,7 +8,12 @@
 
 extern float dt;
 
-Particle::Particle(ParticleTexture* texture, Vector3f* position, float lifeLength, float scale, bool onlyRendersOnce)
+Particle::Particle()
+{
+
+}
+
+ParticleStandard::ParticleStandard(ParticleTexture* texture, Vector3f* position, float lifeLength, float scale, bool onlyRendersOnce)
 {
     this->texture = texture;
     this->positionRef = &this->position;
@@ -27,10 +32,10 @@ Particle::Particle(ParticleTexture* texture, Vector3f* position, float lifeLengt
     this->scaleYChange = 0;
     this->onlyRendersOnce = onlyRendersOnce;
     this->opacity = 1.0f;
-    ParticleMaster::addParticle(this);
+    ParticleMaster::addParticleStandard(this);
 }
 
-Particle::Particle(ParticleTexture* texture, Vector3f* position, float lifeLength, float scale, float opacity, bool onlyRendersOnce)
+ParticleStandard::ParticleStandard(ParticleTexture* texture, Vector3f* position, float lifeLength, float scale, float opacity, bool onlyRendersOnce)
 {
     this->texture = texture;
     this->positionRef = &this->position;
@@ -49,10 +54,10 @@ Particle::Particle(ParticleTexture* texture, Vector3f* position, float lifeLengt
     this->scaleYChange = 0;
     this->onlyRendersOnce = onlyRendersOnce;
     this->opacity = opacity;
-    ParticleMaster::addParticle(this);
+    ParticleMaster::addParticleStandard(this);
 }
 
-Particle::Particle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float lifeLength, float scale, bool onlyRendersOnce)
+ParticleStandard::ParticleStandard(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float lifeLength, float scale, bool onlyRendersOnce)
 {
     this->texture = texture;
     this->positionRef = &this->position;
@@ -71,10 +76,10 @@ Particle::Particle(ParticleTexture* texture, Vector3f* position, Vector3f* veloc
     this->scaleYChange = 0;
     this->onlyRendersOnce = onlyRendersOnce;
     this->opacity = 1.0f;
-    ParticleMaster::addParticle(this);
+    ParticleMaster::addParticleStandard(this);
 }
 
-Particle::Particle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float gravityEffect,
+ParticleStandard::ParticleStandard(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float gravityEffect,
     float lifeLength, float rotation, float scale, float scaleChange, bool posIsRef, bool onlyRendersOnce, float opacity)
 {
     this->texture = texture;
@@ -101,10 +106,10 @@ Particle::Particle(ParticleTexture* texture, Vector3f* position, Vector3f* veloc
     this->scaleYChange = scaleChange;
     this->onlyRendersOnce = onlyRendersOnce;
     this->opacity = opacity;
-    ParticleMaster::addParticle(this);
+    ParticleMaster::addParticleStandard(this);
 }
 
-Particle::Particle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float gravityEffect,
+ParticleStandard::ParticleStandard(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float gravityEffect,
         float lifeLength, float rotation, float scaleX, float scaleXChange, float scaleY, float scaleYChange, 
         bool posIsRef, bool onlyRendersOnce)
 {
@@ -132,7 +137,7 @@ Particle::Particle(ParticleTexture* texture, Vector3f* position, Vector3f* veloc
     this->scaleYChange = scaleYChange;
     this->onlyRendersOnce = onlyRendersOnce;
     this->opacity = 1.0f;
-    ParticleMaster::addParticle(this);
+    ParticleMaster::addParticleStandard(this);
 }
 
 void Particle::updateTextureCoordInfo()
@@ -205,8 +210,15 @@ float Particle::getBlend()
     return blend;
 }
 
-bool Particle::update(Camera* camera)
+bool Particle::update()
 {
+    printf("default update being called\n");
+    return false;
+}
+
+bool ParticleStandard::update()
+{
+    //printf("standard update being called\n");
     velocity.y -= gravityEffect*dt;
     scaleX = fmaxf(0, scaleX + scaleXChange*dt);
     scaleY = fmaxf(0, scaleY + scaleYChange*dt);
@@ -215,20 +227,21 @@ bool Particle::update(Camera* camera)
     position.y += velocity.y*dt;
     position.z += velocity.z*dt;
 
-    Vector3f dist(&camera->eye);
-    dist = dist-position;
+    //dont need this since we dont do the sort anyway...
+    //Vector3f dist(&camera->eye);
+    //dist = dist-position;
 
-    distance = dist.lengthSquared();
+    //distance = dist.lengthSquared();
 
     updateTextureCoordInfo();
     elapsedTime += dt;
 
-    bool isDead = elapsedTime < lifeLength;
+    bool stillAlive = elapsedTime < lifeLength;
 
     if (onlyRendersOnce)
     {
         elapsedTime = lifeLength;
     }
 
-    return isDead;
+    return stillAlive;
 }

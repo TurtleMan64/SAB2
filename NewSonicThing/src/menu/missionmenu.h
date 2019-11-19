@@ -2,6 +2,7 @@
 #define MISSIONMENU_H
 
 class Button;
+class GuiTexture;
 
 #include <glad/glad.h>
 #include "menu.h"
@@ -9,13 +10,20 @@ class Button;
 class MissionMenu : public Menu
 {
 private:
-    int index;
+    int currLevel;
     GLuint textureParallelogram;
     GLuint textureParallelogramBackdrop;
     GLuint textureParallelogramHalf;
     GLuint textureParallelogramHalfBackdrop;
     GLuint textureParallelogramHalf2;
     GLuint textureParallelogramHalf2Backdrop;
+    GLuint textureRankA;
+    GLuint textureRankB;
+    GLuint textureRankC;
+    GLuint textureRankD;
+    GLuint textureRankE;
+    GLuint textureBlank;
+    GLuint textureSelect;
 
     int moveXPrevious;
     int moveYPrevious;
@@ -26,20 +34,26 @@ private:
     float holdDownTimer;
 
     Button** levelButton;
-    int counter;
+    int numButtons;
+
+    Button* missionButton = nullptr;
+    GuiTexture* rankM1 = nullptr;
+    GuiTexture* rankM2 = nullptr;
+    GuiTexture* rankM3 = nullptr;
+    GuiTexture* rankM4 = nullptr;
+    GuiTexture* missionSelect = nullptr;
+
+    Button*  timeButton = nullptr;
+    Button*  scoreButton = nullptr;
 
     bool visible;
 
     // Animation
-    //int oldSelection;
-    //float animationTime;
-    //bool animating;
-    //int animationDirection;
     float offsetTarget;
     float offsetCurr;
 
 private:
-    void draw();
+    void draw(bool updateMissionText);
     void setVisible(bool visibleStatus);
 
 public:

@@ -3,7 +3,7 @@ Levels/CityEscape
 CityEscape -100000 -100000 -100000 100000 100000 100000
 Levels/CityEscape
 1
-Collision 8
+Collision 16
 1.0 1.0 1.0
 0.0 0.0 0.0
 0.0 0.0 0.0

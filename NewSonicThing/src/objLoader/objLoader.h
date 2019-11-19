@@ -38,4 +38,7 @@ CollisionModel* loadCollisionModel(std::string filePath, std::string fileName);
 
 //The CollisionModel returned must be deleted later.
 CollisionModel* loadBinaryCollisionModel(std::string filePath, std::string fileName);
+
+//The CollisionModel returned must be deleted later.
+CollisionModel* loadBinaryQuadTree(std::string filePath, std::string fileName);
 #endif

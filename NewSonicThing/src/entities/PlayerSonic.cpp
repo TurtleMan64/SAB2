@@ -27,6 +27,8 @@
 #include "ringmoving.h"
 #include "../menu/timer.h"
 #include "stage.h"
+#include "shieldgreen.h"
+#include "shieldmagnet.h"
 
 #include <list>
 #include <vector>
@@ -74,10 +76,21 @@ void PlayerSonic::step()
     hoverTimer        = std::fmaxf(0.0f,  hoverTimer        - dt);
     homingAttackTimer = std::fmaxf(-1.0f, homingAttackTimer - dt);
     hitTimer          = std::fmaxf(0.0f,  hitTimer          - dt);
+    speedShoesTimer   = std::fmaxf(0.0f, speedShoesTimer    - dt);
     float deadTimerOld = deadTimer;
     if (deadTimer >= 0.0f)
     {
         deadTimer -= dt;
+    }
+
+    float invincibleTimerOld = invincibleTimer;
+    invincibleTimer = std::fmaxf(0.0f, invincibleTimer - dt);
+    int invTimOld = (int)(invincibleTimerOld*2);
+    int invTimNew = (int)(invincibleTimer*2);
+    if (invTimNew != invTimOld)
+    {
+        invincibleColor1.set(&invincibleColor2);
+        invincibleColor2.set(Maths::nextUniform()*2+0.3f, Maths::nextUniform()*2+0.3f, Maths::nextUniform()*2+0.3f);
     }
 
     if (deadTimerOld >  1.0f && 
@@ -577,6 +590,16 @@ void PlayerSonic::step()
     if (onGround)
     {
         hitTimer = 0.0f;
+    }
+
+    //combo stuff
+    if (onGround)
+    {
+        if (combo > 1)
+        {
+            Global::gameScore += 100*(combo - 1);
+        }
+        combo = 0;
     }
 
     if (onGround)
@@ -1687,8 +1710,7 @@ void PlayerSonic::rebound(Vector3f* source)
 
 void PlayerSonic::takeDamage(Vector3f* source)
 {
-    //if (hitTimer == 0.0f && invincibleTimer == 0)
-    if (hitTimer == 0.0f)
+    if (hitTimer == 0.0f && invincibleTimer == 0.0f)
     {
         Vector3f posDiff = position - source;
         posDiff.y = 0;
@@ -1708,20 +1730,20 @@ void PlayerSonic::takeDamage(Vector3f* source)
         spindashReleaseTimer = 0;
         spindashRestartDelay = 0;
 
-        //if (myShieldGreen != nullptr || myShieldMagnet != nullptr)
-        //{
-        //    if (myShieldMagnet != nullptr)
-        //    {
-        //        Main_deleteTransparentEntity(myShieldMagnet);
-        //        myShieldMagnet = nullptr;
-        //    }
-        //    if (myShieldGreen != nullptr)
-        //    {
-        //        Main_deleteTransparentEntity(myShieldGreen);
-        //        myShieldGreen = nullptr;
-        //    }
-        //}
-        //else
+        if (myShieldGreen != nullptr || myShieldMagnet != nullptr)
+        {
+            if (myShieldMagnet != nullptr)
+            {
+                Main_deleteEntity(myShieldMagnet);
+                myShieldMagnet = nullptr;
+            }
+            if (myShieldGreen != nullptr)
+            {
+                Main_deleteEntity(myShieldGreen);
+                myShieldGreen = nullptr;
+            }
+        }
+        else
         {
             int ringsToScatter = Global::gameRingCount;
             Global::gameRingCount = 0;
@@ -1763,13 +1785,13 @@ bool PlayerSonic::isVulnerable()
 {
     return !(
         homingAttackTimer > 0 ||
-        isBouncing ||
-        isJumping ||
-        isBall ||
-        isSpindashing ||
-        isStomping ||
-        hitTimer > 0.0f);
-        //invincibleTimer != 0);
+        isBouncing            ||
+        isJumping             ||
+        isBall                ||
+        isSpindashing         ||
+        isStomping            ||
+        hitTimer > 0.0f       ||
+        invincibleTimer > 0.0f);
 }
 
 void PlayerSonic::homingAttack()
@@ -2052,6 +2074,42 @@ void PlayerSonic::updateAnimationValues()
             ParticleMaster::createParticle(trail, &partPos, &zero, 0, 0.25f, 0, 8.0f, -32.0f, false, false, 1.0f);
         }
     }
+
+    if (invincibleTimer != 0)
+    {
+        //remove this in favor of baseColor rainbow effect
+        //Vector3f center = getCenterPosition();
+        //
+        //for (int i = 0; i < 2; i++)
+        //{
+        //    Vector3f off = Maths::randomPointOnSphere();
+        //    off.scale(8);
+        //    Vector3f pos1 = center + off;
+        //    Vector3f pos2 = center - off;
+        //    off.scale((1/16.0f)*60);
+        //    ParticleMaster::createParticle(ParticleResources::textureSparkleYellow, &pos1, &off, 0, 0.0833f, 0, 3.0f, -(3.0f / 0.0833f), false, false, 1.0f);
+        //    off.scale(-1);
+        //    ParticleMaster::createParticle(ParticleResources::textureSparkleGreen, &pos2, &off, 0, 0.0833f, 0, 3.0f, -(3.0f / 0.0833f), false, false, 1.0f);
+        //
+        //    off = Maths::randomPointOnSphere();
+        //    off.scale(8);
+        //    pos1 = center + off;
+        //    pos2 = center - off;
+        //    off.scale((1/16.0f)*60);
+        //    ParticleMaster::createParticle(ParticleResources::textureSparkleRed, &pos1, &off, 0, 0.0833f, 0, 3.0f, -(3.0f / 0.0833f), false, false, 1.0f);
+        //    off.scale(-1);
+        //    ParticleMaster::createParticle(ParticleResources::textureSparkleBlue, &pos2, &off, 0, 0.0833f, 0, 3.0f, -(3.0f / 0.0833f), false, false, 1.0f);
+        //
+        //    off = Maths::randomPointOnSphere();
+        //    off.scale(8);
+        //    pos1 = center + off;
+        //    pos2 = center - off;
+        //    off.scale((1/16.0f)*60);
+        //    ParticleMaster::createParticle(ParticleResources::textureSparkleLightBlue, &pos1, &off, 0, 0.0833f, 0, 3.0f, -(3.0f / 0.0833f), false, false, 1.0f);
+        //    off.scale(-1);
+        //    ParticleMaster::createParticle(ParticleResources::textureSparkleWhite, &pos2, &off, 0, 0.0833f, 0, 3.0f, -(3.0f / 0.0833f), false, false, 1.0f);
+        //}
+    }
 }
 
 void PlayerSonic::animate()
@@ -2204,6 +2262,26 @@ void PlayerSonic::animate()
         }
     }
 
+    Vector3f newBaseColor(1, 1, 1);
+    //change color with shields/invincible
+    if (myShieldGreen != nullptr)
+    {
+        newBaseColor.set(0.8f, 1.2f, 0.9f);
+    }
+    if (myShieldMagnet != nullptr)
+    {
+        newBaseColor.set(0.8f, 0.9f, 1.2f);
+    }
+    if (invincibleTimer > 0.0f)
+    {
+        float progress = 1 - (fmodf(invincibleTimer, 0.5f)*2);
+        float newR = Maths::interpolate(invincibleColor1.x, invincibleColor2.x, progress);
+        float newG = Maths::interpolate(invincibleColor1.y, invincibleColor2.y, progress);
+        float newB = Maths::interpolate(invincibleColor1.z, invincibleColor2.z, progress);
+        newBaseColor.set(newR, newG, newB);
+    }
+    playerModel->setBaseColor(newBaseColor.x, newBaseColor.y, newBaseColor.z);
+
     if (Global::finishStageTimer >= 1.0f)
     {
         position.set(&Global::gameStage->finishPlayerPosition);
@@ -2318,6 +2396,11 @@ void PlayerSonic::setCameraDirection(Vector3f* newDirection)
     camDirSmooth.set(newDirection);
 }
 
+void PlayerSonic::increaseCombo()
+{
+    combo++;
+}
+
 void PlayerSonic::grabRocket()
 {
     onRocket = true;
@@ -2427,6 +2510,59 @@ void PlayerSonic::die()
             Global::mainHudTimer->freeze(true);
         }
     }
+}
+
+ShieldMagnet* PlayerSonic::getShieldMagnet()
+{
+    return myShieldMagnet;
+}
+
+void PlayerSonic::setShieldMagnet(ShieldMagnet* newMagnet)
+{
+    if (myShieldMagnet != nullptr)
+    {
+        Main_deleteEntity(myShieldMagnet);
+        myShieldMagnet = nullptr;
+    }
+    if (myShieldGreen != nullptr)
+    {
+        Main_deleteEntity(myShieldGreen);
+        myShieldGreen = nullptr;
+    }
+    myShieldMagnet = newMagnet;
+}
+
+ShieldGreen* PlayerSonic::getShieldGreen()
+{
+    return myShieldGreen;
+}
+
+void PlayerSonic::setShieldGreen(ShieldGreen* newGreen)
+{
+    if (myShieldMagnet != nullptr)
+    {
+        Main_deleteEntity(myShieldMagnet);
+        myShieldMagnet = nullptr;
+    }
+    if (myShieldGreen != nullptr)
+    {
+        Main_deleteEntity(myShieldGreen);
+        myShieldGreen = nullptr;
+    }
+    myShieldGreen = newGreen;
+}
+
+
+void PlayerSonic::setInvincibleTimer(float newTimer)
+{
+    invincibleTimer = newTimer;
+    invincibleColor1.set(Maths::nextUniform(), Maths::nextUniform(), Maths::nextUniform());
+    invincibleColor2.set(Maths::nextUniform(), Maths::nextUniform(), Maths::nextUniform());
+}
+
+void PlayerSonic::setSpeedShoesTimer(float newTimer)
+{
+    speedShoesTimer = newTimer;
 }
 
 bool PlayerSonic::isDying()

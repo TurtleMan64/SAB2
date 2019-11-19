@@ -12,16 +12,12 @@ public:
     static std::list<TexturedModel*> models;
 
 private:
-    static float hitboxH;
-    static float hitboxV;
-
     float xVel;
     float yVel;
     float zVel;
     bool moves;
     int grabTimer;
     bool givesPoints;
-    bool trackingPlayer;
 
 public:
     Ring();

@@ -66,7 +66,7 @@ void AudioPlayer::loadSoundEffects()
     AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/Player/PeelCharge.ogg"));            //39
     AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/Player/PeelRelease.ogg"));           //40
     AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/Player/Roll.ogg"));                  //41
-    AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/Snowhead/BabyGoron_Doze.ogg"));      //42
+    AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/GoalRing.ogg"));             //42
     AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/Dig.ogg"));                  //43
     AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/RankShow.ogg"));             //44
     AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/Checkpoint.ogg"));           //45

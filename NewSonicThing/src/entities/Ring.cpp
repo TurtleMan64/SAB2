@@ -16,7 +16,8 @@
 #include "../particles/particle.h"
 #include "../particles/particleresources.h"
 #include "../particles/particlemaster.h"
-//#include "shieldmagnet.h"
+#include "shieldmagnet.h"
+#include "ringmoving.h"
 
 #include <list>
 #include <iostream>
@@ -24,8 +25,6 @@
 
 std::list<TexturedModel*> Ring::models;
 
-float Ring::hitboxH = 5;
-float Ring::hitboxV = 5;
 
 Ring::Ring()
 {
@@ -43,7 +42,6 @@ Ring::Ring(float x, float y, float z)
     zVel = 0;
     grabTimer = 0;
     givesPoints = true;
-    trackingPlayer = false;
     updateTransformationMatrix();
 }
 
@@ -58,7 +56,6 @@ Ring::Ring(float x, float y, float z, float xVel, float yVel, float zVel)
     this->zVel = zVel;
     grabTimer = 60;
     givesPoints = false;
-    trackingPlayer = false;
     updateTransformationMatrix();
 }
 
@@ -199,7 +196,8 @@ void Ring::step()
         fabsf(position.x - Global::gameMainPlayer->position.x) < 40 &&
         grabTimer == 0)
     {
-        if ((Global::gameMainPlayer->getCenterPosition() - position).lengthSquared() < (5.0f*5.0f + 9.0f*9.0f))
+        float toPlayerDistSquared = (Global::gameMainPlayer->getCenterPosition() - position).lengthSquared();
+        if (toPlayerDistSquared < (11.0f*11.0f)) //collect ring range
         {
             AudioPlayer::play(4, getPosition());
 
@@ -225,6 +223,18 @@ void Ring::step()
 
             Main_deleteChunkedEntity(this);
             return;
+        }
+        else
+        {
+            if (Global::gameMainPlayer->getShieldMagnet() != nullptr)
+            {
+                if (toPlayerDistSquared < 36.0f*36.0f) //attract ring range
+                {
+                    Main_deleteChunkedEntity(this);
+                    RingMoving* newRing = new RingMoving(position.x, position.y, position.z); INCR_NEW("RingMoving")
+                    Main_addEntity(newRing);
+                }
+            }
         }
     }
 }
