@@ -29,6 +29,7 @@
 #include "stage.h"
 #include "shieldgreen.h"
 #include "shieldmagnet.h"
+#include "../guis/guitexture.h"
 
 #include <list>
 #include <vector>
@@ -62,11 +63,25 @@ PlayerSonic::PlayerSonic(float x, float y, float z)
 
     visible = false;
     loadVehicleInfo();
+
+    if (homingAttackReticle == nullptr)
+    {
+        extern unsigned int SCR_WIDTH;
+        extern unsigned int SCR_HEIGHT;
+        float aspectRatio = (float)SCR_WIDTH / (float)SCR_HEIGHT;
+
+        homingAttackReticle = new GuiTexture(Loader::loadTexture("res/Images/HomingReticleSmooth.png"), 0.5f, 0.5f, 0.1f/aspectRatio, 0.1f, 0); INCR_NEW("GuiTexture")
+        homingAttackReticle->setVisible(true);
+    }
 }
 
 PlayerSonic::~PlayerSonic()
 {
-
+    if (homingAttackReticle != nullptr)
+    {
+        Loader::deleteTexture(homingAttackReticle->getTexture());
+        delete homingAttackReticle; homingAttackReticle = nullptr; INCR_DEL("GuiTexture")
+    }
 }
 
 void PlayerSonic::step()
@@ -76,7 +91,7 @@ void PlayerSonic::step()
     hoverTimer        = std::fmaxf(0.0f,  hoverTimer        - dt);
     homingAttackTimer = std::fmaxf(-1.0f, homingAttackTimer - dt);
     hitTimer          = std::fmaxf(0.0f,  hitTimer          - dt);
-    speedShoesTimer   = std::fmaxf(0.0f, speedShoesTimer    - dt);
+    speedShoesTimer   = std::fmaxf(0.0f,  speedShoesTimer   - dt);
     float deadTimerOld = deadTimer;
     if (deadTimer >= 0.0f)
     {
@@ -85,12 +100,12 @@ void PlayerSonic::step()
 
     float invincibleTimerOld = invincibleTimer;
     invincibleTimer = std::fmaxf(0.0f, invincibleTimer - dt);
-    int invTimOld = (int)(invincibleTimerOld*2);
-    int invTimNew = (int)(invincibleTimer*2);
+    int invTimOld = (int)(invincibleTimerOld*4);
+    int invTimNew = (int)(invincibleTimer*4);
     if (invTimNew != invTimOld)
     {
         invincibleColor1.set(&invincibleColor2);
-        invincibleColor2.set(Maths::nextUniform()*2+0.3f, Maths::nextUniform()*2+0.3f, Maths::nextUniform()*2+0.3f);
+        invincibleColor2.set(Maths::nextUniform()*3+0.3f, Maths::nextUniform()*3+0.3f, Maths::nextUniform()*3+0.3f);
     }
 
     if (deadTimerOld >  1.0f && 
@@ -299,6 +314,8 @@ void PlayerSonic::step()
     }
 
     //Homing attack
+    homingAttackReticle->setVisible(false);
+    GuiManager::addGuiToRender(homingAttackReticle);
     if (onGround)
     {
         homingAttackTimer = -1.0f;
@@ -307,9 +324,21 @@ void PlayerSonic::step()
     }
     else
     {
-        if (inputJump && !inputJumpPrevious && (isBall || isJumping) && !justHomingAttacked && !isLightdashing)
+        if ((isBall || isJumping) && !justHomingAttacked && !isLightdashing)
         {
-            homingAttack();
+            Vector3f homeTar(0,0,0);
+            bool foundTarget = findHomingTarget(&homeTar);
+            if (foundTarget && !(canMoveTimer > 0.0f || Global::finishStageTimer >= 0.0f || hitTimer > 0.0f || deadTimer > -1.0f))
+            {
+                Vector2f pos = Maths::calcScreenCoordsOfWorldPoint(&homeTar);
+                homingAttackReticle->getPosition()->set(&pos);
+                homingAttackReticle->setVisible(true);
+            }
+
+            if (inputJump && !inputJumpPrevious)
+            {
+                homingAttack(&homeTar, foundTarget);
+            }
         }
     }
 
@@ -1124,7 +1153,7 @@ void PlayerSonic::step()
                     //vel = vel + velToAddFromGravity;
                     if (Input::inputs.INPUT_RB)
                     {
-                        vel = vel - velToAddFromGravity.scaleCopy(4);
+                       // vel = vel - velToAddFromGravity.scaleCopy(4);
                     }
                 }
             }
@@ -1428,7 +1457,14 @@ void PlayerSonic::moveMeGround()
         }
         else
         {
-            vel = vel + velToAdd.scaleCopy(groundRunPush*dt); //Add vel from player stick input
+            if (speedShoesTimer <= 0.0f)
+            {
+                vel = vel + velToAdd.scaleCopy(groundRunPush*dt); //Add vel from player stick input
+            }
+            else
+            {
+                vel = vel + velToAdd.scaleCopy(groundRunPushSpeedshoes*dt); //Add even more vel from player stick input
+            }
 
             Vector3f fr(0, -0.001f, 0); //-.25
             fr = Maths::projectOntoPlane(&fr, &relativeUp);
@@ -1794,7 +1830,7 @@ bool PlayerSonic::isVulnerable()
         invincibleTimer > 0.0f);
 }
 
-void PlayerSonic::homingAttack()
+bool PlayerSonic::findHomingTarget(Vector3f* target)
 {
     float stickAngle = -atan2f(inputY, inputX) - Maths::PI/2; //angle you are holding on the stick, with 0 being up
     float stickRadius = sqrtf(inputX*inputX + inputY*inputY);
@@ -1886,6 +1922,17 @@ void PlayerSonic::homingAttack()
 
     if (homeInOnPoint)
     {
+        target->set(&homeTargetPoint);
+    }
+    
+    return homeInOnPoint;
+}
+
+void PlayerSonic::homingAttack(Vector3f* target, bool homeInOnIt)
+{
+    if (homeInOnIt)
+    {
+        Vector3f homeTargetPoint(target);
         vel = homeTargetPoint - position;
         vel.setLength(6.7f*60.0f);
 
@@ -2274,7 +2321,7 @@ void PlayerSonic::animate()
     }
     if (invincibleTimer > 0.0f)
     {
-        float progress = 1 - (fmodf(invincibleTimer, 0.5f)*2);
+        float progress = 1 - (fmodf(invincibleTimer, 0.25f)*4);
         float newR = Maths::interpolate(invincibleColor1.x, invincibleColor2.x, progress);
         float newG = Maths::interpolate(invincibleColor1.y, invincibleColor2.y, progress);
         float newB = Maths::interpolate(invincibleColor1.z, invincibleColor2.z, progress);
@@ -2560,7 +2607,7 @@ void PlayerSonic::setInvincibleTimer(float newTimer)
     invincibleColor2.set(Maths::nextUniform(), Maths::nextUniform(), Maths::nextUniform());
 }
 
-void PlayerSonic::setSpeedShoesTimer(float newTimer)
+void PlayerSonic::setSpeedshoesTimer(float newTimer)
 {
     speedShoesTimer = newTimer;
 }

@@ -644,8 +644,8 @@ void Input::init()
 
     glfwPollEvents();
 
-    int present = glfwJoystickPresent(CONTROLLER_ID);
-    if (present == 1)
+    //make sure no index goes out of bounds
+    if (glfwJoystickPresent(CONTROLLER_ID) == GLFW_TRUE)
     {
         int axesCount;
         glfwGetJoystickAxes(CONTROLLER_ID, &axesCount);
@@ -665,5 +665,30 @@ void Input::init()
         BUTTON_LB    = std::min(BUTTON_LB,    buttonCount - 1);
         BUTTON_RB    = std::min(BUTTON_RB,    buttonCount - 1);
         BUTTON_START = std::min(BUTTON_START, buttonCount - 1);
+    }
+
+    //log the controllers we see for humans if needed
+    std::ofstream joyLog;
+    joyLog.open((Global::pathToEXE + "Settings/ControllerLog.txt").c_str(), std::ios::out | std::ios::trunc);
+
+    if (!joyLog.is_open())
+    {
+        std::fprintf(stderr, "Error: Failed to create/access '%s'\n", (Global::pathToEXE + "Settings/ControllerLog.txt").c_str());
+        joyLog.close();
+    }
+    else
+    {
+        for (int i = GLFW_JOYSTICK_1; i < GLFW_JOYSTICK_LAST; i++)
+        {
+            joyLog << "Controller " + std::to_string(i) + " Name: ";
+            const char* name = glfwGetJoystickName(i);
+            if (name != nullptr)
+            {
+                joyLog << name;
+            }
+            joyLog << "\n";
+        }
+
+        joyLog.close();
     }
 }

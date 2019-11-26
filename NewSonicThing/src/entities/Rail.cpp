@@ -225,6 +225,37 @@ void Rail::step()
             currentSegment = nullptr;
             currentSegmentIndex = -1;
         }
+        else if (Input::inputs.INPUT_LB && !Input::inputs.INPUT_PREVIOUS_LB)
+        {
+            Global::gameMainPlayer->stopGrinding();
+
+            Vector3f forward = Global::gameMainPlayer->vel;
+            forward.normalize();
+            Vector3f up = currentSegment->normalBegin;
+            Vector3f side = up.cross(&forward);
+            side.setLength(200.0f);
+            Global::gameMainPlayer->vel = Global::gameMainPlayer->vel + side;
+
+            Global::gameMainPlayer->canMoveTimer = 0.3f;
+            currentSegment = nullptr;
+            currentSegmentIndex = -1;
+        }
+        else if (Input::inputs.INPUT_RB && !Input::inputs.INPUT_PREVIOUS_RB)
+        {
+            Global::gameMainPlayer->stopGrinding();
+
+            Vector3f forward = Global::gameMainPlayer->vel;
+            forward.normalize();
+            Vector3f up = currentSegment->normalBegin;
+            Vector3f side = up.cross(&forward);
+            side.setLength(200.0f);
+            side.scale(-1);
+            Global::gameMainPlayer->vel = Global::gameMainPlayer->vel + side;
+
+            Global::gameMainPlayer->canMoveTimer = 0.3f;
+            currentSegment = nullptr;
+            currentSegmentIndex = -1;
+        }
         else
         {
             float distanceRemaining = playerSpeed*dt;
@@ -269,8 +300,8 @@ void Rail::step()
                         Vector3f nP = currentSegment->pointBegin + progressVec;
                         Global::gameMainPlayer->setPosition(&nP);
                         Global::gameMainPlayer->increasePosition(currentSegment->normalBegin.x*1.0f, 
-                                                                  currentSegment->normalBegin.y*1.0f, 
-                                                                  currentSegment->normalBegin.z*1.0f);
+                                                                 currentSegment->normalBegin.y*1.0f, 
+                                                                 currentSegment->normalBegin.z*1.0f);
                         Global::gameMainPlayer->updateTransformationMatrix();
 
                         Global::gameMainPlayer->stopGrinding();
@@ -286,8 +317,8 @@ void Rail::step()
                     Vector3f nP = currentSegment->pointBegin + progressVec;
                     Global::gameMainPlayer->setPosition(&nP);
                     Global::gameMainPlayer->increasePosition(currentSegment->normalBegin.x*1.0f, 
-                                                              currentSegment->normalBegin.y*1.0f, 
-                                                              currentSegment->normalBegin.z*1.0f);
+                                                             currentSegment->normalBegin.y*1.0f, 
+                                                             currentSegment->normalBegin.z*1.0f);
                     Global::gameMainPlayer->updateTransformationMatrix();
 
                     distanceRemaining = 0.0f;
@@ -315,8 +346,8 @@ void Rail::step()
                         Vector3f nP = currentSegment->pointEnd + progressVec;
                         Global::gameMainPlayer->setPosition(&nP);
                         Global::gameMainPlayer->increasePosition(currentSegment->normalBegin.x*1.0f, 
-                                                                  currentSegment->normalBegin.y*1.0f, 
-                                                                  currentSegment->normalBegin.z*1.0f);
+                                                                 currentSegment->normalBegin.y*1.0f, 
+                                                                 currentSegment->normalBegin.z*1.0f);
                         Global::gameMainPlayer->updateTransformationMatrix();
 
                         Global::gameMainPlayer->stopGrinding();

@@ -684,3 +684,39 @@ bool Maths::pointIsInCylinder(Vector3f* point, Vector3f* c1, Vector3f* c2, float
             p.x < cLength &&
             p.y*p.y + p.z*p.z < cRadius*cRadius);
 }
+
+//coordinates are 0,0 for middle of screen, -1, -1 for top left, 1,1 for bot right
+Vector2f Maths::calcScreenCoordsOfWorldPoint(Vector3f* worldPoint)
+{
+    Matrix4f viewMatrix;
+    Maths::createViewMatrix(&viewMatrix, Global::gameCamera);
+
+    Matrix4f modelMatrix;
+    modelMatrix.translate(worldPoint);
+    modelMatrix.m00 = viewMatrix.m00;
+    modelMatrix.m01 = viewMatrix.m10;
+    modelMatrix.m02 = viewMatrix.m20;
+    modelMatrix.m10 = viewMatrix.m01;
+    modelMatrix.m11 = viewMatrix.m11;
+    modelMatrix.m12 = viewMatrix.m21;
+    modelMatrix.m20 = viewMatrix.m02;
+    modelMatrix.m21 = viewMatrix.m12;
+    modelMatrix.m22 = viewMatrix.m22;
+    Vector3f axis(0, 0, 1);
+    modelMatrix.rotate(Maths::toRadians(0), &axis);
+    Vector3f scaleVec(1, 1, 1);
+    modelMatrix.scale(&scaleVec);
+    Matrix4f modelViewMatrix = Matrix4f(modelMatrix);
+    viewMatrix.multiply(&modelViewMatrix, &modelViewMatrix);
+
+    extern Matrix4f* projectionMatrix;
+
+    Matrix4f result;
+    projectionMatrix->multiply(&modelViewMatrix, &result);
+    Vector4f vec4(0, 0, 0, 1);
+    Vector4f gl_Position = result.transform(&vec4);
+    float scl = gl_Position.w;
+    gl_Position.scale(1/scl);
+
+    return Vector2f(gl_Position.x, gl_Position.y);
+}

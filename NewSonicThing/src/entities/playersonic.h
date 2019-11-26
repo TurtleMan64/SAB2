@@ -9,6 +9,7 @@ class PlayerModel;
 class Source;
 class ShieldGreen;
 class ShieldMagnet;
+class GuiTexture;
 
 #include <list>
 #include <vector>
@@ -51,6 +52,7 @@ private:
     float hoverTimer = 0.0f;
 
     const float groundRunPush = 100.0f;
+    const float groundRunPushSpeedshoes = 300.0f;
     const float groundRunFriction = 0.5f;
     const float groundNeutralFriction = 1.5f; //5.5
     const float skidPower = -5.0f;
@@ -124,6 +126,7 @@ private:
     bool isHomingOnPoint = false;
     const float homingAttackRangeMax =  115.0f*115.0f; //max squared
     const float homingAttackDotThreshold = 0.65f;
+    GuiTexture* homingAttackReticle = nullptr;
 
     //const float camAngleLookdown = 0.0f; //0.2f; //How much the camera looks down
     const float camRadius        = 75.0;  //Camera radius at zero speed
@@ -170,7 +173,9 @@ private:
 
     void spindash();
 
-    void homingAttack();
+    void homingAttack(Vector3f* target, bool homeInOnIt);
+
+    bool findHomingTarget(Vector3f* target);
 
     void calcSpindashDirection();
 
@@ -246,7 +251,7 @@ public:
 
     void setInvincibleTimer(float newTimer);
 
-    void setSpeedShoesTimer(float newTimer);
+    void setSpeedshoesTimer(float newTimer);
 
     //called by Rail when sonic jumps off
     void jump();
