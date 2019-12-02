@@ -157,7 +157,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
 
         //Set the Global levelID based on the name of the level
         Level* currLvl = nullptr;
-        for (int i = 0; i < Global::gameLevelData.size(); i++)
+        for (int i = 0; i < (int)Global::gameLevelData.size(); i++)
         {
             Level* t = &Global::gameLevelData[i];
             if (t->fileName == fname)

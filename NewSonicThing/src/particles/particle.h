@@ -33,6 +33,7 @@ protected:
 
 public:
     Particle();
+    virtual ~Particle();
 
     //Particle(ParticleTexture* texture, Vector3f* position, float lifeLength, float scale, bool onlyRendersOnce);
     //
@@ -73,6 +74,8 @@ public:
 class ParticleStandard : public Particle
 {
 public:
+    ~ParticleStandard();
+
     ParticleStandard(ParticleTexture* texture, Vector3f* position, float lifeLength, float scale, bool onlyRendersOnce);
 
     ParticleStandard(ParticleTexture* texture, Vector3f* position, float lifeLength, float scale, float opacity, bool onlyRendersOnce);

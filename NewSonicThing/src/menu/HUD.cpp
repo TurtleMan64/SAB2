@@ -25,7 +25,7 @@ HUD::HUD()
     this->w = s / this->aspectRatio; //width of a single text character
 
     this->numberLives = new GUINumber(Global::gameLives, safeAreaX + w*2, 1.0f - (safeAreaY + s*0.4f), s, 6, false, 2, false); INCR_NEW("GUINumber");
-    this->textLivesMission = new GUIText("Inf", s, Global::fontVipnagorgialla, safeAreaX + w*2, 1.0f - (safeAreaY + s*0.4f), 6, false);
+    this->textLivesMission = new GUIText("Inf", s, Global::fontVipnagorgialla, safeAreaX + w*2, 1.0f - (safeAreaY + s*0.4f), 6, false);  INCR_NEW("GUIText");
 
     this->numberFPS = new GUINumber(Global::currentCalculatedFPS, 1.0f, 0.0f, s, 2, false, 0, false); INCR_NEW("GUINumber");
 

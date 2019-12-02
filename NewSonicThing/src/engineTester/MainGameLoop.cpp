@@ -880,7 +880,7 @@ int main(int argc, char** argv)
                 {
                     Global::gameArcadeIndex+=1;
 
-                    if (Global::gameArcadeIndex < Global::gameArcadeLevelIds.size())
+                    if (Global::gameArcadeIndex < (int)Global::gameArcadeLevelIds.size())
                     {
                         Global::levelID = Global::gameArcadeLevelIds[Global::gameArcadeIndex];
                         Level* currentLevel = &Global::gameLevelData[Global::levelID];
@@ -935,7 +935,7 @@ int main(int argc, char** argv)
 
             if (finishTimerBefore < 6.166f && Global::finishStageTimer >= 6.166f)
             {
-                if (Global::gameIsArcadeMode && Global::gameArcadeIndex+1 >= Global::gameArcadeLevelIds.size())
+                if (Global::gameIsArcadeMode && Global::gameArcadeIndex+1 >= (int)Global::gameArcadeLevelIds.size())
                 {
                     MenuManager::arcadeModeIsDone = true;
                 }

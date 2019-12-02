@@ -29,12 +29,6 @@ private:
 
     float aspectRatio;
 
-    void unloadResources();
-
-    void loadResources();
-
-    void setVisible(bool visibleStatus);
-
     bool visible;
 
     // Animation
@@ -43,6 +37,12 @@ private:
     bool animating;
     int animationDirection;
     void resetAnimation();
+
+    void unloadResources();
+
+    void loadResources();
+
+    void setVisible(bool visibleStatus);
 
 public:
     MainMenu();

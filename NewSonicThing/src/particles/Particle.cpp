@@ -13,6 +13,16 @@ Particle::Particle()
 
 }
 
+Particle::~Particle()
+{
+
+}
+
+ParticleStandard::~ParticleStandard()
+{
+    
+}
+
 ParticleStandard::ParticleStandard(ParticleTexture* texture, Vector3f* position, float lifeLength, float scale, bool onlyRendersOnce)
 {
     this->texture = texture;

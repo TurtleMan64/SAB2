@@ -17,7 +17,7 @@ private:
     GUIText* text = nullptr;
     bool textIsLeftAnchored;
     float scaleX;
-    float anchorOffset;
+    float anchorOffset = 0;
 
     GuiTexture texture;
     GuiTexture textureHighlight; // For Arcade

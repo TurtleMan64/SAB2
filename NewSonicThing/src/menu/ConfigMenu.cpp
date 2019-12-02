@@ -24,42 +24,21 @@
 #include "mainmenu.h"
 #include "../toolbox/maths.h"
 
-GLuint ConfigMenu::textureParallelogram              = GL_NONE;
-GLuint ConfigMenu::textureParallelogramBackdrop      = GL_NONE;
-GLuint ConfigMenu::textureParallelogramHalf          = GL_NONE;
-GLuint ConfigMenu::textureParallelogramHalfBackdrop  = GL_NONE;
-GLuint ConfigMenu::textureParallelogramHalf2         = GL_NONE;
-GLuint ConfigMenu::textureParallelogramHalf2Backdrop = GL_NONE;
-
 ConfigMenu::ConfigMenu()
 {
     //std::cout << "Initializing Config Menu\n";
-    this->init();
-    this->loadResources();
-    this->visible = true;
-    this->offsetCurr = 0.0f;
-    this->offsetTarget = 0.0f;
-    //std::cout << "Config Menu initialized\n";
-}
-
-void ConfigMenu::init()
-{
     fontSize = 0.05f;
-    if (ConfigMenu::textureParallelogram == GL_NONE)
-    {
-        ConfigMenu::textureParallelogram              = Loader::loadTextureNoInterpolation("res/Images/MainMenu/Parallelogram.png");
-        ConfigMenu::textureParallelogramBackdrop      = Loader::loadTextureNoInterpolation("res/Images/MainMenu/ParallelogramBackdrop.png");
-        ConfigMenu::textureParallelogramHalf          = Loader::loadTextureNoInterpolation("res/Images/MainMenu/ParallelogramHalf.png");
-        ConfigMenu::textureParallelogramHalfBackdrop  = Loader::loadTextureNoInterpolation("res/Images/MainMenu/ParallelogramHalfBackdrop.png");
-        ConfigMenu::textureParallelogramHalf2         = Loader::loadTextureNoInterpolation("res/Images/MainMenu/ParallelogramHalf2.png");
-        ConfigMenu::textureParallelogramHalf2Backdrop = Loader::loadTextureNoInterpolation("res/Images/MainMenu/ParallelogramHalf2Backdrop.png");
-    }
+    loadResources();
+    setVisible(false);
+    offsetCurr = 0.0f;
+    offsetTarget = 0.0f;
+    //std::cout << "Config Menu initialized\n";
 }
 
 ConfigMenu::~ConfigMenu()
 {
     //std::cout << "Deleting Config Menu\n";
-    this->unloadResources();
+    unloadResources();
     //std::cout << "Config Menu deleted.\n";
 }
 
@@ -69,6 +48,13 @@ void ConfigMenu::loadResources()
     {
         std::fprintf(stdout, "Warning: ConfigMenu loading resources when they are already loaded.\n");
     }
+
+    textureParallelogram              = Loader::loadTextureNoInterpolation("res/Images/MainMenu/Parallelogram.png");
+    textureParallelogramBackdrop      = Loader::loadTextureNoInterpolation("res/Images/MainMenu/ParallelogramBackdrop.png");
+    textureParallelogramHalf          = Loader::loadTextureNoInterpolation("res/Images/MainMenu/ParallelogramHalf.png");
+    textureParallelogramHalfBackdrop  = Loader::loadTextureNoInterpolation("res/Images/MainMenu/ParallelogramHalfBackdrop.png");
+    textureParallelogramHalf2         = Loader::loadTextureNoInterpolation("res/Images/MainMenu/ParallelogramHalf2.png");
+    textureParallelogramHalf2Backdrop = Loader::loadTextureNoInterpolation("res/Images/MainMenu/ParallelogramHalf2Backdrop.png");
 
     extern unsigned int SCR_WIDTH;
     extern unsigned int SCR_HEIGHT;
@@ -128,6 +114,19 @@ void ConfigMenu::unloadResources()
     {
         std::fprintf(stdout, "Warning: ConfigMenu unloading resources when they are empty.\n");
     }
+
+    Loader::deleteTexture(textureParallelogram);
+    Loader::deleteTexture(textureParallelogramBackdrop);
+    Loader::deleteTexture(textureParallelogramHalf);
+    Loader::deleteTexture(textureParallelogramHalfBackdrop);
+    Loader::deleteTexture(textureParallelogramHalf2);
+    Loader::deleteTexture(textureParallelogramHalf2Backdrop);
+    textureParallelogram              = GL_NONE;
+    textureParallelogramBackdrop      = GL_NONE;
+    textureParallelogramHalf          = GL_NONE;
+    textureParallelogramHalfBackdrop  = GL_NONE;
+    textureParallelogramHalf2         = GL_NONE;
+    textureParallelogramHalf2Backdrop = GL_NONE;
 
     GuiManager::clearGuisToRender();
 
@@ -198,7 +197,7 @@ Menu* ConfigMenu::step()
     extern float dt;
     static float holdTick;
 
-    int holdMultiplier = 1;
+    //int holdMultiplier = 1;
     bool shouldGoDown = false;
     bool shouldGoUp = false;
     bool shouldGoLeft = false;
@@ -313,7 +312,7 @@ Menu* ConfigMenu::step()
         {
             shouldGoRight = true;
             holdTick -= 0.03f;
-            holdMultiplier = 5;
+            //holdMultiplier = 5;
         }
     }
 
@@ -324,7 +323,7 @@ Menu* ConfigMenu::step()
         {
             shouldGoLeft = true;
             holdTick -= 0.03f;
-            holdMultiplier = 5;
+            //holdMultiplier = 5;
         }
     }
 
@@ -345,8 +344,8 @@ Menu* ConfigMenu::step()
         }
     }
 
-    extern unsigned int SCR_WIDTH;
-    extern unsigned int SCR_HEIGHT;
+    //extern unsigned int SCR_WIDTH;
+    //extern unsigned int SCR_HEIGHT;
     extern float VFOV_BASE;
 
     if (shouldGoLeft)

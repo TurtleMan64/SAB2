@@ -19,7 +19,7 @@ TextMeshData* TextMeshCreator::createTextMesh(GUIText* text)
     std::vector<Line> lines = createStructure(text);
     text->lineWidths.clear();
     text->maxLineWidth = 0.0f;
-    for (int i = 0; i < lines.size(); i++)
+    for (int i = 0; i < (int)lines.size(); i++)
     {
         float newLength = lines[i].getLineLength();
         text->lineWidths.push_back(lines[i].getLineLength());

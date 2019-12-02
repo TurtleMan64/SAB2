@@ -42,9 +42,10 @@ MissionMenu::~MissionMenu()
 
 void MissionMenu::loadResources()
 {
-    if (this->numButtons != 0)
+    if (levelButtons.size() != 0)
     {
         std::fprintf(stdout, "Warning: MissionMenu loading resources when they are already loaded.\n");
+        return;
     }
 
     textureParallelogram              = Loader::loadTexture("res/Images/MainMenu/Parallelogram.png");
@@ -57,15 +58,18 @@ void MissionMenu::loadResources()
     extern unsigned int SCR_WIDTH;
     extern unsigned int SCR_HEIGHT;
     float aspectRatio = (float)SCR_WIDTH / SCR_HEIGHT;
-    this->levelButton = new Button*[Global::gameLevelData.size()]; INCR_NEW("Button");
-    this->numButtons = 0;
+    levelButtons.clear();
+
+    int i = 0;
     for (Level level : Global::gameLevelData)
     {
         std::string buttonText = "";
         buttonText = level.displayName;
-        levelButton[this->numButtons] = new Button(level.displayName, Global::fontVipnagorgialla, this->textureParallelogram, this->textureParallelogramBackdrop, 0.31f, 0.5f + (0.2f * this->numButtons), 0.56f / aspectRatio, 0.07f, true); INCR_NEW("Button");
-        this->numButtons++;
+        Button* nextButton = new Button(level.displayName, Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.31f, 0.5f + (0.2f * i), 0.56f / aspectRatio, 0.07f, true); INCR_NEW("Button");
+        levelButtons.push_back(nextButton);
+        i++;
     }
+    currLevel = 0;
 
     textureRankA  = Loader::loadTexture("res/Images/MainMenu/RankA.png");
     textureRankB  = Loader::loadTexture("res/Images/MainMenu/RankB.png");
@@ -90,18 +94,20 @@ void MissionMenu::loadResources()
 void MissionMenu::unloadResources()
 {
     //std::cout << "Unloading Mission Menu resources.\n";
-    if (this->numButtons == 0)
+    if ((int)levelButtons.size() == 0)
     {
         std::fprintf(stdout, "Warning: MissionMenu unloading resources when they are empty.\n");
+        return;
     }
 
     GuiManager::clearGuisToRender();
-    for (int i = 0; i < this->numButtons; i++)
+
+    for (int i = 0; i < (int)levelButtons.size(); i++)
     {
-        delete this->levelButton[i]; INCR_DEL("Button");
+        delete levelButtons[i]; levelButtons[i] = nullptr; INCR_DEL("Button");
     }
-    delete[] this->levelButton; INCR_DEL("Button");
-    this->numButtons = 0;
+    levelButtons.clear();
+    currLevel = 0;
 
     delete missionButton; missionButton = nullptr; INCR_DEL("Button");
 
@@ -158,16 +164,16 @@ void MissionMenu::draw(bool updateMissionText)
 
     GuiManager::clearGuisToRender();
     
-    if (this->visible)
+    if (visible)
     {
-        for (int i = 0; i < this->numButtons; i++)
+        for (int i = 0; i < (int)levelButtons.size(); i++)
         {
-            this->levelButton[i]->setPos(0.31f, 0.5f + this->offsetCurr + 0.15f*i);
-            this->levelButton[i]->setVisible(true);
-            this->levelButton[i]->setHighlight(false);
+            levelButtons[i]->setPos(0.31f, 0.5f + this->offsetCurr + 0.15f*i);
+            levelButtons[i]->setVisible(true);
+            levelButtons[i]->setHighlight(false);
         }
 
-        levelButton[currLevel]->setHighlight(true);
+        levelButtons[currLevel]->setHighlight(true);
 
         missionButton->setVisible(true);
         missionButton->setHighlight(false);
@@ -313,10 +319,10 @@ void MissionMenu::draw(bool updateMissionText)
 
 void MissionMenu::setVisible(bool visibleStatus)
 {
-    for (int i = 0; i < numButtons; i++)
+    for (int i = 0; i < (int)levelButtons.size(); i++)
     {
-        levelButton[i]->setVisible(visibleStatus);
-        levelButton[i]->setHighlight(visibleStatus);
+        levelButtons[i]->setVisible(visibleStatus);
+        levelButtons[i]->setHighlight(visibleStatus);
     }
     missionButton->setVisible(visibleStatus);
     timeButton->setVisible(visibleStatus);
@@ -338,7 +344,7 @@ Menu* MissionMenu::step()
     bool pressedSelect = false;
     bool pressedBack = false;
 
-    bool shouldUpdateMissionText = false;
+    //bool shouldUpdateMissionText = false;
 
     int moveX = (int)round(Input::inputs.INPUT_X);
     int moveY = (int)round(Input::inputs.INPUT_Y);
@@ -426,7 +432,7 @@ Menu* MissionMenu::step()
     {
         if (this->currLevel > 0)
         {
-            shouldUpdateMissionText = true;
+            //shouldUpdateMissionText = true;
             this->currLevel = this->currLevel - 1;
             Global::gameMissionNumber = 0;
             AudioPlayer::play(36, Global::gameCamera->getFadePosition1());
@@ -434,9 +440,9 @@ Menu* MissionMenu::step()
     }
     if (shouldGoDown)
     {
-        if (this->currLevel < (this->numButtons - 1))
+        if (this->currLevel < ((int)levelButtons.size() - 1))
         {
-            shouldUpdateMissionText = true;
+            //shouldUpdateMissionText = true;
             this->currLevel = this->currLevel + 1;
             Global::gameMissionNumber = 0;
             AudioPlayer::play(36, Global::gameCamera->getFadePosition1());
@@ -447,7 +453,7 @@ Menu* MissionMenu::step()
     {
         if (Global::gameMissionNumber > 0)
         {
-            shouldUpdateMissionText = true;
+            //shouldUpdateMissionText = true;
             Global::gameMissionNumber--;
             AudioPlayer::play(37, Global::gameCamera->getFadePosition1());
         }
@@ -457,7 +463,7 @@ Menu* MissionMenu::step()
         int numMissions = Global::gameLevelData[currLevel].numMissions;
         if (Global::gameMissionNumber < numMissions-1)
         {
-            shouldUpdateMissionText = true;
+            //shouldUpdateMissionText = true;
             Global::gameMissionNumber++;
             AudioPlayer::play(37, Global::gameCamera->getFadePosition1());
         }
