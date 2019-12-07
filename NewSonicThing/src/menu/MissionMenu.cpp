@@ -100,7 +100,7 @@ void MissionMenu::unloadResources()
         return;
     }
 
-    GuiManager::clearGuisToRender();
+    //GuiManager::clearGuisToRender();
 
     for (int i = 0; i < (int)levelButtons.size(); i++)
     {
@@ -162,7 +162,7 @@ void MissionMenu::draw(bool updateMissionText)
         this->offsetCurr = this->offsetTarget;
     }
 
-    GuiManager::clearGuisToRender();
+    //GuiManager::clearGuisToRender();
     
     if (visible)
     {

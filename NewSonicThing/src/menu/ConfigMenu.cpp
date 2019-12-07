@@ -128,7 +128,7 @@ void ConfigMenu::unloadResources()
     textureParallelogramHalf2         = GL_NONE;
     textureParallelogramHalf2Backdrop = GL_NONE;
 
-    GuiManager::clearGuisToRender();
+    //GuiManager::clearGuisToRender();
 
     for (int i = 0; i < (int)buttonsNames.size(); i++)
     {
@@ -157,7 +157,7 @@ void ConfigMenu::draw()
         offsetCurr = offsetTarget;
     }
 
-    GuiManager::clearGuisToRender();
+    //GuiManager::clearGuisToRender();
     
     if (visible)
     {

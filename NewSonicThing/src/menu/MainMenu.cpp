@@ -116,7 +116,7 @@ void MainMenu::draw()
         animating = false;
     }
 
-    GuiManager::clearGuisToRender();
+    //GuiManager::clearGuisToRender();
 
     if (visible)
     {
@@ -172,7 +172,7 @@ void MainMenu::unloadResources()
     textureLogo                  = GL_NONE;
     logo.setTexture(GL_NONE);
 
-    GuiManager::clearGuisToRender();
+    //GuiManager::clearGuisToRender();
     //std::cout << "Main Menu resources unloaded!\n";
 }
 

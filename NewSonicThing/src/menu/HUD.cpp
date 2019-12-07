@@ -67,7 +67,7 @@ Timer* HUD::getTimer()
 
 void HUD::draw()
 {
-    if (Global::startStageTimer > 0.999f)
+    if (Global::startStageTimer > 0.999f || Global::finishStageTimer >= 9.166f-0.05f)
     {
         this->timer->setVisible(false);
         this->numberFPS->visible = false;
@@ -121,7 +121,6 @@ void HUD::draw()
 
         this->timer->refresh();
 
-        GuiManager::clearGuisToRender();
         GuiManager::addGuiToRender(GuiTextureResources::textureLifeIcon);
         GuiManager::addGuiToRender(GuiTextureResources::textureRing);
     }
@@ -134,7 +133,7 @@ Menu* HUD::step()
     if (Input::inputs.INPUT_START && !Input::inputs.INPUT_PREVIOUS_START &&
         Global::finishStageTimer < 0.0f)
     {
-        retVal = new PauseScreen(this); INCR_NEW("Menu");
+        retVal = new PauseScreen; INCR_NEW("Menu");
     }
 
     if (Global::startStageTimer <= 0.0f)

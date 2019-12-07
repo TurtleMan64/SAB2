@@ -20,6 +20,7 @@ private:
 
 public:
     static const float PI;
+    static const float E;
 
     static float toRadians(float deg);
 
@@ -53,6 +54,8 @@ public:
 
     //
     static float approach(float initialValue, float terminalValue, float approachConstant, float timePassed);
+
+    static float positionDeltaFromApproach(float initialVelValue, float terminalVelValue, float approachConstant, float timePassed);
 
     //result needs to be array of 3 doubles
     //theta is in radians

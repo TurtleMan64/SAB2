@@ -15,6 +15,7 @@ std::default_random_engine* Maths::generatorNormal = new std::default_random_eng
 std::normal_distribution<float>* Maths::distributionNormal = new std::normal_distribution<float>(0.0f, 1.0f);
 
 const float Maths::PI = 3.14159265358979323846f;
+const float Maths::E  = 2.71828182845904523536f;
 
 float Maths::toRadians(float degrees)
 {
@@ -245,7 +246,38 @@ int Maths::numDigits(int number)
 
 float Maths::approach(float initialValue, float terminalValue, float approachConstant, float timePassed)
 {
-    return ((initialValue-terminalValue)*powf(2.718281828459f, -approachConstant*timePassed) + terminalValue);
+    return ((initialValue-terminalValue)*powf(Maths::E, -approachConstant*timePassed) + terminalValue);
+
+    //float A = approachConstant*2;
+    //float T = terminalValue;
+    //float v0 = initialValue;
+    //float dt = timePassed;
+    //float e = Maths::E;
+    //
+    //float posDelta = ((powf(e, -A*dt)*(T - v0)) + A*T*dt + v0 - T)/A;
+    //return posDelta/timePassed;
+
+    //float A = approachConstant;
+    //float T = terminalValue;
+    //float v0 = initialValue;
+    //float dt = timePassed;
+    //float e = Maths::E;
+    //
+    //float pos1 = (powf(e, -A*0)*(A*0*T*powf(e, A*0) - v0 + T))/A;
+    //float pos2 = (powf(e, -A*dt)*(A*dt*T*powf(e, A*dt) - v0 + T))/A;
+    //
+    //return (pos2-pos1)/timePassed;
+}
+
+float Maths::positionDeltaFromApproach(float initialVelValue, float terminalVelValue, float approachConstant, float timePassed)
+{
+    float A = approachConstant*2; //not sure why i needed to add this
+    float T = terminalVelValue;
+    float v0 = initialVelValue;
+    float dt = timePassed;
+    float e = Maths::E;
+
+    return ((powf(e, -A*dt)*(T - v0)) + A*T*dt + v0 - T)/A;
 }
 
 Vector3f Maths::applyDrag(Vector3f* velocity, float drag, float deltaTime)
@@ -255,7 +287,7 @@ Vector3f Maths::applyDrag(Vector3f* velocity, float drag, float deltaTime)
     {
         return Vector3f(velocity);
     }
-    float newLength = length*powf(2.718281828459f, drag*deltaTime);
+    float newLength = length*powf(Maths::E, drag*deltaTime);
     return velocity->scaleCopy(newLength/length);
 }
 
@@ -266,7 +298,7 @@ float Maths::applyDrag(float velocity, float drag, float deltaTime)
     {
         return velocity;
     }
-    float newLength = length*powf(2.718281828459f, drag*deltaTime);
+    float newLength = length*powf(Maths::E, drag*deltaTime);
     return velocity*(newLength/length);
 }
 

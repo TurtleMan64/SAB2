@@ -374,9 +374,8 @@ int main(int argc, char** argv)
         timeNew = glfwGetTime();
 
         #ifndef WIN32
-        //this actually works really well at meeting the target fps, and
-        // gives extremely consistent dt's. however for some reason it 
-        // still looks choppy, not sure why. also of course uses a ton of cpu.
+        //spin lock to meet the target fps, and gives extremely consistent dt's.
+        // also of course uses a ton of cpu.
         //if (Global::gameState == STATE_RUNNING && Global::framerateUnlock)
         //{
         //    double dtFrameNeedsToTake = 1.0/((double)Global::fpsLimit);
@@ -436,8 +435,6 @@ int main(int argc, char** argv)
             Global::gameArcadePlaytime+=dt;
         }
 
-        Global::menuManager.step();
-
         GLenum err = glGetError();
         if (err != GL_NO_ERROR)
         {
@@ -468,52 +465,6 @@ int main(int argc, char** argv)
             delete entityToDelete; INCR_DEL("Entity");
         }
         gameEntitiesToDelete.clear();
-
-
-        //entities pass2 managment
-        //for (auto entityToAdd : gameEntitiesPass2ToAdd)
-        //{
-        //    gameEntitiesPass2.insert(entityToAdd);
-        //}
-        //gameEntitiesPass2ToAdd.clear();
-
-        //for (auto entityToDelete : gameEntitiesPass2ToDelete)
-        //{
-        //    gameEntitiesPass2.erase(entityToDelete);
-        //    delete entityToDelete; INCR_DEL("Entity");
-        //}
-        //gameEntitiesPass2ToDelete.clear();
-
-
-        //entities pass3 managment
-        //for (auto entityToAdd : gameEntitiesPass3ToAdd)
-        //{
-        //    gameEntitiesPass3.insert(entityToAdd);
-        //}
-        //gameEntitiesPass3ToAdd.clear();
-
-        //for (auto entityToDelete : gameEntitiesPass3ToDelete)
-        //{
-        //    gameEntitiesPass3.erase(entityToDelete);
-        //    delete entityToDelete; INCR_DEL("Entity");
-        //}
-        //gameEntitiesPass3ToDelete.clear();
-
-
-        //transnaprent entities managment
-        //for (auto entityToAdd : gameTransparentEntitiesToAdd)
-        //{
-        //    gameTransparentEntities.insert(entityToAdd);
-        //}
-        //gameTransparentEntitiesToAdd.clear();
-
-        //for (auto entityToDelete : gameTransparentEntitiesToDelete)
-        //{
-        //    gameTransparentEntities.erase(entityToDelete);
-        //    delete entityToDelete; INCR_DEL("Entity");
-        //}
-        //gameTransparentEntitiesToDelete.clear();
-
 
         //chunked entities mamanegement
         for (auto entityToAdd : gameChunkedEntitiesToAdd)
@@ -602,18 +553,7 @@ int main(int argc, char** argv)
                         }
                     }
                 }
-                //for (Entity* e : gameEntitiesPass2)
-                //{
-                //    e->step();
-                //}
-                //for (Entity* e : gameEntitiesPass3)
-                //{
-                //    e->step();
-                //}
-                //for (Entity* e : gameTransparentEntities)
-                //{
-                //    e->step();
-                //}
+
                 skySphere.step();
                 ModelTexture::updateAnimations(dt);
                 Global::gameCamera->refresh();
@@ -692,6 +632,8 @@ int main(int argc, char** argv)
                 break;
         }
 
+        Global::menuManager.step();
+
         Stage::updateVisibleChunks();
         SkyManager::calculateValues();
 
@@ -710,18 +652,6 @@ int main(int argc, char** argv)
                 }
             }
         }
-        //for (Entity* e : gameEntitiesPass2)
-        //{
-        //    Master_processEntityPass2(e);
-        //}
-        //for (Entity* e : gameEntitiesPass3)
-        //{
-        //    Master_processEntityPass3(e);
-        //}
-        //for (Entity* e : gameTransparentEntities)
-        //{
-        //    Master_processTransparentEntity(e);
-        //}
         
         Master_processEntity(&stage);
         Master_renderShadowMaps(&lightSun);
@@ -809,17 +739,14 @@ int main(int argc, char** argv)
         }
 
         Master_clearAllEntities();
-        //Master_clearEntitiesPass2();
-        //Master_clearEntitiesPass3();
-        //Master_clearTransparentEntities();
 
         if (rankDisplay != nullptr)
         {
-            //HUD clears the GUI every frame, so we need to add it back every frame before it gets drawn and erased.
             GuiManager::addGuiToRender(rankDisplay);
         }
 
         GuiManager::refresh();
+        GuiManager::clearGuisToRender();
         TextMaster::render();
 
         updateDisplay();

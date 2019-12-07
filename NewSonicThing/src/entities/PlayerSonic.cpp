@@ -817,6 +817,27 @@ void PlayerSonic::step()
 
     if (!isGrinding && !onRocket && !isLightdashing)
     {
+        //add vel from gravity
+        //if (!onGround)
+        //{
+        //    if (isHomingOnPoint && homingAttackTimer > 0)
+        //    {
+        //            
+        //    }
+        //    else
+        //    {
+        //        vel.y = Maths::approach(vel.y, gravityTerminal, gravityApproach, dt);
+        //
+        //        Vector3f velToAddFromGravity(relativeUp);
+        //        velToAddFromGravity.setLength(-gravityForce*dt);
+        //        //vel = vel + velToAddFromGravity;
+        //        if (Input::inputs.INPUT_RB)
+        //        {
+        //            vel = vel - velToAddFromGravity.scaleCopy(4);
+        //        }
+        //    }
+        //}
+
         //speed before adjusting
         float originalSpeed = vel.length();
         CollisionChecker::setCheckPlayer();
@@ -891,7 +912,7 @@ void PlayerSonic::step()
                             else
                             {
                                 vel.y = Maths::approach(vel.y, gravityTerminal, gravityApproach, dt);
-
+                            
                                 //Vector3f velToAddFromGravity(relativeUp);
                                 //velToAddFromGravity.setLength(-gravityForce*dt);
                                 //vel = vel + velToAddFromGravity;
@@ -1147,14 +1168,16 @@ void PlayerSonic::step()
                 else
                 {
                     vel.y = Maths::approach(vel.y, gravityTerminal, gravityApproach, dt);
-
+                
                     Vector3f velToAddFromGravity(relativeUp);
                     velToAddFromGravity.setLength(-gravityForce*dt);
                     //vel = vel + velToAddFromGravity;
+                    #ifdef DEV_MODE
                     if (Input::inputs.INPUT_RB)
                     {
-                       // vel = vel - velToAddFromGravity.scaleCopy(4);
+                       vel = vel - velToAddFromGravity.scaleCopy(4);
                     }
+                    #endif
                 }
             }
         }

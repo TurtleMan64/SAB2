@@ -22,12 +22,8 @@
 #include "hud.h"
 #include "timer.h"
 
-PauseScreen::PauseScreen(HUD* gameHud)
+PauseScreen::PauseScreen()
 {
-    this->gameHud = gameHud;
-
-    this->size = 0.075f;
-
     //Pause all sound effects
     for (int i = 0; i < 14; i++)
     {
@@ -42,76 +38,53 @@ PauseScreen::PauseScreen(HUD* gameHud)
         }
     }
 
-    //printf("Pause Screen initializing...\n");
-    //this->font = new FontType(Loader::loadTexture("res/Fonts/vipnagorgialla.png"), "res/Fonts/vipnagorgialla.fnt"); INCR_NEW
-
     Global::gameState = STATE_PAUSED;
-    this->menuSelection = 0;
-    this->menuSelectionMAX = 3;
 
-    this->textResume = new GUIText("Resume", size, Global::fontVipnagorgialla, 0.5f, 0.35f, 4, true); INCR_NEW("GUIText");
-    this->textRestart = new GUIText("Restart", size, Global::fontVipnagorgialla, 0.5f, 0.45f, 4, true); INCR_NEW("GUIText");
+    textResume  = new GUIText("Resume",  size, Global::fontVipnagorgialla, 0.5f, 0.35f, 4, true); INCR_NEW("GUIText");
+    textRestart = new GUIText("Restart", size, Global::fontVipnagorgialla, 0.5f, 0.45f, 4, true); INCR_NEW("GUIText");
 
     if (Global::isAutoCam)
     {
-        this->textCamera = new GUIText("Auto Cam", size, Global::fontVipnagorgialla, 0.5f, 0.55f, 4, true); INCR_NEW("GUIText");
+        textCamera = new GUIText("Auto Cam", size, Global::fontVipnagorgialla, 0.5f, 0.55f, 4, true); INCR_NEW("GUIText");
     }
     else
     {
-        this->textCamera = new GUIText("Free Cam", size, Global::fontVipnagorgialla, 0.5f, 0.55f, 4, true); INCR_NEW("GUIText");
+        textCamera = new GUIText("Free Cam", size, Global::fontVipnagorgialla, 0.5f, 0.55f, 4, true); INCR_NEW("GUIText");
     }
 
-    this->textQuit = new GUIText("Quit", size, Global::fontVipnagorgialla, 0.5f, 0.65f, 4, true); INCR_NEW("GUIText");
-
-    //printf("Pause Screen initialized!\n");
+    textQuit = new GUIText("Quit", size, Global::fontVipnagorgialla, 0.5f, 0.65f, 4, true); INCR_NEW("GUIText");
 }
 
 PauseScreen::~PauseScreen()
 {
-    textResume->deleteMe(); delete textResume; INCR_DEL("GUIText");
-
+    textResume ->deleteMe(); delete textResume;  INCR_DEL("GUIText");
     textRestart->deleteMe(); delete textRestart; INCR_DEL("GUIText");
-
-    textCamera->deleteMe(); delete textCamera; INCR_DEL("GUIText");
-
-    textQuit->deleteMe(); delete textQuit; INCR_DEL("GUIText");
-
-    //Global::gameState = STATE_RUNNING;
+    textCamera ->deleteMe(); delete textCamera;  INCR_DEL("GUIText");
+    textQuit   ->deleteMe(); delete textQuit;    INCR_DEL("GUIText");
 }
 
 void PauseScreen::setVisible(bool visible)
 {
-    this->textResume->setVisibility(visible);
-    this->textRestart->setVisibility(visible);
-    this->textCamera->setVisibility(visible);
-    this->textQuit->setVisibility(visible);
+    textResume ->setVisibility(visible);
+    textRestart->setVisibility(visible);
+    textCamera ->setVisibility(visible);
+    textQuit   ->setVisibility(visible);
 }
 
 void PauseScreen::selectButton()
 {
-    //GuiManager::clearGuisToRender();
-
-    this->textResume->setColour(0.5f, 0.5f, 0.5f);
-    this->textRestart->setColour(0.5f, 0.5f, 0.5f);
-    this->textCamera->setColour(0.5f, 0.5f, 0.5f);
-    this->textQuit->setColour(0.5f, 0.5f, 0.5f);
+    textResume ->setColour(0.5f, 0.5f, 0.5f);
+    textRestart->setColour(0.5f, 0.5f, 0.5f);
+    textCamera ->setColour(0.5f, 0.5f, 0.5f);
+    textQuit   ->setColour(0.5f, 0.5f, 0.5f);
 
     switch (menuSelection)
     {
-        case 0:
-            this->textResume->setColour(1.0f, 1.0f, 1.0f);
-            break;
-        case 1:
-            this->textRestart->setColour(1.0f, 1.0f, 1.0f);
-            break;
-        case 2:
-            this->textCamera->setColour(1.0f, 1.0f, 1.0f);
-            break;
-        case 3:
-            this->textQuit->setColour(1.0f, 1.0f, 1.0f);
-            break;
-        default:
-            break;
+        case 0: textResume ->setColour(1.0f, 1.0f, 1.0f); break;
+        case 1: textRestart->setColour(1.0f, 1.0f, 1.0f); break;
+        case 2: textCamera ->setColour(1.0f, 1.0f, 1.0f); break;
+        case 3: textQuit   ->setColour(1.0f, 1.0f, 1.0f); break;
+        default: break;
     }
 }
 
@@ -145,7 +118,11 @@ Menu* PauseScreen::step()
         menuSelection = 0;
     }
         
-    this->selectButton();
+    selectButton();
+
+    //Add life and ring icon since the HUD is no longer being drawn
+    GuiManager::addGuiToRender(GuiTextureResources::textureLifeIcon);
+    GuiManager::addGuiToRender(GuiTextureResources::textureRing);
 
     if (pressedSelect)
     {
@@ -230,5 +207,6 @@ Menu* PauseScreen::step()
     }
 
     moveYPrevious = moveY;
+
     return retVal;
 }
