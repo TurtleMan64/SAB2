@@ -26,22 +26,11 @@ class ControllablePlayer;
 #include "../toolbox/level.h"
 #include "../menu/menumanager.h"
 #include "../toolbox/vector.h"
+#include "../entities/raceghost.h"
 
 void Main_addEntity(Entity* entityToAdd);
 void Main_deleteEntity(Entity* entityToDelete);
 void Main_deleteAllEntites();
-
-//void Main_addEntityPass2(Entity* entityToAdd);
-//void Main_deleteEntityPass2(Entity* entityToDelete);
-//void Main_deleteAllEntitesPass2();
-
-//void Main_addEntityPass3(Entity* entityToAdd);
-//void Main_deleteEntityPass3(Entity* entityToDelete);
-//void Main_deleteAllEntitesPass3();
-
-//void Main_addTransparentEntity(Entity* entityToAdd);
-//void Main_deleteTransparentEntity(Entity* entityToDelete);
-//void Main_deleteAllTransparentEntites();
 
 void Main_addChunkedEntity(Entity* entityToAdd);
 void Main_deleteChunkedEntity(Entity* entityToAdd);
@@ -69,9 +58,6 @@ void Main_deleteAllChunkedEntities();
 #define LVL_SPEED_HIGHWAY   12
 #define LVL_NOKI_BAY        13
 #define LVL_DELFINO_PLAZA   14
-
-//#define ENTITY_RENDER_DIST 2000.0f
-//#define ENTITY_RENDER_DIST_HIGH 5000.0f
 
 #define DEV_MODE
 
@@ -142,8 +128,12 @@ public:
     static bool useFullscreen;
     static int displaySizeChanged; //This will be 1 for a single frame after the size of the window changes (set in callback)
 
-    static std::list<std::string> raceLog;
+    //static std::list<std::string> raceLog;
     static bool shouldLogRace;
+
+    static int raceLogSize;
+    static GhostFrame raceLog[];
+    static const int raceLogSizeMax = 432000; //enough for 10 minutes at 720fps
 
     static bool spawnAtCheckpoint;
     static Vector3f checkpointPlayerPos;
@@ -198,6 +188,8 @@ public:
 
     static void saveSaveData();
 
+    static void saveGhostData();
+
     static int calculateRankAndUpdate();
 
     static void increaseRingCount(int rings);
@@ -207,6 +199,10 @@ public:
     //1 = 4 chunks
     //2 = 9 chunks
     static void getNearbyEntities(float x, float z, int renderDistance, std::list<std::unordered_set<Entity*>*>* list);
+
+    //Return a list of nearby entity sets. Returns either 1 chunk, 2 chunks, or 4 chunks,
+    // depending on the minDistance value.
+    static void getNearbyEntities(float x, float z, std::list<std::unordered_set<Entity*>*>* list, float minDistance);
 
     //Returns the index of 'gameChunkedEntities' for the (x, z) location
     static int getChunkIndex(float x, float z);

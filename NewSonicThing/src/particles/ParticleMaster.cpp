@@ -133,34 +133,34 @@ void ParticleMaster::addParticleGF(GF_Particle* particle)
     list->push_back(particle);
 }
 
-void ParticleMaster::createParticle(ParticleTexture* texture, Vector3f* position, float lifeLength, float scale, bool onlyRendersOnce)
+void ParticleMaster::createParticle(ParticleTexture* texture, Vector3f* position, float lifeLength, float scale, bool onlyRendersOnce, bool optional)
 {
-    if (Global::renderParticles)
+    if (Global::renderParticles || !optional)
     {
         new ParticleStandard(texture, position, lifeLength, scale, onlyRendersOnce); INCR_NEW("ParticleStandard");
     }
 }
 
-void ParticleMaster::createParticle(ParticleTexture* texture, Vector3f* position, float lifeLength, float scale, float opacity, bool onlyRendersOnce)
+void ParticleMaster::createParticle(ParticleTexture* texture, Vector3f* position, float lifeLength, float scale, float opacity, bool onlyRendersOnce, bool optional)
 {
-    if (Global::renderParticles)
+    if (Global::renderParticles || !optional)
     {
         new ParticleStandard(texture, position, lifeLength, scale, opacity, onlyRendersOnce); INCR_NEW("ParticleStandard");
     }
 }
 
-void ParticleMaster::createParticle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float lifeLength, float scale, bool onlyRendersOnce)
+void ParticleMaster::createParticle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float lifeLength, float scale, bool onlyRendersOnce, bool optional)
 {
-    if (Global::renderParticles)
+    if (Global::renderParticles || !optional)
     {
         new ParticleStandard(texture, position, velocity, lifeLength, scale, onlyRendersOnce); INCR_NEW("ParticleStandard");
     }
 }
 
 void ParticleMaster::createParticle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float gravityEffect,
-    float lifeLength, float rotation, float scale, float scaleChange, bool posIsRef, bool onlyRendersOnce, float opacity)
+    float lifeLength, float rotation, float scale, float scaleChange, bool posIsRef, bool onlyRendersOnce, float opacity, bool optional)
 {
-    if (Global::renderParticles)
+    if (Global::renderParticles || !optional)
     {
         new ParticleStandard(texture, position, velocity, gravityEffect, lifeLength, rotation, scale, scaleChange, posIsRef, onlyRendersOnce, opacity); INCR_NEW("ParticleStandard");
     }
@@ -168,9 +168,9 @@ void ParticleMaster::createParticle(ParticleTexture* texture, Vector3f* position
 
 void ParticleMaster::createParticle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float gravityEffect,
     float lifeLength, float rotation, float scaleX, float scaleXChange, float scaleY, float scaleYChange, 
-    bool posIsRef, bool onlyRendersOnce)
+    bool posIsRef, bool onlyRendersOnce, bool optional)
 {
-    if (Global::renderParticles)
+    if (Global::renderParticles || !optional)
     {
         new ParticleStandard(texture, position, velocity, gravityEffect, lifeLength, rotation, scaleX, scaleXChange, scaleY, scaleYChange, posIsRef, onlyRendersOnce); INCR_NEW("ParticleStandard");
     }

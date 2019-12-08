@@ -17,6 +17,10 @@
 #include <cstring>
 #include <fstream>
 
+GhostFrame::GhostFrame()
+{
+
+}
 
 GhostFrame::GhostFrame(float time, int animIndex, float animTime, Vector3f* pos, Vector4f* rot, Vector3f* up)
 {
@@ -36,6 +40,23 @@ GhostFrame::GhostFrame(GhostFrame* other)
     pos.set(&other->pos);
     rot.set(&other->rot);
     up.set(&other->up);
+}
+
+std::string GhostFrame::toString()
+{
+    return std::to_string(time)      + " " +
+           std::to_string(animIndex) + " " +
+           std::to_string(animTime)  + " " +
+           std::to_string(pos.x)     + " " +
+           std::to_string(pos.y)     + " " +
+           std::to_string(pos.z)     + " " +
+           std::to_string(rot.x)     + " " +
+           std::to_string(rot.y)     + " " +
+           std::to_string(rot.z)     + " " +
+           std::to_string(rot.w)     + " " +
+           std::to_string(up.x)      + " " +
+           std::to_string(up.y)      + " " +
+           std::to_string(up.z);
 }
 
 GhostFrame GhostFrame::interpolate(GhostFrame* f1, GhostFrame* f2, float time)
@@ -81,45 +102,65 @@ RaceGhost::RaceGhost()
 
 }
 
-RaceGhost::RaceGhost(char* filePath)
+RaceGhost::RaceGhost(const char* filePath, int missionNumber)
 {
     visible = false;
 
     std::ifstream file(Global::pathToEXE + filePath);
-    if (!file.is_open())
+
+    if (missionNumber == -1) //player made ghosts
     {
-        std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE + filePath).c_str());
-        file.close();
+        if (!file.is_open()) //no player ghost yet
+        {
+            file.close();
+            Main_deleteEntity(this);
+            return;
+        }
     }
     else
     {
-        std::string line;
-
-        while (!file.eof())
+        if (!file.is_open())
         {
-            getlineSafe(file, line);
-
-            char lineBuf[512];
-            memcpy(lineBuf, line.c_str(), line.size()+1);
-
-            int splitLength = 0;
-            char** lineSplit = split(lineBuf, ' ', &splitLength);
-
-            if (splitLength == 13)
-            {
-                float time     = std::stof(lineSplit[0]);
-                int animIndex  = std::stoi(lineSplit[1]);
-                float animTime = std::stof(lineSplit[2]);
-                Vector3f pos(std::stof(lineSplit[ 3]), std::stof(lineSplit[ 4]), std::stof(lineSplit[ 5]));
-                Vector4f rot(std::stof(lineSplit[ 6]), std::stof(lineSplit[ 7]), std::stof(lineSplit[ 8]), std::stof(lineSplit[9]));
-                Vector3f up (std::stof(lineSplit[10]), std::stof(lineSplit[11]), std::stof(lineSplit[12]));
-
-                frames.push_back(GhostFrame(time, animIndex, animTime, &pos, &rot, &up));
-            }
-            free(lineSplit);
+            std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE + filePath).c_str());
+            file.close();
+            Main_deleteEntity(this);
+            return;
         }
-        file.close();
+
+        if (Global::gameMissionNumber != missionNumber) //only show up on the correct mission
+        {
+            file.close();
+            Main_deleteEntity(this);
+            return;
+        }
     }
+
+    std::string line;
+
+    while (!file.eof())
+    {
+        getlineSafe(file, line);
+
+        char lineBuf[512];
+        memcpy(lineBuf, line.c_str(), line.size()+1);
+
+        int splitLength = 0;
+        char** lineSplit = split(lineBuf, ' ', &splitLength);
+
+        if (splitLength == 13)
+        {
+            float time     = std::stof(lineSplit[0]);
+            int animIndex  = std::stoi(lineSplit[1]);
+            float animTime = std::stof(lineSplit[2]);
+            Vector3f pos(std::stof(lineSplit[ 3]), std::stof(lineSplit[ 4]), std::stof(lineSplit[ 5]));
+            Vector4f rot(std::stof(lineSplit[ 6]), std::stof(lineSplit[ 7]), std::stof(lineSplit[ 8]), std::stof(lineSplit[9]));
+            Vector3f up (std::stof(lineSplit[10]), std::stof(lineSplit[11]), std::stof(lineSplit[12]));
+
+            frames.push_back(GhostFrame(time, animIndex, animTime, &pos, &rot, &up));
+        }
+        free(lineSplit);
+    }
+    file.close();
 
     GhostFrame* lastFrame = &frames[frames.size()-1];
     averageFramesPerSecond = frames.size()/lastFrame->time;

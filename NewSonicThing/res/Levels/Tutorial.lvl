@@ -38,7 +38,7 @@ false
 #69 -350.3321 100 -359.7559
 
 #Race Ghost
-70 res/Models/Levels/Tutorial/RaceFrames.txt
+70 res/Models/Levels/Tutorial/MightyRace.ghost 3
 
 #Checkpoints
 10 3590.940674 -1458.528076 3.630792 0

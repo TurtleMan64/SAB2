@@ -258,8 +258,8 @@ void Rocket::makeDirtParticles(float particlePositionOffset)
         particlePosition.z += 4*(Maths::random() - 0.5f);
 
         //create the particle using these calculated values
-        ParticleMaster::createParticle(ParticleResources::textureDust, &particlePosition, &particleVelocity, 0.08f, 60, 0, 4 * Maths::random() + 0.5f, 0, false, true, 1.0f);
-        ParticleMaster::createParticle(ParticleResources::textureDust, &particlePosition, &particleVelocity, 0.08f, 60, 0, 4 * Maths::random() + 0.5f, 0, false, true, 1.0f);
+        ParticleMaster::createParticle(ParticleResources::textureDust, &particlePosition, &particleVelocity, 0.08f, 60, 0, 4 * Maths::random() + 0.5f, 0, false, true, 1.0f, true);
+        ParticleMaster::createParticle(ParticleResources::textureDust, &particlePosition, &particleVelocity, 0.08f, 60, 0, 4 * Maths::random() + 0.5f, 0, false, true, 1.0f, true);
 
         dirtToMake--;
     }

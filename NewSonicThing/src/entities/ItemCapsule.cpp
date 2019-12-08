@@ -171,7 +171,7 @@ void ItemCapsule::die()
             getY() + spread*(Maths::random() - 0.5f) + height,
             getZ() + spread*(Maths::random() - 0.5f));
 
-        ParticleMaster::createParticle(ParticleResources::textureExplosion1, &pos, &vel, 0, 0.75f, 0, 3*Maths::random() + 6, 0, false, false, 0.5f);
+        ParticleMaster::createParticle(ParticleResources::textureExplosion1, &pos, &vel, 0, 0.75f, 0, 3*Maths::random() + 6, 0, false, false, 0.5f, true);
     }
     
     Global::gameMainPlayer->rebound(&centerPos);

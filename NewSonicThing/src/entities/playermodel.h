@@ -3,9 +3,6 @@
 
 class ParticleTexture;
 
-#include <vector>
-#include <string>
-
 #include "entity.h"
 #include "../toolbox/vector.h"
 
@@ -27,6 +24,7 @@ public:
 
     virtual ParticleTexture* getBallTexture();
 
-    void log(std::list<std::string>* log);
+    //logs a frame to the global race log
+    void log();
 };
 #endif

@@ -17,9 +17,13 @@ public:
     Vector4f rot;
     Vector3f up;
 
+    GhostFrame();
+
     GhostFrame(float time, int animIndex, float animTime, Vector3f* pos, Vector4f* rot, Vector3f* up);
 
     GhostFrame(GhostFrame* other);
+
+    std::string toString();
 
     static GhostFrame interpolate(GhostFrame* frameBefore, GhostFrame* frameAfter, float time);
 };
@@ -34,7 +38,7 @@ private:
 
 public:
     RaceGhost();
-    RaceGhost(char* filePath);
+    RaceGhost(const char* filePath, int missionNumber);
 
     void step();
 

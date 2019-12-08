@@ -34,6 +34,9 @@ false
 # Goal Ring
 69 -9973.931641 -6973.009766 -18445.349609
 
+# Stage manager
+91 7
+
 92 res/Models/Levels/RadicalHighway/Rails/Rail8.txt
 92 res/Models/Levels/RadicalHighway/Rails/Rail9.txt
 92 res/Models/Levels/RadicalHighway/Rails/Rail10.txt

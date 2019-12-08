@@ -28,18 +28,18 @@ public:
 
     static void cleanUp();
 
-    static void createParticle(ParticleTexture* texture, Vector3f* position, float lifeLength, float scale, bool onlyRendersOnce);
+    static void createParticle(ParticleTexture* texture, Vector3f* position, float lifeLength, float scale, bool onlyRendersOnce, bool optional);
 
-    static void createParticle(ParticleTexture* texture, Vector3f* position, float lifeLength, float scale, float opacity, bool onlyRendersOnce);
+    static void createParticle(ParticleTexture* texture, Vector3f* position, float lifeLength, float scale, float opacity, bool onlyRendersOnce, bool optional);
 
-    static void createParticle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float lifeLength, float scale, bool onlyRendersOnce);
+    static void createParticle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float lifeLength, float scale, bool onlyRendersOnce, bool optional);
 
     static void createParticle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float gravityEffect,
-        float lifeLength, float rotation, float scale, float scaleChange, bool posIsRef, bool onlyRendersOnce, float opacity);
+        float lifeLength, float rotation, float scale, float scaleChange, bool posIsRef, bool onlyRendersOnce, float opacity, bool optional);
 
     static void createParticle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float gravityEffect,
         float lifeLength, float rotation, float scaleX, float scaleXChange, float scaleY, float scaleYChange, 
-        bool posIsRef, bool onlyRendersOnce);
+        bool posIsRef, bool onlyRendersOnce, bool optional);
 
     static void addParticleStandard(ParticleStandard* particle);
 

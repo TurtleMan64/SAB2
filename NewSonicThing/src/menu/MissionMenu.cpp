@@ -100,7 +100,7 @@ void MissionMenu::unloadResources()
         return;
     }
 
-    //GuiManager::clearGuisToRender();
+    GuiManager::clearGuisToRender();
 
     for (int i = 0; i < (int)levelButtons.size(); i++)
     {

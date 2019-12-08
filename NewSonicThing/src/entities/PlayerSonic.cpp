@@ -112,7 +112,7 @@ void PlayerSonic::step()
         deadTimer    <= 1.0f)
     {
         Vector3f partVel(0, 0, 0);
-        ParticleMaster::createParticle(ParticleResources::textureBlackFadeOutAndIn, Global::gameCamera->getFadePosition1(), &partVel, 0, 2.0f, 0, 400, 0, true, false, 1);
+        ParticleMaster::createParticle(ParticleResources::textureBlackFadeOutAndIn, Global::gameCamera->getFadePosition1(), &partVel, 0, 2.0f, 0, 400, 0, true, false, 1, false);
     }
     else if (deadTimerOld >  0.0f &&
              deadTimer    <= 0.0f)
@@ -138,7 +138,7 @@ void PlayerSonic::step()
 
             //search through close entities to find rings
             std::list<std::unordered_set<Entity*>*> entities;
-            Global::getNearbyEntities(position.x, position.z, 1, &entities);
+            Global::getNearbyEntities(position.x, position.z, &entities, lightdashStartRingMinDist);
 
             //keep track of rings we've already used, to not use them again
             std::unordered_set<Entity*> alreadyUsedRings;
@@ -188,7 +188,7 @@ void PlayerSonic::step()
                 {
                     Vector3f center = lightdashTrail.back();
                     //search through close entities to find rings
-                    Global::getNearbyEntities(center.x, center.z, 1, &entities);
+                    Global::getNearbyEntities(center.x, center.z, &entities, lightdashContinueRingMinDist);
 
                     float bestScore = -100000000000.0f;
                     Vector3f* bestPoint = nullptr;
@@ -568,7 +568,7 @@ void PlayerSonic::step()
             Vector3f rand(Maths::nextUniform()-0.5f, Maths::nextUniform()-0.5f, Maths::nextUniform()-0.5f);
             rand.scale(30.0f);
             partVel = partVel + rand;
-            ParticleMaster::createParticle(ParticleResources::textureSparkleYellow, &position, &partVel, 0.2f, 1.0f, false);
+            ParticleMaster::createParticle(ParticleResources::textureSparkleYellow, &position, &partVel, 0.2f, 1.0f, false, true);
         }
 
         float grindAudioPitch = 0.65f + vel.length()/1000.0f;
@@ -1288,7 +1288,7 @@ void PlayerSonic::step()
                 (Maths::random() - 0.5f) * 3 + (vel.z/60.0f)*0.8f);
             partVel.scale(60.0f);
 
-            ParticleMaster::createParticle(playerModel->getBallTexture(), &partPos, &partVel, 0.12f*60.0f*60.0f, 0.5f, 0, 14.0f, -28.0f, false, false, 2.0f);
+            ParticleMaster::createParticle(playerModel->getBallTexture(), &partPos, &partVel, 0.12f*60.0f*60.0f, 0.5f, 0, 14.0f, -28.0f, false, false, 2.0f, true);
         }
     }
 
@@ -1304,7 +1304,7 @@ void PlayerSonic::step()
         AudioPlayer::play(5, &position);
         Vector3f partPos(&position);
         partPos.y = waterHeight + 5;
-        ParticleMaster::createParticle(ParticleResources::textureSplash, &partPos, 0.5f, 10.0f, false);
+        ParticleMaster::createParticle(ParticleResources::textureSplash, &partPos, 0.5f, 10.0f, false, true);
 
         if (!onGround)
         {
@@ -1328,7 +1328,7 @@ void PlayerSonic::step()
                 Maths::random() - 0.5f + (vel.z/60.0f)*0.4f);
 
             bubVel.scale(60.0f);
-            ParticleMaster::createParticle(ParticleResources::textureBubble, &bubPos, &bubVel, 60*60*0.25f, 1.0f, 0.0f, 4.0f, 0.0f, false, false, 1.0f);
+            ParticleMaster::createParticle(ParticleResources::textureBubble, &bubPos, &bubVel, 60*60*0.25f, 1.0f, 0.0f, 4.0f, 0.0f, false, false, 1.0f, true);
         }
     }
 
@@ -1337,7 +1337,7 @@ void PlayerSonic::step()
         AudioPlayer::play(5, &position);
         Vector3f partPos(&position);
         partPos.y = waterHeight + 5;
-        ParticleMaster::createParticle(ParticleResources::textureSplash, &partPos, 0.5f, 10.0f, false);
+        ParticleMaster::createParticle(ParticleResources::textureSplash, &partPos, 0.5f, 10.0f, false, true);
 
         int numBubbles = ((int)abs((vel.y/60.0f) * 8)) + 18;
         for (int i = 0; i < numBubbles; i++)
@@ -1356,7 +1356,7 @@ void PlayerSonic::step()
                 Maths::random() - 0.5f + (vel.z/60.0f)*0.4f);
 
             bubVel.scale(60.0f);
-            ParticleMaster::createParticle(ParticleResources::textureBubble, &bubPos, &bubVel, 60*60*0.05f, 1.0f, 0.0f, 4.0f, 0.0f, false, false, 1.0f);
+            ParticleMaster::createParticle(ParticleResources::textureBubble, &bubPos, &bubVel, 60*60*0.05f, 1.0f, 0.0f, 4.0f, 0.0f, false, false, 1.0f, true);
         }
 
         vel.y = fmaxf(vel.y, -200.0f); //waterEntryMaxYVel
@@ -1388,9 +1388,9 @@ void PlayerSonic::step()
     inWaterPrevious = inWater;
     inWater = false;
 
-    if (Global::shouldLogRace)
+    //if (Global::shouldLogRace)
     {
-        //playerModel->log(&Global::raceLog);
+        playerModel->log();
         //fprintf(stdout, "log\n");
     }
 
@@ -1867,9 +1867,9 @@ bool PlayerSonic::findHomingTarget(Vector3f* target)
     
     //search through close entities to find rings
     std::list<std::unordered_set<Entity*>*> entities;
-    Global::getNearbyEntities(position.x, position.z, 1, &entities);
+    Global::getNearbyEntities(position.x, position.z, &entities, homingAttackRangeMax);
 
-    float closestDist = homingAttackRangeMax;
+    float closestDist = homingAttackRangeMax*homingAttackRangeMax;
     float bestDotProduct = -1.0f;
 
     bool homeInOnPoint = false;
@@ -1919,7 +1919,7 @@ bool PlayerSonic::findHomingTarget(Vector3f* target)
                     continue;
                 }
 
-                if (diff.lengthSquared() >= homingAttackRangeMax)
+                if (diff.lengthSquared() >= homingAttackRangeMax*homingAttackRangeMax)
                 {
                     continue;
                 }
@@ -2088,13 +2088,13 @@ void PlayerSonic::updateAnimationValues()
                     Vector3f spd = rng;
                     Vector3f partPos = position + relativeUp.scaleCopy(partScale/2);
                     //todo make this look good
-                    ParticleMaster::createParticle(ParticleResources::textureSplash, &partPos, &spd, 0, 0.25f + (0.125f*Maths::nextGaussian()), 0, partScale, 0.0f, false, false, 1.0f);
+                    ParticleMaster::createParticle(ParticleResources::textureSplash, &partPos, &spd, 0, 0.25f + (0.125f*Maths::nextGaussian()), 0, partScale, 0.0f, false, false, 1.0f, true);
                 }
                 else
                 {
                     Vector3f spd = relativeUp.scaleCopy(55.0f) + rng;
                     Vector3f partPos = position + relativeUp.scaleCopy(1.5f);
-                    ParticleMaster::createParticle(ParticleResources::textureDust, &partPos, &spd, 0, 0.25f + (0.125f*Maths::nextGaussian()), 0, 5.0f+Maths::nextGaussian(), 0.0f, false, false, 1.0f);
+                    ParticleMaster::createParticle(ParticleResources::textureDust, &partPos, &spd, 0, 0.25f + (0.125f*Maths::nextGaussian()), 0, 5.0f+Maths::nextGaussian(), 0.0f, false, false, 1.0f, true);
                 }
                 //new Particle(ParticleResources::textureDust, &partPos, 0.25f, 6.0f, 2.8f, false);
             }
@@ -2141,7 +2141,7 @@ void PlayerSonic::updateAnimationValues()
         for (int i = 0; i < numParticles; i++)
         {
             Vector3f partPos = centerPosPrev + diff.scaleCopy(((float)i)/numParticles);
-            ParticleMaster::createParticle(trail, &partPos, &zero, 0, 0.25f, 0, 8.0f, -32.0f, false, false, 1.0f);
+            ParticleMaster::createParticle(trail, &partPos, &zero, 0, 0.25f, 0, 8.0f, -32.0f, false, false, 1.0f, true);
         }
     }
 

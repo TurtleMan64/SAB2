@@ -124,7 +124,7 @@ private:
     float homingAttackTimer = -1.0f; // less than 0 = can start a homing attack
     const float homingAttackTimerMax = 0.2f;
     bool isHomingOnPoint = false;
-    const float homingAttackRangeMax =  115.0f*115.0f; //max squared
+    const float homingAttackRangeMax =  115.0f;
     const float homingAttackDotThreshold = 0.65f;
     GuiTexture* homingAttackReticle = nullptr;
 

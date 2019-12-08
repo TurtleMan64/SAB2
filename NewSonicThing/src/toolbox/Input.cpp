@@ -402,16 +402,17 @@ void Input::pollInputs()
 
         //Loader::printInfo();
 
-        if (Global::raceLog.size() > 0)
+        if (Global::raceLogSize > 0)
         {
-            std::ofstream raceLogFile;
-            raceLogFile.open("RaceLog.txt", std::ios::out | std::ios::trunc);
-            for (std::string line : Global::raceLog)
-            {
-                raceLogFile << line;
-            }
-            raceLogFile.close();
-            Global::raceLog.clear();
+            //std::ofstream raceLogFile;
+            //raceLogFile.open("RaceLog.txt", std::ios::out | std::ios::trunc);
+            //for (int i = 0; i < Global::raceLogSize; i++)
+            //{
+            //    std::string line = Global::raceLog[i].toString();
+            //    raceLogFile << line << "\n";
+            //}
+            //raceLogFile.close();
+            //Global::raceLogSize = 0;
         }
     }
     if (Input::inputs.INPUT_RB && !Input::inputs.INPUT_PREVIOUS_RB)

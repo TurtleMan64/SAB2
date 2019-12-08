@@ -63,6 +63,7 @@
 #include "../entities/itemcapsule.h"
 #include "../entities/springtriple.h"
 #include "../menu/timer.h"
+#include "../entities/RadicalHighway/rhstagemanager.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -117,6 +118,8 @@ void LevelLoader::loadTitle()
     Global::checkpointPlayerDir.set(1,0,0);
     Global::checkpointCamDir.set(1,0,0);
     Global::checkpointTime = 0.0f;
+
+    Global::raceLogSize = 0;
 
     //use vsync on the title screen
     glfwSwapInterval(1); 
@@ -205,9 +208,6 @@ void LevelLoader::loadLevel(std::string levelFilename)
     Global::gameMainPlayer = nullptr;
 
     Main_deleteAllEntites();
-    //Main_deleteAllEntitesPass2();
-    //Main_deleteAllEntitesPass3();
-    //Main_deleteAllTransparentEntites();
     Main_deleteAllChunkedEntities();
 
     if (stageFault == 1)
@@ -661,6 +661,11 @@ void LevelLoader::loadLevel(std::string levelFilename)
     }
     file.close();
 
+    //Add the player's ghost
+    RaceGhost::loadStaticModels();
+    RaceGhost* playerGhost = new RaceGhost(("res/SaveData/" + std::to_string(Global::levelID) + "_" + std::to_string(Global::gameMissionNumber) + ".ghost").c_str(), -1); INCR_NEW("Entity");
+    Main_addEntity(playerGhost);
+
     //sort the chunked entity stuff
     if (chunkedEntities.size() > 0)
     {
@@ -756,9 +761,21 @@ void LevelLoader::loadLevel(std::string levelFilename)
             Global::gameMainPlayer->camDir.normalize();
             Global::gameMainPlayer->camDirSmooth.normalize();
         }
+
+        //erase the points after the checkpoint
+        for (int i = 0; i < Global::raceLogSize; i++)
+        {
+            if (Global::raceLog[i].time >= Global::checkpointTime)
+            {
+                Global::raceLogSize = i;
+                break;
+            }
+        }
     }
     else
     {
+        Global::raceLogSize = 0;
+
         if (Global::mainHudTimer != nullptr)
         {
             Global::mainHudTimer->totalTime = 0.0f;
@@ -779,8 +796,6 @@ void LevelLoader::loadLevel(std::string levelFilename)
     //GuiManager::addGuiToRender(GuiTextureResources::textureRing);
 
     Global::finishStageTimer = -1.0f;
-
-    Global::raceLog.clear();
 
     //Vector3f partVel(0, 0, 0);
     //new Particle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &partVel, 0.0f,
@@ -971,7 +986,7 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
         case 70: //Race Ghost
         {
             RaceGhost::loadStaticModels();
-            RaceGhost* raceGhost = new RaceGhost(dat[1]); INCR_NEW("Entity");
+            RaceGhost* raceGhost = new RaceGhost(dat[1], toInt(dat[2])); INCR_NEW("Entity");
             Main_addEntity(raceGhost);
             return;
         }
@@ -1034,6 +1049,14 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                     T_StageManager::loadStaticModels();
                     T_StageManager* tut = new T_StageManager; INCR_NEW("Entity");
                     Main_addEntity(tut);
+                    break;
+                }
+
+                case 7:
+                {
+                    RH_StageManager::loadStaticModels();
+                    RH_StageManager* rh = new RH_StageManager; INCR_NEW("Entity");
+                    Main_addEntity(rh);
                     break;
                 }
 
@@ -1295,6 +1318,7 @@ void LevelLoader::freeAllStaticModels()
     T_StageManager::deleteStaticModels();
     ItemCapsule::deleteStaticModels();
     SpringTriple::deleteStaticModels();
+    RH_StageManager::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()
