@@ -111,6 +111,8 @@ public:
     static bool gameIsHardMode;
     static bool gameIsChaoMode;
     static bool gameIsRingMode;
+    static bool gameIsRaceMode;
+    static float gameRaceTimeLimit;
     static std::string gameMissionDescription;
     static int gameRingTarget; //How many rings you have to collect to finish the stage in Ring mode
     static bool gameIsArcadeMode;

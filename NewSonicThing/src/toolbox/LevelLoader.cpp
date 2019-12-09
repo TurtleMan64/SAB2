@@ -112,6 +112,7 @@ void LevelLoader::loadTitle()
     Global::gameIsHardMode = false;
     Global::gameIsChaoMode = false;
     Global::gameIsRingMode = false;
+    Global::gameIsRaceMode = false;
 
     Global::spawnAtCheckpoint  = false;
     Global::checkpointPlayerPos.set(0,0,0);
@@ -616,6 +617,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
     Global::gameIsHardMode = false;
     Global::gameIsChaoMode = false;
     Global::gameIsRingMode = false;
+    Global::gameIsRaceMode = false;
 
     Level* currentLevel = &Global::gameLevelData[Global::levelID];
     std::string missionType = (currentLevel->missionData[Global::gameMissionNumber])[0];
@@ -624,10 +626,16 @@ void LevelLoader::loadLevel(std::string levelFilename)
     if (missionType == "Ring")   Global::gameIsRingMode   = true;
     if (missionType == "Chao")   Global::gameIsChaoMode   = true;
     if (missionType == "Hard")   Global::gameIsHardMode   = true;
+    if (missionType == "Race")   Global::gameIsRaceMode   = true;
 
     if (Global::gameIsRingMode)
     {
         Global::gameRingTarget = std::stoi((currentLevel->missionData[Global::gameMissionNumber])[2]);
+    }
+
+    if (Global::gameIsRaceMode)
+    {
+        Global::gameRaceTimeLimit = std::stof((currentLevel->missionData[Global::gameMissionNumber])[2]);
     }
 
 

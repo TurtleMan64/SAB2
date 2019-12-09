@@ -82,14 +82,14 @@ Checkpoint::Checkpoint(float x, float y, float z, float yRot)
     ball2Pos = ball2Pos + position;
 
     ball1 = new Dummy(&Checkpoint::modelsBall); INCR_NEW("Entity")
-    Main_addEntity(ball1);
+    Main_addChunkedEntity(ball1);
     ball1->setVisible(true);
     ball1->setPosition(&ball1Pos);
     ball1->setRotY(rotY+90);
     ball1->updateTransformationMatrix();
 
     ball2 = new Dummy(&Checkpoint::modelsBall); INCR_NEW("Entity")
-    Main_addEntity(ball2);
+    Main_addChunkedEntity(ball2);
     ball2->setVisible(true);
     ball2->setPosition(&ball2Pos);
     ball2->setRotY(rotY-90);
@@ -108,6 +108,14 @@ Checkpoint::Checkpoint(float x, float y, float z, float yRot)
 
 void Checkpoint::step()
 {
+    if (Global::gameIsRaceMode)
+    {
+        Main_deleteChunkedEntity(this);
+        Main_deleteChunkedEntity(ball1);
+        Main_deleteChunkedEntity(ball2);
+        return;
+    }
+
     const float playerColH = 4.0f;
     const float playerColV = 4.0f;
 

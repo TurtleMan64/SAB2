@@ -62,6 +62,17 @@ void GoalRing::step()
         Main_deleteEntity(text);
     }
 
+    if (Global::gameIsRaceMode && Global::mainHudTimer != nullptr)
+    {
+        if (Global::mainHudTimer->totalTime >= Global::gameRaceTimeLimit)
+        {
+            Main_deleteEntity(this);
+            Main_deleteEntity(text);
+
+            Global::gameMainPlayer->die();
+        }
+    }
+
     extern float dt;
     increaseRotation(0, dt*100, 0);
     text->setRotation(0, rotY, 0, 0);

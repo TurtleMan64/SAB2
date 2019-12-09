@@ -10,6 +10,7 @@
 #include "../toolbox/getline.h"
 #include "../toolbox/split.h"
 #include "maniamightymodel.h"
+#include "maniasonicmodel.h"
 #include "../menu/timer.h"
 #include "../toolbox/maths.h"
 
@@ -110,9 +111,18 @@ RaceGhost::RaceGhost(const char* filePath, int missionNumber)
 
     if (missionNumber == -1) //player made ghosts
     {
+        bool deleteMe = false;
+
         if (!file.is_open()) //no player ghost yet
         {
+            deleteMe = true;
             file.close();
+        }
+        
+        //some missions, dont spawn ghost (like treasure hunting (todo))
+
+        if (deleteMe)
+        {
             Main_deleteEntity(this);
             return;
         }
@@ -165,7 +175,15 @@ RaceGhost::RaceGhost(const char* filePath, int missionNumber)
     GhostFrame* lastFrame = &frames[frames.size()-1];
     averageFramesPerSecond = frames.size()/lastFrame->time;
 
-    myModel = new ManiaMightyModel; INCR_NEW("Entity");
+    if (missionNumber == -1) //player ghost
+    {
+        myModel = new ManiaSonicModel; INCR_NEW("Entity");
+        myModel->baseColour.set(2, 2, 2);
+    }
+    else
+    {
+        myModel = new ManiaMightyModel; INCR_NEW("Entity");
+    }
     Main_addEntity(myModel);
 }
 
@@ -252,6 +270,7 @@ void RaceGhost::loadStaticModels()
     #endif
 
     ManiaMightyModel::loadStaticModels();
+    ManiaSonicModel::loadStaticModels();
 }
 
 void RaceGhost::deleteStaticModels()
@@ -261,4 +280,5 @@ void RaceGhost::deleteStaticModels()
     #endif
 
     ManiaMightyModel::deleteStaticModels();
+    ManiaSonicModel::deleteStaticModels();
 }

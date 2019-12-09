@@ -176,6 +176,8 @@ bool Global::gameIsNormalMode = false;
 bool Global::gameIsHardMode = false;
 bool Global::gameIsChaoMode = false;
 bool Global::gameIsRingMode = false;
+bool Global::gameIsRaceMode = false;
+float Global::gameRaceTimeLimit = 0.0f;
 int  Global::gameRingTarget = 100;
 bool Global::gameIsArcadeMode = false;
 std::vector<Level> Global::gameLevelData;
@@ -1294,7 +1296,7 @@ int Global::calculateRankAndUpdate()
                 Global::saveSaveData();
             }
         }
-        else if (missionType == "Ring" || missionType == "Chao")
+        else if (missionType == "Ring" || missionType == "Chao" || missionType == "Race")
         {
             float timeForRankA = std::stof((currentLevel->missionData[Global::gameMissionNumber])[1]);
             float timeForRankB = (4*timeForRankA)/3;
