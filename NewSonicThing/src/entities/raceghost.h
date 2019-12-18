@@ -33,6 +33,7 @@ class RaceGhost : public Entity
 private:
     PlayerModel* myModel = nullptr;
 
+    int ghostType; //0 = player ghosts. 1 = mighty race
     std::vector<GhostFrame> frames;
     float averageFramesPerSecond;
 

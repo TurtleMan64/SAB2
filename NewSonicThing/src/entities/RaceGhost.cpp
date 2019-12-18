@@ -111,6 +111,8 @@ RaceGhost::RaceGhost(const char* filePath, int missionNumber)
 
     if (missionNumber == -1) //player made ghosts
     {
+        ghostType = 0;
+
         bool deleteMe = false;
 
         if (!file.is_open()) //no player ghost yet
@@ -129,6 +131,8 @@ RaceGhost::RaceGhost(const char* filePath, int missionNumber)
     }
     else
     {
+        ghostType = 1;
+
         if (!file.is_open())
         {
             std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE + filePath).c_str());
@@ -175,10 +179,11 @@ RaceGhost::RaceGhost(const char* filePath, int missionNumber)
     GhostFrame* lastFrame = &frames[frames.size()-1];
     averageFramesPerSecond = frames.size()/lastFrame->time;
 
-    if (missionNumber == -1) //player ghost
+    if (ghostType == 0) //player ghost
     {
         myModel = new ManiaSonicModel; INCR_NEW("Entity");
         myModel->baseColour.set(2, 2, 2);
+        myModel->setRenderOrder(3);
     }
     else
     {
@@ -194,6 +199,19 @@ void RaceGhost::step()
     if (Global::mainHudTimer != nullptr)
     {
         currentTime = Global::mainHudTimer->totalTime;
+    }
+
+    if (currentTime <= 0.0f)
+    {
+        Vector3f up(0, 1, 0);
+        myModel->setOrientation(0, -100000, 0, 0, 0, 0, 0, &up);
+        myModel->animate(0, 0.0f);
+        return;
+    }
+
+    if (ghostType == 0)
+    {
+        myModel->setBaseAlpha(sinf(currentTime*20)/4 + 0.3f); //make ghost flash alpha
     }
 
     GhostFrame* lastFrame = &frames[frames.size()-1];

@@ -77,7 +77,7 @@ void EntityRenderer::prepareTexturedModel(TexturedModel* model)
     shader->loadTransparency(texture->hasTransparency);
     shader->loadGlowAmount(texture->glowAmount);
     shader->loadTextureOffsets(clockTime * (texture->scrollX), clockTime * (texture->scrollY));
-    if (texture->hasMultipleImages())
+    //if (texture->hasMultipleImages())
     {
         //std::fprintf(stdout, "mix factor = %f\n", texture->animationSpeed);
     }
@@ -100,13 +100,14 @@ void EntityRenderer::unbindTexturedModel()
 
 void EntityRenderer::prepareInstance(Entity* entity)
 {
-    shader->loadTransformationMatrix(entity->getTransformationMatrix());
-    shader->loadBaseColour(entity->getBaseColour());
+    shader->loadTransformationMatrix(&entity->transformationMatrix);
+    shader->loadBaseColour(&entity->baseColour);
+    shader->loadBaseAlpha(entity->baseAlpha);
 }
 
 void EntityRenderer::render(Entity* entity)
 {
-    if (entity->getVisible() == false)
+    if (!entity->visible)
     {
         return;
     }
@@ -129,7 +130,7 @@ void EntityRenderer::render(Entity* entity)
 
 void EntityRenderer::updateProjectionMatrix(Matrix4f* projectionMatrix)
 {
-    this->shader->start();
-    this->shader->loadProjectionMatrix(projectionMatrix);
-    this->shader->stop();
+    shader->start();
+    shader->loadProjectionMatrix(projectionMatrix);
+    shader->stop();
 }

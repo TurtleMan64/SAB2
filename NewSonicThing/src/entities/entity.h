@@ -18,6 +18,7 @@ public:
     float scale;
     bool visible;
     Vector3f baseColour;
+    float baseAlpha = 1.0f;
     Matrix4f transformationMatrix;
     char renderOrder = 0; //0 = rendered first (default), 1 = second, 2 = third, 3 = fourth + transparent (no depth testing)
 

@@ -107,6 +107,10 @@ public:
 
     void setBaseColor(float r, float g, float b);
 
+    void setBaseAlpha(float a);
+
+    void setRenderOrder(char newOrder);
+
     const float getDisplayBallOffset();
 
     ParticleTexture* getBallTexture();

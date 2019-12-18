@@ -1,5 +1,10 @@
 #include <glad/glad.h>
+
+#ifdef _WIN32
 #include <GLFW/glfw3.h>
+#else
+#include "/usr/include/GLFW/glfw3.h"
+#endif
 
 #include <iostream>
 #include <cmath>

@@ -2384,7 +2384,7 @@ void PlayerSonic::animate()
         yawAngleGround = Maths::toDegrees(atan2f(-nZGround, nXGround));
         diffGround = Maths::compareTwoAngles(twistAngleGround, yawAngleGround);
 
-        float finishTimeAnim = fmaxf(0, fminf((float)(Global::finishStageTimer-1.666f)*2.0f*60.0f, 99.99f));
+        float finishTimeAnim = fmaxf(0, fminf((float)(Global::finishStageTimer-1.666f)*2.0f*60.0f, 99.999f));
 
         playerModel->setOrientation(position.x, position.y, position.z, diffGround, yawAngleGround, pitchAngleGround, 0, &relativeUp);
         playerModel->animate(14, finishTimeAnim);

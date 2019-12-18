@@ -16,6 +16,10 @@ void PlayerModel::setOrientation(float, float, float, float, float, float, float
 
 void PlayerModel::setBaseColor(float, float, float) {}
 
+void PlayerModel::setBaseAlpha(float) {}
+
+void PlayerModel::setRenderOrder(char) {}
+
 const float PlayerModel::getDisplayBallOffset() {return 0.0f;}
 
 ParticleTexture* PlayerModel::getBallTexture() {return nullptr;}
