@@ -54,7 +54,7 @@ void WindGust::step()
 
 	Vector3f vel(0, 5.5f, 0);
     		
-    ParticleMaster::createParticle(ParticleResources::textureDust, &pos, &vel, 0, (int)(height/2.0f), 0, 10 * Maths::random() + 3, 0, false, true, 1.0f);
+    ParticleMaster::createParticle(ParticleResources::textureDust, &pos, &vel, 0, (int)(height/2.0f), 0, 10 * Maths::random() + 3, 0, false, true, 1.0f, false);
 }
 
 bool WindGust::checkForPlayerCollision()

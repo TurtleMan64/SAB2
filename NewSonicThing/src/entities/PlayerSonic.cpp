@@ -2562,23 +2562,10 @@ void PlayerSonic::increaseCombo()
     combo++;
 }
 
-void PlayerSonic::grabRocket()
-{
-    onRocket = true;
-    onGround = false;
-    isBall = false;
-    isJumping = false;
-}
-
 void PlayerSonic::setInWater(float newWaterHeight)
 {
     inWater = true;
     waterHeight = newWaterHeight;
-}
-
-void PlayerSonic::releaseRocket()
-{
-    onRocket = false;
 }
 
 void PlayerSonic::refreshCamera()

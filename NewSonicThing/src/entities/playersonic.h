@@ -50,6 +50,7 @@ private:
     const float hoverPower = 170.0f; //How much hover adds to your vel
     const float hoverTimerThreshold = 1.0f; //How long you can hover for
     float hoverTimer = 0.0f;
+    const float JUMP_POWER_PULLEY = 102.0f;
 
     const float groundRunPush = 100.0f;
     const float groundRunPushSpeedshoes = 300.0f;

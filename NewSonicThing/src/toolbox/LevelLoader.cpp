@@ -64,6 +64,7 @@
 #include "../menu/timer.h"
 #include "../entities/RadicalHighway/rhstagemanager.h"
 #include "../entities/windgust.h"
+#include "../entities/PyramidCave/pcstaticobjects.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -1196,6 +1197,18 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             return;
         }
 
+        case 100: //Pyramid Cave Specific
+        {
+        switch(toInt(dat[1]))
+			{
+                case 0: //Static Objects
+                    PC_StaticObjects::loadStaticModels();
+					PC_StaticObjects* staticObjects = new PC_StaticObjects(); INCR_NEW("Entity");
+					Main_addEntity(staticObjects);
+					return;
+            }
+        }
+
         case 101: //Pulley
 		{
 			Pulley::loadStaticModels();
@@ -1334,6 +1347,7 @@ void LevelLoader::freeAllStaticModels()
     ItemCapsule::deleteStaticModels();
     SpringTriple::deleteStaticModels();
     RH_StageManager::deleteStaticModels();
+    PC_StaticObjects::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()
