@@ -47,9 +47,11 @@ false
 92 res/Models/Levels/MetalHarbor/Rails/Rail6.txt
 92 res/Models/Levels/MetalHarbor/Rails/Rail7.txt
 
-# Goal Rings
-#69 1706.997 -170.0 -6596.0
-#69 8796.54 -139.44 -10266.15
+# Lost Chao
+81 1706.997 -170.0 -6596.0
+
+# Goal Ring
+69 8796.54 -139.44 -10266.15
 
 #Tank
 93 0 9036.0016 -256.999992 -10337

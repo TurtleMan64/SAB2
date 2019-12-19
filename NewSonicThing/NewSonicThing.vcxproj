@@ -163,6 +163,7 @@
     <ClCompile Include="src\entities\GreenForest\GF_Particle.cpp" />
     <ClCompile Include="src\entities\Help.cpp" />
     <ClCompile Include="src\entities\ItemCapsule.cpp" />
+    <ClCompile Include="src\entities\LostChao.cpp" />
     <ClCompile Include="src\entities\ManiaMightyModel.cpp" />
     <ClCompile Include="src\entities\PlayerModel.cpp" />
     <ClCompile Include="src\entities\PlayerSonic.cpp" />
@@ -304,6 +305,7 @@
     <ClInclude Include="src\entities\GreenForest\gfparticle.h" />
     <ClInclude Include="src\entities\help.h" />
     <ClInclude Include="src\entities\itemcapsule.h" />
+    <ClInclude Include="src\entities\lostchao.h" />
     <ClInclude Include="src\entities\maniamightymodel.h" />
     <ClInclude Include="src\entities\playermodel.h" />
     <ClInclude Include="src\entities\playersonic.h" />

@@ -64,6 +64,7 @@
 #include "../entities/springtriple.h"
 #include "../menu/timer.h"
 #include "../entities/RadicalHighway/rhstagemanager.h"
+#include "../entities/lostchao.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -999,6 +1000,15 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             return;
         }
 
+        case 81: //Lost Chao
+        {
+            LostChao::loadStaticModels();
+            LostChao* chao = new LostChao(
+                toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3])); INCR_NEW("Entity");
+            Main_addEntity(chao);
+            return;
+        }
+
         case 91: //General Purpose Stage Manager
         {
             int id2 = std::stoi(dat[1]);
@@ -1327,6 +1337,7 @@ void LevelLoader::freeAllStaticModels()
     ItemCapsule::deleteStaticModels();
     SpringTriple::deleteStaticModels();
     RH_StageManager::deleteStaticModels();
+    LostChao::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()

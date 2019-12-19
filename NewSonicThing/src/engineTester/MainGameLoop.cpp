@@ -755,8 +755,6 @@ int main(int argc, char** argv)
             {
                 Vector3f partVel(0, 0, 0);
                 ParticleMaster::createParticle(ParticleResources::textureWhiteFadeOutAndIn, Global::gameCamera->getFadePosition1(), &partVel, 0, 2.0f, 0, 900, 0, true, false, 1.0f, false);
-                
-                Global::saveGhostData();
             }
 
             if (finishTimerBefore < 1.0f && Global::finishStageTimer >= 1.0f)
@@ -836,6 +834,8 @@ int main(int argc, char** argv)
 
             if (finishTimerBefore < 9.133f && Global::finishStageTimer >= 9.133f)
             {
+                Global::saveGhostData();
+
                 GuiManager::clearGuisToRender();
                 Global::gameScore = 0;
                 Global::gameRingCount = 0;

@@ -85,6 +85,7 @@ void AudioPlayer::loadSoundEffects()
     AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/Player/GrindVineLoop.ogg"));         //58
     AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/Player/GrindMetalLand.ogg"));        //59
     AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/Player/GrindVineLand.ogg"));         //60
+    AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/ChaoCry.ogg"));              //61
 }
 
 void AudioPlayer::loadBGM(char* fileName)

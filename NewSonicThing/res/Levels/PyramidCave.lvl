@@ -1,9 +1,9 @@
 Levels/PyramidCave
 1
-PC -100000 -100000 -100000 100000 100000 100000
+PCnew -100000 -100000 -100000 100000 100000 100000
 Levels/PyramidCave
 1
-Collision 7
+ColSmooth 7
 1.0 .92 .84
 0.0 0.0 0.0
 0.0 0.0 0.0
