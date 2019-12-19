@@ -14,6 +14,7 @@
 #include <unordered_set>
 #include <list>
 
+#include <chrono>
 #include <ctime>
 #include <random>
 
@@ -72,6 +73,7 @@
 #include "../menu/menumanager.h"
 #include "../menu/mainmenu.h"
 #include "../menu/timer.h"
+#include "../menu/hud.h"
 #ifdef _WIN32
 #include <windows.h>
 #include <tchar.h>
@@ -82,18 +84,6 @@ std::string Global::pathToEXE;
 std::unordered_set<Entity*> gameEntities;
 std::list<Entity*> gameEntitiesToAdd;
 std::list<Entity*> gameEntitiesToDelete;
-
-//std::unordered_set<Entity*> gameEntitiesPass2;
-//std::list<Entity*> gameEntitiesPass2ToAdd;
-//std::list<Entity*> gameEntitiesPass2ToDelete;
-
-//std::unordered_set<Entity*> gameEntitiesPass3;
-//std::list<Entity*> gameEntitiesPass3ToAdd;
-//std::list<Entity*> gameEntitiesPass3ToDelete;
-
-//std::unordered_set<Entity*> gameTransparentEntities;
-//std::list<Entity*> gameTransparentEntitiesToAdd;
-//std::list<Entity*> gameTransparentEntitiesToDelete;
 
 //vector that we treat as a 2D array. 
 std::vector<std::unordered_set<Entity*>> gameChunkedEntities;
@@ -165,7 +155,7 @@ int Global::countNew = 0;
 int Global::countDelete = 0;
 int Global::gameState = 0;
 int Global::levelID = 0;
-float Global::raceStartTimer = -1;
+float Global::startStageTimer = -1;
 bool Global::shouldLoadLevel = false;
 bool Global::isNewLevel = false;
 bool Global::isAutoCam = true;
@@ -175,7 +165,7 @@ int Global::gameRingCount = 0;
 int Global::gameScore = 0;
 int Global::gameLives = 4;
 float Global::gameClock = 0.0f;
-float Global::gameTotalPlaytime = 0;
+int Global::gameTotalPlaytime = 0;
 float Global::gameArcadePlaytime = 0;
 float Global::deathHeight = -100.0f;
 int Global::gameMainVehicleSpeed = 0;
@@ -186,6 +176,8 @@ bool Global::gameIsNormalMode = false;
 bool Global::gameIsHardMode = false;
 bool Global::gameIsChaoMode = false;
 bool Global::gameIsRingMode = false;
+bool Global::gameIsRaceMode = false;
+float Global::gameRaceTimeLimit = 0.0f;
 int  Global::gameRingTarget = 100;
 bool Global::gameIsArcadeMode = false;
 std::vector<Level> Global::gameLevelData;
@@ -194,26 +186,26 @@ bool Global::stageUsesWater = true;
 FontType* Global::fontVipnagorgialla = nullptr;
 bool Global::renderWithCulling = true;
 bool Global::displayFPS = true;
+//float Global::fpsTarget = 120.0f;
+float Global::fpsLimit = 60.0f;
 int Global::currentCalculatedFPS = 0;
 int Global::renderCount = 0;
 int Global::displaySizeChanged = 0;
 
-std::list<std::string> Global::raceLog;
+int Global::gameArcadeIndex = 0;
+std::vector<int> Global::gameArcadeLevelIds;
+
+//std::list<std::string> Global::raceLog;
 bool Global::shouldLogRace = false;
 
-std::list<Checkpoint*> Global::gameCheckpointList;
-int Global::gameCheckpointLast;
+int Global::raceLogSize;
+GhostFrame Global::raceLog[Global::raceLogSizeMax]; //enough for 10 minutes at 720fps
 
-bool   Global::spawnAtCheckpoint  = false;
-float  Global::checkpointX        = 0;
-float  Global::checkpointY        = 0;
-float  Global::checkpointZ        = 0;
-float  Global::checkpointRotY     = 0;
-float  Global::checkpointCamYaw   = 0;
-float  Global::checkpointCamPitch = 0;
-int    Global::checkpointTimeCen  = 0;
-int    Global::checkpointTimeSec  = 0;
-int    Global::checkpointTimeMin  = 0;
+bool Global::spawnAtCheckpoint = false;
+Vector3f Global::checkpointPlayerPos;
+Vector3f Global::checkpointPlayerDir;
+Vector3f Global::checkpointCamDir;
+float Global::checkpointTime = 0;
 
 GUIText* Global::titleCardLevelName          = nullptr;
 GUIText* Global::titleCardMission            = nullptr;
@@ -233,7 +225,7 @@ void doListenThread();
 
 void listen();
 
-MenuManager Global::menuManager = MenuManager();
+MenuManager Global::menuManager;
 Timer* Global::mainHudTimer = nullptr;
 
 int main(int argc, char** argv)
@@ -251,225 +243,234 @@ int main(int argc, char** argv)
         #endif
     }
 
-	#ifdef DEV_MODE
-	std::thread listenThread(doListenThread);
-	#endif
+    #ifdef DEV_MODE
+    std::thread listenThread(doListenThread);
+    #endif
 
-	increaseProcessPriority();
+    increaseProcessPriority();
 
-	Global::countNew = 0;
-	Global::countDelete = 0;
+    Global::countNew = 0;
+    Global::countDelete = 0;
 
-	srand(0);
+    srand(0);
 
-	createDisplay();
+    createDisplay();
 
-	Global::loadSaveData();
+    Global::loadSaveData();
 
-	#if !defined(DEV_MODE) && defined(_WIN32)
-	FreeConsole();
-	#endif
+    //The levels you play in arcade mode, in order
+    Global::gameArcadeLevelIds.push_back(LVL_TUTORIAL);
+    Global::gameArcadeLevelIds.push_back(LVL_METAL_HARBOR);
+    Global::gameArcadeLevelIds.push_back(LVL_RADICAL_HIGHWAY);
+    Global::gameArcadeLevelIds.push_back(LVL_GREEN_FOREST);
+    Global::gameArcadeLevelIds.push_back(LVL_SKY_RAIL);
 
-	Input::init();
+    #if !defined(DEV_MODE) && defined(_WIN32)
+    FreeConsole();
+    #endif
 
-	//This camera is never deleted.
-	Camera cam;
-	Global::gameCamera = &cam;
+    Input::init();
 
-	Master_init();
+    //This camera is never deleted.
+    Camera cam;
+    Global::gameCamera = &cam;
 
-	LevelLoader::loadLevelData();
+    Master_init();
 
-	AudioMaster::init();
+    LevelLoader::loadLevelData();
 
-	Global::fontVipnagorgialla = new FontType(Loader::loadTexture("res/Fonts/vipnagorgialla.png"), "res/Fonts/vipnagorgialla.fnt"); INCR_NEW("FontType");
+    AudioMaster::init();
 
-	TextMaster::init();
+    Global::fontVipnagorgialla = new FontType(Loader::loadTexture("res/Fonts/vipnagorgialla.png"), "res/Fonts/vipnagorgialla.fnt"); INCR_NEW("FontType");
 
-	GuiManager::init();
+    TextMaster::init();
 
-	Global::menuManager.push(new MainMenu); INCR_NEW("MainMenu");
+    GuiManager::init();
 
-
-	if (Global::renderParticles)
-	{
-		ParticleResources::loadParticles();
-	}
-
-	GuiTextureResources::loadGuiTextures();
-
-	CollisionChecker::initChecker();
-	AnimationResources::createAnimations();
-
-	//This light never gets deleted.
-	Light lightSun;
-	Global::gameLightSun = &lightSun;
-
-	//This light never gets deleted.
-	Light lightMoon;
-	Global::gameLightMoon = &lightMoon;
-
-	//This stage never gets deleted.
-	Stage stage;
-	Global::gameStage = &stage;
-
-	//This sky sphere never gets deleted.
-	SkySphere skySphere;
-	Global::gameSkySphere = &skySphere;
+    Global::menuManager.push(new MainMenu); INCR_NEW("MainMenu");
 
 
-	SkyManager::initSkyManager(nullptr, nullptr);
-	SkyManager::setTimeOfDay(155.0f);
+    if (Global::renderParticles)
+    {
+        ParticleResources::loadParticles();
+    }
 
-	lightSun.getPosition()->x = 0;
-	lightSun.getPosition()->y = 0;
-	lightSun.getPosition()->z = 0;
-	lightMoon.getPosition()->y = -100000;
+    GuiTextureResources::loadGuiTextures();
 
-	if (Global::useHighQualityWater)
-	{
-		Global::gameWaterFBOs     = new WaterFrameBuffers; INCR_NEW("WaterFrameBuffers");
-		WaterShader* waterShader  = new WaterShader; INCR_NEW("WaterShader");
-		Global::gameWaterRenderer = new WaterRenderer(waterShader, Master_getProjectionMatrix(), Global::gameWaterFBOs, Master_getShadowRenderer()); INCR_NEW("WaterRenderer");
-		for (int r = -1; r <= 2; r++)
-		{
-			for (int c = -1; c <= 2; c++)
-			{
-				Global::gameWaterTiles.push_back(new WaterTile(r*WaterTile::TILE_SIZE*2-WaterTile::TILE_SIZE, c*WaterTile::TILE_SIZE*2-WaterTile::TILE_SIZE)); INCR_NEW("WaterTile");
-			}
-		}
-	}
+    CollisionChecker::initChecker();
+    AnimationResources::createAnimations();
 
-	if (Global::renderBloom)
-	{
-		Global::gameMultisampleFbo = new Fbo(SCR_WIDTH, SCR_HEIGHT); INCR_NEW("Fbo");
-		Global::gameOutputFbo      = new Fbo(SCR_WIDTH, SCR_HEIGHT, Fbo::DEPTH_TEXTURE); INCR_NEW("Fbo");
-		Global::gameOutputFbo2     = new Fbo(SCR_WIDTH, SCR_HEIGHT, Fbo::DEPTH_TEXTURE); INCR_NEW("Fbo");
-		PostProcessing::init();
-	}
+    //This light never gets deleted.
+    Light lightSun;
+    Global::gameLightSun = &lightSun;
 
-	ParticleMaster::init(Master_getProjectionMatrix());
+    //This light never gets deleted.
+    Light lightMoon;
+    Global::gameLightMoon = &lightMoon;
+
+    //This stage never gets deleted.
+    Stage stage;
+    Global::gameStage = &stage;
+
+    //This sky sphere never gets deleted.
+    SkySphere skySphere;
+    Global::gameSkySphere = &skySphere;
 
 
-	glfwSetTime(0);
+    SkyManager::initSkyManager(nullptr, nullptr);
+    SkyManager::setTimeOfDay(155.0f);
 
-	int frameCount = 0;
-	double previousTime = 0;
+    lightSun.getPosition()->x = 0;
+    lightSun.getPosition()->y = 0;
+    lightSun.getPosition()->z = 0;
+    lightMoon.getPosition()->y = -100000;
 
-	Global::gameState = STATE_TITLE;
+    if (Global::useHighQualityWater)
+    {
+        Global::gameWaterFBOs     = new WaterFrameBuffers; INCR_NEW("WaterFrameBuffers");
+        WaterShader* waterShader  = new WaterShader; INCR_NEW("WaterShader");
+        Global::gameWaterRenderer = new WaterRenderer(waterShader, Master_getProjectionMatrix(), Global::gameWaterFBOs, Master_getShadowRenderer()); INCR_NEW("WaterRenderer");
+        for (int r = -1; r <= 2; r++)
+        {
+            for (int c = -1; c <= 2; c++)
+            {
+                Global::gameWaterTiles.push_back(new WaterTile(r*WaterTile::TILE_SIZE*2-WaterTile::TILE_SIZE, c*WaterTile::TILE_SIZE*2-WaterTile::TILE_SIZE)); INCR_NEW("WaterTile");
+            }
+        }
+    }
 
-	std::list<std::unordered_set<Entity*>*> entityChunkedList;
+    if (Global::renderBloom)
+    {
+        Global::gameMultisampleFbo = new Fbo(SCR_WIDTH, SCR_HEIGHT); INCR_NEW("Fbo");
+        Global::gameOutputFbo      = new Fbo(SCR_WIDTH, SCR_HEIGHT, Fbo::DEPTH_TEXTURE); INCR_NEW("Fbo");
+        Global::gameOutputFbo2     = new Fbo(SCR_WIDTH, SCR_HEIGHT, Fbo::DEPTH_TEXTURE); INCR_NEW("Fbo");
+        PostProcessing::init();
+    }
 
-	while (Global::gameState != STATE_EXITING && displayWantsToClose() == 0)
-	{
-		frameCount++;
+    ParticleMaster::init(Master_getProjectionMatrix());
+
+    long long secSinceEpoch = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+
+    glfwSetTime(0);
+
+    int frameCount = 0;
+    double previousTime = 0;
+
+    Global::gameState = STATE_TITLE;
+
+    GuiTexture* rankDisplay = nullptr;
+
+    std::list<std::unordered_set<Entity*>*> entityChunkedList;
+
+    while (Global::gameState != STATE_EXITING && displayWantsToClose() == 0)
+    {
+        timeNew = glfwGetTime();
+
+        #ifndef WIN32
+        //spin lock to meet the target fps, and gives extremely consistent dt's.
+        // also of course uses a ton of cpu.
+        //if (Global::gameState == STATE_RUNNING && Global::framerateUnlock)
+        //{
+        //    double dtFrameNeedsToTake = 1.0/((double)Global::fpsLimit);
+        //    while ((timeNew - timeOld) < dtFrameNeedsToTake)
+        //    {
+        //        timeNew = glfwGetTime();
+        //    }
+        //}
+        #else
+        //another idea: windows only. if you put the thread/process into a above normal priority,
+        // and call Sleep, it will actually sleep and return pretty consistently close
+        // to the amount you slept for. in my testing, it would never sleep for more
+        // than 2 milliseconds longer than what it was given (max was 1.5323 ms more than
+        // the sleep amount). So, we can sleep for 2ms less than the time needed, and then
+        // busy wait loop for the remaining time.
+        // This actually works really well but also has the same problem as the busy wait loop,
+        // which is the video looks choppy at bad fps targets. For example, if you set the target to 
+        // 60fps on a 60fps monitor, then it looks fine. But, if you set the target to 90fps, then
+        // it looks very choppy.
+        if (Global::gameState == STATE_RUNNING && Global::framerateUnlock)
+        {
+            double dtFrameNeedsToTake = 1.0/((double)Global::fpsLimit);
+            timeNew = glfwGetTime();
+        
+            const double sleepBuffer = 0.00175; //sleep will hopefully never take longer than this to return
+            double sleepTime = (dtFrameNeedsToTake - (timeNew - timeOld)) - sleepBuffer;
+            int msToSleep = (int)(sleepTime*1000);
+            if (msToSleep >= 1)
+            {
+                Sleep(msToSleep);
+            }
+        
+            timeNew = glfwGetTime();
+            while ((timeNew - timeOld) < dtFrameNeedsToTake)
+            {
+                timeNew = glfwGetTime();
+            }
+        }
+        #endif
+
+        dt = (float)(timeNew - timeOld);
+        dt = std::fminf(dt, 0.04f); //Anything lower than 25fps will slow the gameplay down
+        timeOld = timeNew;
+
+        Input::pollInputs();
+
+        frameCount++;
         Global::renderCount++;
-		timeNew = glfwGetTime();
-		dt = (float)(timeNew - timeOld);
-		dt = std::fminf(dt, 0.04f); //Anything lower than 25fps will slow the gameplay down
 
-		timeOld = timeNew;
+        long long nextSecSinceEpoch = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+        int epocSecDiff = (int)(nextSecSinceEpoch - secSinceEpoch);
+        secSinceEpoch = nextSecSinceEpoch;
+        Global::gameTotalPlaytime+=epocSecDiff;
 
-		Global::gameTotalPlaytime+=dt;
+        if (Global::gameIsArcadeMode)
+        {
+            Global::gameArcadePlaytime+=dt;
+        }
 
-		if (Global::gameIsArcadeMode)
-		{
-			Global::gameArcadePlaytime+=dt;
-		}
+        GLenum err = glGetError();
+        if (err != GL_NO_ERROR)
+        {
+            std::fprintf(stderr, "########  GL ERROR  ########\n");
+            std::fprintf(stderr, "%d\n", err);
+        }
 
-		Input::pollInputs();
+        ALenum erral = alGetError();
+        if (erral != AL_NO_ERROR)
+        {
+            std::fprintf(stderr, "########  AL ERROR  ########\n");
+            std::fprintf(stderr, "%d\n", erral);
+        }
 
-        Global::menuManager.step();
+        //long double thisTime = std::time(0);
+        //std::fprintf(stdout, "time: %f time\n", thisTime);
 
-		GLenum err = glGetError();
-		if (err != GL_NO_ERROR)
-		{
-			std::fprintf(stderr, "########  GL ERROR  ########\n");
-			std::fprintf(stderr, "%d\n", err);
-		}
+        //entities managment
+        for (auto entityToAdd : gameEntitiesToAdd)
+        {
+            gameEntities.insert(entityToAdd);
+        }
+        gameEntitiesToAdd.clear();
 
-		ALenum erral = alGetError();
-		if (erral != AL_NO_ERROR)
-		{
-			std::fprintf(stderr, "########  AL ERROR  ########\n");
-			std::fprintf(stderr, "%d\n", erral);
-		}
+        for (auto entityToDelete : gameEntitiesToDelete)
+        {
+            gameEntities.erase(entityToDelete);
+            delete entityToDelete; INCR_DEL("Entity");
+        }
+        gameEntitiesToDelete.clear();
 
-		//long double thisTime = std::time(0);
-		//std::fprintf(stdout, "time: %f time\n", thisTime);
+        //chunked entities mamanegement
+        for (auto entityToAdd : gameChunkedEntitiesToAdd)
+        {
+            int realIndex = Global::getChunkIndex(entityToAdd->getX(), entityToAdd->getZ());
+            gameChunkedEntities[realIndex].insert(entityToAdd);
+        }
+        gameChunkedEntitiesToAdd.clear();
 
-		//entities managment
-		for (auto entityToAdd : gameEntitiesToAdd)
-		{
-			gameEntities.insert(entityToAdd);
-		}
-		gameEntitiesToAdd.clear();
-
-		for (auto entityToDelete : gameEntitiesToDelete)
-		{
-			gameEntities.erase(entityToDelete);
-			delete entityToDelete; INCR_DEL("Entity");
-		}
-		gameEntitiesToDelete.clear();
-
-
-		//entities pass2 managment
-		//for (auto entityToAdd : gameEntitiesPass2ToAdd)
-		//{
-		//	gameEntitiesPass2.insert(entityToAdd);
-		//}
-		//gameEntitiesPass2ToAdd.clear();
-
-		//for (auto entityToDelete : gameEntitiesPass2ToDelete)
-		//{
-		//	gameEntitiesPass2.erase(entityToDelete);
-		//	delete entityToDelete; INCR_DEL("Entity");
-		//}
-		//gameEntitiesPass2ToDelete.clear();
-
-
-		//entities pass3 managment
-		//for (auto entityToAdd : gameEntitiesPass3ToAdd)
-		//{
-		//	gameEntitiesPass3.insert(entityToAdd);
-		//}
-		//gameEntitiesPass3ToAdd.clear();
-
-		//for (auto entityToDelete : gameEntitiesPass3ToDelete)
-		//{
-		//	gameEntitiesPass3.erase(entityToDelete);
-		//	delete entityToDelete; INCR_DEL("Entity");
-		//}
-		//gameEntitiesPass3ToDelete.clear();
-
-
-		//transnaprent entities managment
-		//for (auto entityToAdd : gameTransparentEntitiesToAdd)
-		//{
-		//	gameTransparentEntities.insert(entityToAdd);
-		//}
-		//gameTransparentEntitiesToAdd.clear();
-
-		//for (auto entityToDelete : gameTransparentEntitiesToDelete)
-		//{
-		//	gameTransparentEntities.erase(entityToDelete);
-		//	delete entityToDelete; INCR_DEL("Entity");
-		//}
-		//gameTransparentEntitiesToDelete.clear();
-
-
-		//chunked entities mamanegement
-		for (auto entityToAdd : gameChunkedEntitiesToAdd)
-		{
-			int realIndex = Global::getChunkIndex(entityToAdd->getX(), entityToAdd->getZ());
-			gameChunkedEntities[realIndex].insert(entityToAdd);
-		}
-		gameChunkedEntitiesToAdd.clear();
-
-		for (auto entityToDelete : gameChunkedEntitiesToDelete)
-		{
-			int realIndex = Global::getChunkIndex(entityToDelete->getX(), entityToDelete->getZ());
-			size_t numDeleted = gameChunkedEntities[realIndex].erase(entityToDelete);
+        for (auto entityToDelete : gameChunkedEntitiesToDelete)
+        {
+            int realIndex = Global::getChunkIndex(entityToDelete->getX(), entityToDelete->getZ());
+            size_t numDeleted = gameChunkedEntities[realIndex].erase(entityToDelete);
             if (numDeleted == 0)
             {
                 for (int i = 0; i < (int)gameChunkedEntities.size(); i++)
@@ -486,15 +487,15 @@ int main(int argc, char** argv)
                     std::fprintf(stdout, "Error: Tried to delete a chunked entity that wasn't in the lists.\n");
                 }
             }
-			delete entityToDelete; INCR_DEL("Entity");
-		}
-		gameChunkedEntitiesToDelete.clear();
+            delete entityToDelete; INCR_DEL("Entity");
+        }
+        gameChunkedEntitiesToDelete.clear();
 
-		switch (Global::gameState)
-		{
-			case STATE_RUNNING:
-			{
-				//game logic
+        switch (Global::gameState)
+        {
+            case STATE_RUNNING:
+            {
+                //game logic
 
                 //unlock framerate during gameplay
                 if (Global::framerateUnlock)
@@ -517,433 +518,435 @@ int main(int argc, char** argv)
                     glfwSwapInterval(1);
                 }
 
-				if (Global::raceStartTimer >= 0)
-				{
-					Global::raceStartTimer -= dt;
-					if (Global::raceStartTimer < 0)
-					{
+                if (Global::startStageTimer >= 0)
+                {
+                    Global::startStageTimer -= dt;
+                    if (Global::startStageTimer < 0)
+                    {
                         Global::mainHudTimer->freeze(false);
-					}
-				}
+                    }
+                }
 
                 if (Global::gameMainPlayer != nullptr)
                 {
                     Global::gameMainPlayer->step();
                 }
-				for (Entity* e : gameEntities)
-				{
-					e->step();
-				}
-				if (gameChunkedEntities.size() > 0)
-				{
-					Global::getNearbyEntities(cam.eye.x, cam.eye.z, 2, &entityChunkedList);
-					for (std::unordered_set<Entity*>* entitySet : entityChunkedList)
-					{
-						for (Entity* e : (*entitySet))
-						{
-							e->step();
-						}
-					}
-				}
-				//for (Entity* e : gameEntitiesPass2)
-				//{
-				//	e->step();
-				//}
-				//for (Entity* e : gameEntitiesPass3)
-				//{
-				//	e->step();
-				//}
-				//for (Entity* e : gameTransparentEntities)
-				//{
-				//	e->step();
-				//}
-				skySphere.step();
+                for (Entity* e : gameEntities)
+                {
+                    e->step();
+                }
+                if (gameChunkedEntities.size() > 0)
+                {
+                    Global::getNearbyEntities(cam.eye.x, cam.eye.z, 2, &entityChunkedList);
+                    for (std::unordered_set<Entity*>* entitySet : entityChunkedList)
+                    {
+                        for (Entity* e : (*entitySet))
+                        {
+                            e->step();
+                        }
+                    }
+                }
+
+                skySphere.step();
                 ModelTexture::updateAnimations(dt);
-				Global::gameCamera->refresh();
-				if (Global::renderParticles)
-				{
-					ParticleMaster::update(Global::gameCamera);
-				}
-				Global::gameClock+=dt;
+                Global::gameCamera->refresh();
+                ParticleMaster::update(Global::gameCamera);
+                Global::gameClock+=dt;
 
-				if (Global::debugDisplay && Global::frozen)
-				{
-					Global::gameState = STATE_DEBUG;
-				}
+                if (Global::debugDisplay && Global::frozen)
+                {
+                    Global::gameState = STATE_DEBUG;
+                }
 
-				if (Global::gameIsRingMode)
-				{
-					if (Global::gameRingCount >= Global::gameRingTarget && Global::finishStageTimer < -0.5f)
-					{
-						Global::finishStageTimer = 0;
-					}
-				}
-				break;
-			}
+                if (Global::gameIsRingMode)
+                {
+                    if (Global::gameRingCount >= Global::gameRingTarget && Global::finishStageTimer < 0)
+                    {
+                        Global::finishStageTimer = 0;
+                        Global::mainHudTimer->freeze(true);
+                    }
+                }
+                break;
+            }
 
-			case STATE_PAUSED:
-			{
+            case STATE_PAUSED:
+            {
                 //vsync during pausing. no need to stress the system.
                 glfwSwapInterval(1);
-				break;
-			}
+                break;
+            }
 
-			case STATE_CUTSCENE:
-			{
+            case STATE_CUTSCENE:
+            {
                 glfwSwapInterval(1);
-				Global::gameCamera->refresh();
-				break;
-			}
+                Global::gameCamera->refresh();
+                break;
+            }
 
-			case STATE_TITLE:
-			{
+            case STATE_TITLE:
+            {
                 //vsync during title. no need to stress the system.
                 glfwSwapInterval(1);
-				Global::gameCamera->refresh();
-				if (Global::renderParticles)
-				{
-					ParticleMaster::update(Global::gameCamera);
-				}
-				break;
-			}
+                Global::gameCamera->refresh();
+                ParticleMaster::update(Global::gameCamera);
+                break;
+            }
 
-			case STATE_DEBUG:
-			{
+            case STATE_DEBUG:
+            {
                 glfwSwapInterval(1);
 
-				if (Global::gameMainPlayer != nullptr)
-				{
-					//Global::gamePlayer->debugAdjustCamera();
-				}
+                if (Global::gameMainPlayer != nullptr)
+                {
+                    //Global::gamePlayer->debugAdjustCamera();
+                }
 
-				Input::pollInputs();
-				if (Global::step)
-				{
-					Global::gameState = STATE_RUNNING;
-					Global::step = false;
-				}
-				
-				if (Global::debugDisplay == false || Global::frozen == false)
-				{
-					Global::gameState = STATE_RUNNING;
-				}
-				break;
-			}
+                Input::pollInputs();
+                if (Global::step)
+                {
+                    Global::gameState = STATE_RUNNING;
+                    Global::step = false;
+                }
+                
+                if (Global::debugDisplay == false || Global::frozen == false)
+                {
+                    Global::gameState = STATE_RUNNING;
+                }
+                break;
+            }
 
-			default:
-				break;
-		}
+            default:
+                break;
+        }
 
-		Stage::updateVisibleChunks();
-		SkyManager::calculateValues();
+        Global::menuManager.step();
 
-		//prepare entities to render
-		for (Entity* e : gameEntities)
-		{
-			Master_processEntity(e);
-		}
-		if (gameChunkedEntities.size() > 0)
-		{
-			for (std::unordered_set<Entity*>* entitySet : entityChunkedList)
-			{
-				for (Entity* e : (*entitySet))
-				{
-					Master_processEntity(e);
-				}
-			}
-		}
-		//for (Entity* e : gameEntitiesPass2)
-		//{
-		//	Master_processEntityPass2(e);
-		//}
-		//for (Entity* e : gameEntitiesPass3)
-		//{
-		//	Master_processEntityPass3(e);
-		//}
-		//for (Entity* e : gameTransparentEntities)
-		//{
-		//	Master_processTransparentEntity(e);
-		//}
-		for (Checkpoint* check : Global::gameCheckpointList)
-		{
-			Master_processEntity(check);
-		}
-		
-		Master_processEntity(&stage);
-		Master_renderShadowMaps(&lightSun);
-		Master_processEntity(&skySphere);
+        Stage::updateVisibleChunks();
+        SkyManager::calculateValues();
 
-		glEnable(GL_CLIP_DISTANCE1);
-		if (Global::useHighQualityWater && Global::stageUsesWater)
-		{
-			glEnable(GL_CLIP_DISTANCE0);
-			bool aboveWater = (cam.eye.y > Global::waterHeight);
+        //prepare entities to render
+        for (Entity* e : gameEntities)
+        {
+            Master_processEntity(e);
+        }
+        if (gameChunkedEntities.size() > 0)
+        {
+            for (std::unordered_set<Entity*>* entitySet : entityChunkedList)
+            {
+                for (Entity* e : (*entitySet))
+                {
+                    Master_processEntity(e);
+                }
+            }
+        }
+        
+        Master_processEntity(&stage);
+        Master_renderShadowMaps(&lightSun);
+        Master_processEntity(&skySphere);
 
-			const float offsetWater = 0.3f;
+        glEnable(GL_CLIP_DISTANCE1);
+        if (Global::useHighQualityWater && Global::stageUsesWater)
+        {
+            glEnable(GL_CLIP_DISTANCE0);
+            bool aboveWater = (cam.eye.y > Global::waterHeight);
 
-			//reflection render
-			Global::gameWaterFBOs->bindReflectionFrameBuffer();
-			cam.mirrorForWater();
-			if (aboveWater)
-			{
-				Master_render(&cam, 0, 1, 0, offsetWater - Global::waterHeight);
-				if (Global::renderParticles)
-				{
-					ParticleMaster::renderParticles(&cam, SkyManager::getOverallBrightness(), 1);
-				}
-			}
-			else
-			{
-				Master_render(&cam, 0, -1, 0, offsetWater + Global::waterHeight);
-				if (Global::renderParticles)
-				{
-					ParticleMaster::renderParticles(&cam, SkyManager::getOverallBrightness(), -1);
-				}
-			}
-			cam.mirrorForWater();
-			Global::gameWaterFBOs->unbindCurrentFrameBuffer();
+            const float offsetWater = 0.3f;
 
-			//refraction render
-			Global::gameWaterFBOs->bindRefractionFrameBuffer();
-			if (aboveWater)
-			{
-				Master_render(&cam, 0, -1, 0, offsetWater + Global::waterHeight);
-				if (Global::renderParticles)
-				{
-					ParticleMaster::renderParticles(&cam, SkyManager::getOverallBrightness(), -1);
-				}
-			}
-			else
-			{
-				Master_render(&cam, 0, 1, 0, offsetWater - Global::waterHeight);
-				if (Global::renderParticles)
-				{
-					ParticleMaster::renderParticles(&cam, SkyManager::getOverallBrightness(), 1);
-				}
-			}
-			Global::gameWaterFBOs->unbindCurrentFrameBuffer();
+            //reflection render
+            Global::gameWaterFBOs->bindReflectionFrameBuffer();
+            cam.mirrorForWater();
+            if (aboveWater)
+            {
+                Master_render(&cam, 0, 1, 0, offsetWater - Global::waterHeight);
+                if (Global::renderParticles)
+                {
+                    ParticleMaster::renderParticles(&cam, SkyManager::getOverallBrightness(), 1);
+                }
+            }
+            else
+            {
+                Master_render(&cam, 0, -1, 0, offsetWater + Global::waterHeight);
+                if (Global::renderParticles)
+                {
+                    ParticleMaster::renderParticles(&cam, SkyManager::getOverallBrightness(), -1);
+                }
+            }
+            cam.mirrorForWater();
+            Global::gameWaterFBOs->unbindCurrentFrameBuffer();
 
-			glDisable(GL_CLIP_DISTANCE0);
-		}
+            //refraction render
+            Global::gameWaterFBOs->bindRefractionFrameBuffer();
+            if (aboveWater)
+            {
+                Master_render(&cam, 0, -1, 0, offsetWater + Global::waterHeight);
+                if (Global::renderParticles)
+                {
+                    ParticleMaster::renderParticles(&cam, SkyManager::getOverallBrightness(), -1);
+                }
+            }
+            else
+            {
+                Master_render(&cam, 0, 1, 0, offsetWater - Global::waterHeight);
+                if (Global::renderParticles)
+                {
+                    ParticleMaster::renderParticles(&cam, SkyManager::getOverallBrightness(), 1);
+                }
+            }
+            Global::gameWaterFBOs->unbindCurrentFrameBuffer();
 
-		Vector3f camVel = cam.vel.scaleCopy(0.016666f);
-		AudioMaster::updateListenerData(&cam.eye, &cam.target, &cam.up, &camVel);
+            glDisable(GL_CLIP_DISTANCE0);
+        }
 
-		if (Global::renderBloom)
-		{
-			Global::gameMultisampleFbo->bindFrameBuffer();
-		}
-		Master_render(&cam, 0, 0, 0, 0);
-		glDisable(GL_CLIP_DISTANCE1);
+        Vector3f camVel = cam.vel.scaleCopy(0.016666f);
+        AudioMaster::updateListenerData(&cam.eye, &cam.target, &cam.up, &camVel);
 
-		if (Global::useHighQualityWater && Global::stageUsesWater)
-		{
-			Global::gameWaterRenderer->render(&Global::gameWaterTiles, &cam, &lightSun);
-		}
+        if (Global::renderBloom)
+        {
+            Global::gameMultisampleFbo->bindFrameBuffer();
+        }
+        Master_render(&cam, 0, 0, 0, 0);
+        glDisable(GL_CLIP_DISTANCE1);
 
-		if (Global::renderParticles)
-		{
-			ParticleMaster::renderParticles(&cam, SkyManager::getOverallBrightness(), 0);
-		}
+        if (Global::useHighQualityWater && Global::stageUsesWater)
+        {
+            Global::gameWaterRenderer->render(&Global::gameWaterTiles, &cam, &lightSun);
+        }
 
-		if (Global::renderBloom)
-		{
-			Global::gameMultisampleFbo->unbindFrameBuffer();
-			Global::gameMultisampleFbo->resolveToFbo(GL_COLOR_ATTACHMENT0, Global::gameOutputFbo);
-			Global::gameMultisampleFbo->resolveToFbo(GL_COLOR_ATTACHMENT1, Global::gameOutputFbo2);
-			PostProcessing::doPostProcessing(Global::gameOutputFbo->getColourTexture(), Global::gameOutputFbo2->getColourTexture());
-		}
+        ParticleMaster::renderParticles(&cam, SkyManager::getOverallBrightness(), 0);
 
-		Master_clearAllEntities();
-		//Master_clearEntitiesPass2();
-		//Master_clearEntitiesPass3();
-		//Master_clearTransparentEntities();
+        if (Global::renderBloom)
+        {
+            Global::gameMultisampleFbo->unbindFrameBuffer();
+            Global::gameMultisampleFbo->resolveToFbo(GL_COLOR_ATTACHMENT0, Global::gameOutputFbo);
+            Global::gameMultisampleFbo->resolveToFbo(GL_COLOR_ATTACHMENT1, Global::gameOutputFbo2);
+            PostProcessing::doPostProcessing(Global::gameOutputFbo->getColourTexture(), Global::gameOutputFbo2->getColourTexture());
+        }
 
-		GuiManager::refresh();
-		TextMaster::render();
+        Master_clearAllEntities();
 
-		updateDisplay();
+        if (rankDisplay != nullptr)
+        {
+            GuiManager::addGuiToRender(rankDisplay);
+        }
 
-		AudioPlayer::refreshBGM();
+        GuiManager::refresh();
+        GuiManager::clearGuisToRender();
+        TextMaster::render();
 
-		if (Global::shouldLoadLevel)
-		{
-			Global::shouldLoadLevel = false;
-			LevelLoader::loadLevel(Global::levelName);
-		}
+        updateDisplay();
 
-		if (Global::finishStageTimer >= 0)
-		{
-			float finishTimerBefore = Global::finishStageTimer;
-			Global::finishStageTimer += dt;
-
-			//Stage finished stuff
-			if (finishTimerBefore < 0.0166f && Global::finishStageTimer >= 0.0166f)
-			{
-				Vector3f partVel(0, 0, 0);
-				ParticleMaster::createParticle(ParticleResources::textureWhiteFadeOutAndIn, Global::gameCamera->getFadePosition1(), &partVel, 0, 2.0f, 0, 900, 0, true, false, 1.0f);
-			}
-			else if (finishTimerBefore < 1.0f && Global::finishStageTimer >= 1.0f)
-			{
-				AudioPlayer::stopBGM();
-				//AudioPlayer::play(24, Global::gamePlayer->getPosition());
-			}
-			else if (finishTimerBefore < 8.166f && Global::finishStageTimer >= 8.166f)
-			{
-				Vector3f partVel(0, 0, 0);
-				ParticleMaster::createParticle(ParticleResources::textureBlackFadeOutAndIn, Global::gameCamera->getFadePosition1(), &partVel, 0, 2.0f, 0, 900, 0, true, false, 1.0f);
-
-				//AudioPlayer::play(25, Global::gamePlayer->getPosition());
-			}
-
-			if (Global::finishStageTimer >= 0 &&
-				Global::finishStageTimer < 1)
-			{
-				AudioPlayer::setBGMVolume(1-Global::finishStageTimer);
-			}
-
-			if (finishTimerBefore < 9.166f && Global::finishStageTimer >= 9.166f)
-			{
-				if (Global::gameIsArcadeMode)
-				{
-					Global::levelID+=1;
-
-					if (Global::levelID <= LVL_GREEN_HILL_ZONE)
-					{
-						Level* nextLevel = &Global::gameLevelData[Global::levelID];
-						Global::shouldLoadLevel = true;
-						Global::isNewLevel = true;
-						Global::levelName = nextLevel->fileName;
-						Global::levelNameDisplay = nextLevel->displayName;
-						Global::gameMissionDescription = (nextLevel->missionData[Global::gameMissionNumber])[(nextLevel->missionData[Global::gameMissionNumber]).size()-1];
-					}
-					else
-					{
-						if (Global::gameSaveData.find("BestArcadeClearTime") == Global::gameSaveData.end())
-						{
-							Global::gameSaveData["BestArcadeClearTime"] = std::to_string(Global::gameArcadePlaytime);
-							Global::saveSaveData();
-						}
-						else
-						{
-							float currentPB = std::stof(Global::gameSaveData["BestArcadeClearTime"]);
-							if (Global::gameArcadePlaytime < currentPB)
-							{
-								Global::gameSaveData["BestArcadeClearTime"] = std::to_string(Global::gameArcadePlaytime);
-								Global::saveSaveData();
-							}
-						}
-
-						AudioPlayer::play(7, Global::gameCamera->getFadePosition1());
-
-						LevelLoader::loadTitle();
-						Global::gameIsArcadeMode = false;
-					}
-				}
-				else
-				{
-					LevelLoader::loadTitle();
-				}
-			}
-
-			if (finishTimerBefore < 9.133f && Global::finishStageTimer >= 9.133f)
-			{
-				GuiManager::clearGuisToRender();
-				Global::gameScore = 0;
-				Global::gameRingCount = 0;
-			}
-
-			if (finishTimerBefore < 6.166f && Global::finishStageTimer >= 6.166f)
-			{
-				// int rank = Global::calculateRankAndUpdate();
-				GuiManager::addGuiToRender(GuiTextureResources::textureRankDisplay);
-				//AudioPlayer::play(44, Global::gamePlayer->getPosition());
-			}
-		}
+        AudioPlayer::refreshBGM();
 
         Global::clearTitleCard();
+
+        if (Global::shouldLoadLevel)
+        {
+            Global::shouldLoadLevel = false;
+            LevelLoader::loadLevel(Global::levelName);
+        }
+
+        if (Global::finishStageTimer >= 0)
+        {
+            float finishTimerBefore = Global::finishStageTimer;
+            Global::finishStageTimer += dt;
+
+            //Stage finished stuff
+            if (finishTimerBefore < 0.0166f && Global::finishStageTimer >= 0.0166f)
+            {
+                Vector3f partVel(0, 0, 0);
+                ParticleMaster::createParticle(ParticleResources::textureWhiteFadeOutAndIn, Global::gameCamera->getFadePosition1(), &partVel, 0, 2.0f, 0, 900, 0, true, false, 1.0f, false);
+                
+                Global::saveGhostData();
+            }
+
+            if (finishTimerBefore < 1.0f && Global::finishStageTimer >= 1.0f)
+            {
+                AudioPlayer::stopBGM();
+                AudioPlayer::play(24, &Global::gameMainPlayer->position);
+
+                //Add score based on timer
+                float currTime = 0;
+                if (Global::mainHudTimer != nullptr)
+                {
+                    currTime = Global::mainHudTimer->totalTime;
+                }
+                Global::gameScore += std::max(0, 11200 - 20*((int)currTime)); //20 per second
+            }
+
+            if (finishTimerBefore < 8.166f && Global::finishStageTimer >= 8.166f)
+            {
+                Vector3f partVel(0, 0, 0);
+                ParticleMaster::createParticle(ParticleResources::textureBlackFadeOutAndIn, Global::gameCamera->getFadePosition1(), &partVel, 0, 2.0f, 0, 900, 0, true, false, 1.0f, false);
+
+                AudioPlayer::play(25, &Global::gameMainPlayer->position);
+            }
+
+            if (Global::finishStageTimer >= 0 &&
+                Global::finishStageTimer < 1)
+            {
+                AudioPlayer::setBGMVolume(1 - Global::finishStageTimer);
+            }
+
+            if (finishTimerBefore < 9.166f && Global::finishStageTimer >= 9.166f)
+            {
+                if (Global::gameIsArcadeMode)
+                {
+                    Global::gameArcadeIndex+=1;
+
+                    if (Global::gameArcadeIndex < (int)Global::gameArcadeLevelIds.size())
+                    {
+                        Global::levelID = Global::gameArcadeLevelIds[Global::gameArcadeIndex];
+                        Level* currentLevel = &Global::gameLevelData[Global::levelID];
+                        Global::shouldLoadLevel = true;
+                        Global::isNewLevel = true;
+                        Global::levelName = currentLevel->fileName;
+                        Global::levelNameDisplay = currentLevel->displayName;
+                        Global::gameMissionDescription = (currentLevel->missionData[Global::gameMissionNumber])[(currentLevel->missionData[Global::gameMissionNumber]).size() - 1];
+                    
+                        Global::createTitleCard();
+                    }
+                    else
+                    {
+                        if (Global::gameSaveData.find("BestArcadeClearTime") == Global::gameSaveData.end())
+                        {
+                            Global::gameSaveData["BestArcadeClearTime"] = std::to_string(Global::gameArcadePlaytime);
+                            Global::saveSaveData();
+                        }
+                        else
+                        {
+                            float currentPB = std::stof(Global::gameSaveData["BestArcadeClearTime"]);
+                            if (Global::gameArcadePlaytime < currentPB)
+                            {
+                                Global::gameSaveData["BestArcadeClearTime"] = std::to_string(Global::gameArcadePlaytime);
+                                Global::saveSaveData();
+                            }
+                        }
+
+                        AudioPlayer::play(7, Global::gameCamera->getFadePosition1());
+
+                        LevelLoader::loadTitle();
+                        Global::gameIsArcadeMode = false;
+                    }
+                }
+                else
+                {
+                    LevelLoader::loadTitle();
+                }
+            }
+
+            if (finishTimerBefore < 9.133f && Global::finishStageTimer >= 9.133f)
+            {
+                GuiManager::clearGuisToRender();
+                Global::gameScore = 0;
+                Global::gameRingCount = 0;
+            }
+
+            if (finishTimerBefore < 8.5f && Global::finishStageTimer >= 8.5f)
+            {
+                rankDisplay = nullptr;
+            }
+
+            if (finishTimerBefore < 6.166f && Global::finishStageTimer >= 6.166f)
+            {
+                if (Global::gameIsArcadeMode && Global::gameArcadeIndex+1 >= (int)Global::gameArcadeLevelIds.size())
+                {
+                    MenuManager::arcadeModeIsDone = true;
+                }
+                int rank = Global::calculateRankAndUpdate();
+                rankDisplay = nullptr;
+                switch (rank)
+                {
+                    case 0: rankDisplay = GuiTextureResources::textureRankE; break;
+                    case 1: rankDisplay = GuiTextureResources::textureRankD; break;
+                    case 2: rankDisplay = GuiTextureResources::textureRankC; break;
+                    case 3: rankDisplay = GuiTextureResources::textureRankB; break;
+                    case 4: rankDisplay = GuiTextureResources::textureRankA; break;
+                    default: break;
+                }
+                AudioPlayer::play(44, &Global::gameMainPlayer->position);
+            }
+        }
 
         if (previousTime > timeNew)
         {
             previousTime = timeNew;
         }
 
-		if (timeNew - previousTime >= 1.0)
-		{
+        if (timeNew - previousTime >= 1.0)
+        {
             Global::currentCalculatedFPS = (int)(std::round(frameCount/(timeNew - previousTime)));
-			//std::fprintf(stdout, "fps: %f\n", frameCount / (timeNew - previousTime));
-			//std::fprintf(stdout, "diff: %d\n", Global::countNew - Global::countDelete);
-			//Loader::printInfo();
-			//std::fprintf(stdout, "entity counts: %d %d %d\n", gameEntities.size(), gameEntitiesPass2.size(), gameTransparentEntities.size());
-			frameCount = 0;
-			previousTime = timeNew;
-		}
+            //std::fprintf(stdout, "fps: %f\n", frameCount / (timeNew - previousTime));
+            //std::fprintf(stdout, "diff: %d\n", Global::countNew - Global::countDelete);
+            //Loader::printInfo();
+            //std::fprintf(stdout, "entity counts: %d %d %d\n", gameEntities.size(), gameEntitiesPass2.size(), gameTransparentEntities.size());
+            frameCount = 0;
+            previousTime = timeNew;
+        }
 
         Global::displaySizeChanged = std::max(0, Global::displaySizeChanged - 1);
         if (Global::displaySizeChanged == 1)
         {
             //recreate all fbos and other things to the new size of the window
             //if (Global::renderBloom)
-		    {
-			    //Global::gameMultisampleFbo->resize(SCR_WIDTH, SCR_HEIGHT); //memory leaks
+            {
+                //Global::gameMultisampleFbo->resize(SCR_WIDTH, SCR_HEIGHT); //memory leaks
                 //Global::gameOutputFbo->resize(SCR_WIDTH, SCR_HEIGHT);
                 //Global::gameOutputFbo2->resize(SCR_WIDTH, SCR_HEIGHT);
-		    }
+            }
         }
-		//std::fprintf(stdout, "dt: %f\n", dt);
-		//std::this_thread::sleep_for(std::chrono::milliseconds(8));
-	}
+        //std::fprintf(stdout, "dt: %f\n", dt);
+    }
 
-	Global::saveSaveData();
+    Global::saveSaveData();
 
-	#ifdef DEV_MODE
-	listenThread.detach();
-	#endif
+    #ifdef DEV_MODE
+    listenThread.detach();
+    #endif
 
-	Master_cleanUp();
-	Loader::cleanUp();
-	TextMaster::cleanUp();
-	AudioMaster::cleanUp();
-	GuiRenderer::cleanUp();
-	closeDisplay();
+    Master_cleanUp();
+    Loader::cleanUp();
+    TextMaster::cleanUp();
+    AudioMaster::cleanUp();
+    GuiRenderer::cleanUp();
+    closeDisplay();
 
-	return 0;
+    return 0;
 }
 
 //The newEntity should be created with the new keyword, as it will be deleted later
 void Main_addEntity(Entity* entityToAdd)
 {
-	gameEntitiesToAdd.push_back(entityToAdd);
+    gameEntitiesToAdd.push_back(entityToAdd);
 }
 
 void Main_deleteEntity(Entity* entityToDelete)
 {
-	gameEntitiesToDelete.push_back(entityToDelete);
+    gameEntitiesToDelete.push_back(entityToDelete);
 }
 
 void Main_deleteAllEntites()
 {
-	//Make sure no entities get left behind in transition
-	for (Entity* entityToAdd : gameEntitiesToAdd)
-	{
-		gameEntities.insert(entityToAdd);
-	}
-	gameEntitiesToAdd.clear();
+    //Make sure no entities get left behind in transition
+    for (Entity* entityToAdd : gameEntitiesToAdd)
+    {
+        gameEntities.insert(entityToAdd);
+    }
+    gameEntitiesToAdd.clear();
 
-	for (Entity* entityToDelete : gameEntitiesToDelete)
-	{
-		gameEntities.erase(entityToDelete);
-		delete entityToDelete; INCR_DEL("Entity");
-	}
-	gameEntitiesToDelete.clear();
+    for (Entity* entityToDelete : gameEntitiesToDelete)
+    {
+        gameEntities.erase(entityToDelete);
+        delete entityToDelete; INCR_DEL("Entity");
+    }
+    gameEntitiesToDelete.clear();
 
 
-	//Delete all the rest
-	for (Entity* entityToDelete : gameEntities)
-	{
-		delete entityToDelete; INCR_DEL("Entity");
-	}
-	gameEntities.clear();
+    //Delete all the rest
+    for (Entity* entityToDelete : gameEntities)
+    {
+        delete entityToDelete; INCR_DEL("Entity");
+    }
+    gameEntities.clear();
 
     if (Global::gameMainPlayer != nullptr)
     {
@@ -952,616 +955,688 @@ void Main_deleteAllEntites()
     }
 }
 
-//void Main_addEntityPass2(Entity* entityToAdd)
-//{
-//	gameEntitiesPass2ToAdd.push_back(entityToAdd);
-//}
-
-//void Main_deleteEntityPass2(Entity* entityToDelete)
-//{
-//	gameEntitiesPass2ToDelete.push_back(entityToDelete);
-//}
-
-//void Main_deleteAllEntitesPass2()
-//{
-//	//Make sure no entities get left behind in transition
-//	for (Entity* entityToAdd : gameEntitiesPass2ToAdd)
-//	{
-//		gameEntitiesPass2.insert(entityToAdd);
-//	}
-//	gameEntitiesPass2ToAdd.clear();
-//
-//	for (Entity* entityToDelete : gameEntitiesPass2ToDelete)
-//	{
-//		gameEntitiesPass2.erase(entityToDelete);
-//		delete entityToDelete; INCR_DEL("Entity");
-//	}
-//	gameEntitiesPass2ToDelete.clear();
-//
-//	for (Entity* entityToDelete : gameEntitiesPass2)
-//	{
-//		delete entityToDelete; INCR_DEL("Entity");
-//	}
-//	gameEntitiesPass2.clear();
-//}
-
-//void Main_addEntityPass3(Entity* entityToAdd)
-//{
-//	gameEntitiesPass3ToAdd.push_back(entityToAdd);
-//}
-
-//void Main_deleteEntityPass3(Entity* entityToDelete)
-//{
-//	gameEntitiesPass3ToDelete.push_back(entityToDelete);
-//}
-
-//void Main_deleteAllEntitesPass3()
-//{
-//	//Make sure no entities get left behind in transition
-//	for (Entity* entityToAdd : gameEntitiesPass3ToAdd)
-//	{
-//		gameEntitiesPass3.insert(entityToAdd);
-//	}
-//	gameEntitiesPass3ToAdd.clear();
-//
-//	for (Entity* entityToDelete : gameEntitiesPass3ToDelete)
-//	{
-//		gameEntitiesPass3.erase(entityToDelete);
-//		delete entityToDelete; INCR_DEL("Entity");
-//	}
-//	gameEntitiesPass3ToDelete.clear();
-//
-//	for (Entity* entityToDelete : gameEntitiesPass3)
-//	{
-//		delete entityToDelete; INCR_DEL("Entity");
-//	}
-//	gameEntitiesPass3.clear();
-//}
-
-//Transparent entities shouldn't create new transparent entities from within their step function
-//void Main_addTransparentEntity(Entity* entityToAdd)
-//{
-//	gameTransparentEntities.insert(entityToAdd);
-//}
-
-//void Main_deleteTransparentEntity(Entity* entityToDelete)
-//{
-//	gameTransparentEntities.erase(entityToDelete);
-//	delete entityToDelete; INCR_DEL("Entity");
-//}
-
-//void Main_deleteAllTransparentEntites()
-//{
-//	for (Entity* entityToDelete : gameTransparentEntities)
-//	{
-//		delete entityToDelete; INCR_DEL("Entity");
-//	}
-//	gameTransparentEntities.clear();
-//}
-
 void increaseProcessPriority()
 {
-	#ifdef _WIN32
-	DWORD dwError;
+    #ifdef _WIN32
+    DWORD dwError;
 
-	
-	if (!SetPriorityClass(GetCurrentProcess(), ABOVE_NORMAL_PRIORITY_CLASS))
-	{
-		dwError = GetLastError();
-		_tprintf(TEXT("Failed to enter above normal mode (%d)\n"), (int)dwError);
-	}
+    
+    if (!SetPriorityClass(GetCurrentProcess(), ABOVE_NORMAL_PRIORITY_CLASS))
+    {
+        dwError = GetLastError();
+        std::fprintf(stdout, "Failed to enter above normal mode (%d)\n", (int)dwError);
+    }
 
-	if (!SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_ABOVE_NORMAL))
-	{
-		dwError = GetLastError();
-		_tprintf(TEXT("Failed to enter above normal mode (%d)\n"), (int)dwError);
-	}
-	
+    if (!SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_ABOVE_NORMAL))
+    {
+        dwError = GetLastError();
+        std::fprintf(stdout, "Failed to enter above normal mode (%d)\n", (int)dwError);
+    }
+    
 
-	/*
-	if (!SetPriorityClass(GetCurrentProcess(), BELOW_NORMAL_PRIORITY_CLASS))
-	{
-		dwError = GetLastError();
-		_tprintf(TEXT("Failed to enter below normal mode (%d)\n"), (int)dwError);
-	}
+    
+    //if (!SetPriorityClass(GetCurrentProcess(), IDLE_PRIORITY_CLASS))
+    //{
+    //    dwError = GetLastError();
+    //    _tprintf(TEXT("Failed to enter below normal mode (%d)\n"), (int)dwError);
+    //}
+    //
+    //if (!SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_IDLE))
+    //{
+    //    dwError = GetLastError();
+    //    _tprintf(TEXT("Failed to enter below normal mode (%d)\n"), (int)dwError);
+    //}
+    
 
-	if (!SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_BELOW_NORMAL))
-	{
-		dwError = GetLastError();
-		_tprintf(TEXT("Failed to enter below normal mode (%d)\n"), (int)dwError);
-	}
-	*/
-
-	#endif
+    #endif
 }
 
 void Global::checkErrorAL(const char* description)
 {
-	ALenum erral = alGetError();
-	if (erral != AL_NO_ERROR)
-	{
-		fprintf(stdout, "########  AL ERROR  ########\n");
-		fprintf(stdout, "%s     %d\n", description, erral);
-	}
+    ALenum erral = alGetError();
+    if (erral != AL_NO_ERROR)
+    {
+        fprintf(stdout, "########  AL ERROR  ########\n");
+        fprintf(stdout, "%s     %d\n", description, erral);
+    }
 }
 
 void Global::loadSaveData()
 {
-	Global::gameSaveData.clear();
+    Global::gameSaveData.clear();
 
-	std::ifstream file(Global::pathToEXE+"res/SaveData/SaveData.sav");
-	if (!file.is_open())
-	{
-		std::fprintf(stdout, "No save data found. Creating new save file...\n");
-		file.close();
-		Global::saveSaveData();
-	}
-	else
-	{
-		std::string line;
-		getlineSafe(file, line);
+    std::ifstream file(Global::pathToEXE+"res/SaveData/SaveData.sav");
+    if (!file.is_open())
+    {
+        std::fprintf(stdout, "No save data found. Creating new save file...\n");
+        file.close();
+        Global::saveSaveData();
+    }
+    else
+    {
+        std::string line;
+        getlineSafe(file, line);
 
-		while (!file.eof())
-		{
-			char lineBuf[512];
-			memcpy(lineBuf, line.c_str(), line.size()+1);
+        while (!file.eof())
+        {
+            char lineBuf[512];
+            memcpy(lineBuf, line.c_str(), line.size()+1);
 
-			int splitLength = 0;
-			char** lineSplit = split(lineBuf, ';', &splitLength);
+            int splitLength = 0;
+            char** lineSplit = split(lineBuf, ';', &splitLength);
 
-			if (splitLength == 2)
-			{
-				Global::gameSaveData[lineSplit[0]] = lineSplit[1];
-			}
+            if (splitLength == 2)
+            {
+                Global::gameSaveData[lineSplit[0]] = lineSplit[1];
+            }
 
-			free(lineSplit);
+            free(lineSplit);
 
-			getlineSafe(file, line);
-		}
+            getlineSafe(file, line);
+        }
 
-		file.close();
-	}
+        file.close();
+    }
 
-	if (Global::gameSaveData.find("PLAYTIME") != Global::gameSaveData.end())
-	{
-		Global::gameTotalPlaytime = std::stof(Global::gameSaveData["PLAYTIME"]);
-	}
+    if (Global::gameSaveData.find("PLAYTIME") != Global::gameSaveData.end())
+    {
+        Global::gameTotalPlaytime = std::stoi(Global::gameSaveData["PLAYTIME"]);
+    }
 
-	if (Global::gameSaveData.find("CAMERA") != Global::gameSaveData.end())
-	{
-		if (Global::gameSaveData["CAMERA"] == "AUTO")
-		{
-			Global::isAutoCam = true;
-		}
-		else
-		{
-			Global::isAutoCam = false;
-		}
-	}
+    if (Global::gameSaveData.find("CAMERA") != Global::gameSaveData.end())
+    {
+        if (Global::gameSaveData["CAMERA"] == "AUTO")
+        {
+            Global::isAutoCam = true;
+        }
+        else
+        {
+            Global::isAutoCam = false;
+        }
+    }
+}
+
+void Global::saveGhostData()
+{
+    #ifdef _WIN32
+    _mkdir((Global::pathToEXE + "res/SaveData").c_str());
+    #else
+    mkdir((Global::pathToEXE + "res/SaveData").c_str(), 0777);
+    #endif
+
+    bool newTimeIsFaster = false;
+
+    std::string ghostFilename = Global::pathToEXE + "res/SaveData/" + std::to_string(Global::levelID) + "_" + std::to_string(Global::gameMissionNumber) + ".ghost";
+
+    //Check if we got a faster time than the existing ghost
+    std::ifstream filein(ghostFilename);
+    if (!filein.is_open())
+    {
+        filein.close();
+        newTimeIsFaster = true;
+    }
+    else
+    {
+        float oldTime = 0.0f;
+        std::string line;
+
+        while (!filein.eof())
+        {
+            getlineSafe(filein, line);
+
+            char lineBuf[512];
+            memcpy(lineBuf, line.c_str(), line.size()+1);
+
+            int splitLength = 0;
+            char** lineSplit = split(lineBuf, ' ', &splitLength);
+
+            if (splitLength == 13)
+            {
+                oldTime = std::stof(lineSplit[0]);
+            }
+            free(lineSplit);
+        }
+        filein.close();
+
+        float newTime = 100000000.0f;
+
+        if (Global::mainHudTimer != nullptr)
+        {
+            newTime = Global::mainHudTimer->totalTime;
+        }
+
+        if (newTime < oldTime)
+        {
+            newTimeIsFaster = true;
+        }
+    }
+
+    if (newTimeIsFaster)
+    {
+        if (Global::raceLogSize > 0)
+        {
+            std::ofstream raceLogFile;
+            raceLogFile.open(ghostFilename, std::ios::out | std::ios::trunc);
+            if (!raceLogFile.is_open())
+            {
+                std::fprintf(stderr, "Error: Failed to create/access '%s'\n", (ghostFilename).c_str());
+            }
+            else
+            {
+                for (int i = 0; i < Global::raceLogSize; i++)
+                {
+                    std::string line = Global::raceLog[i].toString();
+                    raceLogFile << line << "\n";
+                }
+            }
+            raceLogFile.close();
+            Global::raceLogSize = 0;
+        }
+    }
 }
 
 void Global::saveSaveData()
 {
-	#ifdef _WIN32
-	_mkdir((Global::pathToEXE + "res/SaveData").c_str());
-	#else
-	mkdir((Global::pathToEXE + "res/SaveData").c_str(), 0777);
-	#endif
+    #ifdef _WIN32
+    _mkdir((Global::pathToEXE + "res/SaveData").c_str());
+    #else
+    mkdir((Global::pathToEXE + "res/SaveData").c_str(), 0777);
+    #endif
 
-	std::ofstream file;
-	file.open((Global::pathToEXE + "res/SaveData/SaveData.sav").c_str(), std::ios::out | std::ios::trunc);
+    std::ofstream file;
+    file.open((Global::pathToEXE + "res/SaveData/SaveData.sav").c_str(), std::ios::out | std::ios::trunc);
 
-	if (!file.is_open())
-	{
-		std::fprintf(stderr, "Error: Failed to create/access '%s'\n", (Global::pathToEXE + "res/SaveData/SaveData.sav").c_str());
-		file.close();
-	}
-	else
-	{
-		Global::gameSaveData["PLAYTIME"] = std::to_string(Global::gameTotalPlaytime);
+    if (!file.is_open())
+    {
+        std::fprintf(stderr, "Error: Failed to create/access '%s'\n", (Global::pathToEXE + "res/SaveData/SaveData.sav").c_str());
+        file.close();
+    }
+    else
+    {
+        Global::gameSaveData["PLAYTIME"] = std::to_string(Global::gameTotalPlaytime);
 
-		if (Global::isAutoCam)
-		{
-			Global::gameSaveData["CAMERA"] = "AUTO";
-		}
-		else
-		{
-			Global::gameSaveData["CAMERA"] = "FREE";
-		}
+        if (Global::isAutoCam)
+        {
+            Global::gameSaveData["CAMERA"] = "AUTO";
+        }
+        else
+        {
+            Global::gameSaveData["CAMERA"] = "FREE";
+        }
 
-		std::unordered_map<std::string, std::string>::iterator it = Global::gameSaveData.begin();
+        std::unordered_map<std::string, std::string>::iterator it = Global::gameSaveData.begin();
  
-		while (it != Global::gameSaveData.end())
-		{
-			file << it->first+";"+it->second+"\n";
-			
-			it++;
-		}
+        while (it != Global::gameSaveData.end())
+        {
+            file << it->first+";"+it->second+"\n";
+            
+            it++;
+        }
 
-		file.close();
-	}
+        file.close();
+    }
 }
 
 void Global::increaseRingCount(int rings)
 {
-	int before = Global::gameRingCount/100;
-	Global::gameRingCount += rings;
-	int after = Global::gameRingCount/100;
+    int before = Global::gameRingCount/100;
+    Global::gameRingCount += rings;
+    int after = Global::gameRingCount/100;
 
-	if (before != after)
-	{
-		Global::gameLives++;
-		AudioPlayer::play(35, Global::gameCamera->getFadePosition1());
-	}
+    if (before != after)
+    {
+        Global::gameLives++;
+        AudioPlayer::play(35, Global::gameCamera->getFadePosition1());
+    }
 }
 
 int Global::calculateRankAndUpdate()
 {
-	int newRank = 0; //0 = E, 4 = A
+    int newRank = 0; //0 = E, 4 = A
 
-	Level* currentLevel = &Global::gameLevelData[Global::levelID];
+    Level* currentLevel = &Global::gameLevelData[Global::levelID];
 
-	if (Global::gameMissionNumber < currentLevel->numMissions)
-	{
-		std::string missionType = (currentLevel->missionData[Global::gameMissionNumber])[0];
+    if (Global::gameMissionNumber < currentLevel->numMissions)
+    {
+        std::string missionType = (currentLevel->missionData[Global::gameMissionNumber])[0];
 
-		std::string missionRankString = "ERROR";
-		switch (Global::gameMissionNumber)
-		{
-			case 0: missionRankString = "_M1_RANK"; break;
-			case 1: missionRankString = "_M2_RANK"; break;
-			case 2: missionRankString = "_M3_RANK"; break;
-			case 3: missionRankString = "_M4_RANK"; break;
-			default: break;
-		}
+        std::string missionRankString = "ERROR";
+        switch (Global::gameMissionNumber)
+        {
+            case 0: missionRankString = "_M1_RANK"; break;
+            case 1: missionRankString = "_M2_RANK"; break;
+            case 2: missionRankString = "_M3_RANK"; break;
+            case 3: missionRankString = "_M4_RANK"; break;
+            default: break;
+        }
 
-		std::string missionScoreString = "ERROR";
-		switch (Global::gameMissionNumber)
-		{
-			case 0: missionScoreString = "_M1_SCORE"; break;
-			case 1: missionScoreString = "_M2_SCORE"; break;
-			case 2: missionScoreString = "_M3_SCORE"; break;
-			case 3: missionScoreString = "_M4_SCORE"; break;
-			default: break;
-		}
+        std::string missionScoreString = "ERROR";
+        switch (Global::gameMissionNumber)
+        {
+            case 0: missionScoreString = "_M1_SCORE"; break;
+            case 1: missionScoreString = "_M2_SCORE"; break;
+            case 2: missionScoreString = "_M3_SCORE"; break;
+            case 3: missionScoreString = "_M4_SCORE"; break;
+            default: break;
+        }
 
-		std::string missionTimeString = "ERROR";
-		switch (Global::gameMissionNumber)
-		{
-			case 0: missionTimeString = "_M1_TIME"; break;
-			case 1: missionTimeString = "_M2_TIME"; break;
-			case 2: missionTimeString = "_M3_TIME"; break;
-			case 3: missionTimeString = "_M4_TIME"; break;
-			default: break;
-		}
+        std::string missionTimeString = "ERROR";
+        switch (Global::gameMissionNumber)
+        {
+            case 0: missionTimeString = "_M1_TIME"; break;
+            case 1: missionTimeString = "_M2_TIME"; break;
+            case 2: missionTimeString = "_M3_TIME"; break;
+            case 3: missionTimeString = "_M4_TIME"; break;
+            default: break;
+        }
 
-		int newScore = Global::gameScore;
-		int savedScore = -1;
+        int newScore = Global::gameScore;
+        int savedScore = -1;
 
-		if (Global::gameSaveData.find(currentLevel->displayName+missionScoreString) != Global::gameSaveData.end())
-		{
-			std::string savedScoreString = Global::gameSaveData[currentLevel->displayName+missionScoreString];
-			savedScore = std::stoi(savedScoreString);
-		}
+        if (Global::gameSaveData.find(currentLevel->displayName+missionScoreString) != Global::gameSaveData.end())
+        {
+            std::string savedScoreString = Global::gameSaveData[currentLevel->displayName+missionScoreString];
+            savedScore = std::stoi(savedScoreString);
+        }
 
-		if (newScore > savedScore)
-		{
-			std::string newScoreString = std::to_string(newScore);
-			Global::gameSaveData[currentLevel->displayName+missionScoreString] = newScoreString;
-			Global::saveSaveData();
-		}
+        if (newScore > savedScore)
+        {
+            std::string newScoreString = std::to_string(newScore);
+            Global::gameSaveData[currentLevel->displayName+missionScoreString] = newScoreString;
+            Global::saveSaveData();
+        }
 
-		//float savedTime = 6000.0f;
+        float newTime = 60000.0f;
+        if (Global::mainHudTimer != nullptr)
+        {
+            newTime = Global::mainHudTimer->totalTime;
+        }
+        float savedTime = 600000.0f;
 
-		//if (Global::gameSaveData.find(currentLevel->displayName+missionTimeString) != Global::gameSaveData.end())
-		{
-			//std::string savedTimeString = Global::gameSaveData[currentLevel->displayName+missionTimeString];
-			//savedTime = std::stof(savedTimeString);
-		}
-	}
+        if (Global::gameSaveData.find(currentLevel->displayName+missionTimeString) != Global::gameSaveData.end())
+        {
+            std::string savedTimeString = Global::gameSaveData[currentLevel->displayName+missionTimeString];
+            savedTime = std::stof(savedTimeString);
+        }
 
-	return newRank;
+        if (newTime < savedTime)
+        {
+            std::string newTimeString = std::to_string(newTime);
+            Global::gameSaveData[currentLevel->displayName+missionTimeString] = newTimeString;
+            Global::saveSaveData();
+        }
+
+        if (missionType == "Normal" || missionType == "Hard")
+        {
+            int scoreForRankA = std::stoi((currentLevel->missionData[Global::gameMissionNumber])[1]);
+            int scoreForRankB = (3*scoreForRankA)/4;
+            int scoreForRankC = (2*scoreForRankA)/3;
+            int scoreForRankD = (1*scoreForRankA)/2;
+
+            if      (newScore >= scoreForRankA) newRank = 4;
+            else if (newScore >= scoreForRankB) newRank = 3;
+            else if (newScore >= scoreForRankC) newRank = 2;
+            else if (newScore >= scoreForRankD) newRank = 1;
+
+            if (newScore > savedScore)
+            {
+                std::string newRankString = "ERROR";
+                switch (newRank)
+                {
+                    case 0: newRankString = "E"; break;
+                    case 1: newRankString = "D"; break;
+                    case 2: newRankString = "C"; break;
+                    case 3: newRankString = "B"; break;
+                    case 4: newRankString = "A"; break;
+                    default: break;
+                }
+
+                Global::gameSaveData[currentLevel->displayName+missionRankString]  = newRankString;
+
+                Global::saveSaveData();
+            }
+        }
+        else if (missionType == "Ring" || missionType == "Chao" || missionType == "Race")
+        {
+            float timeForRankA = std::stof((currentLevel->missionData[Global::gameMissionNumber])[1]);
+            float timeForRankB = (4*timeForRankA)/3;
+            float timeForRankC = (3*timeForRankA)/2;
+            float timeForRankD = (2*timeForRankA)/1;
+
+            if      (newTime <= timeForRankA) newRank = 4;
+            else if (newTime <= timeForRankB) newRank = 3;
+            else if (newTime <= timeForRankC) newRank = 2;
+            else if (newTime <= timeForRankD) newRank = 1;
+
+            if (newTime < savedTime)
+            {
+                std::string newRankString = "ERROR";
+                switch (newRank)
+                {
+                    case 0: newRankString = "E"; break;
+                    case 1: newRankString = "D"; break;
+                    case 2: newRankString = "C"; break;
+                    case 3: newRankString = "B"; break;
+                    case 4: newRankString = "A"; break;
+                    default: break;
+                }
+
+                Global::gameSaveData[currentLevel->displayName+missionRankString] = newRankString;
+
+                Global::saveSaveData();
+            }
+        }
+    }
+
+    return newRank;
 }
 
 void doListenThread()
 {
 #ifdef _WIN32
-	DWORD dwError;
+    DWORD dwError;
 
-	if (!SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_BELOW_NORMAL))
-	{
-		dwError = GetLastError();
-		_tprintf(TEXT("Failed to enter above normal mode (%d)\n"), (int)dwError);
-	}
+    if (!SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_BELOW_NORMAL))
+    {
+        dwError = GetLastError();
+        _tprintf(TEXT("Failed to enter above normal mode (%d)\n"), (int)dwError);
+    }
 #endif
 
-	listen();
+    listen();
 }
 
 //listen on stdin for coordinates
 void listen()
 {
-	int loop = 1;
-	std::string input;
+    int loop = 1;
+    std::string input;
 
-	while (loop == 1)
-	{
-		getlineSafe(std::cin, input);
+    while (loop == 1)
+    {
+        getlineSafe(std::cin, input);
 
-		if (input == "exit")
-		{
-			loop = 0;
-		}
-		else if (input.size() > 1)
-		{
-			fprintf(stdout, "input = '%s'\n", input.c_str());
-			//Global::gamePlayer->setGroundSpeed(0, 0);
-			//Global::gamePlayer->setxVelAir(0);
-			//Global::gamePlayer->setxVelAir(0);
-			//Global::gamePlayer->setyVel(0);
-			if (input.c_str()[0] == 'w')
-			{
-				const char* data = &input.c_str()[1];
-				Global::waterHeight = std::stof(data);
-			}
-			//if (input == "goff")
-			//{
-			//	Global::gamePlayer->setGravity(0);
-			//}
-			//else if (input == "gon")
-			//{
-			//	Global::gamePlayer->setGravity(0.08f);
-			//}
-			//else if (input.c_str()[0] == 'x')
-			//{
-			//	const char* data = &input.c_str()[1];
-			//	Global::gamePlayer->setX(std::stof(data));
-			//	Global::gamePlayer->setGravity(0);
-			//}
-			//else if (input.c_str()[0] == 'y')
-			//{
-			//	const char* data = &input.c_str()[1];
-			//	Global::gamePlayer->setY(std::stof(data));
-			//	Global::gamePlayer->setGravity(0);
-			//}
-			//else if (input.c_str()[0] == 'z')
-			//{
-			//	const char* data = &input.c_str()[1];
-			//	Global::gamePlayer->setZ(std::stof(data));
-			//	Global::gamePlayer->setGravity(0);
-			//}
-			//else
-			//{
-			//	char lineBuf[256];
-			//	memcpy(lineBuf, input.c_str(), input.size()+1);
-			//
-			//	int splitLength = 0;
-			//	char** lineSplit = split(lineBuf, ' ', &splitLength);
-			//
-			//	if (splitLength == 3)
-			//	{
-			//		Global::gamePlayer->setX(std::stof(lineSplit[0]));
-			//		Global::gamePlayer->setY(std::stof(lineSplit[1]));
-			//		Global::gamePlayer->setZ(std::stof(lineSplit[2]));
-			//		Global::gamePlayer->setGravity(0);
-			//	}
-			//	free(lineSplit);
-			//}
-		}
-	}
+        if (input == "exit")
+        {
+            loop = 0;
+        }
+        else if (input.size() > 1)
+        {
+            fprintf(stdout, "input = '%s'\n", input.c_str());
+            //Global::gamePlayer->setGroundSpeed(0, 0);
+            //Global::gamePlayer->setxVelAir(0);
+            //Global::gamePlayer->setxVelAir(0);
+            //Global::gamePlayer->setyVel(0);
+            if (input.c_str()[0] == 'w')
+            {
+                const char* data = &input.c_str()[1];
+                Global::waterHeight = std::stof(data);
+            }
+            //if (input == "goff")
+            //{
+            //    Global::gamePlayer->setGravity(0);
+            //}
+            //else if (input == "gon")
+            //{
+            //    Global::gamePlayer->setGravity(0.08f);
+            //}
+            //else if (input.c_str()[0] == 'x')
+            //{
+            //    const char* data = &input.c_str()[1];
+            //    Global::gamePlayer->setX(std::stof(data));
+            //    Global::gamePlayer->setGravity(0);
+            //}
+            //else if (input.c_str()[0] == 'y')
+            //{
+            //    const char* data = &input.c_str()[1];
+            //    Global::gamePlayer->setY(std::stof(data));
+            //    Global::gamePlayer->setGravity(0);
+            //}
+            //else if (input.c_str()[0] == 'z')
+            //{
+            //    const char* data = &input.c_str()[1];
+            //    Global::gamePlayer->setZ(std::stof(data));
+            //    Global::gamePlayer->setGravity(0);
+            //}
+            //else
+            //{
+            //    char lineBuf[256];
+            //    memcpy(lineBuf, input.c_str(), input.size()+1);
+            //
+            //    int splitLength = 0;
+            //    char** lineSplit = split(lineBuf, ' ', &splitLength);
+            //
+            //    if (splitLength == 3)
+            //    {
+            //        Global::gamePlayer->setX(std::stof(lineSplit[0]));
+            //        Global::gamePlayer->setY(std::stof(lineSplit[1]));
+            //        Global::gamePlayer->setZ(std::stof(lineSplit[2]));
+            //        Global::gamePlayer->setGravity(0);
+            //    }
+            //    free(lineSplit);
+            //}
+        }
+    }
 }
 
 //Returns the index of 'gameChunkedEntities' for the (x, z) location
 int Global::getChunkIndex(float x, float z)
 {
-	float relativeX = x - chunkedEntitiesMinX;
-	float relativeZ = z - chunkedEntitiesMinZ;
+    float relativeX = x - chunkedEntitiesMinX;
+    float relativeZ = z - chunkedEntitiesMinZ;
 
-	//const float DIVIDE_OFFSET = 1.0f;
+    //const float DIVIDE_OFFSET = 1.0f;
 
-	//ensure the coords arent out of bounds
-	//relativeX = std::fmaxf(0.0f, relativeX);
-	//relativeX = std::fminf(relativeX, chunkedEntitiesWidth*chunkedEntitiesChunkSize - DIVIDE_OFFSET);
+    //ensure the coords arent out of bounds
+    //relativeX = std::fmaxf(0.0f, relativeX);
+    //relativeX = std::fminf(relativeX, chunkedEntitiesWidth*chunkedEntitiesChunkSize - DIVIDE_OFFSET);
 
-	//relativeZ = std::fmaxf(0.0f, relativeZ);
-	//relativeZ = std::fminf(relativeZ, chunkedEntitiesHeight*chunkedEntitiesChunkSize - DIVIDE_OFFSET);
+    //relativeZ = std::fmaxf(0.0f, relativeZ);
+    //relativeZ = std::fminf(relativeZ, chunkedEntitiesHeight*chunkedEntitiesChunkSize - DIVIDE_OFFSET);
 
-	//calculate 2d array indices
-	int iX = (int)(relativeX/chunkedEntitiesChunkSize);
-	int iZ = (int)(relativeZ/chunkedEntitiesChunkSize);
+    //calculate 2d array indices
+    int iX = (int)(relativeX/chunkedEntitiesChunkSize);
+    int iZ = (int)(relativeZ/chunkedEntitiesChunkSize);
 
-	iX = std::max(0, iX);
-	iX = std::min(iX, chunkedEntitiesWidth-1);
+    iX = std::max(0, iX);
+    iX = std::min(iX, chunkedEntitiesWidth-1);
 
-	iZ = std::max(0, iZ);
-	iZ = std::min(iZ, chunkedEntitiesHeight-1);
+    iZ = std::max(0, iZ);
+    iZ = std::min(iZ, chunkedEntitiesHeight-1);
 
-	//calculate index in gameNearbyEntities that corresponds to iX, iZ
-	int realIndex = iX + iZ*chunkedEntitiesWidth;
+    //calculate index in gameNearbyEntities that corresponds to iX, iZ
+    int realIndex = iX + iZ*chunkedEntitiesWidth;
 
-	if (realIndex >= (int)gameChunkedEntities.size())
-	{
-		std::fprintf(stderr, "Error: Index out of bounds on gameNearbyEntities. THIS IS VERY BAD.\n");
-		std::fprintf(stdout, "	x = %f       z = %f\n", x, z);
-		std::fprintf(stdout, "	relativeX = %f      relativeZ = %f\n", relativeX, relativeZ);
-		std::fprintf(stdout, "	iX = %d        iZ = %d\n", iX, iZ);
-		std::fprintf(stdout, "	chunkedEntitiesWidth = %d             chunkedEntitiesHeight = %d\n", chunkedEntitiesWidth, chunkedEntitiesHeight);
-		std::fprintf(stdout, "	chunkedEntitiesChunkSize = %f\n", chunkedEntitiesChunkSize);
-		std::fprintf(stdout, "	realIndex = %d          gameChunkedEntities.size() = %d\n", realIndex, (int)gameChunkedEntities.size());
-		return 0;
-	}
+    if (realIndex >= (int)gameChunkedEntities.size())
+    {
+        std::fprintf(stderr, "Error: Index out of bounds on gameNearbyEntities. THIS IS VERY BAD.\n");
+        std::fprintf(stdout, "    x = %f       z = %f\n", x, z);
+        std::fprintf(stdout, "    relativeX = %f      relativeZ = %f\n", relativeX, relativeZ);
+        std::fprintf(stdout, "    iX = %d        iZ = %d\n", iX, iZ);
+        std::fprintf(stdout, "    chunkedEntitiesWidth = %d             chunkedEntitiesHeight = %d\n", chunkedEntitiesWidth, chunkedEntitiesHeight);
+        std::fprintf(stdout, "    chunkedEntitiesChunkSize = %f\n", chunkedEntitiesChunkSize);
+        std::fprintf(stdout, "    realIndex = %d          gameChunkedEntities.size() = %d\n", realIndex, (int)gameChunkedEntities.size());
+        return 0;
+    }
 
-	return realIndex;
+    return realIndex;
 }
 
 void Global::getNearbyEntities(float x, float z, int renderDistance, std::list<std::unordered_set<Entity*>*>* list)
 {
-	list->clear();
+    list->clear();
 
-	switch (renderDistance)
-	{
-		case 0:
-		{
-			list->push_back(&gameChunkedEntities[Global::getChunkIndex(x, z)]);
-			break;
-		}
+    switch (renderDistance)
+    {
+        case 0:
+        {
+            list->push_back(&gameChunkedEntities[Global::getChunkIndex(x, z)]);
+            break;
+        }
 
-		case 1:
-		{
-			std::unordered_set<int> chunkIdxs;
-			float w = chunkedEntitiesChunkSize/2;
-			chunkIdxs.insert(Global::getChunkIndex(x-w, z-w));
-			chunkIdxs.insert(Global::getChunkIndex(x+w, z-w));
-			chunkIdxs.insert(Global::getChunkIndex(x-w, z+w));
-			chunkIdxs.insert(Global::getChunkIndex(x+w, z+w));
-			for (int i : chunkIdxs)
-			{
-				list->push_back(&gameChunkedEntities[i]);
-			}
-			break;
-		}
+        case 1:
+        {
+            std::unordered_set<int> chunkIdxs;
+            float w = chunkedEntitiesChunkSize/2;
+            chunkIdxs.insert(Global::getChunkIndex(x-w, z-w));
+            chunkIdxs.insert(Global::getChunkIndex(x+w, z-w));
+            chunkIdxs.insert(Global::getChunkIndex(x-w, z+w));
+            chunkIdxs.insert(Global::getChunkIndex(x+w, z+w));
+            for (int i : chunkIdxs)
+            {
+                list->push_back(&gameChunkedEntities[i]);
+            }
+            break;
+        }
 
-		case 2:
-		{
-			std::unordered_set<int> chunkIdxs;
-			float w = chunkedEntitiesChunkSize;
-			chunkIdxs.insert(Global::getChunkIndex(x-w, z-w));
-			chunkIdxs.insert(Global::getChunkIndex(x+0, z-w));
-			chunkIdxs.insert(Global::getChunkIndex(x+w, z-w));
-			chunkIdxs.insert(Global::getChunkIndex(x-w, z+0));
-			chunkIdxs.insert(Global::getChunkIndex(x+0, z+0));
-			chunkIdxs.insert(Global::getChunkIndex(x+w, z+0));
-			chunkIdxs.insert(Global::getChunkIndex(x-w, z+w));
-			chunkIdxs.insert(Global::getChunkIndex(x+0, z+w));
-			chunkIdxs.insert(Global::getChunkIndex(x+w, z+w));
-			for (int i : chunkIdxs)
-			{
-				list->push_back(&gameChunkedEntities[i]);
-			}
-			break;
-		}
+        case 2:
+        {
+            std::unordered_set<int> chunkIdxs;
+            float w = chunkedEntitiesChunkSize;
+            chunkIdxs.insert(Global::getChunkIndex(x-w, z-w));
+            chunkIdxs.insert(Global::getChunkIndex(x+0, z-w));
+            chunkIdxs.insert(Global::getChunkIndex(x+w, z-w));
+            chunkIdxs.insert(Global::getChunkIndex(x-w, z+0));
+            chunkIdxs.insert(Global::getChunkIndex(x+0, z+0));
+            chunkIdxs.insert(Global::getChunkIndex(x+w, z+0));
+            chunkIdxs.insert(Global::getChunkIndex(x-w, z+w));
+            chunkIdxs.insert(Global::getChunkIndex(x+0, z+w));
+            chunkIdxs.insert(Global::getChunkIndex(x+w, z+w));
+            for (int i : chunkIdxs)
+            {
+                list->push_back(&gameChunkedEntities[i]);
+            }
+            break;
+        }
 
-		default:
-		{
-			std::fprintf(stderr, "Error: Render distance not out of range.\n");
-			break;
-		}
-	}
+        default:
+        {
+            std::fprintf(stderr, "Error: Render distance not out of range.\n");
+            break;
+        }
+    }
+}
+
+//Return a list of nearby entity sets. Returns either 1 chunk, 2 chunks, or 4 chunks,
+// depending on the minDistance value.
+void Global::getNearbyEntities(float x, float z, std::list<std::unordered_set<Entity*>*>* list, float minDistance)
+{
+    list->clear();
+
+    std::unordered_set<int> chunkIdxs;
+    float w = minDistance;
+    chunkIdxs.insert(Global::getChunkIndex(x-w, z-w));
+    chunkIdxs.insert(Global::getChunkIndex(x+w, z-w));
+    chunkIdxs.insert(Global::getChunkIndex(x-w, z+w));
+    chunkIdxs.insert(Global::getChunkIndex(x+w, z+w));
+    for (int i : chunkIdxs)
+    {
+        list->push_back(&gameChunkedEntities[i]);
+    }
 }
 
 void Global::recalculateEntityChunks(float minX, float maxX, float minZ, float maxZ, float chunkSize)
 {
-	if (gameChunkedEntities.size() != 0)
-	{
-		std::fprintf(stderr, "Error: Trying to recalculate entity chunks when gameChunkedEntities is not 0.\n");
-		return;
-	}
+    if (gameChunkedEntities.size() != 0)
+    {
+        std::fprintf(stderr, "Error: Trying to recalculate entity chunks when gameChunkedEntities is not 0.\n");
+        return;
+    }
 
-	float xDiff = maxX - minX;
-	float zDiff = maxZ - minZ;
+    float xDiff = maxX - minX;
+    float zDiff = maxZ - minZ;
 
-	int newWidth  = (int)(xDiff/chunkSize) + 1;
-	int newHeight = (int)(zDiff/chunkSize) + 1;
+    int newWidth  = (int)(xDiff/chunkSize) + 1;
+    int newHeight = (int)(zDiff/chunkSize) + 1;
 
-	int count = newWidth*newHeight;
-	for (int i = 0; i < count; i++)
-	{
-		std::unordered_set<Entity*> set;
-		gameChunkedEntities.push_back(set);
-	}
+    int count = newWidth*newHeight;
+    for (int i = 0; i < count; i++)
+    {
+        std::unordered_set<Entity*> set;
+        gameChunkedEntities.push_back(set);
+    }
 
-	chunkedEntitiesMinX = minX;
-	chunkedEntitiesMinZ = minZ;
-	chunkedEntitiesChunkSize = chunkSize;
-	chunkedEntitiesWidth = newWidth;
-	chunkedEntitiesHeight = newHeight;
+    chunkedEntitiesMinX = minX;
+    chunkedEntitiesMinZ = minZ;
+    chunkedEntitiesChunkSize = chunkSize;
+    chunkedEntitiesWidth = newWidth;
+    chunkedEntitiesHeight = newHeight;
 }
 
 void Main_addChunkedEntity(Entity* entityToAdd)
 {
-	gameChunkedEntitiesToAdd.push_back(entityToAdd);
+    gameChunkedEntitiesToAdd.push_back(entityToAdd);
 }
 
 void Main_deleteChunkedEntity(Entity* entityToAdd)
 {
-	gameChunkedEntitiesToDelete.push_back(entityToAdd);
+    gameChunkedEntitiesToDelete.push_back(entityToAdd);
 }
 
 void Main_deleteAllChunkedEntities()
 {
-	//Make sure no entities get left behind in transition
-	for (Entity* entityToAdd : gameChunkedEntitiesToAdd)
-	{
-		delete entityToAdd; INCR_DEL("Entity");
-	}
-	gameChunkedEntitiesToAdd.clear();
+    //Make sure no entities get left behind in transition
+    for (Entity* entityToAdd : gameChunkedEntitiesToAdd)
+    {
+        delete entityToAdd; INCR_DEL("Entity");
+    }
+    gameChunkedEntitiesToAdd.clear();
 
-	gameChunkedEntitiesToDelete.clear();
+    gameChunkedEntitiesToDelete.clear();
 
-	for (std::unordered_set<Entity*> set : gameChunkedEntities)
-	{
-		for (Entity* e : set)
-		{
-			delete e; INCR_DEL("Entity");
-		}
-		set.clear();
-	}
-	gameChunkedEntities.clear();
+    for (std::unordered_set<Entity*> set : gameChunkedEntities)
+    {
+        for (Entity* e : set)
+        {
+            delete e; INCR_DEL("Entity");
+        }
+        set.clear();
+    }
+    gameChunkedEntities.clear();
 }
 
 void Global::createTitleCard()
 {
-	ParticleMaster::deleteAllParticles();
-	GuiManager::clearGuisToRender();
+    Global::startStageTimer = 1.0f;
 
-	Vector3f vel(0,0,0);
-	ParticleMaster::createParticle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &vel, 0, 1.0f, 0.0f, 50.0f, 0, true, false, 1.0f);
-	GuiManager::addGuiToRender(GuiTextureResources::textureBlueLine);
+    ParticleMaster::deleteAllParticles();
+    GuiManager::clearGuisToRender();
 
-	if (titleCardLevelName != nullptr)
-	{
-		titleCardLevelName->deleteMe();
-		delete titleCardLevelName; INCR_DEL("GUIText");
-		titleCardLevelName = nullptr;
-	}
-	if (titleCardMission != nullptr)
-	{
-		titleCardMission->deleteMe();
-		delete titleCardMission; INCR_DEL("GUIText");
-		titleCardMission = nullptr;
-	}
-	if (titleCardMissionDescription != nullptr)
-	{
-		titleCardMissionDescription->deleteMe();
-		delete titleCardMissionDescription; INCR_DEL("GUIText");
-		titleCardMissionDescription = nullptr;
-	}
+    Vector3f vel(0,0,0);
+    ParticleMaster::createParticle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &vel, 0, 1.0f, 0.0f, 50.0f, 0, true, false, 1.0f, false);
+    GuiManager::addGuiToRender(GuiTextureResources::textureBlueLine);
 
-	titleCardLevelName          = new GUIText(Global::levelNameDisplay, 0.09f, Global::fontVipnagorgialla, 0.5f, 0.6f, 4, true); INCR_NEW("GUIText");
-	titleCardMission            = new GUIText("Mission "+std::to_string(Global::gameMissionNumber+1)+":", 0.075f, Global::fontVipnagorgialla, 0.5f, 0.7f, 4, true); INCR_NEW("GUIText");
-	titleCardMissionDescription = new GUIText(Global::gameMissionDescription, 0.06f, Global::fontVipnagorgialla, 0.5f, 0.8f, 4, true); INCR_NEW("GUIText");
+    Global::clearTitleCard();
+
+    titleCardLevelName          = new GUIText(Global::levelNameDisplay, 0.09f, Global::fontVipnagorgialla, 0.5f, 0.6f, 4, true); INCR_NEW("GUIText");
+    titleCardMission            = new GUIText("Mission "+std::to_string(Global::gameMissionNumber+1)+":", 0.075f, Global::fontVipnagorgialla, 0.5f, 0.7f, 4, true); INCR_NEW("GUIText");
+    //titleCardMissionDescription = new GUIText(Global::gameMissionDescription, 0.06f, Global::fontVipnagorgialla, 0.5f, 0.8f, 4, true); INCR_NEW("GUIText");
+    titleCardMissionDescription = new GUIText(Global::gameMissionDescription, 0.06f, Global::fontVipnagorgialla, 0.0f, 0.8f, 1.0f, true, false, true); INCR_NEW("GUIText");
+    
+    //GUIText::GUIText(std::string text, float fontSize, FontType* font, float x, float y, float maxLineLength,
+    //bool centered, bool rightAligned, bool visible)
 }
 
 void Global::clearTitleCard()
 {
-	if (titleCardLevelName != nullptr)
-	{
-		titleCardLevelName->deleteMe();
-		delete titleCardLevelName; INCR_DEL("GUIText");
-		titleCardLevelName = nullptr;
-	}
-	if (titleCardMission != nullptr)
-	{
-		titleCardMission->deleteMe();
-		delete titleCardMission; INCR_DEL("GUIText");
-		titleCardMission = nullptr;
-	}
-	if (titleCardMissionDescription != nullptr)
-	{
-		titleCardMissionDescription->deleteMe();
-		delete titleCardMissionDescription; INCR_DEL("GUIText");
-		titleCardMissionDescription = nullptr;
-	}
+    if (titleCardLevelName != nullptr)
+    {
+        titleCardLevelName->deleteMe();
+        delete titleCardLevelName; INCR_DEL("GUIText");
+        titleCardLevelName = nullptr;
+    }
+    if (titleCardMission != nullptr)
+    {
+        titleCardMission->deleteMe();
+        delete titleCardMission; INCR_DEL("GUIText");
+        titleCardMission = nullptr;
+    }
+    if (titleCardMissionDescription != nullptr)
+    {
+        titleCardMissionDescription->deleteMe();
+        delete titleCardMissionDescription; INCR_DEL("GUIText");
+        titleCardMissionDescription = nullptr;
+    }
 }
 
 std::unordered_map<std::string, int> heapObjects;

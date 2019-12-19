@@ -37,20 +37,20 @@ Rocket::Rocket()
 
 }
 
-Rocket::Rocket(int point1ID, int point2ID)
+Rocket::Rocket(Vector3f* point1, Vector3f* point2)
 {
-    //get the positions of the start and end points
-    pointPositionStart = getPointPosition(point1ID);
-    pointPositionEnd = getPointPosition(point2ID);
+    //set the positions of the start and end points
+    pointPositionStart.set(point1);
+    pointPositionEnd.set(point2);
 
     //set some variables to their initial values
     position = pointPositionStart;
-	canActivate = true;
-	isActive = false;
-	percentOfPathCompleted = 0;
-	startupTimer = STARTUP_TIMER_INITIAL_VALUE;
+    canActivate = true;
+    isActive = false;
+    percentOfPathCompleted = 0;
+    startupTimer = STARTUP_TIMER_INITIAL_VALUE;
 
-	rocketAppearSoundPlayed = false; //these are outside that function so it can also be used for the end of the rocket's launch
+    rocketAppearSoundPlayed = false; //these are outside that function so it can also be used for the end of the rocket's launch
     visible = true;
 
     setupRocketBase();
@@ -101,6 +101,7 @@ void Rocket::step()
 		isActive = true;
 		canActivate = false;
 
+        //updates some player variables to ensure the rocket movement goes smoothly
 		Global::gameMainPlayer->grabRocket();
 
 		playRocketLaunchSoundStart();
@@ -109,6 +110,9 @@ void Rocket::step()
 	if (isActive)
 	{
 		playRocketLaunchSoundLoop();
+
+        //updates some player variables to ensure the rocket movement goes smoothly
+        Global::gameMainPlayer->grabRocket();
 
 		//Rocket state disables player movement based on velocity, velocity here is set purely for camera reasons
 		Global::gameMainPlayer->vel.set(
@@ -184,47 +188,29 @@ void Rocket::loadStaticModels()
 
 void Rocket::deleteStaticModels()
 {
-	#ifdef DEV_MODE
-	std::fprintf(stdout, "Deleting Rocket static models...\n");
-	#endif
+    #ifdef DEV_MODE
+    std::fprintf(stdout, "Deleting Rocket static models...\n");
+    #endif
 
-	Entity::deleteModels(&Rocket::modelsRocket);
-	Entity::deleteModels(&Rocket::modelsBase);
-	Entity::deleteCollisionModel(&Rocket::cmBase);
+    Entity::deleteModels(&Rocket::modelsRocket);
+    Entity::deleteModels(&Rocket::modelsBase);
+
+    Entity::deleteCollisionModel(&Rocket::cmBase);
 }
 
 //functions used for the constructor start here
 
-Vector3f Rocket::getPointPosition(int pointID)
-{
-    Vector3f pointPos;
-    extern std::list<Entity*> gameEntitiesToAdd;
-	for (auto e : gameEntitiesToAdd)
-	{
-		if (e->isPoint())
-		{
-			Point* thisPoint = (Point*)e;
-			if (thisPoint->getID() == pointID)
-			{
-				pointPos = thisPoint->getPosition();
-                break;
-			}
-		}
-	}
-    return pointPos;
-}
-
 void Rocket::setupRocketBase()
 {
     base = new Body(&Rocket::modelsBase); INCR_NEW("Entity");
-	base->setVisible(true);
-	Main_addEntity(base);
-	base->setPosition(&position);
+    base->setVisible(true);
+    Main_addEntity(base);
+    base->setPosition(&position);
 
-	collideModelOriginal = Rocket::cmBase;
-	collideModelTransformed = loadCollisionModel("Models/Objects/Rocket/", "RocketPlatformCollision");
-	CollisionChecker::addCollideModel(collideModelTransformed);
-	updateCollisionModel();
+    collideModelOriginal = Rocket::cmBase;
+    collideModelTransformed = loadCollisionModel("Models/Objects/Rocket/", "RocketPlatformCollision");
+    CollisionChecker::addCollideModel(collideModelTransformed);
+    updateCollisionModel();
 }
 
 float Rocket::calculateRocketYRotation()
@@ -265,30 +251,30 @@ bool Rocket::playerWithinRocketHitbox()
 
 void Rocket::makeDirtParticles(float particlePositionOffset)
 {
-	int dirtToMake = 5;
-	while (dirtToMake > 0)
-		{
-			//put the particle in the right position
-			Vector3f particlePosition(getX() + (rocketPathPositionDifferenceNormalized.x * particlePositionOffset),
-						 getY() + (rocketPathPositionDifferenceNormalized.y * particlePositionOffset),
-						 getZ() + (rocketPathPositionDifferenceNormalized.z * particlePositionOffset));
+    int dirtToMake = 5;
+    while (dirtToMake > 0)
+    {
+        //put the particle in the right position
+        Vector3f particlePosition(getX() + (rocketPathPositionDifferenceNormalized.x * particlePositionOffset),
+                                  getY() + (rocketPathPositionDifferenceNormalized.y * particlePositionOffset),
+                                  getZ() + (rocketPathPositionDifferenceNormalized.z * particlePositionOffset));
 
-			//setup the particle velocities so they fly in different directions to make a ball
-			Vector3f particleVelocity(rocketPathPositionDifferenceNormalized);
-			particleVelocity.scale(-3);
-			particleVelocity.x +=   (Maths::random() - 0.5f);
-			particleVelocity.y +=   (Maths::random() - 0.5f);
-			particleVelocity.z +=   (Maths::random() - 0.5f);
-			particlePosition.x += 4*(Maths::random() - 0.5f);
-			particlePosition.y += 4*(Maths::random() - 0.5f);
-			particlePosition.z += 4*(Maths::random() - 0.5f);
+        //setup the particle velocities so they fly in different directions to make a ball
+        Vector3f particleVelocity(rocketPathPositionDifferenceNormalized);
+        particleVelocity.scale(-3);
+        particleVelocity.x +=   (Maths::random() - 0.5f);
+        particleVelocity.y +=   (Maths::random() - 0.5f);
+        particleVelocity.z +=   (Maths::random() - 0.5f);
+        particlePosition.x += 4*(Maths::random() - 0.5f);
+        particlePosition.y += 4*(Maths::random() - 0.5f);
+        particlePosition.z += 4*(Maths::random() - 0.5f);
 
-			//create the particle using these calculated values
-			ParticleMaster::createParticle(ParticleResources::textureDust, &particlePosition, &particleVelocity, 0.08f, 60, 0, 4 * Maths::random() + 0.5f, 0, false, true, 1.0f);
-			ParticleMaster::createParticle(ParticleResources::textureDust, &particlePosition, &particleVelocity, 0.08f, 60, 0, 4 * Maths::random() + 0.5f, 0, false, true, 1.0f);
+        //create the particle using these calculated values
+        ParticleMaster::createParticle(ParticleResources::textureDust, &particlePosition, &particleVelocity, 0.08f, 60, 0, 4 * Maths::random() + 0.5f, 0, false, true, 1.0f, true);
+        ParticleMaster::createParticle(ParticleResources::textureDust, &particlePosition, &particleVelocity, 0.08f, 60, 0, 4 * Maths::random() + 0.5f, 0, false, true, 1.0f, true);
 
-			dirtToMake--;
-		}
+        dirtToMake--;
+    }
 }
 
 void Rocket::playRocketLaunchSoundStart()

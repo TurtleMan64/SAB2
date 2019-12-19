@@ -13,31 +13,31 @@ std::list<TexturedModel*> StagePass3::models;
 
 StagePass3::StagePass3()
 {
-	
+    
 }
 
 StagePass3::StagePass3(const char* objFolder, const char* objFilename)
 {
-	position.x = 0;
-	position.y = 0;
-	position.z = 0;
-	rotX = 0;
-	rotY = 0;
-	rotZ = 0;
-	scale = 1;
+    position.x = 0;
+    position.y = 0;
+    position.z = 0;
+    rotX = 0;
+    rotY = 0;
+    rotZ = 0;
+    scale = 1;
     renderOrder = 2;
-	visible = true;
-	
-	if (StagePass3::models.size() == 0)
-	{
-		#ifdef DEV_MODE
-		std::fprintf(stdout, "Loading StagePass3 static models...\n");
-		#endif
+    visible = true;
+    
+    if (StagePass3::models.size() == 0)
+    {
+        #ifdef DEV_MODE
+        std::fprintf(stdout, "Loading StagePass3 static models...\n");
+        #endif
 
-		loadModel(&StagePass3::models, objFolder, objFilename);
-	}
-	
-	updateTransformationMatrix();
+        loadModel(&StagePass3::models, objFolder, objFilename);
+    }
+    
+    updateTransformationMatrix();
 }
 
 void StagePass3::step()
@@ -47,14 +47,14 @@ void StagePass3::step()
 
 std::list<TexturedModel*>* StagePass3::getModels()
 {
-	return &StagePass3::models;
+    return &StagePass3::models;
 }
 
 void StagePass3::deleteStaticModels()
 {
-	#ifdef DEV_MODE
-	std::fprintf(stdout, "Deleting StagePass3 static models...\n");
-	#endif
+    #ifdef DEV_MODE
+    std::fprintf(stdout, "Deleting StagePass3 static models...\n");
+    #endif
 
-	Entity::deleteModels(&StagePass3::models);
+    Entity::deleteModels(&StagePass3::models);
 }

@@ -10,6 +10,7 @@
 #include "../toolbox/getline.h"
 #include "../toolbox/split.h"
 #include "maniamightymodel.h"
+#include "maniasonicmodel.h"
 #include "../menu/timer.h"
 #include "../toolbox/maths.h"
 
@@ -17,6 +18,10 @@
 #include <cstring>
 #include <fstream>
 
+GhostFrame::GhostFrame()
+{
+
+}
 
 GhostFrame::GhostFrame(float time, int animIndex, float animTime, Vector3f* pos, Vector4f* rot, Vector3f* up)
 {
@@ -36,6 +41,23 @@ GhostFrame::GhostFrame(GhostFrame* other)
     pos.set(&other->pos);
     rot.set(&other->rot);
     up.set(&other->up);
+}
+
+std::string GhostFrame::toString()
+{
+    return std::to_string(time)      + " " +
+           std::to_string(animIndex) + " " +
+           std::to_string(animTime)  + " " +
+           std::to_string(pos.x)     + " " +
+           std::to_string(pos.y)     + " " +
+           std::to_string(pos.z)     + " " +
+           std::to_string(rot.x)     + " " +
+           std::to_string(rot.y)     + " " +
+           std::to_string(rot.z)     + " " +
+           std::to_string(rot.w)     + " " +
+           std::to_string(up.x)      + " " +
+           std::to_string(up.y)      + " " +
+           std::to_string(up.z);
 }
 
 GhostFrame GhostFrame::interpolate(GhostFrame* f1, GhostFrame* f2, float time)
@@ -81,51 +103,88 @@ RaceGhost::RaceGhost()
 
 }
 
-RaceGhost::RaceGhost(char* filePath)
+RaceGhost::RaceGhost(const char* filePath, int missionNumber)
 {
     visible = false;
 
     std::ifstream file(Global::pathToEXE + filePath);
-	if (!file.is_open())
-	{
-		std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE + filePath).c_str());
-		file.close();
-	}
-	else
-	{
-		std::string line;
 
-		while (!file.eof())
-		{
-			getlineSafe(file, line);
+    if (missionNumber == -1) //player made ghosts
+    {
+        bool deleteMe = false;
 
-			char lineBuf[512];
-			memcpy(lineBuf, line.c_str(), line.size()+1);
+        if (!file.is_open()) //no player ghost yet
+        {
+            deleteMe = true;
+            file.close();
+        }
+        
+        //some missions, dont spawn ghost (like treasure hunting (todo))
 
-			int splitLength = 0;
-			char** lineSplit = split(lineBuf, ' ', &splitLength);
+        if (deleteMe)
+        {
+            Main_deleteEntity(this);
+            return;
+        }
+    }
+    else
+    {
+        if (!file.is_open())
+        {
+            std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE + filePath).c_str());
+            file.close();
+            Main_deleteEntity(this);
+            return;
+        }
 
-			if (splitLength == 13)
-			{
-                float time     = std::stof(lineSplit[0]);
-                int animIndex  = std::stoi(lineSplit[1]);
-                float animTime = std::stof(lineSplit[2]);
-				Vector3f pos(std::stof(lineSplit[ 3]), std::stof(lineSplit[ 4]), std::stof(lineSplit[ 5]));
-				Vector4f rot(std::stof(lineSplit[ 6]), std::stof(lineSplit[ 7]), std::stof(lineSplit[ 8]), std::stof(lineSplit[9]));
-                Vector3f up (std::stof(lineSplit[10]), std::stof(lineSplit[11]), std::stof(lineSplit[12]));
+        if (Global::gameMissionNumber != missionNumber) //only show up on the correct mission
+        {
+            file.close();
+            Main_deleteEntity(this);
+            return;
+        }
+    }
 
-                frames.push_back(GhostFrame(time, animIndex, animTime, &pos, &rot, &up));
-			}
-			free(lineSplit);
-		}
-		file.close();
-	}
+    std::string line;
 
-	GhostFrame* lastFrame = &frames[frames.size()-1];
+    while (!file.eof())
+    {
+        getlineSafe(file, line);
+
+        char lineBuf[512];
+        memcpy(lineBuf, line.c_str(), line.size()+1);
+
+        int splitLength = 0;
+        char** lineSplit = split(lineBuf, ' ', &splitLength);
+
+        if (splitLength == 13)
+        {
+            float time     = std::stof(lineSplit[0]);
+            int animIndex  = std::stoi(lineSplit[1]);
+            float animTime = std::stof(lineSplit[2]);
+            Vector3f pos(std::stof(lineSplit[ 3]), std::stof(lineSplit[ 4]), std::stof(lineSplit[ 5]));
+            Vector4f rot(std::stof(lineSplit[ 6]), std::stof(lineSplit[ 7]), std::stof(lineSplit[ 8]), std::stof(lineSplit[9]));
+            Vector3f up (std::stof(lineSplit[10]), std::stof(lineSplit[11]), std::stof(lineSplit[12]));
+
+            frames.push_back(GhostFrame(time, animIndex, animTime, &pos, &rot, &up));
+        }
+        free(lineSplit);
+    }
+    file.close();
+
+    GhostFrame* lastFrame = &frames[frames.size()-1];
     averageFramesPerSecond = frames.size()/lastFrame->time;
 
-    myModel = new ManiaMightyModel; INCR_NEW("Entity");
-	Main_addEntity(myModel);
+    if (missionNumber == -1) //player ghost
+    {
+        myModel = new ManiaSonicModel; INCR_NEW("Entity");
+        myModel->baseColour.set(2, 2, 2);
+    }
+    else
+    {
+        myModel = new ManiaMightyModel; INCR_NEW("Entity");
+    }
+    Main_addEntity(myModel);
 }
 
 
@@ -145,7 +204,7 @@ void RaceGhost::step()
             f->pos.x, f->pos.y, f->pos.z,
             f->rot.x, f->rot.y, f->rot.z, f->rot.w,
             &f->up);
-	    myModel->animate(f->animIndex, f->animTime);
+        myModel->animate(f->animIndex, f->animTime);
     }
     else
     {
@@ -195,29 +254,31 @@ void RaceGhost::step()
             interpFrame.pos.x, interpFrame.pos.y, interpFrame.pos.z,
             interpFrame.rot.x, interpFrame.rot.y, interpFrame.rot.z, interpFrame.rot.w,
             &interpFrame.up);
-	    myModel->animate(interpFrame.animIndex, interpFrame.animTime);
+        myModel->animate(interpFrame.animIndex, interpFrame.animTime);
     }
 }
 
 std::list<TexturedModel*>* RaceGhost::getModels()
 {
-	return nullptr;
+    return nullptr;
 }
 
 void RaceGhost::loadStaticModels()
 {
-	#ifdef DEV_MODE
-	std::fprintf(stdout, "Loading RaceGhost static models...\n");
-	#endif
+    #ifdef DEV_MODE
+    std::fprintf(stdout, "Loading RaceGhost static models...\n");
+    #endif
 
     ManiaMightyModel::loadStaticModels();
+    ManiaSonicModel::loadStaticModels();
 }
 
 void RaceGhost::deleteStaticModels()
 {
-	#ifdef DEV_MODE
-	std::fprintf(stdout, "Deleting RaceGhost static models...\n");
-	#endif
+    #ifdef DEV_MODE
+    std::fprintf(stdout, "Deleting RaceGhost static models...\n");
+    #endif
 
-	ManiaMightyModel::deleteStaticModels();
+    ManiaMightyModel::deleteStaticModels();
+    ManiaSonicModel::deleteStaticModels();
 }

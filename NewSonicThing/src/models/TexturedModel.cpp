@@ -12,35 +12,35 @@ TexturedModel::TexturedModel()
 
 TexturedModel::TexturedModel(RawModel* model, ModelTexture* texture)
 {
-	//Copy over the RawModel data
-	this->rawModel.setVaoID(model->getVaoID());
-	this->rawModel.setVertexCount(model->getVertexCount());
+    //Copy over the RawModel data
+    this->rawModel.setVaoID(model->getVaoID());
+    this->rawModel.setVertexCount(model->getVertexCount());
 
-	std::list<GLuint>* myVBOs = this->rawModel.getVboIDs();
-	std::list<GLuint>* theirVBOs = model->getVboIDs();
+    std::list<GLuint>* myVBOs = this->rawModel.getVboIDs();
+    std::list<GLuint>* theirVBOs = model->getVboIDs();
 
-	for (GLuint vbo : (*theirVBOs))
-	{
-		myVBOs->push_back(vbo);
-	}
+    for (GLuint vbo : (*theirVBOs))
+    {
+        myVBOs->push_back(vbo);
+    }
 
-	//Copy over the ModelTexture data
+    //Copy over the ModelTexture data
     this->texture = ModelTexture(texture);
     this->texture.addMeToAnimationsSetIfNeeded();
 }
 
 RawModel* TexturedModel::getRawModel()
 {
-	return &rawModel;
+    return &rawModel;
 }
 
 ModelTexture* TexturedModel::getTexture()
 {
-	return &texture;
+    return &texture;
 }
 
 void TexturedModel::deleteMe()
 {
-	rawModel.deleteMe();
-	texture.deleteMe();
+    rawModel.deleteMe();
+    texture.deleteMe();
 }

@@ -13,10 +13,10 @@ class QuadTreeNode;
 class CollisionChecker
 {
 private:
-	static Vector3f collidePosition;
-	static Triangle3D* collideTriangle;
-	static std::list<CollisionModel*> collideModels;
-	static bool checkPlayer;
+    static Vector3f collidePosition;
+    static Triangle3D* collideTriangle;
+    static std::list<CollisionModel*> collideModels;
+    static bool checkPlayer;
 
     //given two coords, populates a set with all of the quadtree nodes
     // that the line can intersect with
@@ -26,51 +26,51 @@ private:
         float x1, float z1, float x2, float z2);
 
 public:
-	static bool debug;
+    static bool debug;
 
 public:
-	static void initChecker();
+    static void initChecker();
 
-	// Makes the next collision check set which collision
-	// model the player has collided with, and sets that model
-	// to touching the player.
-	static void setCheckPlayer();
+    // Makes the next collision check set which collision
+    // model the player has collided with, and sets that model
+    // to touching the player.
+    static void setCheckPlayer();
 
-	// Sets all collision models to not have the player on them
-	static void falseAlarm();
-
-	static bool checkCollision(
-		float px1, float py1, float pz1,
-		float px2, float py2, float pz2);
+    // Sets all collision models to not have the player on them
+    static void falseAlarm();
 
     static bool checkCollision(
-		Vector3f* p1, Vector3f* p2);
+        float px1, float py1, float pz1,
+        float px2, float py2, float pz2);
 
-	static bool checkPointInTriangle3D(
-		float checkx, float checky, float checkz,
-		Triangle3D* tri);
+    static bool checkCollision(
+        Vector3f* p1, Vector3f* p2);
 
-	static bool checkPointInTriangle2D(
-		float x,  float y,
-		float x1, float y1,
-		float x2, float y2,
-		float x3, float y3);
+    static bool checkPointInTriangle3D(
+        float checkx, float checky, float checkz,
+        Triangle3D* tri);
 
-	//delete's all collide models
-	static void deleteAllCollideModels();
+    static bool checkPointInTriangle2D(
+        float x,  float y,
+        float x1, float y1,
+        float x2, float y2,
+        float x3, float y3);
 
-	//use this when reloading the same level - then you dont have to regenerate the quad trees
-	static void deleteAllCollideModelsExceptQuadTrees();
+    //delete's all collide models
+    static void deleteAllCollideModels();
 
-	static void deleteCollideModel(CollisionModel* cm);
+    //use this when reloading the same level - then you dont have to regenerate the quad trees
+    static void deleteAllCollideModelsExceptQuadTrees();
 
-	static void addCollideModel(CollisionModel* cm);
+    static void deleteCollideModel(CollisionModel* cm);
 
-	//based off of the last collision check
-	static Triangle3D* getCollideTriangle();
+    static void addCollideModel(CollisionModel* cm);
 
-	//based off of the last collision check
-	static Vector3f* getCollidePosition();
+    //based off of the last collision check
+    static Triangle3D* getCollideTriangle();
+
+    //based off of the last collision check
+    static Vector3f* getCollidePosition();
 };
 
 #endif

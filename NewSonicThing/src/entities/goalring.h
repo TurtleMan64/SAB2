@@ -3,6 +3,7 @@
 
 class TexturedModel;
 class Dummy;
+class Source;
 
 #include <list>
 #include "entity.h"
@@ -10,21 +11,23 @@ class Dummy;
 class GoalRing : public Entity
 {
 private:
-	static std::list<TexturedModel*> modelsRing;
-	static std::list<TexturedModel*> modelsText;
+    static std::list<TexturedModel*> modelsRing;
+    static std::list<TexturedModel*> modelsText;
 
-	Dummy* text;
+    Dummy* text = nullptr;
+    Source* sourceRing = nullptr;
 
 public:
-	GoalRing();
-	GoalRing(float x, float y, float z);
+    GoalRing();
+    GoalRing(float x, float y, float z);
+    ~GoalRing();
 
-	void step();
+    void step();
 
-	std::list<TexturedModel*>* getModels();
+    std::list<TexturedModel*>* getModels();
 
-	static void loadStaticModels();
+    static void loadStaticModels();
 
-	static void deleteStaticModels();
+    static void deleteStaticModels();
 };
 #endif

@@ -6,19 +6,19 @@ class Fbo;
 class ImageRenderer 
 {
 private:
-	Fbo* fbo = nullptr;
-	
+    Fbo* fbo = nullptr;
+    
 public:
-	ImageRenderer(int width, int height);
-	
-	ImageRenderer();
-	
-	void renderQuad();
-	
-	int getOutputTexture();
+    ImageRenderer(int width, int height);
+    
+    ImageRenderer();
+    
+    void renderQuad();
+    
+    int getOutputTexture();
 
     void resize(int newWidth, int newHeight);
-	
-	void cleanUp();
+    
+    void cleanUp();
 };
 #endif

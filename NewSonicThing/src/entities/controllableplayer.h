@@ -4,8 +4,8 @@
 #include "entity.h"
 #include "../toolbox/vector.h"
 
-//class ShieldMagnet;
-//class ShieldGreen;
+class ShieldMagnet;
+class ShieldGreen;
 
 class ControllablePlayer : public Entity
 {
@@ -22,20 +22,20 @@ public:
     bool onGround = false;
     float canMoveTimer = 0.0f;
 
-	//Functions that every player must be able to handle in some way
+    //Functions that every player must be able to handle in some way
 public:
 
-	//virtual void setCameraAngles(float newYaw, float newPitch);
+    //virtual void setCameraAngles(float newYaw, float newPitch);
 
-	//virtual void setCameraTargetYaw(float yaw);
+    //virtual void setCameraTargetYaw(float yaw);
 
-	//virtual void setCameraTargetPitch(float pitch);
+    //virtual void setCameraTargetPitch(float pitch);
 
-	//virtual void increaseGroundSpeed(float dx, float dz);
+    //virtual void increaseGroundSpeed(float dx, float dz);
 
-	//virtual float getSpeed();
+    //virtual float getSpeed();
 
-	virtual void goUp();
+    virtual void goUp();
 
     virtual void jump();
 
@@ -49,120 +49,124 @@ public:
 
     virtual void refreshCamera();
 
-	virtual void setCanMoveTimer(int newMoveTimer);
+    virtual void setCanMoveTimer(int newMoveTimer);
 
-	//virtual void setGroundSpeed(float newXspd, float newZspd);
+    //virtual void setGroundSpeed(float newXspd, float newZspd);
 
-	//virtual float getXVelGround();
+    //virtual float getXVelGround();
 
-	//virtual float getZVelGround();
+    //virtual float getZVelGround();
 
-	//virtual float getxVel();
+    //virtual float getxVel();
 
-	//virtual void setxVel(float xVel);
+    //virtual void setxVel(float xVel);
 
-	//virtual float getyVel();
+    //virtual float getyVel();
 
-	//virtual void setyVel(float yVel);
+    //virtual void setyVel(float yVel);
 
-	//virtual float getzVel();
+    //virtual float getzVel();
 
-	//virtual void setzVel(float zVel);
+    //virtual void setzVel(float zVel);
 
-	//virtual void setxVelAir(float xVelAir);
+    //virtual void setxVelAir(float xVelAir);
 
-	//virtual float getXVelAir();
+    //virtual float getXVelAir();
 
-	//virtual void setzVelAir(float zVelAir);
+    //virtual void setzVelAir(float zVelAir);
 
-	//virtual float getZVelAir();
+    //virtual float getZVelAir();
 
-	virtual void setHoverTimer(float newTime);
+    virtual void setHoverTimer(float newTime);
 
-	virtual float getHoverTimer();
+    virtual float getHoverTimer();
 
-	//virtual void setOnPlane(bool on);
+    //virtual void setOnPlane(bool on);
 
-	//virtual float getHitboxHorizontal();
+    //virtual float getHitboxHorizontal();
 
-	//virtual float getHitboxVertical();
+    //virtual float getHitboxVertical();
 
-	//virtual void stopMoving();
+    //virtual void stopMoving();
 
-	virtual void setInWater(float newWaterHeight);
+    virtual void setInWater(float newWaterHeight);
 
-	virtual void takeDamage(Vector3f* damageSource);
+    virtual void takeDamage(Vector3f* damageSource);
 
-	virtual void rebound(Vector3f* source);
+    virtual void rebound(Vector3f* source);
 
-	virtual bool isVulnerable();
+    virtual bool isVulnerable();
 
-	virtual void die();
+    virtual bool canDealDamage();
 
-	//virtual Vector3f getOverallVel();
+    virtual void die();
 
-	//virtual float getSpindashSpeed();
+    //virtual Vector3f getOverallVel();
 
-	//virtual void debugAdjustCamera();
+    //virtual float getSpindashSpeed();
 
-	//virtual void boostMe(float amount);
+    //virtual void debugAdjustCamera();
 
-	//virtual void setDisplacement(float x, float y, float z);
+    //virtual void boostMe(float amount);
 
-	//virtual void setGravity(float newGrav);
+    //virtual void setDisplacement(float x, float y, float z);
 
-	virtual bool isDying();
+    //virtual void setGravity(float newGrav);
 
-	//virtual void setOnPlanePrevious(bool on);
+    virtual bool isDying();
 
-	//virtual int getSpindashTimer();
+    //virtual void setOnPlanePrevious(bool on);
 
-	//virtual void setSpindashTimer(int newTimer);
+    //virtual int getSpindashTimer();
 
-	//virtual bool isChargingSpindash();
+    //virtual void setSpindashTimer(int newTimer);
 
-	//virtual void setIsBall(bool newisBall);
+    //virtual bool isChargingSpindash();
 
-	//returns the speed player goes after releasing a spindash
-	//virtual float calculateSpindashSpeed(int spindashCharge);
+    //virtual void setIsBall(bool newisBall);
 
-	//virtual bool isOnGround();
+    //returns the speed player goes after releasing a spindash
+    //virtual float calculateSpindashSpeed(int spindashCharge);
 
-	//Returns the normal of the triangle that the player has collided with
-	//virtual Vector3f* getCurrNorm();
+    //virtual bool isOnGround();
 
-	//Returns the center position of where the player is being drawn.
-	virtual Vector3f getCenterPosition();
+    //Returns the normal of the triangle that the player has collided with
+    //virtual Vector3f* getCurrNorm();
 
-	//virtual ShieldMagnet* getShieldMagnet();
+    //Returns the center position of where the player is being drawn.
+    virtual Vector3f getCenterPosition();
 
-	//virtual void setShieldMagnet(ShieldMagnet* newMagnet);
+    virtual ShieldMagnet* getShieldMagnet();
 
-	//virtual ShieldGreen* getShieldGreen();
+    virtual void setShieldMagnet(ShieldMagnet* newMagnet);
 
-	//virtual void setShieldGreen(ShieldGreen* newGreen);
+    virtual ShieldGreen* getShieldGreen();
 
-	//virtual int getDiggingTimer();
+    virtual void setShieldGreen(ShieldGreen* newGreen);
 
-	//virtual void increaseCombo();
+    //virtual int getDiggingTimer();
 
-	//virtual void setInvincibleTimer(int newTimer);
+    virtual void increaseCombo();
 
-	//virtual void setSpeedshoesTimer(int newTimer);
+    virtual void setInvincibleTimer(float newTimer);
 
-	virtual void grabRocket();
+    virtual void setSpeedshoesTimer(float newTimer);
+
+    virtual void grabRocket();
 
     virtual void releaseRocket();
 
-	virtual void grabPulley();
+    virtual void grabPulley();
 
 	virtual void releasePulley();
 
-    virtual void hitSpring(Vector3f* direction, float power, float lockInputTime);
+    virtual void hitSpring(Vector3f* direction, float power, float lockInputTime, bool resetsCamera);
 
     virtual void hitSpringTriple(Vector3f* direction, float power, float lockInputTime);
 
-	virtual void setVelocityMovesPlayer(bool newVelocityMovesPlayer);
+    virtual void hitSpeedRamp(Vector3f* direction, float speed, float lockInputTime);
+
+    virtual void setVelocityMovesPlayer(bool newVelocityMovesPlayer);
 	virtual void setOnPulley(bool newOnPulley);
 	virtual void jumpOffPulley(Vector3f forwardDirectionVector);
 };

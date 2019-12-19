@@ -11,49 +11,49 @@ class Button;
 class ConfigMenu : public Menu
 {
 private:
-	GLuint textureParallelogram;
-	GLuint textureParallelogramBackdrop;
-	GLuint textureParallelogramHalf;
-	GLuint textureParallelogramHalfBackdrop;
-	GLuint textureParallelogramHalf2;
-	GLuint textureParallelogramHalf2Backdrop;
+    GLuint textureParallelogram              = GL_NONE;
+    GLuint textureParallelogramBackdrop      = GL_NONE;
+    GLuint textureParallelogramHalf          = GL_NONE;
+    GLuint textureParallelogramHalfBackdrop  = GL_NONE;
+    GLuint textureParallelogramHalf2         = GL_NONE;
+    GLuint textureParallelogramHalf2Backdrop = GL_NONE;
 
-	int moveXPrevious;
-	int moveYPrevious;
-	bool selectInputPrevious;
-	bool backInputPrevious;
+    int moveXPrevious = 0;
+    int moveYPrevious = 0;
+    bool selectInputPrevious = false;
+    bool backInputPrevious = false;
 
-	float holdDownTimer;
-	float holdUpTimer;
-    float holdLeftTimer;
-	float holdRightTimer;
+    float holdDownTimer = 0;
+    float holdUpTimer = 0;
+    float holdLeftTimer = 0;
+    float holdRightTimer = 0;
 
     int currentButtonIndex = 0;
     std::vector<Button*> buttonsNames;
     std::vector<Button*> buttonsValues;
 
-	bool visible;
+    bool visible = false;
 
-	// Animation
-	float offsetTarget;
-	float offsetCurr;
+    // Animation
+    float offsetTarget = 0;
+    float offsetCurr = 0;
 
 private:
-	void draw();
-	void setVisible(bool visibleStatus);
+    void draw();
+    void setVisible(bool visibleStatus);
 
     static std::string boolToString(bool value);
     static std::string floatToString(float value);
 
+    void loadResources();
+    void unloadResources();
+
 public:
-	ConfigMenu();
-	~ConfigMenu();
-	void init();
-	void loadResources();
-	void unloadResources();
-	Menu* step();
-	
-	float fontSize;
+    ConfigMenu();
+    ~ConfigMenu();
+    Menu* step();
+    
+    float fontSize;
 };
 
 #endif

@@ -35,194 +35,194 @@ Entity* SkyManager::centerObject;
 
 void SkyManager::initSkyManager(Entity* mySun, Entity *center)
 {
-	sunAngle = 0.0f;
-	timeOfDay = 0.0f;
-	sunRadius = 100000;
-	sunModelRadius = 7400;
+    sunAngle = 0.0f;
+    timeOfDay = 0.0f;
+    sunRadius = 100000;
+    sunModelRadius = 7400;
 
-	currentFogColourDay.set(49 / 255.0f, 101 / 255.0f, 231 / 255.0f);
-	currentFogColourNight.set(0.05f, 0.05f, 0.075f);
+    currentFogColourDay.set(49 / 255.0f, 101 / 255.0f, 231 / 255.0f);
+    currentFogColourNight.set(0.05f, 0.05f, 0.075f);
 
-	colourSunNight.set(0.0f, 0.0f, 0.0f);
-	colourSunDay.set(1.0f, 1.0f, 1.0f);
+    colourSunNight.set(0.0f, 0.0f, 0.0f);
+    colourSunDay.set(1.0f, 1.0f, 1.0f);
 
-	colourMoonNight.set(0.3f, 0.3f, 0.45f);
-	colourMoonDay.set(0.0f, 0.0f, 0.0f);
+    colourMoonNight.set(0.3f, 0.3f, 0.45f);
+    colourMoonDay.set(0.0f, 0.0f, 0.0f);
 
-	colourSunInterpolated.set(1, 1, 1);
-	colourFogInterpolated.set(1, 1, 1);
-	colourMoonInterpolated.set(1, 1, 1);
+    colourSunInterpolated.set(1, 1, 1);
+    colourFogInterpolated.set(1, 1, 1);
+    colourMoonInterpolated.set(1, 1, 1);
 
-	dayFactor = 1;
-	nightFactor = 1;
+    dayFactor = 1;
+    nightFactor = 1;
 
-	entitySun = mySun;
-	centerObject = center;
+    entitySun = mySun;
+    centerObject = center;
 
-	timeOfDay = 90;
+    timeOfDay = 90;
 
-	fogDensity = 0.00005f;
-	fogGradient = 2.0f;
+    fogDensity = 0.00005f;
+    fogGradient = 2.0f;
 }
 
 void SkyManager::calculateValues()
 {
-	timeOfDay = fmodf(timeOfDay + 360, 360);
-	sunAngle = Maths::toRadians(timeOfDay);
-	float sunPeakAngle = 60;
-	float sunVangle  = Maths::toRadians(sunPeakAngle*sinf(sunAngle));
-	float sunHangle  = Maths::toRadians(90 * cosf(sunAngle));
-	float moonVangle = Maths::toRadians(sunPeakAngle*sinf(sunAngle - Maths::PI));
-	float moonHangle = Maths::toRadians(90 * cosf(sunAngle));
+    timeOfDay = fmodf(timeOfDay + 360, 360);
+    sunAngle = Maths::toRadians(timeOfDay);
+    float sunPeakAngle = 60;
+    float sunVangle  = Maths::toRadians(sunPeakAngle*sinf(sunAngle));
+    float sunHangle  = Maths::toRadians(90 * cosf(sunAngle));
+    float moonVangle = Maths::toRadians(sunPeakAngle*sinf(sunAngle - Maths::PI));
+    float moonHangle = Maths::toRadians(90 * cosf(sunAngle));
 
-	Vector3f dummy;
-	Vector3f* center = &dummy;
-	if (centerObject != nullptr)
-	{
-		center = centerObject->getPosition();
-	}
-	Vector3f sunOffset   = Maths::spherePositionFromAngles(sunHangle, sunVangle, sunRadius);
-	Vector3f moonOffset  = Maths::spherePositionFromAngles(moonHangle, moonVangle, sunRadius);
-	//Vector3f modelOffset = spherePositionFromAngles(sunHangle, sunVangle, sunModelRadius);
+    Vector3f dummy;
+    Vector3f* center = &dummy;
+    if (centerObject != nullptr)
+    {
+        center = centerObject->getPosition();
+    }
+    Vector3f sunOffset   = Maths::spherePositionFromAngles(sunHangle, sunVangle, sunRadius);
+    Vector3f moonOffset  = Maths::spherePositionFromAngles(moonHangle, moonVangle, sunRadius);
+    //Vector3f modelOffset = spherePositionFromAngles(sunHangle, sunVangle, sunModelRadius);
 
 
-	Global::gameLightSun->setPosition(center->x + sunOffset.x,
-									  sunOffset.y,
-									  center->z - sunOffset.z);
+    Global::gameLightSun->setPosition(center->x + sunOffset.x,
+                                      sunOffset.y,
+                                      center->z - sunOffset.z);
 
-	//entitySun.setX(center->x + modelOffset.x);
-	//entitySun.setY(modelOffset.y);
-	//entitySun.setZ(center->z - modelOffset.z);
+    //entitySun.setX(center->x + modelOffset.x);
+    //entitySun.setY(modelOffset.y);
+    //entitySun.setZ(center->z - modelOffset.z);
 
-	Global::gameLightMoon->setPosition(center->x + moonOffset.x,
-									   moonOffset.y,
-									   center->z - moonOffset.z);
+    Global::gameLightMoon->setPosition(center->x + moonOffset.x,
+                                       moonOffset.y,
+                                       center->z - moonOffset.z);
 
-	if (timeOfDay >= 180)
-	{
-		colourFogInterpolated.set(&currentFogColourNight);
-		colourSunInterpolated.set(&colourSunNight);
-		colourMoonInterpolated.set(&colourMoonNight);
-	}
-	else
-	{
-		colourFogInterpolated.set(&currentFogColourDay);
-		colourSunInterpolated.set(&colourSunDay);
-		colourMoonInterpolated.set(&colourMoonDay);
-	}
+    if (timeOfDay >= 180)
+    {
+        colourFogInterpolated.set(&currentFogColourNight);
+        colourSunInterpolated.set(&colourSunNight);
+        colourMoonInterpolated.set(&colourMoonNight);
+    }
+    else
+    {
+        colourFogInterpolated.set(&currentFogColourDay);
+        colourSunInterpolated.set(&colourSunDay);
+        colourMoonInterpolated.set(&colourMoonDay);
+    }
 
-	if (sin(sunAngle) <= 0.2f && sin(sunAngle) >= -0.2f)//  sunrise / sunset
-	{
-		dayFactor = ((sinf(sunAngle)*2.5f) + 0.5f);
-		nightFactor = 1 - dayFactor;
+    if (sin(sunAngle) <= 0.2f && sin(sunAngle) >= -0.2f)//  sunrise / sunset
+    {
+        dayFactor = ((sinf(sunAngle)*2.5f) + 0.5f);
+        nightFactor = 1 - dayFactor;
 
-		colourFogInterpolated.x = ((currentFogColourNight.x*nightFactor) + (currentFogColourDay.x*dayFactor));
-		colourFogInterpolated.y = ((currentFogColourNight.y*nightFactor) + (currentFogColourDay.y*dayFactor));
-		colourFogInterpolated.z = ((currentFogColourNight.z*nightFactor) + (currentFogColourDay.z*dayFactor));
+        colourFogInterpolated.x = ((currentFogColourNight.x*nightFactor) + (currentFogColourDay.x*dayFactor));
+        colourFogInterpolated.y = ((currentFogColourNight.y*nightFactor) + (currentFogColourDay.y*dayFactor));
+        colourFogInterpolated.z = ((currentFogColourNight.z*nightFactor) + (currentFogColourDay.z*dayFactor));
 
-		colourSunInterpolated.x = ((colourSunNight.x*nightFactor) + (colourSunDay.x*dayFactor));
-		colourSunInterpolated.y = ((colourSunNight.y*nightFactor) + (colourSunDay.y*dayFactor));
-		colourSunInterpolated.z = ((colourSunNight.z*nightFactor) + (colourSunDay.z*dayFactor));
+        colourSunInterpolated.x = ((colourSunNight.x*nightFactor) + (colourSunDay.x*dayFactor));
+        colourSunInterpolated.y = ((colourSunNight.y*nightFactor) + (colourSunDay.y*dayFactor));
+        colourSunInterpolated.z = ((colourSunNight.z*nightFactor) + (colourSunDay.z*dayFactor));
 
-		colourMoonInterpolated.x = ((colourMoonNight.x*nightFactor) + (colourMoonDay.x*dayFactor));
-		colourMoonInterpolated.y = ((colourMoonNight.y*nightFactor) + (colourMoonDay.y*dayFactor));
-		colourMoonInterpolated.z = ((colourMoonNight.z*nightFactor) + (colourMoonDay.z*dayFactor));
-	}
+        colourMoonInterpolated.x = ((colourMoonNight.x*nightFactor) + (colourMoonDay.x*dayFactor));
+        colourMoonInterpolated.y = ((colourMoonNight.y*nightFactor) + (colourMoonDay.y*dayFactor));
+        colourMoonInterpolated.z = ((colourMoonNight.z*nightFactor) + (colourMoonDay.z*dayFactor));
+    }
 
-	Global::gameLightSun->setColour(&colourSunInterpolated);
-	Global::gameLightMoon->setColour(&colourMoonInterpolated);
+    Global::gameLightSun->setColour(&colourSunInterpolated);
+    Global::gameLightMoon->setColour(&colourMoonInterpolated);
 }
 
 Vector3f* SkyManager::getFogColour()
 {
-	return &colourFogInterpolated;
+    return &colourFogInterpolated;
 }
 
 float SkyManager::getFogRed()
 {
-	return colourFogInterpolated.x;
+    return colourFogInterpolated.x;
 }
 
 float SkyManager::getFogGreen()
 {
-	return colourFogInterpolated.y;
+    return colourFogInterpolated.y;
 }
 
 float SkyManager::getFogBlue()
 {
-	return colourFogInterpolated.z;
+    return colourFogInterpolated.z;
 }
 
 void SkyManager::increaseTimeOfDay(float timeIncrease)
 {
-	setTimeOfDay(fmodf(timeOfDay + timeIncrease, 360.0f));
+    setTimeOfDay(fmodf(timeOfDay + timeIncrease, 360.0f));
 }
 
 void SkyManager::setTimeOfDay(float timeSet)
 {
-	timeOfDay = timeSet;
-	calculateValues();
+    timeOfDay = timeSet;
+    calculateValues();
 }
 
 float SkyManager::getTimeOfDay()
 {
-	return timeOfDay;
+    return timeOfDay;
 }
 
 float SkyManager::getOverallBrightness()
 {
-	float rawVal = sinf(sunAngle);
-	if (rawVal >= 0)
-	{
-		return (rawVal*0.5f + 0.5f);
-	}
-	rawVal = rawVal*-0.3f;
-	return rawVal*0.75f + 0.25f;
+    float rawVal = sinf(sunAngle);
+    if (rawVal >= 0)
+    {
+        return (rawVal*0.5f + 0.5f);
+    }
+    rawVal = rawVal*-0.3f;
+    return rawVal*0.75f + 0.25f;
 }
 
 void SkyManager::setFogColours(Vector3f* newFogDay, Vector3f* newFogNight)
 {
-	currentFogColourDay.set(newFogDay);
-	currentFogColourNight.set(newFogNight);
+    currentFogColourDay.set(newFogDay);
+    currentFogColourNight.set(newFogNight);
 }
 
 void SkyManager::setCenterObject(Entity* newCenter)
 {
-	centerObject = newCenter;
+    centerObject = newCenter;
 }
 
 void SkyManager::setSunColorDay(Vector3f* newSunColor)
 {
-	colourSunDay.set(newSunColor);
+    colourSunDay.set(newSunColor);
 }
 
 void SkyManager::setSunColorNight(Vector3f* newSunColor)
 {
-	colourSunNight.set(newSunColor);
+    colourSunNight.set(newSunColor);
 }
 
 void SkyManager::setMoonColorDay(Vector3f* newSunColor)
 {
-	colourMoonDay.set(newSunColor);
+    colourMoonDay.set(newSunColor);
 }
 
 void SkyManager::setMoonColorNight(Vector3f* newSunColor)
 {
-	colourMoonNight.set(newSunColor);
+    colourMoonNight.set(newSunColor);
 }
 
 void SkyManager::setFogVars(float newDensity, float newGradient)
 {
-	SkyManager::fogDensity = newDensity;
-	SkyManager::fogGradient = newGradient;
+    SkyManager::fogDensity = newDensity;
+    SkyManager::fogGradient = newGradient;
 }
 
 float SkyManager::getFogGradient()
 {
-	return SkyManager::fogGradient;
+    return SkyManager::fogGradient;
 }
 
 float SkyManager::getFogDensity()
 {
-	return SkyManager::fogDensity;
+    return SkyManager::fogDensity;
 }

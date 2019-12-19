@@ -15,7 +15,7 @@ std::list<TexturedModel*> GH_StageManager::modelsWaterVertical;
 
 GH_StageManager::GH_StageManager()
 {
-	visible = true;
+    visible = true;
 
     skyClouds     = new Dummy(&GH_StageManager::modelsSkyClouds);     INCR_NEW("Entity");
     waterFlat     = new Dummy(&GH_StageManager::modelsWaterFlat);     INCR_NEW("Entity");
@@ -43,10 +43,10 @@ void GH_StageManager::step()
 {
     extern float dt;
 
-	//set the position of the background sky dome
-	position.set(Global::gameMainPlayer->getPosition());
+    //set the position of the background sky dome
+    position.set(Global::gameMainPlayer->getPosition());
     position.y = 0;
-	updateTransformationMatrix();
+    updateTransformationMatrix();
 
     skyClouds->setPosition(&position);
     skyClouds->increaseRotation(0, 5*dt, 0);
@@ -55,21 +55,21 @@ void GH_StageManager::step()
 
 std::list<TexturedModel*>* GH_StageManager::getModels()
 {
-	return &GH_StageManager::modelsSkyCylinder;
+    return &GH_StageManager::modelsSkyCylinder;
 }
 
 void GH_StageManager::loadStaticModels()
 {
-	if (GH_StageManager::modelsSkyCylinder.size() > 0)
-	{
-		return;
-	}
+    if (GH_StageManager::modelsSkyCylinder.size() > 0)
+    {
+        return;
+    }
 
-	#ifdef DEV_MODE
-	std::fprintf(stdout, "Loading GH_StageManager static models...\n");
-	#endif
+    #ifdef DEV_MODE
+    std::fprintf(stdout, "Loading GH_StageManager static models...\n");
+    #endif
 
-	loadModel(&GH_StageManager::modelsSkyCylinder,   "res/Models/Levels/GreenHillNew/Sky/",   "SkyCylinder");
+    loadModel(&GH_StageManager::modelsSkyCylinder,   "res/Models/Levels/GreenHillNew/Sky/",   "SkyCylinder");
     loadModel(&GH_StageManager::modelsSkyClouds,     "res/Models/Levels/GreenHillNew/Sky/",   "SkyClouds");
     loadModel(&GH_StageManager::modelsWaterFlat,     "res/Models/Levels/GreenHillNew/Water/", "StaticWater");
     loadModel(&GH_StageManager::modelsWaterVertical, "res/Models/Levels/GreenHillNew/Water/", "FlowingWater");
@@ -77,11 +77,11 @@ void GH_StageManager::loadStaticModels()
 
 void GH_StageManager::deleteStaticModels()
 {
-	#ifdef DEV_MODE
-	std::fprintf(stdout, "Deleting GH_StageManager static models...\n");
-	#endif
+    #ifdef DEV_MODE
+    std::fprintf(stdout, "Deleting GH_StageManager static models...\n");
+    #endif
 
-	Entity::deleteModels(&GH_StageManager::modelsSkyCylinder);
+    Entity::deleteModels(&GH_StageManager::modelsSkyCylinder);
     Entity::deleteModels(&GH_StageManager::modelsSkyClouds);
     Entity::deleteModels(&GH_StageManager::modelsWaterFlat);
     Entity::deleteModels(&GH_StageManager::modelsWaterVertical);

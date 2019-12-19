@@ -11,25 +11,42 @@ class FontType;
 class Button
 {
 private:
-	bool visible;
-	bool visibleHighlight;
+    bool visible;
+    bool visibleHighlight;
 
-	GUIText* text = nullptr;
+    GUIText* text = nullptr;
+    bool textIsLeftAnchored;
+    float scaleX;
+    float anchorOffset = 0;
 
-	GuiTexture texture;
-	GuiTexture textureHighlight; // For Arcade
+    GuiTexture texture;
+    GuiTexture textureHighlight; // For Arcade
 
 public:
-	Button(std::string label, FontType* font, GLuint texture, GLuint highlight, float posX, float posY, float scaleX, float scaleY, bool visible);
-	~Button();
+    /*
+       Basic button with normal/highlight texture and text
+     * label: text to display on button
+     * posX, posY: coordinates to center the button, where
+      (0,0) is top-left, and (1,1) is bottom-right
+     * scaleX, scaleY: scale for the button, where
+       1.0f is the whole screen
+     * visible: draw the button after creating it
+    */
+    Button(std::string label, FontType* font, GLuint texture, GLuint highlight, float posX, float posY, float scaleX, float scaleY, bool visible);
 
-	void setVisible(bool makeVisible);
-	void setHighlight(bool makeVisible); // Toggles textureSet display
+    //If you want text to be anchored on the left side
+    Button(std::string label, FontType* font, GLuint texture, GLuint highlight, float posX, float posY, float scaleX, float scaleY, bool visible, bool leftAnchored);
 
-	void setPos(float xPos, float yPos);
+    ~Button();
+
+    void setVisible(bool makeVisible);
+    void setHighlight(bool makeVisible); // Toggles textureSet display
+
+    void setPos(float xPos, float yPos);
 
     void generateText(std::string newText);
+    void generateText(std::string newText, bool darkText);
 
-	GUIText* getText();
+    GUIText* getText();
 };
 #endif

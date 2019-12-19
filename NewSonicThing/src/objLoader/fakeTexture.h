@@ -6,11 +6,11 @@
 class FakeTexture
 {
 public:
-	std::string name;
-	char type;
-	char sound;
-	char particle;
+    std::string name;
+    char type;
+    char sound;
+    char particle;
 
-	FakeTexture();
+    FakeTexture();
 };
 #endif

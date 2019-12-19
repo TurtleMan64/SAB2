@@ -9,7 +9,7 @@
 class ModelTexture
 {
 private:
-	std::vector<GLuint> texIDs;
+    std::vector<GLuint> texIDs;
 
     //animation 
     bool isAnimated; //has more than 1 image
@@ -20,27 +20,27 @@ private:
     static std::unordered_set<ModelTexture*> animatedTextureReferences;
 
 public:
-	float shineDamper;
-	float reflectivity;
-	float scrollX;
-	float scrollY;
-	float glowAmount;
-	bool hasTransparency;
-	bool useFakeLighting;
+    float shineDamper;
+    float reflectivity;
+    float scrollX;
+    float scrollY;
+    float glowAmount;
+    bool hasTransparency;
+    bool useFakeLighting;
     float fogScale;
     int mixingType; //interpolation. 1 = binary, 2 = linear, 3 = sinusoid
     float animationSpeed; //delta per second
 
-	ModelTexture();
+    ModelTexture();
 
-	ModelTexture(std::vector<GLuint>* texIDs);
+    ModelTexture(std::vector<GLuint>* texIDs);
 
     ModelTexture(ModelTexture* other);
 
     bool hasMultipleImages();
 
     //returns image 1
-	GLuint getID();
+    GLuint getID();
 
     //returns image 2 (next image in the animation)
     GLuint getID2();
@@ -51,7 +51,7 @@ public:
     std::vector<GLuint>* getIDs();
 
     //deletes all of the texture IDs out of gpu memory
-	void deleteMe();
+    void deleteMe();
 
     void addMeToAnimationsSetIfNeeded();
 

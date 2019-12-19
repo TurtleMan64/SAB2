@@ -12,24 +12,24 @@ class FontShader;
 class FontRenderer
 {
 private:
-	FontShader* shader;
+    FontShader* shader;
 
-	void prepare();
+    void prepare();
 
-	void renderText(GUIText* text);
+    void renderText(GUIText* text);
 
-	void renderNumber(GUINumber* number);
+    void renderNumber(GUINumber* number);
 
-	void endRendering();
+    void endRendering();
 
 public:
-	FontRenderer();
+    FontRenderer();
 
-	void render(
-		std::unordered_map<FontType*, std::list<GUIText*>>* texts, 
-		std::unordered_map<FontType*, std::list<GUINumber*>>* numbers);
+    void render(
+        std::unordered_map<FontType*, std::list<GUIText*>>* texts, 
+        std::unordered_map<FontType*, std::list<GUINumber*>>* numbers);
 
-	void cleanUp();
+    void cleanUp();
 };
 
 #endif

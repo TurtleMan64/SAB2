@@ -3,9 +3,6 @@
 
 class ParticleTexture;
 
-#include <vector>
-#include <string>
-
 #include "entity.h"
 #include "../toolbox/vector.h"
 
@@ -21,10 +18,13 @@ public:
     
     virtual void setOrientation(float x, float y, float z, float xRot, float yRot, float zRot, float spinRot, Vector3f* up);
 
+    virtual void setBaseColor(float r, float g, float b);
+
     const virtual float getDisplayBallOffset();
 
     virtual ParticleTexture* getBallTexture();
 
-    void log(std::list<std::string>* log);
+    //logs a frame to the global race log
+    void log();
 };
 #endif

@@ -9,20 +9,21 @@ class TexturedModel;
 class GF_StageManager : public Entity
 {
 private:
-	static std::list<TexturedModel*> modelsSkydome;
-	float pollenSpawnTimer = 0;
-	const float pollenSparseness = 0.001f;
-	const float pollenRadius = 200.0f;
+    static std::list<TexturedModel*> modelsSkydome;
+    float pollenSpawnTimer = 0;
+    const float pollenSparseness = 0.001f;
+    const float pollenRadius = 200.0f;
+    bool firstFrame;
 
 public:
-	GF_StageManager();
+    GF_StageManager();
 
-	void step();
+    void step();
 
-	std::list<TexturedModel*>* getModels();
+    std::list<TexturedModel*>* getModels();
 
-	static void loadStaticModels();
+    static void loadStaticModels();
 
-	static void deleteStaticModels();
+    static void deleteStaticModels();
 };
 #endif

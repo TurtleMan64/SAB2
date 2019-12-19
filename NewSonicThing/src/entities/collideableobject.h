@@ -8,24 +8,24 @@ class CollisionModel;
 class CollideableObject : public Entity
 {
 protected:
-	CollisionModel* collideModelOriginal;
-	CollisionModel* collideModelTransformed;
+    CollisionModel* collideModelOriginal;
+    CollisionModel* collideModelTransformed;
 
 public:
-	CollideableObject();
+    CollideableObject();
 
-	void updateCMJustPosition(CollisionModel* cmBase, CollisionModel* cmToUpdate);
+    void updateCMJustPosition(CollisionModel* cmBase, CollisionModel* cmToUpdate);
 
-	void updateCollisionModel(CollisionModel* cmBase, CollisionModel* cmToUpdate);
+    void updateCollisionModel(CollisionModel* cmBase, CollisionModel* cmToUpdate);
 
-	void updateCollisionModelWithZ(CollisionModel* cmBase, CollisionModel* cmToUpdate);
+    void updateCollisionModelWithZ(CollisionModel* cmBase, CollisionModel* cmToUpdate);
 
-	void updateCMJustPosition();
+    void updateCMJustPosition();
 
-	void updateCollisionModel();
+    void updateCollisionModel();
 
-	void updateCollisionModelWithScale();
+    void updateCollisionModelWithScale();
 
-	void updateCollisionModelWithZ();
+    void updateCollisionModelWithZ();
 };
 #endif

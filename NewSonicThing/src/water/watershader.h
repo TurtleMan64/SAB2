@@ -13,78 +13,78 @@ class Vector4f;
 class WaterShader
 {
 private:
-	GLuint programID;
-	GLuint vertexShaderID;
-	GLuint fragmentShaderID;
+    GLuint programID;
+    GLuint vertexShaderID;
+    GLuint fragmentShaderID;
 
-	int location_modelMatrix;
-	int location_viewMatrix;
-	int location_projectionMatrix;
-	int location_reflectionTexture;
-	int location_refractionTexture;
-	int location_dudvMap;
-	int location_moveFactor;
-	int location_cameraPosition;
-	int location_normalMap;
-	int location_lightPosition;
-	int location_lightColour;
-	int location_depthMap;
-	int location_shadowMap;
-	int location_toShadowMapSpace;
-	int location_waterHeight;
-	int location_clipPlaneBehind;
+    int location_modelMatrix;
+    int location_viewMatrix;
+    int location_projectionMatrix;
+    int location_reflectionTexture;
+    int location_refractionTexture;
+    int location_dudvMap;
+    int location_moveFactor;
+    int location_cameraPosition;
+    int location_normalMap;
+    int location_lightPosition;
+    int location_lightColour;
+    int location_depthMap;
+    int location_shadowMap;
+    int location_toShadowMapSpace;
+    int location_waterHeight;
+    int location_clipPlaneBehind;
 
-	float matrixBuffer[16];
+    float matrixBuffer[16];
 
 public:
-	WaterShader();
+    WaterShader();
 
-	void start();
+    void start();
 
-	void stop();
+    void stop();
 
-	void cleanUp();
+    void cleanUp();
 
-	void connectTextureUnits();
+    void connectTextureUnits();
 
-	void loadLight(Light* sun);
+    void loadLight(Light* sun);
 
-	void loadWaterHeight(float waterHeight);
+    void loadWaterHeight(float waterHeight);
 
-	void loadMoveFactor(float factor);
+    void loadMoveFactor(float factor);
 
-	void loadProjectionMatrix(Matrix4f* projection);
+    void loadProjectionMatrix(Matrix4f* projection);
 
-	void loadViewMatrix(Camera* camera);
+    void loadViewMatrix(Camera* camera);
 
-	void loadModelMatrix(Matrix4f* modelMatrix);
+    void loadModelMatrix(Matrix4f* modelMatrix);
 
-	void loadToShadowSpaceMatrix(Matrix4f* matrix);
+    void loadToShadowSpaceMatrix(Matrix4f* matrix);
 
-	void loadClipPlaneBehind(Vector4f* plane);
+    void loadClipPlaneBehind(Vector4f* plane);
 
 protected:
-	void bindAttributes();
+    void bindAttributes();
 
-	void bindAttribute(int attatchment, const char* variableName);
+    void bindAttribute(int attatchment, const char* variableName);
 
-	void bindFragOutput(int attatchment, const char* variableName);
+    void bindFragOutput(int attatchment, const char* variableName);
 
-	void getAllUniformLocations();
+    void getAllUniformLocations();
 
-	int getUniformLocation(const char*);
+    int getUniformLocation(const char*);
 
-	void loadInt(int location, int value);
+    void loadInt(int location, int value);
 
-	void loadFloat(int, float);
+    void loadFloat(int, float);
 
-	void loadVector(int, Vector3f*);
+    void loadVector(int, Vector3f*);
 
-	void loadVector4f(int, Vector4f*);
+    void loadVector4f(int, Vector4f*);
 
-	void loadBoolean(int, float);
+    void loadBoolean(int, float);
 
-	void loadMatrix(int, Matrix4f*);
+    void loadMatrix(int, Matrix4f*);
 };
 
 #endif

@@ -10,34 +10,34 @@ class Vector3f;
 class ShadowShader
 {
 private:
-	GLuint programID;
-	GLuint vertexShaderID;
-	GLuint fragmentShaderID;
+    GLuint programID;
+    GLuint vertexShaderID;
+    GLuint fragmentShaderID;
 
-	int location_mvpMatrix;
+    int location_mvpMatrix;
 
 public:
-	ShadowShader(const char* vertFile, const char* fragFile);
+    ShadowShader(const char* vertFile, const char* fragFile);
 
-	void start();
+    void start();
 
-	void stop();
+    void stop();
 
-	void cleanUp();
+    void cleanUp();
 
-	void loadMvpMatrix(Matrix4f* mvpMatrix);
+    void loadMvpMatrix(Matrix4f* mvpMatrix);
 
 
 protected:
-	void bindAttributes();
+    void bindAttributes();
 
-	void bindAttribute(int, const char* attrName);
+    void bindAttribute(int, const char* attrName);
 
-	void getAllUniformLocations();
+    void getAllUniformLocations();
 
-	int getUniformLocation(const char* uniName);
+    int getUniformLocation(const char* uniName);
 
-	void loadMatrix(int, Matrix4f* mat);
+    void loadMatrix(int, Matrix4f* mat);
 };
 
 #endif

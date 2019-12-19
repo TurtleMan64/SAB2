@@ -7,11 +7,11 @@
 class Level
 {
 public:
-	std::string fileName;
-	std::string displayName;
-	int numMissions;
-	std::vector<std::vector<std::string>> missionData;
+    std::string fileName;
+    std::string displayName;
+    int numMissions;
+    std::vector<std::vector<std::string>> missionData;
 
-	Level();
+    Level();
 };
 #endif

@@ -9,16 +9,16 @@ class VerticalBlurShader;
 class VerticalBlur 
 {
 private:
-	ImageRenderer* renderer;
-	VerticalBlurShader* shader;
-	
+    ImageRenderer* renderer;
+    VerticalBlurShader* shader;
+    
 public:
-	VerticalBlur(int targetFboWidth, int targetFboHeight);
-	
-	void render(GLuint texture);
-	
-	int getOutputTexture();
-	
-	void cleanUp();
+    VerticalBlur(int targetFboWidth, int targetFboHeight);
+    
+    void render(GLuint texture);
+    
+    int getOutputTexture();
+    
+    void cleanUp();
 };
 #endif

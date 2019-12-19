@@ -4,10 +4,10 @@
 class Menu
 {
 public:
-	virtual Menu* step() = 0;
-	virtual ~Menu()
-	{
-	}
+    virtual Menu* step() = 0;
+    virtual ~Menu()
+    {
+    }
 };
 
 // Singleton menus. Used to return commands using step()
@@ -15,37 +15,37 @@ public:
 class PopMenu : public Menu
 {
 private:
-	static Menu* retVal;
-	PopMenu() {}
+    static Menu* retVal;
+    PopMenu() {}
 public:
-	Menu* step() { return nullptr; }
-	~PopMenu() {}
+    Menu* step() { return nullptr; }
+    ~PopMenu() {}
 
-	static Menu* get();
+    static Menu* get();
 };
 
 class ClearStack : public Menu
 {
 private:
-	static Menu* retVal;
-	ClearStack() {}
+    static Menu* retVal;
+    ClearStack() {}
 public:
-	Menu* step() { return nullptr; }
-	~ClearStack() {}
+    Menu* step() { return nullptr; }
+    ~ClearStack() {}
 
-	static Menu* get();
+    static Menu* get();
 };
 
 class SwitchStack : public Menu
 {
 private:
-	static Menu* retVal;
-	SwitchStack() {}
+    static Menu* retVal;
+    SwitchStack() {}
 public:
-	Menu* step() { return nullptr; }
-	~SwitchStack() {}
+    Menu* step() { return nullptr; }
+    ~SwitchStack() {}
 
-	static Menu* get();
+    static Menu* get();
 };
 
 #endif

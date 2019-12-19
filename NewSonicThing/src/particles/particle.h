@@ -2,70 +2,94 @@
 #define PARTICLE_H
 
 class ParticleTexture;
-class Camera;
 
 #include "../toolbox/vector.h"
 
 class Particle
 {
-private:
-	Vector3f position;
-	Vector3f* positionRef;
-	Vector3f velocity;
-	float gravityEffect;
-	float lifeLength;
-	bool onlyRendersOnce;
-	float rotation;
-	float scaleX;
-	float scaleXChange;
-	float scaleY;
-	float scaleYChange;
-	float distance;
-	ParticleTexture* texture;
-	Vector2f texOffset1;
-	Vector2f texOffset2;
-	float blend;
-	float elapsedTime = 0;
+protected:
+    Vector3f position;
+    Vector3f* positionRef;
+    Vector3f velocity;
+    float gravityEffect;
+    float lifeLength;
+    bool onlyRendersOnce;
+    float rotation;
+    float scaleX;
+    float scaleXChange;
+    float scaleY;
+    float scaleYChange;
+    float distance;
+    ParticleTexture* texture;
+    Vector2f texOffset1;
+    Vector2f texOffset2;
+    float blend;
+    float elapsedTime = 0;
     float opacity;
 
-	void updateTextureCoordInfo();
+    void updateTextureCoordInfo();
 
-	void setTextureOffset(Vector2f* offset, int index);
+    void setTextureOffset(Vector2f* offset, int index);
 
 public:
-	Particle(ParticleTexture* texture, Vector3f* position, float lifeLength, float scale, bool onlyRendersOnce);
+    Particle();
+    virtual ~Particle();
 
-    Particle(ParticleTexture* texture, Vector3f* position, float lifeLength, float scale, float opacity, bool onlyRendersOnce);
+    //Particle(ParticleTexture* texture, Vector3f* position, float lifeLength, float scale, bool onlyRendersOnce);
+    //
+    //Particle(ParticleTexture* texture, Vector3f* position, float lifeLength, float scale, float opacity, bool onlyRendersOnce);
+    //
+    //Particle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float lifeLength, float scale, bool onlyRendersOnce);
+    //
+    //Particle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float gravityEffect,
+    //    float lifeLength, float rotation, float scale, float scaleChange, bool posIsRef, bool onlyRendersOnce, float opacity);
+    //
+    //Particle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float gravityEffect,
+    //    float lifeLength, float rotation, float scaleX, float scaleXChange, float scaleY, float scaleYChange, 
+    //    bool posIsRef, bool onlyRendersOnce);
 
-	Particle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float lifeLength, float scale, bool onlyRendersOnce);
+    float getDistance();
 
-	Particle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float gravityEffect,
-		float lifeLength, float rotation, float scale, float scaleChange, bool posIsRef, bool onlyRendersOnce, float opacity);
+    ParticleTexture* getTexture();
 
-	Particle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float gravityEffect,
-		float lifeLength, float rotation, float scaleX, float scaleXChange, float scaleY, float scaleYChange, 
-		bool posIsRef, bool onlyRendersOnce);
+    Vector3f* getPosition();
 
-	float getDistance();
+    float getRotation();
 
-	ParticleTexture* getTexture();
+    float getScaleX();
 
-	Vector3f* getPosition();
-
-	float getRotation();
-
-	float getScaleX();
-
-	float getScaleY();
+    float getScaleY();
 
     float getOpacity();
 
-	Vector2f* getTexOffset1();
+    Vector2f* getTexOffset1();
 
-	Vector2f* getTexOffset2();
+    Vector2f* getTexOffset2();
 
-	float getBlend();
+    float getBlend();
 
-	bool update(Camera* camera);
+    virtual bool update();
 };
+
+class ParticleStandard : public Particle
+{
+public:
+    ~ParticleStandard();
+
+    ParticleStandard(ParticleTexture* texture, Vector3f* position, float lifeLength, float scale, bool onlyRendersOnce);
+
+    ParticleStandard(ParticleTexture* texture, Vector3f* position, float lifeLength, float scale, float opacity, bool onlyRendersOnce);
+
+    ParticleStandard(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float lifeLength, float scale, bool onlyRendersOnce);
+
+    ParticleStandard(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float gravityEffect,
+        float lifeLength, float rotation, float scale, float scaleChange, bool posIsRef, bool onlyRendersOnce, float opacity);
+
+    ParticleStandard(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float gravityEffect,
+        float lifeLength, float rotation, float scaleX, float scaleXChange, float scaleY, float scaleYChange, 
+        bool posIsRef, bool onlyRendersOnce);
+
+    bool update();
+};
+
 #endif

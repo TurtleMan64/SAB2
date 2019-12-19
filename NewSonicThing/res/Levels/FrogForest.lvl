@@ -17,9 +17,11 @@ CollisionSmooth 8
 2
 res/Audio/BGM/frog_fores_intro.ogg
 res/Audio/BGM/frog_fores_loop.ogg
--2997.882813 204.103973 -10584.179688
-103 3
--100
+-8237.792969 -4301.968750 -27905.951172
+0.000484 0.000147 0.002828
+0 1 0
+-0.163975 -0.249754 -0.954325
+-10000
 nowater
 0
 0
@@ -28,6 +30,9 @@ false
 # Player
 #6 -1.319926 2755.100586 -1153.838745
 6 30 4000 120
+
+#Goal Ring
+69 -8237.792969 -4331.968750 -27905.951172
 
 92 res/Models/Levels/FrogForest/Rails/Rails0.txt 
 92 res/Models/Levels/FrogForest/Rails/Rails1.txt 

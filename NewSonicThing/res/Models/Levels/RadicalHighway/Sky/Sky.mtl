@@ -1,0 +1,17 @@
+# Material Count: 3
+
+newmtl Tex_0063_0.dds
+Ns 20
+Ni 0.0
+map_Kd city.png
+
+newmtl Tex_0062_0.dds
+Ns 20
+Ni 0.0
+map_Kd Tex_0062_0.dds
+
+newmtl Tex_0064_0.dds
+Ns 20
+Ni 0.0
+map_Kd Tex_0064_0.dds
+

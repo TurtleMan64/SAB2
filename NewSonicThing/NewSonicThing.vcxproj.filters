@@ -100,6 +100,9 @@
     <Filter Include="Source Files\entities\Tutorial">
       <UniqueIdentifier>{4c5de964-236c-4857-8963-be35bc59474a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\entities\RadicalHighway">
+      <UniqueIdentifier>{8024aea5-16c9-41e7-b484-56159167d2c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\glad.c">
@@ -163,9 +166,6 @@
       <Filter>Source Files\entities</Filter>
     </ClCompile>
     <ClCompile Include="src\entities\Entity.cpp">
-      <Filter>Source Files\entities</Filter>
-    </ClCompile>
-    <ClCompile Include="src\entities\JumpRamp.cpp">
       <Filter>Source Files\entities</Filter>
     </ClCompile>
     <ClCompile Include="src\entities\Light.cpp">
@@ -501,6 +501,27 @@
     <ClCompile Include="src\entities\SpringTriple.cpp">
       <Filter>Source Files\entities</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\RingMoving.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\SpeedRamp.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\menu\ResultsScreen.cpp">
+      <Filter>Source Files\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\ShieldGreen.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\ShieldMagnet.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\GreenForest\GF_Particle.cpp">
+      <Filter>Source Files\entities\GreenForest</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\RadicalHighway\RH_StageManager.cpp">
+      <Filter>Source Files\entities\RadicalHighway</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.h">
@@ -561,9 +582,6 @@
       <Filter>Source Files\entities</Filter>
     </ClInclude>
     <ClInclude Include="src\entities\entity.h">
-      <Filter>Source Files\entities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\entities\jumpramp.h">
       <Filter>Source Files\entities</Filter>
     </ClInclude>
     <ClInclude Include="src\entities\light.h">
@@ -886,6 +904,27 @@
     </ClInclude>
     <ClInclude Include="src\entities\springtriple.h">
       <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\ringmoving.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\speedramp.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\menu\resultsscreen.h">
+      <Filter>Source Files\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\shieldgreen.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\shieldmagnet.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\GreenForest\gfparticle.h">
+      <Filter>Source Files\entities\GreenForest</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\RadicalHighway\rhstagemanager.h">
+      <Filter>Source Files\entities\RadicalHighway</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

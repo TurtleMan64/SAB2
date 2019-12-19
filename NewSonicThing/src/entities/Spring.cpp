@@ -24,18 +24,19 @@ Spring::Spring()
 
 }
 
-Spring::Spring(float x, float y, float z, float dirX, float dirY, float dirZ, float myPower, float cooldownMax)
+Spring::Spring(float x, float y, float z, float dirX, float dirY, float dirZ, float myPower, float cooldownMax, bool setsCam)
 {
-	this->position.x = x;
-	this->position.y = y;
-	this->position.z = z;
-	this->dir.set(dirX, dirY, dirZ);
-    this->dir.normalize();
-	this->springPower = fmaxf(100.0f, myPower);
-	this->cooldownTimer = 0.0f;
-	this->cooldownTimerMax = fmaxf(0.1f, cooldownMax);
-	this->scale = 1;
-	this->visible = true;
+    position.x = x;
+    position.y = y;
+    position.z = z;
+    dir.set(dirX, dirY, dirZ);
+    dir.normalize();
+    springPower = fmaxf(100.0f, myPower);
+    cooldownTimer = 0.0f;
+    cooldownTimerMax = fmaxf(0.1f, cooldownMax);
+    scale = 1;
+    visible = true;
+    resetsCamera = setsCam;
 
     hitCenter = position + dir.scaleCopy(10.0f);
 
@@ -45,68 +46,65 @@ Spring::Spring(float x, float y, float z, float dirX, float dirY, float dirZ, fl
     rotZ = Maths::toDegrees(atan2f(dir.y, sqrtf(dir.x*dir.x + dir.z*dir.z)));
     rotRoll = 0;
 
-	updateTransformationMatrix();
+    updateTransformationMatrix();
 }
 
 extern float dt;
 
 void Spring::step()
 {
-	cooldownTimer = std::fmaxf(cooldownTimer - dt, 0.0f);
+    cooldownTimer = std::fmaxf(cooldownTimer - dt, 0.0f);
 
-	if (fabsf(hitCenter.y - Global::gameMainPlayer->position.y) < 40 &&
-		fabsf(hitCenter.z - Global::gameMainPlayer->position.z) < 40 &&
-		fabsf(hitCenter.x - Global::gameMainPlayer->position.x) < 40 &&
-		cooldownTimer == 0.0f)
-	{
+    if (fabsf(hitCenter.y - Global::gameMainPlayer->position.y) < 40 &&
+        fabsf(hitCenter.z - Global::gameMainPlayer->position.z) < 40 &&
+        fabsf(hitCenter.x - Global::gameMainPlayer->position.x) < 40 &&
+        cooldownTimer == 0.0f)
+    {
         if ((Global::gameMainPlayer->getCenterPosition() - hitCenter).lengthSquared() < (10.83f*10.83f)+(4.0f*4.0f)) //10.83 = radius of spring, 4 = radius of sonic
-		{
+        {
             Global::gameMainPlayer->position = hitCenter;
-		    Global::gameMainPlayer->hitSpring(&dir, springPower, cooldownTimerMax);
-		    AudioPlayer::play(6, &position, 1 + (springPower*0.00013333f));
+            Global::gameMainPlayer->hitSpring(&dir, springPower, cooldownTimerMax, resetsCamera);
+            AudioPlayer::play(6, &position, 1 + (springPower*0.00013333f));
 
-		    cooldownTimer = cooldownTimerMax;
+            cooldownTimer = cooldownTimerMax;
         }
-	}
-
-	//increaseRotation(1, 0, 0);
-	//updateTransformationMatrix();
+    }
 }
 
 std::list<TexturedModel*>* Spring::getModels()
 {
-	return &Spring::models;
+    return &Spring::models;
 }
 
 void Spring::loadStaticModels()
 {
-	if (Spring::models.size() > 0)
-	{
-		return;
-	}
+    if (Spring::models.size() > 0)
+    {
+        return;
+    }
 
-	#ifdef DEV_MODE
-	std::fprintf(stdout, "Loading spring static models...\n");
-	#endif
+    #ifdef DEV_MODE
+    std::fprintf(stdout, "Loading spring static models...\n");
+    #endif
 
     loadModel(&Spring::models, "res/Models/Objects/Spring/", "Spring");
 }
 
 void Spring::deleteStaticModels()
 {
-	#ifdef DEV_MODE
-	std::fprintf(stdout, "Deleting spring static models...\n");
-	#endif
+    #ifdef DEV_MODE
+    std::fprintf(stdout, "Deleting spring static models...\n");
+    #endif
 
-	Entity::deleteModels(&Spring::models);
+    Entity::deleteModels(&Spring::models);
 }
 
 const bool Spring::canHomingAttackOn()
 {
-	return true;
+    return true;
 }
 
 const Vector3f Spring::getHomingCenter()
 {
-	return hitCenter;
+    return hitCenter;
 }

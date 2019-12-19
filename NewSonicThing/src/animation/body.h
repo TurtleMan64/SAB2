@@ -13,37 +13,37 @@ class TexturedModel;
 class Body : public Entity
 {
 private:
-	float baseX;
-	float baseY;
-	float baseZ;
-	float baseRotY;
-	float baseRotZ;
-	float baseRotX;
-	float baseRotS;
+    float baseX;
+    float baseY;
+    float baseZ;
+    float baseRotY;
+    float baseRotZ;
+    float baseRotX;
+    float baseRotS;
     float baseScale;
-	float prevTime;
+    float prevTime;
 
-	std::list<TexturedModel*>* myModels;
+    std::list<TexturedModel*>* myModels;
 
 public:
-	int animationIndex;
-	float time;
-	float deltaTime;
+    int animationIndex;
+    float time;
+    float deltaTime;
 
-	std::vector<Animation>* animations;
+    std::vector<Animation>* animations;
 
-	Body(std::list<TexturedModel*>* models);
+    Body(std::list<TexturedModel*>* models);
 
-	void step();
+    void step();
 
-	void update(float time);
+    void update(float time);
 
-	void setBaseOrientation(Vector3f* basePosition, float rotX, float rotY, float rotZ, float rotS, float scale);
+    void setBaseOrientation(Vector3f* basePosition, float rotX, float rotY, float rotZ, float rotS, float scale);
 
-	void setBaseOrientation(float baseX, float baseY, float baseZ, float rotX, float rotY, float rotZ, float rotS, float scale);
+    void setBaseOrientation(float baseX, float baseY, float baseZ, float rotX, float rotY, float rotZ, float rotS, float scale);
 
-	inline std::list<TexturedModel*>* getModels();
+    inline std::list<TexturedModel*>* getModels();
 
-	inline void setModels(std::list<TexturedModel*>* newModels);
+    inline void setModels(std::list<TexturedModel*>* newModels);
 };
 #endif

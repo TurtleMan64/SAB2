@@ -6,34 +6,34 @@
 class CombineShader
 {
 private:
-	GLuint programID;
-	GLuint vertexShaderID;
-	GLuint fragmentShaderID;
+    GLuint programID;
+    GLuint vertexShaderID;
+    GLuint fragmentShaderID;
 
-	int location_colourTexture;
-	int location_highlightTexture;
+    int location_colourTexture;
+    int location_highlightTexture;
 
 public:
-	CombineShader(const char* vFile, const char* fFile);
+    CombineShader(const char* vFile, const char* fFile);
 
-	void start();
+    void start();
 
-	void stop();
+    void stop();
 
-	void cleanUp();
+    void cleanUp();
 
-	void connectTextureUnits();
+    void connectTextureUnits();
 
 protected:
-	void bindAttributes();
+    void bindAttributes();
 
-	void bindAttribute(int attribute, const char* variableName);
+    void bindAttribute(int attribute, const char* variableName);
 
-	void getAllUniformLocations();
+    void getAllUniformLocations();
 
-	int getUniformLocation(const char* uniformName);
+    int getUniformLocation(const char* uniformName);
 
-	void loadInt(int location, int value);
+    void loadInt(int location, int value);
 };
 
 #endif

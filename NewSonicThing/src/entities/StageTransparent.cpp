@@ -13,31 +13,31 @@ std::list<TexturedModel*> StageTransparent::models;
 
 StageTransparent::StageTransparent()
 {
-	
+    
 }
 
 StageTransparent::StageTransparent(const char* objFolder, const char* objFilename)
 {
-	position.x = 0;
-	position.y = 0;
-	position.z = 0;
-	rotX = 0;
-	rotY = 0;
-	rotZ = 0;
-	scale = 1;
+    position.x = 0;
+    position.y = 0;
+    position.z = 0;
+    rotX = 0;
+    rotY = 0;
+    rotZ = 0;
+    scale = 1;
     renderOrder = 3;
-	visible = true;
-	
-	if (StageTransparent::models.size() == 0)
-	{
-		#ifdef DEV_MODE
-		std::fprintf(stdout, "Loading StageTransparent static models...\n");
-		#endif
+    visible = true;
+    
+    if (StageTransparent::models.size() == 0)
+    {
+        #ifdef DEV_MODE
+        std::fprintf(stdout, "Loading StageTransparent static models...\n");
+        #endif
 
-		loadModel(&StageTransparent::models, objFolder, objFilename);
-	}
-	
-	updateTransformationMatrix();
+        loadModel(&StageTransparent::models, objFolder, objFilename);
+    }
+    
+    updateTransformationMatrix();
 }
 
 void StageTransparent::step()
@@ -47,14 +47,14 @@ void StageTransparent::step()
 
 std::list<TexturedModel*>* StageTransparent::getModels()
 {
-	return &StageTransparent::models;
+    return &StageTransparent::models;
 }
 
 void StageTransparent::deleteStaticModels()
 {
-	#ifdef DEV_MODE
-	std::fprintf(stdout, "Deleting StageTransparent static models...\n");
-	#endif
+    #ifdef DEV_MODE
+    std::fprintf(stdout, "Deleting StageTransparent static models...\n");
+    #endif
 
-	Entity::deleteModels(&StageTransparent::models);
+    Entity::deleteModels(&StageTransparent::models);
 }

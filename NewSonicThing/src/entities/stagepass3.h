@@ -10,16 +10,16 @@ class TexturedModel;
 class StagePass3 : public Entity
 {
 private:
-	static std::list<TexturedModel*> models;
+    static std::list<TexturedModel*> models;
 
 public:
-	StagePass3();
-	StagePass3(const char* objFolder, const char* objFilename);
+    StagePass3();
+    StagePass3(const char* objFolder, const char* objFilename);
 
-	void step();
+    void step();
 
-	std::list<TexturedModel*>* getModels();
+    std::list<TexturedModel*>* getModels();
 
-	static void deleteStaticModels();
+    static void deleteStaticModels();
 };
 #endif

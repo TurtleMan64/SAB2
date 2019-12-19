@@ -8,35 +8,33 @@
 #include "../toolbox/vector.h"
 #include "../particles/particletexture.h"
 #include "../menu/timer.h"
+#include "raceghost.h"
 
 void PlayerModel::animate(int, float) {}
 
 void PlayerModel::setOrientation(float, float, float, float, float, float, float, Vector3f*) {}
 
+void PlayerModel::setBaseColor(float, float, float) {}
+
 const float PlayerModel::getDisplayBallOffset() {return 0.0f;}
 
 ParticleTexture* PlayerModel::getBallTexture() {return nullptr;}
 
-void PlayerModel::log(std::list<std::string>* log)
+void PlayerModel::log()
 {
-    if (Global::mainHudTimer == nullptr)
+    if (Global::mainHudTimer == nullptr || Global::raceLogSize >= Global::raceLogSizeMax)
     {
         return;
     }
 
-    std::string line = std::to_string(Global::mainHudTimer->totalTime) + " " +
-                       std::to_string(currentAnimIndex) + " " +
-                       std::to_string(currentAnimTime) + " " +
-                       std::to_string(position.x) + " " +
-                       std::to_string(position.y) + " " +
-                       std::to_string(position.z) + " " +
-                       std::to_string(rotX) + " " +
-                       std::to_string(rotY) + " " +
-                       std::to_string(rotZ) + " " +
-                       std::to_string(rotRoll) + " " +
-                       std::to_string(currentUpDirection.x) + " " +
-                       std::to_string(currentUpDirection.y) + " " +
-                       std::to_string(currentUpDirection.z) + "\n";
+    GhostFrame frame;
+    frame.time = Global::mainHudTimer->totalTime;
+    frame.animIndex = currentAnimIndex;
+    frame.animTime = currentAnimTime;
+    frame.pos.set(&position);
+    frame.rot.set(rotX, rotY, rotZ, rotRoll);
+    frame.up.set(&currentUpDirection);
 
-    log->push_back(line);
+    Global::raceLog[Global::raceLogSize] = frame;
+    Global::raceLogSize++;
 }

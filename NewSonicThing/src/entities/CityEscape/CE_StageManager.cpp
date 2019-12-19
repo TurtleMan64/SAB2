@@ -13,14 +13,14 @@ std::list<TexturedModel*> CE_StageManager::modelsSkydome;
 CE_StageManager::CE_StageManager()
 {
     scale = 1.5f;
-	visible = true;
+    visible = true;
     playedBGM = false;
 }
 
 void CE_StageManager::step()
 {
-	position.set(&Global::gameMainPlayer->position);
-	updateTransformationMatrix();
+    position.set(&Global::gameMainPlayer->position);
+    updateTransformationMatrix();
 
     if (!playedBGM)
     {
@@ -29,35 +29,35 @@ void CE_StageManager::step()
         {
             playedBGM = true;
             AudioPlayer::stopBGM();
-		    AudioPlayer::playBGMWithIntro(2, 3);
+            AudioPlayer::playBGMWithIntro(2, 3);
         }
     }
 }
 
 std::list<TexturedModel*>* CE_StageManager::getModels()
 {
-	return &CE_StageManager::modelsSkydome;
+    return &CE_StageManager::modelsSkydome;
 }
 
 void CE_StageManager::loadStaticModels()
 {
-	if (CE_StageManager::modelsSkydome.size() > 0)
-	{
-		return;
-	}
+    if (CE_StageManager::modelsSkydome.size() > 0)
+    {
+        return;
+    }
 
-	#ifdef DEV_MODE
-	std::fprintf(stdout, "Loading CE_StageManager static models...\n");
-	#endif
+    #ifdef DEV_MODE
+    std::fprintf(stdout, "Loading CE_StageManager static models...\n");
+    #endif
 
-	loadModel(&CE_StageManager::modelsSkydome,  "res/Models/Levels/CityEscape/Sky/", "Sky");
+    loadModel(&CE_StageManager::modelsSkydome,  "res/Models/Levels/CityEscape/Sky/", "Sky");
 }
 
 void CE_StageManager::deleteStaticModels()
 {
-	#ifdef DEV_MODE
-	std::fprintf(stdout, "Deleting CE_StageManager static models...\n");
-	#endif
+    #ifdef DEV_MODE
+    std::fprintf(stdout, "Deleting CE_StageManager static models...\n");
+    #endif
 
-	Entity::deleteModels(&CE_StageManager::modelsSkydome);
+    Entity::deleteModels(&CE_StageManager::modelsSkydome);
 }

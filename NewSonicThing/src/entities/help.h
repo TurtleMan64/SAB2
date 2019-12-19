@@ -11,24 +11,24 @@ class GUIText;
 class Help : public Entity
 {
 private:
-	static std::list<TexturedModel*> models;
-	static GUIText* messageGUI1;
-	static GUIText* messageGUI2;
+    static std::list<TexturedModel*> models;
+    static GUIText* messageGUI1;
+    static GUIText* messageGUI2;
 
-	std::string myMessage1;
-	std::string myMessage2;
+    std::string myMessage1;
+    std::string myMessage2;
 
 public:
-	Help();
-	~Help();
-	Help(float x, float y, float z, std::string message);
+    Help();
+    ~Help();
+    Help(float x, float y, float z, std::string message);
 
-	void step();
+    void step();
 
-	std::list<TexturedModel*>* getModels();
+    std::list<TexturedModel*>* getModels();
 
-	static void loadStaticModels();
+    static void loadStaticModels();
 
-	static void deleteStaticModels();
+    static void deleteStaticModels();
 };
 #endif

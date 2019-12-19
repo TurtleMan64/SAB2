@@ -15,67 +15,67 @@
 
 ShadowShader::ShadowShader(const char* vertexFile, const char* fragmentFile)
 {
-	vertexShaderID = Loader::loadShader(vertexFile, GL_VERTEX_SHADER);
-	fragmentShaderID = Loader::loadShader(fragmentFile, GL_FRAGMENT_SHADER);
-	programID = glCreateProgram();
-	glAttachShader(programID, vertexShaderID);
-	glAttachShader(programID, fragmentShaderID);
-	bindAttributes();
-	glLinkProgram(programID);
-	glValidateProgram(programID);
-	getAllUniformLocations();
+    vertexShaderID = Loader::loadShader(vertexFile, GL_VERTEX_SHADER);
+    fragmentShaderID = Loader::loadShader(fragmentFile, GL_FRAGMENT_SHADER);
+    programID = glCreateProgram();
+    glAttachShader(programID, vertexShaderID);
+    glAttachShader(programID, fragmentShaderID);
+    bindAttributes();
+    glLinkProgram(programID);
+    glValidateProgram(programID);
+    getAllUniformLocations();
 }
 
 void ShadowShader::start()
 {
-	glUseProgram(programID);
+    glUseProgram(programID);
 }
 
 void ShadowShader::stop()
 {
-	glUseProgram(0);
+    glUseProgram(0);
 }
 
 void ShadowShader::cleanUp()
 {
-	stop();
-	glDetachShader(programID, vertexShaderID);
-	glDetachShader(programID, fragmentShaderID);
-	glDeleteShader(vertexShaderID);
-	glDeleteShader(fragmentShaderID);
-	glDeleteProgram(programID);
+    stop();
+    glDetachShader(programID, vertexShaderID);
+    glDetachShader(programID, fragmentShaderID);
+    glDeleteShader(vertexShaderID);
+    glDeleteShader(fragmentShaderID);
+    glDeleteProgram(programID);
 }
 
 void ShadowShader::loadMvpMatrix(Matrix4f* matrix)
 {
-	loadMatrix(location_mvpMatrix, matrix);
+    loadMatrix(location_mvpMatrix, matrix);
 }
 
 void ShadowShader::bindAttributes()
 {
-	bindAttribute(0, "in_position");
-	bindAttribute(1, "in_textureCoords");
+    bindAttribute(0, "in_position");
+    bindAttribute(1, "in_textureCoords");
 }
 
 void ShadowShader::bindAttribute(int attribute, const char* variableName)
 {
-	glBindAttribLocation(programID, attribute, variableName);
+    glBindAttribLocation(programID, attribute, variableName);
 }
 
 void ShadowShader::getAllUniformLocations()
 {
-	location_mvpMatrix = getUniformLocation("mvpMatrix");
+    location_mvpMatrix = getUniformLocation("mvpMatrix");
 }
 
 int ShadowShader::getUniformLocation(const char* uniformName)
 {
-	return glGetUniformLocation(programID, uniformName);
+    return glGetUniformLocation(programID, uniformName);
 }
 
 float shadowMatrixBuffer[16];
 
 void ShadowShader::loadMatrix(int location, Matrix4f* matrix)
 {
-	matrix->store(shadowMatrixBuffer);
-	glUniformMatrix4fv(location, 1, GL_FALSE, shadowMatrixBuffer);
+    matrix->store(shadowMatrixBuffer);
+    glUniformMatrix4fv(location, 1, GL_FALSE, shadowMatrixBuffer);
 }

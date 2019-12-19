@@ -160,6 +160,7 @@
     <ClCompile Include="src\entities\Camera.cpp" />
     <ClCompile Include="src\entities\ControllablePlayer.cpp" />
     <ClCompile Include="src\entities\DelfinoPlaza\DP_StageManager.cpp" />
+    <ClCompile Include="src\entities\GreenForest\GF_Particle.cpp" />
     <ClCompile Include="src\entities\Help.cpp" />
     <ClCompile Include="src\entities\ItemCapsule.cpp" />
     <ClCompile Include="src\entities\ManiaMightyModel.cpp" />
@@ -173,7 +174,6 @@
     <ClCompile Include="src\entities\GoalRing.cpp" />
     <ClCompile Include="src\entities\GreenForest\GF_StageManager.cpp" />
     <ClCompile Include="src\entities\GreenHill\GH_StageManager.cpp" />
-    <ClCompile Include="src\entities\JumpRamp.cpp" />
     <ClCompile Include="src\entities\Light.cpp" />
     <ClCompile Include="src\entities\ManiaSonicModel.cpp" />
     <ClCompile Include="src\entities\MetalHarbor\MH_GiantRocket.cpp" />
@@ -185,11 +185,16 @@
     <ClCompile Include="src\entities\MetalHarbor\MH_Tank.cpp" />
     <ClCompile Include="src\entities\Point.cpp" />
     <ClCompile Include="src\entities\RaceGhost.cpp" />
+    <ClCompile Include="src\entities\RadicalHighway\RH_StageManager.cpp" />
     <ClCompile Include="src\entities\Rail.cpp" />
     <ClCompile Include="src\entities\Ring.cpp" />
+    <ClCompile Include="src\entities\RingMoving.cpp" />
     <ClCompile Include="src\entities\Rocket.cpp" />
+    <ClCompile Include="src\entities\ShieldGreen.cpp" />
+    <ClCompile Include="src\entities\ShieldMagnet.cpp" />
     <ClCompile Include="src\entities\SkyRail\SR_StageManager.cpp" />
     <ClCompile Include="src\entities\SkySphere.cpp" />
+    <ClCompile Include="src\entities\SpeedRamp.cpp" />
     <ClCompile Include="src\entities\Spring.cpp" />
     <ClCompile Include="src\entities\SpringTriple.cpp" />
     <ClCompile Include="src\entities\Stage.cpp" />
@@ -228,6 +233,7 @@
     <ClCompile Include="src\menu\MenuManager.cpp" />
     <ClCompile Include="src\menu\MissionMenu.cpp" />
     <ClCompile Include="src\menu\PauseScreen.cpp" />
+    <ClCompile Include="src\menu\ResultsScreen.cpp" />
     <ClCompile Include="src\menu\Timer.cpp" />
     <ClCompile Include="src\models\RawModel.cpp" />
     <ClCompile Include="src\models\TexturedModel.cpp" />
@@ -295,6 +301,7 @@
     <ClInclude Include="src\entities\camera.h" />
     <ClInclude Include="src\entities\controllableplayer.h" />
     <ClInclude Include="src\entities\DelfinoPlaza\dpstagemanager.h" />
+    <ClInclude Include="src\entities\GreenForest\gfparticle.h" />
     <ClInclude Include="src\entities\help.h" />
     <ClInclude Include="src\entities\itemcapsule.h" />
     <ClInclude Include="src\entities\maniamightymodel.h" />
@@ -308,7 +315,6 @@
     <ClInclude Include="src\entities\goalring.h" />
     <ClInclude Include="src\entities\GreenForest\gfstagemanager.h" />
     <ClInclude Include="src\entities\GreenHill\ghstagemanager.h" />
-    <ClInclude Include="src\entities\jumpramp.h" />
     <ClInclude Include="src\entities\light.h" />
     <ClInclude Include="src\entities\maniasonicmodel.h" />
     <ClInclude Include="src\entities\MetalHarbor\mhgiantrocket.h" />
@@ -320,11 +326,16 @@
     <ClInclude Include="src\entities\MetalHarbor\mhtank.h" />
     <ClInclude Include="src\entities\point.h" />
     <ClInclude Include="src\entities\raceghost.h" />
+    <ClInclude Include="src\entities\RadicalHighway\rhstagemanager.h" />
     <ClInclude Include="src\entities\rail.h" />
     <ClInclude Include="src\entities\ring.h" />
+    <ClInclude Include="src\entities\ringmoving.h" />
     <ClInclude Include="src\entities\rocket.h" />
+    <ClInclude Include="src\entities\shieldgreen.h" />
+    <ClInclude Include="src\entities\shieldmagnet.h" />
     <ClInclude Include="src\entities\SkyRail\srstagemanager.h" />
     <ClInclude Include="src\entities\skysphere.h" />
+    <ClInclude Include="src\entities\speedramp.h" />
     <ClInclude Include="src\entities\spring.h" />
     <ClInclude Include="src\entities\springtriple.h" />
     <ClInclude Include="src\entities\stage.h" />
@@ -362,6 +373,7 @@
     <ClInclude Include="src\menu\menumanager.h" />
     <ClInclude Include="src\menu\missionmenu.h" />
     <ClInclude Include="src\menu\pausescreen.h" />
+    <ClInclude Include="src\menu\resultsscreen.h" />
     <ClInclude Include="src\menu\timer.h" />
     <ClInclude Include="src\models\models.h" />
     <ClInclude Include="src\objLoader\fakeTexture.h" />

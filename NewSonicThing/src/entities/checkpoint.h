@@ -1,40 +1,40 @@
 #ifndef CHECKPOINT_H
 #define CHECKPOINT_H
 
+class TexturedModel;
+class Dummy;
+
 #include <list>
 #include "entity.h"
+#include <AL/al.h>
 
-class TexturedModel;
 
 class Checkpoint : public Entity
 {
 private:
-	static std::list<TexturedModel*> models;
+    static std::list<TexturedModel*> modelsBase;
+    static std::list<TexturedModel*> modelsBall;
 
-	float scaleX;
-	float scaleY;
-	float scaleZ;
+    Dummy* ball1 = nullptr;
+    Dummy* ball2 = nullptr;
+    static float colHorizontal;
+    static float colVertical;
 
-	float sinT;
-	float cosT;
+    bool isHit;
+
+    static ALuint savedBGMIntro;
+    static ALuint savedBGMLoop;
 
 public:
-	int ID;
+    Checkpoint();
+    Checkpoint(float x, float y, float z, float rotY);
 
-	Checkpoint();
-	Checkpoint(
-		float rotationY, float x, float y, float z,
-		float scaleX, float scaleY, float scaleZ,
-		int number);
+    void step();
 
-	void step();
+    std::list<TexturedModel*>* getModels();
 
-	bool isPointInsideMe(Vector3f* test);
+    static void loadStaticModels();
 
-	std::list<TexturedModel*>* getModels();
-
-	static void loadStaticModels();
-
-	static void deleteStaticModels();
+    static void deleteStaticModels();
 };
 #endif

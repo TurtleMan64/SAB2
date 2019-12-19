@@ -20,29 +20,29 @@ class ShadowMapMasterRenderer;
 class WaterRenderer
 {
 private:
-	float moveFactor;
-	GLuint dudvTexture;
-	GLuint normalMap;
+    float moveFactor;
+    GLuint dudvTexture;
+    GLuint normalMap;
 
-	RawModel* quad;
-	WaterShader* shader;
-	WaterFrameBuffers* fbos;
+    RawModel* quad;
+    WaterShader* shader;
+    WaterFrameBuffers* fbos;
 
-	ShadowMapMasterRenderer* shadowMapRenderer;
+    ShadowMapMasterRenderer* shadowMapRenderer;
 
-	void prepareRender(Camera* camera, Light* sun);
+    void prepareRender(Camera* camera, Light* sun);
 
-	void unbind();
+    void unbind();
 
-	void setUpVAO();
+    void setUpVAO();
 
 public:
-	static const float WAVE_SPEED;
+    static const float WAVE_SPEED;
 
-	WaterRenderer(WaterShader* shader, Matrix4f* projectionMatrix, WaterFrameBuffers* fbos, ShadowMapMasterRenderer* shadowMapRenderer);
+    WaterRenderer(WaterShader* shader, Matrix4f* projectionMatrix, WaterFrameBuffers* fbos, ShadowMapMasterRenderer* shadowMapRenderer);
 
-	void render(std::vector<WaterTile*>* water, Camera* camera, Light* sun);
+    void render(std::vector<WaterTile*>* water, Camera* camera, Light* sun);
 
-	void updateProjectionMatrix(Matrix4f* projectionMatrix);
+    void updateProjectionMatrix(Matrix4f* projectionMatrix);
 };
 #endif

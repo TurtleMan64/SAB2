@@ -6,33 +6,33 @@
 class HorizontalBlurShader
 {
 private:
-	GLuint programID;
-	GLuint vertexShaderID;
-	GLuint fragmentShaderID;
+    GLuint programID;
+    GLuint vertexShaderID;
+    GLuint fragmentShaderID;
 
-	int location_targetWidth;
+    int location_targetWidth;
 
 public:
-	HorizontalBlurShader(const char* vFile, const char* fFile);
+    HorizontalBlurShader(const char* vFile, const char* fFile);
 
-	void start();
+    void start();
 
-	void stop();
+    void stop();
 
-	void cleanUp();
+    void cleanUp();
 
-	void loadTargetWidth(float width);
+    void loadTargetWidth(float width);
 
 protected:
-	void bindAttributes();
+    void bindAttributes();
 
-	void bindAttribute(int attribute, const char* variableName);
+    void bindAttribute(int attribute, const char* variableName);
 
-	void getAllUniformLocations();
+    void getAllUniformLocations();
 
-	int getUniformLocation(const char* uniformName);
+    int getUniformLocation(const char* uniformName);
 
-	void loadFloat(int location, float value);
+    void loadFloat(int location, float value);
 };
 
 #endif

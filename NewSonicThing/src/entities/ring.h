@@ -8,33 +8,30 @@ class TexturedModel;
 
 class Ring : public Entity
 {
+public:
+    static std::list<TexturedModel*> models;
+
 private:
-	static std::list<TexturedModel*> models;
-
-	static float hitboxH;
-	static float hitboxV;
-
-	float xVel;
-	float yVel;
-	float zVel;
-	bool moves;
-	int grabTimer;
-	bool givesPoints;
-	bool trackingPlayer;
+    float xVel;
+    float yVel;
+    float zVel;
+    bool moves;
+    int grabTimer;
+    bool givesPoints;
 
 public:
-	Ring();
-	Ring(float x, float y, float z);
-	Ring(float x, float y, float z, float xVel, float yVel, float zVel);
+    Ring();
+    Ring(float x, float y, float z);
+    Ring(float x, float y, float z, float xVel, float yVel, float zVel);
 
-	void step();
+    void step();
 
-	std::list<TexturedModel*>* getModels();
+    std::list<TexturedModel*>* getModels();
 
-	static void loadStaticModels();
+    static void loadStaticModels();
 
-	static void deleteStaticModels();
+    static void deleteStaticModels();
 
-	const inline bool canLightdashOn();
+    const inline bool canLightdashOn();
 };
 #endif

@@ -14,30 +14,30 @@ class GUIText;
 class TextMeshCreator
 {
 private:
-	MetaFile* metaData;
+    MetaFile* metaData;
 
-	std::vector<Line> createStructure(GUIText* text);
+    std::vector<Line> createStructure(GUIText* text);
 
-	//void completeStructure(std::vector<Line> lines, Line currentLine, Word currentWord, GUIText* text);
+    //void completeStructure(std::vector<Line> lines, Line currentLine, Word currentWord, GUIText* text);
 
-	TextMeshData* createQuadVertices(GUIText* text, std::vector<Line>* lines);
+    TextMeshData* createQuadVertices(GUIText* text, std::vector<Line>* lines);
 
-	void addVerticesForCharacter(float curserX, float curserY, Character character, float fontSize, std::vector<float>* vertices);
+    void addVerticesForCharacter(float curserX, float curserY, Character character, float fontSize, std::vector<float>* vertices);
 
-	static void addVertices(std::vector<float>* vertices, float x, float y, float maxX, float maxY);
+    static void addVertices(std::vector<float>* vertices, float x, float y, float maxX, float maxY);
 
-	static void addTexCoords(std::vector<float>* texCoords, float x, float y, float maxX, float maxY);
+    static void addTexCoords(std::vector<float>* texCoords, float x, float y, float maxX, float maxY);
 
-	//static float[] listToArray(std::vector<Float> listOfFloats);
+    //static float[] listToArray(std::vector<Float> listOfFloats);
 
 public:
-	static float LINE_HEIGHT;
-	static const int SPACE_ASCII = 32;
+    static float LINE_HEIGHT;
+    static const int SPACE_ASCII = 32;
 
-	TextMeshCreator(std::string filename);
+    TextMeshCreator(std::string filename);
 
-	TextMeshData* createTextMesh(GUIText* text);
-	
+    TextMeshData* createTextMesh(GUIText* text);
+    
 };
 
 #endif

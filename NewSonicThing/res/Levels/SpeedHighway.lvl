@@ -18,7 +18,9 @@ Collision 8
 res/Audio/BGM/highway1_intro.ogg
 res/Audio/BGM/highway1_loop.ogg
 14129.78 2700.98 14168.37
-166 6
+0.001043 0 0.002698
+0 1 0
+-0.355725 -0.189540 -0.915169
 -1000
 nowater
 0

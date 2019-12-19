@@ -11,23 +11,23 @@ class TexturedModel;
 class SkySphere : public Entity
 {
 private:
-	static std::list<TexturedModel*> models;
+    static std::list<TexturedModel*> models;
 
-	bool followsY = false;
+    bool followsY = false;
 
 public:
-	SkySphere();
+    SkySphere();
 
-	void step();
+    void step();
 
-	std::list<TexturedModel*>* getModels();
+    std::list<TexturedModel*>* getModels();
 
-	static void loadModels(char* folder, char* objname, char* mtlname);
+    static void loadModels(char* folder, char* objname, char* mtlname);
 
-	static void deleteModels();
+    static void deleteModels();
 
-	void setFollowsY(bool newFollowsY);
+    void setFollowsY(bool newFollowsY);
 
-	bool getFollowsY();
+    bool getFollowsY();
 };
 #endif
