@@ -96,7 +96,11 @@ MH_AircraftCarrierCart::MH_AircraftCarrierCart(float x, float y, float z, float 
 
 void MH_AircraftCarrierCart::step() 
 {
-	if (platformMoves == true)
+	Vector3f playerPos = Global::gameMainPlayer->position;
+	Vector3f playerDistanceSquared = (playerPos - position) * (playerPos - position);
+	if (platformMoves && playerDistanceSquared.x <= MAX_UPDATE_DISTANCE_SQUARED
+					  && playerDistanceSquared.y <= MAX_UPDATE_DISTANCE_SQUARED
+					  && playerDistanceSquared.z <= MAX_UPDATE_DISTANCE_SQUARED)
 	{	
 		Vector3f movementAmount;
 		switch (stateCurrent)

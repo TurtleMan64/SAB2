@@ -63,6 +63,8 @@ private:
 	const float COLLISION_RADIUS = 5; 
 	const float COLLISION_HEIGHT = 11.5;
 
+	const float MAX_UPDATE_DISTANCE_SQUARED = 1000*1000;
+
 	//if false, the platform doesn't need to update at all after being initialized since it doesn't move
 	//set by having a displacementMax of 0
 	bool platformMoves;
