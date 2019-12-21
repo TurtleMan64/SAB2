@@ -834,8 +834,6 @@ int main(int argc, char** argv)
 
             if (finishTimerBefore < 9.133f && Global::finishStageTimer >= 9.133f)
             {
-                Global::saveGhostData();
-
                 GuiManager::clearGuisToRender();
                 Global::gameScore = 0;
                 Global::gameRingCount = 0;
@@ -864,6 +862,8 @@ int main(int argc, char** argv)
                     default: break;
                 }
                 AudioPlayer::play(44, &Global::gameMainPlayer->position);
+
+                Global::saveGhostData();
             }
         }
 

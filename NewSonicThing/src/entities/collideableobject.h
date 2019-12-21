@@ -27,5 +27,7 @@ public:
     void updateCollisionModelWithScale();
 
     void updateCollisionModelWithZ();
+
+    void updateCollisionModelXYZ();
 };
 #endif

@@ -304,7 +304,7 @@ void ManiaMightyModel::animate(int animIndex, float time)
 
         case 25: //grab
         {
-            setScale(0.27f);
+            setScale(0.84f);
             models = &ManiaMightyModel::modelGrab;
             updateTransformationMatrix();
             setLimbsVisibility(false);
@@ -314,7 +314,7 @@ void ManiaMightyModel::animate(int animIndex, float time)
 
         case 26: //grind
         {
-            setScale(0.27f);
+            setScale(0.84f);
             models = &ManiaMightyModel::modelGrind;
             updateTransformationMatrix();
             setLimbsVisibility(false);
@@ -458,12 +458,12 @@ void ManiaMightyModel::loadStaticModels()
     loadModel(&ManiaMightyModel::modelJog15    , "res/Models/Characters/ManiaMighty/", "MightyJog15");
     loadModel(&ManiaMightyModel::modelJog16    , "res/Models/Characters/ManiaMighty/", "MightyJog16");
     loadModel(&ManiaMightyModel::modelJog17    , "res/Models/Characters/ManiaMighty/", "MightyJog17");
-    loadModel(&ManiaMightyModel::modelGrind    , "res/Models/Characters/ManiaSonic/", "Grind");
-    loadModel(&ManiaMightyModel::modelSkid     , "res/Models/Characters/ManiaSonic/", "Skid");
-    loadModel(&ManiaMightyModel::modelLightdash, "res/Models/Characters/ManiaSonic/", "Lightdash");
-    loadModel(&ManiaMightyModel::modelFreefall , "res/Models/Characters/ManiaSonic/", "Freefall");
-    loadModel(&ManiaMightyModel::modelStomp    , "res/Models/Characters/ManiaSonic/", "Stomp");
-    loadModel(&ManiaMightyModel::modelGrab     , "res/Models/Characters/ManiaSonic/", "Grab");
+    loadModel(&ManiaMightyModel::modelGrind    , "res/Models/Characters/ManiaMighty/", "MightyGrind");
+    loadModel(&ManiaMightyModel::modelSkid     , "res/Models/Characters/ManiaMighty/", "MightySkid");
+    loadModel(&ManiaMightyModel::modelLightdash, "res/Models/Characters/ManiaMighty/", "MightyLightdash");
+    loadModel(&ManiaMightyModel::modelFreefall , "res/Models/Characters/ManiaMighty/", "MightyFreefall");
+    loadModel(&ManiaMightyModel::modelStomp    , "res/Models/Characters/ManiaMighty/", "MightyStomp");
+    loadModel(&ManiaMightyModel::modelGrab     , "res/Models/Characters/ManiaMighty/", "MightyGrab");
 }
 
 void ManiaMightyModel::setLimbsVisibility(bool newVisible)

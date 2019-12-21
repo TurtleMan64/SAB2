@@ -9,8 +9,8 @@
 #include "../engineTester/main.h"
 #include "../entities/controllableplayer.h"
 #include "../toolbox/maths.h"
-#include "../animation/body.h"
-#include "../entities/camera.h"
+#include "dummy.h"
+#include "camera.h"
 #include "./camera.h"
 #include "./point.h"
 #include "../collision/collisionmodel.h"
@@ -55,7 +55,7 @@ Rocket::Rocket(Vector3f* point1, Vector3f* point2)
 
     setupRocketBase();
 
-    position.y += 10; //place the rocket above the base of the rocket
+    position.y += ROCKET_OFFSET_HEIGHT; //place the rocket above the base of the rocket
 
     //for rotating the rocket to face the end, as well as for the actual movement
     rocketPathPositionDifference = pointPositionEnd - position;
@@ -87,12 +87,11 @@ void Rocket::step()
     if (rocketAppearSoundCanPlay())
     {
         rocketAppearSoundPlayed = true;
-        rocketAudioSource = AudioPlayer::play(54, getPosition(), 1, false);
+        AudioPlayer::play(54, getPosition(), 1, false);
     }
     else if (rocketAppearSoundCanReset())
     {
         rocketAppearSoundPlayed = false;
-        rocketAudioSource = nullptr;
     }
 
     if (!isActive && canActivate && playerWithinRocketHitbox())
@@ -110,14 +109,14 @@ void Rocket::step()
 
         //Rocket state disables player movement based on velocity, velocity here is set purely for camera reasons
         Global::gameMainPlayer->vel.set(
-            rocketPathPositionDifferenceNormalized.x * 1000, 
-            rocketPathPositionDifferenceNormalized.y * 1000, 
-            rocketPathPositionDifferenceNormalized.z * 1000);
+            rocketPathPositionDifferenceNormalized.x * ROCKET_SPEED, 
+            rocketPathPositionDifferenceNormalized.y * ROCKET_SPEED, 
+            rocketPathPositionDifferenceNormalized.z * ROCKET_SPEED);
         Global::gameMainPlayer->grabRocket();
 
         if (!rocketStartedMoving()) //rocket is starting up
         {
-            makeDirtParticles(PARTICLE_POSITION_OFFSET_ROCKET_STARTUP);
+            //makeExhaustParticles(0.0f);
 
             setPlayerPositionToHoldRocketHandle();
 
@@ -125,9 +124,9 @@ void Rocket::step()
         }
         else //rocket is moving
         {
-            makeDirtParticles(PARTICLE_POSITION_OFFSET_ROCKET_MOVING);
-
             calculateNewRocketPosition();
+
+            makeExhaustParticles(ROCKET_SPEED);
 
             setPlayerPositionToHoldRocketHandle();
 
@@ -190,13 +189,13 @@ void Rocket::deleteStaticModels()
 
 void Rocket::setupRocketBase()
 {
-    base = new Body(&Rocket::modelsBase); INCR_NEW("Entity");
+    base = new Dummy(&Rocket::modelsBase); INCR_NEW("Entity");
     base->setVisible(true);
     Main_addEntity(base);
     base->setPosition(&position);
 
     collideModelOriginal = Rocket::cmBase;
-    collideModelTransformed = loadCollisionModel("Models/Objects/Rocket/", "RocketPlatformCollision");
+    collideModelTransformed = Rocket::cmBase->duplicateMe();
     CollisionChecker::addCollideModel(collideModelTransformed);
     updateCollisionModel();
 }
@@ -237,19 +236,26 @@ bool Rocket::playerWithinRocketHitbox()
             && fabsf(playerToRocketPositionDifference.y) < HITBOX_HEIGHT);
 }
 
-void Rocket::makeDirtParticles(float particlePositionOffset)
+void Rocket::makeExhaustParticles(float rocketSpeed)
 {
     int dirtToMake = 5;
     while (dirtToMake > 0)
     {
+        Vector3f down(0, -1, 0);
+        Vector3f rotAxis = rocketPathPositionDifferenceNormalized.cross(&down);
+        Vector3f up = Maths::rotatePoint(&rocketPathPositionDifferenceNormalized, &rotAxis, -Maths::PI/2);
+        up.normalize();
+
         //put the particle in the right position
-        Vector3f particlePosition(getX() + (rocketPathPositionDifferenceNormalized.x * particlePositionOffset),
-                                  getY() + (rocketPathPositionDifferenceNormalized.y * particlePositionOffset),
-                                  getZ() + (rocketPathPositionDifferenceNormalized.z * particlePositionOffset));
+        Vector3f particlePosition = 
+            position + 
+            rocketPathPositionDifferenceNormalized.scaleCopy(PARTICLE_POSITION_OFFSET_FORWARD) +
+            up.scaleCopy(PARTICLE_POSITION_OFFSET_UP);
 
         //setup the particle velocities so they fly in different directions to make a ball
-        Vector3f particleVelocity(rocketPathPositionDifferenceNormalized);
-        particleVelocity.scale(-3);
+        Vector3f particleVelocity(&rocketPathPositionDifferenceNormalized);
+        particleVelocity.setLength(rocketSpeed);
+        particleVelocity.scale(0.25f);
         particleVelocity.x +=   (Maths::random() - 0.5f);
         particleVelocity.y +=   (Maths::random() - 0.5f);
         particleVelocity.z +=   (Maths::random() - 0.5f);
@@ -258,8 +264,8 @@ void Rocket::makeDirtParticles(float particlePositionOffset)
         particlePosition.z += 4*(Maths::random() - 0.5f);
 
         //create the particle using these calculated values
-        ParticleMaster::createParticle(ParticleResources::textureDust, &particlePosition, &particleVelocity, 0.08f, 60, 0, 4 * Maths::random() + 0.5f, 0, false, true, 1.0f, true);
-        ParticleMaster::createParticle(ParticleResources::textureDust, &particlePosition, &particleVelocity, 0.08f, 60, 0, 4 * Maths::random() + 0.5f, 0, false, true, 1.0f, true);
+        ParticleMaster::createParticle(ParticleResources::textureDust, &particlePosition, &particleVelocity, 0.0f, 0.1f, 0, 2*Maths::random() + 0.5f, 0, false, false, 1.0f, true);
+        ParticleMaster::createParticle(ParticleResources::textureDust, &particlePosition, &particleVelocity, 0.0f, 0.1f, 0, 2*Maths::random() + 0.5f, 0, false, false, 1.0f, true);
 
         dirtToMake--;
     }
@@ -276,12 +282,13 @@ void Rocket::playRocketLaunchSoundLoop()
     {
         if (!rocketAudioSource->isPlaying())
         {
-            rocketAudioSource = AudioPlayer::play(56, getPosition(), 1, false);
+            rocketAudioSource = AudioPlayer::play(56, getPosition(), 1, true);
         }
+        rocketAudioSource->setPosition(position.x, position.y, position.z);
     }
     else
     {
-        rocketAudioSource = AudioPlayer::play(56, getPosition(), 1, false);
+        rocketAudioSource = AudioPlayer::play(56, getPosition(), 1, true);
     }
 }
 
@@ -292,16 +299,13 @@ bool Rocket::rocketStartedMoving()
 
 void Rocket::setPlayerPositionToHoldRocketHandle()
 {
-    Global::gameMainPlayer->setPosition(
-            position.x - 6*rocketPathPositionDifferenceNormalized.x,
-            position.y - 5,
-            position.z - 6*rocketPathPositionDifferenceNormalized.z);
+    Global::gameMainPlayer->setPosition(&position);
 }
 
 void Rocket::calculateNewRocketPosition()
 {
     position.x = pointPositionStart.x + (rocketPathPositionDifference.x * percentOfPathCompleted);
-    position.y = (pointPositionStart.y + 10) + (rocketPathPositionDifference.y * percentOfPathCompleted);
+    position.y = (pointPositionStart.y + ROCKET_OFFSET_HEIGHT) + (rocketPathPositionDifference.y * percentOfPathCompleted);
     position.z = pointPositionStart.z + (rocketPathPositionDifference.z * percentOfPathCompleted);
 }
 
@@ -318,9 +322,14 @@ bool Rocket::fullPathTraveled()
 void Rocket::resetRocketVariables()
 {
     position = pointPositionStart;
-    position.y += 10;
+    position.y += ROCKET_OFFSET_HEIGHT;
     canActivate = true;
     isActive = false;
     percentOfPathCompleted = 0;
     startupTimer = STARTUP_TIMER_INITIAL_VALUE;
+    if (rocketAudioSource != nullptr)
+    {
+        rocketAudioSource->setLooping(false);
+        rocketAudioSource = nullptr;
+    }
 }
