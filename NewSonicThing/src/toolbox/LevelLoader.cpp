@@ -65,6 +65,9 @@
 #include "../menu/timer.h"
 #include "../entities/RadicalHighway/rhstagemanager.h"
 #include "../entities/lostchao.h"
+#include "../entities/rhinospike.h"
+#include "../entities/hunter.h"
+#include "../entities/bullet.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -964,6 +967,25 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             return;
         }
 
+        case 29: //RhinoSpike
+        {
+            RhinoSpike::loadStaticModels();
+            RhinoSpike* rhino = new RhinoSpike(toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3])); INCR_NEW("Entity");
+            chunkedEntities->push_back(rhino);
+            return;
+        }
+
+        case 30: //Hunter
+        {
+            Hunter::loadStaticModels();
+            Bullet::loadStaticModels();
+            Hunter* hunter = new Hunter(toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]),
+                                        toFloat(dat[4]), toFloat(dat[5]), toFloat(dat[6]),
+                                        chunkedEntities); INCR_NEW("Entity");
+            chunkedEntities->push_back(hunter);
+            return;
+        }
+
         case 32: //NPC
         {
             Help::loadStaticModels();
@@ -1338,6 +1360,9 @@ void LevelLoader::freeAllStaticModels()
     SpringTriple::deleteStaticModels();
     RH_StageManager::deleteStaticModels();
     LostChao::deleteStaticModels();
+    RhinoSpike::deleteStaticModels();
+    Hunter::deleteStaticModels();
+    Bullet::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()

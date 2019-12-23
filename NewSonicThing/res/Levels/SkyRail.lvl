@@ -42,6 +42,11 @@ false
 # Lost Chao
 81 -3449.996094 -1047.461548 2999.977539
 
+# Spike Rhino
+29 -2482.698730 -3785.904053 8814.100586
+29 -2116.632324 -2250.502441 4421.487305
+29 -2464.785889 -3785.904053 8804.321289
+
 # Rails
 92 res/Models/Levels/SkyRail/Rails/Rail0.txt
 92 res/Models/Levels/SkyRail/Rails/Rail1.txt

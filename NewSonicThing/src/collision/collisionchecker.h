@@ -34,7 +34,7 @@ public:
     // Makes the next collision check set which collision
     // model the player has collided with, and sets that model
     // to touching the player.
-    static void setCheckPlayer();
+    static void setCheckPlayer(bool checkPlayer);
 
     // Sets all collision models to not have the player on them
     static void falseAlarm();

@@ -156,12 +156,14 @@
     <ClCompile Include="src\collision\Triangle3D.cpp" />
     <ClCompile Include="src\engineTester\MainGameLoop.cpp" />
     <ClCompile Include="src\entities\Beetle.cpp" />
+    <ClCompile Include="src\entities\Bullet.cpp" />
     <ClCompile Include="src\entities\Dashpad.cpp" />
     <ClCompile Include="src\entities\Camera.cpp" />
     <ClCompile Include="src\entities\ControllablePlayer.cpp" />
     <ClCompile Include="src\entities\DelfinoPlaza\DP_StageManager.cpp" />
     <ClCompile Include="src\entities\GreenForest\GF_Particle.cpp" />
     <ClCompile Include="src\entities\Help.cpp" />
+    <ClCompile Include="src\entities\Hunter.cpp" />
     <ClCompile Include="src\entities\ItemCapsule.cpp" />
     <ClCompile Include="src\entities\LostChao.cpp" />
     <ClCompile Include="src\entities\ManiaMightyModel.cpp" />
@@ -188,6 +190,7 @@
     <ClCompile Include="src\entities\RaceGhost.cpp" />
     <ClCompile Include="src\entities\RadicalHighway\RH_StageManager.cpp" />
     <ClCompile Include="src\entities\Rail.cpp" />
+    <ClCompile Include="src\entities\RhinoSpike.cpp" />
     <ClCompile Include="src\entities\Ring.cpp" />
     <ClCompile Include="src\entities\RingMoving.cpp" />
     <ClCompile Include="src\entities\Rocket.cpp" />
@@ -298,12 +301,14 @@
     <ClInclude Include="src\collision\triangle3d.h" />
     <ClInclude Include="src\engineTester\main.h" />
     <ClInclude Include="src\entities\beetle.h" />
+    <ClInclude Include="src\entities\bullet.h" />
     <ClInclude Include="src\entities\dashpad.h" />
     <ClInclude Include="src\entities\camera.h" />
     <ClInclude Include="src\entities\controllableplayer.h" />
     <ClInclude Include="src\entities\DelfinoPlaza\dpstagemanager.h" />
     <ClInclude Include="src\entities\GreenForest\gfparticle.h" />
     <ClInclude Include="src\entities\help.h" />
+    <ClInclude Include="src\entities\hunter.h" />
     <ClInclude Include="src\entities\itemcapsule.h" />
     <ClInclude Include="src\entities\lostchao.h" />
     <ClInclude Include="src\entities\maniamightymodel.h" />
@@ -330,6 +335,7 @@
     <ClInclude Include="src\entities\raceghost.h" />
     <ClInclude Include="src\entities\RadicalHighway\rhstagemanager.h" />
     <ClInclude Include="src\entities\rail.h" />
+    <ClInclude Include="src\entities\rhinospike.h" />
     <ClInclude Include="src\entities\ring.h" />
     <ClInclude Include="src\entities\ringmoving.h" />
     <ClInclude Include="src\entities\rocket.h" />

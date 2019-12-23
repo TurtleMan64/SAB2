@@ -26,9 +26,9 @@ void CollisionChecker::initChecker()
     CollisionChecker::checkPlayer = false;
 }
 
-void CollisionChecker::setCheckPlayer()
+void CollisionChecker::setCheckPlayer(bool checkPlayerNew)
 {
-    CollisionChecker::checkPlayer = true;
+    CollisionChecker::checkPlayer = checkPlayerNew;
 }
 
 

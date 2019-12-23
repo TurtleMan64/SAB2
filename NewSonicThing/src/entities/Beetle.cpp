@@ -55,8 +55,8 @@ Beetle::Beetle(float x, float y, float z, std::list<Entity*>* entityListToAdd)
     updateBlades(&position);
     entityListToAdd->push_back(blades);
 
-    baseColour.set(Maths::nextUniform()*5, Maths::nextUniform()*5, Maths::nextUniform()*5);
-    blades->baseColour.set(&baseColour);
+    //baseColour.set(Maths::nextUniform()*5, Maths::nextUniform()*5, Maths::nextUniform()*5);
+    //blades->baseColour.set(&baseColour);
 }
 
 void Beetle::updateBlades(Vector3f* pos)
@@ -112,8 +112,6 @@ void Beetle::step()
 void Beetle::die()
 {
     AudioPlayer::play(3, &position);
-
-    //Global::gamePlayer->increaseCombo();
 
     //very strange bug that i cant figure out. sometimes when you homing attack a beetle and hit it, 
     // there will be a visible entity that returns a nullptr for their models during rendering.

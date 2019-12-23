@@ -2,7 +2,7 @@
 
 newmtl object_004C3794_material_12
 Ns 20
-Ni 0.3
+Ni 0.1
 Tr 1
 d 1.000000
 scrollX 0
@@ -11,7 +11,7 @@ map_Kd board_ura.png
 
 newmtl object_004C3794_material_55
 Ns 20
-Ni 0.3
+Ni 0.1
 Tr 1
 d 1.000000
 scrollX 0
@@ -20,7 +20,7 @@ map_Kd rock_panel3.png
 
 newmtl object_004C3794_material_52
 Ns 20
-Ni 0.3
+Ni 0.1
 Tr 1
 d 1.000000
 scrollX 0
@@ -29,7 +29,7 @@ map_Kd rock_burn.png
 
 newmtl object_004C3794_material_69
 Ns 20
-Ni 0.3
+Ni 0.1
 Tr 1
 d 1.000000
 scrollX 0
@@ -38,7 +38,7 @@ map_Kd yuka.png
 
 newmtl object_004C3794_material_66
 Ns 20
-Ni 0.3
+Ni 0.1
 Tr 1
 d 1.000000
 scrollX 0
@@ -47,7 +47,7 @@ map_Kd wlight.png
 
 newmtl object_004C3794_material_40
 Ns 20
-Ni 0.3
+Ni 0.1
 Tr 1
 d 1.000000
 scrollX 0
@@ -56,7 +56,7 @@ map_Kd kabe2.png
 
 newmtl object_004C3794_material_56
 Ns 20
-Ni 0.3
+Ni 0.1
 Tr 1
 d 1.000000
 scrollX 0
@@ -65,7 +65,7 @@ map_Kd rock_panel4.png
 
 newmtl object_004C3794_material_68
 Ns 20
-Ni 0.3
+Ni 0.1
 Tr 1
 d 1.000000
 scrollX 0
@@ -74,7 +74,7 @@ map_Kd yellow.png
 
 newmtl object_004C3794_material_42
 Ns 20
-Ni 0.3
+Ni 0.1
 Tr 1
 d 1.000000
 scrollX 0
@@ -83,7 +83,7 @@ map_Kd kabe4.png
 
 newmtl object_004C3794_material_17
 Ns 20
-Ni 0.3
+Ni 0.1
 Tr 1
 d 1.000000
 scrollX 0
@@ -92,7 +92,7 @@ map_Kd burn0.png
 
 newmtl object_004C3794_material_54
 Ns 20
-Ni 0.3
+Ni 0.1
 Tr 1
 d 1.000000
 scrollX 0
@@ -101,7 +101,7 @@ map_Kd rock_panel2.png
 
 newmtl object_004C3794_material_57
 Ns 20
-Ni 0.3
+Ni 0.1
 Tr 1
 d 1.000000
 scrollX 0
@@ -110,7 +110,7 @@ map_Kd rock_panel5.png
 
 newmtl object_004C3794_material_53
 Ns 20
-Ni 0.3
+Ni 0.1
 Tr 1
 d 1.000000
 scrollX 0
@@ -119,7 +119,7 @@ map_Kd rock_hane.png
 
 newmtl object_004C3794_material_13
 Ns 20
-Ni 0.3
+Ni 0.1
 Tr 1
 d 1.000000
 scrollX 0
