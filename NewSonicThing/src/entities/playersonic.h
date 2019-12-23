@@ -129,8 +129,13 @@ private:
     GuiTexture* homingAttackReticle = nullptr;
 
     //const float camAngleLookdown = 0.0f; //0.2f; //How much the camera looks down
-    const float camRadius        = 75.0;  //Camera radius at zero speed
-    const float camHeightOffset  = 5.0f; //Point above the vehicle that the camera focuses on
+    float camRadius               = 75.0f;  //Camera radius at zero speed
+    float camRadiusTarget         = 75.0f;
+    const float camRadiusMax      = 75.0f;
+    const float camRadiusMin      = 25.0f;
+    const float camRadiusApproach = 3.0f;
+    const float camRadiusSpeed    = 20.0f;
+    const float camHeightOffset   = 5.0f; //Point above the vehicle that the camera focuses on
 
     float hitTimer = 0.0f; //when you get hit by something, like an enemy or spikes
     //float canMoveTimer = 0.0f;
@@ -166,6 +171,7 @@ private:
     float inputY;
     float inputX2;
     float inputY2;
+    int   inputZoom;
 
     void moveMeGround();
 

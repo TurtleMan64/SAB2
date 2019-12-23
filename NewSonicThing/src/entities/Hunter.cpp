@@ -82,17 +82,31 @@ void Hunter::updateGun()
     Vector3f gunPos = position + yAxis.scaleCopy(upOffset) + right.scaleCopy(rightOffset);
     gun->position = gunPos;
 
-    //calc direction of gun to sonic
-    Vector3f target = Global::gameMainPlayer->getCenterPosition();
+    float hitInThisSec = 0.5f;
+
+    //point the gun inbetween sonics current position and where he will be shortly
+    Vector3f target = Global::gameMainPlayer->getCenterPosition() + Global::gameMainPlayer->vel.scaleCopy(hitInThisSec*0.25f);
     Vector3f diff = target - gunPos;
     gun->rotY = Maths::toDegrees(atan2f(-diff.z, diff.x));
     gun->rotZ = Maths::toDegrees(atan2f(diff.y, sqrtf(diff.x*diff.x + diff.z*diff.z)));
-
     gun->updateTransformationMatrix();
-
-    gunDirection = diff;
+    gunDirection = diff; //gun visual direction
     gunDirection.normalize();
     gunTipPos = gunPos + gunDirection.scaleCopy(22.5189f*scale);
+
+    //figure out where sonic is going to be in 0.5 seconds, aim the bullet there
+    target = Global::gameMainPlayer->getCenterPosition() + Global::gameMainPlayer->vel.scaleCopy(hitInThisSec);
+
+    diff = target - gunTipPos;
+
+    bulletDirection = diff;
+    bulletDirection.normalize();
+    bulletTipPos = gunTipPos;//gunPos + bulletDirection.scaleCopy(22.5189f*scale);
+
+    Vector3f distToCover = target - bulletTipPos;
+    bulletSpeed = distToCover.length()/hitInThisSec;
+
+    bulletSpeed = fmaxf(bulletSpeed, 50.0f);
 }
 
 void Hunter::step()
@@ -142,10 +156,10 @@ void Hunter::step()
 
         if (shootTimer > timeUntilShoot)
         {
-            shootTimer = 0.0f;
+            shootTimer = Maths::random()*0.2f;
 
-            Vector3f bulletVel = gunDirection.scaleCopy(bulletSpeed);
-            Bullet* bullet = new Bullet(&gunTipPos, &bulletVel, timeUntilShoot*3.0f); INCR_NEW("Entity");
+            Vector3f bulletVel = bulletDirection.scaleCopy(bulletSpeed);
+            Bullet* bullet = new Bullet(&bulletTipPos, &bulletVel, timeUntilShoot*3.0f); INCR_NEW("Entity");
             Main_addEntity(bullet);
         }
     }

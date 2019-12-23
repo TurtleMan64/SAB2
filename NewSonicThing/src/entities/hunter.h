@@ -20,11 +20,15 @@ private:
     const float hitRadius = 7.2f;
     const float hitHeight = 27.0f;
     const float timeUntilShoot = 2.0f;
-    const float bulletSpeed = 120.0f;
+
+    float bulletSpeed = 120.0f; //this changes based on distance to sonic
 
     float shootTimer = 0.0f;
-    Vector3f gunDirection;
-    Vector3f gunTipPos;
+    Vector3f gunDirection; //the visual direction that the gun is facing
+    Vector3f gunTipPos; //the top of the gun barrel
+
+    Vector3f bulletDirection; //the direction the bullet is going to go in
+    Vector3f bulletTipPos; //where the bullet is going to spawn
 
     Dummy* gun = nullptr;
     Vector3f forward;

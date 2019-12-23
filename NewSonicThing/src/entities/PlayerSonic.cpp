@@ -2401,6 +2401,7 @@ void PlayerSonic::setInputs()
     inputY       = Input::inputs.INPUT_Y;
     inputX2      = Input::inputs.INPUT_X2;
     inputY2      = Input::inputs.INPUT_Y2;
+    inputZoom    = (int)Input::inputs.INPUT_DPADU - (int)Input::inputs.INPUT_DPADD;
 
     inputJumpPrevious    = Input::inputs.INPUT_PREVIOUS_ACTION1;
     inputActionPrevious  = Input::inputs.INPUT_PREVIOUS_ACTION2;
@@ -2417,6 +2418,7 @@ void PlayerSonic::setInputs()
         inputY    = 0;
         inputX2   = 0;
         inputY2   = 0;
+        inputZoom = 0;
 
         inputJumpPrevious    = false;
         inputActionPrevious  = false;
@@ -2503,6 +2505,10 @@ void PlayerSonic::refreshCamera()
 
         if (Global::finishStageTimer < 1.0f)
         {
+            camRadiusTarget -= camRadiusSpeed*inputZoom*dt;
+            camRadiusTarget = fmaxf(fminf(camRadiusTarget, camRadiusMax), camRadiusMin);
+            camRadius = Maths::approach(camRadius, camRadiusTarget, camRadiusApproach, dt);
+
             camOffset.setLength(camRadius);
         }
         else

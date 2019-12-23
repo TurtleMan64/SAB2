@@ -32,7 +32,7 @@
 
 extern GLFWwindow* window;
 
-InputStruct Input::inputs{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+InputStruct Input::inputs{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 //vars for use by us
 double mousePreviousX = 0;
@@ -60,6 +60,8 @@ int BUTTON_LB     = 4;
 int BUTTON_RB     = 5;
 int BUTTON_SELECT = 6;
 int BUTTON_START  = 7;
+int BUTTON_DPADU  = 11;
+int BUTTON_DPADD  = 13;
 
 int   STICK_LX       = 0;
 float STICK_LX_SCALE = 1;
@@ -146,6 +148,9 @@ void Input::pollInputs()
             Input::inputs.INPUT_SELECT  = state.buttons[BUTTON_SELECT];
             Input::inputs.INPUT_START   = state.buttons[BUTTON_START];
 
+            Input::inputs.INPUT_DPADU   = state.buttons[BUTTON_DPADU];
+            Input::inputs.INPUT_DPADD   = state.buttons[BUTTON_DPADD];
+
             Input::inputs.INPUT_X  = state.axes[STICK_LX];
             Input::inputs.INPUT_Y  = state.axes[STICK_LY];
             Input::inputs.INPUT_X2 = state.axes[STICK_RX];
@@ -170,6 +175,8 @@ void Input::pollInputs()
         Input::inputs.INPUT_RB       = buttons[BUTTON_RB];
         Input::inputs.INPUT_LB       = buttons[BUTTON_LB];
         Input::inputs.INPUT_START    = buttons[BUTTON_START];
+        Input::inputs.INPUT_DPADU    = buttons[BUTTON_DPADU];
+        Input::inputs.INPUT_DPADD    = buttons[BUTTON_DPADD];
 
         int axesCount;
         const float *axes = glfwGetJoystickAxes(CONTROLLER_ID, &axesCount);
@@ -407,7 +414,7 @@ void Input::pollInputs()
 
         //Loader::printInfo();
 
-        if (Global::raceLogSize > 0)
+        //if (Global::raceLogSize > 0)
         {
             //std::ofstream raceLogFile;
             //raceLogFile.open("RaceLog.txt", std::ios::out | std::ios::trunc);
@@ -571,6 +578,14 @@ void Input::init()
                 {
                     BUTTON_START = std::stoi(lineSplit[1], nullptr, 10);
                 }
+                else if (strcmp(lineSplit[0], "DpadU") == 0)
+                {
+                    BUTTON_DPADU = std::stoi(lineSplit[1], nullptr, 10);
+                }
+                else if (strcmp(lineSplit[0], "DpadD") == 0)
+                {
+                    BUTTON_DPADD = std::stoi(lineSplit[1], nullptr, 10);
+                }
                 else if (strcmp(lineSplit[0], "Controller_ID") == 0)
                 {
                     int raw = std::stoi(lineSplit[1], nullptr, 10);
@@ -671,6 +686,8 @@ void Input::init()
         BUTTON_LB    = std::min(BUTTON_LB,    buttonCount - 1);
         BUTTON_RB    = std::min(BUTTON_RB,    buttonCount - 1);
         BUTTON_START = std::min(BUTTON_START, buttonCount - 1);
+        BUTTON_DPADU = std::min(BUTTON_DPADU, buttonCount - 1);
+        BUTTON_DPADD = std::min(BUTTON_DPADD, buttonCount - 1);
     }
 
     //log the controllers we see for humans if needed
