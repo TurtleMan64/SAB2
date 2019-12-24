@@ -317,7 +317,7 @@ inline void MH_CratePlatform::playStoppingSound()
 {
 	if (platformAudioSource == nullptr)
 	{
-		platformAudioSource = AudioPlayer::play(62, getPosition(), 1, false);
+		platformAudioSource = AudioPlayer::play(63, getPosition(), 1, false);
 	}
 }
 

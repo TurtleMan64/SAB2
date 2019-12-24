@@ -231,7 +231,7 @@ inline void Pulley::playPulleySound()
 {
 	if (pulleyAudioSource == nullptr)
 	{
-		pulleyAudioSource = AudioPlayer::play(61, top->getPosition(), 1, false);
+		pulleyAudioSource = AudioPlayer::play(62, top->getPosition(), 1, false);
 	}
 	pulleyAudioSource->setLooping(true);
 }
