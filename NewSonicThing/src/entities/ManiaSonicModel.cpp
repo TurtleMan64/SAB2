@@ -340,21 +340,59 @@ void ManiaSonicModel::setOrientation(float x, float y, float z, float xRot, floa
 
 void ManiaSonicModel::setBaseColor(float r, float g, float b)
 {
-    baseColour.set(r, g, b);
-    myBody->baseColour.set(r, g, b);
-    myHead->baseColour.set(r, g, b);
-    myLeftHumerus->baseColour.set(r, g, b);
-    myLeftForearm->baseColour.set(r, g, b);
-    myLeftHand->baseColour.set(r, g, b);
-    myLeftThigh->baseColour.set(r, g, b);
-    myLeftShin->baseColour.set(r, g, b);
-    myLeftFoot->baseColour.set(r, g, b);
+                    baseColour.set(r, g, b);
+    myBody        ->baseColour.set(r, g, b);
+    myHead        ->baseColour.set(r, g, b);
+    myLeftHumerus ->baseColour.set(r, g, b);
+    myLeftForearm ->baseColour.set(r, g, b);
+    myLeftHand    ->baseColour.set(r, g, b);
+    myLeftThigh   ->baseColour.set(r, g, b);
+    myLeftShin    ->baseColour.set(r, g, b);
+    myLeftFoot    ->baseColour.set(r, g, b);
     myRightHumerus->baseColour.set(r, g, b);
     myRightForearm->baseColour.set(r, g, b);
-    myRightHand->baseColour.set(r, g, b);
-    myRightThigh->baseColour.set(r, g, b);
-    myRightShin->baseColour.set(r, g, b);
-    myRightFoot->baseColour.set(r, g, b);
+    myRightHand   ->baseColour.set(r, g, b);
+    myRightThigh  ->baseColour.set(r, g, b);
+    myRightShin   ->baseColour.set(r, g, b);
+    myRightFoot   ->baseColour.set(r, g, b);
+}
+
+void ManiaSonicModel::setBaseAlpha(float a)
+{
+                    baseAlpha = a;
+    myBody        ->baseAlpha = a;
+    myHead        ->baseAlpha = a;
+    myLeftHumerus ->baseAlpha = a;
+    myLeftForearm ->baseAlpha = a;
+    myLeftHand    ->baseAlpha = a;
+    myLeftThigh   ->baseAlpha = a;
+    myLeftShin    ->baseAlpha = a;
+    myLeftFoot    ->baseAlpha = a;
+    myRightHumerus->baseAlpha = a;
+    myRightForearm->baseAlpha = a;
+    myRightHand   ->baseAlpha = a;
+    myRightThigh  ->baseAlpha = a;
+    myRightShin   ->baseAlpha = a;
+    myRightFoot   ->baseAlpha = a;
+}
+
+void ManiaSonicModel::setRenderOrder(char newOrder)
+{
+                    renderOrder = newOrder;
+    myBody        ->renderOrder = newOrder;
+    myHead        ->renderOrder = newOrder;
+    myLeftHumerus ->renderOrder = newOrder;
+    myLeftForearm ->renderOrder = newOrder;
+    myLeftHand    ->renderOrder = newOrder;
+    myLeftThigh   ->renderOrder = newOrder;
+    myLeftShin    ->renderOrder = newOrder;
+    myLeftFoot    ->renderOrder = newOrder;
+    myRightHumerus->renderOrder = newOrder;
+    myRightForearm->renderOrder = newOrder;
+    myRightHand   ->renderOrder = newOrder;
+    myRightThigh  ->renderOrder = newOrder;
+    myRightShin   ->renderOrder = newOrder;
+    myRightFoot   ->renderOrder = newOrder;
 }
 
 std::list<TexturedModel*>* ManiaSonicModel::getModels()

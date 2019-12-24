@@ -26,6 +26,7 @@ private:
     int location_useFakeLighting;
     int location_hasTransparency;
     int location_baseColour;
+    int location_baseAlpha;
     int location_skyColour;
     int location_texOffX;
     int location_texOffY;
@@ -69,6 +70,8 @@ public:
     void loadGlowAmount(float glowAmount);
 
     void loadBaseColour(Vector3f* baseColour);
+
+    void loadBaseAlpha(float baseAlpha);
 
     void loadTextureOffsets(float offX, float offY);
 

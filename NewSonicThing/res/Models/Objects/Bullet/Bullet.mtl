@@ -1,0 +1,9 @@
+# Material Count: 1
+
+newmtl Tex_0062_0.dds
+Ns 20
+Ni 0.0
+d 0
+glow 2.0
+Tr 0
+map_Kd colorstransparent.png

@@ -20,6 +20,10 @@ public:
 
     virtual void setBaseColor(float r, float g, float b);
 
+    virtual void setBaseAlpha(float a);
+
+    virtual void setRenderOrder(char newOrder);
+
     const virtual float getDisplayBallOffset();
 
     virtual ParticleTexture* getBallTexture();

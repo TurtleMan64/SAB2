@@ -840,7 +840,7 @@ void PlayerSonic::step()
 
         //speed before adjusting
         float originalSpeed = vel.length();
-        CollisionChecker::setCheckPlayer();
+        CollisionChecker::setCheckPlayer(true);
         if (CollisionChecker::checkCollision(getX(), getY(), getZ(), getX()+vel.x*dt, getY()+vel.y*dt, getZ()+vel.z*dt))
         {
             Vector3f* colNormal = &CollisionChecker::getCollideTriangle()->normal;
@@ -1011,7 +1011,7 @@ void PlayerSonic::step()
 
                     while (distanceRemaining > 0.0f)
                     {
-                        CollisionChecker::setCheckPlayer();
+                        CollisionChecker::setCheckPlayer(true);
                         if (CollisionChecker::checkCollision(getX(), getY(), getZ(), getX()+nextVel.x, getY()+nextVel.y, getZ()+nextVel.z))
                         {
                             colNormal = &CollisionChecker::getCollideTriangle()->normal;
@@ -1084,9 +1084,9 @@ void PlayerSonic::step()
             increasePosition(vel.x*dt, vel.y*dt, vel.z*dt);
 
             bool checkPassed = false;
-            CollisionChecker::setCheckPlayer();
             if (onGround)
             {
+                CollisionChecker::setCheckPlayer(true);
                 checkPassed = CollisionChecker::checkCollision(getX(), getY(), getZ(), getX() - relativeUp.x*surfaceTension, getY() - relativeUp.y*surfaceTension, getZ() - relativeUp.z*surfaceTension);
             }
             if (checkPassed)
@@ -2426,7 +2426,7 @@ void PlayerSonic::animate()
         yawAngleGround = Maths::toDegrees(atan2f(-nZGround, nXGround));
         diffGround = Maths::compareTwoAngles(twistAngleGround, yawAngleGround);
 
-        float finishTimeAnim = fmaxf(0, fminf((float)(Global::finishStageTimer-1.666f)*2.0f*60.0f, 99.99f));
+        float finishTimeAnim = fmaxf(0, fminf((float)(Global::finishStageTimer-1.666f)*2.0f*60.0f, 99.999f));
 
         playerModel->setOrientation(position.x, position.y, position.z, diffGround, yawAngleGround, pitchAngleGround, 0, &relativeUp);
         playerModel->animate(14, finishTimeAnim);
@@ -2443,6 +2443,7 @@ void PlayerSonic::setInputs()
     inputY       = Input::inputs.INPUT_Y;
     inputX2      = Input::inputs.INPUT_X2;
     inputY2      = Input::inputs.INPUT_Y2;
+    inputZoom    = (int)Input::inputs.INPUT_DPADU - (int)Input::inputs.INPUT_DPADD;
 
     inputJumpPrevious    = Input::inputs.INPUT_PREVIOUS_ACTION1;
     inputActionPrevious  = Input::inputs.INPUT_PREVIOUS_ACTION2;
@@ -2459,6 +2460,7 @@ void PlayerSonic::setInputs()
         inputY    = 0;
         inputX2   = 0;
         inputY2   = 0;
+        inputZoom = 0;
 
         inputJumpPrevious    = false;
         inputActionPrevious  = false;
@@ -2581,6 +2583,10 @@ void PlayerSonic::refreshCamera()
 
         if (Global::finishStageTimer < 1.0f)
         {
+            camRadiusTarget -= camRadiusSpeed*inputZoom*dt;
+            camRadiusTarget = fmaxf(fminf(camRadiusTarget, camRadiusMax), camRadiusMin);
+            camRadius = Maths::approach(camRadius, camRadiusTarget, camRadiusApproach, dt);
+
             camOffset.setLength(camRadius);
         }
         else
@@ -2606,6 +2612,7 @@ void PlayerSonic::refreshCamera()
         Vector3f camDelta = eye - target;
         camDelta.setLength(5); //this is what causes metal harbor to go through cam at beginning
         Vector3f camStart = target + camDelta;
+        CollisionChecker::setCheckPlayer(false);
         if (CollisionChecker::checkCollision(camStart.x, camStart.y, camStart.z, eye.x, eye.y, eye.z))
         {
             Vector3f delta = eye - target;

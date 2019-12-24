@@ -122,59 +122,41 @@ void CollisionModel::transformModel(CollisionModel* targetModel, Vector3f* trans
         return;
     }
 
-    float offX = translate->x;
-    float offY = translate->y;
-    float offZ = translate->z;
-
-    float angleRad = Maths::toRadians(yRot);
-    float cosAng = cosf(angleRad);
-    float sinAng = sinf(angleRad);
-
+    float angleRadY = Maths::toRadians(yRot);
     float angleRadZ = Maths::toRadians(zRot);
-    float cosAngZ = cosf(angleRadZ);
-    float sinAngZ = sinf(angleRadZ);
 
-    //targetModel->deleteMe();
+    Vector3f yAxis(0, 1, 0);
+    Vector3f zAxis(0, 0, 1);
+
     int i = 0;
     for (Triangle3D* tri : triangles)
     {
-        float xDiff = tri->p1X;
-        float zDiff = tri->p1Z;
-        float yDiff = tri->p1Y;
+        Vector3f newPoint1(tri->p1X, tri->p1Y, tri->p1Z);
+        newPoint1 = Maths::rotatePoint(&newPoint1, &yAxis, angleRadY);
+        newPoint1 = Maths::rotatePoint(&newPoint1, &zAxis, angleRadZ);
+        newPoint1 = newPoint1 + translate;
 
-        float newX = (xDiff*cosAngZ - yDiff*sinAngZ);
-        float newY = (yDiff*cosAngZ + xDiff*sinAngZ);
-        Vector3f newP1(offX + (newX*cosAng - zDiff*sinAng), offY + newY, offZ + (zDiff*cosAng + newX*sinAng));
+        Vector3f newPoint2(tri->p2X, tri->p2Y, tri->p2Z);
+        newPoint2 = Maths::rotatePoint(&newPoint2, &yAxis, angleRadY);
+        newPoint2 = Maths::rotatePoint(&newPoint2, &zAxis, angleRadZ);
+        newPoint2 = newPoint2 + translate;
 
-        xDiff = tri->p2X;
-        zDiff = tri->p2Z;
-        yDiff = tri->p2Y;
-        newX = (xDiff*cosAngZ - yDiff*sinAngZ);
-        newY = (yDiff*cosAngZ + xDiff*sinAngZ);
-        Vector3f newP2(offX + (newX*cosAng - zDiff*sinAng), offY + newY, offZ + (zDiff*cosAng + newX*sinAng));
-
-        xDiff = tri->p3X;
-        zDiff = tri->p3Z;
-        yDiff = tri->p3Y;
-        newX = (xDiff*cosAngZ - yDiff*sinAngZ);
-        newY = (yDiff*cosAngZ + xDiff*sinAngZ);
-        Vector3f newP3(offX + (newX*cosAng - zDiff*sinAng), offY + newY, offZ + (zDiff*cosAng + newX*sinAng));
-
-        //old, allocate on heap again
-        //Triangle3D* newTri = new Triangle3D(&newP1, &newP2, &newP3, tri->type, tri->sound, tri->particle); INCR_NEW("Triangle3D");
-        //targetModel->triangles.push_back(newTri);
+        Vector3f newPoint3(tri->p3X, tri->p3Y, tri->p3Z);
+        newPoint3 = Maths::rotatePoint(&newPoint3, &yAxis, angleRadY);
+        newPoint3 = Maths::rotatePoint(&newPoint3, &zAxis, angleRadZ);
+        newPoint3 = newPoint3 + translate;
 
         //new, keep already allocated triangles and change their values
         Triangle3D* newTri = targetModel->triangles[i];
-        newTri->p1X      = newP1.x;
-        newTri->p1Y      = newP1.y;
-        newTri->p1Z      = newP1.z;
-        newTri->p2X      = newP2.x;
-        newTri->p2Y      = newP2.y;
-        newTri->p2Z      = newP2.z;
-        newTri->p3X      = newP3.x;
-        newTri->p3Y      = newP3.y;
-        newTri->p3Z      = newP3.z;
+        newTri->p1X      = newPoint1.x;
+        newTri->p1Y      = newPoint1.y;
+        newTri->p1Z      = newPoint1.z;
+        newTri->p2X      = newPoint2.x;
+        newTri->p2Y      = newPoint2.y;
+        newTri->p2Z      = newPoint2.z;
+        newTri->p3X      = newPoint3.x;
+        newTri->p3Y      = newPoint3.y;
+        newTri->p3Z      = newPoint3.z;
         newTri->type     = tri->type;
         newTri->sound    = tri->sound;
         newTri->particle = tri->particle;
@@ -185,9 +167,63 @@ void CollisionModel::transformModel(CollisionModel* targetModel, Vector3f* trans
     targetModel->generateMinMaxValues();
 }
 
-void CollisionModel::transformModel(CollisionModel* /*targetModel*/, Vector3f* /*translate*/, float /*xRot*/, float /*yRot*/, float /*zRot*/)
+//order = x, y, z
+void CollisionModel::transformModel(CollisionModel* targetModel, Vector3f* translate, float xRot, float yRot, float zRot)
 {
-    std::fprintf(stdout, "nothing\n");
+    if (targetModel->triangles.size() != triangles.size())
+    {
+        std::fprintf(stdout, "Warning: Trying to transform a collision model based on another collision model that doesn't have the same amount of triangles.\n");
+        return;
+    }
+
+    float angleRadX = Maths::toRadians(xRot);
+    float angleRadY = Maths::toRadians(yRot);
+    float angleRadZ = Maths::toRadians(zRot);
+
+    Vector3f xAxis(1, 0, 0);
+    Vector3f yAxis(0, 1, 0);
+    Vector3f zAxis(0, 0, 1);
+
+    int i = 0;
+    for (Triangle3D* tri : triangles)
+    {
+        Vector3f newPoint1(tri->p1X, tri->p1Y, tri->p1Z);
+        newPoint1 = Maths::rotatePoint(&newPoint1, &xAxis, angleRadX);
+        newPoint1 = Maths::rotatePoint(&newPoint1, &yAxis, angleRadY);
+        newPoint1 = Maths::rotatePoint(&newPoint1, &zAxis, angleRadZ);
+        newPoint1 = newPoint1 + translate;
+
+        Vector3f newPoint2(tri->p2X, tri->p2Y, tri->p2Z);
+        newPoint2 = Maths::rotatePoint(&newPoint2, &xAxis, angleRadX);
+        newPoint2 = Maths::rotatePoint(&newPoint2, &yAxis, angleRadY);
+        newPoint2 = Maths::rotatePoint(&newPoint2, &zAxis, angleRadZ);
+        newPoint2 = newPoint2 + translate;
+
+        Vector3f newPoint3(tri->p3X, tri->p3Y, tri->p3Z);
+        newPoint3 = Maths::rotatePoint(&newPoint3, &xAxis, angleRadX);
+        newPoint3 = Maths::rotatePoint(&newPoint3, &yAxis, angleRadY);
+        newPoint3 = Maths::rotatePoint(&newPoint3, &zAxis, angleRadZ);
+        newPoint3 = newPoint3 + translate;
+
+        //keep already allocated triangles and change their values
+        Triangle3D* newTri = targetModel->triangles[i];
+        newTri->p1X      = newPoint1.x;
+        newTri->p1Y      = newPoint1.y;
+        newTri->p1Z      = newPoint1.z;
+        newTri->p2X      = newPoint2.x;
+        newTri->p2Y      = newPoint2.y;
+        newTri->p2Z      = newPoint2.z;
+        newTri->p3X      = newPoint3.x;
+        newTri->p3Y      = newPoint3.y;
+        newTri->p3Z      = newPoint3.z;
+        newTri->type     = tri->type;
+        newTri->sound    = tri->sound;
+        newTri->particle = tri->particle;
+        newTri->generateValues();
+        i++;
+    }
+
+    targetModel->generateMinMaxValues();
 }
 
 //makes a collision model be the transformed version of this collision model
@@ -199,44 +235,35 @@ void CollisionModel::transformModel(CollisionModel* targetModel, Vector3f* trans
         return;
     }
 
-    float offX = translate->x;
-    float offY = translate->y;
-    float offZ = translate->z;
+    float angleRadY = Maths::toRadians(yRot);
 
-    float angleRad = Maths::toRadians(yRot);
-    float cosAng = cosf(angleRad);
-    float sinAng = sinf(angleRad);
+    Vector3f yAxis(0, 1, 0);
 
-    //targetModel->deleteMe();
     int i = 0;
     for (Triangle3D* tri : triangles)
     {
-        float xDiff = tri->p1X;
-        float zDiff = tri->p1Z;
-        Vector3f newP1(offX + (xDiff*cosAng - zDiff*sinAng), offY + tri->p1Y, offZ + (zDiff*cosAng + xDiff*sinAng));
+        Vector3f newPoint1(tri->p1X, tri->p1Y, tri->p1Z);
+        newPoint1 = Maths::rotatePoint(&newPoint1, &yAxis, angleRadY);
+        newPoint1 = newPoint1 + translate;
 
-        xDiff = tri->p2X;
-        zDiff = tri->p2Z;
-        Vector3f newP2(offX + (xDiff*cosAng - zDiff*sinAng), offY + tri->p2Y, offZ + (zDiff*cosAng + xDiff*sinAng));
+        Vector3f newPoint2(tri->p2X, tri->p2Y, tri->p2Z);
+        newPoint2 = Maths::rotatePoint(&newPoint2, &yAxis, angleRadY);
+        newPoint2 = newPoint2 + translate;
 
-        xDiff = tri->p3X;
-        zDiff = tri->p3Z;
-        Vector3f newP3(offX + (xDiff*cosAng - zDiff*sinAng), offY + tri->p3Y, offZ + (zDiff*cosAng + xDiff*sinAng));
-
-        //Triangle3D* newTri = new Triangle3D(&newP1, &newP2, &newP3, tri->type, tri->sound, tri->particle); INCR_NEW("Triangle3D");
-
-        //targetModel->triangles.push_back(newTri);
+        Vector3f newPoint3(tri->p3X, tri->p3Y, tri->p3Z);
+        newPoint3 = Maths::rotatePoint(&newPoint3, &yAxis, angleRadY);
+        newPoint3 = newPoint3 + translate;
 
         Triangle3D* newTri = targetModel->triangles[i];
-        newTri->p1X      = newP1.x;
-        newTri->p1Y      = newP1.y;
-        newTri->p1Z      = newP1.z;
-        newTri->p2X      = newP2.x;
-        newTri->p2Y      = newP2.y;
-        newTri->p2Z      = newP2.z;
-        newTri->p3X      = newP3.x;
-        newTri->p3Y      = newP3.y;
-        newTri->p3Z      = newP3.z;
+        newTri->p1X      = newPoint1.x;
+        newTri->p1Y      = newPoint1.y;
+        newTri->p1Z      = newPoint1.z;
+        newTri->p2X      = newPoint2.x;
+        newTri->p2Y      = newPoint2.y;
+        newTri->p2Z      = newPoint2.z;
+        newTri->p3X      = newPoint3.x;
+        newTri->p3Y      = newPoint3.y;
+        newTri->p3Z      = newPoint3.z;
         newTri->type     = tri->type;
         newTri->sound    = tri->sound;
         newTri->particle = tri->particle;
@@ -255,44 +282,38 @@ void CollisionModel::transformModelWithScale(CollisionModel* targetModel, Vector
         return;
     }
 
-    float offX = translate->x;
-    float offY = translate->y;
-    float offZ = translate->z;
+    float angleRadY = Maths::toRadians(yRot);
 
-    float angleRad = Maths::toRadians(yRot);
-    float cosAng = cosf(angleRad);
-    float sinAng = sinf(angleRad);
+    Vector3f yAxis(0, 1, 0);
 
-    //targetModel->deleteMe();
     int i = 0;
     for (Triangle3D* tri : triangles)
     {
-        float xDiff = tri->p1X*scale;
-        float zDiff = tri->p1Z*scale;
-        Vector3f newP1(offX + (xDiff*cosAng - zDiff*sinAng), offY + tri->p1Y*scale, offZ + (zDiff*cosAng + xDiff*sinAng));
+        Vector3f newPoint1(tri->p1X, tri->p1Y, tri->p1Z);
+        newPoint1.scale(scale);
+        newPoint1 = Maths::rotatePoint(&newPoint1, &yAxis, angleRadY);
+        newPoint1 = newPoint1 + translate;
 
-        xDiff = tri->p2X*scale;
-        zDiff = tri->p2Z*scale;
-        Vector3f newP2(offX + (xDiff*cosAng - zDiff*sinAng), offY + tri->p2Y*scale, offZ + (zDiff*cosAng + xDiff*sinAng));
+        Vector3f newPoint2(tri->p2X, tri->p2Y, tri->p2Z);
+        newPoint2.scale(scale);
+        newPoint2 = Maths::rotatePoint(&newPoint2, &yAxis, angleRadY);
+        newPoint2 = newPoint2 + translate;
 
-        xDiff = tri->p3X*scale;
-        zDiff = tri->p3Z*scale;
-        Vector3f newP3(offX + (xDiff*cosAng - zDiff*sinAng), offY + tri->p3Y*scale, offZ + (zDiff*cosAng + xDiff*sinAng));
-
-        //Triangle3D* newTri = new Triangle3D(&newP1, &newP2, &newP3, tri->type, tri->sound, tri->particle); INCR_NEW("Triangle3D");
-
-        //targetModel->triangles.push_back(newTri);
+        Vector3f newPoint3(tri->p3X, tri->p3Y, tri->p3Z);
+        newPoint3.scale(scale);
+        newPoint3 = Maths::rotatePoint(&newPoint3, &yAxis, angleRadY);
+        newPoint3 = newPoint3 + translate;
 
         Triangle3D* newTri = targetModel->triangles[i];
-        newTri->p1X      = newP1.x;
-        newTri->p1Y      = newP1.y;
-        newTri->p1Z      = newP1.z;
-        newTri->p2X      = newP2.x;
-        newTri->p2Y      = newP2.y;
-        newTri->p2Z      = newP2.z;
-        newTri->p3X      = newP3.x;
-        newTri->p3Y      = newP3.y;
-        newTri->p3Z      = newP3.z;
+        newTri->p1X      = newPoint1.x;
+        newTri->p1Y      = newPoint1.y;
+        newTri->p1Z      = newPoint1.z;
+        newTri->p2X      = newPoint2.x;
+        newTri->p2Y      = newPoint2.y;
+        newTri->p2Z      = newPoint2.z;
+        newTri->p3X      = newPoint3.x;
+        newTri->p3Y      = newPoint3.y;
+        newTri->p3Z      = newPoint3.z;
         newTri->type     = tri->type;
         newTri->sound    = tri->sound;
         newTri->particle = tri->particle;

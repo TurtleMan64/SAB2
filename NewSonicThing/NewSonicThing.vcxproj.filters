@@ -522,6 +522,18 @@
     <ClCompile Include="src\entities\RadicalHighway\RH_StageManager.cpp">
       <Filter>Source Files\entities\RadicalHighway</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\LostChao.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\RhinoSpike.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\Hunter.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\Bullet.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.h">
@@ -925,6 +937,18 @@
     </ClInclude>
     <ClInclude Include="src\entities\RadicalHighway\rhstagemanager.h">
       <Filter>Source Files\entities\RadicalHighway</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\lostchao.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\rhinospike.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\hunter.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\bullet.h">
+      <Filter>Source Files\entities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

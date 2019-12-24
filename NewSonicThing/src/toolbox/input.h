@@ -21,6 +21,8 @@ struct InputStruct
     volatile bool INPUT_SELECT;
     volatile bool INPUT_START;
     volatile bool INPUT_TAB;
+    volatile bool INPUT_DPADU;
+    volatile bool INPUT_DPADD;
 
     volatile float INPUT_PREVIOUS_X;
     volatile float INPUT_PREVIOUS_Y;

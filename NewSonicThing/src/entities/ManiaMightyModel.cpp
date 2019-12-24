@@ -304,7 +304,7 @@ void ManiaMightyModel::animate(int animIndex, float time)
 
         case 25: //grab
         {
-            setScale(0.27f);
+            setScale(0.84f);
             models = &ManiaMightyModel::modelGrab;
             updateTransformationMatrix();
             setLimbsVisibility(false);
@@ -314,7 +314,7 @@ void ManiaMightyModel::animate(int animIndex, float time)
 
         case 26: //grind
         {
-            setScale(0.27f);
+            setScale(0.84f);
             models = &ManiaMightyModel::modelGrind;
             updateTransformationMatrix();
             setLimbsVisibility(false);
@@ -341,21 +341,59 @@ void ManiaMightyModel::setOrientation(float x, float y, float z, float xRot, flo
 
 void ManiaMightyModel::setBaseColor(float r, float g, float b)
 {
-    baseColour.set(r, g, b);
-    myBody->baseColour.set(r, g, b);
-    myHead->baseColour.set(r, g, b);
-    myLeftHumerus->baseColour.set(r, g, b);
-    myLeftForearm->baseColour.set(r, g, b);
-    myLeftHand->baseColour.set(r, g, b);
-    myLeftThigh->baseColour.set(r, g, b);
-    myLeftShin->baseColour.set(r, g, b);
-    myLeftFoot->baseColour.set(r, g, b);
+                    baseColour.set(r, g, b);
+    myBody        ->baseColour.set(r, g, b);
+    myHead        ->baseColour.set(r, g, b);
+    myLeftHumerus ->baseColour.set(r, g, b);
+    myLeftForearm ->baseColour.set(r, g, b);
+    myLeftHand    ->baseColour.set(r, g, b);
+    myLeftThigh   ->baseColour.set(r, g, b);
+    myLeftShin    ->baseColour.set(r, g, b);
+    myLeftFoot    ->baseColour.set(r, g, b);
     myRightHumerus->baseColour.set(r, g, b);
     myRightForearm->baseColour.set(r, g, b);
-    myRightHand->baseColour.set(r, g, b);
-    myRightThigh->baseColour.set(r, g, b);
-    myRightShin->baseColour.set(r, g, b);
-    myRightFoot->baseColour.set(r, g, b);
+    myRightHand   ->baseColour.set(r, g, b);
+    myRightThigh  ->baseColour.set(r, g, b);
+    myRightShin   ->baseColour.set(r, g, b);
+    myRightFoot   ->baseColour.set(r, g, b);
+}
+
+void ManiaMightyModel::setBaseAlpha(float a)
+{
+                    baseAlpha = a;
+    myBody        ->baseAlpha = a;
+    myHead        ->baseAlpha = a;
+    myLeftHumerus ->baseAlpha = a;
+    myLeftForearm ->baseAlpha = a;
+    myLeftHand    ->baseAlpha = a;
+    myLeftThigh   ->baseAlpha = a;
+    myLeftShin    ->baseAlpha = a;
+    myLeftFoot    ->baseAlpha = a;
+    myRightHumerus->baseAlpha = a;
+    myRightForearm->baseAlpha = a;
+    myRightHand   ->baseAlpha = a;
+    myRightThigh  ->baseAlpha = a;
+    myRightShin   ->baseAlpha = a;
+    myRightFoot   ->baseAlpha = a;
+}
+
+void ManiaMightyModel::setRenderOrder(char newOrder)
+{
+                    renderOrder = newOrder;
+    myBody        ->renderOrder = newOrder;
+    myHead        ->renderOrder = newOrder;
+    myLeftHumerus ->renderOrder = newOrder;
+    myLeftForearm ->renderOrder = newOrder;
+    myLeftHand    ->renderOrder = newOrder;
+    myLeftThigh   ->renderOrder = newOrder;
+    myLeftShin    ->renderOrder = newOrder;
+    myLeftFoot    ->renderOrder = newOrder;
+    myRightHumerus->renderOrder = newOrder;
+    myRightForearm->renderOrder = newOrder;
+    myRightHand   ->renderOrder = newOrder;
+    myRightThigh  ->renderOrder = newOrder;
+    myRightShin   ->renderOrder = newOrder;
+    myRightFoot   ->renderOrder = newOrder;
 }
 
 std::list<TexturedModel*>* ManiaMightyModel::getModels()
@@ -371,7 +409,7 @@ void ManiaMightyModel::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading mania sonic static models...\n");
+    std::fprintf(stdout, "Loading mania mighty static models...\n");
     #endif
 
     loadModel(&ManiaMightyModel::modelBody,         "res/Models/Characters/ManiaMighty/", "LimbBody");
@@ -420,12 +458,12 @@ void ManiaMightyModel::loadStaticModels()
     loadModel(&ManiaMightyModel::modelJog15    , "res/Models/Characters/ManiaMighty/", "MightyJog15");
     loadModel(&ManiaMightyModel::modelJog16    , "res/Models/Characters/ManiaMighty/", "MightyJog16");
     loadModel(&ManiaMightyModel::modelJog17    , "res/Models/Characters/ManiaMighty/", "MightyJog17");
-    loadModel(&ManiaMightyModel::modelGrind    , "res/Models/Characters/ManiaSonic/", "Grind");
-    loadModel(&ManiaMightyModel::modelSkid     , "res/Models/Characters/ManiaSonic/", "Skid");
-    loadModel(&ManiaMightyModel::modelLightdash, "res/Models/Characters/ManiaSonic/", "Lightdash");
-    loadModel(&ManiaMightyModel::modelFreefall , "res/Models/Characters/ManiaSonic/", "Freefall");
-    loadModel(&ManiaMightyModel::modelStomp    , "res/Models/Characters/ManiaSonic/", "Stomp");
-    loadModel(&ManiaMightyModel::modelGrab     , "res/Models/Characters/ManiaSonic/", "Grab");
+    loadModel(&ManiaMightyModel::modelGrind    , "res/Models/Characters/ManiaMighty/", "MightyGrind");
+    loadModel(&ManiaMightyModel::modelSkid     , "res/Models/Characters/ManiaMighty/", "MightySkid");
+    loadModel(&ManiaMightyModel::modelLightdash, "res/Models/Characters/ManiaMighty/", "MightyLightdash");
+    loadModel(&ManiaMightyModel::modelFreefall , "res/Models/Characters/ManiaMighty/", "MightyFreefall");
+    loadModel(&ManiaMightyModel::modelStomp    , "res/Models/Characters/ManiaMighty/", "MightyStomp");
+    loadModel(&ManiaMightyModel::modelGrab     , "res/Models/Characters/ManiaMighty/", "MightyGrab");
 }
 
 void ManiaMightyModel::setLimbsVisibility(bool newVisible)

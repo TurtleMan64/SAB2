@@ -161,6 +161,7 @@ Menu* PauseScreen::step()
                 {
                     PauseScreen::pausedSounds[i] = false;
                 }
+                return retVal;
             }
             break;
         }

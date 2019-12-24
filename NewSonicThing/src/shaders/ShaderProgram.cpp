@@ -95,8 +95,12 @@ void ShaderProgram::loadGlowAmount(float glowAmount)
 
 void ShaderProgram::loadBaseColour(Vector3f* baseColour)
 {
-    //std::fprintf(stdout, "baseColour = %f %f %f\n", baseColour->x, baseColour->y, baseColour->z);
     loadVector(location_baseColour, baseColour);
+}
+
+void ShaderProgram::loadBaseAlpha(float baseAlpha)
+{
+    loadFloat(location_baseAlpha, baseAlpha);
 }
 
 void ShaderProgram::loadTextureOffsets(float offX, float offY)
@@ -158,6 +162,7 @@ void ShaderProgram::getAllUniformLocations()
     location_hasTransparency       = getUniformLocation("hasTransparency");
     location_glowAmount            = getUniformLocation("glowAmount");
     location_baseColour            = getUniformLocation("baseColour");
+    location_baseAlpha             = getUniformLocation("baseAlpha");
     location_texOffX               = getUniformLocation("texOffX");
     location_texOffY               = getUniformLocation("texOffY");
     location_skyColour             = getUniformLocation("skyColour");

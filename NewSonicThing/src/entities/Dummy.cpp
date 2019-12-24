@@ -6,8 +6,8 @@
 Dummy::Dummy(std::list<TexturedModel*>* models)
 {
     myModels = models;
-    
-    setVisible(true);
+    scale = 1;
+    visible = true;
 }
 
 void Dummy::step()

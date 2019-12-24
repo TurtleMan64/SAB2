@@ -42,13 +42,13 @@ SpeedRamp::SpeedRamp(float x, float y, float z, float dirX, float dirY, float di
 
     Vector3f up(0, 1, 0);
     Vector3f perpen = forward.cross(&up);
-    launchDirection = Maths::rotatePoint(&forward, &perpen, Maths::toRadians(15.0f));
+    launchDirection = Maths::rotatePoint(&forward, &perpen, Maths::toRadians(20.0f));
     launchDirection.normalize();
 
     //calculate angles
-    rotX = 0;
-    rotY = Maths::toDegrees(atan2f(-forward.z, forward.x));
-    rotZ = Maths::toDegrees(atan2f(forward.y, sqrtf(forward.x*forward.x + forward.z*forward.z)));
+    rotX = Maths::toDegrees(atan2f(forward.y, sqrtf(forward.x*forward.x + forward.z*forward.z)));
+    rotY = Maths::toDegrees(atan2f(-forward.x, -forward.z));
+    rotZ = 0;
     rotRoll = 0;
 
     updateTransformationMatrix();
@@ -58,7 +58,7 @@ SpeedRamp::SpeedRamp(float x, float y, float z, float dirX, float dirY, float di
 
     CollisionChecker::addCollideModel(collideModelTransformed);
 
-    updateCollisionModelWithZ();
+    updateCollisionModelXYZ();
 }
 
 void SpeedRamp::step()

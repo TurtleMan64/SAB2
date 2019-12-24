@@ -755,8 +755,6 @@ int main(int argc, char** argv)
             {
                 Vector3f partVel(0, 0, 0);
                 ParticleMaster::createParticle(ParticleResources::textureWhiteFadeOutAndIn, Global::gameCamera->getFadePosition1(), &partVel, 0, 2.0f, 0, 900, 0, true, false, 1.0f, false);
-                
-                Global::saveGhostData();
             }
 
             if (finishTimerBefore < 1.0f && Global::finishStageTimer >= 1.0f)
@@ -864,6 +862,8 @@ int main(int argc, char** argv)
                     default: break;
                 }
                 AudioPlayer::play(44, &Global::gameMainPlayer->position);
+
+                Global::saveGhostData();
             }
         }
 
