@@ -47,6 +47,8 @@ public:
     //assumes the size of int and float are 32 bits
     static int sign(float value);
 
+    static unsigned int getSignBit(float value);
+
     //calculates the number of base 10 decimal digits in the number. 
     // examples: numDigits(38)    = 2  
     //           numDigits(68932) = 5

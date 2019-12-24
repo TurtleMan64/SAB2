@@ -234,6 +234,13 @@ int Maths::sign(float value)
     return 0;
 }
 
+unsigned int Maths::getSignBit(float value)
+{
+    unsigned int v = *(unsigned int*)&value; //get bits of value casted as an int
+
+    return v & 0b10000000000000000000000000000000;
+}
+
 int Maths::numDigits(int number)
 {
     int numChars = (int)ceil(log10f((float)(number+1)));

@@ -103,6 +103,9 @@
     <Filter Include="Source Files\entities\RadicalHighway">
       <UniqueIdentifier>{8024aea5-16c9-41e7-b484-56159167d2c7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\entities\PyramidCave">
+      <UniqueIdentifier>{7e33bdaf-049b-4ea2-9409-f6c251d8df56}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\glad.c">
@@ -534,6 +537,9 @@
     <ClCompile Include="src\entities\Bullet.cpp">
       <Filter>Source Files\entities</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\PyramidCave\PC_StageManager.cpp">
+      <Filter>Source Files\entities\PyramidCave</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.h">
@@ -949,6 +955,9 @@
     </ClInclude>
     <ClInclude Include="src\entities\bullet.h">
       <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\PyramidCave\pcstagemanager.h">
+      <Filter>Source Files\entities\PyramidCave</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

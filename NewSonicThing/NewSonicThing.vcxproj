@@ -187,6 +187,7 @@
     <ClCompile Include="src\entities\MetalHarbor\MH_StageManager.cpp" />
     <ClCompile Include="src\entities\MetalHarbor\MH_Tank.cpp" />
     <ClCompile Include="src\entities\Point.cpp" />
+    <ClCompile Include="src\entities\PyramidCave\PC_StageManager.cpp" />
     <ClCompile Include="src\entities\RaceGhost.cpp" />
     <ClCompile Include="src\entities\RadicalHighway\RH_StageManager.cpp" />
     <ClCompile Include="src\entities\Rail.cpp" />
@@ -332,6 +333,7 @@
     <ClInclude Include="src\entities\MetalHarbor\mhstagemanager.h" />
     <ClInclude Include="src\entities\MetalHarbor\mhtank.h" />
     <ClInclude Include="src\entities\point.h" />
+    <ClInclude Include="src\entities\PyramidCave\pcstagemanager.h" />
     <ClInclude Include="src\entities\raceghost.h" />
     <ClInclude Include="src\entities\RadicalHighway\rhstagemanager.h" />
     <ClInclude Include="src\entities\rail.h" />

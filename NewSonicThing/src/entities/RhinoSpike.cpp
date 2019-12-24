@@ -3,7 +3,7 @@
 #include "entity.h"
 #include "../models/models.h"
 #include "../toolbox/vector.h"
-#include "RhinoSpike.h"
+#include "rhinospike.h"
 #include "../renderEngine/renderEngine.h"
 #include "../objLoader/objLoader.h"
 #include "../engineTester/main.h"
