@@ -71,9 +71,9 @@ bool CollisionChecker::checkCollision(
 
         //Bounds check on entire model
         //if any of these are true, we can skip the model
-        if (!((px1 <= cm->minX && px2 <= cm->minX) || (px1 >= cm->maxX && px2 >= cm->maxX) ||
-              (pz1 <= cm->minZ && pz2 <= cm->minZ) || (pz1 >= cm->maxZ && pz2 >= cm->maxZ) ||
-              (py1 <= cm->minY && py2 <= cm->minY) || (py1 >= cm->maxY && py2 >= cm->maxY)))
+        if (!((px1 < cm->minX && px2 < cm->minX) || (px1 > cm->maxX && px2 > cm->maxX) ||
+              (pz1 < cm->minZ && pz2 < cm->minZ) || (pz1 > cm->maxZ && pz2 > cm->maxZ) ||
+              (py1 < cm->minY && py2 < cm->minY) || (py1 > cm->maxY && py2 > cm->maxY)))
         {
             if (cm->hasQuadTree() == true)
             {
@@ -84,9 +84,9 @@ bool CollisionChecker::checkCollision(
                 {
                     //Bounds check on entire node
                     //if any of these are true, we can skip the node
-                    if (!((px1 <= node->xMin && px2 <= node->xMin) || (px1 >= node->xMax && px2 >= node->xMax) ||
-                          (pz1 <= node->zMin && pz2 <= node->zMin) || (pz1 >= node->zMax && pz2 >= node->zMax) ||
-                          (py1 <= node->yMin && py2 <= node->yMin) || (py1 >= node->yMax && py2 >= node->yMax)))
+                    if (!((px1 < node->xMin && px2 < node->xMin) || (px1 > node->xMax && px2 > node->xMax) ||
+                          (pz1 < node->zMin && pz2 < node->zMin) || (pz1 > node->zMax && pz2 > node->zMax) ||
+                          (py1 < node->yMin && py2 < node->yMin) || (py1 > node->yMax && py2 > node->yMax)))
                     {
                         for (Triangle3D* currTriangle : node->tris)
                         {
@@ -101,9 +101,9 @@ bool CollisionChecker::checkCollision(
                             
                             //Bounds check on individual triangle
                             //if any of these are true, we can skip the triangle
-                            if (!((px1 <= currTriangle->minX && px2 <= currTriangle->minX) || (px1 >= currTriangle->maxX && px2 >= currTriangle->maxX) ||
-                                  (pz1 <= currTriangle->minZ && pz2 <= currTriangle->minZ) || (pz1 >= currTriangle->maxZ && pz2 >= currTriangle->maxZ) ||
-                                  (py1 <= currTriangle->minY && py2 <= currTriangle->minY) || (py1 >= currTriangle->maxY && py2 >= currTriangle->maxY)))
+                            if (!((px1 < currTriangle->minX && px2 < currTriangle->minX) || (px1 > currTriangle->maxX && px2 > currTriangle->maxX) ||
+                                  (pz1 < currTriangle->minZ && pz2 < currTriangle->minZ) || (pz1 > currTriangle->maxZ && pz2 > currTriangle->maxZ) ||
+                                  (py1 < currTriangle->minY && py2 < currTriangle->minY) || (py1 > currTriangle->maxY && py2 > currTriangle->maxY)))
                             {
                                 A = currTriangle->A;
                                 B = currTriangle->B;

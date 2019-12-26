@@ -1,0 +1,74 @@
+	# Material Count: 8
+	
+newmtl None_windy2_4.png
+	Ns 20
+	Ni 0.02
+	Tr 1
+	d 1
+	scrollX 0
+	scrollY 0
+	map_Kd windy2_4.png
+	
+newmtl None_windy3_1.png.002
+	Ns 20
+	Ni 0.02
+	Tr 1
+	d 1
+	scrollX 0
+	scrollY 0
+	map_Kd windy3_1.png
+	
+newmtl None_windy1_6.png
+	Ns 20
+	Ni 0.02
+	Tr 1
+	d 1
+	scrollX 0
+	scrollY 0
+	map_Kd windy1_6.png
+	
+newmtl None_windy3_4.png.002
+	Ns 20
+	Ni 0.02
+	Tr 1
+	d 1
+	scrollX 0
+	scrollY 0
+	map_Kd windy3_4.png
+	
+newmtl None
+	Ns 20
+	Ni 0.02
+	Tr 1
+	d 1
+	scrollX 0
+	scrollY 0
+	map_Kd windy1_9.png
+	
+newmtl None.002
+	Ns 20
+	Ni 0.02
+	Tr 1
+	d 1
+	scrollX 0
+	scrollY 0
+	map_Kd windy1_17.png
+	
+newmtl None_windy3_6.png.002
+	Ns 20
+	Ni 0.02
+	Tr 1
+	d 1
+	scrollX 0
+	scrollY 0
+	map_Kd windy3_6.png
+	
+newmtl None_windy1_1.png
+	Ns 20
+	Ni 0.02
+	Tr 1
+	d 1
+	scrollX 0
+	scrollY 0
+	map_Kd windy1_1.png
+	
