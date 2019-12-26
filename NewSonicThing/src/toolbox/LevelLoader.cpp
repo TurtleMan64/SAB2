@@ -69,6 +69,7 @@
 #include "../entities/rhinospike.h"
 #include "../entities/hunter.h"
 #include "../entities/bullet.h"
+#include "../entities/PyramidCave/pcstagemanager.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -1101,6 +1102,14 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                     break;
                 }
 
+                case 8:
+                {
+                    PC_StageManager::loadStaticModels();
+                    PC_StageManager* pc = new PC_StageManager; INCR_NEW("Entity");
+                    Main_addEntity(pc);
+                    break;
+                }
+
                 default: break;
             }
             return;
@@ -1384,6 +1393,7 @@ void LevelLoader::freeAllStaticModels()
     RhinoSpike::deleteStaticModels();
     Hunter::deleteStaticModels();
     Bullet::deleteStaticModels();
+    PC_StageManager::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()

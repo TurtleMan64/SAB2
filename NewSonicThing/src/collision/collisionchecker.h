@@ -25,6 +25,8 @@ private:
         CollisionModel* cm, 
         float x1, float z1, float x2, float z2);
 
+    static int getBiggest(float A, float B, float C);
+
 public:
     static bool debug;
 
