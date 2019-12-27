@@ -58,31 +58,31 @@ Rocket::Rocket(Vector3f* point1, Vector3f* point2)
     position.y += ROCKET_OFFSET_HEIGHT; //place the rocket above the base of the rocket
 
     //for rotating the rocket to face the end, as well as for the actual movement
-	rocketPathPositionDifference = pointPositionEnd - position;
+    rocketPathPositionDifference = pointPositionEnd - position;
 
-	rotY = calculateRocketYRotation();
-	rotZ = calculateRocketZRotation();
-	base->setRotY(rotY);
+    rotY = calculateRocketYRotation();
+    rotZ = calculateRocketZRotation();
+    base->setRotY(rotY);
 
-	rocketPathPositionDifferenceNormalized = rocketPathPositionDifference;
-	rocketPathPositionDifferenceNormalized.normalize();
+    rocketPathPositionDifferenceNormalized = rocketPathPositionDifference;
+    rocketPathPositionDifferenceNormalized.normalize();
 
     rocketPathPositionDifferenceLength = rocketPathPositionDifference.length();
 
     //update transforms for both models and the collision since they were changed
     updateTransformationMatrix();
     cmBase->transformModel(collideModelTransformed, base->getPosition());
-	base->updateTransformationMatrix();
+    base->updateTransformationMatrix();
 }
 
 void Rocket::step()
 {
-	//The players current position as of this frame
-	Vector3f playerPos = Global::gameMainPlayer->getPosition();
+    //The players current position as of this frame
+    Vector3f playerPos = Global::gameMainPlayer->getPosition();
 
-	playerToRocketPositionDifference = playerPos - position;
+    playerToRocketPositionDifference = playerPos - position;
 
-	playerToRocketPositionDifferenceHorizontalSquared = getPlayerToRocketDifferenceHorizontalSquared();
+    playerToRocketPositionDifferenceHorizontalSquared = getPlayerToRocketDifferenceHorizontalSquared();
 
     if (rocketAppearSoundCanPlay())
     {
@@ -94,21 +94,18 @@ void Rocket::step()
         rocketAppearSoundPlayed = false;
     }
 
-	if (!isActive && canActivate && playerWithinRocketHitbox())
-	{
-		//activate rocket
-		isActive = true;
-		canActivate = false;
+    if (!isActive && canActivate && playerWithinRocketHitbox())
+    {
+        //activate rocket
+        isActive = true;
+        canActivate = false;
 
-        //updates some player variables to ensure the rocket movement goes smoothly
-		Global::gameMainPlayer->grabRocket();
+        playRocketLaunchSoundStart();
+    }
 
-		playRocketLaunchSoundStart();
-	}
-
-	if (isActive)
-	{
-		playRocketLaunchSoundLoop();
+    if (isActive)
+    {
+        playRocketLaunchSoundLoop();
 
         //Rocket state disables player movement based on velocity, velocity set here for camera and speedometer reasons
         Global::gameMainPlayer->vel.set(
@@ -153,27 +150,27 @@ void Rocket::step()
 
 std::list<TexturedModel*>* Rocket::getModels()
 {
-	return &Rocket::modelsRocket;
+    return &Rocket::modelsRocket;
 }
 
 void Rocket::loadStaticModels()
 {
-	if (Rocket::modelsRocket.size() > 0)
-	{
-		return;
-	}
+    if (Rocket::modelsRocket.size() > 0)
+    {
+        return;
+    }
 
-	#ifdef DEV_MODE
-	std::fprintf(stdout, "Loading Rocket static models...\n");
-	#endif
+    #ifdef DEV_MODE
+    std::fprintf(stdout, "Loading Rocket static models...\n");
+    #endif
 
-	loadModel(&Rocket::modelsRocket, "res/Models/Objects/Rocket/", "Rocket");
-	loadModel(&Rocket::modelsBase,   "res/Models/Objects/Rocket/", "RocketPlatform");
+    loadModel(&Rocket::modelsRocket, "res/Models/Objects/Rocket/", "Rocket");
+    loadModel(&Rocket::modelsBase,   "res/Models/Objects/Rocket/", "RocketPlatform");
 
-	if (Rocket::cmBase == nullptr)
-	{
-		Rocket::cmBase = loadCollisionModel("Models/Objects/Rocket/", "RocketPlatformCollision");
-	}
+    if (Rocket::cmBase == nullptr)
+    {
+        Rocket::cmBase = loadCollisionModel("Models/Objects/Rocket/", "RocketPlatformCollision");
+    }
 }
 
 void Rocket::deleteStaticModels()
@@ -218,25 +215,25 @@ float Rocket::calculateRocketZRotation()
 //functions used for step() start here
 float Rocket::getPlayerToRocketDifferenceHorizontalSquared()
 {
-	return playerToRocketPositionDifference.x * playerToRocketPositionDifference.x + playerToRocketPositionDifference.z*playerToRocketPositionDifference.z;
+    return playerToRocketPositionDifference.x * playerToRocketPositionDifference.x + playerToRocketPositionDifference.z*playerToRocketPositionDifference.z;
 }
 
 bool Rocket::rocketAppearSoundCanPlay()
 {
-	return !rocketAppearSoundPlayed && (playerToRocketPositionDifferenceHorizontalSquared <= pow(HITBOX_RADIUS * 30, 2)
-			&& fabsf(playerToRocketPositionDifference.y) < (HITBOX_HEIGHT * 10));
+    return !rocketAppearSoundPlayed && (playerToRocketPositionDifferenceHorizontalSquared <= pow(HITBOX_RADIUS * 30, 2)
+            && fabsf(playerToRocketPositionDifference.y) < (HITBOX_HEIGHT * 10));
 }
 
 bool Rocket::rocketAppearSoundCanReset()
 {
-	return (playerToRocketPositionDifferenceHorizontalSquared >= pow(HITBOX_RADIUS * 150, 2)
-			&& fabsf(playerToRocketPositionDifference.y) < (HITBOX_HEIGHT * 50));
+    return (playerToRocketPositionDifferenceHorizontalSquared >= pow(HITBOX_RADIUS * 150, 2)
+            && fabsf(playerToRocketPositionDifference.y) < (HITBOX_HEIGHT * 50));
 }
 
 bool Rocket::playerWithinRocketHitbox()
 {
-	return (playerToRocketPositionDifferenceHorizontalSquared <= pow(HITBOX_RADIUS, 2)
-			&& fabsf(playerToRocketPositionDifference.y) < HITBOX_HEIGHT);
+    return (playerToRocketPositionDifferenceHorizontalSquared <= pow(HITBOX_RADIUS, 2)
+            && fabsf(playerToRocketPositionDifference.y) < HITBOX_HEIGHT);
 }
 
 void Rocket::makeExhaustParticles(float rocketSpeed)
@@ -276,7 +273,7 @@ void Rocket::makeExhaustParticles(float rocketSpeed)
 
 void Rocket::playRocketLaunchSoundStart()
 {
-	rocketAudioSource = AudioPlayer::play(55, getPosition(), 1, false);
+    rocketAudioSource = AudioPlayer::play(55, getPosition(), 1, false);
 }
 
 void Rocket::playRocketLaunchSoundLoop()
@@ -297,35 +294,35 @@ void Rocket::playRocketLaunchSoundLoop()
 
 bool Rocket::rocketStartedMoving()
 {
-	return startupTimer <= 0;
+    return startupTimer <= 0;
 }
 
 Vector3f Rocket::calculateNewPlayerPosition()
 {
-	Vector3f newPlayerPos = Vector3f(
-			position.x - 6*rocketPathPositionDifferenceNormalized.x,
-			position.y - 5,
-			position.z - 6*rocketPathPositionDifferenceNormalized.z);
-	return newPlayerPos;
+    Vector3f newPlayerPos = Vector3f(
+            position.x - 6*rocketPathPositionDifferenceNormalized.x,
+            position.y - 5,
+            position.z - 6*rocketPathPositionDifferenceNormalized.z);
+    return newPlayerPos;
 }
 
 Vector3f Rocket::calculateNewRocketPosition()
 {
-	Vector3f newPos = Vector3f();
-	newPos.x = pointPositionStart.x + (rocketPathPositionDifference.x * percentOfPathCompleted);
-	newPos.y = (pointPositionStart.y + 10) + (rocketPathPositionDifference.y * percentOfPathCompleted);
-	newPos.z = pointPositionStart.z + (rocketPathPositionDifference.z * percentOfPathCompleted);
-	return newPos;
+    Vector3f newPos = Vector3f();
+    newPos.x = pointPositionStart.x + (rocketPathPositionDifference.x * percentOfPathCompleted);
+    newPos.y = (pointPositionStart.y + 10) + (rocketPathPositionDifference.y * percentOfPathCompleted);
+    newPos.z = pointPositionStart.z + (rocketPathPositionDifference.z * percentOfPathCompleted);
+    return newPos;
 }
 
 float Rocket::calculatePathMovementPercentForThisFrame()
 {
-	return (ROCKET_SPEED * dt) / rocketPathPositionDifferenceLength;
+    return (ROCKET_SPEED * dt) / rocketPathPositionDifferenceLength;
 }
 
 bool Rocket::fullPathTraveled()
 {
-	return (percentOfPathCompleted >= 1);
+    return (percentOfPathCompleted >= 1);
 }
 
 void Rocket::resetRocketVariables()

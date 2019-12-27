@@ -110,8 +110,8 @@ private:
     bool onPulley = false;
 
     //If true, the velocity the player has will make them move.
-	//If false, the velocity will only change the camera direction.
-	bool velocityMovesPlayer = true;
+    //If false, the velocity will only change the camera direction.
+    bool velocityMovesPlayer = true;
 
     bool isLightdashing = false;
     std::vector<Vector3f> lightdashTrail;
@@ -253,7 +253,7 @@ public:
 
     void grabPulley();
 
-	void releasePulley();
+    void releasePulley();
 
     void setOnGround(bool newOnGround);
 
@@ -273,9 +273,9 @@ public:
     void jump();
 
     //Called by the Pulley when Sonic jumps off, separate due to unique properties required for pulley jump.
-	//Specifically, Sonic needs to basically go completely horizontally off the pulley, and should go straight
-	//forward with neutral stick.
-	void jumpOffPulley(Vector3f forwardDirectionVector);
+    //Specifically, Sonic needs to basically go completely horizontally off the pulley, and should go straight
+    //forward with neutral stick.
+    void jumpOffPulley(Vector3f forwardDirectionVector);
 
     void setRelativeUp(Vector3f* newUp);
 
@@ -289,7 +289,7 @@ public:
 
     float getHitboxHorizontal();
 
-	float getHitboxVertical();
+    float getHitboxVertical();
 
     Vector3f* getCameraDirection();
 
@@ -297,7 +297,7 @@ public:
 
     void setVelocityMovesPlayer(bool newVelocityMovesPlayer);
 
-	void setOnPulley(bool newOnPulley);
+    void setOnPulley(bool newOnPulley);
 
     Vector3f getCenterPosition();
 };

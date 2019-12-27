@@ -63,7 +63,6 @@
 #include "../entities/springtriple.h"
 #include "../menu/timer.h"
 #include "../entities/RadicalHighway/rhstagemanager.h"
-#include "../entities/windgust.h"
 #include "../entities/PyramidCave/pcstaticobjects.h"
 #include "../entities/lostchao.h"
 #include "../entities/rhinospike.h"
@@ -1123,42 +1122,42 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
         }
 
         case 93: //Metal Harbor Specific Objects
-		{
-			switch(toInt(dat[1]))
-			{
-				case 0: //Static Objects (environment stuff that never moves)
-				{
-					MH_StaticObjects::loadStaticModels();
-					MH_StaticObjects* staticObjects = new MH_StaticObjects(); INCR_NEW("Entity");
-					Main_addEntity(staticObjects);
-					return;
-				}
-				case 1: //Aircraft Carrier Cart
-				{
-					MH_AircraftCarrierCart::loadStaticModels();
-					MH_AircraftCarrierCart* yellowMovingPlatform = new MH_AircraftCarrierCart(
-						toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]), 			//position
-						toFloat(dat[5]), toFloat(dat[6]),							//dirX, dirZ
-						toInt(dat[7]), toFloat(dat[8])); 						    //displacementMax, speed
-					INCR_NEW("Entity");
-					Main_addEntity(yellowMovingPlatform);
-					return;
-				}
-				case 2: //Crate Platform
-				{
-					MH_CratePlatform::loadStaticModels();
-					MH_CratePlatform* cratePlatform = new MH_CratePlatform(
-						toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]), 			//position
-						toFloat(dat[5]), toFloat(dat[6]),							//dirX, dirZ
-						toInt(dat[7]), toFloat(dat[8]),								//displacementMax, speed
-						toFloat(dat[9])); 						    				//Type: 0: long, 1: with box, 2: without box
-					INCR_NEW("Entity");
-					Main_addEntity(cratePlatform);
-					return;
-				}
-			}
-			
-		}
+        {
+            switch(toInt(dat[1]))
+            {
+                case 0: //Static Objects (environment stuff that never moves)
+                {
+                    MH_StaticObjects::loadStaticModels();
+                    MH_StaticObjects* staticObjects = new MH_StaticObjects(); INCR_NEW("Entity");
+                    Main_addEntity(staticObjects);
+                    return;
+                }
+                case 1: //Aircraft Carrier Cart
+                {
+                    MH_AircraftCarrierCart::loadStaticModels();
+                    MH_AircraftCarrierCart* yellowMovingPlatform = new MH_AircraftCarrierCart(
+                        toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]),             //position
+                        toFloat(dat[5]), toFloat(dat[6]),                            //dirX, dirZ
+                        toInt(dat[7]), toFloat(dat[8]));                             //displacementMax, speed
+                    INCR_NEW("Entity");
+                    Main_addEntity(yellowMovingPlatform);
+                    return;
+                }
+                case 2: //Crate Platform
+                {
+                    MH_CratePlatform::loadStaticModels();
+                    MH_CratePlatform* cratePlatform = new MH_CratePlatform(
+                        toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]),             //position
+                        toFloat(dat[5]), toFloat(dat[6]),                            //dirX, dirZ
+                        toInt(dat[7]), toFloat(dat[8]),                                //displacementMax, speed
+                        toFloat(dat[9]));                                             //Type: 0: long, 1: with box, 2: without box
+                    INCR_NEW("Entity");
+                    Main_addEntity(cratePlatform);
+                    return;
+                }
+            }
+            
+        }
 
         case 96: //Point (for paths)
         {
@@ -1241,37 +1240,25 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
         case 100: //Pyramid Cave Specific
         {
         switch(toInt(dat[1]))
-			{
+            {
                 case 0: //Static Objects
                     PC_StaticObjects::loadStaticModels();
-					PC_StaticObjects* staticObjects = new PC_StaticObjects(); INCR_NEW("Entity");
-					Main_addEntity(staticObjects);
-					return;
+                    PC_StaticObjects* staticObjects = new PC_StaticObjects(); INCR_NEW("Entity");
+                    Main_addEntity(staticObjects);
+                    return;
             }
         }
 
         case 101: //Pulley
-		{
-			Pulley::loadStaticModels();
-			Pulley* pulley = new Pulley(
-					toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position x,y,z
-					toFloat(dat[4]), toFloat(dat[5])); 				   //y rotation, handle vertical displacement
-			INCR_NEW("Entity");
-			chunkedEntities->push_back(pulley);
-			return;
-		}
-
-		case 102: //WindGust
-		{
-			WindGust* windGust = new WindGust(
-					toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position x,y,z
-					toFloat(dat[4]), toFloat(dat[5]), 				   //y rotation, z rotation
-					toFloat(dat[6]), toFloat(dat[7]), toFloat(dat[8]) //radius, height, power
-			);
-			INCR_NEW("Entity");
-			Main_addEntity(windGust);
-			return;
-		}
+        {
+            Pulley::loadStaticModels();
+            Pulley* pulley = new Pulley(
+                    toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position x,y,z
+                    toFloat(dat[4]), toFloat(dat[5]));                    //y rotation, handle vertical displacement
+            INCR_NEW("Entity");
+            chunkedEntities->push_back(pulley);
+            return;
+        }
 
         default:
         {
@@ -1371,8 +1358,8 @@ void LevelLoader::freeAllStaticModels()
     Ring::deleteStaticModels();
     MH_StageManager::deleteStaticModels();
     MH_StaticObjects::deleteStaticModels();
-	MH_AircraftCarrierCart::deleteStaticModels();
-	MH_CratePlatform::deleteStaticModels();
+    MH_AircraftCarrierCart::deleteStaticModels();
+    MH_CratePlatform::deleteStaticModels();
     Pulley::deleteStaticModels();
     SR_StageManager::deleteStaticModels();
     GoalRing::deleteStaticModels();

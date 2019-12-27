@@ -132,7 +132,7 @@ void AudioPlayer::deleteBuffersBGM()
 void AudioPlayer::createSources()
 {
     //First 14 sources are for sound effects
-    sources.push_back(new Source(1, 100, 600));    INCR_NEW("Source");
+    sources.push_back(new Source(1, 100, 600)); INCR_NEW("Source");
     sources.push_back(new Source(1, 100, 600));    INCR_NEW("Source");
     sources.push_back(new Source(1, 100, 600));    INCR_NEW("Source");
     sources.push_back(new Source(1, 100, 600));    INCR_NEW("Source");

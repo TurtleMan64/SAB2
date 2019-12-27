@@ -8,11 +8,11 @@ Ring;100;100;Collect 100 Rings!
 Chao;100;Find the lost chao!
 Race;100;62.166862;Race against Mighty!
 
-PyramidCave.lvl
-Pyramid Cave
+GreenForest.lvl
+Green Forest
 3
 Normal;100;Complete as Blue Falcon
-Ring;100;100;Collect 100 Rings!
+Ring;80;200;Collect 200 Rings!
 Chao;100;Complete as Soic Phantom
 
 MetalHarbor.lvl
@@ -22,11 +22,11 @@ Normal;14000;Escape from the military base!
 Ring;80;150;Collect 150 Rings!
 Chao;45;Find the lost chao!
 
-GreenForest.lvl
-Green Forest
+PyramidCave.lvl
+Pyramid Cave
 3
 Normal;100;Complete as Blue Falcon
-Ring;80;200;Collect 200 Rings!
+Ring;100;100;Collect 100 Rings!
 Chao;100;Complete as Soic Phantom
 
 SkyRail.lvl
