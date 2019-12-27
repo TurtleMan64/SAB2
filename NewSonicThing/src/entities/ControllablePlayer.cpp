@@ -17,7 +17,7 @@ void          ControllablePlayer::jump()                              {}
 void          ControllablePlayer::hitDashpad()                        {}
 void          ControllablePlayer::animate()                           {}
 void          ControllablePlayer::refreshCamera()                     {}
-//void          ControllablePlayer::setCanMoveTimer(int)                {}
+void          ControllablePlayer::setCanMoveTimer(int)                {}
 //void          ControllablePlayer::setGroundSpeed(float,float)         {}
 //float         ControllablePlayer::getXVelGround()                     {return 0;}
 //float         ControllablePlayer::getZVelGround()                     {return 0;}
@@ -71,6 +71,11 @@ void          ControllablePlayer::setInvincibleTimer(float)           {}
 void          ControllablePlayer::setSpeedshoesTimer(float)           {}
 void          ControllablePlayer::grabRocket()                        {}
 void          ControllablePlayer::releaseRocket()                     {}
+void          ControllablePlayer::grabPulley()                        {}
+void          ControllablePlayer::releasePulley()                     {}
 void          ControllablePlayer::hitSpring(Vector3f*, float, float, bool)  {}
 void          ControllablePlayer::hitSpringTriple(Vector3f*, float, float)  {}
 void          ControllablePlayer::hitSpeedRamp(Vector3f*, float, float) {}
+void          ControllablePlayer::setVelocityMovesPlayer(bool newVelocityMovesPlayer) {}
+void          ControllablePlayer::setOnPulley(bool newOnPulley)       {}
+void          ControllablePlayer::jumpOffPulley(Vector3f forwardDirectionVector) {}

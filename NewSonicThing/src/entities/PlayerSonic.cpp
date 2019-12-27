@@ -641,7 +641,7 @@ void PlayerSonic::step()
     }
 
     //camera stuff
-    if (!isGrinding && !onRocket && !isLightdashing)
+    if (velocityMovesPlayer && !isGrinding && !onRocket && !isLightdashing)
     {
         //camera adjust to direction you are heading in
         if (onGround)
@@ -815,7 +815,7 @@ void PlayerSonic::step()
     relativeUpSmooth = Maths::interpolateVector(&relativeUpSmooth, &relativeUp, 3*dt);
     relativeUpAnim = Maths::interpolateVector(&relativeUpAnim, &relativeUp, 15*dt);
 
-    if (!isGrinding && !onRocket && !isLightdashing)
+    if (velocityMovesPlayer && !isGrinding && !onRocket && !isLightdashing)
     {
         //add vel from gravity
         //if (!onGround)
@@ -1617,7 +1617,7 @@ void PlayerSonic::moveMeGround()
 
 void PlayerSonic::moveMeAir()
 {
-    if (isGrinding || isLightdashing || (isHomingOnPoint && homingAttackTimer > 0) || onRocket)
+    if (!velocityMovesPlayer || isGrinding || isLightdashing || (isHomingOnPoint && homingAttackTimer > 0) || onRocket)
     {
         return;
     }
@@ -1727,6 +1727,43 @@ void PlayerSonic::jump()
     hoverTimer = hoverTimerThreshold;
     onGround = false;
     isJumping = true;
+    AudioPlayer::play(12, getPosition());
+}
+
+void PlayerSonic::jumpOffPulley(Vector3f forwardDirectionVector)
+{
+    isGrinding = false;
+    isBouncing = false;
+    isBall = false;
+    isLightdashing = false;
+    isSkidding = false;
+    isSpindashing = false;
+    isStomping = false;
+    justBounced = false;
+    justHomingAttacked = false;
+    homingAttackTimer = -1.0f;
+    onGround = false;
+    isJumping = true;
+
+    forwardDirectionVector.normalize();
+    if (inputX == 0 and inputY == 0)
+    {
+        //Stick isn't being held, move straight forward instead
+        vel = forwardDirectionVector.scaleCopy(JUMP_POWER_PULLEY);
+    }
+    else
+    {
+        //Stick is being held, move in that direction
+        float stickAngle = -atan2f(inputY, inputX) - Maths::PI/2; //angle you are holding on the stick, with 0 being up
+        float stickRadius = sqrtf(inputX*inputX + inputY*inputY);
+        Vector3f dirForward = Maths::projectOntoPlane(&camDir, &relativeUp);
+        dirForward.setLength(stickRadius);
+        Vector3f velNew = Maths::rotatePoint(&dirForward, &relativeUp, stickAngle);
+        vel = velNew.scaleCopy(JUMP_POWER_PULLEY);
+    }
+    
+
+    //jump sound
     AudioPlayer::play(12, getPosition());
 }
 
@@ -2235,6 +2272,11 @@ void PlayerSonic::animate()
         playerModel->setOrientation(dspX, dspY, dspZ, 0, airYaw, 0, 0, &relativeUpAnim);
         playerModel->animate(19, 0);
     }
+    else if (onPulley)
+    {
+        playerModel->setOrientation(dspX, dspY, dspZ, 0, airYaw, 90, airPitch, &relativeUpAnim);
+        playerModel->animate(25, 0);
+    }
     else if (isLightdashing)
     {
         playerModel->setOrientation(dspX, dspY, dspZ, 0, airYaw, 90, airPitch, &relativeUpAnim);
@@ -2457,6 +2499,55 @@ const bool PlayerSonic::isVehicle()
     return true;
 }
 
+void PlayerSonic::grabRocket()
+{
+    onRocket = true;
+    onGround = false;
+    isBall = false;
+    isJumping = false;
+}
+
+void PlayerSonic::releaseRocket()
+{
+    velocityMovesPlayer = true;
+    onRocket = false;
+}
+
+void PlayerSonic::grabPulley()
+{
+    onPulley = true;
+    onGround = false;
+    isBall = false;
+    isJumping = false;
+    velocityMovesPlayer = false;
+}
+
+void PlayerSonic::releasePulley()
+{
+    onPulley = false;
+    velocityMovesPlayer = true;
+}
+
+float PlayerSonic::getHitboxHorizontal()
+{
+    return 6;
+}
+
+float PlayerSonic::getHitboxVertical()
+{
+    return 12;
+}
+
+void PlayerSonic::setVelocityMovesPlayer(bool newVelocityMovesPlayer)
+{
+    velocityMovesPlayer = newVelocityMovesPlayer;
+}
+
+void PlayerSonic::setOnPulley(bool newOnPulley)
+{
+    onPulley = newOnPulley;
+}
+
 Vector3f* PlayerSonic::getCameraDirection()
 {
     return &camDir;
@@ -2473,23 +2564,10 @@ void PlayerSonic::increaseCombo()
     combo++;
 }
 
-void PlayerSonic::grabRocket()
-{
-    onRocket = true;
-    onGround = false;
-    isBall = false;
-    isJumping = false;
-}
-
 void PlayerSonic::setInWater(float newWaterHeight)
 {
     inWater = true;
     waterHeight = newWaterHeight;
-}
-
-void PlayerSonic::releaseRocket()
-{
-    onRocket = false;
 }
 
 void PlayerSonic::refreshCamera()

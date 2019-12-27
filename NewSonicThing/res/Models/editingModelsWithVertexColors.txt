@@ -1,0 +1,12 @@
+[12:31 AM] NoThisIsStupider: so, to edit a model in sab right now that uses vertex colours, you need to:
+[12:31 AM] NoThisIsStupider: -get the custom blender obj importer that does vertex colours, import the model
+[12:31 AM] NoThisIsStupider: -make changes you want
+[12:31 AM] NoThisIsStupider: -export to dae with texture type set to uv textures
+(note from the future: rotate the entire model -90 around the x-axis before exporting as dae)
+[12:32 AM] NoThisIsStupider: -import that dae to meshlab and export as obj from there
+[12:32 AM] NoThisIsStupider: -fix with the objfixer, but it'll crash because of some mtl thing so comment out that line
+(note from the future: use a text editor to find and replace in the .mtl and remove all instances of ".001.png")
+
+process used for metal harbor, hopefully works on other stages
+
+TODO: these instructions are old, replace with very informative and updated ones

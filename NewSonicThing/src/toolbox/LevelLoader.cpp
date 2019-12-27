@@ -36,12 +36,11 @@
 #include "../particles/particleresources.h"
 #include "../particles/particle.h"
 #include "../entities/GreenForest/gfstagemanager.h"
-#include "../entities/MetalHarbor/mhtank.h"
-#include "../entities/MetalHarbor/mhrocketbase.h"
-#include "../entities/MetalHarbor/mhgiantrocket.h"
-#include "../entities/MetalHarbor/mhpathflat.h"
-#include "../entities/MetalHarbor/mhpathdiagonal.h"
-#include "../entities/MetalHarbor/mhpathflatsmall.h"
+#include "../entities/MetalHarbor/mhstaticobjects.h"
+#include "../entities/MetalHarbor/mhaircraftcarriercart.h"
+#include "../entities/MetalHarbor/mhcrateplatform.h"
+#include "../entities/rocket.h"
+#include "../entities/pulley.h"
 #include "../entities/rail.h"
 #include "../entities/ring.h"
 #include "../menu/menumanager.h"
@@ -64,6 +63,7 @@
 #include "../entities/springtriple.h"
 #include "../menu/timer.h"
 #include "../entities/RadicalHighway/rhstagemanager.h"
+#include "../entities/PyramidCave/pcstaticobjects.h"
 #include "../entities/lostchao.h"
 #include "../entities/rhinospike.h"
 #include "../entities/hunter.h"
@@ -1121,56 +1121,42 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             return;
         }
 
-        case 93: //Metal Harbor Objects
+        case 93: //Metal Harbor Specific Objects
         {
-            int id2 = std::stoi(dat[1]);
-            switch (id2)
+            switch(toInt(dat[1]))
             {
-                case 0: //Tank
+                case 0: //Static Objects (environment stuff that never moves)
                 {
-                    MH_Tank::loadStaticModels();
-                    MH_Tank* tank = new MH_Tank(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4])); INCR_NEW("Entity"); //x, y, z
-                    chunkedEntities->push_back(tank);
-                    break;
+                    MH_StaticObjects::loadStaticModels();
+                    MH_StaticObjects* staticObjects = new MH_StaticObjects(); INCR_NEW("Entity");
+                    Main_addEntity(staticObjects);
+                    return;
                 }
-                case 1: //RocketBase
+                case 1: //Aircraft Carrier Cart
                 {
-                    MH_RocketBase::loadStaticModels();
-                    MH_RocketBase* rocketBase = new MH_RocketBase(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4])); INCR_NEW("Entity"); //x, y, z
-                    chunkedEntities->push_back(rocketBase);
-                    break;
+                    MH_AircraftCarrierCart::loadStaticModels();
+                    MH_AircraftCarrierCart* yellowMovingPlatform = new MH_AircraftCarrierCart(
+                        toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]),             //position
+                        toFloat(dat[5]), toFloat(dat[6]),                            //dirX, dirZ
+                        toInt(dat[7]), toFloat(dat[8]));                             //displacementMax, speed
+                    INCR_NEW("Entity");
+                    Main_addEntity(yellowMovingPlatform);
+                    return;
                 }
-                case 2: //GiantRocket
+                case 2: //Crate Platform
                 {
-                    MH_GiantRocket::loadStaticModels();
-                    MH_GiantRocket* giantRocket = new MH_GiantRocket(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4])); INCR_NEW("Entity"); //x, y, z
-                    chunkedEntities->push_back(giantRocket);
-                    break;
+                    MH_CratePlatform::loadStaticModels();
+                    MH_CratePlatform* cratePlatform = new MH_CratePlatform(
+                        toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]),             //position
+                        toFloat(dat[5]), toFloat(dat[6]),                            //dirX, dirZ
+                        toInt(dat[7]), toFloat(dat[8]),                                //displacementMax, speed
+                        toFloat(dat[9]));                                             //Type: 0: long, 1: with box, 2: without box
+                    INCR_NEW("Entity");
+                    Main_addEntity(cratePlatform);
+                    return;
                 }
-                case 3: //PathFlat
-                {
-                    MH_PathFlat::loadStaticModels();
-                    MH_PathFlat* pathFlat = new MH_PathFlat(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]), toFloat(dat[5])); INCR_NEW("Entity"); //x, y, z, rotY
-                    chunkedEntities->push_back(pathFlat);
-                    break;
-                }
-                case 4: //PathDiagonal
-                {
-                    MH_PathDiagonal::loadStaticModels();
-                    MH_PathDiagonal* pathDiagonal = new MH_PathDiagonal(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]), toFloat(dat[5])); INCR_NEW("Entity"); //x, y, z, rotY
-                    chunkedEntities->push_back(pathDiagonal);
-                    break;
-                }
-                case 5: //PathFlatSmall
-                {
-                    MH_PathFlatSmall::loadStaticModels();
-                    MH_PathFlatSmall* pathFlatSmall = new MH_PathFlatSmall(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]), toFloat(dat[5])); INCR_NEW("Entity"); //x, y, z, rotY
-                    chunkedEntities->push_back(pathFlatSmall);
-                    break;
-                }
-                default: break;
             }
-            return;
+            
         }
 
         case 96: //Point (for paths)
@@ -1248,6 +1234,29 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                 Ring* ring = new Ring(centerPos.x, centerPos.y, centerPos.z); INCR_NEW("Entity");
                 chunkedEntities->push_back(ring);
             }
+            return;
+        }
+
+        case 100: //Pyramid Cave Specific
+        {
+        switch(toInt(dat[1]))
+            {
+                case 0: //Static Objects
+                    PC_StaticObjects::loadStaticModels();
+                    PC_StaticObjects* staticObjects = new PC_StaticObjects(); INCR_NEW("Entity");
+                    Main_addEntity(staticObjects);
+                    return;
+            }
+        }
+
+        case 101: //Pulley
+        {
+            Pulley::loadStaticModels();
+            Pulley* pulley = new Pulley(
+                    toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position x,y,z
+                    toFloat(dat[4]), toFloat(dat[5]));                    //y rotation, handle vertical displacement
+            INCR_NEW("Entity");
+            chunkedEntities->push_back(pulley);
             return;
         }
 
@@ -1348,12 +1357,10 @@ void LevelLoader::freeAllStaticModels()
     GF_StageManager::deleteStaticModels();
     Ring::deleteStaticModels();
     MH_StageManager::deleteStaticModels();
-    MH_GiantRocket::deleteStaticModels();
-    MH_PathDiagonal::deleteStaticModels();
-    MH_PathFlat::deleteStaticModels();
-    MH_PathFlatSmall::deleteStaticModels();
-    MH_RocketBase::deleteStaticModels();
-    MH_Tank::deleteStaticModels();
+    MH_StaticObjects::deleteStaticModels();
+    MH_AircraftCarrierCart::deleteStaticModels();
+    MH_CratePlatform::deleteStaticModels();
+    Pulley::deleteStaticModels();
     SR_StageManager::deleteStaticModels();
     GoalRing::deleteStaticModels();
     Rocket::deleteStaticModels();
@@ -1368,6 +1375,7 @@ void LevelLoader::freeAllStaticModels()
     ItemCapsule::deleteStaticModels();
     SpringTriple::deleteStaticModels();
     RH_StageManager::deleteStaticModels();
+    PC_StaticObjects::deleteStaticModels();
     LostChao::deleteStaticModels();
     RhinoSpike::deleteStaticModels();
     Hunter::deleteStaticModels();

@@ -1,0 +1,65 @@
+	# Material Count: 7
+	
+newmtl pr128_7.png
+	Ns 20
+	Ni 0.02
+	Tr 1
+	d 1
+	scrollX 0
+	scrollY 0
+	map_Kd pr128_7.png
+	
+newmtl pr64_17fixed.png
+	Ns 20
+	Ni 0.02
+	Tr 1
+	d 1
+	scrollX 0
+	scrollY 0
+	map_Kd pr64_17fixed.png
+	
+newmtl miu64_mh010fixed.png
+	Ns 20
+	Ni 0.02
+	Tr 1
+	d 1
+	scrollX 0
+	scrollY 0
+	map_Kd miu64_mh010fixed.png
+	
+newmtl miu64_mh005.png
+	Ns 20
+	Ni 0.02
+	Tr 1
+	d 1
+	scrollX 0
+	scrollY 0
+	map_Kd miu64_mh005.png
+	
+newmtl pr256_2.png
+	Ns 20
+	Ni 0.02
+	Tr 1
+	d 1
+	scrollX 0
+	scrollY 0
+	map_Kd pr256_2.png
+	
+newmtl miu128_mh003.png
+	Ns 20
+	Ni 0.02
+	Tr 1
+	d 1
+	scrollX 0
+	scrollY 0
+	map_Kd miu128_mh003.png
+	
+newmtl pr64_3.png
+	Ns 20
+	Ni 0.02
+	Tr 1
+	d 1
+	scrollX 0
+	scrollY 0
+	map_Kd pr64_3.png
+	

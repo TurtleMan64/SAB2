@@ -50,6 +50,7 @@ private:
     const float hoverPower = 170.0f; //How much hover adds to your vel
     const float hoverTimerThreshold = 1.0f; //How long you can hover for
     float hoverTimer = 0.0f;
+    const float JUMP_POWER_PULLEY = 102.0f;
 
     const float groundRunPush = 100.0f;
     const float groundRunPushSpeedshoes = 300.0f;
@@ -106,6 +107,11 @@ private:
     Source* sourceGrind = nullptr;
 
     bool onRocket = false;
+    bool onPulley = false;
+
+    //If true, the velocity the player has will make them move.
+    //If false, the velocity will only change the camera direction.
+    bool velocityMovesPlayer = true;
 
     bool isLightdashing = false;
     std::vector<Vector3f> lightdashTrail;
@@ -245,6 +251,10 @@ public:
 
     void releaseRocket();
 
+    void grabPulley();
+
+    void releasePulley();
+
     void setOnGround(bool newOnGround);
 
     ShieldMagnet* getShieldMagnet();
@@ -262,6 +272,11 @@ public:
     //called by Rail when sonic jumps off
     void jump();
 
+    //Called by the Pulley when Sonic jumps off, separate due to unique properties required for pulley jump.
+    //Specifically, Sonic needs to basically go completely horizontally off the pulley, and should go straight
+    //forward with neutral stick.
+    void jumpOffPulley(Vector3f forwardDirectionVector);
+
     void setRelativeUp(Vector3f* newUp);
 
     std::list<TexturedModel*>* getModels();
@@ -272,9 +287,17 @@ public:
 
     const bool isVehicle();
 
+    float getHitboxHorizontal();
+
+    float getHitboxVertical();
+
     Vector3f* getCameraDirection();
 
     void setCameraDirection(Vector3f* newDirection);
+
+    void setVelocityMovesPlayer(bool newVelocityMovesPlayer);
+
+    void setOnPulley(bool newOnPulley);
 
     Vector3f getCenterPosition();
 };

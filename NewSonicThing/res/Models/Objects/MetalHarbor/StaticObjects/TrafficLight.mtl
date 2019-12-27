@@ -1,0 +1,47 @@
+# Material Count: 5
+
+newmtl pr64_21.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd pr64_21.png
+
+newmtl miu32_mh004.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd miu32_mh004.png
+
+newmtl pr128_28.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd pr128_28.png
+
+newmtl pr32_4fixed.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd pr32_4fixed.png
+
+newmtl pr64_11.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd pr64_11.png
+

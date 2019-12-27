@@ -49,7 +49,7 @@ public:
 
     virtual void refreshCamera();
 
-    //virtual void setCanMoveTimer(int newMoveTimer);
+    virtual void setCanMoveTimer(int newMoveTimer);
 
     //virtual void setGroundSpeed(float newXspd, float newZspd);
 
@@ -156,10 +156,20 @@ public:
 
     virtual void releaseRocket();
 
+    virtual void grabPulley();
+
+    virtual void releasePulley();
+
     virtual void hitSpring(Vector3f* direction, float power, float lockInputTime, bool resetsCamera);
 
     virtual void hitSpringTriple(Vector3f* direction, float power, float lockInputTime);
 
     virtual void hitSpeedRamp(Vector3f* direction, float speed, float lockInputTime);
+
+    virtual void setVelocityMovesPlayer(bool newVelocityMovesPlayer);
+
+    virtual void setOnPulley(bool newOnPulley);
+
+    virtual void jumpOffPulley(Vector3f forwardDirectionVector);
 };
 #endif

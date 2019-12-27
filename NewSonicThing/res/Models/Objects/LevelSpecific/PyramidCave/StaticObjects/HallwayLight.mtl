@@ -1,0 +1,20 @@
+# Material Count: 2
+
+newmtl Tex_0026_0.png
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd Tex_0026_0.png
+
+newmtl Tex_0025_0.dds
+Ns 20
+Ni 0.02
+Tr 1
+d 1
+scrollX 0
+scrollY 0
+map_Kd Tex_0025_0.dds
+

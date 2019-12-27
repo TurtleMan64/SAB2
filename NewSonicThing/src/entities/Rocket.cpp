@@ -107,7 +107,7 @@ void Rocket::step()
     {
         playRocketLaunchSoundLoop();
 
-        //Rocket state disables player movement based on velocity, velocity here is set purely for camera reasons
+        //Rocket state disables player movement based on velocity, velocity set here for camera and speedometer reasons
         Global::gameMainPlayer->vel.set(
             rocketPathPositionDifferenceNormalized.x * ROCKET_SPEED, 
             rocketPathPositionDifferenceNormalized.y * ROCKET_SPEED, 
@@ -118,19 +118,19 @@ void Rocket::step()
         {
             //makeExhaustParticles(0.0f);
 
-            setPlayerPositionToHoldRocketHandle();
+            Global::gameMainPlayer->position = calculateNewPlayerPosition();
 
             startupTimer -= dt;
         }
         else //rocket is moving
         {
-            calculateNewRocketPosition();
+            position = calculateNewRocketPosition();
 
             makeExhaustParticles(ROCKET_SPEED);
 
-            setPlayerPositionToHoldRocketHandle();
+            Global::gameMainPlayer->position = calculateNewPlayerPosition();
 
-            calculateNewPercentOfPathCompletedValue();    
+            percentOfPathCompleted += calculatePathMovementPercentForThisFrame();
         }    
     }
 
@@ -297,21 +297,27 @@ bool Rocket::rocketStartedMoving()
     return startupTimer <= 0;
 }
 
-void Rocket::setPlayerPositionToHoldRocketHandle()
+Vector3f Rocket::calculateNewPlayerPosition()
 {
-    Global::gameMainPlayer->setPosition(&position);
+    Vector3f newPlayerPos = Vector3f(
+            position.x - 6*rocketPathPositionDifferenceNormalized.x,
+            position.y - 5,
+            position.z - 6*rocketPathPositionDifferenceNormalized.z);
+    return newPlayerPos;
 }
 
-void Rocket::calculateNewRocketPosition()
+Vector3f Rocket::calculateNewRocketPosition()
 {
-    position.x = pointPositionStart.x + (rocketPathPositionDifference.x * percentOfPathCompleted);
-    position.y = (pointPositionStart.y + ROCKET_OFFSET_HEIGHT) + (rocketPathPositionDifference.y * percentOfPathCompleted);
-    position.z = pointPositionStart.z + (rocketPathPositionDifference.z * percentOfPathCompleted);
+    Vector3f newPos = Vector3f();
+    newPos.x = pointPositionStart.x + (rocketPathPositionDifference.x * percentOfPathCompleted);
+    newPos.y = (pointPositionStart.y + 10) + (rocketPathPositionDifference.y * percentOfPathCompleted);
+    newPos.z = pointPositionStart.z + (rocketPathPositionDifference.z * percentOfPathCompleted);
+    return newPos;
 }
 
-void Rocket::calculateNewPercentOfPathCompletedValue()
+float Rocket::calculatePathMovementPercentForThisFrame()
 {
-    percentOfPathCompleted += (ROCKET_SPEED * dt) / rocketPathPositionDifferenceLength;
+    return (ROCKET_SPEED * dt) / rocketPathPositionDifferenceLength;
 }
 
 bool Rocket::fullPathTraveled()

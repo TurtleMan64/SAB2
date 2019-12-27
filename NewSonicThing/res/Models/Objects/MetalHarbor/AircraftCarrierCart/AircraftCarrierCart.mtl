@@ -1,0 +1,58 @@
+	# Material Count: 6
+	
+newmtl miu32_mh003.png
+	Ns 20
+	Ni 0.02
+	Tr 1
+	d 1
+	scrollX 0
+	scrollY 0
+	map_Kd miu32_mh003.png
+	
+newmtl pr128_22.png
+	Ns 20
+	Ni 0.02
+	Tr 1
+	d 1
+	scrollX 0
+	scrollY 0
+	map_Kd pr128_22.png
+	
+newmtl pr64_19.png
+	Ns 20
+	Ni 0.02
+	Tr 1
+	d 1
+	scrollX 0
+	scrollY 0
+	map_Kd pr64_19.png
+	
+newmtl pr64_20.png
+	Ns 20
+	Ni 0.02
+	Tr 1
+	d 1
+	scrollX 0
+	scrollY 0
+	map_Kd pr64_20.png
+	
+newmtl miu64_mh006.png
+	Ns 20
+	Ni 0.02
+	Tr 1
+	d 1
+	scrollX 0
+	scrollY 0
+	map_Kd miu64_mh006.png
+	
+newmtl miu64_mh007.png
+	Ns 20
+	Ni 0.02
+	Tr 1
+	d 1
+	numImages 2
+	mixSinusoidal
+	animSpeed 1.0
+	map_Kd miu64_mh007.png
+	miu64_mh007dim.png
+	
