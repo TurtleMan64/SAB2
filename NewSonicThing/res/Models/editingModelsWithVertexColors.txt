@@ -8,3 +8,5 @@
 (note from the future: use a text editor to find and replace in the .mtl and remove all instances of ".001.png")
 
 process used for metal harbor, hopefully works on other stages
+
+TODO: these instructions are old, replace with very informative and updated ones
