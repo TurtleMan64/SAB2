@@ -86,8 +86,8 @@ void AudioPlayer::loadSoundEffects()
     AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/Player/GrindMetalLand.ogg"));        //59
     AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/Player/GrindVineLand.ogg"));         //60
     AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/ChaoCry.ogg"));              //61
-	AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/Pulley.ogg"));			   //62
-	AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/MetalHarbor/CratePlatformStop.ogg"));//63	
+    AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/Pulley.ogg"));               //62
+    AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/MetalHarbor/CratePlatformStop.ogg"));//63    
 }
 
 void AudioPlayer::loadBGM(char* fileName)

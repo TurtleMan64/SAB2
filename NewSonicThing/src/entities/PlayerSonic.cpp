@@ -1732,39 +1732,39 @@ void PlayerSonic::jump()
 
 void PlayerSonic::jumpOffPulley(Vector3f forwardDirectionVector)
 {
-	isGrinding = false;
-	isBouncing = false;
-	isBall = false;
-	isLightdashing = false;
-	isSkidding = false;
-	isSpindashing = false;
-	isStomping = false;
-	justBounced = false;
-	justHomingAttacked = false;
-	homingAttackTimer = -1.0f;
-	onGround = false;
-	isJumping = true;
+    isGrinding = false;
+    isBouncing = false;
+    isBall = false;
+    isLightdashing = false;
+    isSkidding = false;
+    isSpindashing = false;
+    isStomping = false;
+    justBounced = false;
+    justHomingAttacked = false;
+    homingAttackTimer = -1.0f;
+    onGround = false;
+    isJumping = true;
 
-	forwardDirectionVector.normalize();
-	if (inputX == 0 and inputY == 0)
-	{
-		//Stick isn't being held, move straight forward instead
-		vel = forwardDirectionVector.scaleCopy(JUMP_POWER_PULLEY);
-	}
-	else
-	{
-		//Stick is being held, move in that direction
-		float stickAngle = -atan2f(inputY, inputX) - Maths::PI/2; //angle you are holding on the stick, with 0 being up
-		float stickRadius = sqrtf(inputX*inputX + inputY*inputY);
-		Vector3f dirForward = Maths::projectOntoPlane(&camDir, &relativeUp);
-		dirForward.setLength(stickRadius);
-		Vector3f velNew = Maths::rotatePoint(&dirForward, &relativeUp, stickAngle);
-		vel = velNew.scaleCopy(JUMP_POWER_PULLEY);
-	}
-	
+    forwardDirectionVector.normalize();
+    if (inputX == 0 and inputY == 0)
+    {
+        //Stick isn't being held, move straight forward instead
+        vel = forwardDirectionVector.scaleCopy(JUMP_POWER_PULLEY);
+    }
+    else
+    {
+        //Stick is being held, move in that direction
+        float stickAngle = -atan2f(inputY, inputX) - Maths::PI/2; //angle you are holding on the stick, with 0 being up
+        float stickRadius = sqrtf(inputX*inputX + inputY*inputY);
+        Vector3f dirForward = Maths::projectOntoPlane(&camDir, &relativeUp);
+        dirForward.setLength(stickRadius);
+        Vector3f velNew = Maths::rotatePoint(&dirForward, &relativeUp, stickAngle);
+        vel = velNew.scaleCopy(JUMP_POWER_PULLEY);
+    }
+    
 
-	//jump sound
-	AudioPlayer::play(12, getPosition());
+    //jump sound
+    AudioPlayer::play(12, getPosition());
 }
 
 void PlayerSonic::rebound(Vector3f* source)
@@ -2274,8 +2274,8 @@ void PlayerSonic::animate()
     }
     else if (onPulley)
     {
-		playerModel->setOrientation(dspX, dspY, dspZ, 0, airYaw, 90, airPitch, &relativeUpAnim);
-		playerModel->animate(25, 0);
+        playerModel->setOrientation(dspX, dspY, dspZ, 0, airYaw, 90, airPitch, &relativeUpAnim);
+        playerModel->animate(25, 0);
     }
     else if (isLightdashing)
     {
@@ -2509,43 +2509,43 @@ void PlayerSonic::grabRocket()
 
 void PlayerSonic::releaseRocket()
 {
-	velocityMovesPlayer = true;
+    velocityMovesPlayer = true;
     onRocket = false;
 }
 
 void PlayerSonic::grabPulley()
 {
-	onPulley = true;
+    onPulley = true;
     onGround = false;
     isBall = false;
     isJumping = false;
-	velocityMovesPlayer = false;
+    velocityMovesPlayer = false;
 }
 
 void PlayerSonic::releasePulley()
 {
-	onPulley = false;
-	velocityMovesPlayer = true;
+    onPulley = false;
+    velocityMovesPlayer = true;
 }
 
 float PlayerSonic::getHitboxHorizontal()
 {
-	return 6;
+    return 6;
 }
 
 float PlayerSonic::getHitboxVertical()
 {
-	return 12;
+    return 12;
 }
 
 void PlayerSonic::setVelocityMovesPlayer(bool newVelocityMovesPlayer)
 {
-	velocityMovesPlayer = newVelocityMovesPlayer;
+    velocityMovesPlayer = newVelocityMovesPlayer;
 }
 
 void PlayerSonic::setOnPulley(bool newOnPulley)
 {
-	onPulley = newOnPulley;
+    onPulley = newOnPulley;
 }
 
 Vector3f* PlayerSonic::getCameraDirection()

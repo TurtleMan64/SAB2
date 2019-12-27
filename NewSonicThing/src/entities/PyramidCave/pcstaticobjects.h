@@ -11,36 +11,36 @@ class Body;
 class PC_StaticObjects : public CollideableObject
 {
 private:
-	//The visual model that doesn't use vertex colours
-	static std::list<TexturedModel*> models;
-	//The visual model that uses vertex colours
-	static std::list<TexturedModel*> modelsVertexColours;
-	//The visual model that is for textures with transparency
-	static std::list<TexturedModel*> modelsTransparent;
-	//The collision model
-	static CollisionModel* cmOriginal;
+    //The visual model that doesn't use vertex colours
+    static std::list<TexturedModel*> models;
+    //The visual model that uses vertex colours
+    static std::list<TexturedModel*> modelsVertexColours;
+    //The visual model that is for textures with transparency
+    static std::list<TexturedModel*> modelsTransparent;
+    //The collision model
+    static CollisionModel* cmOriginal;
 
-	//Body used to be able to display the vertex colours model
-	Body* modelVertexColours;
-	//Body used to be able to display the transparent model
-	Body* modelTransparent;
+    //Body used to be able to display the vertex colours model
+    Body* modelVertexColours;
+    //Body used to be able to display the transparent model
+    Body* modelTransparent;
 
-	//Functions for the constructor start here
-	
-	//Makes the body used for the Vertex Colours model
-	void setupModelVertexColours();
-	//Makes the body used for the transparent model
-	void setupModelTransparent();
+    //Functions for the constructor start here
+    
+    //Makes the body used for the Vertex Colours model
+    void setupModelVertexColours();
+    //Makes the body used for the transparent model
+    void setupModelTransparent();
 
 public:
-	PC_StaticObjects();
+    PC_StaticObjects();
 
-	void step();
+    void step();
 
-	std::list<TexturedModel*>* getModels();
+    std::list<TexturedModel*>* getModels();
 
-	static void loadStaticModels();
+    static void loadStaticModels();
 
-	static void deleteStaticModels();
+    static void deleteStaticModels();
 };
 #endif
