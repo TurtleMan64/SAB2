@@ -486,8 +486,15 @@ int main(int argc, char** argv)
                 {
                     std::fprintf(stdout, "Error: Tried to delete a chunked entity that wasn't in the lists.\n");
                 }
+                else
+                {
+                    delete entityToDelete; INCR_DEL("Entity");
+                }
             }
-            delete entityToDelete; INCR_DEL("Entity");
+            else
+            {
+                delete entityToDelete; INCR_DEL("Entity");
+            }
         }
         gameChunkedEntitiesToDelete.clear();
 

@@ -35,7 +35,7 @@ MH_StaticObjects::MH_StaticObjects()
     updateTransformationMatrix();
 
     collideModelOriginal = MH_StaticObjects::cmOriginal;
-    collideModelTransformed = loadCollisionModel("Models/Objects/MetalHarbor/StaticObjects/", "StaticObjectsCollision");
+    collideModelTransformed = collideModelOriginal->duplicateMe();
 
     CollisionChecker::addCollideModel(collideModelTransformed);
 

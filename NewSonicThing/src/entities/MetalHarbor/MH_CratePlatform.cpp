@@ -17,8 +17,8 @@
 #include "../../collision/collisionmodel.h"
 #include "../../collision/collisionchecker.h"
 #include "../../animation/body.h"
-#include "../audio/audioplayer.h"
-#include "../audio/source.h"
+#include "../../audio/audioplayer.h"
+#include "../../audio/source.h"
 
 #include <algorithm>
 
@@ -70,17 +70,16 @@ MH_CratePlatform::MH_CratePlatform(float x, float y, float z, float dirX, float 
     {
         case LONG:
             collideModelOriginal = MH_CratePlatform::cmCratePlatformLong;
-            collideModelTransformed = loadCollisionModel("Models/Objects/MetalHarbor/CratePlatform/", "CratePlatformLongCollision");
             break;
         case CRATE:
             collideModelOriginal = MH_CratePlatform::cmCratePlatformCrate;
-            collideModelTransformed = loadCollisionModel("Models/Objects/MetalHarbor/CratePlatform/", "CratePlatformCrateCollision");
             break;
         case CRATELESS:
             collideModelOriginal = MH_CratePlatform::cmCratePlatformNoCrate;
-            collideModelTransformed = loadCollisionModel("Models/Objects/MetalHarbor/CratePlatform/", "CratePlatformCratelessCollision");
             break;
     }
+
+    collideModelTransformed = collideModelOriginal->duplicateMe();
 
     CollisionChecker::addCollideModel(collideModelTransformed);
 
@@ -199,7 +198,8 @@ std::list<TexturedModel*>* MH_CratePlatform::getModels()
             return &MH_CratePlatform::modelsCratePlatformNoCrate;
             break;
     }
-    
+
+    return nullptr;
 }
 
 void MH_CratePlatform::loadStaticModels()
@@ -268,7 +268,7 @@ inline Vector3f MH_CratePlatform::shakePlatform()
     return directionVector.scaleCopy(sinf(shakeTimer)/shakeTimer * 5) + distanceFromPositionStopped;
 }
 
-inline void MH_CratePlatform::pushSonicAway(bool frontHitboxes, bool backHitboxes)
+inline void MH_CratePlatform::pushSonicAway(bool /*frontHitboxes*/, bool /*backHitboxes*/)
 {
     //first check if sonic is even close to the platform
     if (collisionCheckCylinder(position, 100, 100))

@@ -87,7 +87,7 @@ MH_AircraftCarrierCart::MH_AircraftCarrierCart(float x, float y, float z, float 
     updateTransformationMatrix();
 
     collideModelOriginal = MH_AircraftCarrierCart::cmOriginal;
-    collideModelTransformed = loadCollisionModel("Models/Objects/MetalHarbor/AircraftCarrierCart/", "AircraftCarrierCartCollision");
+    collideModelTransformed = collideModelOriginal->duplicateMe();
 
     CollisionChecker::addCollideModel(collideModelTransformed);
 
@@ -324,7 +324,7 @@ inline Vector3f MH_AircraftCarrierCart::shakePlatform()
     return directionVector.scaleCopy(sinf(shakeTimer)/shakeTimer * 5) + distanceFromPositionStopped;
 }
 
-inline void MH_AircraftCarrierCart::pushSonicAway(bool frontHitboxes, bool backHitboxes)
+inline void MH_AircraftCarrierCart::pushSonicAway(bool /*frontHitboxes*/, bool /*backHitboxes*/)
 {
     //first check if sonic is even close to the platform
     if (collisionCheckCylinder(position, 100, 100))

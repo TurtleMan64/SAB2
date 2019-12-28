@@ -22,9 +22,9 @@ private:
     static CollisionModel* cmTop;
 
     //The entity of the rope.
-    Body* rope;
+    Body* rope = nullptr;
     //The entity of the top of the rocket.
-    Body* top;
+    Body* top = nullptr;
 
     //The y position of the top of the pulley, this is useful to have so the position of the handle can
     //be saved as a displacement from this rather than a separate vector3f
@@ -55,9 +55,9 @@ private:
     Source* pulleyAudioSource = nullptr;
 
     //Max value the bob timer can have, it will be clamped at this point
-    const float BOB_TIMER_MAX = 31.4159265359;
+    const float BOB_TIMER_MAX = 31.4159265359f;
     //Minimum value the bob timer can have, since you divide by this value so it can't be set to 0
-    const float BOB_TIMER_MIN = 3.14159265359;
+    const float BOB_TIMER_MIN = 3.14159265359f;
     //Timer used for the animation of the Pulley bobbing up and down
     float bobTimer = BOB_TIMER_MAX;
     //Whether the pulley is bobbing or not

@@ -237,9 +237,9 @@ void ItemCapsule::die()
                 }
             }
 
-            std::list<std::unordered_set<Entity*>*> nearbyEntities;
-            Global::getNearbyEntities(position.x, position.z, 2, &nearbyEntities);
-            for (auto set : nearbyEntities)
+            std::list<std::unordered_set<Entity*>*> nearbyChunkedEntities;
+            Global::getNearbyEntities(position.x, position.z, &nearbyChunkedEntities, 300);
+            for (auto set : nearbyChunkedEntities)
             {
                 for (auto e : (*set))
                 {

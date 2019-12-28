@@ -1123,7 +1123,7 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
 
         case 93: //Metal Harbor Specific Objects
         {
-            switch(toInt(dat[1]))
+            switch (toInt(dat[1]))
             {
                 case 0: //Static Objects (environment stuff that never moves)
                 {
@@ -1136,9 +1136,9 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                 {
                     MH_AircraftCarrierCart::loadStaticModels();
                     MH_AircraftCarrierCart* yellowMovingPlatform = new MH_AircraftCarrierCart(
-                        toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]),             //position
-                        toFloat(dat[5]), toFloat(dat[6]),                            //dirX, dirZ
-                        toInt(dat[7]), toFloat(dat[8]));                             //displacementMax, speed
+                        toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]), //position
+                        toFloat(dat[5]), toFloat(dat[6]),                  //dirX, dirZ
+                        toFloat(dat[7]), toFloat(dat[8]));                 //displacementMax, speed
                     INCR_NEW("Entity");
                     Main_addEntity(yellowMovingPlatform);
                     return;
@@ -1147,10 +1147,10 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                 {
                     MH_CratePlatform::loadStaticModels();
                     MH_CratePlatform* cratePlatform = new MH_CratePlatform(
-                        toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]),             //position
-                        toFloat(dat[5]), toFloat(dat[6]),                            //dirX, dirZ
-                        toInt(dat[7]), toFloat(dat[8]),                                //displacementMax, speed
-                        toFloat(dat[9]));                                             //Type: 0: long, 1: with box, 2: without box
+                        toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]),  //position
+                        toFloat(dat[5]), toFloat(dat[6]),                   //dirX, dirZ
+                        toFloat(dat[7]), toFloat(dat[8]),                   //displacementMax, speed
+                        toInt(dat[9]));                                     //Type: 0: long, 1: with box, 2: without box
                     INCR_NEW("Entity");
                     Main_addEntity(cratePlatform);
                     return;
@@ -1239,11 +1239,11 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
 
         case 100: //Pyramid Cave Specific
         {
-        switch(toInt(dat[1]))
+            switch (toInt(dat[1]))
             {
                 case 0: //Static Objects
                     PC_StaticObjects::loadStaticModels();
-                    PC_StaticObjects* staticObjects = new PC_StaticObjects(); INCR_NEW("Entity");
+                    PC_StaticObjects* staticObjects = new PC_StaticObjects; INCR_NEW("Entity");
                     Main_addEntity(staticObjects);
                     return;
             }

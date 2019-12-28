@@ -76,6 +76,6 @@ void          ControllablePlayer::releasePulley()                     {}
 void          ControllablePlayer::hitSpring(Vector3f*, float, float, bool)  {}
 void          ControllablePlayer::hitSpringTriple(Vector3f*, float, float)  {}
 void          ControllablePlayer::hitSpeedRamp(Vector3f*, float, float) {}
-void          ControllablePlayer::setVelocityMovesPlayer(bool newVelocityMovesPlayer) {}
-void          ControllablePlayer::setOnPulley(bool newOnPulley)       {}
-void          ControllablePlayer::jumpOffPulley(Vector3f forwardDirectionVector) {}
+void          ControllablePlayer::setVelocityMovesPlayer(bool) {}
+void          ControllablePlayer::setOnPulley(bool)       {}
+void          ControllablePlayer::jumpOffPulley(Vector3f) {}

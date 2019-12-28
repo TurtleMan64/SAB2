@@ -396,24 +396,6 @@
     <ClCompile Include="src\entities\Ring.cpp">
       <Filter>Source Files\entities</Filter>
     </ClCompile>
-    <ClCompile Include="src\entities\MetalHarbor\MH_GiantRocket.cpp">
-      <Filter>Source Files\entities\MetalHarbor</Filter>
-    </ClCompile>
-    <ClCompile Include="src\entities\MetalHarbor\MH_PathDiagonal.cpp">
-      <Filter>Source Files\entities\MetalHarbor</Filter>
-    </ClCompile>
-    <ClCompile Include="src\entities\MetalHarbor\MH_PathFlat.cpp">
-      <Filter>Source Files\entities\MetalHarbor</Filter>
-    </ClCompile>
-    <ClCompile Include="src\entities\MetalHarbor\MH_PathFlatSmall.cpp">
-      <Filter>Source Files\entities\MetalHarbor</Filter>
-    </ClCompile>
-    <ClCompile Include="src\entities\MetalHarbor\MH_RocketBase.cpp">
-      <Filter>Source Files\entities\MetalHarbor</Filter>
-    </ClCompile>
-    <ClCompile Include="src\entities\MetalHarbor\MH_Tank.cpp">
-      <Filter>Source Files\entities\MetalHarbor</Filter>
-    </ClCompile>
     <ClCompile Include="src\menu\Button.cpp">
       <Filter>Source Files\menu</Filter>
     </ClCompile>
@@ -453,7 +435,19 @@
     <ClCompile Include="src\entities\Rocket.cpp">
       <Filter>Source Files\entities</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\Pulley.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\MetalHarbor\MH_AircraftCarrierCart.cpp">
+      <Filter>Source Files\entities\MetalHarbor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\MetalHarbor\MH_CratePlatform.cpp">
+      <Filter>Source Files\entities\MetalHarbor</Filter>
+    </ClCompile>
     <ClCompile Include="src\entities\MetalHarbor\MH_StageManager.cpp">
+      <Filter>Source Files\entities\MetalHarbor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\MetalHarbor\MH_StaticObjects.cpp">
       <Filter>Source Files\entities\MetalHarbor</Filter>
     </ClCompile>
     <ClCompile Include="src\entities\GreenHill\GH_StageManager.cpp">
@@ -538,6 +532,9 @@
       <Filter>Source Files\entities</Filter>
     </ClCompile>
     <ClCompile Include="src\entities\PyramidCave\PC_StageManager.cpp">
+      <Filter>Source Files\entities\PyramidCave</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\PyramidCave\PC_StaticObjects.cpp">
       <Filter>Source Files\entities\PyramidCave</Filter>
     </ClCompile>
   </ItemGroup>
@@ -815,24 +812,6 @@
     <ClInclude Include="src\entities\ring.h">
       <Filter>Source Files\entities</Filter>
     </ClInclude>
-    <ClInclude Include="src\entities\MetalHarbor\mhgiantrocket.h">
-      <Filter>Source Files\entities\MetalHarbor</Filter>
-    </ClInclude>
-    <ClInclude Include="src\entities\MetalHarbor\mhpathdiagonal.h">
-      <Filter>Source Files\entities\MetalHarbor</Filter>
-    </ClInclude>
-    <ClInclude Include="src\entities\MetalHarbor\mhpathflat.h">
-      <Filter>Source Files\entities\MetalHarbor</Filter>
-    </ClInclude>
-    <ClInclude Include="src\entities\MetalHarbor\mhpathflatsmall.h">
-      <Filter>Source Files\entities\MetalHarbor</Filter>
-    </ClInclude>
-    <ClInclude Include="src\entities\MetalHarbor\mhrocketbase.h">
-      <Filter>Source Files\entities\MetalHarbor</Filter>
-    </ClInclude>
-    <ClInclude Include="src\entities\MetalHarbor\mhtank.h">
-      <Filter>Source Files\entities\MetalHarbor</Filter>
-    </ClInclude>
     <ClInclude Include="src\menu\button.h">
       <Filter>Source Files\menu</Filter>
     </ClInclude>
@@ -872,7 +851,19 @@
     <ClInclude Include="src\entities\rocket.h">
       <Filter>Source Files\entities</Filter>
     </ClInclude>
+    <ClInclude Include="src\entities\pulley.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\MetalHarbor\mhaircraftcarriercart.h">
+      <Filter>Source Files\entities\MetalHarbor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\MetalHarbor\mhcrateplatform.h">
+      <Filter>Source Files\entities\MetalHarbor</Filter>
+    </ClInclude>
     <ClInclude Include="src\entities\MetalHarbor\mhstagemanager.h">
+      <Filter>Source Files\entities\MetalHarbor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\MetalHarbor\mhstaticobjects.h">
       <Filter>Source Files\entities\MetalHarbor</Filter>
     </ClInclude>
     <ClInclude Include="src\entities\GreenHill\ghstagemanager.h">
@@ -957,6 +948,9 @@
       <Filter>Source Files\entities</Filter>
     </ClInclude>
     <ClInclude Include="src\entities\PyramidCave\pcstagemanager.h">
+      <Filter>Source Files\entities\PyramidCave</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\PyramidCave\pcstaticobjects.h">
       <Filter>Source Files\entities\PyramidCave</Filter>
     </ClInclude>
   </ItemGroup>

@@ -7,6 +7,7 @@
 
 class TexturedModel;
 class Body;
+class CollisionModel;
 
 class PC_StaticObjects : public CollideableObject
 {
@@ -21,9 +22,9 @@ private:
     static CollisionModel* cmOriginal;
 
     //Body used to be able to display the vertex colours model
-    Body* modelVertexColours;
+    Body* modelVertexColours = nullptr;
     //Body used to be able to display the transparent model
-    Body* modelTransparent;
+    Body* modelTransparent = nullptr;
 
     //Functions for the constructor start here
     

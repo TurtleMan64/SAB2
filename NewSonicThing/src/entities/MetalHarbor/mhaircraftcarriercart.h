@@ -31,37 +31,37 @@ private:
     static CollisionModel* cmOriginal;
 
     //Body used to be able to display the front wheels model
-    Body* wheelFront;
+    Body* wheelFront = nullptr;
     //Body used to be able to display the back wheels model
-    Body* wheelBack;
+    Body* wheelBack = nullptr;
     //Body used to be able to display the transparent model
-    Body* bodyTransparent;
+    Body* bodyTransparent = nullptr;
 
     //Horizontal Offset of the Front Wheel
-    const float WHEEL_OFFSET_FRONT_HORIZONTAL = 8.86459;
+    const float WHEEL_OFFSET_FRONT_HORIZONTAL = 8.86459f;
     //Horizontal Offset of the Back Wheel
-    const float WHEEL_OFFSET_BACK_HORIZONTAL = -13.1062;
+    const float WHEEL_OFFSET_BACK_HORIZONTAL = -13.1062f;
     //Vertical Offset of the Front Wheel
-    const float WHEEL_OFFSET_FRONT_VERTICAL = 4.28373;
+    const float WHEEL_OFFSET_FRONT_VERTICAL = 4.28373f;
     //Vertical Offset of the Back Wheel
-    const float WHEEL_OFFSET_BACK_VERTICAL = 5.71319;
+    const float WHEEL_OFFSET_BACK_VERTICAL = 5.71319f;
     //Speed of the Front Wheel
-    const float WHEEL_SPEED_FRONT = 2;
+    const float WHEEL_SPEED_FRONT = 2.0f;
     //Speed of the Back Wheel, different because it's a bigger wheel
-    const float WHEEL_SPEED_BACK = 1.885;
+    const float WHEEL_SPEED_BACK = 1.885f;
     //minimum value of the shake timer
-    const float SHAKE_TIMER_MIN = 3.14159265359;
+    const float SHAKE_TIMER_MIN = 3.14159265359f;
     //maximum value of the shake timer
-    const float SHAKE_TIMER_MAX = 31.4159265359;
+    const float SHAKE_TIMER_MAX = 31.4159265359f;
 
     //used for player collisions with the front and back of the platform when moving
-    const float COLLISION_POSITION_SIDEWAYS = 9.9351;
-    const float COLLISION_POSITION_FORWARD = 20.407;
-    const float COLLISION_POSITION_BACKWARD_INNER = -23;
-    const float COLLISION_POSITION_BACKWARD_OUTER = -25;
-    const float COLLISION_POSITION_BACKSIDEWAYS_INNER = 5;
-    const float COLLISION_RADIUS = 5; 
-    const float COLLISION_HEIGHT = 11.5;
+    const float COLLISION_POSITION_SIDEWAYS = 9.9351f;
+    const float COLLISION_POSITION_FORWARD = 20.407f;
+    const float COLLISION_POSITION_BACKWARD_INNER = -23.0f;
+    const float COLLISION_POSITION_BACKWARD_OUTER = -25.0f;
+    const float COLLISION_POSITION_BACKSIDEWAYS_INNER = 5.0f;
+    const float COLLISION_RADIUS = 5.0f; 
+    const float COLLISION_HEIGHT = 11.5f;
 
     const float MAX_UPDATE_DISTANCE_SQUARED = 1000*1000;
 

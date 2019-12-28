@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -167,6 +167,9 @@
     <ClCompile Include="src\entities\ItemCapsule.cpp" />
     <ClCompile Include="src\entities\LostChao.cpp" />
     <ClCompile Include="src\entities\ManiaMightyModel.cpp" />
+    <ClCompile Include="src\entities\MetalHarbor\MH_AircraftCarrierCart.cpp" />
+    <ClCompile Include="src\entities\MetalHarbor\MH_CratePlatform.cpp" />
+    <ClCompile Include="src\entities\MetalHarbor\MH_StaticObjects.cpp" />
     <ClCompile Include="src\entities\PlayerModel.cpp" />
     <ClCompile Include="src\entities\PlayerSonic.cpp" />
     <ClCompile Include="src\entities\Checkpoint.cpp" />
@@ -179,15 +182,10 @@
     <ClCompile Include="src\entities\GreenHill\GH_StageManager.cpp" />
     <ClCompile Include="src\entities\Light.cpp" />
     <ClCompile Include="src\entities\ManiaSonicModel.cpp" />
-    <ClCompile Include="src\entities\MetalHarbor\MH_GiantRocket.cpp" />
-    <ClCompile Include="src\entities\MetalHarbor\MH_PathDiagonal.cpp" />
-    <ClCompile Include="src\entities\MetalHarbor\MH_PathFlat.cpp" />
-    <ClCompile Include="src\entities\MetalHarbor\MH_PathFlatSmall.cpp" />
-    <ClCompile Include="src\entities\MetalHarbor\MH_RocketBase.cpp" />
     <ClCompile Include="src\entities\MetalHarbor\MH_StageManager.cpp" />
-    <ClCompile Include="src\entities\MetalHarbor\MH_Tank.cpp" />
     <ClCompile Include="src\entities\Point.cpp" />
     <ClCompile Include="src\entities\PyramidCave\PC_StageManager.cpp" />
+    <ClCompile Include="src\entities\PyramidCave\PC_StaticObjects.cpp" />
     <ClCompile Include="src\entities\RaceGhost.cpp" />
     <ClCompile Include="src\entities\RadicalHighway\RH_StageManager.cpp" />
     <ClCompile Include="src\entities\Rail.cpp" />
@@ -195,6 +193,7 @@
     <ClCompile Include="src\entities\Ring.cpp" />
     <ClCompile Include="src\entities\RingMoving.cpp" />
     <ClCompile Include="src\entities\Rocket.cpp" />
+    <ClCompile Include="src\entities\Pulley.cpp" />
     <ClCompile Include="src\entities\ShieldGreen.cpp" />
     <ClCompile Include="src\entities\ShieldMagnet.cpp" />
     <ClCompile Include="src\entities\SkyRail\SR_StageManager.cpp" />
@@ -313,6 +312,9 @@
     <ClInclude Include="src\entities\itemcapsule.h" />
     <ClInclude Include="src\entities\lostchao.h" />
     <ClInclude Include="src\entities\maniamightymodel.h" />
+    <ClInclude Include="src\entities\MetalHarbor\mhaircraftcarriercart.h" />
+    <ClInclude Include="src\entities\MetalHarbor\mhcrateplatform.h" />
+    <ClInclude Include="src\entities\MetalHarbor\mhstaticobjects.h" />
     <ClInclude Include="src\entities\playermodel.h" />
     <ClInclude Include="src\entities\playersonic.h" />
     <ClInclude Include="src\entities\checkpoint.h" />
@@ -325,15 +327,11 @@
     <ClInclude Include="src\entities\GreenHill\ghstagemanager.h" />
     <ClInclude Include="src\entities\light.h" />
     <ClInclude Include="src\entities\maniasonicmodel.h" />
-    <ClInclude Include="src\entities\MetalHarbor\mhgiantrocket.h" />
-    <ClInclude Include="src\entities\MetalHarbor\mhpathdiagonal.h" />
-    <ClInclude Include="src\entities\MetalHarbor\mhpathflat.h" />
-    <ClInclude Include="src\entities\MetalHarbor\mhpathflatsmall.h" />
-    <ClInclude Include="src\entities\MetalHarbor\mhrocketbase.h" />
     <ClInclude Include="src\entities\MetalHarbor\mhstagemanager.h" />
-    <ClInclude Include="src\entities\MetalHarbor\mhtank.h" />
     <ClInclude Include="src\entities\point.h" />
+    <ClInclude Include="src\entities\pulley.h" />
     <ClInclude Include="src\entities\PyramidCave\pcstagemanager.h" />
+    <ClInclude Include="src\entities\PyramidCave\pcstaticobjects.h" />
     <ClInclude Include="src\entities\raceghost.h" />
     <ClInclude Include="src\entities\RadicalHighway\rhstagemanager.h" />
     <ClInclude Include="src\entities\rail.h" />
