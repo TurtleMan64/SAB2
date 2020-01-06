@@ -69,13 +69,9 @@ void          ControllablePlayer::setShieldGreen(ShieldGreen*)        {}
 void          ControllablePlayer::increaseCombo()                     {}
 void          ControllablePlayer::setInvincibleTimer(float)           {}
 void          ControllablePlayer::setSpeedshoesTimer(float)           {}
-void          ControllablePlayer::grabRocket()                        {}
-void          ControllablePlayer::releaseRocket()                     {}
-void          ControllablePlayer::grabPulley()                        {}
-void          ControllablePlayer::releasePulley()                     {}
+void          ControllablePlayer::startGrabbing()                        {}
+void          ControllablePlayer::stopGrabbing()                     {}
 void          ControllablePlayer::hitSpring(Vector3f*, float, float, bool)  {}
 void          ControllablePlayer::hitSpringTriple(Vector3f*, float, float)  {}
 void          ControllablePlayer::hitSpeedRamp(Vector3f*, float, float) {}
-void          ControllablePlayer::setVelocityMovesPlayer(bool) {}
-void          ControllablePlayer::setOnPulley(bool)       {}
 void          ControllablePlayer::jumpOffPulley(Vector3f) {}

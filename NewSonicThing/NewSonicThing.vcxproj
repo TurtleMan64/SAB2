@@ -115,6 +115,9 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -132,6 +135,7 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <OmitFramePointers>true</OmitFramePointers>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -162,6 +166,7 @@
     <ClCompile Include="src\entities\ControllablePlayer.cpp" />
     <ClCompile Include="src\entities\DelfinoPlaza\DP_StageManager.cpp" />
     <ClCompile Include="src\entities\GreenForest\GF_Particle.cpp" />
+    <ClCompile Include="src\entities\GreenForest\GF_Vine.cpp" />
     <ClCompile Include="src\entities\Help.cpp" />
     <ClCompile Include="src\entities\Hunter.cpp" />
     <ClCompile Include="src\entities\ItemCapsule.cpp" />
@@ -275,10 +280,10 @@
     <ClCompile Include="src\toolbox\Input.cpp" />
     <ClCompile Include="src\toolbox\Level.cpp" />
     <ClCompile Include="src\toolbox\LevelLoader.cpp" />
-    <ClCompile Include="src\toolbox\maths.cpp" />
-    <ClCompile Include="src\toolbox\matrix.cpp" />
+    <ClCompile Include="src\toolbox\Maths.cpp" />
+    <ClCompile Include="src\toolbox\Matrix.cpp" />
     <ClCompile Include="src\toolbox\Split.cpp" />
-    <ClCompile Include="src\toolbox\vector.cpp" />
+    <ClCompile Include="src\toolbox\Vector.cpp" />
     <ClCompile Include="src\water\WaterFrameBuffers.cpp" />
     <ClCompile Include="src\water\WaterRenderer.cpp" />
     <ClCompile Include="src\water\WaterShader.cpp" />
@@ -307,6 +312,7 @@
     <ClInclude Include="src\entities\controllableplayer.h" />
     <ClInclude Include="src\entities\DelfinoPlaza\dpstagemanager.h" />
     <ClInclude Include="src\entities\GreenForest\gfparticle.h" />
+    <ClInclude Include="src\entities\GreenForest\gfvine.h" />
     <ClInclude Include="src\entities\help.h" />
     <ClInclude Include="src\entities\hunter.h" />
     <ClInclude Include="src\entities\itemcapsule.h" />

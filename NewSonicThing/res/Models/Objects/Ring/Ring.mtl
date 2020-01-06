@@ -2,7 +2,7 @@
 newmtl _f6b0ad3_dds
 	Ns 20.0000
     Ka 1.000000 1.000000 1.000000
-    Kd 0.030713 0.005182 0.462077
+    Kd 1 1 1
     Ks 0.000000 0.000000 0.000000
     Ke 0.000000 0.000000 0.000000
 	Ni 0.600
@@ -11,5 +11,4 @@ newmtl _f6b0ad3_dds
 	glow 0.95
 	scrollX 1
 	scrollY 0
-	map_Ka Ring.png
 	map_Kd Ring.png

@@ -107,6 +107,8 @@ public:
 
     void setBaseAlpha(float a);
 
+    void setBaseVisibility(bool visible);
+
     void setRenderOrder(char newOrder);
 
     const float getDisplayBallOffset();

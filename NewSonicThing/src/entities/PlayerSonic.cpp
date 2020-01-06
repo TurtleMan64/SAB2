@@ -91,6 +91,7 @@ void PlayerSonic::step()
     hoverTimer        = std::fmaxf(0.0f,  hoverTimer        - dt);
     homingAttackTimer = std::fmaxf(-1.0f, homingAttackTimer - dt);
     hitTimer          = std::fmaxf(0.0f,  hitTimer          - dt);
+    hitFlashingTimer  = std::fmaxf(0.0f,  hitFlashingTimer  - dt);
     speedShoesTimer   = std::fmaxf(0.0f,  speedShoesTimer   - dt);
     float deadTimerOld = deadTimer;
     if (deadTimer >= 0.0f)
@@ -328,7 +329,7 @@ void PlayerSonic::step()
         {
             Vector3f homeTar(0,0,0);
             bool foundTarget = findHomingTarget(&homeTar);
-            if (foundTarget && !(canMoveTimer > 0.0f || Global::finishStageTimer >= 0.0f || hitTimer > 0.0f || deadTimer > -1.0f))
+            if (foundTarget && !(canMoveTimer > 0.0f || Global::finishStageTimer >= 0.0f || hitTimer > 0.0f || deadTimer > -1.0f || hitFlashingTimer > 0.0f))
             {
                 Vector2f pos = Maths::calcScreenCoordsOfWorldPoint(&homeTar);
                 homingAttackReticle->getPosition()->set(&pos);
@@ -641,7 +642,7 @@ void PlayerSonic::step()
     }
 
     //camera stuff
-    if (velocityMovesPlayer && !isGrinding && !onRocket && !isLightdashing)
+    if (velocityMovesPlayer && !isGrinding && !isGrabbing && !isLightdashing)
     {
         //camera adjust to direction you are heading in
         if (onGround)
@@ -815,7 +816,7 @@ void PlayerSonic::step()
     relativeUpSmooth = Maths::interpolateVector(&relativeUpSmooth, &relativeUp, 3*dt);
     relativeUpAnim = Maths::interpolateVector(&relativeUpAnim, &relativeUp, 15*dt);
 
-    if (velocityMovesPlayer && !isGrinding && !onRocket && !isLightdashing)
+    if (velocityMovesPlayer && !isGrinding && !isGrabbing && !isLightdashing)
     {
         //add vel from gravity
         //if (!onGround)
@@ -1617,7 +1618,7 @@ void PlayerSonic::moveMeGround()
 
 void PlayerSonic::moveMeAir()
 {
-    if (!velocityMovesPlayer || isGrinding || isLightdashing || (isHomingOnPoint && homingAttackTimer > 0) || onRocket)
+    if (!velocityMovesPlayer || isGrinding || isLightdashing || (isHomingOnPoint && homingAttackTimer > 0) || isGrabbing)
     {
         return;
     }
@@ -1806,7 +1807,7 @@ void PlayerSonic::rebound(Vector3f* source)
 
 void PlayerSonic::takeDamage(Vector3f* source)
 {
-    if (hitTimer == 0.0f && invincibleTimer == 0.0f)
+    if (hitTimer == 0.0f && invincibleTimer == 0.0f && hitFlashingTimer == 0.0f)
     {
         Vector3f posDiff = position - source;
         posDiff.y = 0;
@@ -1816,6 +1817,7 @@ void PlayerSonic::takeDamage(Vector3f* source)
         vel.z = posDiff.z;
         vel.y = 60*1.5f;
         hitTimer = 2.0f;
+        hitFlashingTimer = hitTimer;
         isJumping = false;
         isSpindashing = false;
         isSkidding = false;
@@ -1880,13 +1882,14 @@ void PlayerSonic::takeDamage(Vector3f* source)
 bool PlayerSonic::isVulnerable()
 {
     return !(
-        homingAttackTimer > 0 ||
-        isBouncing            ||
-        isJumping             ||
-        isBall                ||
-        isSpindashing         ||
-        isStomping            ||
-        hitTimer > 0.0f       ||
+        homingAttackTimer > 0   ||
+        isBouncing              ||
+        isJumping               ||
+        isBall                  ||
+        isSpindashing           ||
+        isStomping              ||
+        hitTimer > 0.0f         ||
+        hitFlashingTimer > 0.0f ||
         invincibleTimer > 0.0f);
 }
 
@@ -2040,7 +2043,7 @@ void PlayerSonic::updateAnimationValues()
     {
 
     }
-    else if (onRocket)
+    else if (isGrabbing)
     {
 
     }
@@ -2267,24 +2270,27 @@ void PlayerSonic::animate()
         }
     }
 
+    bool isVisibleFlashing = true;
+    if (fmodf(hitFlashingTimer, 0.1f) > 0.05f)
+    {
+        isVisibleFlashing = false;
+
+    }
+    playerModel->setBaseVisibility(isVisibleFlashing);
+
     if (deadTimer > -1.0f)
     {
         playerModel->setOrientation(dspX, dspY, dspZ, 0, airYaw, 0, 0, &relativeUpAnim);
         playerModel->animate(19, 0);
-    }
-    else if (onPulley)
-    {
-        playerModel->setOrientation(dspX, dspY, dspZ, 0, airYaw, 90, airPitch, &relativeUpAnim);
-        playerModel->animate(25, 0);
     }
     else if (isLightdashing)
     {
         playerModel->setOrientation(dspX, dspY, dspZ, 0, airYaw, 90, airPitch, &relativeUpAnim);
         playerModel->animate(18, 0);
     }
-    else if (onRocket)
+    else if (isGrabbing)
     {
-        playerModel->setOrientation(dspX, dspY, dspZ, 0, airYaw, 90, airPitch, &relativeUpAnim);
+        playerModel->setOrientation(dspX, dspY, dspZ, diffGround, yawAngleGround, pitchAngleGround, 0, &relativeUpAnim);
         playerModel->animate(25, 0);
     }
     else if (isJumping)
@@ -2413,7 +2419,7 @@ void PlayerSonic::animate()
         isBouncing = false;
         isStomping = false;
         isLightdashing = false;
-        onRocket = false;
+        isGrabbing = false;
         isGrinding = false;
 
         groundSpeeds = Maths::calculatePlaneSpeed(vel.x, vel.y, vel.z, &relativeUp);
@@ -2499,32 +2505,18 @@ const bool PlayerSonic::isVehicle()
     return true;
 }
 
-void PlayerSonic::grabRocket()
+void PlayerSonic::startGrabbing()
 {
-    onRocket = true;
-    onGround = false;
-    isBall = false;
-    isJumping = false;
-}
-
-void PlayerSonic::releaseRocket()
-{
-    velocityMovesPlayer = true;
-    onRocket = false;
-}
-
-void PlayerSonic::grabPulley()
-{
-    onPulley = true;
+    isGrabbing = true;
     onGround = false;
     isBall = false;
     isJumping = false;
     velocityMovesPlayer = false;
 }
 
-void PlayerSonic::releasePulley()
+void PlayerSonic::stopGrabbing()
 {
-    onPulley = false;
+    isGrabbing = false;
     velocityMovesPlayer = true;
 }
 
@@ -2536,16 +2528,6 @@ float PlayerSonic::getHitboxHorizontal()
 float PlayerSonic::getHitboxVertical()
 {
     return 12;
-}
-
-void PlayerSonic::setVelocityMovesPlayer(bool newVelocityMovesPlayer)
-{
-    velocityMovesPlayer = newVelocityMovesPlayer;
-}
-
-void PlayerSonic::setOnPulley(bool newOnPulley)
-{
-    onPulley = newOnPulley;
 }
 
 Vector3f* PlayerSonic::getCameraDirection()
@@ -2727,7 +2709,7 @@ bool PlayerSonic::isDying()
 
 bool PlayerSonic::canDealDamage()
 {
-    return (hitTimer == 0.0f);
+    return (hitTimer == 0.0f && hitFlashingTimer == 0.0f);
 }
 
 void PlayerSonic::hitSpring(Vector3f* direction, float power, float lockInputTime, bool resetsCamera)

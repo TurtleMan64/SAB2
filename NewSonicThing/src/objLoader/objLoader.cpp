@@ -19,7 +19,7 @@
 #include "fakeTexture.h"
 #include "../collision/quadtreenode.h"
 
-void parseMtl(std::string filePath, std::string fileName);
+void parseMtl(std::string filePath, std::string fileName, std::unordered_map<std::string, ModelTexture>* outMtlMap);
 
 void processVertex(char** vertex,
     std::vector<Vertex*>* vertices,
@@ -45,12 +45,6 @@ void convertDataToArrays(
     std::vector<float>* texturesArray,
     std::vector<float>* normalsArray,
     std::vector<float>* colorsArray);
-
-std::vector<ModelTexture> modelTextures;
-
-std::vector<ModelTexture> modelTexturesList;
-std::vector<std::string> textureNamesList;
-
 
 int loadModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName)
 {
@@ -79,6 +73,8 @@ int loadModel(std::list<TexturedModel*>* models, std::string filePath, std::stri
 
     return attemptBinaryOBJ;
 }
+
+//int numAdditionalVertices = 0;
 
 //Each TexturedModel contained within 'models' must be deleted later.
 int loadBinaryModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName)
@@ -114,8 +110,8 @@ int loadBinaryModel(std::list<TexturedModel*>* models, std::string filePath, std
     std::vector<Vertex*>  vertices;
     std::vector<Vector2f> textures;
     std::vector<Vector3f> normals;
-    std::vector<std::string> indiceMaterials;
     std::vector<RawModel> rawModelsList;
+    std::vector<ModelTexture> modelTextures;
 
     int mtllibLength;
     fread(&mtllibLength, sizeof(int), 1, file);
@@ -125,11 +121,14 @@ int loadBinaryModel(std::list<TexturedModel*>* models, std::string filePath, std
         fread(&nextChar, sizeof(char), 1, file);
         mtlname = mtlname + nextChar;
     }
-    parseMtl(filePath, mtlname);
+
+    std::unordered_map<std::string, ModelTexture> mtlMap;
+    parseMtl(filePath, mtlname, &mtlMap);
 
 
     int numVertices;
     fread(&numVertices, sizeof(int), 1, file);
+    vertices.reserve(numVertices*2);
     for (int i = 0; i < numVertices; i++)
     {
         float t[3];
@@ -142,6 +141,7 @@ int loadBinaryModel(std::list<TexturedModel*>* models, std::string filePath, std
 
     int numTexCoords;
     fread(&numTexCoords, sizeof(int), 1, file);
+    textures.reserve(numTexCoords);
     for (int i = 0; i < numTexCoords; i++)
     {
         float t[2];
@@ -153,6 +153,7 @@ int loadBinaryModel(std::list<TexturedModel*>* models, std::string filePath, std
 
     int numNormals;
     fread(&numNormals, sizeof(int), 1, file);
+    normals.reserve(numNormals);
     for (int i = 0; i < numNormals; i++)
     {
         float t[3];
@@ -171,6 +172,7 @@ int loadBinaryModel(std::list<TexturedModel*>* models, std::string filePath, std
 
     int numMaterials;
     fread(&numMaterials, sizeof(int), 1, file);
+    rawModelsList.reserve(numMaterials);
     for (int m = 0; m < numMaterials; m++)
     {
         int matnameLength;
@@ -182,20 +184,13 @@ int loadBinaryModel(std::list<TexturedModel*>* models, std::string filePath, std
             fread(&nextChar, sizeof(char), 1, file);
             matname = matname + nextChar;
         }
-        indiceMaterials.push_back(matname);
 
-        for (unsigned int i = 0; i < textureNamesList.size(); i++) //search for the right texture to use based off its name
-        {
-            std::string testName = textureNamesList[i];
-            if (testName == matname) //we've found the right texture!
-            {
-                modelTextures.push_back(modelTexturesList[i]); //put a copy of the texture into modelTextures
-            }
-        }
+        modelTextures.push_back(mtlMap[matname]);
 
         std::vector<int> indices;
         int numFaces;
         fread(&numFaces, sizeof(int), 1, file);
+        indices.reserve(numFaces*9);
         for (int i = 0; i < numFaces; i++)
         {
             //int f[9] = {0,0,0,0,0,0,0,0,0};
@@ -245,12 +240,9 @@ int loadBinaryModel(std::list<TexturedModel*>* models, std::string filePath, std
     }
 
     modelTextures.clear();
-    modelTexturesList.clear();
-    textureNamesList.clear();
+    mtlMap.clear();
 
     modelTextures.shrink_to_fit();
-    modelTexturesList.shrink_to_fit();
-    textureNamesList.shrink_to_fit();
 
     return 0;
 }
@@ -289,8 +281,8 @@ int loadVclModel(std::list<TexturedModel*>* models, std::string filePath, std::s
     std::vector<Vertex*>  vertices;
     std::vector<Vector2f> textures;
     std::vector<Vector3f> normals;
-    std::vector<std::string> indiceMaterials;
     std::vector<RawModel> rawModelsList;
+    std::vector<ModelTexture> modelTextures;
 
     int mtllibLength;
     fread(&mtllibLength, sizeof(int), 1, file);
@@ -300,11 +292,13 @@ int loadVclModel(std::list<TexturedModel*>* models, std::string filePath, std::s
         fread(&nextChar, sizeof(char), 1, file);
         mtlname = mtlname + nextChar;
     }
-    parseMtl(filePath, mtlname);
 
+    std::unordered_map<std::string, ModelTexture> mtlMap;
+    parseMtl(filePath, mtlname, &mtlMap);
 
     int numVertices;
     fread(&numVertices, sizeof(int), 1, file);
+    vertices.reserve(numVertices*2);
     for (int i = 0; i < numVertices; i++)
     {
         float t[3];
@@ -318,12 +312,16 @@ int loadVclModel(std::list<TexturedModel*>* models, std::string filePath, std::s
         float red   = ((float)c[0])/255.0f;
         float green = ((float)c[1])/255.0f;
         float blue  = ((float)c[2])/255.0f;
-        newVertex->color = Vector3f(red, green, blue);
+        newVertex->color.set(red, green, blue);
         vertices.push_back(newVertex);
     }
 
+    //printf("%d regular vertices\n", numVertices);
+    //numAdditionalVertices = 0;
+
     int numTexCoords;
     fread(&numTexCoords, sizeof(int), 1, file);
+    textures.reserve(numTexCoords);
     for (int i = 0; i < numTexCoords; i++)
     {
         float t[2];
@@ -343,6 +341,8 @@ int loadVclModel(std::list<TexturedModel*>* models, std::string filePath, std::s
 
     int numMaterials;
     fread(&numMaterials, sizeof(int), 1, file);
+    rawModelsList.reserve(numMaterials);
+    modelTextures.reserve(numMaterials);
     for (int m = 0; m < numMaterials; m++)
     {
         int matnameLength;
@@ -354,20 +354,13 @@ int loadVclModel(std::list<TexturedModel*>* models, std::string filePath, std::s
             fread(&nextChar, sizeof(char), 1, file);
             matname = matname + nextChar;
         }
-        indiceMaterials.push_back(matname);
 
-        for (unsigned int i = 0; i < textureNamesList.size(); i++) //search for the right texture to use based off its name
-        {
-            std::string testName = textureNamesList[i];
-            if (testName == matname) //we've found the right texture!
-            {
-                modelTextures.push_back(modelTexturesList[i]); //put a copy of the texture into modelTextures
-            }
-        }
+        modelTextures.push_back(mtlMap[matname]);
 
         std::vector<int> indices;
         int numFaces;
         fread(&numFaces, sizeof(int), 1, file);
+        indices.reserve(numFaces*9);
         for (int i = 0; i < numFaces; i++)
         {
             //int f[6] = {0,0,0,0,0,0};
@@ -399,6 +392,8 @@ int loadVclModel(std::list<TexturedModel*>* models, std::string filePath, std::s
         rawModelsList.push_back(Loader::loadToVAO(&verticesArray, &texturesArray, &normalsArray, &colorsArray, &indices));
     }
 
+    //printf("%d new vertices\n", numAdditionalVertices);
+
     fclose(file);
 
     //go through rawModelsList and modelTextures to construct and add to the given TexturedModel list
@@ -414,12 +409,9 @@ int loadVclModel(std::list<TexturedModel*>* models, std::string filePath, std::s
     }
 
     modelTextures.clear();
-    modelTexturesList.clear();
-    textureNamesList.clear();
+    mtlMap.clear();
 
     modelTextures.shrink_to_fit();
-    modelTexturesList.shrink_to_fit();
-    textureNamesList.shrink_to_fit();
 
     return 0;
 }
@@ -446,7 +438,10 @@ int loadObjModel(std::list<TexturedModel*>* models, std::string filePath, std::s
     std::vector<Vector3f> normals;
     std::vector<int> indices;
 
+    std::unordered_map<std::string, ModelTexture> mtlMap;
+
     std::vector<RawModel> rawModelsList;
+    std::vector<ModelTexture> modelTextures;
 
     int foundFaces = 0;
 
@@ -473,7 +468,7 @@ int loadObjModel(std::list<TexturedModel*>* models, std::string filePath, std::s
                 //Find the mtl filename
                 if (strcmp(lineSplit[0], "mtllib") == 0)
                 {
-                    parseMtl(filePath, lineSplit[1]);
+                    parseMtl(filePath, lineSplit[1], &mtlMap);
                 }
                 else if (strcmp(lineSplit[0], "v") == 0)
                 {
@@ -514,14 +509,7 @@ int loadObjModel(std::list<TexturedModel*>* models, std::string filePath, std::s
                 }
                 else if (strcmp(lineSplit[0], "usemtl") == 0) //first usetml found, before any faces entered
                 {
-                    for (unsigned int i = 0; i < textureNamesList.size(); i++) //search for the right texture to use based off its name
-                    {
-                        std::string testName = textureNamesList[i];
-                        if (testName == lineSplit[1]) //we've found the right texture!
-                        {
-                            modelTextures.push_back(modelTexturesList[i]); //put a copy of the texture into modelTextures
-                        }
-                    }
+                    modelTextures.push_back(mtlMap[lineSplit[1]]);
                 }
                 else if (strcmp(lineSplit[0], "f") == 0)
                 {
@@ -548,14 +536,7 @@ int loadObjModel(std::list<TexturedModel*>* models, std::string filePath, std::s
                 }
                 else if (strcmp(lineSplit[0], "usemtl") == 0 && (vertices.size() > 0)) //found another new material, so save the previous model and start a new one
                 {
-                    for (unsigned int i = 0; i < textureNamesList.size(); i++) //search for the right texture to use based off its name
-                    {
-                        std::string testName = textureNamesList[i];
-                        if (testName == lineSplit[1]) //we've found the right texture!
-                        {
-                            modelTextures.push_back(modelTexturesList[i]); //put a copy of the texture into modelTextures
-                        }
-                    }
+                    modelTextures.push_back(mtlMap[lineSplit[1]]);
 
                     //save the model we've been building so far...
                     removeUnusedVertices(&vertices);
@@ -600,24 +581,17 @@ int loadObjModel(std::list<TexturedModel*>* models, std::string filePath, std::s
     }
 
     modelTextures.clear();
-    modelTexturesList.clear();
-    textureNamesList.clear();
+    mtlMap.clear();
 
     modelTextures.shrink_to_fit();
-    modelTexturesList.shrink_to_fit();
-    textureNamesList.shrink_to_fit();
 
     return 0;
 }
 
-void parseMtl(std::string filePath, std::string fileName)
+void parseMtl(std::string filePath, std::string fileName, std::unordered_map<std::string, ModelTexture>* outMtlMap)
 {
-    //array that obj will fill in, using our generated arrays
-    modelTextures.clear();
-
-    //arrays that we fill in, from the mtl file
-    modelTexturesList.clear();
-    textureNamesList.clear();
+    //map that we fill in, from the mtl file
+    outMtlMap->clear();
 
     std::ifstream file(Global::pathToEXE+filePath+fileName);
     if (!file.is_open())
@@ -634,6 +608,7 @@ void parseMtl(std::string filePath, std::string fileName)
     std::string line;
 
     //default values
+    std::string currentMaterialName = "DefaultMtl";
     float currentShineDamperValue = 20.0f;
     float currentReflectivityValue = 0.0f;
     float currentTransparencyValue = 1.0f;
@@ -660,7 +635,7 @@ void parseMtl(std::string filePath, std::string fileName)
         {
             if (strcmp(lineSplit[0], "newmtl") == 0) //new material found, add its name to array
             {
-                textureNamesList.push_back(lineSplit[1]);
+                currentMaterialName = lineSplit[1];
                 currentShineDamperValue = 0.0f;
                 currentReflectivityValue = 0.0f;
                 currentTransparencyValue = 1.0f;
@@ -727,7 +702,7 @@ void parseMtl(std::string filePath, std::string fileName)
                 newTexture.mixingType = currentMixingType;
                 newTexture.fogScale = currentFogScale;
 
-                modelTexturesList.push_back(newTexture); //put a copy of newTexture into the list
+                (*outMtlMap)[currentMaterialName] = newTexture; //put a copy of newTexture into the list
             }
             else if (strcmp(lineSplit[0], "\tNs") == 0 || strcmp(lineSplit[0], "Ns") == 0)
             {
@@ -798,8 +773,6 @@ void parseMtl(std::string filePath, std::string fileName)
 
 }
 
-
-
 int loadObjModelWithMTL(std::list<TexturedModel*>* models, std::string filePath, std::string fileNameOBJ, std::string fileNameMTL)
 {
     if (models->size() > 0)
@@ -823,10 +796,12 @@ int loadObjModelWithMTL(std::list<TexturedModel*>* models, std::string filePath,
     std::vector<int> indices;
 
     std::vector<RawModel> rawModelsList;
+    std::vector<ModelTexture> modelTextures;
 
     int foundFaces = 0;
 
-    parseMtl(filePath, fileNameMTL);
+    std::unordered_map<std::string, ModelTexture> mtlMap;
+    parseMtl(filePath, fileNameMTL, &mtlMap);
 
     while (!file.eof())
     {
@@ -881,14 +856,7 @@ int loadObjModelWithMTL(std::list<TexturedModel*>* models, std::string filePath,
                 }
                 else if (strcmp(lineSplit[0], "usemtl") == 0) //first usetml found, before any faces entered
                 {
-                    for (unsigned int i = 0; i < textureNamesList.size(); i++) //search for the right texture to use based off its name
-                    {
-                        std::string testName = textureNamesList[i];
-                        if (testName == lineSplit[1]) //we've found the right texture!
-                        {
-                            modelTextures.push_back(modelTexturesList[i]); //put a copy of the texture into modelTextures
-                        }
-                    }
+                    modelTextures.push_back(mtlMap[lineSplit[1]]);
                 }
                 else if (strcmp(lineSplit[0], "f") == 0)
                 {
@@ -915,14 +883,7 @@ int loadObjModelWithMTL(std::list<TexturedModel*>* models, std::string filePath,
                 }
                 else if (strcmp(lineSplit[0], "usemtl") == 0 && (vertices.size() > 0)) //found another new material, so save the previous model and start a new one
                 {
-                    for (unsigned int i = 0; i < textureNamesList.size(); i++) //search for the right texture to use based off its name
-                    {
-                        std::string testName = textureNamesList[i];
-                        if (testName == lineSplit[1]) //we've found the right texture!
-                        {
-                            modelTextures.push_back(modelTexturesList[i]); //put a copy of the texture into modelTextures
-                        }
-                    }
+                    modelTextures.push_back(mtlMap[lineSplit[1]]);
 
                     //save the model we've been building so far...
                     removeUnusedVertices(&vertices);
@@ -962,12 +923,9 @@ int loadObjModelWithMTL(std::list<TexturedModel*>* models, std::string filePath,
     }
 
     modelTextures.clear();
-    modelTexturesList.clear();
-    textureNamesList.clear();
+    mtlMap.clear();
 
     modelTextures.shrink_to_fit();
-    modelTexturesList.shrink_to_fit();
-    textureNamesList.shrink_to_fit();
 
     return 0;
 }
@@ -1005,8 +963,8 @@ int loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::string filePa
     std::vector<Vertex*>  vertices;
     std::vector<Vector2f> textures;
     std::vector<Vector3f> normals;
-    std::vector<std::string> indiceMaterials;
     std::vector<RawModel> rawModelsList;
+    std::vector<ModelTexture> modelTextures;
 
     int mtllibLength;
     fread(&mtllibLength, sizeof(int), 1, file);
@@ -1016,11 +974,13 @@ int loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::string filePa
         fread(&nextChar, sizeof(char), 1, file);
         mtlname = mtlname + nextChar;
     }
-    parseMtl(filePath, fileNameMTL);
 
+    std::unordered_map<std::string, ModelTexture> mtlMap;
+    parseMtl(filePath, fileNameMTL, &mtlMap);
 
     int numVertices;
     fread(&numVertices, sizeof(int), 1, file);
+    vertices.reserve(numVertices);
     for (int i = 0; i < numVertices; i++)
     {
         float t[3];
@@ -1033,6 +993,7 @@ int loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::string filePa
 
     int numTexCoords;
     fread(&numTexCoords, sizeof(int), 1, file);
+    textures.reserve(numTexCoords);
     for (int i = 0; i < numTexCoords; i++)
     {
         float t[2];
@@ -1044,6 +1005,7 @@ int loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::string filePa
 
     int numNormals;
     fread(&numNormals, sizeof(int), 1, file);
+    normals.reserve(numNormals);
     for (int i = 0; i < numNormals; i++)
     {
         float t[3];
@@ -1062,6 +1024,7 @@ int loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::string filePa
 
     int numMaterials;
     fread(&numMaterials, sizeof(int), 1, file);
+    rawModelsList.reserve(numMaterials);
     for (int m = 0; m < numMaterials; m++)
     {
         int matnameLength;
@@ -1073,20 +1036,13 @@ int loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::string filePa
             fread(&nextChar, sizeof(char), 1, file);
             matname = matname + nextChar;
         }
-        indiceMaterials.push_back(matname);
 
-        for (unsigned int i = 0; i < textureNamesList.size(); i++) //search for the right texture to use based off its name
-        {
-            std::string testName = textureNamesList[i];
-            if (testName == matname) //we've found the right texture!
-            {
-                modelTextures.push_back(modelTexturesList[i]); //put a copy of the texture into modelTextures
-            }
-        }
+        modelTextures.push_back(mtlMap[matname]);
 
         std::vector<int> indices;
         int numFaces;
         fread(&numFaces, sizeof(int), 1, file);
+        indices.reserve(numFaces*9);
         for (int i = 0; i < numFaces; i++)
         {
             //int f[9] = {0,0,0,0,0,0,0,0,0};
@@ -1136,12 +1092,9 @@ int loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::string filePa
     }
 
     modelTextures.clear();
-    modelTexturesList.clear();
-    textureNamesList.clear();
+    mtlMap.clear();
 
     modelTextures.shrink_to_fit();
-    modelTexturesList.shrink_to_fit();
-    textureNamesList.shrink_to_fit();
 
     return 0;
 }
@@ -1209,7 +1162,7 @@ void dealWithAlreadyProcessedVertex(
         else
         {
             Vertex* duplicateVertex = new Vertex((int)vertices->size(), previousVertex->getPosition(), &previousVertex->color); INCR_NEW("Vertex");
-
+            //numAdditionalVertices++;
             duplicateVertex->setTextureIndex(newTextureIndex);
             duplicateVertex->setNormalIndex(newNormalIndex);
 
@@ -1641,6 +1594,7 @@ CollisionModel* loadBinaryCollisionModel(std::string filePath, std::string fileN
 
     int numVertices;
     fread(&numVertices, sizeof(int), 1, file);
+    vertices.reserve(numVertices);
     for (int i = 0; i < numVertices; i++)
     {
         float t[3];
@@ -1684,6 +1638,7 @@ CollisionModel* loadBinaryCollisionModel(std::string filePath, std::string fileN
         std::vector<int> indices;
         int numFaces;
         fread(&numFaces, sizeof(int), 1, file);
+        indices.reserve(numFaces*3);
         for (int i = 0; i < numFaces; i++)
         {
             //int f[3] = {0,0,0};
@@ -1702,14 +1657,6 @@ CollisionModel* loadBinaryCollisionModel(std::string filePath, std::string fileN
         }
     }
     fclose(file);
-
-    modelTextures.clear();
-    modelTexturesList.clear();
-    textureNamesList.clear();
-
-    modelTextures.shrink_to_fit();
-    modelTexturesList.shrink_to_fit();
-    textureNamesList.shrink_to_fit();
 
     collisionModel->generateMinMaxValues();
 

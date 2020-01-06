@@ -106,8 +106,7 @@ private:
     bool isGrinding = false;
     Source* sourceGrind = nullptr;
 
-    bool onRocket = false;
-    bool onPulley = false;
+    bool isGrabbing = false;
 
     //If true, the velocity the player has will make them move.
     //If false, the velocity will only change the camera direction.
@@ -144,7 +143,9 @@ private:
     const float camHeightOffset   = 5.0f; //Point above the vehicle that the camera focuses on
 
     float hitTimer = 0.0f; //when you get hit by something, like an enemy or spikes
-    //float canMoveTimer = 0.0f;
+
+    float hitFlashingTimer = 0.0f;
+
     float hitSpringTimer = 0.0f;
 
     float deadTimer = -1.0f;
@@ -247,13 +248,9 @@ public:
 
     void increaseCombo();
 
-    void grabRocket();
+    void startGrabbing();
 
-    void releaseRocket();
-
-    void grabPulley();
-
-    void releasePulley();
+    void stopGrabbing();
 
     void setOnGround(bool newOnGround);
 
@@ -294,10 +291,6 @@ public:
     Vector3f* getCameraDirection();
 
     void setCameraDirection(Vector3f* newDirection);
-
-    void setVelocityMovesPlayer(bool newVelocityMovesPlayer);
-
-    void setOnPulley(bool newOnPulley);
 
     Vector3f getCenterPosition();
 };

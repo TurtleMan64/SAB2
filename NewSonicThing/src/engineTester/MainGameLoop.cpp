@@ -1132,6 +1132,7 @@ void Global::saveGhostData()
             {
                 for (int i = 0; i < Global::raceLogSize; i++)
                 {
+                    //Global::raceLog[i].pos = Global::raceLog[i].pos + Global::raceLog[i].up.scaleCopy(5.5f);
                     std::string line = Global::raceLog[i].toString();
                     raceLogFile << line << "\n";
                 }

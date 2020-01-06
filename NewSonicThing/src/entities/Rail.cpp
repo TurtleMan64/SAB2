@@ -198,7 +198,7 @@ void Rail::step()
                         float dot = currentSegment->pointsDiff.dot(&newVel);
                         playerSpeed = Maths::sign(dot)*newVel.length();
 
-                        timer = 0.1f; //0.1 seconds before we can land on the rail again
+                        timer = timeBeforeLandAgain; //seconds before we can land on the rail again
                     }
                 }
             }

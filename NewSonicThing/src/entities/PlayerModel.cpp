@@ -18,6 +18,8 @@ void PlayerModel::setBaseColor(float, float, float) {}
 
 void PlayerModel::setBaseAlpha(float) {}
 
+void PlayerModel::setBaseVisibility(bool) {}
+
 void PlayerModel::setRenderOrder(char) {}
 
 const float PlayerModel::getDisplayBallOffset() {return 0.0f;}

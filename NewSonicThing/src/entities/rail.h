@@ -9,7 +9,7 @@ class RailSegment
 {
 public:
     int index; //Our index in the rails vector
-    std::vector<RailSegment>* rails;
+    std::vector<RailSegment>* rails = nullptr;
     Vector3f pointBegin;
     Vector3f pointEnd;
     Vector3f pointsDiff;
@@ -37,11 +37,12 @@ class Rail : public Entity
 {
 private:
     std::vector<RailSegment> rails;
-    RailSegment* currentSegment;
+    RailSegment* currentSegment = nullptr;
     int currentSegmentIndex;
     float playerSpeed; //positive speed means going to end point from start point
     const float crouchPush = 40.0f; //how much the player croushing accelerates them
     const float railDrag = -0.13f;
+    const float timeBeforeLandAgain = 0.03f;
     float timer;
     float minX;
     float minY;

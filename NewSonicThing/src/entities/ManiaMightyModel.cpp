@@ -151,7 +151,7 @@ void ManiaMightyModel::animate(int animIndex, float time)
             myBody->setBaseOrientation(pos.x, pos.y, pos.z, rotX, rotY, rotZ, rotRoll, limbsScale);
             updateLimbs(0, time);
             updateLimbsMatrix();
-            setLimbsVisibility(true);
+            setLimbsVisibility(baseVisible);
             visible = false;
             break;
         }
@@ -178,7 +178,7 @@ void ManiaMightyModel::animate(int animIndex, float time)
             }
             updateTransformationMatrix();
             setLimbsVisibility(false);
-            visible = true;
+            visible = baseVisible;
             break;
         }
 
@@ -188,7 +188,7 @@ void ManiaMightyModel::animate(int animIndex, float time)
             myBody->setBaseOrientation(position.x, position.y, position.z, rotX, rotY, rotZ+90, rotRoll-90, limbsScale);
             updateLimbs(3, 100);
             updateLimbsMatrix();
-            setLimbsVisibility(true);
+            setLimbsVisibility(baseVisible);
             visible = false;
             break;
         }
@@ -199,7 +199,7 @@ void ManiaMightyModel::animate(int animIndex, float time)
             myBody->setBaseOrientation(position.x, position.y, position.z, rotX, rotY, rotZ, rotRoll, limbsScale);
             updateLimbs(8, 0);
             updateLimbsMatrix();
-            setLimbsVisibility(true);
+            setLimbsVisibility(baseVisible);
             visible = false;
             break;
         }
@@ -210,7 +210,7 @@ void ManiaMightyModel::animate(int animIndex, float time)
             myBody->setBaseOrientation(position.x, position.y, position.z, rotX, rotY, rotZ, rotRoll, limbsScale);
             updateLimbs(11, 0);
             updateLimbsMatrix();
-            setLimbsVisibility(true);
+            setLimbsVisibility(baseVisible);
             visible = false;
             break;
         }
@@ -221,7 +221,7 @@ void ManiaMightyModel::animate(int animIndex, float time)
             models = &ManiaMightyModel::modelJump;
             updateTransformationMatrix();
             setLimbsVisibility(false);
-            visible = true;
+            visible = baseVisible;
             break;
         }
 
@@ -232,7 +232,7 @@ void ManiaMightyModel::animate(int animIndex, float time)
             myBody->setBaseOrientation(pos.x, pos.y, pos.z, rotX, rotY, rotZ, rotRoll, 1.0f);
             updateLimbs(14, time);
             updateLimbsMatrix();
-            setLimbsVisibility(true);
+            setLimbsVisibility(baseVisible);
             visible = false;
             break;
         }
@@ -265,7 +265,7 @@ void ManiaMightyModel::animate(int animIndex, float time)
             }
             updateTransformationMatrix();
             setLimbsVisibility(false);
-            visible = true;
+            visible = baseVisible;
             break;
         }
 
@@ -275,7 +275,7 @@ void ManiaMightyModel::animate(int animIndex, float time)
             myBody->setBaseOrientation(position.x, position.y, position.z, rotX, rotY, rotZ-90, rotRoll, limbsScale);
             updateLimbs(18, 0);
             updateLimbsMatrix();
-            setLimbsVisibility(true);
+            setLimbsVisibility(baseVisible);
             visible = false;
             break;
         }
@@ -286,7 +286,7 @@ void ManiaMightyModel::animate(int animIndex, float time)
             myBody->setBaseOrientation(position.x, position.y, position.z, rotX, rotY, rotZ, rotRoll, limbsScale);
             updateLimbs(19, 0);
             updateLimbsMatrix();
-            setLimbsVisibility(true);
+            setLimbsVisibility(baseVisible);
             visible = false;
             break;
         }
@@ -297,7 +297,7 @@ void ManiaMightyModel::animate(int animIndex, float time)
             myBody->setBaseOrientation(position.x, position.y, position.z, rotX, rotY, rotZ, rotRoll, limbsScale);
             updateLimbs(21, 0);
             updateLimbsMatrix();
-            setLimbsVisibility(true);
+            setLimbsVisibility(baseVisible);
             visible = false;
             break;
         }
@@ -308,7 +308,7 @@ void ManiaMightyModel::animate(int animIndex, float time)
             models = &ManiaMightyModel::modelGrab;
             updateTransformationMatrix();
             setLimbsVisibility(false);
-            visible = true;
+            visible = baseVisible;
             break;
         }
 
@@ -318,7 +318,7 @@ void ManiaMightyModel::animate(int animIndex, float time)
             models = &ManiaMightyModel::modelGrind;
             updateTransformationMatrix();
             setLimbsVisibility(false);
-            visible = true;
+            visible = baseVisible;
             break;
         }
 
@@ -394,6 +394,11 @@ void ManiaMightyModel::setRenderOrder(char newOrder)
     myRightThigh  ->renderOrder = newOrder;
     myRightShin   ->renderOrder = newOrder;
     myRightFoot   ->renderOrder = newOrder;
+}
+
+void ManiaMightyModel::setBaseVisibility(bool newVisible)
+{
+    baseVisible = newVisible;
 }
 
 std::list<TexturedModel*>* ManiaMightyModel::getModels()

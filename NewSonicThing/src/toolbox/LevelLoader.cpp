@@ -69,6 +69,7 @@
 #include "../entities/hunter.h"
 #include "../entities/bullet.h"
 #include "../entities/PyramidCave/pcstagemanager.h"
+#include "../entities/GreenForest/gfvine.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -92,9 +93,6 @@ void LevelLoader::loadTitle()
     Global::gameMainPlayer = nullptr;
 
     Main_deleteAllEntites();
-    //Main_deleteAllEntitesPass2();
-    //Main_deleteAllEntitesPass3();
-    //Main_deleteAllTransparentEntites();
     Main_deleteAllChunkedEntities();
 
     AudioPlayer::stopBGM();
@@ -734,6 +732,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
         startingDir.y = 0;
         startingDir.setLength(0.001f);
         Global::gameMainPlayer->vel.set(&startingDir);
+        //Global::gameMainPlayer->vel.set(0, 600, 0);
     }
 
     if (waitForSomeTime)
@@ -1254,10 +1253,31 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             Pulley::loadStaticModels();
             Pulley* pulley = new Pulley(
                     toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position x,y,z
-                    toFloat(dat[4]), toFloat(dat[5]));                    //y rotation, handle vertical displacement
+                    toFloat(dat[4]), toFloat(dat[5]));                 //y rotation, handle vertical displacement
             INCR_NEW("Entity");
             chunkedEntities->push_back(pulley);
             return;
+        }
+
+        case 102: //Green Forest Specific
+        {
+            switch (toInt(dat[1]))
+            {
+                case 1: //Vine
+                    GF_Vine::loadStaticModels();
+                    GF_Vine* vine = new GF_Vine(
+                        toFloat(dat[2]),  toFloat(dat[3]),  toFloat(dat[4]),  //position
+                        toFloat(dat[5]),  toFloat(dat[6]),  toFloat(dat[7]),  //vine end position
+                        toFloat(dat[8]),  toFloat(dat[9]),  toFloat(dat[10]), //rotation axis
+                        toFloat(dat[11]),                                     //number of rotations until done
+                        toFloat(dat[12]), toFloat(dat[13]), toFloat(dat[14]), //launch direction
+                        toFloat(dat[15]),                                     //launch speed
+                        toFloat(dat[16]));                                    //input lock time
+
+                    INCR_NEW("Entity");
+                    Main_addEntity(vine);
+                    return;
+            }
         }
 
         default:
@@ -1381,6 +1401,7 @@ void LevelLoader::freeAllStaticModels()
     Hunter::deleteStaticModels();
     Bullet::deleteStaticModels();
     PC_StageManager::deleteStaticModels();
+    GF_Vine::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()

@@ -112,7 +112,7 @@ void Rocket::step()
             rocketPathPositionDifferenceNormalized.x * ROCKET_SPEED, 
             rocketPathPositionDifferenceNormalized.y * ROCKET_SPEED, 
             rocketPathPositionDifferenceNormalized.z * ROCKET_SPEED);
-        Global::gameMainPlayer->grabRocket();
+        Global::gameMainPlayer->startGrabbing();
 
         if (!rocketStartedMoving()) //rocket is starting up
         {
@@ -138,7 +138,7 @@ void Rocket::step()
     {
         //velocity here is set so the player faces the correct direction at the end of the rocket path
         Global::gameMainPlayer->vel.set(rocketPathPositionDifferenceNormalized.x, rocketPathPositionDifferenceNormalized.y, rocketPathPositionDifferenceNormalized.z);
-        Global::gameMainPlayer->releaseRocket();
+        Global::gameMainPlayer->stopGrabbing();
 
         resetRocketVariables();
     }

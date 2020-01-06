@@ -98,7 +98,7 @@ void Pulley::step()
         if (jumpInputPressed()) //get off the pulley, should also happen if damaged
         {
             Global::gameMainPlayer->vel.set(0,0,0);
-            Global::gameMainPlayer->releasePulley();
+            Global::gameMainPlayer->stopGrabbing();
             Global::gameMainPlayer->jumpOffPulley(cameraDirectionVector);
 
             playerIsOnPulley = false;
@@ -112,7 +112,7 @@ void Pulley::step()
         playerIsOnPulley = true;
 
         //This below is all just setting up player variables in preparation for the movement
-        Global::gameMainPlayer->grabPulley();
+        Global::gameMainPlayer->startGrabbing();
 
         //Make player face the right direction
         Global::gameMainPlayer->setRotY(rotY);

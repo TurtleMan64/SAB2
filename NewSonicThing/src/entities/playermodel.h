@@ -12,6 +12,7 @@ protected:
     int currentAnimIndex;
     float currentAnimTime;
     Vector3f currentUpDirection;
+    bool baseVisible;
 
 public:
     virtual void animate(int animIndex, float time);
@@ -21,6 +22,8 @@ public:
     virtual void setBaseColor(float r, float g, float b);
 
     virtual void setBaseAlpha(float a);
+
+    virtual void setBaseVisibility(bool visible);
 
     virtual void setRenderOrder(char newOrder);
 

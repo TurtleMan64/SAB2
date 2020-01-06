@@ -189,6 +189,7 @@ RaceGhost::RaceGhost(const char* filePath, int missionNumber)
     {
         myModel = new ManiaMightyModel; INCR_NEW("Entity");
     }
+    myModel->setBaseVisibility(true);
     Main_addEntity(myModel);
 }
 

@@ -150,7 +150,7 @@ void ManiaSonicModel::animate(int animIndex, float time)
             myBody->setBaseOrientation(pos.x, pos.y, pos.z, rotX, rotY, rotZ, rotRoll, limbsScale);
             updateLimbs(0, time);
             updateLimbsMatrix();
-            setLimbsVisibility(true);
+            setLimbsVisibility(baseVisible);
             visible = false;
             break;
         }
@@ -177,7 +177,7 @@ void ManiaSonicModel::animate(int animIndex, float time)
             }
             updateTransformationMatrix();
             setLimbsVisibility(false);
-            visible = true;
+            visible = baseVisible;
             break;
         }
 
@@ -187,7 +187,7 @@ void ManiaSonicModel::animate(int animIndex, float time)
             models = &ManiaSonicModel::modelStomp;
             updateTransformationMatrix();
             setLimbsVisibility(false);
-            visible = true;
+            visible = baseVisible;
             break;
         }
 
@@ -197,7 +197,7 @@ void ManiaSonicModel::animate(int animIndex, float time)
             models = &ManiaSonicModel::modelSkid;
             updateTransformationMatrix();
             setLimbsVisibility(false);
-            visible = true;
+            visible = baseVisible;
             break;
         }
 
@@ -205,14 +205,7 @@ void ManiaSonicModel::animate(int animIndex, float time)
         {
             updateLimbs(11, 0);
             updateLimbsMatrix();
-            if (fmodf(time, 0.1f) > 0.05f)
-            {
-                setLimbsVisibility(true);
-            }
-            else
-            {
-                setLimbsVisibility(false);
-            }
+            setLimbsVisibility(baseVisible);
             visible = false;
             break;
         }
@@ -223,7 +216,7 @@ void ManiaSonicModel::animate(int animIndex, float time)
             models = &ManiaSonicModel::modelJump;
             updateTransformationMatrix();
             setLimbsVisibility(false);
-            visible = true;
+            visible = baseVisible;
             break;
         }
 
@@ -234,7 +227,7 @@ void ManiaSonicModel::animate(int animIndex, float time)
             myBody->setBaseOrientation(pos.x, pos.y, pos.z, rotX, rotY, rotZ, rotRoll, limbsScale);
             updateLimbs(14, time);
             updateLimbsMatrix();
-            setLimbsVisibility(true);
+            setLimbsVisibility(baseVisible);
             visible = false;
             break;
         }
@@ -267,7 +260,7 @@ void ManiaSonicModel::animate(int animIndex, float time)
             }
             updateTransformationMatrix();
             setLimbsVisibility(false);
-            visible = true;
+            visible = baseVisible;
             break;
         }
 
@@ -277,7 +270,7 @@ void ManiaSonicModel::animate(int animIndex, float time)
             models = &ManiaSonicModel::modelLightdash;
             updateTransformationMatrix();
             setLimbsVisibility(false);
-            visible = true;
+            visible = baseVisible;
             break;
         }
 
@@ -285,7 +278,7 @@ void ManiaSonicModel::animate(int animIndex, float time)
         {
             updateLimbs(19, 0);
             updateLimbsMatrix();
-            setLimbsVisibility(true);
+            setLimbsVisibility(baseVisible);
             visible = false;
             break;
         }
@@ -296,7 +289,7 @@ void ManiaSonicModel::animate(int animIndex, float time)
             models = &ManiaSonicModel::modelFreefall;
             updateTransformationMatrix();
             setLimbsVisibility(false);
-            visible = true;
+            visible = baseVisible;
             break;
         }
 
@@ -306,7 +299,7 @@ void ManiaSonicModel::animate(int animIndex, float time)
             models = &ManiaSonicModel::modelGrab;
             updateTransformationMatrix();
             setLimbsVisibility(false);
-            visible = true;
+            visible = baseVisible;
             break;
         }
 
@@ -316,7 +309,7 @@ void ManiaSonicModel::animate(int animIndex, float time)
             models = &ManiaSonicModel::modelGrind;
             updateTransformationMatrix();
             setLimbsVisibility(false);
-            visible = true;
+            visible = baseVisible;
             break;
         }
 
@@ -393,6 +386,11 @@ void ManiaSonicModel::setRenderOrder(char newOrder)
     myRightThigh  ->renderOrder = newOrder;
     myRightShin   ->renderOrder = newOrder;
     myRightFoot   ->renderOrder = newOrder;
+}
+
+void ManiaSonicModel::setBaseVisibility(bool newVisible)
+{
+    baseVisible = newVisible;
 }
 
 std::list<TexturedModel*>* ManiaSonicModel::getModels()

@@ -96,13 +96,6 @@ public:
     //drag should be a negative number to actually drag the velocity
     static float applyDrag(float velocity, float drag, float deltaTime);
 
-    //angle in radians
-    static Vector3f mapInputs3(float angle, float mag, Vector3f* VecC);
-
-    //in radians
-    static Vector3f mapCamera(float yaw, float pitch, float mag, Vector3f* VecC);
-
-
     static Vector3f bounceVector(Vector3f* initialVelocity, Vector3f* surfaceNormal, float elasticity);
 
     /**

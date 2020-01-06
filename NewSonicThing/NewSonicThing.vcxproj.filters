@@ -357,16 +357,7 @@
     <ClCompile Include="src\toolbox\LevelLoader.cpp">
       <Filter>Source Files\toolbox</Filter>
     </ClCompile>
-    <ClCompile Include="src\toolbox\maths.cpp">
-      <Filter>Source Files\toolbox</Filter>
-    </ClCompile>
-    <ClCompile Include="src\toolbox\matrix.cpp">
-      <Filter>Source Files\toolbox</Filter>
-    </ClCompile>
     <ClCompile Include="src\toolbox\Split.cpp">
-      <Filter>Source Files\toolbox</Filter>
-    </ClCompile>
-    <ClCompile Include="src\toolbox\vector.cpp">
       <Filter>Source Files\toolbox</Filter>
     </ClCompile>
     <ClCompile Include="src\water\WaterFrameBuffers.cpp">
@@ -536,6 +527,18 @@
     </ClCompile>
     <ClCompile Include="src\entities\PyramidCave\PC_StaticObjects.cpp">
       <Filter>Source Files\entities\PyramidCave</Filter>
+    </ClCompile>
+    <ClCompile Include="src\toolbox\Vector.cpp">
+      <Filter>Source Files\toolbox</Filter>
+    </ClCompile>
+    <ClCompile Include="src\toolbox\Matrix.cpp">
+      <Filter>Source Files\toolbox</Filter>
+    </ClCompile>
+    <ClCompile Include="src\toolbox\Maths.cpp">
+      <Filter>Source Files\toolbox</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\GreenForest\GF_Vine.cpp">
+      <Filter>Source Files\entities\GreenForest</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -952,6 +955,9 @@
     </ClInclude>
     <ClInclude Include="src\entities\PyramidCave\pcstaticobjects.h">
       <Filter>Source Files\entities\PyramidCave</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\GreenForest\gfvine.h">
+      <Filter>Source Files\entities\GreenForest</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
