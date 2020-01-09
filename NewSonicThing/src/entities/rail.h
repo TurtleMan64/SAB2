@@ -42,7 +42,7 @@ private:
     float playerSpeed; //positive speed means going to end point from start point
     const float crouchPush = 40.0f; //how much the player croushing accelerates them
     const float railDrag = -0.13f;
-    const float timeBeforeLandAgain = 0.03f;
+    const float timeBeforeLandAgain = 0.08f;
     float timer;
     float minX;
     float minY;

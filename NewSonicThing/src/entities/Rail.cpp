@@ -27,9 +27,9 @@ RailSegment::RailSegment(Vector3f* begin, Vector3f* end, Vector3f* beginNormal, 
     }
 
     //Ring* ring1 = new Ring(pointBegin.x, pointBegin.y, pointBegin.z); INCR_NEW
-    //Main_addEntity(ring1);
+    //Global::addEntity(ring1);
     //Ring* ring2 = new Ring(pointEnd.x, pointEnd.y, pointEnd.z); INCR_NEW
-    //Main_addEntity(ring2);
+    //Global::addEntity(ring2);
 
     playerIsOn = false;
     playerProgress = 0;

@@ -59,7 +59,7 @@ PlayerSonic::PlayerSonic(float x, float y, float z)
     camDirSmooth.set(0, 0, -1);
 
     playerModel = new ManiaSonicModel; INCR_NEW("Entity");
-    Main_addEntity(playerModel);
+    Global::addEntity(playerModel);
 
     visible = false;
     loadVehicleInfo();
@@ -1750,7 +1750,7 @@ void PlayerSonic::jumpOffPulley(Vector3f forwardDirectionVector)
     if (inputX == 0 and inputY == 0)
     {
         //Stick isn't being held, move straight forward instead
-        vel = forwardDirectionVector.scaleCopy(JUMP_POWER_PULLEY);
+        vel = forwardDirectionVector.scaleCopy(jumpPowerPulley);
     }
     else
     {
@@ -1760,7 +1760,7 @@ void PlayerSonic::jumpOffPulley(Vector3f forwardDirectionVector)
         Vector3f dirForward = Maths::projectOntoPlane(&camDir, &relativeUp);
         dirForward.setLength(stickRadius);
         Vector3f velNew = Maths::rotatePoint(&dirForward, &relativeUp, stickAngle);
-        vel = velNew.scaleCopy(JUMP_POWER_PULLEY);
+        vel = velNew.scaleCopy(jumpPowerPulley);
     }
     
 
@@ -1832,12 +1832,12 @@ void PlayerSonic::takeDamage(Vector3f* source)
         {
             if (myShieldMagnet != nullptr)
             {
-                Main_deleteEntity(myShieldMagnet);
+                Global::deleteEntity(myShieldMagnet);
                 myShieldMagnet = nullptr;
             }
             if (myShieldGreen != nullptr)
             {
-                Main_deleteEntity(myShieldGreen);
+                Global::deleteEntity(myShieldGreen);
                 myShieldGreen = nullptr;
             }
         }
@@ -1871,7 +1871,7 @@ void PlayerSonic::takeDamage(Vector3f* source)
             
                 RingMoving* ring = new RingMoving(position.x, position.y+5, position.z, xspd, yspd, zspd); INCR_NEW("Entity")
             
-                Main_addEntity(ring);
+                Global::addEntity(ring);
             
                 ringsToScatter--;
             }
@@ -2658,12 +2658,12 @@ void PlayerSonic::setShieldMagnet(ShieldMagnet* newMagnet)
 {
     if (myShieldMagnet != nullptr)
     {
-        Main_deleteEntity(myShieldMagnet);
+        Global::deleteEntity(myShieldMagnet);
         myShieldMagnet = nullptr;
     }
     if (myShieldGreen != nullptr)
     {
-        Main_deleteEntity(myShieldGreen);
+        Global::deleteEntity(myShieldGreen);
         myShieldGreen = nullptr;
     }
     myShieldMagnet = newMagnet;
@@ -2678,12 +2678,12 @@ void PlayerSonic::setShieldGreen(ShieldGreen* newGreen)
 {
     if (myShieldMagnet != nullptr)
     {
-        Main_deleteEntity(myShieldMagnet);
+        Global::deleteEntity(myShieldMagnet);
         myShieldMagnet = nullptr;
     }
     if (myShieldGreen != nullptr)
     {
-        Main_deleteEntity(myShieldGreen);
+        Global::deleteEntity(myShieldGreen);
         myShieldGreen = nullptr;
     }
     myShieldGreen = newGreen;
@@ -2710,6 +2710,11 @@ bool PlayerSonic::isDying()
 bool PlayerSonic::canDealDamage()
 {
     return (hitTimer == 0.0f && hitFlashingTimer == 0.0f);
+}
+
+bool PlayerSonic::canBreakObjects()
+{
+    return (isBouncing || isBall || isSpindashing) && (vel.lengthSquared() > breakObjectsSpeed*breakObjectsSpeed);
 }
 
 void PlayerSonic::hitSpring(Vector3f* direction, float power, float lockInputTime, bool resetsCamera)

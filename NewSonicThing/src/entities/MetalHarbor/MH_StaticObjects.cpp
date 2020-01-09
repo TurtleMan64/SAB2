@@ -8,7 +8,7 @@
 #include "../../toolbox/maths.h"
 #include "../../collision/collisionmodel.h"
 #include "../../collision/collisionchecker.h"
-#include "../../animation/body.h"
+#include "../dummy.h"
 
 #include <algorithm>
 
@@ -85,17 +85,17 @@ void MH_StaticObjects::deleteStaticModels()
 
 void MH_StaticObjects::setupModelVertexColours()
 {
-    modelVertexColours = new Body(&MH_StaticObjects::modelsVertexColours);
+    modelVertexColours = new Dummy(&MH_StaticObjects::modelsVertexColours);
     modelVertexColours->setVisible(true);
     INCR_NEW("Entity");
-    Main_addEntity(modelVertexColours);
+    Global::addEntity(modelVertexColours);
 }
 
 void MH_StaticObjects::setupModelTransparent()
 {
-    modelTransparent = new Body(&MH_StaticObjects::modelsTransparent);
+    modelTransparent = new Dummy(&MH_StaticObjects::modelsTransparent);
     modelTransparent->setVisible(true);
     INCR_NEW("Entity");
-    Main_addEntity(modelTransparent);
+    Global::addEntity(modelTransparent);
     modelTransparent->renderOrder = 1;
 }

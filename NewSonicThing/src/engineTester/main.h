@@ -28,14 +28,6 @@ class ControllablePlayer;
 #include "../toolbox/vector.h"
 #include "../entities/raceghost.h"
 
-void Main_addEntity(Entity* entityToAdd);
-void Main_deleteEntity(Entity* entityToDelete);
-void Main_deleteAllEntites();
-
-void Main_addChunkedEntity(Entity* entityToAdd);
-void Main_deleteChunkedEntity(Entity* entityToAdd);
-void Main_deleteAllChunkedEntities();
-
 #define STATE_PAUSED 0
 #define STATE_RUNNING 1
 #define STATE_EXITING 2
@@ -195,6 +187,15 @@ public:
     static int calculateRankAndUpdate();
 
     static void increaseRingCount(int rings);
+
+    //Entities passed here should be made on the heap, as they will be explicitly deleted later
+    static void addEntity(Entity* entityToAdd);
+    static void deleteEntity(Entity* entityToDelete);
+    static void deleteAllEntites();
+
+    static void addChunkedEntity(Entity* entityToAdd);
+    static void deleteChunkedEntity(Entity* entityToAdd);
+    static void deleteAllChunkedEntities();
 
     //Return a list of nearby entity sets. renderDistance is number of layers to go outwards.
     //0 = only the exact chunk.

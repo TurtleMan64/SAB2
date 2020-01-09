@@ -125,7 +125,7 @@ RaceGhost::RaceGhost(const char* filePath, int missionNumber)
 
         if (deleteMe)
         {
-            Main_deleteEntity(this);
+            Global::deleteEntity(this);
             return;
         }
     }
@@ -137,14 +137,14 @@ RaceGhost::RaceGhost(const char* filePath, int missionNumber)
         {
             std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE + filePath).c_str());
             file.close();
-            Main_deleteEntity(this);
+            Global::deleteEntity(this);
             return;
         }
 
         if (Global::gameMissionNumber != missionNumber) //only show up on the correct mission
         {
             file.close();
-            Main_deleteEntity(this);
+            Global::deleteEntity(this);
             return;
         }
     }
@@ -190,7 +190,7 @@ RaceGhost::RaceGhost(const char* filePath, int missionNumber)
         myModel = new ManiaMightyModel; INCR_NEW("Entity");
     }
     myModel->setBaseVisibility(true);
-    Main_addEntity(myModel);
+    Global::addEntity(myModel);
 }
 
 

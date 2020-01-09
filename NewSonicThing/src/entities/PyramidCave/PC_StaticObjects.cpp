@@ -87,7 +87,7 @@ void PC_StaticObjects::setupModelVertexColours()
     modelVertexColours = new Body(&PC_StaticObjects::modelsVertexColours);
     modelVertexColours->setVisible(true);
     INCR_NEW("Entity");
-    Main_addEntity(modelVertexColours);
+    Global::addEntity(modelVertexColours);
 }
 
 void PC_StaticObjects::setupModelTransparent()
@@ -95,6 +95,6 @@ void PC_StaticObjects::setupModelTransparent()
     modelTransparent = new Body(&PC_StaticObjects::modelsTransparent);
     modelTransparent->setVisible(true);
     INCR_NEW("Entity");
-    Main_addEntity(modelTransparent);
+    Global::addEntity(modelTransparent);
     modelTransparent->renderOrder = 1;
 }

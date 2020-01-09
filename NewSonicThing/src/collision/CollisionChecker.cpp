@@ -101,6 +101,11 @@ bool CollisionChecker::checkCollision(
             cm->playerIsOn = false;
         }
 
+        if (!cm->tangible)
+        {
+            continue;
+        }
+
         //Bounds check on entire model
         //if any of these are true, we can skip the model
         if (!((px1 < cm->minX && px2 < cm->minX) || (px1 > cm->maxX && px2 > cm->maxX) ||

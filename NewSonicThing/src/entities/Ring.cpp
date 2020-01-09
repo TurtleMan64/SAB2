@@ -111,7 +111,7 @@ void Ring::step()
                         Global::gameScore += 10;
                     }
 
-                    Main_deleteEntity(this);
+                    Global::deleteEntity(this);
                     return;
                 }
             }
@@ -158,7 +158,7 @@ void Ring::step()
 
                 if (getY() < -100)
                 {
-                    Main_deleteEntity(this);
+                    Global::deleteEntity(this);
                 }
             }
             else
@@ -221,7 +221,7 @@ void Ring::step()
                 Global::gameScore += 10;
             }
 
-            Main_deleteChunkedEntity(this);
+            Global::deleteChunkedEntity(this);
             return;
         }
         else
@@ -230,9 +230,9 @@ void Ring::step()
             {
                 if (toPlayerDistSquared < 36.0f*36.0f) //attract ring range
                 {
-                    Main_deleteChunkedEntity(this);
+                    Global::deleteChunkedEntity(this);
                     RingMoving* newRing = new RingMoving(position.x, position.y, position.z); INCR_NEW("RingMoving")
-                    Main_addEntity(newRing);
+                    Global::addEntity(newRing);
                 }
             }
         }

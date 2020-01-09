@@ -8,8 +8,8 @@ class CollisionModel;
 class CollideableObject : public Entity
 {
 protected:
-    CollisionModel* collideModelOriginal;
-    CollisionModel* collideModelTransformed;
+    CollisionModel* collideModelOriginal = nullptr;
+    CollisionModel* collideModelTransformed = nullptr;
 
 public:
     CollideableObject();

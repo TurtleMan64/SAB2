@@ -25,9 +25,9 @@ GH_StageManager::GH_StageManager()
     waterFlat->setVisible(true);
     waterVertical->setVisible(true);
 
-    Main_addEntity(skyClouds);
-    Main_addEntity(waterFlat);
-    Main_addEntity(waterVertical);
+    Global::addEntity(skyClouds);
+    Global::addEntity(waterFlat);
+    Global::addEntity(waterVertical);
 
     position.set(0,0,0);
     skyClouds->setPosition(&position);

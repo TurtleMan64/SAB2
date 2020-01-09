@@ -540,6 +540,9 @@
     <ClCompile Include="src\entities\GreenForest\GF_Vine.cpp">
       <Filter>Source Files\entities\GreenForest</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\WoodBox.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.h">
@@ -958,6 +961,9 @@
     </ClInclude>
     <ClInclude Include="src\entities\GreenForest\gfvine.h">
       <Filter>Source Files\entities\GreenForest</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\woodbox.h">
+      <Filter>Source Files\entities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -99,6 +99,8 @@ public:
 
     virtual bool canDealDamage();
 
+    virtual bool canBreakObjects();
+
     virtual void die();
 
     //virtual Vector3f getOverallVel();

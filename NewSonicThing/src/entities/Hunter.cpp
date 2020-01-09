@@ -160,7 +160,7 @@ void Hunter::step()
 
             Vector3f bulletVel = bulletDirection.scaleCopy(bulletSpeed);
             Bullet* bullet = new Bullet(&bulletTipPos, &bulletVel, timeUntilShoot*3.0f); INCR_NEW("Entity");
-            Main_addEntity(bullet);
+            Global::addEntity(bullet);
         }
     }
     else
@@ -173,10 +173,10 @@ void Hunter::die()
 {
     AudioPlayer::play(3, &position);
     
-    Main_deleteChunkedEntity(this);
+    Global::deleteChunkedEntity(this);
     if (gun != nullptr)
     {
-        Main_deleteChunkedEntity(gun);
+        Global::deleteChunkedEntity(gun);
         gun = nullptr;
     }
 

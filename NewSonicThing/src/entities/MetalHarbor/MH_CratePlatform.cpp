@@ -16,7 +16,6 @@
 #include "../controllableplayer.h"
 #include "../../collision/collisionmodel.h"
 #include "../../collision/collisionchecker.h"
-#include "../../animation/body.h"
 #include "../../audio/audioplayer.h"
 #include "../../audio/source.h"
 

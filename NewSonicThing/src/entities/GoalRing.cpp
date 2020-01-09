@@ -50,7 +50,7 @@ GoalRing::GoalRing(float x, float y, float z)
     text->setVisible(true);
     text->setPosition(&position);
     text->renderOrder = 1;
-    Main_addEntity(text);
+    Global::addEntity(text);
 }
 
 void GoalRing::step()
@@ -58,16 +58,16 @@ void GoalRing::step()
     if (Global::gameIsRingMode ||
         Global::gameIsChaoMode)
     {
-        Main_deleteEntity(this);
-        Main_deleteEntity(text);
+        Global::deleteEntity(this);
+        Global::deleteEntity(text);
     }
 
     if (Global::gameIsRaceMode && Global::mainHudTimer != nullptr)
     {
         if (Global::mainHudTimer->totalTime >= Global::gameRaceTimeLimit)
         {
-            Main_deleteEntity(this);
-            Main_deleteEntity(text);
+            Global::deleteEntity(this);
+            Global::deleteEntity(text);
 
             Global::gameMainPlayer->die();
         }

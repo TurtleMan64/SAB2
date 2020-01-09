@@ -46,7 +46,7 @@ void Bullet::step()
 
     if (timeUntilDeath <= 0.0f)
     {
-        Main_deleteEntity(this);
+        Global::deleteEntity(this);
         visible = false;
         return;
     }
@@ -69,7 +69,7 @@ void Bullet::step()
             ParticleMaster::createParticle(ParticleResources::textureExplosion1, &pos, &bounce, 0, 0.75f, 0, 1*Maths::random() + 2, 0, false, false, 0.5f, true);
         }
 
-        Main_deleteEntity(this);
+        Global::deleteEntity(this);
         visible = false;
         return;
     }
@@ -85,7 +85,7 @@ void Bullet::step()
         if (Global::gameMainPlayer->canDealDamage())
         {
             Global::gameMainPlayer->takeDamage(&position);
-            Main_deleteEntity(this);
+            Global::deleteEntity(this);
             visible = false;
         }
     }

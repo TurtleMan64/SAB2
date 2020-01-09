@@ -42,6 +42,7 @@ void          ControllablePlayer::takeDamage(Vector3f*)               {}
 void          ControllablePlayer::rebound(Vector3f*)                  {}
 bool          ControllablePlayer::isVulnerable()                      {return false;}
 bool          ControllablePlayer::canDealDamage()                     {return false;}
+bool          ControllablePlayer::canBreakObjects()                   {return false;}
 void          ControllablePlayer::die()                               {}
 void          ControllablePlayer::startGrinding()                     {}
 void          ControllablePlayer::stopGrinding()                      {}

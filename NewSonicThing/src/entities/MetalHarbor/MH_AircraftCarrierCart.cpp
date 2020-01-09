@@ -34,7 +34,7 @@
 #include "../controllableplayer.h"
 #include "../../collision/collisionmodel.h"
 #include "../../collision/collisionchecker.h"
-#include "../../animation/body.h"
+#include "../dummy.h"
 
 #include <algorithm>
 
@@ -246,10 +246,9 @@ void MH_AircraftCarrierCart::deleteStaticModels()
 
 inline void MH_AircraftCarrierCart::setupModelWheelFront()
 {
-    wheelFront = new Body(&MH_AircraftCarrierCart::modelsWheelFront);
+    wheelFront = new Dummy(&MH_AircraftCarrierCart::modelsWheelFront); INCR_NEW("Entity");
     wheelFront->setVisible(true);
-    INCR_NEW("Entity");
-    Main_addEntity(wheelFront);
+    Global::addEntity(wheelFront);
     wheelFront->renderOrder = 1;
     wheelFront->setPosition(&position);
     wheelFront->setRotY(rotY);
@@ -257,10 +256,9 @@ inline void MH_AircraftCarrierCart::setupModelWheelFront()
 
 inline void MH_AircraftCarrierCart::setupModelWheelBack()
 {
-    wheelBack = new Body(&MH_AircraftCarrierCart::modelsWheelBack);
+    wheelBack = new Dummy(&MH_AircraftCarrierCart::modelsWheelBack); INCR_NEW("Entity");
     wheelBack->setVisible(true);
-    INCR_NEW("Entity");
-    Main_addEntity(wheelBack);
+    Global::addEntity(wheelBack);
     wheelBack->renderOrder = 1;
     wheelBack->setPosition(&position);
     wheelBack->setRotY(rotY);
@@ -268,10 +266,9 @@ inline void MH_AircraftCarrierCart::setupModelWheelBack()
 
 inline void MH_AircraftCarrierCart::setupModelTransparent()
 {
-    bodyTransparent = new Body(&MH_AircraftCarrierCart::modelsTransparent);
+    bodyTransparent = new Dummy(&MH_AircraftCarrierCart::modelsTransparent); INCR_NEW("Entity");
     bodyTransparent->setVisible(true);
-    INCR_NEW("Entity");
-    Main_addEntity(bodyTransparent);
+    Global::addEntity(bodyTransparent);
     bodyTransparent->renderOrder = 1;
     bodyTransparent->setRotY(rotY);
 }

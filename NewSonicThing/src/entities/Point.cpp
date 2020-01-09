@@ -22,7 +22,7 @@ Point::Point(float x, float y, float z, int id)
 
 void Point::step()
 {
-    Main_deleteEntity(this);
+    Global::deleteEntity(this);
 }
 
 int Point::getID()

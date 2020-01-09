@@ -51,7 +51,7 @@ void LostChao::step()
 {
     if (!Global::gameIsChaoMode)
     {
-        Main_deleteEntity(this);
+        Global::deleteEntity(this);
     }
     
     float distToPlayerSquared = (Global::gameMainPlayer->position - position).lengthSquared();

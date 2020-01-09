@@ -21,7 +21,7 @@ extern float dt;
 std::list<TexturedModel*> Pulley::modelsHandle;
 std::list<TexturedModel*> Pulley::modelsRope;
 std::list<TexturedModel*> Pulley::modelsTop;
-CollisionModel* Pulley::cmTop;
+CollisionModel* Pulley::cmTop = nullptr;
 
 Pulley::Pulley() {}
 
@@ -185,19 +185,17 @@ inline Vector3f Pulley::calculateCameraDirectionVector()
 
 inline void Pulley::setupPulleyRope()
 {
-    rope = new Body(&Pulley::modelsRope);
+    rope = new Body(&Pulley::modelsRope); INCR_NEW("Entity");
     rope->setVisible(true);
-    INCR_NEW("Entity");
-    Main_addEntity(rope);
+    Global::addEntity(rope);
     rope->setPosition(&position);
 }
 
 inline void Pulley::setupPulleyTop()
 {
-    top = new Body(&Pulley::modelsTop);
+    top = new Body(&Pulley::modelsTop); INCR_NEW("Entity");
     top->setVisible(true);
-    INCR_NEW("Entity");
-    Main_addEntity(top);
+    Global::addEntity(top);
     top->setPosition(&position);
     top->setRotY(rotY);
 
@@ -209,11 +207,10 @@ inline void Pulley::setupPulleyTop()
 
 inline bool Pulley::playerWithinHandleHitbox()
 {
-    Vector3f playerPosition = Global::gameMainPlayer->getPosition();
-    Vector3f playerPulleyDistance = playerPosition - position;
-    float playerPulleyDistanceHorizontalSquared = pow(playerPulleyDistance.x, 2) + 
-                                                        pow(playerPulleyDistance.z, 2);
-    return (playerPulleyDistanceHorizontalSquared <= powf(HITBOX_RADIUS, 2) &&
+    Vector3f playerPulleyDistance = Global::gameMainPlayer->position - position;
+    float playerPulleyDistanceHorizontalSquared = (playerPulleyDistance.x)*(playerPulleyDistance.x) + 
+                                                  (playerPulleyDistance.z)*(playerPulleyDistance.z);
+    return (playerPulleyDistanceHorizontalSquared <= (HITBOX_RADIUS*HITBOX_RADIUS) &&
             fabsf(playerPulleyDistance.y) <= HITBOX_HEIGHT);
 }
 

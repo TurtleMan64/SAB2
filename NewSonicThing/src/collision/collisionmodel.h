@@ -14,10 +14,13 @@ class CollisionModel
 public:
     std::vector<Triangle3D*> triangles;
 
-    bool playerIsOn;
+    bool playerIsOn = false;
 
-    QuadTreeNode* quadTreeRoot;
-    int treeMaxDepth;
+    //if this is false, then the model wont be checked in collision checking
+    bool tangible = true;
+
+    QuadTreeNode* quadTreeRoot = nullptr;
+    int treeMaxDepth = -1;
     float leafNodeWidth;
     float leafNodeHeight;
 

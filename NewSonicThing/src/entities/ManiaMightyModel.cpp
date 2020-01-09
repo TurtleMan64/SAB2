@@ -106,20 +106,20 @@ ManiaMightyModel::ManiaMightyModel()
         myLeftThigh, myLeftShin, myLeftFoot,
         myRightThigh, myRightShin, myRightFoot);
 
-    Main_addEntity(myBody);
-    Main_addEntity(myHead);
-    Main_addEntity(myLeftHumerus);
-    Main_addEntity(myLeftForearm);
-    Main_addEntity(myLeftHand);
-    Main_addEntity(myLeftThigh);
-    Main_addEntity(myLeftShin);
-    Main_addEntity(myLeftFoot);
-    Main_addEntity(myRightHumerus);
-    Main_addEntity(myRightForearm);
-    Main_addEntity(myRightHand);
-    Main_addEntity(myRightThigh);
-    Main_addEntity(myRightShin);
-    Main_addEntity(myRightFoot);
+    Global::addEntity(myBody);
+    Global::addEntity(myHead);
+    Global::addEntity(myLeftHumerus);
+    Global::addEntity(myLeftForearm);
+    Global::addEntity(myLeftHand);
+    Global::addEntity(myLeftThigh);
+    Global::addEntity(myLeftShin);
+    Global::addEntity(myLeftFoot);
+    Global::addEntity(myRightHumerus);
+    Global::addEntity(myRightForearm);
+    Global::addEntity(myRightHand);
+    Global::addEntity(myRightThigh);
+    Global::addEntity(myRightShin);
+    Global::addEntity(myRightFoot);
 }
 
 void ManiaMightyModel::step()

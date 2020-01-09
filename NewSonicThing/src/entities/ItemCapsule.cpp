@@ -157,9 +157,9 @@ void ItemCapsule::die()
 {
     AudioPlayer::play(3, getPosition());
 
-    Main_deleteChunkedEntity(this);
-    Main_deleteChunkedEntity(entityItem);
-    Main_deleteChunkedEntity(entityGlass);
+    Global::deleteChunkedEntity(this);
+    Global::deleteChunkedEntity(entityItem);
+    Global::deleteChunkedEntity(entityGlass);
 
     float height = 6.0f;
     float spread = 10.0f;
@@ -214,7 +214,7 @@ void ItemCapsule::die()
             //green shield
             Global::gameScore += 100;
             ShieldGreen* shield = new ShieldGreen; INCR_NEW("Entity")
-            Main_addEntity(shield);
+            Global::addEntity(shield);
             Global::gameMainPlayer->setShieldGreen(shield);
             break;
         }
@@ -262,7 +262,7 @@ void ItemCapsule::die()
             //electric shield
             Global::gameScore += 100;
             ShieldMagnet* shield = new ShieldMagnet; INCR_NEW("Entity")
-            Main_addEntity(shield);
+            Global::addEntity(shield);
             Global::gameMainPlayer->setShieldMagnet(shield);
             break;
         }

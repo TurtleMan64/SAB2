@@ -920,18 +920,17 @@ int main(int argc, char** argv)
     return 0;
 }
 
-//The newEntity should be created with the new keyword, as it will be deleted later
-void Main_addEntity(Entity* entityToAdd)
+void Global::addEntity(Entity* entityToAdd)
 {
     gameEntitiesToAdd.push_back(entityToAdd);
 }
 
-void Main_deleteEntity(Entity* entityToDelete)
+void Global::deleteEntity(Entity* entityToDelete)
 {
     gameEntitiesToDelete.push_back(entityToDelete);
 }
 
-void Main_deleteAllEntites()
+void Global::deleteAllEntites()
 {
     //Make sure no entities get left behind in transition
     for (Entity* entityToAdd : gameEntitiesToAdd)
@@ -1571,17 +1570,17 @@ void Global::recalculateEntityChunks(float minX, float maxX, float minZ, float m
     chunkedEntitiesHeight = newHeight;
 }
 
-void Main_addChunkedEntity(Entity* entityToAdd)
+void Global::addChunkedEntity(Entity* entityToAdd)
 {
     gameChunkedEntitiesToAdd.push_back(entityToAdd);
 }
 
-void Main_deleteChunkedEntity(Entity* entityToAdd)
+void Global::deleteChunkedEntity(Entity* entityToAdd)
 {
     gameChunkedEntitiesToDelete.push_back(entityToAdd);
 }
 
-void Main_deleteAllChunkedEntities()
+void Global::deleteAllChunkedEntities()
 {
     //Make sure no entities get left behind in transition
     for (Entity* entityToAdd : gameChunkedEntitiesToAdd)

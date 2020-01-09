@@ -128,7 +128,7 @@ void RingMoving::step()
 
         if (ageTimer > 12.0f)
         {
-            Main_deleteEntity(this);
+            Global::deleteEntity(this);
             return;
         }
     }
@@ -163,7 +163,7 @@ void RingMoving::step()
                 Global::gameScore += 10;
             }
 
-            Main_deleteEntity(this);
+            Global::deleteEntity(this);
             return;
         }
     }

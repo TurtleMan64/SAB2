@@ -11,9 +11,7 @@
 
 CollisionModel::CollisionModel()
 {
-    playerIsOn = false;
-    quadTreeRoot = nullptr;
-    treeMaxDepth = -1;
+
 }
 
 void CollisionModel::generateMinMaxValues()

@@ -6,7 +6,7 @@
 #include "../collideableobject.h"
 
 class TexturedModel;
-class Body;
+class Dummy;
 
 class MH_StaticObjects : public CollideableObject
 {
@@ -20,10 +20,10 @@ private:
     //The collision model
     static CollisionModel* cmOriginal;
 
-    //Body used to be able to display the vertex colours model
-    Body* modelVertexColours = nullptr;
-    //Body used to be able to display the transparent model
-    Body* modelTransparent = nullptr;
+    //Dummy used to be able to display the vertex colours model
+    Dummy* modelVertexColours = nullptr;
+    //Dummy used to be able to display the transparent model
+    Dummy* modelTransparent = nullptr;
 
     //Functions for the constructor start here
     

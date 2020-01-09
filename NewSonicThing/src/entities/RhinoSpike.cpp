@@ -295,7 +295,7 @@ void RhinoSpike::die()
 {
     AudioPlayer::play(3, &position);
 
-    Main_deleteChunkedEntity(this);
+    Global::deleteChunkedEntity(this);
 
     visible = false;
 

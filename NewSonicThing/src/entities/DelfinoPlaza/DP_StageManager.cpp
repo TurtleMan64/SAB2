@@ -28,8 +28,8 @@ DP_StageManager::DP_StageManager()
     skyPass2->scale = 3.0f;
     skyTransparent->scale = 1.8f;
 
-    Main_addEntity(skyPass2);
-    Main_addEntity(skyTransparent);
+    Global::addEntity(skyPass2);
+    Global::addEntity(skyTransparent);
 }
 
 void DP_StageManager::step()

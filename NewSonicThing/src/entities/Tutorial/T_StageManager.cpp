@@ -28,8 +28,8 @@ T_StageManager::T_StageManager()
     skyPass2->renderOrder = 1;
     skyTransparent->renderOrder = 3;
 
-    Main_addEntity(skyPass2);
-    Main_addEntity(skyTransparent);
+    Global::addEntity(skyPass2);
+    Global::addEntity(skyTransparent);
 }
 
 void T_StageManager::step()

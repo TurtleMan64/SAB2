@@ -50,7 +50,7 @@ private:
     const float hoverPower = 170.0f; //How much hover adds to your vel
     const float hoverTimerThreshold = 1.0f; //How long you can hover for
     float hoverTimer = 0.0f;
-    const float JUMP_POWER_PULLEY = 102.0f;
+    const float jumpPowerPulley = 102.0f;
 
     const float groundRunPush = 100.0f;
     const float groundRunPushSpeedshoes = 300.0f;
@@ -132,6 +132,8 @@ private:
     const float homingAttackRangeMax =  115.0f;
     const float homingAttackDotThreshold = 0.65f;
     GuiTexture* homingAttackReticle = nullptr;
+
+    const float breakObjectsSpeed = 200.0f; //how fast you need to be going to break through objects like boxes
 
     //const float camAngleLookdown = 0.0f; //0.2f; //How much the camera looks down
     float camRadius               = 75.0f;  //Camera radius at zero speed
@@ -231,6 +233,8 @@ public:
     bool isVulnerable();
 
     bool canDealDamage();
+
+    bool canBreakObjects();
 
     void takeDamage(Vector3f* source);
 

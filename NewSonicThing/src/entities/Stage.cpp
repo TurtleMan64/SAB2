@@ -38,7 +38,7 @@ void Stage::respawnChunks()
         chunk->setVisible(true);
         chunk->setPosition(0, 0, 0);
         chunk->updateTransformationMatrix();
-        Main_addEntity(chunk);
+        Global::addEntity(chunk);
         Stage::chunkDummies.push_back(chunk);
     }
 }

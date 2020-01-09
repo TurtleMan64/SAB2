@@ -70,6 +70,7 @@
 #include "../entities/bullet.h"
 #include "../entities/PyramidCave/pcstagemanager.h"
 #include "../entities/GreenForest/gfvine.h"
+#include "../entities/woodbox.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -92,8 +93,8 @@ void LevelLoader::loadTitle()
     }
     Global::gameMainPlayer = nullptr;
 
-    Main_deleteAllEntites();
-    Main_deleteAllChunkedEntities();
+    Global::deleteAllEntites();
+    Global::deleteAllChunkedEntities();
 
     AudioPlayer::stopBGM();
     AudioPlayer::deleteBuffersBGM();
@@ -211,8 +212,8 @@ void LevelLoader::loadLevel(std::string levelFilename)
     }
     Global::gameMainPlayer = nullptr;
 
-    Main_deleteAllEntites();
-    Main_deleteAllChunkedEntities();
+    Global::deleteAllEntites();
+    Global::deleteAllChunkedEntities();
 
     if (stageFault == 1)
     {
@@ -675,7 +676,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
     //Add the player's ghost
     RaceGhost::loadStaticModels();
     RaceGhost* playerGhost = new RaceGhost(("res/SaveData/" + std::to_string(Global::levelID) + "_" + std::to_string(Global::gameMissionNumber) + ".ghost").c_str(), -1); INCR_NEW("Entity");
-    Main_addEntity(playerGhost);
+    Global::addEntity(playerGhost);
 
     //sort the chunked entity stuff
     if (chunkedEntities.size() > 0)
@@ -707,14 +708,14 @@ void LevelLoader::loadLevel(std::string levelFilename)
 
         for (Entity* e : chunkedEntities)
         {
-            Main_addChunkedEntity(e);
+            Global::addChunkedEntity(e);
         }
     }
     else //not many chunked entities, dont bother
     {
         for (Entity* e : chunkedEntities)
         {
-            Main_addEntity(e);
+            Global::addEntity(e);
         }
     }
 
@@ -851,21 +852,21 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
         case 2: //Stage Pass 2
         {
             StagePass2* pass2 = new StagePass2(dat[1], dat[2]); INCR_NEW("Entity");
-            Main_addEntity(pass2);
+            Global::addEntity(pass2);
             return;
         }
 
         case 3: //Stage Pass 3
         {
             StagePass3* pass3 = new StagePass3(dat[1], dat[2]); INCR_NEW("Entity");
-            Main_addEntity(pass3);
+            Global::addEntity(pass3);
             return;
         }
 
         case 4: //Stage Transparent
         {
             StageTransparent* trans = new StageTransparent(dat[1], dat[2]); INCR_NEW("Entity");
-            Main_addEntity(trans);
+            Global::addEntity(trans);
             return;
         }
 
@@ -877,7 +878,7 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                 delete Global::gameMainPlayer; INCR_DEL("Entity");
             }
             Global::gameMainPlayer = player;
-            //Main_addEntity(car);
+            //Global::addEntity(car);
             return;
         }
 
@@ -1010,7 +1011,7 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             GoalRing::loadStaticModels();
             GoalRing* goal = new GoalRing(
                 toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3])); INCR_NEW("Entity");
-            Main_addEntity(goal);
+            Global::addEntity(goal);
             return;
         }
 
@@ -1018,7 +1019,7 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
         {
             RaceGhost::loadStaticModels();
             RaceGhost* raceGhost = new RaceGhost(dat[1], toInt(dat[2])); INCR_NEW("Entity");
-            Main_addEntity(raceGhost);
+            Global::addEntity(raceGhost);
             return;
         }
 
@@ -1027,7 +1028,7 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             LostChao::loadStaticModels();
             LostChao* chao = new LostChao(
                 toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3])); INCR_NEW("Entity");
-            Main_addEntity(chao);
+            Global::addEntity(chao);
             return;
         }
 
@@ -1040,7 +1041,7 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                 {
                     GF_StageManager::loadStaticModels();
                     GF_StageManager* gf = new GF_StageManager; INCR_NEW("Entity");
-                    Main_addEntity(gf);
+                    Global::addEntity(gf);
                     break;
                 }
 
@@ -1048,7 +1049,7 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                 {
                     MH_StageManager::loadStaticModels();
                     MH_StageManager* mh = new MH_StageManager; INCR_NEW("Entity");
-                    Main_addEntity(mh);
+                    Global::addEntity(mh);
                     break;
                 }
 
@@ -1056,7 +1057,7 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                 {
                     SR_StageManager::loadStaticModels();
                     SR_StageManager* sr = new SR_StageManager; INCR_NEW("Entity");
-                    Main_addEntity(sr);
+                    Global::addEntity(sr);
                     break;
                 }
 
@@ -1064,7 +1065,7 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                 {
                     GH_StageManager::loadStaticModels();
                     GH_StageManager* gh = new GH_StageManager; INCR_NEW("Entity");
-                    Main_addEntity(gh);
+                    Global::addEntity(gh);
                     break;
                 }
 
@@ -1072,7 +1073,7 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                 {
                     CE_StageManager::loadStaticModels();
                     CE_StageManager* ce = new CE_StageManager; INCR_NEW("Entity");
-                    Main_addEntity(ce);
+                    Global::addEntity(ce);
                     break;
                 }
 
@@ -1080,7 +1081,7 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                 {
                     DP_StageManager::loadStaticModels();
                     DP_StageManager* dp = new DP_StageManager; INCR_NEW("Entity");
-                    Main_addEntity(dp);
+                    Global::addEntity(dp);
                     break;
                 }
 
@@ -1088,7 +1089,7 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                 {
                     T_StageManager::loadStaticModels();
                     T_StageManager* tut = new T_StageManager; INCR_NEW("Entity");
-                    Main_addEntity(tut);
+                    Global::addEntity(tut);
                     break;
                 }
 
@@ -1096,7 +1097,7 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                 {
                     RH_StageManager::loadStaticModels();
                     RH_StageManager* rh = new RH_StageManager; INCR_NEW("Entity");
-                    Main_addEntity(rh);
+                    Global::addEntity(rh);
                     break;
                 }
 
@@ -1104,7 +1105,7 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                 {
                     PC_StageManager::loadStaticModels();
                     PC_StageManager* pc = new PC_StageManager; INCR_NEW("Entity");
-                    Main_addEntity(pc);
+                    Global::addEntity(pc);
                     break;
                 }
 
@@ -1116,7 +1117,7 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
         case 92: //Rail
         {
             Rail* rail = new Rail(dat[1]); INCR_NEW("Entity");
-            Main_addEntity(rail);
+            Global::addEntity(rail);
             return;
         }
 
@@ -1128,7 +1129,7 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                 {
                     MH_StaticObjects::loadStaticModels();
                     MH_StaticObjects* staticObjects = new MH_StaticObjects(); INCR_NEW("Entity");
-                    Main_addEntity(staticObjects);
+                    Global::addEntity(staticObjects);
                     return;
                 }
                 case 1: //Aircraft Carrier Cart
@@ -1139,7 +1140,7 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                         toFloat(dat[5]), toFloat(dat[6]),                  //dirX, dirZ
                         toFloat(dat[7]), toFloat(dat[8]));                 //displacementMax, speed
                     INCR_NEW("Entity");
-                    Main_addEntity(yellowMovingPlatform);
+                    Global::addEntity(yellowMovingPlatform);
                     return;
                 }
                 case 2: //Crate Platform
@@ -1151,7 +1152,7 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                         toFloat(dat[7]), toFloat(dat[8]),                   //displacementMax, speed
                         toInt(dat[9]));                                     //Type: 0: long, 1: with box, 2: without box
                     INCR_NEW("Entity");
-                    Main_addEntity(cratePlatform);
+                    Global::addEntity(cratePlatform);
                     return;
                 }
             }
@@ -1164,7 +1165,7 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                 toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
                 toInt(dat[4])); //point id
             INCR_NEW("Entity");
-            Main_addEntity(point);
+            Global::addEntity(point);
             return;
         }
 
@@ -1175,7 +1176,7 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             Vector3f pos2(toFloat(dat[4]), toFloat(dat[5]), toFloat(dat[6]));
             Rocket* rocket = new Rocket(&pos1, &pos2);
             INCR_NEW("Entity");
-            Main_addEntity(rocket);
+            Global::addEntity(rocket);
             return;
         }
 
@@ -1243,7 +1244,7 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                 case 0: //Static Objects
                     PC_StaticObjects::loadStaticModels();
                     PC_StaticObjects* staticObjects = new PC_StaticObjects; INCR_NEW("Entity");
-                    Main_addEntity(staticObjects);
+                    Global::addEntity(staticObjects);
                     return;
             }
         }
@@ -1275,9 +1276,20 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                         toFloat(dat[16]));                                    //input lock time
 
                     INCR_NEW("Entity");
-                    Main_addEntity(vine);
+                    Global::addEntity(vine);
                     return;
             }
+        }
+
+        case 103: //Wood Box
+        {
+            WoodBox::loadStaticModels();
+            WoodBox* box = new WoodBox(
+                    toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position x,y,z
+                    toFloat(dat[4]));                                  //y rotation
+            INCR_NEW("Entity");
+            chunkedEntities->push_back(box);
+            return;
         }
 
         default:
@@ -1402,6 +1414,7 @@ void LevelLoader::freeAllStaticModels()
     Bullet::deleteStaticModels();
     PC_StageManager::deleteStaticModels();
     GF_Vine::deleteStaticModels();
+    WoodBox::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()

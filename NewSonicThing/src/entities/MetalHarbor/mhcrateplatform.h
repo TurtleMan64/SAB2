@@ -6,7 +6,6 @@
 #include "../collideableobject.h"
 
 class TexturedModel;
-class Body;
 class Source;
 
 class MH_CratePlatform : public CollideableObject

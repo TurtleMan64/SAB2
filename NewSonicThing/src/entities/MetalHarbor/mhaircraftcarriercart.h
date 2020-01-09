@@ -6,7 +6,7 @@
 #include "../collideableobject.h"
 
 class TexturedModel;
-class Body;
+class Dummy;
 
 class MH_AircraftCarrierCart : public CollideableObject
 {
@@ -30,12 +30,12 @@ private:
     //The collision model
     static CollisionModel* cmOriginal;
 
-    //Body used to be able to display the front wheels model
-    Body* wheelFront = nullptr;
-    //Body used to be able to display the back wheels model
-    Body* wheelBack = nullptr;
-    //Body used to be able to display the transparent model
-    Body* bodyTransparent = nullptr;
+    //Dummy used to be able to display the front wheels model
+    Dummy* wheelFront = nullptr;
+    //Dummy used to be able to display the back wheels model
+    Dummy* wheelBack = nullptr;
+    //Dummy used to be able to display the transparent model
+    Dummy* bodyTransparent = nullptr;
 
     //Horizontal Offset of the Front Wheel
     const float WHEEL_OFFSET_FRONT_HORIZONTAL = 8.86459f;

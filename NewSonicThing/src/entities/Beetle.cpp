@@ -123,11 +123,11 @@ void Beetle::die()
     //visible = false;
     //blades->visible = false;
 
-    Main_deleteChunkedEntity(this);
-    Main_deleteChunkedEntity(blades);
+    Global::deleteChunkedEntity(this);
+    Global::deleteChunkedEntity(blades);
 
-    float height = 10.0f;
-    float spread = 20.0f;
+    const float height = 10.0f;
+    const float spread = 20.0f;
 
     Vector3f vel(0, 0, 0);
     Vector3f toCamDiff = Global::gameCamera->eye - position;

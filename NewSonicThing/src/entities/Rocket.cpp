@@ -191,7 +191,7 @@ void Rocket::setupRocketBase()
 {
     base = new Dummy(&Rocket::modelsBase); INCR_NEW("Entity");
     base->setVisible(true);
-    Main_addEntity(base);
+    Global::addEntity(base);
     base->setPosition(&position);
 
     collideModelOriginal = Rocket::cmBase;
