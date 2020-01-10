@@ -270,14 +270,14 @@ inline Vector3f MH_CratePlatform::shakePlatform()
 inline void MH_CratePlatform::pushSonicAway(bool /*frontHitboxes*/, bool /*backHitboxes*/)
 {
     //first check if sonic is even close to the platform
-    if (collisionCheckCylinder(position, 100, 100))
+    //if (collisionCheckCylinder(position, 100, 100))
     {
-        Vector3f rotateAround = Vector3f(0, 1, 0);
-        Vector3f sidewaysVector = Maths::rotatePoint(&directionVector, &rotateAround, Maths::toRadians(90));
-        Vector3f collisionCenterPos1;
-        Vector3f collisionCenterPos2;
-        Vector3f collisionCenterPos3;
-        Vector3f collisionCenterPos4;
+        //Vector3f rotateAround = Vector3f(0, 1, 0);
+        //Vector3f sidewaysVector = Maths::rotatePoint(&directionVector, &rotateAround, Maths::toRadians(90));
+        //Vector3f collisionCenterPos1;
+        //Vector3f collisionCenterPos2;
+        //Vector3f collisionCenterPos3;
+        //Vector3f collisionCenterPos4;
 
         //collisions on front of platform
         //collisionCenterPos1 = position + directionVector.scaleCopy(COLLISION_POSITION_FORWARD) + sidewaysVector.scaleCopy(COLLISION_POSITION_SIDEWAYS);
@@ -324,3 +324,4 @@ inline void MH_CratePlatform::resetStoppingSound()
 {
     platformAudioSource = nullptr;
 }
+
