@@ -1,6 +1,6 @@
 Levels/RadicalHighway
 1
-RH -100000 -100000 -100000 100000 100000 100000
+RadicalHighway -100000 -100000 -100000 100000 100000 100000
 Levels/RadicalHighway
 1
 Collision 9
@@ -36,6 +36,13 @@ false
 
 # Lost Chao
 81 -6328.125488 -4499.925293 -8869.032227
+
+# NPC
+33 0 215.053101 1609.099243 0 1 0 I promise you...;REVENGE!
+33 -6636.320801 -3100.935547 -5069.836426 -0.002099 -0.002119 1 This is my hidey-hole.;Get out.
+33 -7333.147461 -4784.919922 -11964.203125 0.002872 -0.000068 2 How pathetic!
+33 -9525.124023 -6749.912109 -14944.609375 0.138061 -0.090909 3 You spin me right round baby.
+33 -9974.833008 -6739.570801 -18488.150391 0.003145 1.233481 4 Who would have thunk?;He put one past the goal ring!
 
 # Stage manager
 91 7

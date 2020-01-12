@@ -71,6 +71,7 @@
 #include "../entities/PyramidCave/pcstagemanager.h"
 #include "../entities/GreenForest/gfvine.h"
 #include "../entities/woodbox.h"
+#include "../entities/npc.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -987,7 +988,7 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             return;
         }
 
-        case 32: //NPC
+        case 32: //Help
         {
             Help::loadStaticModels();
 
@@ -1003,6 +1004,27 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                 message); //message
             INCR_NEW("Entity");
             chunkedEntities->push_back(help);
+            return;
+        }
+
+        case 33: //NPC
+        {
+            NPC::loadStaticModels();
+
+            std::string message = "";
+            for (int i = 7; i < datLength-1; i++)
+            {
+                message = message + dat[i] + " ";
+            }
+            message = message + dat[datLength-1];
+
+            NPC* npc = new NPC(
+                toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
+                toFloat(dat[4]), toFloat(dat[5]),                  //rotation direction
+                toInt(dat[6]),                                     //id
+                message);                                          //message
+            INCR_NEW("Entity");
+            Global::addEntity(npc);
             return;
         }
 
@@ -1272,8 +1294,9 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                         toFloat(dat[8]),  toFloat(dat[9]),  toFloat(dat[10]), //rotation axis
                         toFloat(dat[11]),                                     //number of rotations until done
                         toFloat(dat[12]), toFloat(dat[13]), toFloat(dat[14]), //launch direction
-                        toFloat(dat[15]),                                     //launch speed
-                        toFloat(dat[16]));                                    //input lock time
+                        toFloat(dat[15]),                                     //rotate speed
+                        toFloat(dat[16]),                                     //launch speed
+                        toFloat(dat[17]));                                    //input lock time
 
                     INCR_NEW("Entity");
                     Global::addEntity(vine);
@@ -1415,6 +1438,7 @@ void LevelLoader::freeAllStaticModels()
     PC_StageManager::deleteStaticModels();
     GF_Vine::deleteStaticModels();
     WoodBox::deleteStaticModels();
+    NPC::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()

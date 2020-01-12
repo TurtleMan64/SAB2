@@ -177,6 +177,7 @@
     <ClCompile Include="src\entities\MetalHarbor\MH_AircraftCarrierCart.cpp" />
     <ClCompile Include="src\entities\MetalHarbor\MH_CratePlatform.cpp" />
     <ClCompile Include="src\entities\MetalHarbor\MH_StaticObjects.cpp" />
+    <ClCompile Include="src\entities\NPC.cpp" />
     <ClCompile Include="src\entities\PlayerModel.cpp" />
     <ClCompile Include="src\entities\PlayerSonic.cpp" />
     <ClCompile Include="src\entities\Checkpoint.cpp" />
@@ -324,6 +325,7 @@
     <ClInclude Include="src\entities\MetalHarbor\mhaircraftcarriercart.h" />
     <ClInclude Include="src\entities\MetalHarbor\mhcrateplatform.h" />
     <ClInclude Include="src\entities\MetalHarbor\mhstaticobjects.h" />
+    <ClInclude Include="src\entities\npc.h" />
     <ClInclude Include="src\entities\playermodel.h" />
     <ClInclude Include="src\entities\playersonic.h" />
     <ClInclude Include="src\entities\checkpoint.h" />

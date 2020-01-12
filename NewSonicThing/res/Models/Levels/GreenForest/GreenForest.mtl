@@ -1,14 +1,14 @@
 # Material Count: 24
 
-newmtl jungle256_6.png
-Ns 20
-Ni 0.0
-map_Kd jungle256_6.png
-
 newmtl jungle128_11.png
 Ns 20
 Ni 0.0
 map_Kd jungle128_11.png
+
+newmtl jungle256_6.png
+Ns 20
+Ni 0.0
+map_Kd jungle256_6.png
 
 newmtl jungle128_6.png
 Ns 20
@@ -30,15 +30,15 @@ Ns 20
 Ni 0.0
 map_Kd jungle256_4.png
 
-newmtl jungle128_5.png
-Ns 20
-Ni 0.0
-map_Kd jungle128_5.png
-
 newmtl jungle64_2.png
 Ns 20
 Ni 0.0
 map_Kd jungle64_2.png
+
+newmtl jungle128_5.png
+Ns 20
+Ni 0.0
+map_Kd jungle128_5.png
 
 newmtl jungle128_10.png
 Ns 20
@@ -50,15 +50,15 @@ Ns 20
 Ni 0.0
 map_Kd jungle128_3.png
 
-newmtl jungle128_1.png
-Ns 20
-Ni 0.0
-map_Kd jungle128_1.png
-
 newmtl jungle128_14.png
 Ns 20
 Ni 0.0
 map_Kd jungle128_14.png
+
+newmtl jungle128_1.png
+Ns 20
+Ni 0.0
+map_Kd jungle128_1.png
 
 newmtl jungle128_7.png
 Ns 20
@@ -75,40 +75,40 @@ Ns 20
 Ni 0.0
 map_Kd jungle64_4.png
 
-newmtl jungle256_2.png
-Ns 20
-Ni 0.0
-map_Kd jungle256_2.png
-
 newmtl jungle128_9.png
 Ns 20
 Ni 0.0
 map_Kd jungle128_9.png
+
+newmtl jungle256_2.png
+Ns 20
+Ni 0.0
+map_Kd jungle256_2.png
 
 newmtl jungle128_4.png
 Ns 20
 Ni 0.0
 map_Kd jungle128_4.png
 
-newmtl jungle256_5.png
-Ns 20
-Ni 0.0
-map_Kd jungle256_5.png
-
 newmtl jungle64_3.png
 Ns 20
 Ni 0.0
 map_Kd jungle64_3.png
 
-newmtl jungle128_13.png
+newmtl jungle256_5.png
 Ns 20
 Ni 0.0
-map_Kd jungle128_13.png
+map_Kd jungle256_5.png
 
 newmtl jungle64_1.png
 Ns 20
 Ni 0.0
 map_Kd jungle64_1.png
+
+newmtl jungle128_13.png
+Ns 20
+Ni 0.0
+map_Kd jungle128_13.png
 
 newmtl jungle256_9.png
 Ns 20

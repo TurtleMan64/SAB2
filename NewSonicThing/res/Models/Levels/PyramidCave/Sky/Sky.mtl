@@ -11,7 +11,7 @@ Ni 0.02
 d 0
 glow 1.0
 illum 2
-map_Kd Tex_0028_0.dds
+map_Kd Tex_0028_0.png
 
 newmtl Mesh_0153.rip
 Ns 20

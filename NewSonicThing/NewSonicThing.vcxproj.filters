@@ -543,6 +543,9 @@
     <ClCompile Include="src\entities\WoodBox.cpp">
       <Filter>Source Files\entities</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\NPC.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.h">
@@ -963,6 +966,9 @@
       <Filter>Source Files\entities\GreenForest</Filter>
     </ClInclude>
     <ClInclude Include="src\entities\woodbox.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\npc.h">
       <Filter>Source Files\entities</Filter>
     </ClInclude>
   </ItemGroup>

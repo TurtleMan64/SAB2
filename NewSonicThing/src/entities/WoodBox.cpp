@@ -113,4 +113,3 @@ void WoodBox::deleteStaticModels()
     Entity::deleteModels(&WoodBox::models);
     Entity::deleteCollisionModel(&WoodBox::cmOriginal);
 }
-

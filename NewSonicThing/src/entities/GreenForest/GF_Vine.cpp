@@ -21,6 +21,7 @@ GF_Vine::GF_Vine(
     float rotAxisX, float rotAxisY, float rotAxisZ,
     float numRotations,
     float launchX, float launchY, float launchZ,
+    float rotSpd,
     float launchSpd,
     float inputLock)
 {
@@ -33,6 +34,7 @@ GF_Vine::GF_Vine(
     numRotationsUntilFinish = numRotations;
     launchDirection.set(launchX, launchY, launchZ);
     launchDirection.normalize();
+    rotateSpeed = rotSpd;
     launchSpeed = launchSpd;
     inputLockTime = inputLock;
 
@@ -72,7 +74,7 @@ void GF_Vine::step()
             {
                 playerIsHoldingOn = true;
                 currentRotations = 0;
-                angleChangeSpeed = fmaxf(launchSpeed, Global::gameMainPlayer->vel.length());
+                angleChangeSpeed = fmaxf(rotateSpeed, Global::gameMainPlayer->vel.length());
                 Global::gameMainPlayer->startGrabbing();
             }
         }
@@ -110,12 +112,7 @@ void GF_Vine::step()
 
 Vector3f GF_Vine::calcForwardDirection()
 {
-    //Vector3f end1 = Maths::rotatePoint(&initialDirection, &rotationAxis, Maths::toRadians(360*currentRotations));
-    //Vector3f end2 = Maths::rotatePoint(&initialDirection, &rotationAxis, Maths::toRadians(360*currentRotations + 3.0f));
-    //Vector3f forward = end2 - end1;
-
     Vector3f forward = rotationAxis.cross(&currentDirection);
-
     forward.normalize();
     return forward;
 }

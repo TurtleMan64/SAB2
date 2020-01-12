@@ -12,8 +12,9 @@ private:
     static std::list<TexturedModel*> models;
 
     Vector3f initialDirection; //so you can reset after vine is used
-    Vector3f launchDirection; //once you finish, what speed do you go
+    Vector3f launchDirection; //once you finish, what direction do you go
     float launchSpeed;
+    float rotateSpeed;
     Vector3f rotationAxis;
     float length; //length of the vine
     float numRotationsUntilFinish; //how many times does the vine swing around before releasing sonic?
@@ -43,6 +44,7 @@ public:
         float rotAxisX, float rotAxisY, float rotAxisZ,
         float numRotations,
         float launchX, float launchY, float launchZ,
+        float rotSpd,
         float launchSpeed,
         float inputLock);
 
