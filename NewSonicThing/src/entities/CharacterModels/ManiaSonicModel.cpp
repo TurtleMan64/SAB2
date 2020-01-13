@@ -1,19 +1,19 @@
 #include <glad/glad.h>
 
-#include "entity.h"
-#include "../models/models.h"
-#include "../toolbox/vector.h"
+#include "../entity.h"
+#include "../../models/models.h"
+#include "../../toolbox/vector.h"
 #include "maniasonicmodel.h"
-#include "../renderEngine/renderEngine.h"
-#include "../objLoader/objLoader.h"
-#include "../engineTester/main.h"
-#include "../entities/playersonic.h"
-#include "../toolbox/maths.h"
-#include "../animation/body.h"
-#include "../animation/limb.h"
-#include "../animation/animationresources.h"
-#include "../particles/particletexture.h"
-#include "../particles/particleresources.h"
+#include "../../renderEngine/renderEngine.h"
+#include "../../objLoader/objLoader.h"
+#include "../../engineTester/main.h"
+#include "../../entities/playersonic.h"
+#include "../../toolbox/maths.h"
+#include "../../animation/body.h"
+#include "../../animation/limb.h"
+#include "../../animation/animationresources.h"
+#include "../../particles/particletexture.h"
+#include "../../particles/particleresources.h"
 
 #include <list>
 #include <iostream>

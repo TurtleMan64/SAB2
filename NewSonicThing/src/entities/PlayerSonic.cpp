@@ -21,9 +21,10 @@
 #include "../audio/source.h"
 #include "checkpoint.h"
 #include "../guis/guimanager.h"
-#include "playermodel.h"
-#include "maniasonicmodel.h"
-#include "maniamightymodel.h"
+#include "CharacterModels/playermodel.h"
+#include "CharacterModels/maniasonicmodel.h"
+#include "CharacterModels/maniamightymodel.h"
+#include "CharacterModels/maniatailsmodel.h"
 #include "ringmoving.h"
 #include "../menu/timer.h"
 #include "stage.h"
@@ -58,7 +59,19 @@ PlayerSonic::PlayerSonic(float x, float y, float z)
     camDir.set(0, 0, -1);
     camDirSmooth.set(0, 0, -1);
 
-    playerModel = new ManiaSonicModel; INCR_NEW("Entity");
+    //temp code for testing
+    if (Global::currentCharacterType == Global::PlayableCharacter::Sonic)
+    {
+        playerModel = new ManiaSonicModel; INCR_NEW("Entity");
+    }
+    else if (Global::currentCharacterType == Global::PlayableCharacter::Tails)
+    {
+        playerModel = new ManiaTailsModel; INCR_NEW("Entity");
+    }
+    else
+    {
+        playerModel = new ManiaMightyModel; INCR_NEW("Entity");
+    }
     Global::addEntity(playerModel);
 
     visible = false;
@@ -2143,6 +2156,7 @@ void PlayerSonic::updateAnimationValues()
 
     ParticleTexture* trail = nullptr;
     float density = 2.0f; //1 particle every 2 units
+    float opacity = 1.0f;
 
     if (deadTimer >= 0)
     {
@@ -2152,6 +2166,7 @@ void PlayerSonic::updateAnimationValues()
     {
         trail = ParticleResources::textureOrangeTrail;
         density = 0.75f;
+        opacity = 0.25f;
     }
     else if (homingAttackTimer > 0 ||
             (isJumping && (hoverTimer > 0 && inputJump)) ||
@@ -2181,7 +2196,7 @@ void PlayerSonic::updateAnimationValues()
         for (int i = 0; i < numParticles; i++)
         {
             Vector3f partPos = centerPosPrev + diff.scaleCopy(((float)i)/numParticles);
-            ParticleMaster::createParticle(trail, &partPos, &zero, 0, 0.25f, 0, 8.0f, -32.0f, false, false, 1.0f, true);
+            ParticleMaster::createParticle(trail, &partPos, &zero, 0, 0.25f, 0, 8.0f, -32.0f, false, false, opacity, true);
         }
     }
 
@@ -2488,6 +2503,7 @@ void PlayerSonic::loadVehicleInfo()
     
     ManiaSonicModel::loadStaticModels();
     ManiaMightyModel::loadStaticModels();
+    ManiaTailsModel::loadStaticModels();
 }
 
 void PlayerSonic::deleteStaticModels()
@@ -2498,6 +2514,7 @@ void PlayerSonic::deleteStaticModels()
     
     ManiaSonicModel::deleteStaticModels();
     ManiaMightyModel::deleteStaticModels();
+    ManiaTailsModel::deleteStaticModels();
 }
 
 const bool PlayerSonic::isVehicle()

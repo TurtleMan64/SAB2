@@ -8,7 +8,7 @@ class ParticleTexture;
 
 #include <list>
 #include <vector>
-#include "entity.h"
+#include "../entity.h"
 #include "playermodel.h"
 
 

@@ -122,6 +122,15 @@ public:
     static bool useFullscreen;
     static int displaySizeChanged; //This will be 1 for a single frame after the size of the window changes (set in callback)
 
+    static int currentCharacterType;
+    //the different types of character movements
+    enum PlayableCharacter
+    {
+        Sonic    = 0,
+        Tails    = 1,
+        Knuckles = 2
+    };
+
     //static std::list<std::string> raceLog;
     static bool shouldLogRace;
 
@@ -211,6 +220,8 @@ public:
     static int getChunkIndex(float x, float z);
 
     static void recalculateEntityChunks(float minX, float maxX, float minZ, float maxZ, float chunkSize);
+
+    static float calcAspectRatio();
 
     static void createTitleCard();
 

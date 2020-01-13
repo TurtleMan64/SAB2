@@ -9,8 +9,8 @@
 #include "../engineTester/main.h"
 #include "../toolbox/getline.h"
 #include "../toolbox/split.h"
-#include "maniamightymodel.h"
-#include "maniasonicmodel.h"
+#include "CharacterModels/maniamightymodel.h"
+#include "CharacterModels/maniasonicmodel.h"
 #include "../menu/timer.h"
 #include "../toolbox/maths.h"
 

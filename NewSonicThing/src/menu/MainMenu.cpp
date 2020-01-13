@@ -24,6 +24,7 @@
 #include "missionmenu.h"
 #include "configmenu.h"
 #include "extras.h"
+#include "characterselect.h"
 
 MainMenu::MainMenu()
 {
@@ -228,32 +229,15 @@ Menu* MainMenu::step()
             {
                 Global::gameIsArcadeMode = true;
                 AudioPlayer::play(38, Global::gameCamera->getFadePosition1());
-
-                Global::gameMissionNumber = 0;
-                Global::gameArcadeIndex = 0;
-
-                Global::levelID = Global::gameArcadeLevelIds[Global::gameArcadeIndex];
-                Level* currentLevel = &Global::gameLevelData[Global::levelID];
-                Global::levelName = currentLevel->fileName;
-                Global::levelNameDisplay = currentLevel->displayName;
-                Global::gameMissionDescription = (currentLevel->missionData[Global::gameMissionNumber])[(currentLevel->missionData[Global::gameMissionNumber]).size() - 1];
-                
-                Global::createTitleCard();
-
-                Global::gameArcadePlaytime = 0.0f;
-
-                Global::isNewLevel = true;
-                Global::shouldLoadLevel = true;
-
-                retVal = SwitchStack::get();
+                retVal = new CharacterSelect; INCR_NEW("Menu");
                 setVisible(false);
-                return retVal;
+                break;
             }
 
             case mission:
                 Global::gameIsArcadeMode = false;
                 AudioPlayer::play(38, Global::gameCamera->getFadePosition1());
-                retVal = new MissionMenu; INCR_NEW("Menu");
+                retVal = new CharacterSelect; INCR_NEW("Menu");
                 setVisible(false);
                 break;
 

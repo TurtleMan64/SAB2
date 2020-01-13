@@ -106,6 +106,9 @@
     <Filter Include="Source Files\entities\PyramidCave">
       <UniqueIdentifier>{7e33bdaf-049b-4ea2-9409-f6c251d8df56}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\entities\CharacterModels">
+      <UniqueIdentifier>{def54bef-5d81-476c-82b3-83b2fd812c5e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\glad.c">
@@ -372,9 +375,6 @@
     <ClCompile Include="src\water\WaterTile.cpp">
       <Filter>Source Files\water</Filter>
     </ClCompile>
-    <ClCompile Include="src\entities\ManiaSonicModel.cpp">
-      <Filter>Source Files\entities</Filter>
-    </ClCompile>
     <ClCompile Include="src\entities\GreenForest\GF_StageManager.cpp">
       <Filter>Source Files\entities\GreenForest</Filter>
     </ClCompile>
@@ -462,12 +462,6 @@
     <ClCompile Include="src\entities\DelfinoPlaza\DP_StageManager.cpp">
       <Filter>Source Files\entities\DelfinoPlaza</Filter>
     </ClCompile>
-    <ClCompile Include="src\entities\PlayerModel.cpp">
-      <Filter>Source Files\entities</Filter>
-    </ClCompile>
-    <ClCompile Include="src\entities\ManiaMightyModel.cpp">
-      <Filter>Source Files\entities</Filter>
-    </ClCompile>
     <ClCompile Include="src\entities\Dashpad.cpp">
       <Filter>Source Files\entities</Filter>
     </ClCompile>
@@ -545,6 +539,21 @@
     </ClCompile>
     <ClCompile Include="src\entities\NPC.cpp">
       <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\menu\CharacterSelect.cpp">
+      <Filter>Source Files\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\CharacterModels\ManiaMightyModel.cpp">
+      <Filter>Source Files\entities\CharacterModels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\CharacterModels\ManiaSonicModel.cpp">
+      <Filter>Source Files\entities\CharacterModels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\CharacterModels\PlayerModel.cpp">
+      <Filter>Source Files\entities\CharacterModels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\CharacterModels\ManiaTailsModel.cpp">
+      <Filter>Source Files\entities\CharacterModels</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -806,9 +815,6 @@
     <ClInclude Include="src\water\watertile.h">
       <Filter>Source Files\water</Filter>
     </ClInclude>
-    <ClInclude Include="src\entities\maniasonicmodel.h">
-      <Filter>Source Files\entities</Filter>
-    </ClInclude>
     <ClInclude Include="src\entities\GreenForest\gfstagemanager.h">
       <Filter>Source Files\entities\GreenForest</Filter>
     </ClInclude>
@@ -896,9 +902,6 @@
     <ClInclude Include="src\entities\DelfinoPlaza\dpstagemanager.h">
       <Filter>Source Files\entities\DelfinoPlaza</Filter>
     </ClInclude>
-    <ClInclude Include="src\entities\maniamightymodel.h">
-      <Filter>Source Files\entities</Filter>
-    </ClInclude>
     <ClInclude Include="src\entities\dashpad.h">
       <Filter>Source Files\entities</Filter>
     </ClInclude>
@@ -910,9 +913,6 @@
     </ClInclude>
     <ClInclude Include="src\entities\Tutorial\tstagemanager.h">
       <Filter>Source Files\entities\Tutorial</Filter>
-    </ClInclude>
-    <ClInclude Include="src\entities\playermodel.h">
-      <Filter>Source Files\entities</Filter>
     </ClInclude>
     <ClInclude Include="src\menu\configmenu.h">
       <Filter>Source Files\menu</Filter>
@@ -970,6 +970,21 @@
     </ClInclude>
     <ClInclude Include="src\entities\npc.h">
       <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\menu\characterselect.h">
+      <Filter>Source Files\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\CharacterModels\maniamightymodel.h">
+      <Filter>Source Files\entities\CharacterModels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\CharacterModels\maniasonicmodel.h">
+      <Filter>Source Files\entities\CharacterModels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\CharacterModels\playermodel.h">
+      <Filter>Source Files\entities\CharacterModels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\CharacterModels\maniatailsmodel.h">
+      <Filter>Source Files\entities\CharacterModels</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

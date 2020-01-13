@@ -10,6 +10,7 @@
 #include "../guis/guitexture.h"
 #include "../fontMeshCreator/fonttype.h"
 #include "../renderEngine/renderEngine.h"
+#include "../entities/controllableplayer.h"
 #include "timer.h"
 
 HUD::HUD()
@@ -128,11 +129,18 @@ void HUD::draw()
 
 Menu* HUD::step()
 {
+    extern float dt;
+
     Menu* retVal = nullptr;
 
+    pauseTimer = fmaxf(0.0f, pauseTimer - dt);
+
     if (Input::inputs.INPUT_START && !Input::inputs.INPUT_PREVIOUS_START &&
-        Global::finishStageTimer < 0.0f)
+        Global::finishStageTimer < 0.0f &&
+        pauseTimer == 0.0f &&
+        !Global::gameMainPlayer->isDying())
     {
+        pauseTimer = 0.5f;
         retVal = new PauseScreen; INCR_NEW("Menu");
     }
 

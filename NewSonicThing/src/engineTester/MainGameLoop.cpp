@@ -192,6 +192,8 @@ int Global::currentCalculatedFPS = 0;
 int Global::renderCount = 0;
 int Global::displaySizeChanged = 0;
 
+int Global::currentCharacterType = Global::PlayableCharacter::Sonic;
+
 int Global::gameArcadeIndex = 0;
 std::vector<int> Global::gameArcadeLevelIds;
 
@@ -411,6 +413,7 @@ int main(int argc, char** argv)
 
         dt = (float)(timeNew - timeOld);
         dt = std::fminf(dt, 0.04f); //Anything lower than 25fps will slow the gameplay down
+        //dt*=0.2f;
         timeOld = timeNew;
 
         Input::pollInputs();
@@ -1602,6 +1605,13 @@ void Global::deleteAllChunkedEntities()
     gameChunkedEntities.clear();
 }
 
+float Global::calcAspectRatio()
+{
+    extern unsigned int SCR_WIDTH;
+    extern unsigned int SCR_HEIGHT;
+    return ((float)SCR_WIDTH)/SCR_HEIGHT;
+}
+
 void Global::createTitleCard()
 {
     Global::startStageTimer = 1.0f;
@@ -1611,7 +1621,23 @@ void Global::createTitleCard()
 
     Vector3f vel(0,0,0);
     ParticleMaster::createParticle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &vel, 0, 1.0f, 0.0f, 50.0f, 0, true, false, 1.0f, false);
-    GuiManager::addGuiToRender(GuiTextureResources::textureBlueLine);
+    
+    switch (Global::currentCharacterType)
+    {
+        case Global::PlayableCharacter::Sonic:
+            GuiManager::addGuiToRender(GuiTextureResources::textureLineBlue);
+            break;
+
+        case Global::PlayableCharacter::Tails:
+            GuiManager::addGuiToRender(GuiTextureResources::textureLineYellow);
+            break;
+
+        case Global::PlayableCharacter::Knuckles:
+            GuiManager::addGuiToRender(GuiTextureResources::textureLineRed);
+            break;
+
+        default: break;
+    }
 
     Global::clearTitleCard();
 

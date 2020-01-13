@@ -163,6 +163,10 @@
     <ClCompile Include="src\engineTester\MainGameLoop.cpp" />
     <ClCompile Include="src\entities\Beetle.cpp" />
     <ClCompile Include="src\entities\Bullet.cpp" />
+    <ClCompile Include="src\entities\CharacterModels\ManiaMightyModel.cpp" />
+    <ClCompile Include="src\entities\CharacterModels\ManiaSonicModel.cpp" />
+    <ClCompile Include="src\entities\CharacterModels\ManiaTailsModel.cpp" />
+    <ClCompile Include="src\entities\CharacterModels\PlayerModel.cpp" />
     <ClCompile Include="src\entities\Dashpad.cpp" />
     <ClCompile Include="src\entities\Camera.cpp" />
     <ClCompile Include="src\entities\ControllablePlayer.cpp" />
@@ -173,12 +177,10 @@
     <ClCompile Include="src\entities\Hunter.cpp" />
     <ClCompile Include="src\entities\ItemCapsule.cpp" />
     <ClCompile Include="src\entities\LostChao.cpp" />
-    <ClCompile Include="src\entities\ManiaMightyModel.cpp" />
     <ClCompile Include="src\entities\MetalHarbor\MH_AircraftCarrierCart.cpp" />
     <ClCompile Include="src\entities\MetalHarbor\MH_CratePlatform.cpp" />
     <ClCompile Include="src\entities\MetalHarbor\MH_StaticObjects.cpp" />
     <ClCompile Include="src\entities\NPC.cpp" />
-    <ClCompile Include="src\entities\PlayerModel.cpp" />
     <ClCompile Include="src\entities\PlayerSonic.cpp" />
     <ClCompile Include="src\entities\Checkpoint.cpp" />
     <ClCompile Include="src\entities\CityEscape\CE_StageManager.cpp" />
@@ -189,7 +191,6 @@
     <ClCompile Include="src\entities\GreenForest\GF_StageManager.cpp" />
     <ClCompile Include="src\entities\GreenHill\GH_StageManager.cpp" />
     <ClCompile Include="src\entities\Light.cpp" />
-    <ClCompile Include="src\entities\ManiaSonicModel.cpp" />
     <ClCompile Include="src\entities\MetalHarbor\MH_StageManager.cpp" />
     <ClCompile Include="src\entities\Point.cpp" />
     <ClCompile Include="src\entities\PyramidCave\PC_StageManager.cpp" />
@@ -238,6 +239,7 @@
     <ClCompile Include="src\guis\GuiTexture.cpp" />
     <ClCompile Include="src\guis\GuiTextureResources.cpp" />
     <ClCompile Include="src\menu\Button.cpp" />
+    <ClCompile Include="src\menu\CharacterSelect.cpp" />
     <ClCompile Include="src\menu\ConfigMenu.cpp" />
     <ClCompile Include="src\menu\Extras.cpp" />
     <ClCompile Include="src\menu\HUD.cpp" />
@@ -311,6 +313,10 @@
     <ClInclude Include="src\engineTester\main.h" />
     <ClInclude Include="src\entities\beetle.h" />
     <ClInclude Include="src\entities\bullet.h" />
+    <ClInclude Include="src\entities\CharacterModels\maniamightymodel.h" />
+    <ClInclude Include="src\entities\CharacterModels\maniasonicmodel.h" />
+    <ClInclude Include="src\entities\CharacterModels\maniatailsmodel.h" />
+    <ClInclude Include="src\entities\CharacterModels\playermodel.h" />
     <ClInclude Include="src\entities\dashpad.h" />
     <ClInclude Include="src\entities\camera.h" />
     <ClInclude Include="src\entities\controllableplayer.h" />
@@ -321,12 +327,10 @@
     <ClInclude Include="src\entities\hunter.h" />
     <ClInclude Include="src\entities\itemcapsule.h" />
     <ClInclude Include="src\entities\lostchao.h" />
-    <ClInclude Include="src\entities\maniamightymodel.h" />
     <ClInclude Include="src\entities\MetalHarbor\mhaircraftcarriercart.h" />
     <ClInclude Include="src\entities\MetalHarbor\mhcrateplatform.h" />
     <ClInclude Include="src\entities\MetalHarbor\mhstaticobjects.h" />
     <ClInclude Include="src\entities\npc.h" />
-    <ClInclude Include="src\entities\playermodel.h" />
     <ClInclude Include="src\entities\playersonic.h" />
     <ClInclude Include="src\entities\checkpoint.h" />
     <ClInclude Include="src\entities\CityEscape\cestagemanager.h" />
@@ -337,7 +341,6 @@
     <ClInclude Include="src\entities\GreenForest\gfstagemanager.h" />
     <ClInclude Include="src\entities\GreenHill\ghstagemanager.h" />
     <ClInclude Include="src\entities\light.h" />
-    <ClInclude Include="src\entities\maniasonicmodel.h" />
     <ClInclude Include="src\entities\MetalHarbor\mhstagemanager.h" />
     <ClInclude Include="src\entities\point.h" />
     <ClInclude Include="src\entities\pulley.h" />
@@ -385,6 +388,7 @@
     <ClInclude Include="src\guis\guitexture.h" />
     <ClInclude Include="src\guis\guitextureresources.h" />
     <ClInclude Include="src\menu\button.h" />
+    <ClInclude Include="src\menu\characterselect.h" />
     <ClInclude Include="src\menu\configmenu.h" />
     <ClInclude Include="src\menu\extras.h" />
     <ClInclude Include="src\menu\hud.h" />

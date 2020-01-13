@@ -29,8 +29,8 @@ float SkyManager::fogGradient = 2.0f;
 float SkyManager::dayFactor;
 float SkyManager::nightFactor;
 
-Entity* SkyManager::entitySun;
-Entity* SkyManager::centerObject;
+Entity* SkyManager::entitySun = nullptr;
+Entity* SkyManager::centerObject = nullptr;
 
 
 void SkyManager::initSkyManager(Entity* mySun, Entity *center)

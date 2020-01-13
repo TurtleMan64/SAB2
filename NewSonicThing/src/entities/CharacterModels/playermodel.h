@@ -3,8 +3,8 @@
 
 class ParticleTexture;
 
-#include "entity.h"
-#include "../toolbox/vector.h"
+#include "../entity.h"
+#include "../../toolbox/vector.h"
 
 class PlayerModel : public Entity
 {

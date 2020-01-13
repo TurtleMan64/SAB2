@@ -10,7 +10,9 @@ class GuiTextureResources
 public:
     static GuiTexture* textureRing;
     static GuiTexture* textureLifeIcon;
-    static GuiTexture* textureBlueLine;
+    static GuiTexture* textureLineBlue;
+    static GuiTexture* textureLineYellow;
+    static GuiTexture* textureLineRed;
     static GuiTexture* textureRankA;
     static GuiTexture* textureRankB;
     static GuiTexture* textureRankC;

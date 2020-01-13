@@ -1,5 +1,5 @@
-#ifndef MANIAMIGHTYMODEL_H
-#define MANIAMIGHTYMODEL_H
+#ifndef MANIATAILSMODEL_H
+#define MANIATAILSMODEL_H
 
 class TexturedModel;
 class Limb;
@@ -8,17 +8,19 @@ class ParticleTexture;
 
 #include <list>
 #include <vector>
-#include "entity.h"
+#include "../entity.h"
 #include "playermodel.h"
 
 
-class ManiaMightyModel : public PlayerModel
+class ManiaTailsModel : public PlayerModel
 {
 private:
     std::list<TexturedModel*>* models;
 
-    const float displayHeightOffset = 0.63f;
+    const float displayHeightOffset = -0.5f;
     const float displayBallOffset = 3.0f;
+
+    const float limbsScale = 1.0f;
 
     Body* myBody         = nullptr;
     Limb* myHead         = nullptr;
@@ -62,6 +64,12 @@ private:
     static std::list<TexturedModel*> modelDash9;
     static std::list<TexturedModel*> modelDash10;
     static std::list<TexturedModel*> modelDash11;
+    static std::list<TexturedModel*> modelDash12;
+    static std::list<TexturedModel*> modelDash13;
+    static std::list<TexturedModel*> modelDash14;
+    static std::list<TexturedModel*> modelDash15;
+    static std::list<TexturedModel*> modelDash16;
+    static std::list<TexturedModel*> modelDash17;
     static std::list<TexturedModel*> modelJump;
     static std::list<TexturedModel*> modelJog0;
     static std::list<TexturedModel*> modelJog1;
@@ -95,7 +103,7 @@ private:
     void updateLimbsMatrix();
 
 public:
-    ManiaMightyModel();
+    ManiaTailsModel();
 
     void step();
 
@@ -107,7 +115,7 @@ public:
 
     void setBaseAlpha(float a);
 
-    void setBaseVisibility(bool visible);
+    void setBaseVisibility(bool newVisible);
 
     void setRenderOrder(char newOrder);
 

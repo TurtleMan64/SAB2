@@ -1,0 +1,101 @@
+# Material Count: 11
+
+newmtl 220_0_28
+	Ns 20.0
+	Ni 0.02
+	Tr 1
+	d 1
+scrollX 0
+scrollY 0
+map_Kd 220_0_28.png
+
+newmtl 244_0_72
+	Ns 20.0
+	Ni 0.02
+	Tr 1
+	d 1
+scrollX 0
+scrollY 0
+map_Kd 244_0_72.png
+
+newmtl 165_194_195
+	Ns 20.0
+	Ni 0.02
+	Tr 1
+	d 1
+scrollX 0
+scrollY 0
+map_Kd 165_194_195.png
+
+newmtl 255_255_255
+	Ns 20.0
+	Ni 0.02
+	Tr 1
+	d 1
+scrollX 0
+scrollY 0
+map_Kd 255_255_255.png
+
+newmtl 172_172_172
+	Ns 20.0
+	Ni 0.02
+	Tr 1
+	d 1
+scrollX 0
+scrollY 0
+map_Kd 172_172_172.png
+
+newmtl 255_190_150
+	Ns 20.0
+	Ni 0.02
+	Tr 1
+	d 1
+scrollX 0
+scrollY 0
+map_Kd 255_190_150.png
+
+newmtl 21_228_21
+	Ns 20.0
+	Ni 0.02
+	Tr 1
+	d 1
+scrollX 0
+scrollY 0
+map_Kd 21_228_21.png
+
+newmtl 0_0_0
+	Ns 20.0
+	Ni 0.02
+	Tr 1
+	d 1
+scrollX 0
+scrollY 0
+map_Kd 0_0_0.png
+
+newmtl 116_116_116
+	Ns 20.0
+	Ni 0.02
+	Tr 1
+	d 1
+scrollX 0
+scrollY 0
+map_Kd 116_116_116.png
+
+newmtl 255_211_28
+	Ns 20.0
+	Ni 0.02
+	Tr 1
+	d 1
+scrollX 0
+scrollY 0
+map_Kd 255_211_28.png
+
+newmtl 56_56_56
+	Ns 20.0
+	Ni 0.02
+	Tr 1
+	d 1
+scrollX 0
+scrollY 0
+map_Kd 56_56_56.png
+

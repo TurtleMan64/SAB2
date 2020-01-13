@@ -49,12 +49,12 @@ void ConfigMenu::loadResources()
         std::fprintf(stdout, "Warning: ConfigMenu loading resources when they are already loaded.\n");
     }
 
-    textureParallelogram              = Loader::loadTextureNoInterpolation("res/Images/MainMenu/Parallelogram.png");
-    textureParallelogramBackdrop      = Loader::loadTextureNoInterpolation("res/Images/MainMenu/ParallelogramBackdrop.png");
-    textureParallelogramHalf          = Loader::loadTextureNoInterpolation("res/Images/MainMenu/ParallelogramHalf.png");
-    textureParallelogramHalfBackdrop  = Loader::loadTextureNoInterpolation("res/Images/MainMenu/ParallelogramHalfBackdrop.png");
-    textureParallelogramHalf2         = Loader::loadTextureNoInterpolation("res/Images/MainMenu/ParallelogramHalf2.png");
-    textureParallelogramHalf2Backdrop = Loader::loadTextureNoInterpolation("res/Images/MainMenu/ParallelogramHalf2Backdrop.png");
+    textureParallelogram              = Loader::loadTexture("res/Images/MainMenu/Parallelogram.png");
+    textureParallelogramBackdrop      = Loader::loadTexture("res/Images/MainMenu/ParallelogramBackdrop.png");
+    textureParallelogramHalf          = Loader::loadTexture("res/Images/MainMenu/ParallelogramHalf.png");
+    textureParallelogramHalfBackdrop  = Loader::loadTexture("res/Images/MainMenu/ParallelogramHalfBackdrop.png");
+    textureParallelogramHalf2         = Loader::loadTexture("res/Images/MainMenu/ParallelogramHalf2.png");
+    textureParallelogramHalf2Backdrop = Loader::loadTexture("res/Images/MainMenu/ParallelogramHalf2Backdrop.png");
 
     extern unsigned int SCR_WIDTH;
     extern unsigned int SCR_HEIGHT;

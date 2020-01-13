@@ -19,6 +19,8 @@ private:
     float speedometer;
     float speedometerScale;
 
+    float pauseTimer;
+
     GUINumber* numberFPS = nullptr;
     GUINumber* numberLives = nullptr;
     GUINumber* numberRings = nullptr;

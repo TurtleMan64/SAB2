@@ -1,0 +1,65 @@
+# Material Count: 7
+
+newmtl 199_199_199.png
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd 199_199_199.png
+
+newmtl 255_141_0
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd 255_255_255.png
+
+newmtl 0_0_0
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd 255_141_0.png
+
+newmtl 56_56_56
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd 56_56_56.png
+
+newmtl 43_43_43_43_43_43.png
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd 43_43_43.png
+
+newmtl 250_21_21
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd 250_21_21.png
+
+newmtl 112_112_143
+Ns 19.607843
+Ni 0.02
+Tr 1
+d 1.000000
+scrollX 0
+scrollY 0
+map_Kd 112_112_143.png
+
