@@ -365,6 +365,7 @@ void PlayerSonic::step()
             hoverTimer = hoverTimerThreshold;
             onGround = false;
             isJumping = true;
+            animationTime = 0;
             AudioPlayer::play(12, getPosition());
         }
     }
@@ -1417,7 +1418,7 @@ void PlayerSonic::step()
     //std::fprintf(stdout, "delta pos = %f\n\n", posDiffDelta.length()/dt);
 
 
-
+    std::fprintf(stdout, "%f\n", animationTime);
     //std::fprintf(stdout, "%f\n\n\n\n", vel.length());
 
     //Vector3f vnorm(&vel);
@@ -1496,7 +1497,15 @@ void PlayerSonic::moveMeGround()
         {
             if (speedShoesTimer <= 0.0f)
             {
-                vel = vel + velToAdd.scaleCopy(groundRunPush*dt); //Add vel from player stick input
+                //Add vel from player stick input
+                if (vel.lengthSquared() < groundRunPushThreshold*groundRunPushThreshold)
+                {
+                    vel = vel + velToAdd.scaleCopy(3*groundRunPush*dt);
+                }
+                else
+                {
+                    vel = vel + velToAdd.scaleCopy(groundRunPush*dt);
+                }
             }
             else
             {
@@ -1645,11 +1654,22 @@ void PlayerSonic::moveMeAir()
 
     if (stickRadius > 0.1f)
     {
-        vel = vel + velToAdd.scaleCopy(airRunPush*dt); //Add vel from player stick input
+        float storedVelY = vel.y;
+        vel.y = 0;
+        //Add vel from player stick input
+        if (vel.lengthSquared() > airFrictionThreshold*airFrictionThreshold)
+        {
+            vel = vel + velToAdd.scaleCopy(airRunPush*dt);
+        }
+        else
+        {
+            vel = vel + velToAdd.scaleCopy(3.5f*airRunPush*dt); //Move a bit more if youre going slow
+        }
+        vel.y = storedVelY;
 
         if (vel.lengthSquared() > 0.00001f)
         {
-            float storedVelY = vel.y;
+            storedVelY = vel.y;
             vel.y = 0;
             if (vel.lengthSquared() > airFrictionThreshold*airFrictionThreshold)
             {
@@ -1666,7 +1686,7 @@ void PlayerSonic::moveMeAir()
         }
 
         //rotate vel to where the stick is going
-        float storedVelY = vel.y;
+        storedVelY = vel.y;
         vel.y = 0;
         float ang = Maths::angleBetweenVectors(&vel, &velToAdd);
         if (ang > 0.001f)
@@ -2050,80 +2070,72 @@ void PlayerSonic::updateAnimationValues()
 
     if (deadTimer > -1.0f)
     {
-        
+        animationTime = 0;
     }
     else if (isLightdashing)
     {
-
+        animationTime = 0;
     }
     else if (isGrabbing)
     {
-
+        animationTime = 0;
     }
     else if (isJumping)
     {
-        runAnimationCycle -= 3000*dt;
+        animationTime -= 3000*dt;
     }
     else if (isBouncing)
     {
-        runAnimationCycle -= 3500*dt;
+        animationTime -= 3500*dt;
     }
     else if (isStomping)
     {
-    
+        animationTime = 0;
     }
     else if (isBall)
     {
-        runAnimationCycle -= (8.0f*currSpeed + 300)*dt;
+        animationTime -= (8.0f*currSpeed + 300)*dt;
     }
     else if (isGrinding)
     {
-
+        animationTime = 0;
     }
     else if (hitTimer > 0.0f)
     {
-    
+        animationTime = 0;
     }
     else if (isSpindashing)
     {
         if (spindashTimer >= spindashTimerMax)
         {
-            runAnimationCycle -= 2500*dt;
+            animationTime -= 2500*dt;
         }
         else
         {
-            runAnimationCycle = -(spindashTimer*spindashTimer*0.8f*60*60);
+            animationTime = -(spindashTimer*spindashTimer*0.8f*60*60);
         }
     }
     else if (isSkidding)
     {
-
+        animationTime = 0;
     }
     else if (spindashReleaseTimer > 0)
     {
-        runAnimationCycle = (spindashReleaseTimer*spindashReleaseTimer*0.4f*60*60);
+        animationTime = (spindashReleaseTimer*spindashReleaseTimer*0.4f*60*60);
     }
     else if (onGround && currSpeed < 0.6f) //stand
     {
-        runAnimationCycle += 60.0f*dt;
-        runAnimationCycle = fmodf(runAnimationCycle, 100.0f);
-        if (runAnimationCycle < 0.0f)
-        {
-            runAnimationCycle += 100.0f; //fmodf returns negative numbers if the number is negative
-        }
+        animationTime += 60.0f*dt;
+        animationTime = fmaxf(0.0f, animationTime);
     }
     else if (!onGround) //freefall
     {
-
+        animationTime = 0;
     }
     else //running animation
     {
-        runAnimationCycle += (1.5f*currSpeed)*dt;
-        runAnimationCycle = fmodf(runAnimationCycle, 100.0f);
-        if (runAnimationCycle < 0.0f)
-        {
-            runAnimationCycle += 100.0f; //fmodf returns negative numbers if the number is negative
-        }
+        animationTime += (1.5f*currSpeed)*dt;
+        animationTime = fmaxf(0.0f, animationTime);
 
         if (currSpeed > spindashPowerMax-20.0f)
         {
@@ -2310,12 +2322,12 @@ void PlayerSonic::animate()
     }
     else if (isJumping)
     {
-        playerModel->setOrientation(dspX, dspY, dspZ, diffAir, yawAngleAir, pitchAngleAir, runAnimationCycle, &relativeUpAnim);
+        playerModel->setOrientation(dspX, dspY, dspZ, diffAir, yawAngleAir, pitchAngleAir, animationTime, &relativeUpAnim);
         playerModel->animate(12, 0);
     }
     else if (isBouncing)
     {
-        playerModel->setOrientation(dspX, dspY, dspZ, diffAir, yawAngleAir, pitchAngleAir, runAnimationCycle, &relativeUpAnim);
+        playerModel->setOrientation(dspX, dspY, dspZ, diffAir, yawAngleAir, pitchAngleAir, animationTime, &relativeUpAnim);
         playerModel->animate(12, 0);
     }
     else if (isStomping)
@@ -2327,11 +2339,11 @@ void PlayerSonic::animate()
     {
         if (onGround)
         {
-            playerModel->setOrientation(dspX, dspY, dspZ, diffGround, yawAngleGround, pitchAngleGround, runAnimationCycle, &relativeUpAnim);
+            playerModel->setOrientation(dspX, dspY, dspZ, diffGround, yawAngleGround, pitchAngleGround, animationTime, &relativeUpAnim);
         }
         else
         {
-            playerModel->setOrientation(dspX, dspY, dspZ, diffAir, yawAngleAir, pitchAngleAir, runAnimationCycle, &relativeUpAnim);
+            playerModel->setOrientation(dspX, dspY, dspZ, diffAir, yawAngleAir, pitchAngleAir, animationTime, &relativeUpAnim);
         }
         playerModel->animate(12, 0);
     }
@@ -2358,7 +2370,7 @@ void PlayerSonic::animate()
         float yawAngleGroundSpnd = Maths::toDegrees(atan2f(-nZGroundSpnd, nXGroundSpnd));
         float diffGroundSpnd = Maths::compareTwoAngles(twistAngleGroundSpnd, yawAngleGroundSpnd);
 
-        playerModel->setOrientation(dspX, dspY, dspZ, diffGroundSpnd, yawAngleGroundSpnd, pitchAngleGroundSpnd, runAnimationCycle, &relativeUpAnim);
+        playerModel->setOrientation(dspX, dspY, dspZ, diffGroundSpnd, yawAngleGroundSpnd, pitchAngleGroundSpnd, animationTime, &relativeUpAnim);
         playerModel->animate(12, 0);
     }
     else if (isSkidding)
@@ -2368,13 +2380,13 @@ void PlayerSonic::animate()
     }
     else if (spindashReleaseTimer > 0)
     {
-        playerModel->setOrientation(dspX, dspY, dspZ, diffGround, yawAngleGround, pitchAngleGround, runAnimationCycle, &relativeUpAnim);
+        playerModel->setOrientation(dspX, dspY, dspZ, diffGround, yawAngleGround, pitchAngleGround, animationTime, &relativeUpAnim);
         playerModel->animate(12, 0);
     }
     else if (onGround && currSpeed < 0.6f) //stand
     {
         playerModel->setOrientation(dspX, dspY, dspZ, diffGround, yawAngleGround, pitchAngleGround, 0, &relativeUpAnim);
-        playerModel->animate(0, runAnimationCycle);
+        playerModel->animate(0, animationTime);
     }
     else if (!onGround) //freefall
     {
@@ -2387,11 +2399,11 @@ void PlayerSonic::animate()
 
         if (currSpeed < 200)
         {
-            playerModel->animate(15, runAnimationCycle);
+            playerModel->animate(15, animationTime);
         }
         else
         {
-            playerModel->animate(1, runAnimationCycle);
+            playerModel->animate(1, animationTime);
         }
     }
 

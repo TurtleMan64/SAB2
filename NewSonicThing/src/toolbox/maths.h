@@ -47,6 +47,12 @@ public:
     //assumes the size of int and float are 32 bits
     static int sign(float value);
 
+    //clamps value between lower and higher
+    static float clamp(float lower, float value, float higher);
+
+    //clamps value between lower and higher
+    static int clamp(int lower, int value, int higher);
+
     static unsigned int getSignBit(float value);
 
     //calculates the number of base 10 decimal digits in the number. 

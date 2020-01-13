@@ -148,7 +148,7 @@ void ManiaSonicModel::animate(int animIndex, float time)
             Vector3f off = currentUpDirection.scaleCopy(limbsScale*displayHeightOffset);
             Vector3f pos = position + off;
             myBody->setBaseOrientation(pos.x, pos.y, pos.z, rotX, rotY, rotZ, rotRoll, limbsScale);
-            updateLimbs(0, time);
+            updateLimbs(0, fmodf(time, 100.0f));
             updateLimbsMatrix();
             setLimbsVisibility(baseVisible);
             visible = false;
@@ -158,8 +158,8 @@ void ManiaSonicModel::animate(int animIndex, float time)
         case 1: //run
         {
             setScale(0.27f);
-            int index = (int)(time / 8.3333333f);
-            switch (index)
+            int index = (int)(time/8.3333333f);
+            switch (index % 12)
             {
                 case  0: models = &ManiaSonicModel::modelDash0;  break;
                 case  1: models = &ManiaSonicModel::modelDash1;  break;
@@ -236,7 +236,7 @@ void ManiaSonicModel::animate(int animIndex, float time)
         {
             setScale(0.27f);
             int index = (int)(time / 5.55555555f);
-            switch (index)
+            switch (index % 18)
             {
                 case 0:  models = &ManiaSonicModel::modelJog0;  break;
                 case 1:  models = &ManiaSonicModel::modelJog1;  break;

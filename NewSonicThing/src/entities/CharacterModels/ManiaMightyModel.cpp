@@ -149,7 +149,7 @@ void ManiaMightyModel::animate(int animIndex, float time)
             Vector3f off = currentUpDirection.scaleCopy(limbsScale*displayHeightOffset);
             Vector3f pos = position + off;
             myBody->setBaseOrientation(pos.x, pos.y, pos.z, rotX, rotY, rotZ, rotRoll, limbsScale);
-            updateLimbs(0, time);
+            updateLimbs(0, fmodf(time, 100.0f));
             updateLimbsMatrix();
             setLimbsVisibility(baseVisible);
             visible = false;
@@ -160,7 +160,7 @@ void ManiaMightyModel::animate(int animIndex, float time)
         {
             setScale(0.27f);
             int index = (int)(time / 8.3333333f);
-            switch (index)
+            switch (index % 12)
             {
                 case  0: models = &ManiaMightyModel::modelDash0;  break;
                 case  1: models = &ManiaMightyModel::modelDash1;  break;
@@ -241,7 +241,7 @@ void ManiaMightyModel::animate(int animIndex, float time)
         {
             setScale(0.27f);
             int index = (int)(time / 5.55555555f);
-            switch (index)
+            switch (index % 18)
             {
                 case 0:  models = &ManiaMightyModel::modelJog0;  break;
                 case 1:  models = &ManiaMightyModel::modelJog1;  break;

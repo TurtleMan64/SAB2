@@ -234,6 +234,18 @@ int Maths::sign(float value)
     return 0;
 }
 
+//clamps value between lower and higher
+float Maths::clamp(float lower, float value, float higher)
+{
+    return fmaxf(lower, fminf(value, higher));
+}
+
+//clamps value between lower and higher
+int Maths::clamp(int lower, int value, int higher)
+{
+    return std::max(lower, std::min(value, higher));
+}
+
 unsigned int Maths::getSignBit(float value)
 {
     unsigned int v = *(unsigned int*)&value; //get bits of value casted as an int

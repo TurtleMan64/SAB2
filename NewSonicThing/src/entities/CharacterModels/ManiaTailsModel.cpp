@@ -154,7 +154,7 @@ void ManiaTailsModel::animate(int animIndex, float time)
             Vector3f off = currentUpDirection.scaleCopy(limbsScale*displayHeightOffset);
             Vector3f pos = position + off;
             myBody->setBaseOrientation(pos.x, pos.y, pos.z, rotX, rotY, rotZ, rotRoll, limbsScale);
-            updateLimbs(0, time);
+            updateLimbs(0, fmodf(time, 100.0f));
             updateLimbsMatrix();
             setLimbsVisibility(baseVisible);
             visible = false;
@@ -164,8 +164,8 @@ void ManiaTailsModel::animate(int animIndex, float time)
         case 1: //run
         {
             setScale(0.30175f);
-            int index = (int)(time / 5.55555555556f);
-            switch (index)
+            int index = (int)(time / 13.0f);
+            switch (index % 18)
             {
                 case  0: models = &ManiaTailsModel::modelDash0;  break;
                 case  1: models = &ManiaTailsModel::modelDash1;  break;
@@ -248,7 +248,7 @@ void ManiaTailsModel::animate(int animIndex, float time)
         {
             setScale(0.30175f);
             int index = (int)(time / 5.55555555f);
-            switch (index)
+            switch (index % 18)
             {
                 case 0:  models = &ManiaTailsModel::modelJog0;  break;
                 case 1:  models = &ManiaTailsModel::modelJog1;  break;

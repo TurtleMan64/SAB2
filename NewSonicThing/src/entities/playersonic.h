@@ -54,13 +54,14 @@ private:
 
     const float groundRunPush = 100.0f;
     const float groundRunPushSpeedshoes = 300.0f;
+    const float groundRunPushThreshold = 33.0f; //when going slower than this, give extra push
     const float groundRunFriction = 0.5f;
     const float groundNeutralFriction = 1.5f; //5.5
     const float skidPower = -5.0f;
     const float airRunPush = 25.0f; //30.0
     const float airRunFrictionUp = 0.75f; //0.25    //maybe make another variable for this to use when vel.y < 0?
     const float airRunFrictionDown = 0.25f; //For when sonic is falling down
-    const float airFrictionThreshold = 40.0f; //When youre going slower than this horizontally, don't apply friction
+    const float airFrictionThreshold = 50.0f; //When youre going slower than this horizontally, don't apply friction
     const float airNeutralFriction = 1.25f;
     const float slopeRunAccel = 9000.0f;
 
@@ -78,7 +79,7 @@ private:
     Vector3f spindashDirection;
     bool canStartSpindash = false;
     bool bufferedSpindashInput = false;
-    const float spindashPowerMax = 500.0f; //475.0f
+    const float spindashPowerMax = 500.0f; //380.0f for tails
     const float spindashChargeRate = 0.4f*60*60;
     const float spindashFriction = 2.0f;
     const float spindashPowerfulFriction = 8.0f;
@@ -162,7 +163,7 @@ private:
     int combo = 0;
 
     //animation variables
-    float runAnimationCycle = 0.0f;
+    float animationTime = 0.0f;
     Vector3f centerPosPrev;
     Vector3f invincibleColor1;
     Vector3f invincibleColor2;
