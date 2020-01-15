@@ -19,8 +19,8 @@ private:
     int location_transformationMatrix;
     int location_projectionMatrix;
     int location_viewMatrix;
-    int location_lightPosition;
-    int location_lightColour;
+    int location_sunDirInv;
+    int location_sunColor;
     int location_shineDamper;
     int location_reflectivity;
     int location_useFakeLighting;
@@ -59,7 +59,7 @@ public:
 
     void loadViewMatrix(Camera*);
 
-    void loadLight(Light*);
+    void loadSun(Light*);
 
     void loadShineVariables(float damper, float reflectivity);
 

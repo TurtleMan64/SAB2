@@ -6,7 +6,7 @@ out vec4 clipSpace;
 out vec2 textureCoords;
 out vec3 toCameraVector;
 out vec3 passCameraPosition;
-out vec3 fromLightVector;
+//out vec3 fromLightVector;
 //out vec4 shadowCoords;
 
 out vec3 worldposition;
@@ -35,7 +35,7 @@ void main(void)
 	textureCoords = vec2(position.x/2.0 + 0.5, position.y/2.0 + 0.5) * tiling;
 	toCameraVector = cameraPosition - worldPosition.xyz;
 	passCameraPosition = cameraPosition;
-	fromLightVector = worldPosition.xyz - lightPosition;
+	//fromLightVector = worldPosition.xyz - lightPosition;
 	
 	
 	

@@ -14,6 +14,7 @@
 #include "../../animation/animationresources.h"
 #include "../../particles/particletexture.h"
 #include "../../particles/particleresources.h"
+#include "../dummy.h"
 
 #include <list>
 #include <iostream>
@@ -78,6 +79,9 @@ std::list<TexturedModel*> ManiaTailsModel::modelLightdash;
 std::list<TexturedModel*> ManiaTailsModel::modelFreefall;
 std::list<TexturedModel*> ManiaTailsModel::modelStomp;
 std::list<TexturedModel*> ManiaTailsModel::modelGrab;
+std::list<TexturedModel*> ManiaTailsModel::modelFlyBody;
+std::list<TexturedModel*> ManiaTailsModel::modelFlyBodyTired;
+std::list<TexturedModel*> ManiaTailsModel::modelFlyTails;
 
 ManiaTailsModel::ManiaTailsModel()
 {
@@ -90,6 +94,10 @@ ManiaTailsModel::ManiaTailsModel()
     scale = 0.30175f;
     visible = false;
     models = &ManiaTailsModel::modelDash0;
+
+    flyTails = new Dummy(&ManiaTailsModel::modelFlyTails); INCR_NEW("Entity");
+
+    Global::addEntity(flyTails);
 
     myBody =         new Body(&modelBody);                                                                   INCR_NEW("Entity");
     myHead =         new Limb(&modelHead,         0.93717f, -0.20826f,  0,        myBody,   nullptr);        INCR_NEW("Entity");
@@ -157,13 +165,14 @@ void ManiaTailsModel::animate(int animIndex, float time)
             updateLimbs(0, fmodf(time, 100.0f));
             updateLimbsMatrix();
             setLimbsVisibility(baseVisible);
+            setFlyVisibility(false);
             visible = false;
             break;
         }
 
         case 1: //run
         {
-            setScale(0.30175f);
+            scale = 0.30175f;
             int index = (int)(time / 13.0f);
             switch (index % 18)
             {
@@ -189,26 +198,29 @@ void ManiaTailsModel::animate(int animIndex, float time)
             }
             updateTransformationMatrix();
             setLimbsVisibility(false);
+            setFlyVisibility(false);
             visible = baseVisible;
             break;
         }
 
         case 3: //stomp
         {
-            setScale(1.0f);
+            scale = 1.0f;
             models = &ManiaTailsModel::modelStomp;
             updateTransformationMatrix();
             setLimbsVisibility(false);
+            setFlyVisibility(false);
             visible = baseVisible;
             break;
         }
 
         case 8: //skid
         {
-            setScale(1.0f);
+            scale = 1.0f;
             models = &ManiaTailsModel::modelSkid;
             updateTransformationMatrix();
             setLimbsVisibility(false);
+            setFlyVisibility(false);
             visible = baseVisible;
             break;
         }
@@ -219,15 +231,17 @@ void ManiaTailsModel::animate(int animIndex, float time)
             updateLimbsMatrix();
             setLimbsVisibility(baseVisible);
             visible = false;
+            setFlyVisibility(false);
             break;
         }
 
         case 12: //jump
         {
-            setScale(0.32f);
+            scale = 0.32f;
             models = &ManiaTailsModel::modelJump;
             updateTransformationMatrix();
             setLimbsVisibility(false);
+            setFlyVisibility(false);
             visible = baseVisible;
             break;
         }
@@ -240,13 +254,14 @@ void ManiaTailsModel::animate(int animIndex, float time)
             updateLimbs(14, time);
             updateLimbsMatrix();
             setLimbsVisibility(baseVisible);
+            setFlyVisibility(false);
             visible = false;
             break;
         }
 
         case 15: //jog
         {
-            setScale(0.30175f);
+            scale = 0.30175f;
             int index = (int)(time / 5.55555555f);
             switch (index % 18)
             {
@@ -272,16 +287,18 @@ void ManiaTailsModel::animate(int animIndex, float time)
             }
             updateTransformationMatrix();
             setLimbsVisibility(false);
+            setFlyVisibility(false);
             visible = baseVisible;
             break;
         }
 
         case 18: //lightdash
         {
-            setScale(1.0f);
+            scale = 1.0f;
             models = &ManiaTailsModel::modelLightdash;
             updateTransformationMatrix();
             setLimbsVisibility(false);
+            setFlyVisibility(false);
             visible = baseVisible;
             break;
         }
@@ -291,37 +308,67 @@ void ManiaTailsModel::animate(int animIndex, float time)
             updateLimbs(19, 0);
             updateLimbsMatrix();
             setLimbsVisibility(baseVisible);
+            setFlyVisibility(false);
             visible = false;
+            break;
+        }
+
+        case 20: //fly
+        {
+            scale = 1.0f;
+            setLimbsVisibility(false);
+            visible = baseVisible;
+            setFlyVisibility(baseVisible);
+            models = &ManiaTailsModel::modelFlyBody;
+            flyTails->rotY += time*0.6f;
+            updateFlyMatrix();
+            updateTransformationMatrix();
             break;
         }
 
         case 21: //freefall
         {
-            setScale(1.0f);
+            scale = 1.0f;
             models = &ManiaTailsModel::modelFreefall;
             updateTransformationMatrix();
             setLimbsVisibility(false);
+            setFlyVisibility(false);
             visible = baseVisible;
             break;
         }
 
         case 25: //grab
         {
-            setScale(1.0f);
+            scale = 1.0f;
             models = &ManiaTailsModel::modelGrab;
             updateTransformationMatrix();
             setLimbsVisibility(false);
+            setFlyVisibility(false);
             visible = baseVisible;
             break;
         }
 
         case 26: //grind
         {
-            setScale(1.0f);
+            scale = 1.0f;
             models = &ManiaTailsModel::modelGrind;
             updateTransformationMatrix();
             setLimbsVisibility(false);
+            setFlyVisibility(false);
             visible = baseVisible;
+            break;
+        }
+
+        case 27: //fly tired
+        {
+            scale = 1.0f;
+            setLimbsVisibility(false);
+            visible = baseVisible;
+            setFlyVisibility(baseVisible);
+            models = &ManiaTailsModel::modelFlyBodyTired;
+            flyTails->rotY += time*0.2f;
+            updateFlyMatrix();
+            updateTransformationMatrix();
             break;
         }
 
@@ -341,6 +388,8 @@ void ManiaTailsModel::setOrientation(float x, float y, float z, float xRot, floa
     rotRoll    = spinRot;
     currentUpDirection.set(newUp);
     myBody->setBaseOrientation(x, y, z, rotX, rotY, rotZ, rotRoll, limbsScale);
+    flyTails->position.set(x, y, z);
+    flyTails->setRotation(xRot, yRot, zRot, spinRot);
 }
 
 void ManiaTailsModel::setBaseColor(float r, float g, float b)
@@ -436,49 +485,52 @@ void ManiaTailsModel::loadStaticModels()
     loadModel(&ManiaTailsModel::modelRightShin,    "res/Models/Characters/ManiaTails/", "Forearm");
     loadModel(&ManiaTailsModel::modelRightFoot,    "res/Models/Characters/ManiaTails/", "ShoeRight");
 
-    loadModel(&ManiaTailsModel::modelDash0    , "res/Models/Characters/ManiaTails/", "Dash0");
-    loadModel(&ManiaTailsModel::modelDash1    , "res/Models/Characters/ManiaTails/", "Dash1");
-    loadModel(&ManiaTailsModel::modelDash2    , "res/Models/Characters/ManiaTails/", "Dash2");
-    loadModel(&ManiaTailsModel::modelDash3    , "res/Models/Characters/ManiaTails/", "Dash3");
-    loadModel(&ManiaTailsModel::modelDash4    , "res/Models/Characters/ManiaTails/", "Dash4");
-    loadModel(&ManiaTailsModel::modelDash5    , "res/Models/Characters/ManiaTails/", "Dash5");
-    loadModel(&ManiaTailsModel::modelDash6    , "res/Models/Characters/ManiaTails/", "Dash6");
-    loadModel(&ManiaTailsModel::modelDash7    , "res/Models/Characters/ManiaTails/", "Dash7");
-    loadModel(&ManiaTailsModel::modelDash8    , "res/Models/Characters/ManiaTails/", "Dash8");
-    loadModel(&ManiaTailsModel::modelDash9    , "res/Models/Characters/ManiaTails/", "Dash9");
-    loadModel(&ManiaTailsModel::modelDash10   , "res/Models/Characters/ManiaTails/", "Dash10");
-    loadModel(&ManiaTailsModel::modelDash11   , "res/Models/Characters/ManiaTails/", "Dash11");
-    loadModel(&ManiaTailsModel::modelDash12   , "res/Models/Characters/ManiaTails/", "Dash12");
-    loadModel(&ManiaTailsModel::modelDash13   , "res/Models/Characters/ManiaTails/", "Dash13");
-    loadModel(&ManiaTailsModel::modelDash14   , "res/Models/Characters/ManiaTails/", "Dash14");
-    loadModel(&ManiaTailsModel::modelDash15   , "res/Models/Characters/ManiaTails/", "Dash15");
-    loadModel(&ManiaTailsModel::modelDash16   , "res/Models/Characters/ManiaTails/", "Dash16");
-    loadModel(&ManiaTailsModel::modelDash17   , "res/Models/Characters/ManiaTails/", "Dash17");
-    loadModel(&ManiaTailsModel::modelJump     , "res/Models/Characters/ManiaTails/", "Jump");
-    loadModel(&ManiaTailsModel::modelJog0     , "res/Models/Characters/ManiaTails/", "Jog0");
-    loadModel(&ManiaTailsModel::modelJog1     , "res/Models/Characters/ManiaTails/", "Jog1");
-    loadModel(&ManiaTailsModel::modelJog2     , "res/Models/Characters/ManiaTails/", "Jog2");
-    loadModel(&ManiaTailsModel::modelJog3     , "res/Models/Characters/ManiaTails/", "Jog3");
-    loadModel(&ManiaTailsModel::modelJog4     , "res/Models/Characters/ManiaTails/", "Jog4");
-    loadModel(&ManiaTailsModel::modelJog5     , "res/Models/Characters/ManiaTails/", "Jog5");
-    loadModel(&ManiaTailsModel::modelJog6     , "res/Models/Characters/ManiaTails/", "Jog6");
-    loadModel(&ManiaTailsModel::modelJog7     , "res/Models/Characters/ManiaTails/", "Jog7");
-    loadModel(&ManiaTailsModel::modelJog8     , "res/Models/Characters/ManiaTails/", "Jog8");
-    loadModel(&ManiaTailsModel::modelJog9     , "res/Models/Characters/ManiaTails/", "Jog9");
-    loadModel(&ManiaTailsModel::modelJog10    , "res/Models/Characters/ManiaTails/", "Jog10");
-    loadModel(&ManiaTailsModel::modelJog11    , "res/Models/Characters/ManiaTails/", "Jog11");
-    loadModel(&ManiaTailsModel::modelJog12    , "res/Models/Characters/ManiaTails/", "Jog12");
-    loadModel(&ManiaTailsModel::modelJog13    , "res/Models/Characters/ManiaTails/", "Jog13");
-    loadModel(&ManiaTailsModel::modelJog14    , "res/Models/Characters/ManiaTails/", "Jog14");
-    loadModel(&ManiaTailsModel::modelJog15    , "res/Models/Characters/ManiaTails/", "Jog15");
-    loadModel(&ManiaTailsModel::modelJog16    , "res/Models/Characters/ManiaTails/", "Jog16");
-    loadModel(&ManiaTailsModel::modelJog17    , "res/Models/Characters/ManiaTails/", "Jog17");
-    loadModel(&ManiaTailsModel::modelGrind    , "res/Models/Characters/ManiaTails/", "Grind");
-    loadModel(&ManiaTailsModel::modelSkid     , "res/Models/Characters/ManiaTails/", "Skid");
-    loadModel(&ManiaTailsModel::modelLightdash, "res/Models/Characters/ManiaTails/", "Lightdash");
-    loadModel(&ManiaTailsModel::modelFreefall , "res/Models/Characters/ManiaTails/", "Freefall");
-    loadModel(&ManiaTailsModel::modelStomp    , "res/Models/Characters/ManiaTails/", "Freefall");
-    loadModel(&ManiaTailsModel::modelGrab     , "res/Models/Characters/ManiaTails/", "Grab");
+    loadModel(&ManiaTailsModel::modelDash0       , "res/Models/Characters/ManiaTails/", "Dash0");
+    loadModel(&ManiaTailsModel::modelDash1       , "res/Models/Characters/ManiaTails/", "Dash1");
+    loadModel(&ManiaTailsModel::modelDash2       , "res/Models/Characters/ManiaTails/", "Dash2");
+    loadModel(&ManiaTailsModel::modelDash3       , "res/Models/Characters/ManiaTails/", "Dash3");
+    loadModel(&ManiaTailsModel::modelDash4       , "res/Models/Characters/ManiaTails/", "Dash4");
+    loadModel(&ManiaTailsModel::modelDash5       , "res/Models/Characters/ManiaTails/", "Dash5");
+    loadModel(&ManiaTailsModel::modelDash6       , "res/Models/Characters/ManiaTails/", "Dash6");
+    loadModel(&ManiaTailsModel::modelDash7       , "res/Models/Characters/ManiaTails/", "Dash7");
+    loadModel(&ManiaTailsModel::modelDash8       , "res/Models/Characters/ManiaTails/", "Dash8");
+    loadModel(&ManiaTailsModel::modelDash9       , "res/Models/Characters/ManiaTails/", "Dash9");
+    loadModel(&ManiaTailsModel::modelDash10      , "res/Models/Characters/ManiaTails/", "Dash10");
+    loadModel(&ManiaTailsModel::modelDash11      , "res/Models/Characters/ManiaTails/", "Dash11");
+    loadModel(&ManiaTailsModel::modelDash12      , "res/Models/Characters/ManiaTails/", "Dash12");
+    loadModel(&ManiaTailsModel::modelDash13      , "res/Models/Characters/ManiaTails/", "Dash13");
+    loadModel(&ManiaTailsModel::modelDash14      , "res/Models/Characters/ManiaTails/", "Dash14");
+    loadModel(&ManiaTailsModel::modelDash15      , "res/Models/Characters/ManiaTails/", "Dash15");
+    loadModel(&ManiaTailsModel::modelDash16      , "res/Models/Characters/ManiaTails/", "Dash16");
+    loadModel(&ManiaTailsModel::modelDash17      , "res/Models/Characters/ManiaTails/", "Dash17");
+    loadModel(&ManiaTailsModel::modelJump        , "res/Models/Characters/ManiaTails/", "Jump");
+    loadModel(&ManiaTailsModel::modelJog0        , "res/Models/Characters/ManiaTails/", "Jog0");
+    loadModel(&ManiaTailsModel::modelJog1        , "res/Models/Characters/ManiaTails/", "Jog1");
+    loadModel(&ManiaTailsModel::modelJog2        , "res/Models/Characters/ManiaTails/", "Jog2");
+    loadModel(&ManiaTailsModel::modelJog3        , "res/Models/Characters/ManiaTails/", "Jog3");
+    loadModel(&ManiaTailsModel::modelJog4        , "res/Models/Characters/ManiaTails/", "Jog4");
+    loadModel(&ManiaTailsModel::modelJog5        , "res/Models/Characters/ManiaTails/", "Jog5");
+    loadModel(&ManiaTailsModel::modelJog6        , "res/Models/Characters/ManiaTails/", "Jog6");
+    loadModel(&ManiaTailsModel::modelJog7        , "res/Models/Characters/ManiaTails/", "Jog7");
+    loadModel(&ManiaTailsModel::modelJog8        , "res/Models/Characters/ManiaTails/", "Jog8");
+    loadModel(&ManiaTailsModel::modelJog9        , "res/Models/Characters/ManiaTails/", "Jog9");
+    loadModel(&ManiaTailsModel::modelJog10       , "res/Models/Characters/ManiaTails/", "Jog10");
+    loadModel(&ManiaTailsModel::modelJog11       , "res/Models/Characters/ManiaTails/", "Jog11");
+    loadModel(&ManiaTailsModel::modelJog12       , "res/Models/Characters/ManiaTails/", "Jog12");
+    loadModel(&ManiaTailsModel::modelJog13       , "res/Models/Characters/ManiaTails/", "Jog13");
+    loadModel(&ManiaTailsModel::modelJog14       , "res/Models/Characters/ManiaTails/", "Jog14");
+    loadModel(&ManiaTailsModel::modelJog15       , "res/Models/Characters/ManiaTails/", "Jog15");
+    loadModel(&ManiaTailsModel::modelJog16       , "res/Models/Characters/ManiaTails/", "Jog16");
+    loadModel(&ManiaTailsModel::modelJog17       , "res/Models/Characters/ManiaTails/", "Jog17");
+    loadModel(&ManiaTailsModel::modelGrind       , "res/Models/Characters/ManiaTails/", "Grind");
+    loadModel(&ManiaTailsModel::modelSkid        , "res/Models/Characters/ManiaTails/", "Skid");
+    loadModel(&ManiaTailsModel::modelLightdash   , "res/Models/Characters/ManiaTails/", "Lightdash");
+    loadModel(&ManiaTailsModel::modelFreefall    , "res/Models/Characters/ManiaTails/", "Freefall");
+    loadModel(&ManiaTailsModel::modelStomp       , "res/Models/Characters/ManiaTails/", "Freefall");
+    loadModel(&ManiaTailsModel::modelGrab        , "res/Models/Characters/ManiaTails/", "Grab");
+    loadModel(&ManiaTailsModel::modelFlyBody     , "res/Models/Characters/ManiaTails/", "FlyBody");
+    loadModel(&ManiaTailsModel::modelFlyBodyTired, "res/Models/Characters/ManiaTails/", "FlyBodyTired");
+    loadModel(&ManiaTailsModel::modelFlyTails    , "res/Models/Characters/ManiaTails/", "FlyTails");
 }
 
 void ManiaTailsModel::setLimbsVisibility(bool newVisible)
@@ -549,10 +601,20 @@ void ManiaTailsModel::updateLimbsMatrix()
     myRightFoot->updateTransformationMatrix();
 }
 
+void ManiaTailsModel::setFlyVisibility(bool newVisible)
+{
+    flyTails->visible = newVisible;
+}
+
+void ManiaTailsModel::updateFlyMatrix()
+{
+    flyTails->updateTransformationMatrix();
+}
+
 void ManiaTailsModel::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting mania sonic static models...\n");
+    std::fprintf(stdout, "Deleting mania tails static models...\n");
     #endif
 
     Entity::deleteModels(&ManiaTailsModel::modelBody);
@@ -613,4 +675,7 @@ void ManiaTailsModel::deleteStaticModels()
     Entity::deleteModels(&ManiaTailsModel::modelFreefall);
     Entity::deleteModels(&ManiaTailsModel::modelStomp);
     Entity::deleteModels(&ManiaTailsModel::modelGrab);
+    Entity::deleteModels(&ManiaTailsModel::modelFlyBody);
+    Entity::deleteModels(&ManiaTailsModel::modelFlyBodyTired);
+    Entity::deleteModels(&ManiaTailsModel::modelFlyTails);
 }

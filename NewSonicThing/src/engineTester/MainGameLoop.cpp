@@ -322,10 +322,10 @@ int main(int argc, char** argv)
     SkyManager::initSkyManager(nullptr, nullptr);
     SkyManager::setTimeOfDay(155.0f);
 
-    lightSun.getPosition()->x = 0;
-    lightSun.getPosition()->y = 0;
-    lightSun.getPosition()->z = 0;
-    lightMoon.getPosition()->y = -100000;
+    //lightSun.getPosition()->x = 0;
+    //lightSun.getPosition()->y = 0;
+    //lightSun.getPosition()->z = 0;
+    //lightMoon.getPosition()->y = -100000;
 
     if (Global::useHighQualityWater)
     {

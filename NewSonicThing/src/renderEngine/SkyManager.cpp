@@ -75,7 +75,7 @@ void SkyManager::calculateValues()
     float moonVangle = Maths::toRadians(sunPeakAngle*sinf(sunAngle - Maths::PI));
     float moonHangle = Maths::toRadians(90 * cosf(sunAngle));
 
-    Vector3f dummy;
+    Vector3f dummy(0, 0, 0);
     Vector3f* center = &dummy;
     if (centerObject != nullptr)
     {
@@ -86,17 +86,20 @@ void SkyManager::calculateValues()
     //Vector3f modelOffset = spherePositionFromAngles(sunHangle, sunVangle, sunModelRadius);
 
 
-    Global::gameLightSun->setPosition(center->x + sunOffset.x,
-                                      sunOffset.y,
-                                      center->z - sunOffset.z);
+    Global::gameLightSun->position.set(center->x + sunOffset.x,
+                                       sunOffset.y,
+                                       center->z - sunOffset.z);
+    sunOffset.normalize();
+    sunOffset.neg();
+    //Global::gameLightSun->direction = sunOffset;
 
     //entitySun.setX(center->x + modelOffset.x);
     //entitySun.setY(modelOffset.y);
     //entitySun.setZ(center->z - modelOffset.z);
 
-    Global::gameLightMoon->setPosition(center->x + moonOffset.x,
-                                       moonOffset.y,
-                                       center->z - moonOffset.z);
+    Global::gameLightMoon->position.set(center->x + moonOffset.x,
+                                        moonOffset.y,
+                                        center->z - moonOffset.z);
 
     if (timeOfDay >= 180)
     {
@@ -129,8 +132,8 @@ void SkyManager::calculateValues()
         colourMoonInterpolated.z = ((colourMoonNight.z*nightFactor) + (colourMoonDay.z*dayFactor));
     }
 
-    Global::gameLightSun->setColour(&colourSunInterpolated);
-    Global::gameLightMoon->setColour(&colourMoonInterpolated);
+    Global::gameLightSun->color = colourSunInterpolated;
+    Global::gameLightMoon->color = colourMoonInterpolated;
 }
 
 Vector3f* SkyManager::getFogColour()

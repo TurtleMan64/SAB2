@@ -65,10 +65,10 @@ void WaterShader::connectTextureUnits()
     loadInt(location_shadowMap, 5);
 }
 
-void WaterShader::loadLight(Light* sun)
+void WaterShader::loadSun(Light* sun)
 {
-    loadVector(location_lightColour,   sun->getColour());
-    loadVector(location_lightPosition, sun->getPosition());
+    loadVector(location_sunColor,     &sun->color);
+    loadVector(location_sunDirection, &sun->direction);
 }
 
 void WaterShader::loadWaterHeight(float waterHeight)
@@ -137,8 +137,8 @@ void WaterShader::getAllUniformLocations()
     location_moveFactor        = getUniformLocation("moveFactor");
     location_cameraPosition    = getUniformLocation("cameraPosition");
     location_normalMap         = getUniformLocation("normalMap");
-    location_lightColour       = getUniformLocation("lightColour");
-    location_lightPosition     = getUniformLocation("lightPosition");
+    location_sunColor          = getUniformLocation("sunColor");
+    location_sunDirection      = getUniformLocation("sunDirection");
     location_depthMap          = getUniformLocation("depthMap");
     location_shadowMap         = getUniformLocation("shadowMap");
     location_toShadowMapSpace  = getUniformLocation("toShadowMapSpace");

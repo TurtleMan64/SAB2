@@ -3,22 +3,13 @@
 
 #include "../toolbox/vector.h"
 
-
 class Light
 {
-private:
-    Vector3f position;
-    Vector3f colour;
-
 public:
+    Vector3f position;
+    Vector3f direction;
+    Vector3f color;
+
     Light();
-
-    Vector3f* getPosition();
-    void setPosition(Vector3f*);
-    void setPosition(float newX, float newY, float newZ);
-
-    Vector3f* getColour();
-    void setColour(Vector3f*);
-    void setColour(float newR, float newG, float newB);
 };
 #endif

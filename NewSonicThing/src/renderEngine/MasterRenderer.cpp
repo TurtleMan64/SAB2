@@ -155,7 +155,7 @@ void Master_render(Camera* camera, float clipX, float clipY, float clipZ, float 
     GREEN = SkyManager::getFogGreen();
     BLUE = SkyManager::getFogBlue();
     shader->loadSkyColour(RED, GREEN, BLUE);
-    shader->loadLight(Global::gameLightSun);
+    shader->loadSun(Global::gameLightSun);
     shader->loadViewMatrix(camera);
     shader->connectTextureUnits();
 

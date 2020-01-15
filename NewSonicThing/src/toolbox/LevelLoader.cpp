@@ -72,6 +72,7 @@
 #include "../entities/GreenForest/gfvine.h"
 #include "../entities/woodbox.h"
 #include "../entities/npc.h"
+#include "../entities/light.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -481,6 +482,20 @@ void LevelLoader::loadLevel(std::string levelFilename)
         free(dat);
     }
 
+    std::string sunDirection;
+    getlineSafe(file, sunDirection);
+    if (stageFault == 1)
+    {
+        char lineBuf[128];
+        memcpy(lineBuf, sunDirection.c_str(), sunDirection.size()+1);
+        int splitLength = 0;
+        char** dat = split(lineBuf, ' ', &splitLength);
+
+        Global::gameLightSun->direction.set(toFloat(dat[0]), toFloat(dat[1]), toFloat(dat[2]));
+        Global::gameLightSun->direction.normalize();
+        free(dat);
+    }
+
     //Global::gameSkySphere->setVisible(false);
 
     Vector3f initialCamDir;
@@ -616,6 +631,12 @@ void LevelLoader::loadLevel(std::string levelFilename)
     getlineSafe(file, backfaceCullingLine);
     Global::renderWithCulling = (backfaceCullingLine == "true");
 
+    //the chunked entity chunk size for this level
+    std::string chunkSize;
+    getlineSafe(file, chunkSize);
+    float newChunkSize = std::stof(chunkSize);
+
+
     GuiManager::clearGuisToRender();
 
     Global::gameIsNormalMode = false;
@@ -705,18 +726,11 @@ void LevelLoader::loadLevel(std::string levelFilename)
             maxZ = std::fmaxf(maxZ, e->getZ());
         }
 
-        Global::recalculateEntityChunks(minX, maxX, minZ, maxZ, 1000);
+        Global::recalculateEntityChunks(minX, maxX, minZ, maxZ, newChunkSize);
 
         for (Entity* e : chunkedEntities)
         {
             Global::addChunkedEntity(e);
-        }
-    }
-    else //not many chunked entities, dont bother
-    {
-        for (Entity* e : chunkedEntities)
-        {
-            Global::addEntity(e);
         }
     }
 

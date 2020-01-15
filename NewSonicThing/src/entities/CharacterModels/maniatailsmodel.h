@@ -5,6 +5,7 @@ class TexturedModel;
 class Limb;
 class Body;
 class ParticleTexture;
+class Dummy;
 
 #include <list>
 #include <vector>
@@ -36,6 +37,8 @@ private:
     Limb* myRightThigh   = nullptr;
     Limb* myRightShin    = nullptr;
     Limb* myRightFoot    = nullptr;
+
+    Dummy* flyTails = nullptr;
 
     static std::list<TexturedModel*> modelBody;
     static std::list<TexturedModel*> modelHead;
@@ -95,12 +98,19 @@ private:
     static std::list<TexturedModel*> modelFreefall;
     static std::list<TexturedModel*> modelStomp;
     static std::list<TexturedModel*> modelGrab;
+    static std::list<TexturedModel*> modelFlyBody;
+    static std::list<TexturedModel*> modelFlyBodyTired;
+    static std::list<TexturedModel*> modelFlyTails;
 
     void setLimbsVisibility(bool newVisible);
 
     void updateLimbs(int animIndex, float time);
 
     void updateLimbsMatrix();
+
+    void setFlyVisibility(bool newVisible);
+
+    void updateFlyMatrix();
 
 public:
     ManiaTailsModel();

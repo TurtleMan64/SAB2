@@ -4,19 +4,20 @@ in vec4 clipSpace;
 in vec2 textureCoords;
 in vec3 toCameraVector;
 in vec3 passCameraPosition;
-in vec3 fromLightVector;
+//in vec3 fromLightVector;
 
 in vec3 worldposition;
 
 out vec4 out_Color;
 out vec4 out_BrightColour;
 
+uniform vec3 sunDirection;
 uniform sampler2D reflectionTexture;
 uniform sampler2D refractionTexture;
 uniform sampler2D dudvMap;
 uniform sampler2D normalMap;
 uniform sampler2D depthMap;
-uniform vec3 lightColour;
+uniform vec3 sunColor;
 uniform float waterHeight;
 uniform float moveFactor;
 
@@ -96,7 +97,8 @@ void main(void)
 	//refractiveFactor = 1.0;
 	
 	
-	vec3 reflectedLight = reflect(normalize(fromLightVector), normal);
+	//vec3 reflectedLight = reflect(normalize(fromLightVector), normal);
+    vec3 reflectedLight = reflect(sunDirection, normal);
 	float specular = max(dot(reflectedLight, viewVector), 0.0);
 	specular = pow(specular, shineDamper);
 	
@@ -115,7 +117,7 @@ void main(void)
 	//switch(renderMode)
 	//{
 		//case 0:
-			specularHighlights = lightColour * specular * reflectivity * waterDepthFactor;
+			specularHighlights = sunColor * specular * reflectivity * waterDepthFactor;
 			out_Color = out_Color + vec4(specularHighlights, 0.0);
 			out_Color.a = waterDepthFactor;
 		//	break;

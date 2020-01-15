@@ -1418,7 +1418,7 @@ void PlayerSonic::step()
     //std::fprintf(stdout, "delta pos = %f\n\n", posDiffDelta.length()/dt);
 
 
-    std::fprintf(stdout, "%f\n", animationTime);
+    //std::fprintf(stdout, "%f\n", animationTime);
     //std::fprintf(stdout, "%f\n\n\n\n", vel.length());
 
     //Vector3f vnorm(&vel);
@@ -2322,8 +2322,18 @@ void PlayerSonic::animate()
     }
     else if (isJumping)
     {
-        playerModel->setOrientation(dspX, dspY, dspZ, diffAir, yawAngleAir, pitchAngleAir, animationTime, &relativeUpAnim);
-        playerModel->animate(12, 0);
+        //playerModel->setOrientation(dspX, dspY, dspZ, diffAir, yawAngleAir, pitchAngleAir, animationTime, &relativeUpAnim);
+        //playerModel->animate(12, 0);
+
+        playerModel->setOrientation(dspX, dspY, dspZ, 0, twistAngleAir, 0, 0, &relativeUpAnim);
+        if (vel.y > 0)
+        {
+            playerModel->animate(20, animationTime);
+        }
+        else
+        {
+            playerModel->animate(27, animationTime);
+        }
     }
     else if (isBouncing)
     {

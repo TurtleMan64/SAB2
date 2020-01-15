@@ -12,6 +12,7 @@ Collision 8
 0.05 0.05 0.075
 0.00000000005 2.0
 90.0
+-0.5 -0.86666 0.0
 1 0 0
 1
 2
@@ -26,6 +27,8 @@ water
 -1.5
 18
 true
+1000
+
 
 #Note: scale that im using from SMS -> SAB2 is 0.1
 

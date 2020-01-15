@@ -27,9 +27,9 @@ ShadowMapMasterRenderer::ShadowMapMasterRenderer()
 void ShadowMapMasterRenderer::render(std::unordered_map<TexturedModel*, std::list<Entity*>>* entities, Light* sun)
 {
     shadowBox->update();
-    Vector3f* sunPosition = sun->getPosition();
-    Vector3f lightDirection(-sunPosition->x, -sunPosition->y, -sunPosition->z);
-    prepare(&lightDirection, shadowBox);
+    //Vector3f* sunPosition = sun->getPosition();
+    //Vector3f lightDirection(-sunPosition->x, -sunPosition->y, -sunPosition->z);
+    prepare(&sun->direction, shadowBox);
     entityRenderer->render(entities);
     finish();
 }

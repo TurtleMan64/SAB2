@@ -66,10 +66,11 @@ void ShaderProgram::loadViewMatrix(Camera* cam)
     loadMatrix(location_viewMatrix, &viewMatrix);
 }
 
-void ShaderProgram::loadLight(Light* light)
+void ShaderProgram::loadSun(Light* light)
 {
-    loadVector(location_lightPosition, light->getPosition());
-    loadVector(location_lightColour, light->getColour());
+    Vector3f dirInv = light->direction.scaleCopy(-1);
+    loadVector(location_sunDirInv, &dirInv);
+    loadVector(location_sunColor, &light->color);
 }
 
 void ShaderProgram::loadShineVariables(float damper, float reflectivity)
@@ -154,8 +155,8 @@ void ShaderProgram::getAllUniformLocations()
     location_transformationMatrix  = getUniformLocation("transformationMatrix");
     location_projectionMatrix      = getUniformLocation("projectionMatrix");
     location_viewMatrix            = getUniformLocation("viewMatrix");
-    location_lightPosition         = getUniformLocation("lightPosition");
-    location_lightColour           = getUniformLocation("lightColour");
+    location_sunDirInv             = getUniformLocation("sunDirInv");
+    location_sunColor              = getUniformLocation("sunColor");
     location_shineDamper           = getUniformLocation("shineDamper");
     location_reflectivity          = getUniformLocation("reflectivity");
     location_useFakeLighting       = getUniformLocation("useFakeLighting");

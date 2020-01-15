@@ -26,8 +26,8 @@ private:
     int location_moveFactor;
     int location_cameraPosition;
     int location_normalMap;
-    int location_lightPosition;
-    int location_lightColour;
+    int location_sunDirection;
+    int location_sunColor;
     int location_depthMap;
     int location_shadowMap;
     int location_toShadowMapSpace;
@@ -47,7 +47,7 @@ public:
 
     void connectTextureUnits();
 
-    void loadLight(Light* sun);
+    void loadSun(Light* sun);
 
     void loadWaterHeight(float waterHeight);
 

@@ -50,7 +50,7 @@ void WaterRenderer::prepareRender(Camera* camera, Light* sun)
     moveFactor += WAVE_SPEED;
     moveFactor = fmodf(moveFactor, 1);
     shader->loadMoveFactor(moveFactor);
-    shader->loadLight(sun);
+    shader->loadSun(sun);
     shader->loadWaterHeight(Global::waterHeight);
     glBindVertexArray(quad->getVaoID());
     glEnableVertexAttribArray(0);
