@@ -1,7 +1,7 @@
 #include <glad/glad.h>
 
 #include "entity.h"
-#include "playersonic.h"
+#include "playertails.h"
 #include "../models/models.h"
 #include "../toolbox/vector.h"
 #include "../renderEngine/renderEngine.h"
@@ -43,12 +43,12 @@
 
 extern float dt;
 
-PlayerSonic::PlayerSonic()
+PlayerTails::PlayerTails()
 {
 
 }
 
-PlayerSonic::PlayerSonic(float x, float y, float z)
+PlayerTails::PlayerTails(float x, float y, float z)
 {
     position.set(x+0.00001f, y, z+0.00001f);
     vel.set(0.00001f, 0.00001f, 0.00001f);
@@ -59,15 +59,7 @@ PlayerSonic::PlayerSonic(float x, float y, float z)
     camDir.set(0, 0, -1);
     camDirSmooth.set(0, 0, -1);
 
-    //temp code for testing
-    if (Global::currentCharacterType == Global::PlayableCharacter::Sonic)
-    {
-        playerModel = new ManiaSonicModel; INCR_NEW("Entity");
-    }
-    else
-    {
-        playerModel = new ManiaMightyModel; INCR_NEW("Entity");
-    }
+    playerModel = new ManiaTailsModel; INCR_NEW("Entity");
     Global::addEntity(playerModel);
 
     visible = false;
@@ -84,16 +76,22 @@ PlayerSonic::PlayerSonic(float x, float y, float z)
     }
 }
 
-PlayerSonic::~PlayerSonic()
+PlayerTails::~PlayerTails()
 {
     if (homingAttackReticle != nullptr)
     {
         Loader::deleteTexture(homingAttackReticle->getTexture());
         delete homingAttackReticle; homingAttackReticle = nullptr; INCR_DEL("GuiTexture")
     }
+
+    if (sourceFly != nullptr)
+    {
+        sourceFly->stop();
+        sourceFly = nullptr;
+    }
 }
 
-void PlayerSonic::step()
+void PlayerTails::step()
 {
     canMoveTimer      = std::fmaxf(0.0f,  canMoveTimer      - dt);
     hitSpringTimer    = std::fmaxf(0.0f,  hitSpringTimer    - dt);
@@ -261,6 +259,9 @@ void PlayerSonic::step()
     //Move along lightdash trail
     if (isLightdashing)
     {
+        isFlying = false;
+        isStomping = false;
+
         if (((int)lightdashTrailProgress)+1 < (int)lightdashTrail.size())
         {
             Vector3f p1 = lightdashTrail[(int)lightdashTrailProgress];
@@ -536,26 +537,90 @@ void PlayerSonic::step()
     }
 
     //Stomping
+    //if (onGround)
+    //{
+    //    isStomping = false;
+    //}
+    //else
+    //{
+    //    if (inputAction2 && !inputAction2Previous && isJumping && !isBouncing && !justHomingAttacked && !isStomping && !isLightdashing)
+    //    {
+    //        if (sourceStomp != nullptr)
+    //        {
+    //            sourceStomp->stop();
+    //            sourceStomp = nullptr;
+    //        }
+    //        sourceStomp = AudioPlayer::play(16, getPosition());
+    //        isJumping = false;
+    //        isStomping = true;
+    //        vel.y = 0;
+    //        vel.setLength(1.0f);
+    //        vel.y = stompSpeed;
+    //    }
+    //}
+
+    //Fly
     if (onGround)
     {
-        isStomping = false;
+        isFlying = false;
     }
     else
     {
-        if (inputAction2 && !inputAction2Previous && isJumping && !isBouncing && !justHomingAttacked && !isStomping && !isLightdashing)
+        if (inputAction2 && !inputAction2Previous)
         {
-            if (sourceStomp != nullptr)
+            if (!isFlying)
             {
-                sourceStomp->stop();
-                sourceStomp = nullptr;
+                if ((isJumping || isBall) && !isBouncing && !justHomingAttacked && !isStomping && !isLightdashing)
+                {
+                    isFlying = true;
+                    isJumping = false;
+                    isBall = false;
+                    flyingUsesRemaining = maxFlyingUses;
+                    flyPitch = 1.0f;
+                }
             }
-            sourceStomp = AudioPlayer::play(16, getPosition());
-            isJumping = false;
-            isStomping = true;
-            vel.y = 0;
-            vel.setLength(1.0f);
-            vel.y = stompSpeed;
+
+            if (isFlying)
+            {
+                if (flyingUsesRemaining > 0 && vel.y < flyYSpeedMax)
+                {
+                    vel.y += flyYSpeedIncrease;
+                    if (vel.y < 0)
+                    {
+                        vel.y += flyYSpeedIncrease;
+                    }
+                    flyingUsesRemaining--;
+                    flyPitch = 1.2f;
+                }
+            }
         }
+
+        if (inputAction && !inputActionPrevious && isFlying)
+        {
+            flyingUsesRemaining = 0;
+        }
+    }
+
+    flyPitch = std::fmaxf(1.0f, flyPitch-0.01f);
+
+    if (isFlying && sourceFly == nullptr)
+    {
+        sourceFly = AudioPlayer::play(27, &position, 1, true);
+    }
+    if (sourceFly != nullptr)
+    {
+        sourceFly->setPosition(position.x, position.z, position.z);
+        sourceFly->setPitch(flyPitch);
+
+        if (isFlying && flyingUsesRemaining == 0 && sourceFly->getLastPlayedBufferID() == AudioPlayer::getSFXBuffer(27))
+        {
+            sourceFly->play(AudioPlayer::getSFXBuffer(28));
+        }
+    }
+    if (!isFlying && sourceFly != nullptr)
+    {
+        sourceFly->stop();
+        sourceFly = nullptr;
     }
 
     //Grinding
@@ -922,7 +987,14 @@ void PlayerSonic::step()
                             }
                             else
                             {
-                                vel.y = Maths::approach(vel.y, gravityTerminal, gravityApproach, dt);
+                                if (isFlying && flyingUsesRemaining > 0)
+                                {
+                                    vel.y = Maths::approach(vel.y, gravityTerminal, gravityApproach*0.5f, dt);
+                                }
+                                else
+                                {
+                                    vel.y = Maths::approach(vel.y, gravityTerminal, gravityApproach, dt);
+                                }
                             
                                 //Vector3f velToAddFromGravity(relativeUp);
                                 //velToAddFromGravity.setLength(-gravityForce*dt);
@@ -1178,7 +1250,14 @@ void PlayerSonic::step()
                 }
                 else
                 {
-                    vel.y = Maths::approach(vel.y, gravityTerminal, gravityApproach, dt);
+                    if (isFlying && flyingUsesRemaining > 0)
+                    {
+                        vel.y = Maths::approach(vel.y, gravityTerminal, gravityApproach*0.5f, dt);
+                    }
+                    else
+                    {
+                        vel.y = Maths::approach(vel.y, gravityTerminal, gravityApproach, dt);
+                    }
                 
                     Vector3f velToAddFromGravity(relativeUp);
                     velToAddFromGravity.setLength(-gravityForce*dt);
@@ -1426,7 +1505,7 @@ void PlayerSonic::step()
     centerPosPrev = getCenterPosition();
 }
 
-void PlayerSonic::spindash()
+void PlayerTails::spindash()
 {
     Vector3f newDir = Maths::projectOntoPlane(&spindashDirection, &relativeUp);
     newDir.setLength(storedSpindashSpeed);
@@ -1438,7 +1517,7 @@ void PlayerSonic::spindash()
     storedSpindashSpeed = 0;
 }
 
-void PlayerSonic::calcSpindashDirection()
+void PlayerTails::calcSpindashDirection()
 {
     float stickAngle = -atan2f(inputY, inputX) - Maths::PI/2; //angle you are holding on the stick, with 0 being up
     float stickRadius = sqrtf(inputX*inputX + inputY*inputY);
@@ -1456,7 +1535,7 @@ void PlayerSonic::calcSpindashDirection()
     }
 }
 
-void PlayerSonic::moveMeGround()
+void PlayerTails::moveMeGround()
 {
     if ((isSpindashing && vel.lengthSquared() < spindashPowerfulFrictionThreshold*spindashPowerfulFrictionThreshold) || //if you are stopped and charging a spindash, dont move sonic
         isLightdashing)
@@ -1634,7 +1713,7 @@ void PlayerSonic::moveMeGround()
     isSkidding = skidded;
 }
 
-void PlayerSonic::moveMeAir()
+void PlayerTails::moveMeAir()
 {
     if (!velocityMovesPlayer || isGrinding || isLightdashing || (isHomingOnPoint && homingAttackTimer > 0) || isGrabbing)
     {
@@ -1647,6 +1726,11 @@ void PlayerSonic::moveMeAir()
     dirForward.setLength(stickRadius);
     Vector3f velToAdd = Maths::rotatePoint(&dirForward, &relativeUp, stickAngle);
     velToAdd.y = 0;
+
+    if (isFlying)
+    {
+        velToAdd.scale(1.5f);
+    }
 
     if (stickRadius > 0.1f)
     {
@@ -1669,7 +1753,7 @@ void PlayerSonic::moveMeAir()
             vel.y = 0;
             if (vel.lengthSquared() > airFrictionThreshold*airFrictionThreshold)
             {
-                if (storedVelY >= 0)
+                if (storedVelY >= 0 && !isFlying)
                 {
                     vel = Maths::applyDrag(&vel, -airRunFrictionUp, dt); //Slow vel down due to friction (but no slowdown in y direction)
                 }
@@ -1706,24 +1790,24 @@ void PlayerSonic::moveMeAir()
     }
 }
 
-void PlayerSonic::setVelocity(float xVel, float yVel, float zVel)
+void PlayerTails::setVelocity(float xVel, float yVel, float zVel)
 {
     vel.x = xVel;
     vel.y = yVel;
     vel.z = zVel;
 }
 
-Vector3f* PlayerSonic::getVelocity()
+Vector3f* PlayerTails::getVelocity()
 {
     return &vel;
 }
 
-void PlayerSonic::setCanMoveTimer(float newTimer)
+void PlayerTails::setCanMoveTimer(float newTimer)
 {
     canMoveTimer = newTimer;
 }
 
-void PlayerSonic::startGrinding()
+void PlayerTails::startGrinding()
 {
     isGrinding = true;
     isJumping = false;
@@ -1733,14 +1817,15 @@ void PlayerSonic::startGrinding()
     isSkidding = false;
     isSpindashing = false;
     isStomping = false;
+    isFlying = false;
 }
 
-void PlayerSonic::stopGrinding()
+void PlayerTails::stopGrinding()
 {
     isGrinding = false;
 }
 
-void PlayerSonic::jump()
+void PlayerTails::jump()
 {
     isGrinding = false;
     isBouncing = false;
@@ -1760,7 +1845,7 @@ void PlayerSonic::jump()
     AudioPlayer::play(12, getPosition());
 }
 
-void PlayerSonic::jumpOffPulley(Vector3f forwardDirectionVector)
+void PlayerTails::jumpOffPulley(Vector3f forwardDirectionVector)
 {
     isGrinding = false;
     isBouncing = false;
@@ -1797,7 +1882,7 @@ void PlayerSonic::jumpOffPulley(Vector3f forwardDirectionVector)
     AudioPlayer::play(12, getPosition());
 }
 
-void PlayerSonic::rebound(Vector3f* source)
+void PlayerTails::rebound(Vector3f* source)
 {
     if (!onGround && !isGrinding && !isLightdashing)
     {
@@ -1831,10 +1916,11 @@ void PlayerSonic::rebound(Vector3f* source)
         justBounced = false;
         onGround = false;
         isJumping = true;
+        isFlying = false;
     }
 }
 
-void PlayerSonic::takeDamage(Vector3f* source)
+void PlayerTails::takeDamage(Vector3f* source)
 {
     if (hitTimer == 0.0f && invincibleTimer == 0.0f && hitFlashingTimer == 0.0f)
     {
@@ -1853,6 +1939,7 @@ void PlayerSonic::takeDamage(Vector3f* source)
         isBall = false;
         isBouncing = false;
         isStomping = false;
+        isFlying = false;
         isLightdashing = false;
         spindashReleaseTimer = 0;
         spindashRestartDelay = 0;
@@ -1908,7 +1995,7 @@ void PlayerSonic::takeDamage(Vector3f* source)
     }
 }
 
-bool PlayerSonic::isVulnerable()
+bool PlayerTails::isVulnerable()
 {
     return !(
         homingAttackTimer > 0   ||
@@ -1922,7 +2009,7 @@ bool PlayerSonic::isVulnerable()
         invincibleTimer > 0.0f);
 }
 
-bool PlayerSonic::findHomingTarget(Vector3f* target)
+bool PlayerTails::findHomingTarget(Vector3f* target)
 {
     float stickAngle = -atan2f(inputY, inputX) - Maths::PI/2; //angle you are holding on the stick, with 0 being up
     float stickRadius = sqrtf(inputX*inputX + inputY*inputY);
@@ -2020,7 +2107,7 @@ bool PlayerSonic::findHomingTarget(Vector3f* target)
     return homeInOnPoint;
 }
 
-void PlayerSonic::homingAttack(Vector3f* target, bool homeInOnIt)
+void PlayerTails::homingAttack(Vector3f* target, bool homeInOnIt)
 {
     if (homeInOnIt)
     {
@@ -2055,12 +2142,12 @@ void PlayerSonic::homingAttack(Vector3f* target, bool homeInOnIt)
     AudioPlayer::play(11, getPosition());
 }
 
-void PlayerSonic::setRelativeUp(Vector3f* newUp)
+void PlayerTails::setRelativeUp(Vector3f* newUp)
 {
     relativeUp.set(newUp);
 }
 
-void PlayerSonic::updateAnimationValues()
+void PlayerTails::updateAnimationValues()
 {
     float currSpeed = vel.length();
 
@@ -2075,6 +2162,10 @@ void PlayerSonic::updateAnimationValues()
     else if (isGrabbing)
     {
         animationTime = 0;
+    }
+    else if (isFlying)
+    {
+        animationTime -= 3000*dt;
     }
     else if (isJumping)
     {
@@ -2245,7 +2336,7 @@ void PlayerSonic::updateAnimationValues()
     }
 }
 
-void PlayerSonic::animate()
+void PlayerTails::animate()
 {
     //idea: relativeUpSmooth works pretty well here but its a bit too smooth. maybe make a new relativeUpSmoothAnim just for this animation?
     Vector3f groundSpeeds = Maths::calculatePlaneSpeed(vel.x, vel.y, vel.z, &relativeUpAnim);
@@ -2315,6 +2406,19 @@ void PlayerSonic::animate()
     {
         playerModel->setOrientation(dspX, dspY, dspZ, diffGround, yawAngleGround, pitchAngleGround, 0, &relativeUpAnim);
         playerModel->animate(25, 0);
+    }
+    else if (isFlying)
+    {
+        playerModel->setOrientation(dspX, dspY, dspZ, 0, twistAngleAir, 0, 0, &relativeUpAnim);
+
+        if (flyingUsesRemaining == 0)
+        {
+            playerModel->animate(27, animationTime);
+        }
+        else
+        {
+            playerModel->animate(20, animationTime);
+        }
     }
     else if (isJumping)
     {
@@ -2462,7 +2566,7 @@ void PlayerSonic::animate()
     }
 }
 
-void PlayerSonic::setInputs()
+void PlayerTails::setInputs()
 {
     inputJump    = Input::inputs.INPUT_ACTION1;
     inputAction  = Input::inputs.INPUT_ACTION2;
@@ -2498,84 +2602,83 @@ void PlayerSonic::setInputs()
     }
 }
 
-std::list<TexturedModel*>* PlayerSonic::getModels()
+std::list<TexturedModel*>* PlayerTails::getModels()
 {
     return nullptr;
 }
 
-void PlayerSonic::loadVehicleInfo()
+void PlayerTails::loadVehicleInfo()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading PlayerSonic static models...\n");
+    std::fprintf(stdout, "Loading PlayerTails static models...\n");
     #endif
     
-    ManiaSonicModel::loadStaticModels();
-    ManiaMightyModel::loadStaticModels();
+    ManiaTailsModel::loadStaticModels();
 }
 
-void PlayerSonic::deleteStaticModels()
+void PlayerTails::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting PlayerSonic static models...\n");
+    std::fprintf(stdout, "Deleting PlayerTails static models...\n");
     #endif
     
-    ManiaSonicModel::deleteStaticModels();
-    ManiaMightyModel::deleteStaticModels();
+    ManiaTailsModel::deleteStaticModels();
 }
 
-const bool PlayerSonic::isVehicle()
+const bool PlayerTails::isVehicle()
 {
     return true;
 }
 
-void PlayerSonic::startGrabbing()
+void PlayerTails::startGrabbing()
 {
     isGrabbing = true;
     onGround = false;
     isBall = false;
     isJumping = false;
+    isFlying = false;
     velocityMovesPlayer = false;
 }
 
-void PlayerSonic::stopGrabbing()
+void PlayerTails::stopGrabbing()
 {
     isGrabbing = false;
     velocityMovesPlayer = true;
 }
 
-float PlayerSonic::getHitboxHorizontal()
+float PlayerTails::getHitboxHorizontal()
 {
     return 6;
 }
 
-float PlayerSonic::getHitboxVertical()
+float PlayerTails::getHitboxVertical()
 {
     return 12;
 }
 
-Vector3f* PlayerSonic::getCameraDirection()
+Vector3f* PlayerTails::getCameraDirection()
 {
     return &camDir;
 }
 
-void PlayerSonic::setCameraDirection(Vector3f* newDirection)
+void PlayerTails::setCameraDirection(Vector3f* newDirection)
 {
     camDir.set(newDirection);
     camDirSmooth.set(newDirection);
 }
 
-void PlayerSonic::increaseCombo()
+void PlayerTails::increaseCombo()
 {
     combo++;
 }
 
-void PlayerSonic::setInWater(float newWaterHeight)
+void PlayerTails::setInWater(float newWaterHeight)
 {
     inWater = true;
     waterHeight = newWaterHeight;
 }
 
-void PlayerSonic::refreshCamera()
+void PlayerTails::refreshCamera()
 {
     //Animating the camera
 
@@ -2647,7 +2750,7 @@ void PlayerSonic::refreshCamera()
 }
 
 //Do a small 'pop off' off the wall
-void PlayerSonic::popOffWall()
+void PlayerTails::popOffWall()
 {
     if (onGround)
     {
@@ -2659,7 +2762,7 @@ void PlayerSonic::popOffWall()
     }
 }
 
-void PlayerSonic::die()
+void PlayerTails::die()
 {
     if (deadTimer == -1.0f && Global::finishStageTimer == -1.0f)
     {
@@ -2672,12 +2775,12 @@ void PlayerSonic::die()
     }
 }
 
-ShieldMagnet* PlayerSonic::getShieldMagnet()
+ShieldMagnet* PlayerTails::getShieldMagnet()
 {
     return myShieldMagnet;
 }
 
-void PlayerSonic::setShieldMagnet(ShieldMagnet* newMagnet)
+void PlayerTails::setShieldMagnet(ShieldMagnet* newMagnet)
 {
     if (myShieldMagnet != nullptr)
     {
@@ -2692,12 +2795,12 @@ void PlayerSonic::setShieldMagnet(ShieldMagnet* newMagnet)
     myShieldMagnet = newMagnet;
 }
 
-ShieldGreen* PlayerSonic::getShieldGreen()
+ShieldGreen* PlayerTails::getShieldGreen()
 {
     return myShieldGreen;
 }
 
-void PlayerSonic::setShieldGreen(ShieldGreen* newGreen)
+void PlayerTails::setShieldGreen(ShieldGreen* newGreen)
 {
     if (myShieldMagnet != nullptr)
     {
@@ -2713,34 +2816,34 @@ void PlayerSonic::setShieldGreen(ShieldGreen* newGreen)
 }
 
 
-void PlayerSonic::setInvincibleTimer(float newTimer)
+void PlayerTails::setInvincibleTimer(float newTimer)
 {
     invincibleTimer = newTimer;
     invincibleColor1.set(Maths::nextUniform(), Maths::nextUniform(), Maths::nextUniform());
     invincibleColor2.set(Maths::nextUniform(), Maths::nextUniform(), Maths::nextUniform());
 }
 
-void PlayerSonic::setSpeedshoesTimer(float newTimer)
+void PlayerTails::setSpeedshoesTimer(float newTimer)
 {
     speedShoesTimer = newTimer;
 }
 
-bool PlayerSonic::isDying()
+bool PlayerTails::isDying()
 {
     return (deadTimer > -1.0f);
 }
 
-bool PlayerSonic::canDealDamage()
+bool PlayerTails::canDealDamage()
 {
     return (hitTimer == 0.0f && hitFlashingTimer == 0.0f);
 }
 
-bool PlayerSonic::canBreakObjects()
+bool PlayerTails::canBreakObjects()
 {
     return (isBouncing || isBall || isSpindashing) && (vel.lengthSquared() > breakObjectsSpeed*breakObjectsSpeed);
 }
 
-void PlayerSonic::hitSpring(Vector3f* direction, float power, float lockInputTime, bool resetsCamera)
+void PlayerTails::hitSpring(Vector3f* direction, float power, float lockInputTime, bool resetsCamera)
 {
     vel = direction->scaleCopy(power);
     onGround = false;
@@ -2754,6 +2857,7 @@ void PlayerSonic::hitSpring(Vector3f* direction, float power, float lockInputTim
     isBouncing = false;
     isHomingOnPoint = false;
     justBounced = false;
+    isFlying = false;
     hoverTimer = 0.0f;
     canMoveTimer = lockInputTime;
     hitSpringTimer = lockInputTime;
@@ -2765,7 +2869,7 @@ void PlayerSonic::hitSpring(Vector3f* direction, float power, float lockInputTim
     }
 }
 
-void PlayerSonic::hitSpringTriple(Vector3f* direction, float power, float lockInputTime)
+void PlayerTails::hitSpringTriple(Vector3f* direction, float power, float lockInputTime)
 {
     Vector3f dir(direction);
     dir.y = 0;
@@ -2790,12 +2894,13 @@ void PlayerSonic::hitSpringTriple(Vector3f* direction, float power, float lockIn
     isHomingOnPoint = false;
     justBounced = false;
     justHomingAttacked = false;
+    isFlying = false;
     hoverTimer = 0.0f;
     canMoveTimer = lockInputTime;
     hitSpringTimer = lockInputTime;
 }
 
-void PlayerSonic::hitSpeedRamp(Vector3f* direction, float speed, float lockInputTime)
+void PlayerTails::hitSpeedRamp(Vector3f* direction, float speed, float lockInputTime)
 {
     vel.set(direction);
     vel.setLength(speed);
@@ -2810,6 +2915,7 @@ void PlayerSonic::hitSpeedRamp(Vector3f* direction, float speed, float lockInput
     isBouncing = false;
     isHomingOnPoint = false;
     justBounced = false;
+    isFlying = false;
     hoverTimer = 0.0f;
     canMoveTimer = lockInputTime;
 
@@ -2819,14 +2925,14 @@ void PlayerSonic::hitSpeedRamp(Vector3f* direction, float speed, float lockInput
     position.y += 4;
 }
 
-void PlayerSonic::hitDashpad()
+void PlayerTails::hitDashpad()
 {
     isBall = false;
     isSkidding = false;
     isSpindashing = false;
 }
 
-Vector3f PlayerSonic::getCenterPosition()
+Vector3f PlayerTails::getCenterPosition()
 {
     if (onGround)
     {

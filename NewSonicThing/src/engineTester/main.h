@@ -122,7 +122,6 @@ public:
     static bool useFullscreen;
     static int displaySizeChanged; //This will be 1 for a single frame after the size of the window changes (set in callback)
 
-    static int currentCharacterType;
     //the different types of character movements
     enum PlayableCharacter
     {
@@ -130,6 +129,8 @@ public:
         Tails    = 1,
         Knuckles = 2
     };
+    static PlayableCharacter currentCharacterType;
+    static std::unordered_map<PlayableCharacter, std::string> characterNames;
 
     //static std::list<std::string> raceLog;
     static bool shouldLogRace;

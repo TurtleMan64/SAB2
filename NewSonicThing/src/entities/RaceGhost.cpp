@@ -11,6 +11,7 @@
 #include "../toolbox/split.h"
 #include "CharacterModels/maniamightymodel.h"
 #include "CharacterModels/maniasonicmodel.h"
+#include "CharacterModels/maniatailsmodel.h"
 #include "../menu/timer.h"
 #include "../toolbox/maths.h"
 
@@ -181,7 +182,25 @@ RaceGhost::RaceGhost(const char* filePath, int missionNumber)
 
     if (ghostType == 0) //player ghost
     {
-        myModel = new ManiaSonicModel; INCR_NEW("Entity");
+        switch (Global::currentCharacterType)
+        {
+            case Global::PlayableCharacter::Sonic: 
+                myModel = new ManiaSonicModel; INCR_NEW("Entity");
+                break;
+
+            case Global::PlayableCharacter::Tails: 
+                myModel = new ManiaTailsModel; INCR_NEW("Entity");
+                break;
+
+            case Global::PlayableCharacter::Knuckles: 
+                myModel = new ManiaMightyModel; INCR_NEW("Entity");
+                break;
+
+            default:
+                myModel = new ManiaMightyModel; INCR_NEW("Entity");
+                break;
+        }
+
         myModel->baseColour.set(2, 2, 2);
         myModel->setRenderOrder(3);
     }
@@ -290,6 +309,7 @@ void RaceGhost::loadStaticModels()
 
     ManiaMightyModel::loadStaticModels();
     ManiaSonicModel::loadStaticModels();
+    ManiaTailsModel::loadStaticModels();
 }
 
 void RaceGhost::deleteStaticModels()
@@ -300,4 +320,5 @@ void RaceGhost::deleteStaticModels()
 
     ManiaMightyModel::deleteStaticModels();
     ManiaSonicModel::deleteStaticModels();
+    ManiaTailsModel::deleteStaticModels();
 }

@@ -409,6 +409,7 @@ void ManiaTailsModel::setBaseColor(float r, float g, float b)
     myRightThigh  ->baseColour.set(r, g, b);
     myRightShin   ->baseColour.set(r, g, b);
     myRightFoot   ->baseColour.set(r, g, b);
+    flyTails      ->baseColour.set(r, g, b);
 }
 
 void ManiaTailsModel::setBaseAlpha(float a)
@@ -428,6 +429,7 @@ void ManiaTailsModel::setBaseAlpha(float a)
     myRightThigh  ->baseAlpha = a;
     myRightShin   ->baseAlpha = a;
     myRightFoot   ->baseAlpha = a;
+    flyTails      ->baseAlpha = a;
 }
 
 void ManiaTailsModel::setRenderOrder(char newOrder)
@@ -447,6 +449,7 @@ void ManiaTailsModel::setRenderOrder(char newOrder)
     myRightThigh  ->renderOrder = newOrder;
     myRightShin   ->renderOrder = newOrder;
     myRightFoot   ->renderOrder = newOrder;
+    flyTails      ->renderOrder = newOrder;
 }
 
 void ManiaTailsModel::setBaseVisibility(bool newVisible)
@@ -467,7 +470,7 @@ void ManiaTailsModel::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading mania sonic static models...\n");
+    std::fprintf(stdout, "Loading mania tails static models...\n");
     #endif
 
     loadModel(&ManiaTailsModel::modelBody,         "res/Models/Characters/ManiaTails/", "Body");

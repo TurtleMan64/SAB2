@@ -109,6 +109,13 @@ NPC::NPC(float x, float y, float z, float dirX, float dirZ, int id, std::string 
         //Global::deleteEntity(glasses);
         //return;
     }
+
+    if (Global::currentCharacterType != Global::PlayableCharacter::Sonic)
+    {
+        Global::deleteEntity(this);
+        Global::deleteEntity(glasses);
+        return;
+    }
 }
 
 void NPC::step()

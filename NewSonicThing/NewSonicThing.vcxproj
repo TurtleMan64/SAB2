@@ -192,6 +192,7 @@
     <ClCompile Include="src\entities\GreenHill\GH_StageManager.cpp" />
     <ClCompile Include="src\entities\Light.cpp" />
     <ClCompile Include="src\entities\MetalHarbor\MH_StageManager.cpp" />
+    <ClCompile Include="src\entities\PlayerTails.cpp" />
     <ClCompile Include="src\entities\Point.cpp" />
     <ClCompile Include="src\entities\PyramidCave\PC_StageManager.cpp" />
     <ClCompile Include="src\entities\PyramidCave\PC_StaticObjects.cpp" />
@@ -342,6 +343,7 @@
     <ClInclude Include="src\entities\GreenHill\ghstagemanager.h" />
     <ClInclude Include="src\entities\light.h" />
     <ClInclude Include="src\entities\MetalHarbor\mhstagemanager.h" />
+    <ClInclude Include="src\entities\playertails.h" />
     <ClInclude Include="src\entities\point.h" />
     <ClInclude Include="src\entities\pulley.h" />
     <ClInclude Include="src\entities\PyramidCave\pcstagemanager.h" />

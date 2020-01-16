@@ -202,9 +202,9 @@ void MissionMenu::draw(bool updateMissionText)
         {
             std::string rank = "";
             rankM4->setTexture(textureBlank);
-            if (Global::gameSaveData.find(Global::gameLevelData[currLevel].displayName+"_M4_RANK") != Global::gameSaveData.end())
+            if (Global::gameSaveData.find(Global::gameLevelData[currLevel].displayName+"_"+Global::characterNames[Global::currentCharacterType]+"_M4_RANK") != Global::gameSaveData.end())
             {
-                rank = Global::gameSaveData[Global::gameLevelData[currLevel].displayName+"_M4_RANK"];
+                rank = Global::gameSaveData[Global::gameLevelData[currLevel].displayName+"_"+Global::characterNames[Global::currentCharacterType]+"_M4_RANK"];
                 if (rank == "A") rankM4->setTexture(textureRankA);
                 if (rank == "B") rankM4->setTexture(textureRankB);
                 if (rank == "C") rankM4->setTexture(textureRankC);
@@ -216,9 +216,9 @@ void MissionMenu::draw(bool updateMissionText)
         {
             std::string rank = "";
             rankM3->setTexture(textureBlank);
-            if (Global::gameSaveData.find(Global::gameLevelData[currLevel].displayName+"_M3_RANK") != Global::gameSaveData.end())
+            if (Global::gameSaveData.find(Global::gameLevelData[currLevel].displayName+"_"+Global::characterNames[Global::currentCharacterType]+"_M3_RANK") != Global::gameSaveData.end())
             {
-                rank = Global::gameSaveData[Global::gameLevelData[currLevel].displayName+"_M3_RANK"];
+                rank = Global::gameSaveData[Global::gameLevelData[currLevel].displayName+"_"+Global::characterNames[Global::currentCharacterType]+"_M3_RANK"];
                 if (rank == "A") rankM3->setTexture(textureRankA);
                 if (rank == "B") rankM3->setTexture(textureRankB);
                 if (rank == "C") rankM3->setTexture(textureRankC);
@@ -230,9 +230,9 @@ void MissionMenu::draw(bool updateMissionText)
         {
             std::string rank = "";
             rankM2->setTexture(textureBlank);
-            if (Global::gameSaveData.find(Global::gameLevelData[currLevel].displayName+"_M2_RANK") != Global::gameSaveData.end())
+            if (Global::gameSaveData.find(Global::gameLevelData[currLevel].displayName+"_"+Global::characterNames[Global::currentCharacterType]+"_M2_RANK") != Global::gameSaveData.end())
             {
-                rank = Global::gameSaveData[Global::gameLevelData[currLevel].displayName+"_M2_RANK"];
+                rank = Global::gameSaveData[Global::gameLevelData[currLevel].displayName+"_"+Global::characterNames[Global::currentCharacterType]+"_M2_RANK"];
                 if (rank == "A") rankM2->setTexture(textureRankA);
                 if (rank == "B") rankM2->setTexture(textureRankB);
                 if (rank == "C") rankM2->setTexture(textureRankC);
@@ -244,9 +244,9 @@ void MissionMenu::draw(bool updateMissionText)
         {
             std::string rank = "";
             rankM1->setTexture(textureBlank);
-            if (Global::gameSaveData.find(Global::gameLevelData[currLevel].displayName+"_M1_RANK") != Global::gameSaveData.end())
+            if (Global::gameSaveData.find(Global::gameLevelData[currLevel].displayName+"_"+Global::characterNames[Global::currentCharacterType]+"_M1_RANK") != Global::gameSaveData.end())
             {
-                rank = Global::gameSaveData[Global::gameLevelData[currLevel].displayName+"_M1_RANK"];
+                rank = Global::gameSaveData[Global::gameLevelData[currLevel].displayName+"_"+Global::characterNames[Global::currentCharacterType]+"_M1_RANK"];
                 if (rank == "A") rankM1->setTexture(textureRankA);
                 if (rank == "B") rankM1->setTexture(textureRankB);
                 if (rank == "C") rankM1->setTexture(textureRankC);
@@ -275,9 +275,9 @@ void MissionMenu::draw(bool updateMissionText)
                 default: break;
             }
 
-            if (Global::gameSaveData.find(Global::gameLevelData[currLevel].displayName+missionTimeString) != Global::gameSaveData.end())
+            if (Global::gameSaveData.find(Global::gameLevelData[currLevel].displayName+"_"+Global::characterNames[Global::currentCharacterType]+missionTimeString) != Global::gameSaveData.end())
             {
-                std::string timeString = Global::gameSaveData[Global::gameLevelData[currLevel].displayName+missionTimeString];
+                std::string timeString = Global::gameSaveData[Global::gameLevelData[currLevel].displayName+"_"+Global::characterNames[Global::currentCharacterType]+missionTimeString];
                 float time = std::stof(timeString);
 
                 // Convert float timer to ints of mm:ss:cc
@@ -304,9 +304,9 @@ void MissionMenu::draw(bool updateMissionText)
                 timeButton->generateText("Time: ");
             }
 
-            if (Global::gameSaveData.find(Global::gameLevelData[currLevel].displayName+missionScoreString) != Global::gameSaveData.end())
+            if (Global::gameSaveData.find(Global::gameLevelData[currLevel].displayName+"_"+Global::characterNames[Global::currentCharacterType]+missionScoreString) != Global::gameSaveData.end())
             {
-                std::string score = Global::gameSaveData[Global::gameLevelData[currLevel].displayName+missionScoreString];
+                std::string score = Global::gameSaveData[Global::gameLevelData[currLevel].displayName+"_"+Global::characterNames[Global::currentCharacterType]+missionScoreString];
                 scoreButton->generateText("Score: "+score);
             }
             else

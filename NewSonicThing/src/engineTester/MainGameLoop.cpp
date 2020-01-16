@@ -192,7 +192,8 @@ int Global::currentCalculatedFPS = 0;
 int Global::renderCount = 0;
 int Global::displaySizeChanged = 0;
 
-int Global::currentCharacterType = Global::PlayableCharacter::Sonic;
+Global::PlayableCharacter Global::currentCharacterType = Global::PlayableCharacter::Sonic;
+std::unordered_map<Global::PlayableCharacter, std::string> Global::characterNames;
 
 int Global::gameArcadeIndex = 0;
 std::vector<int> Global::gameArcadeLevelIds;
@@ -258,6 +259,10 @@ int main(int argc, char** argv)
 
     createDisplay();
 
+    Global::characterNames[Global::PlayableCharacter::Sonic] = "Sonic";
+    Global::characterNames[Global::PlayableCharacter::Tails] = "Tails";
+    Global::characterNames[Global::PlayableCharacter::Knuckles] = "Knuckles";
+
     Global::loadSaveData();
 
     //The levels you play in arcade mode, in order
@@ -292,7 +297,7 @@ int main(int argc, char** argv)
     Global::menuManager.push(new MainMenu); INCR_NEW("MainMenu");
 
 
-    if (Global::renderParticles)
+    //if (Global::renderParticles)
     {
         ParticleResources::loadParticles();
     }
@@ -815,17 +820,17 @@ int main(int argc, char** argv)
                     }
                     else
                     {
-                        if (Global::gameSaveData.find("BestArcadeClearTime") == Global::gameSaveData.end())
+                        if (Global::gameSaveData.find("BestArcadeClearTime_"+Global::characterNames[Global::currentCharacterType]) == Global::gameSaveData.end())
                         {
-                            Global::gameSaveData["BestArcadeClearTime"] = std::to_string(Global::gameArcadePlaytime);
+                            Global::gameSaveData["BestArcadeClearTime_"+Global::characterNames[Global::currentCharacterType]] = std::to_string(Global::gameArcadePlaytime);
                             Global::saveSaveData();
                         }
                         else
                         {
-                            float currentPB = std::stof(Global::gameSaveData["BestArcadeClearTime"]);
+                            float currentPB = std::stof(Global::gameSaveData["BestArcadeClearTime_"+Global::characterNames[Global::currentCharacterType]]);
                             if (Global::gameArcadePlaytime < currentPB)
                             {
-                                Global::gameSaveData["BestArcadeClearTime"] = std::to_string(Global::gameArcadePlaytime);
+                                Global::gameSaveData["BestArcadeClearTime_"+Global::characterNames[Global::currentCharacterType]] = std::to_string(Global::gameArcadePlaytime);
                                 Global::saveSaveData();
                             }
                         }
@@ -1075,7 +1080,12 @@ void Global::saveGhostData()
 
     bool newTimeIsFaster = false;
 
-    std::string ghostFilename = Global::pathToEXE + "res/SaveData/" + std::to_string(Global::levelID) + "_" + std::to_string(Global::gameMissionNumber) + ".ghost";
+    std::string ghostFilename = Global::pathToEXE + 
+        "res/SaveData/" + 
+        Global::characterNames[Global::currentCharacterType] + "_" +
+        std::to_string(Global::levelID) + "_" + 
+        std::to_string(Global::gameMissionNumber) + 
+        ".ghost";
 
     //Check if we got a faster time than the existing ghost
     std::ifstream filein(ghostFilename);
@@ -1243,16 +1253,16 @@ int Global::calculateRankAndUpdate()
         int newScore = Global::gameScore;
         int savedScore = -1;
 
-        if (Global::gameSaveData.find(currentLevel->displayName+missionScoreString) != Global::gameSaveData.end())
+        if (Global::gameSaveData.find(currentLevel->displayName+"_"+Global::characterNames[Global::currentCharacterType]+missionScoreString) != Global::gameSaveData.end())
         {
-            std::string savedScoreString = Global::gameSaveData[currentLevel->displayName+missionScoreString];
+            std::string savedScoreString = Global::gameSaveData[currentLevel->displayName+"_"+Global::characterNames[Global::currentCharacterType]+missionScoreString];
             savedScore = std::stoi(savedScoreString);
         }
 
         if (newScore > savedScore)
         {
             std::string newScoreString = std::to_string(newScore);
-            Global::gameSaveData[currentLevel->displayName+missionScoreString] = newScoreString;
+            Global::gameSaveData[currentLevel->displayName+"_"+Global::characterNames[Global::currentCharacterType]+missionScoreString] = newScoreString;
             Global::saveSaveData();
         }
 
@@ -1263,16 +1273,16 @@ int Global::calculateRankAndUpdate()
         }
         float savedTime = 600000.0f;
 
-        if (Global::gameSaveData.find(currentLevel->displayName+missionTimeString) != Global::gameSaveData.end())
+        if (Global::gameSaveData.find(currentLevel->displayName+"_"+Global::characterNames[Global::currentCharacterType]+missionTimeString) != Global::gameSaveData.end())
         {
-            std::string savedTimeString = Global::gameSaveData[currentLevel->displayName+missionTimeString];
+            std::string savedTimeString = Global::gameSaveData[currentLevel->displayName+"_"+Global::characterNames[Global::currentCharacterType]+missionTimeString];
             savedTime = std::stof(savedTimeString);
         }
 
         if (newTime < savedTime)
         {
             std::string newTimeString = std::to_string(newTime);
-            Global::gameSaveData[currentLevel->displayName+missionTimeString] = newTimeString;
+            Global::gameSaveData[currentLevel->displayName+"_"+Global::characterNames[Global::currentCharacterType]+missionTimeString] = newTimeString;
             Global::saveSaveData();
         }
 
@@ -1301,7 +1311,7 @@ int Global::calculateRankAndUpdate()
                     default: break;
                 }
 
-                Global::gameSaveData[currentLevel->displayName+missionRankString]  = newRankString;
+                Global::gameSaveData[currentLevel->displayName+"_"+Global::characterNames[Global::currentCharacterType]+missionRankString]  = newRankString;
 
                 Global::saveSaveData();
             }
@@ -1331,7 +1341,7 @@ int Global::calculateRankAndUpdate()
                     default: break;
                 }
 
-                Global::gameSaveData[currentLevel->displayName+missionRankString] = newRankString;
+                Global::gameSaveData[currentLevel->displayName+"_"+Global::characterNames[Global::currentCharacterType]+missionRankString] = newRankString;
 
                 Global::saveSaveData();
             }

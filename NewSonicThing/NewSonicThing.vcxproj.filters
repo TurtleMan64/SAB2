@@ -555,6 +555,9 @@
     <ClCompile Include="src\entities\CharacterModels\ManiaTailsModel.cpp">
       <Filter>Source Files\entities\CharacterModels</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\PlayerTails.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.h">
@@ -985,6 +988,9 @@
     </ClInclude>
     <ClInclude Include="src\entities\CharacterModels\maniatailsmodel.h">
       <Filter>Source Files\entities\CharacterModels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\playertails.h">
+      <Filter>Source Files\entities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

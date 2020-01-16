@@ -73,6 +73,7 @@
 #include "../entities/woodbox.h"
 #include "../entities/npc.h"
 #include "../entities/light.h"
+#include "../entities/playertails.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -697,7 +698,13 @@ void LevelLoader::loadLevel(std::string levelFilename)
 
     //Add the player's ghost
     RaceGhost::loadStaticModels();
-    RaceGhost* playerGhost = new RaceGhost(("res/SaveData/" + std::to_string(Global::levelID) + "_" + std::to_string(Global::gameMissionNumber) + ".ghost").c_str(), -1); INCR_NEW("Entity");
+    RaceGhost* playerGhost = new RaceGhost(
+        ("res/SaveData/" + 
+        Global::characterNames[Global::currentCharacterType] + "_" +
+        std::to_string(Global::levelID) + "_" +
+        std::to_string(Global::gameMissionNumber) +
+        ".ghost").c_str(),
+        -1); INCR_NEW("Entity");
     Global::addEntity(playerGhost);
 
     //sort the chunked entity stuff
@@ -885,15 +892,32 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             return;
         }
 
-        case 6: //Sonic
+        case 6: //Player
         {
-            PlayerSonic* player = new PlayerSonic(toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3])); INCR_NEW("Entity");
             if (Global::gameMainPlayer != nullptr)
             {
                 delete Global::gameMainPlayer; INCR_DEL("Entity");
             }
-            Global::gameMainPlayer = player;
-            //Global::addEntity(car);
+
+            Vector3f pos(toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]));
+            switch (Global::currentCharacterType)
+            {
+                case Global::PlayableCharacter::Sonic:
+                    Global::gameMainPlayer = new PlayerSonic(pos.x, pos.y, pos.z); INCR_NEW("Entity");
+                    break;
+
+                case Global::PlayableCharacter::Tails:
+                    Global::gameMainPlayer = new PlayerTails(pos.x, pos.y, pos.z); INCR_NEW("Entity");
+                    break;
+
+                case Global::PlayableCharacter::Knuckles:
+                    Global::gameMainPlayer = new PlayerSonic(pos.x, pos.y, pos.z); INCR_NEW("Entity");
+                    break;
+
+                default:
+                    break;
+            }
+
             return;
         }
 
@@ -1453,6 +1477,7 @@ void LevelLoader::freeAllStaticModels()
     GF_Vine::deleteStaticModels();
     WoodBox::deleteStaticModels();
     NPC::deleteStaticModels();
+    PlayerTails::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()
