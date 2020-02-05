@@ -126,6 +126,16 @@ void ShaderProgram::loadFogGradient(float gradient)
     loadFloat(location_fogGradient, gradient);
 }
 
+void ShaderProgram::loadFogBottomPosition(float position)
+{
+    loadFloat(location_fogBottomPosition, position);
+}
+
+void ShaderProgram::loadFogBottomThickness(float thickness)
+{
+    loadFloat(location_fogBottomThickness, 1/thickness);
+}
+
 void ShaderProgram::bindAttributes()
 {
     if (Global::renderBloom)
@@ -179,6 +189,8 @@ void ShaderProgram::getAllUniformLocations()
     location_mixFactor             = getUniformLocation("mixFactor");
     location_textureSampler2       = getUniformLocation("textureSampler2");
     location_fogScale              = getUniformLocation("fogScale");
+    location_fogBottomPosition     = getUniformLocation("fogBottomPosition");
+    location_fogBottomThickness    = getUniformLocation("fogBottomThickness");
 }
 
 int ShaderProgram::getUniformLocation(const char* uniformName)

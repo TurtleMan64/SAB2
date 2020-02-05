@@ -167,6 +167,7 @@
     <ClCompile Include="src\entities\CharacterModels\ManiaSonicModel.cpp" />
     <ClCompile Include="src\entities\CharacterModels\ManiaTailsModel.cpp" />
     <ClCompile Include="src\entities\CharacterModels\PlayerModel.cpp" />
+    <ClCompile Include="src\entities\CloudStage\CS_StageManager.cpp" />
     <ClCompile Include="src\entities\Dashpad.cpp" />
     <ClCompile Include="src\entities\Camera.cpp" />
     <ClCompile Include="src\entities\ControllablePlayer.cpp" />
@@ -318,6 +319,7 @@
     <ClInclude Include="src\entities\CharacterModels\maniasonicmodel.h" />
     <ClInclude Include="src\entities\CharacterModels\maniatailsmodel.h" />
     <ClInclude Include="src\entities\CharacterModels\playermodel.h" />
+    <ClInclude Include="src\entities\CloudStage\csstagemanager.h" />
     <ClInclude Include="src\entities\dashpad.h" />
     <ClInclude Include="src\entities\camera.h" />
     <ClInclude Include="src\entities\controllableplayer.h" />

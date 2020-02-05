@@ -25,10 +25,6 @@ SR_StageManager::SR_StageManager()
     skyPass3->visible = true;
     skyTransparent->visible = true;
 
-    skyPass2->renderOrder = 1;
-    skyPass3->renderOrder = 2;
-    skyTransparent->renderOrder = 3;
-
     Global::addEntity(skyPass2);
     Global::addEntity(skyPass3);
     Global::addEntity(skyTransparent);
@@ -69,6 +65,10 @@ void SR_StageManager::loadStaticModels()
     loadModel(&SR_StageManager::modelsSkyPass2,       "res/Models/Levels/SkyRail/Sky/", "Pass2");
     loadModel(&SR_StageManager::modelsSkyPass3,       "res/Models/Levels/SkyRail/Sky/", "Pass3");
     loadModel(&SR_StageManager::modelsSkyTransparent, "res/Models/Levels/SkyRail/Sky/", "Transparent");
+
+    setModelsRenderOrder(&SR_StageManager::modelsSkyPass2,       1);
+    setModelsRenderOrder(&SR_StageManager::modelsSkyPass3,       2);
+    setModelsRenderOrder(&SR_StageManager::modelsSkyTransparent, 3);
 }
 
 void SR_StageManager::deleteStaticModels()

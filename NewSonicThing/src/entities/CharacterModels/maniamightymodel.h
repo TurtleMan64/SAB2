@@ -109,7 +109,7 @@ public:
 
     void setBaseVisibility(bool visible);
 
-    void setRenderOrder(char newOrder);
+    void setRenderOrderOverride(char newOrder);
 
     const float getDisplayBallOffset();
 

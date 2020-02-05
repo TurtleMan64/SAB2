@@ -40,6 +40,9 @@ private:
 
 
 public:
+    static float fogBottomPosition;
+    static float fogBottomThickness;
+
     static void initSkyManager(Entity* mySun, Entity* center);
 
     static void calculateValues();

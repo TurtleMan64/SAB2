@@ -6,6 +6,7 @@ in vec3 normal;
 in vec3 vertexColor;
 
 out vec2 pass_textureCoords;
+out vec4 worldPosition;
 out vec3 surfaceNormal;
 out vec3 toCameraVector;
 //out float visibility;
@@ -29,7 +30,7 @@ uniform vec4 clipPlaneBehind;
 
 void main(void)
 {
-	vec4 worldPosition = transformationMatrix * vec4(position, 1.0);
+	worldPosition = transformationMatrix * vec4(position, 1.0);
 	vec4 positionRelativeToCam = viewMatrix * worldPosition;
 	gl_Position = projectionMatrix * positionRelativeToCam;
 	

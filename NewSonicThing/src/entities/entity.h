@@ -20,10 +20,13 @@ public:
     Vector3f baseColour;
     float baseAlpha = 1.0f;
     Matrix4f transformationMatrix;
-    char renderOrder = 0; //0 = rendered first (default), 1 = second, 2 = third, 3 = fourth + transparent (no depth testing)
+    //render order is normally set in each TexturedModel, but can be overrided by using this
+    char renderOrderOverride = -1;
 
     static void deleteModels(std::list<TexturedModel*>* modelsToDelete);
     static void deleteCollisionModel(CollisionModel** colModelToDelete);
+    //0 = rendered first (default), 1 = second, 2 = third, 3 = fourth + transparent (no depth testing)
+    static void setModelsRenderOrder(std::list<TexturedModel*>* models, char newOrder);
 
 public:
     Entity();
@@ -72,6 +75,8 @@ public:
 
     const bool getVisible();
     void setVisible(bool newVisible);
+
+    void setModelsRenderOrder(char newOrder);
 
     const float getX();
 

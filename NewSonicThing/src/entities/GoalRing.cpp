@@ -49,7 +49,6 @@ GoalRing::GoalRing(float x, float y, float z)
     text = new Dummy(&GoalRing::modelsText); INCR_NEW("Entity");
     text->setVisible(true);
     text->setPosition(&position);
-    text->renderOrder = 1;
     Global::addEntity(text);
 }
 
@@ -146,6 +145,8 @@ void GoalRing::loadStaticModels()
 
     loadModel(&GoalRing::modelsRing, "res/Models/Objects/GoalRing/", "Pass1");
     loadModel(&GoalRing::modelsText, "res/Models/Objects/GoalRing/", "Pass2");
+
+    setModelsRenderOrder(&GoalRing::modelsText, 1);
 }
 
 void GoalRing::deleteStaticModels()

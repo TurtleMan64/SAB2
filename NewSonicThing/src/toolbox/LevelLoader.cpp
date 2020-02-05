@@ -74,6 +74,7 @@
 #include "../entities/npc.h"
 #include "../entities/light.h"
 #include "../entities/playertails.h"
+#include "../entities/CloudStage/csstagemanager.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -194,6 +195,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
             else if (currLvl->displayName == "Green Hill Zone") Global::levelID = LVL_GREEN_HILL_ZONE;
             else if (currLvl->displayName == "Windy Valley")    Global::levelID = LVL_WINDY_VALLEY;
             else if (currLvl->displayName == "Delfino Plaza")   Global::levelID = LVL_DELFINO_PLAZA;
+            else if (currLvl->displayName == "Sacred Sky")     Global::levelID = LVL_CLOUD_STAGE;
         }
 
         Global::spawnAtCheckpoint  = false;
@@ -465,6 +467,20 @@ void LevelLoader::loadLevel(std::string levelFilename)
         char** dat = split(lineBuf, ' ', &splitLength);
 
         SkyManager::setFogVars(toFloat(dat[0]), toFloat(dat[1]));
+
+        free(dat);
+    }
+
+    std::string botFogVars;
+    getlineSafe(file, botFogVars);
+    {
+        char lineBuf[128];
+        memcpy(lineBuf, botFogVars.c_str(), botFogVars.size()+1);
+        int splitLength = 0;
+        char** dat = split(lineBuf, ' ', &splitLength);
+
+        SkyManager::fogBottomPosition = toFloat(dat[0]);
+        SkyManager::fogBottomThickness = toFloat(dat[1]);
 
         free(dat);
     }
@@ -1020,7 +1036,7 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             Hunter::loadStaticModels();
             Bullet::loadStaticModels();
             Hunter* hunter = new Hunter(toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]),
-                                        toFloat(dat[4]), toFloat(dat[5]), toFloat(dat[6]),
+                                        toFloat(dat[4]), toFloat(dat[5]),
                                         chunkedEntities); INCR_NEW("Entity");
             chunkedEntities->push_back(hunter);
             return;
@@ -1166,6 +1182,14 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                     PC_StageManager::loadStaticModels();
                     PC_StageManager* pc = new PC_StageManager; INCR_NEW("Entity");
                     Global::addEntity(pc);
+                    break;
+                }
+
+                case 9:
+                {
+                    CS_StageManager::loadStaticModels();
+                    CS_StageManager* cs = new CS_StageManager; INCR_NEW("Entity");
+                    Global::addEntity(cs);
                     break;
                 }
 
@@ -1478,6 +1502,7 @@ void LevelLoader::freeAllStaticModels()
     WoodBox::deleteStaticModels();
     NPC::deleteStaticModels();
     PlayerTails::deleteStaticModels();
+    CS_StageManager::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()

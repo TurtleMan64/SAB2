@@ -37,9 +37,6 @@ void EntityRenderer::renderNEW(std::unordered_map<TexturedModel*, std::list<Enti
 
     clockTime = Global::gameClock;
 
-    shader->loadFogGradient(SkyManager::getFogGradient());
-    shader->loadFogDensity(SkyManager::getFogDensity());
-
     for (auto entry : (*entitiesMap))
     {
         prepareTexturedModel(entry.first);

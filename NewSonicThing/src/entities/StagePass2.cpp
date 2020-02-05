@@ -25,7 +25,6 @@ StagePass2::StagePass2(const char* objFolder, const char* objFilename)
     rotY = 0;
     rotZ = 0;
     scale = 1;
-    renderOrder = 1;
     visible = true;
     
     if (StagePass2::models.size() == 0)
@@ -35,6 +34,8 @@ StagePass2::StagePass2(const char* objFolder, const char* objFilename)
         #endif
 
         loadModel(&StagePass2::models, objFolder, objFilename);
+
+        setModelsRenderOrder(&StagePass2::models, 1);
     }
     
     updateTransformationMatrix();

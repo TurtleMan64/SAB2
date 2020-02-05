@@ -34,7 +34,6 @@ Bullet::Bullet(Vector3f* pos, Vector3f* velocity, float timeToLive)
     rotY = Maths::toDegrees(atan2f(-vel.z, vel.x));
     rotZ = Maths::toDegrees(atan2f(vel.y, sqrtf(vel.x*vel.x + vel.z*vel.z)));
 
-    renderOrder = 3;
     updateTransformationMatrix();
 }
 
@@ -108,6 +107,8 @@ void Bullet::loadStaticModels()
     #endif
 
     loadModel(&Bullet::models, "res/Models/Objects/Bullet/", "Bullet");
+
+    setModelsRenderOrder(&Bullet::models, 3);
 }
 
 void Bullet::deleteStaticModels()

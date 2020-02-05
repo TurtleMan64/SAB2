@@ -25,7 +25,7 @@ public:
 
     virtual void setBaseVisibility(bool visible);
 
-    virtual void setRenderOrder(char newOrder);
+    virtual void setRenderOrderOverride(char newOrder);
 
     const virtual float getDisplayBallOffset();
 

@@ -38,7 +38,7 @@ private:
 
 public:
     Hunter();
-    Hunter(float x, float y, float z, float dx, float dy, float dz, std::list<Entity*>* entityListToAdd);
+    Hunter(float x, float y, float z, float dx, float dz, std::list<Entity*>* entityListToAdd);
 
     void step();
 

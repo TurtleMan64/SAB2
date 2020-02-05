@@ -25,9 +25,6 @@ T_StageManager::T_StageManager()
     skyPass2->scale = 3.0f*0.6f;
     skyTransparent->scale = 1.8f*0.6f;
 
-    skyPass2->renderOrder = 1;
-    skyTransparent->renderOrder = 3;
-
     Global::addEntity(skyPass2);
     Global::addEntity(skyTransparent);
 }
@@ -65,6 +62,9 @@ void T_StageManager::loadStaticModels()
     loadModel(&T_StageManager::modelsSkyPass1,       "res/Models/Levels/DelfinoPlaza/Sky/", "Blue");
     loadModel(&T_StageManager::modelsSkyPass2,       "res/Models/Levels/DelfinoPlaza/Sky/", "Pass2");
     loadModel(&T_StageManager::modelsSkyTransparent, "res/Models/Levels/DelfinoPlaza/Sky/", "Trans");
+
+    setModelsRenderOrder(&T_StageManager::modelsSkyPass2,       1);
+    setModelsRenderOrder(&T_StageManager::modelsSkyTransparent, 3);
 }
 
 void T_StageManager::deleteStaticModels()

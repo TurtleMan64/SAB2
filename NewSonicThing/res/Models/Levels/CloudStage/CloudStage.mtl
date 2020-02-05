@@ -1,0 +1,40 @@
+# Material Count: 6
+
+newmtl Leaf
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd Leaf.png
+
+newmtl Rainbow
+Ns 20
+Ni 0.02
+glow 1
+d 1.000000
+map_Kd rainbow.png
+
+newmtl Cloud
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd white.png
+
+newmtl Rainbow_rainbow.png
+Ns 20
+Ni 0.02
+glow 1
+d 1.000000
+map_Kd rainbow.png
+
+newmtl Bark
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd vine.png
+
+newmtl Bark_Bark.png
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd Bark.png
+

@@ -224,6 +224,9 @@ void MH_AircraftCarrierCart::loadStaticModels()
     loadModel(&MH_AircraftCarrierCart::modelsWheelBack, "res/Models/Objects/MetalHarbor/AircraftCarrierCart/", "AircraftCarrierCartWheelBack");
     loadModel(&MH_AircraftCarrierCart::modelsTransparent, "res/Models/Objects/MetalHarbor/AircraftCarrierCart/", "AircraftCarrierCartTransparent");
 
+    setModelsRenderOrder(&MH_AircraftCarrierCart::modelsWheelFront,  1);
+    setModelsRenderOrder(&MH_AircraftCarrierCart::modelsWheelBack,   1);
+    setModelsRenderOrder(&MH_AircraftCarrierCart::modelsTransparent, 1);
 
     if (MH_AircraftCarrierCart::cmOriginal == nullptr)
     {
@@ -249,7 +252,6 @@ inline void MH_AircraftCarrierCart::setupModelWheelFront()
     wheelFront = new Dummy(&MH_AircraftCarrierCart::modelsWheelFront); INCR_NEW("Entity");
     wheelFront->setVisible(true);
     Global::addEntity(wheelFront);
-    wheelFront->renderOrder = 1;
     wheelFront->setPosition(&position);
     wheelFront->setRotY(rotY);
 }
@@ -259,7 +261,7 @@ inline void MH_AircraftCarrierCart::setupModelWheelBack()
     wheelBack = new Dummy(&MH_AircraftCarrierCart::modelsWheelBack); INCR_NEW("Entity");
     wheelBack->setVisible(true);
     Global::addEntity(wheelBack);
-    wheelBack->renderOrder = 1;
+
     wheelBack->setPosition(&position);
     wheelBack->setRotY(rotY);
 }
@@ -269,7 +271,6 @@ inline void MH_AircraftCarrierCart::setupModelTransparent()
     bodyTransparent = new Dummy(&MH_AircraftCarrierCart::modelsTransparent); INCR_NEW("Entity");
     bodyTransparent->setVisible(true);
     Global::addEntity(bodyTransparent);
-    bodyTransparent->renderOrder = 1;
     bodyTransparent->setRotY(rotY);
 }
 

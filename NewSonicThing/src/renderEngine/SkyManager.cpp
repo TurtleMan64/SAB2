@@ -25,6 +25,8 @@ Vector3f SkyManager::colourMoonInterpolated;
 
 float SkyManager::fogDensity = 0.00005f;
 float SkyManager::fogGradient = 2.0f;
+float SkyManager::fogBottomPosition = -10000000.0f;
+float SkyManager::fogBottomThickness = 1.0f;
 
 float SkyManager::dayFactor;
 float SkyManager::nightFactor;

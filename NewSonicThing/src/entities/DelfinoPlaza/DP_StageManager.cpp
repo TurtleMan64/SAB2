@@ -21,9 +21,6 @@ DP_StageManager::DP_StageManager()
     skyPass2->visible = true;
     skyTransparent->visible = false;
 
-    skyPass2->renderOrder = 1;
-    skyTransparent->renderOrder = 3;
-
     scale = 3.0f;
     skyPass2->scale = 3.0f;
     skyTransparent->scale = 1.8f;
@@ -65,6 +62,9 @@ void DP_StageManager::loadStaticModels()
     loadModel(&DP_StageManager::modelsSkyPass1,       "res/Models/Levels/DelfinoPlaza/Sky/", "Blue");
     loadModel(&DP_StageManager::modelsSkyPass2,       "res/Models/Levels/DelfinoPlaza/Sky/", "Pass2");
     loadModel(&DP_StageManager::modelsSkyTransparent, "res/Models/Levels/DelfinoPlaza/Sky/", "Trans");
+
+    setModelsRenderOrder(&DP_StageManager::modelsSkyPass2,       1);
+    setModelsRenderOrder(&DP_StageManager::modelsSkyTransparent, 3);
 }
 
 void DP_StageManager::deleteStaticModels()

@@ -43,6 +43,8 @@ private:
     int location_mixFactor;
     int location_textureSampler2;
     int location_fogScale;
+    int location_fogBottomPosition;
+    int location_fogBottomThickness;
 
 public:
     ShaderProgram(const char*, const char*);
@@ -80,6 +82,10 @@ public:
     void loadFogDensity(float density);
 
     void loadFogGradient(float gradient);
+
+    void loadFogBottomPosition(float position);
+
+    void loadFogBottomThickness(float thickness);
 
     void loadClipPlane(float clipX, float clipY, float clipZ, float clipW);
 

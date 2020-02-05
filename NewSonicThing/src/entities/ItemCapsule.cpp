@@ -70,7 +70,6 @@ ItemCapsule::ItemCapsule(float x, float y, float z, float upX, float upY, float 
     }
 
     entityGlass->visible = true;
-    entityGlass->renderOrder = 3;
     entityListToAdd->push_back(entityGlass);
     entityGlass->setPosition(&position);
     entityGlass->setRotY(rotY);
@@ -317,6 +316,9 @@ void ItemCapsule::loadStaticModels()
     loadModel(&ItemCapsule::modelsItemRing20,     "res/Models/Objects/ItemBox/Items/", "ItemRing20");
     loadModel(&ItemCapsule::modelsItemSpeedUp,    "res/Models/Objects/ItemBox/Items/", "ItemSpeedUp");
     loadModel(&ItemCapsule::modelsItemBarrierB,   "res/Models/Objects/ItemBox/Items/", "ItemBarrierB");
+
+    setModelsRenderOrder(&ItemCapsule::modelsAnchoredGlass, 3);
+    setModelsRenderOrder(&ItemCapsule::modelsFloatingGlass, 3);
 }
 
 void ItemCapsule::deleteStaticModels()

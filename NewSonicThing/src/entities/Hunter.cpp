@@ -31,7 +31,7 @@ Hunter::Hunter()
 
 }
 
-Hunter::Hunter(float x, float y, float z, float dx, float dy, float dz, std::list<Entity*>* entityListToAdd)
+Hunter::Hunter(float x, float y, float z, float dx, float dz, std::list<Entity*>* entityListToAdd)
 {
     position.x = x;
     position.y = y;
@@ -52,7 +52,7 @@ Hunter::Hunter(float x, float y, float z, float dx, float dy, float dz, std::lis
     centerPos = position;
     centerPos.y += 21.3381f*scale;
 
-    forward.set(dx, dy, dz);
+    forward.set(dx, 0, dz);
     forward.normalize();
     rotY = Maths::toDegrees(atan2f(-forward.z, forward.x));
 

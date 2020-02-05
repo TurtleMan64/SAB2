@@ -98,7 +98,6 @@ NPC::NPC(float x, float y, float z, float dirX, float dirZ, int id, std::string 
     glasses = new Dummy(&NPC::modelsGlasses); INCR_NEW("Entity");
     glasses->position = position;
     glasses->rotY = rotY;
-    glasses->renderOrder = 1;
     glasses->scale = scale;
     glasses->updateTransformationMatrix();
     Global::addEntity(glasses);
@@ -185,6 +184,8 @@ void NPC::loadStaticModels()
 
     loadModel(&NPC::models,        "res/Models/Objects/NPC/", "NPC");
     loadModel(&NPC::modelsGlasses, "res/Models/Objects/NPC/", "Glasses");
+
+    setModelsRenderOrder(&NPC::modelsGlasses, 1);
 }
 
 void NPC::deleteStaticModels()

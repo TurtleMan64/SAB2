@@ -64,6 +64,8 @@ void PC_StaticObjects::loadStaticModels()
     loadModel(&PC_StaticObjects::modelsVertexColours, "res/Models/Objects/MetalHarbor/StaticObjects/", "StaticObjectsVertexColours");
     loadModel(&PC_StaticObjects::modelsTransparent, "res/Models/Objects/LevelSpecific/PyramidCave/StaticObjects/", "HallwayLight");
 
+    setModelsRenderOrder(&PC_StaticObjects::modelsTransparent, 1);
+
     if (PC_StaticObjects::cmOriginal == nullptr)
     {
         PC_StaticObjects::cmOriginal = loadCollisionModel("Models/Objects/MetalHarbor/StaticObjects/", "StaticObjectsCollision");
@@ -96,5 +98,4 @@ void PC_StaticObjects::setupModelTransparent()
     modelTransparent->setVisible(true);
     INCR_NEW("Entity");
     Global::addEntity(modelTransparent);
-    modelTransparent->renderOrder = 1;
 }

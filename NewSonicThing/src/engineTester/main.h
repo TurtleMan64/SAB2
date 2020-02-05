@@ -50,6 +50,7 @@ class ControllablePlayer;
 #define LVL_SPEED_HIGHWAY   12
 #define LVL_NOKI_BAY        13
 #define LVL_DELFINO_PLAZA   14
+#define LVL_CLOUD_STAGE     15
 
 #define DEV_MODE
 

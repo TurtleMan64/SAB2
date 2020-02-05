@@ -377,23 +377,23 @@ void ManiaMightyModel::setBaseAlpha(float a)
     myRightFoot   ->baseAlpha = a;
 }
 
-void ManiaMightyModel::setRenderOrder(char newOrder)
+void ManiaMightyModel::setRenderOrderOverride(char newOrder)
 {
-                    renderOrder = newOrder;
-    myBody        ->renderOrder = newOrder;
-    myHead        ->renderOrder = newOrder;
-    myLeftHumerus ->renderOrder = newOrder;
-    myLeftForearm ->renderOrder = newOrder;
-    myLeftHand    ->renderOrder = newOrder;
-    myLeftThigh   ->renderOrder = newOrder;
-    myLeftShin    ->renderOrder = newOrder;
-    myLeftFoot    ->renderOrder = newOrder;
-    myRightHumerus->renderOrder = newOrder;
-    myRightForearm->renderOrder = newOrder;
-    myRightHand   ->renderOrder = newOrder;
-    myRightThigh  ->renderOrder = newOrder;
-    myRightShin   ->renderOrder = newOrder;
-    myRightFoot   ->renderOrder = newOrder;
+                    renderOrderOverride = newOrder;
+    myBody        ->renderOrderOverride = newOrder;
+    myHead        ->renderOrderOverride = newOrder;
+    myLeftHumerus ->renderOrderOverride = newOrder;
+    myLeftForearm ->renderOrderOverride = newOrder;
+    myLeftHand    ->renderOrderOverride = newOrder;
+    myLeftThigh   ->renderOrderOverride = newOrder;
+    myLeftShin    ->renderOrderOverride = newOrder;
+    myLeftFoot    ->renderOrderOverride = newOrder;
+    myRightHumerus->renderOrderOverride = newOrder;
+    myRightForearm->renderOrderOverride = newOrder;
+    myRightHand   ->renderOrderOverride = newOrder;
+    myRightThigh  ->renderOrderOverride = newOrder;
+    myRightShin   ->renderOrderOverride = newOrder;
+    myRightFoot   ->renderOrderOverride = newOrder;
 }
 
 void ManiaMightyModel::setBaseVisibility(bool newVisible)

@@ -6,6 +6,7 @@
 #include "../toolbox/maths.h"
 #include "../engineTester/main.h"
 #include "../collision/collisionmodel.h"
+#include "../models/models.h"
 
 #include <list>
 #include <iostream>
@@ -123,6 +124,14 @@ Vector3f* Entity::getBaseColour()
 void Entity::setBaseColour(float red, float green, float blue)
 {
     baseColour.set(red, green, blue);
+}
+
+void Entity::setModelsRenderOrder(std::list<TexturedModel*>* models, char newOrder)
+{
+    for (TexturedModel* model : (*models))
+    {
+        model->renderOrder = newOrder;
+    }
 }
 
 const float Entity::getRotX()

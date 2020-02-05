@@ -109,6 +109,9 @@
     <Filter Include="Source Files\entities\CharacterModels">
       <UniqueIdentifier>{def54bef-5d81-476c-82b3-83b2fd812c5e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\entities\CloudStage">
+      <UniqueIdentifier>{08a69956-18d4-41d2-a609-11ec4a34192f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\glad.c">
@@ -558,6 +561,9 @@
     <ClCompile Include="src\entities\PlayerTails.cpp">
       <Filter>Source Files\entities</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\CloudStage\CS_StageManager.cpp">
+      <Filter>Source Files\entities\CloudStage</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.h">
@@ -991,6 +997,9 @@
     </ClInclude>
     <ClInclude Include="src\entities\playertails.h">
       <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\CloudStage\csstagemanager.h">
+      <Filter>Source Files\entities\CloudStage</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

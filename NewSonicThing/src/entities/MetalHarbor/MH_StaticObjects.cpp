@@ -64,6 +64,7 @@ void MH_StaticObjects::loadStaticModels()
     loadModel(&MH_StaticObjects::modelsVertexColours, "res/Models/Objects/MetalHarbor/StaticObjects/", "StaticObjectsVertexColours");
     loadModel(&MH_StaticObjects::modelsTransparent, "res/Models/Objects/MetalHarbor/StaticObjects/", "StaticObjectsTransparent");
 
+    setModelsRenderOrder(&MH_StaticObjects::modelsTransparent, 1);
 
     if (MH_StaticObjects::cmOriginal == nullptr)
     {
@@ -97,5 +98,4 @@ void MH_StaticObjects::setupModelTransparent()
     modelTransparent->setVisible(true);
     INCR_NEW("Entity");
     Global::addEntity(modelTransparent);
-    modelTransparent->renderOrder = 1;
 }

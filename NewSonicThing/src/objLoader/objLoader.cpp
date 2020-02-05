@@ -18,6 +18,7 @@
 #include "../collision/triangle3d.h"
 #include "fakeTexture.h"
 #include "../collision/quadtreenode.h"
+#include "../toolbox/maths.h"
 
 void parseMtl(std::string filePath, std::string fileName, std::unordered_map<std::string, ModelTexture>* outMtlMap);
 
@@ -620,6 +621,7 @@ void parseMtl(std::string filePath, std::string fileName, std::unordered_map<std
     float currentAnimSpeed = 0.0f;
     int   currentMixingType = 1;
     float currentFogScale = 1.0f;
+    int   currentRenderOrder = 0;
 
     while (!file.eof())
     {
@@ -647,6 +649,7 @@ void parseMtl(std::string filePath, std::string fileName, std::unordered_map<std
                 currentAnimSpeed = 0.0f;
                 currentMixingType = 1;
                 currentFogScale = 1.0f;
+                currentRenderOrder = 0;
             }
             else if (strcmp(lineSplit[0], "\tmap_Kd") == 0 || strcmp(lineSplit[0], "map_Kd") == 0) //end of material found, generate it with all its attrributes
             {
@@ -701,6 +704,7 @@ void parseMtl(std::string filePath, std::string fileName, std::unordered_map<std
                 newTexture.animationSpeed = currentAnimSpeed;
                 newTexture.mixingType = currentMixingType;
                 newTexture.fogScale = currentFogScale;
+                newTexture.renderOrder = (char)currentRenderOrder;
 
                 (*outMtlMap)[currentMaterialName] = newTexture; //put a copy of newTexture into the list
             }
@@ -761,6 +765,10 @@ void parseMtl(std::string filePath, std::string fileName, std::unordered_map<std
             else if (strcmp(lineSplit[0], "\tfogScale") == 0 || strcmp(lineSplit[0], "fogScale") == 0)
             {
                 currentFogScale = std::stof(lineSplit[1]);
+            }
+            else if (strcmp(lineSplit[0], "\trenderOrder") == 0 || strcmp(lineSplit[0], "renderOrder") == 0)
+            {
+                currentRenderOrder = Maths::clamp(0, std::stoi(lineSplit[1]), 3);
             }
         }
 
@@ -1445,7 +1453,7 @@ CollisionModel* loadBinaryQuadTree(std::string filePath, std::string fileName)
 
     char fileType[4];
     fread(fileType, sizeof(char), 4, file);
-    if (fileType[0] != 'q' || 
+    if (fileType[0] != 'q' ||
         fileType[1] != 't' ||
         fileType[2] != 'r' ||
         fileType[3] != 'e')

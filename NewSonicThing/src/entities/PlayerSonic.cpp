@@ -1417,6 +1417,9 @@ void PlayerSonic::step()
     //std::fprintf(stdout, "%f\n", animationTime);
     //std::fprintf(stdout, "%f\n\n\n\n", vel.length());
 
+    //std::fprintf(stdout, "camDir       = [%f, %f, %f]\n", camDir.x, camDir.y, camDir.z);
+    //std::fprintf(stdout, "camDirSmooth = [%f, %f, %f]\n", camDirSmooth.x, camDirSmooth.y, camDirSmooth.z);
+
     //Vector3f vnorm(&vel);
     //vnorm.normalize();
     //std::fprintf(stdout, "pos  = [%f, %f, %f]\n", position.x, position.y, position.z);

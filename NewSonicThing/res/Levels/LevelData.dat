@@ -1,4 +1,4 @@
-15
+16
 
 Tutorial.lvl
 Tutorial
@@ -105,3 +105,11 @@ Delfino Plaza
 Normal;100;Collect emerald pieces
 Ring;100;100;Collect 100 Rings!
 Chao;100;Complete as Soic Phantom
+
+CloudStage.lvl
+Sacred Sky
+4
+Normal;13000;Learn how to play the game so you don't get mad at simple things.
+Ring;100;60;Collect 100 Rings!
+Chao;40;Find the lost chao!
+Race;100;54.755398;Race against Mighty!

@@ -20,7 +20,7 @@ void PlayerModel::setBaseAlpha(float) {}
 
 void PlayerModel::setBaseVisibility(bool) {}
 
-void PlayerModel::setRenderOrder(char) {}
+void PlayerModel::setRenderOrderOverride(char) {}
 
 const float PlayerModel::getDisplayBallOffset() {return 0.0f;}
 
@@ -37,6 +37,8 @@ void PlayerModel::log()
     frame.time = Global::mainHudTimer->totalTime;
     frame.animIndex = currentAnimIndex;
     frame.animTime = currentAnimTime;
+    //Vector3f sdff = position + currentUpDirection.scaleCopy(6.0f);
+    //frame.pos.set(&sdff);
     frame.pos.set(&position);
     frame.rot.set(rotX, rotY, rotZ, rotRoll);
     frame.up.set(&currentUpDirection);

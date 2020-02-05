@@ -11,17 +11,18 @@ std::unordered_set<ModelTexture*> ModelTexture::animatedTextureReferences;
 
 ModelTexture::ModelTexture()
 {
-    this->shineDamper = 20.0f;
-    this->reflectivity = 0.0f;
-    this->hasTransparency = false;
-    this->useFakeLighting = false;
-    this->glowAmount = 0;
-    this->isAnimated = false;
-    this->animatedProgress = 0.0f;
-    this->animationSpeed = 0.0f;
-    this->currentImageIndex = 0;
-    this->mixingType = 1;
-    this->fogScale = 1.0f;
+    shineDamper = 20.0f;
+    reflectivity = 0.0f;
+    hasTransparency = false;
+    useFakeLighting = false;
+    glowAmount = 0;
+    isAnimated = false;
+    animatedProgress = 0.0f;
+    animationSpeed = 0.0f;
+    currentImageIndex = 0;
+    mixingType = 1;
+    fogScale = 1.0f;
+    renderOrder = 0;
 }
 
 ModelTexture::ModelTexture(std::vector<GLuint>* texIDs)
@@ -30,23 +31,24 @@ ModelTexture::ModelTexture(std::vector<GLuint>* texIDs)
     {
         this->texIDs.push_back(id);
     }
-    this->shineDamper = 20.0f;
-    this->reflectivity = 0.0f;
-    this->hasTransparency = false;
-    this->useFakeLighting = false;
-    this->glowAmount = 0;
-    this->isAnimated = false;
-    this->animatedProgress = 0.0f;
-    this->animationSpeed = 0.0f;
-    this->currentImageIndex = 0;
-    this->mixingType = 1;
-    this->scrollX = 0.0f;
-    this->scrollY = 0.0f;
-    this->fogScale = 1.0f;
+    shineDamper = 20.0f;
+    reflectivity = 0.0f;
+    hasTransparency = false;
+    useFakeLighting = false;
+    glowAmount = 0;
+    isAnimated = false;
+    animatedProgress = 0.0f;
+    animationSpeed = 0.0f;
+    currentImageIndex = 0;
+    mixingType = 1;
+    scrollX = 0.0f;
+    scrollY = 0.0f;
+    fogScale = 1.0f;
+    renderOrder = 0;
 
     if (this->texIDs.size() > 1)
     {
-        this->isAnimated = true;
+        isAnimated = true;
     }
 }
 
@@ -55,25 +57,26 @@ ModelTexture::ModelTexture(ModelTexture* other)
     std::vector<GLuint>* otherIDs = other->getIDs();
     for (GLuint id : (*otherIDs))
     {
-        this->texIDs.push_back(id);
+        texIDs.push_back(id);
     }
-    this->shineDamper       = other->shineDamper;
-    this->reflectivity      = other->reflectivity;
-    this->hasTransparency   = other->hasTransparency;
-    this->useFakeLighting   = other->useFakeLighting;
-    this->glowAmount        = other->glowAmount;
-    this->isAnimated        = other->isAnimated;
-    this->animatedProgress  = other->animatedProgress;
-    this->animationSpeed    = other->animationSpeed;
-    this->currentImageIndex = other->currentImageIndex;
-    this->mixingType        = other->mixingType;
-    this->scrollX           = other->scrollX;
-    this->scrollY           = other->scrollY;
-    this->fogScale          = other->fogScale;
+    shineDamper       = other->shineDamper;
+    reflectivity      = other->reflectivity;
+    hasTransparency   = other->hasTransparency;
+    useFakeLighting   = other->useFakeLighting;
+    glowAmount        = other->glowAmount;
+    isAnimated        = other->isAnimated;
+    animatedProgress  = other->animatedProgress;
+    animationSpeed    = other->animationSpeed;
+    currentImageIndex = other->currentImageIndex;
+    mixingType        = other->mixingType;
+    scrollX           = other->scrollX;
+    scrollY           = other->scrollY;
+    fogScale          = other->fogScale;
+    renderOrder       = other->renderOrder;
 
-    if (this->texIDs.size() > 1)
+    if (texIDs.size() > 1)
     {
-        this->isAnimated = true;
+        isAnimated = true;
     }
 }
 

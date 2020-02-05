@@ -25,7 +25,6 @@ StageTransparent::StageTransparent(const char* objFolder, const char* objFilenam
     rotY = 0;
     rotZ = 0;
     scale = 1;
-    renderOrder = 3;
     visible = true;
     
     if (StageTransparent::models.size() == 0)
@@ -35,6 +34,8 @@ StageTransparent::StageTransparent(const char* objFolder, const char* objFilenam
         #endif
 
         loadModel(&StageTransparent::models, objFolder, objFilename);
+
+        setModelsRenderOrder(&StageTransparent::models, 3);
     }
     
     updateTransformationMatrix();
