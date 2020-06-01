@@ -143,8 +143,8 @@ void GoalRing::loadStaticModels()
     std::fprintf(stdout, "Loading GoalRing static models...\n");
     #endif
 
-    loadModel(&GoalRing::modelsRing, "res/Models/Objects/GoalRing/", "Pass1");
-    loadModel(&GoalRing::modelsText, "res/Models/Objects/GoalRing/", "Pass2");
+    ObjLoader::loadModel(&GoalRing::modelsRing, "res/Models/Objects/GoalRing/", "Pass1");
+    ObjLoader::loadModel(&GoalRing::modelsText, "res/Models/Objects/GoalRing/", "Pass2");
 
     setModelsRenderOrder(&GoalRing::modelsText, 1);
 }

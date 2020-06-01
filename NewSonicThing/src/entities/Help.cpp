@@ -137,7 +137,7 @@ void Help::loadStaticModels()
     std::fprintf(stdout, "Loading Help static models...\n");
     #endif
 
-    loadModel(&Help::models, "res/Models/Objects/Help/", "Help");
+    ObjLoader::loadModel(&Help::models, "res/Models/Objects/Help/", "Help");
 }
 
 void Help::deleteStaticModels()

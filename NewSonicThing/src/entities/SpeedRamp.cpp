@@ -67,7 +67,7 @@ void SpeedRamp::step()
     {
         Global::gameMainPlayer->hitSpeedRamp(&launchDirection, power, inputLockDuration);
 
-        AudioPlayer::play(21, getPosition());
+        AudioPlayer::play(21, &position);
     }
 }
 
@@ -87,11 +87,11 @@ void SpeedRamp::loadStaticModels()
     std::fprintf(stdout, "Loading SpeedRamp static models...\n");
     #endif
 
-    loadModel(&SpeedRamp::models, "res/Models/Objects/BigJump/", "BigJump");
+    ObjLoader::loadModel(&SpeedRamp::models, "res/Models/Objects/BigJump/", "BigJump");
 
     if (SpeedRamp::cmOriginal == nullptr)
     {
-        SpeedRamp::cmOriginal = loadCollisionModel("Models/Objects/BigJump/", "BigJump");
+        SpeedRamp::cmOriginal = ObjLoader::loadCollisionModel("Models/Objects/BigJump/", "BigJump");
     }
 }
 

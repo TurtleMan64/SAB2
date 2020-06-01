@@ -36,11 +36,10 @@ LostChao::~LostChao()
     }
 }
 
-LostChao::LostChao(float x, float y, float z)
+LostChao::LostChao(float x, float y, float z, float rot)
 {
-    position.x = x;
-    position.y = y;
-    position.z = z;
+    position.set(x, y, z);
+    rotY = rot;
     scale = 1;
     visible = true;
     updateTransformationMatrix();
@@ -117,7 +116,7 @@ void LostChao::loadStaticModels()
     std::fprintf(stdout, "Loading LostChao static models...\n");
     #endif
 
-    loadModel(&LostChao::models, "res/Models/Objects/Chao/", "Chao");
+    ObjLoader::loadModel(&LostChao::models, "res/Models/Objects/Chao/", "Chao");
 }
 
 void LostChao::deleteStaticModels()

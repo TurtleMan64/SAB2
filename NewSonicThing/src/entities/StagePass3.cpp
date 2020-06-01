@@ -33,7 +33,7 @@ StagePass3::StagePass3(const char* objFolder, const char* objFilename)
         std::fprintf(stdout, "Loading StagePass3 static models...\n");
         #endif
 
-        loadModel(&StagePass3::models, objFolder, objFilename);
+        ObjLoader::loadModel(&StagePass3::models, objFolder, objFilename);
 
         setModelsRenderOrder(&StagePass3::models, 2);
     }

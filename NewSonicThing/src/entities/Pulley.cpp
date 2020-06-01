@@ -157,13 +157,13 @@ void Pulley::loadStaticModels()
     std::fprintf(stdout, "Loading Pulley static models...\n");
     #endif
 
-    loadModel(&Pulley::modelsHandle, "res/Models/Objects/Pulley/", "PulleyHandle");
-    loadModel(&Pulley::modelsRope,   "res/Models/Objects/Pulley/", "PulleyRope");
-    loadModel(&Pulley::modelsTop,    "res/Models/Objects/Pulley/", "PulleyTop");
+    ObjLoader::loadModel(&Pulley::modelsHandle, "res/Models/Objects/Pulley/", "PulleyHandle");
+    ObjLoader::loadModel(&Pulley::modelsRope,   "res/Models/Objects/Pulley/", "PulleyRope");
+    ObjLoader::loadModel(&Pulley::modelsTop,    "res/Models/Objects/Pulley/", "PulleyTop");
 
     if (Pulley::cmTop == nullptr)
     {
-        Pulley::cmTop = loadCollisionModel("Models/Objects/Pulley/", "PulleyTopCollision");
+        Pulley::cmTop = ObjLoader::loadCollisionModel("Models/Objects/Pulley/", "PulleyTopCollision");
     }
 }
 

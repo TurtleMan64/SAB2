@@ -9,9 +9,10 @@
 #include "../engineTester/main.h"
 #include "../toolbox/getline.h"
 #include "../toolbox/split.h"
-#include "CharacterModels/maniamightymodel.h"
+#include "CharacterModels/maniaknucklesmodel.h"
 #include "CharacterModels/maniasonicmodel.h"
 #include "CharacterModels/maniatailsmodel.h"
+#include "CharacterModels/maniamightymodel.h"
 #include "../menu/timer.h"
 #include "../toolbox/maths.h"
 
@@ -193,7 +194,7 @@ RaceGhost::RaceGhost(const char* filePath, int missionNumber)
                 break;
 
             case Global::PlayableCharacter::Knuckles: 
-                myModel = new ManiaMightyModel; INCR_NEW("Entity");
+                myModel = new ManiaKnucklesModel; INCR_NEW("Entity");
                 break;
 
             default:

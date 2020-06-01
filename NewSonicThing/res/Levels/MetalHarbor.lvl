@@ -29,6 +29,8 @@ res/Audio/BGM/m_harb2_loop.ogg
 water
 -329.8
 4
+0 0 0
+0
 false
 1000
 
@@ -51,7 +53,7 @@ false
 92 res/Models/Levels/MetalHarbor/Rails/Rail7.txt
 
 # Lost Chao
-81 1706.997 -170.0 -6596.0
+81 1706.997 -170.0 -6596.0 0
 
 # Goal Ring
 69 8796.54 -139.44 -10266.15

@@ -170,8 +170,8 @@ void Beetle::loadStaticModels()
     std::fprintf(stdout, "Loading Beetle static models...\n");
     #endif
 
-    loadModel(&Beetle::modelsBody,   "res/Models/Objects/Beetle/", "Beetle");
-    loadModel(&Beetle::modelsBlades, "res/Models/Objects/Beetle/", "Blades");
+    ObjLoader::loadModel(&Beetle::modelsBody,   "res/Models/Objects/Beetle/", "Beetle");
+    ObjLoader::loadModel(&Beetle::modelsBlades, "res/Models/Objects/Beetle/", "Blades");
 }
 
 void Beetle::deleteStaticModels()

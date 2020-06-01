@@ -11,8 +11,12 @@ in vec3 color;
 out vec4 out_Color;
 out vec4 out_BrightColour;
 
+//const vec2 WINDOW_SIZE; //gets replaced in code before compiling
+
 uniform sampler2D textureSampler;
 uniform sampler2D textureSampler2;
+uniform sampler2D depthBufferTransparent;
+uniform int   isRenderingTransparent;
 uniform vec3  sunDirInv;
 uniform vec3  sunColor;
 uniform float shineDamper;
@@ -23,6 +27,8 @@ uniform float glowAmount;
 uniform vec3  baseColour;
 uniform float baseAlpha;
 uniform float mixFactor;
+uniform vec3  waterColor;
+uniform float waterBlendAmount;
 
 uniform float fogDensity;
 uniform float fogGradient;
@@ -32,6 +38,16 @@ uniform float fogBottomThickness;
 
 void main(void)
 {
+    if (isRenderingTransparent != 0)
+    {
+        float closestDepth = texture(depthBufferTransparent, vec2(gl_FragCoord.x/WINDOW_SIZE.x, gl_FragCoord.y/WINDOW_SIZE.y)).r;
+        
+        if (!(closestDepth > gl_FragCoord.z-0.00005))
+        {
+            discard;
+        }
+    }
+    
     vec4 rawTextureColour = mix(texture(textureSampler, pass_textureCoords), texture(textureSampler2, pass_textureCoords), mixFactor);
     rawTextureColour.rgb *= baseColour*color;
     rawTextureColour.a   *= baseAlpha;
@@ -39,11 +55,15 @@ void main(void)
     float ogTransparency = rawTextureColour.a;
     if (hasTransparency == 0)
     {
-        if (rawTextureColour.a < 0.9)
+        if (ogTransparency < 0.9)
         {
             discard;
         }
         rawTextureColour.a = 1;
+    }
+    else if (ogTransparency == 0)
+    {
+        discard;
     }
     
     vec3 unitNormal = normalize(surfaceNormal);
@@ -103,5 +123,9 @@ void main(void)
     
     //bottom fog
     out_Color.rgb = mix(out_Color.rgb, skyColour, fogScale*clamp((fogBottomPosition-worldPosition.y)*fogBottomThickness, 0.0, 1.0));
+    
+    //water
+    //out_Color.rgb = mix(out_Color.rgb, vec3(0, 0.839216, 0.839216), 0.5);
+    out_Color.rgb = mix(out_Color.rgb, waterColor, waterBlendAmount);
 }
 

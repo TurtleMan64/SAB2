@@ -24,17 +24,6 @@ public:
 
     //Functions that every player must be able to handle in some way
 public:
-
-    //virtual void setCameraAngles(float newYaw, float newPitch);
-
-    //virtual void setCameraTargetYaw(float yaw);
-
-    //virtual void setCameraTargetPitch(float pitch);
-
-    //virtual void increaseGroundSpeed(float dx, float dz);
-
-    //virtual float getSpeed();
-
     virtual void goUp();
 
     virtual void jump();
@@ -50,32 +39,6 @@ public:
     virtual void refreshCamera();
 
     virtual void setCanMoveTimer(int newMoveTimer);
-
-    //virtual void setGroundSpeed(float newXspd, float newZspd);
-
-    //virtual float getXVelGround();
-
-    //virtual float getZVelGround();
-
-    //virtual float getxVel();
-
-    //virtual void setxVel(float xVel);
-
-    //virtual float getyVel();
-
-    //virtual void setyVel(float yVel);
-
-    //virtual float getzVel();
-
-    //virtual void setzVel(float zVel);
-
-    //virtual void setxVelAir(float xVelAir);
-
-    //virtual float getXVelAir();
-
-    //virtual void setzVelAir(float zVelAir);
-
-    //virtual float getZVelAir();
 
     virtual void setHoverTimer(float newTime);
 
@@ -146,7 +109,9 @@ public:
 
     virtual void setShieldGreen(ShieldGreen* newGreen);
 
-    //virtual int getDiggingTimer();
+    virtual bool canGrabDiggablePiece();
+
+    virtual bool canReadHint();
 
     virtual void increaseCombo();
 
@@ -157,6 +122,8 @@ public:
     virtual void startGrabbing();
 
     virtual void stopGrabbing();
+
+    virtual float getDiggingTimer();
 
     virtual void hitSpring(Vector3f* direction, float power, float lockInputTime, bool resetsCamera);
 

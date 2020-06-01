@@ -59,9 +59,9 @@ void T_StageManager::loadStaticModels()
     std::fprintf(stdout, "Loading T_StageManager static models...\n");
     #endif
 
-    loadModel(&T_StageManager::modelsSkyPass1,       "res/Models/Levels/DelfinoPlaza/Sky/", "Blue");
-    loadModel(&T_StageManager::modelsSkyPass2,       "res/Models/Levels/DelfinoPlaza/Sky/", "Pass2");
-    loadModel(&T_StageManager::modelsSkyTransparent, "res/Models/Levels/DelfinoPlaza/Sky/", "Trans");
+    ObjLoader::loadModel(&T_StageManager::modelsSkyPass1,       "res/Models/Levels/DelfinoPlaza/Sky/", "Blue");
+    ObjLoader::loadModel(&T_StageManager::modelsSkyPass2,       "res/Models/Levels/DelfinoPlaza/Sky/", "Pass2");
+    ObjLoader::loadModel(&T_StageManager::modelsSkyTransparent, "res/Models/Levels/DelfinoPlaza/Sky/", "Trans");
 
     setModelsRenderOrder(&T_StageManager::modelsSkyPass2,       1);
     setModelsRenderOrder(&T_StageManager::modelsSkyTransparent, 3);

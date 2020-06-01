@@ -107,7 +107,7 @@ void GF_StageManager::loadStaticModels()
     std::fprintf(stdout, "Loading GF_StageManager static models...\n");
     #endif
 
-    loadModel(&GF_StageManager::modelsSkydome,  "res/Models/Levels/GreenForest/", "Skydome");
+    ObjLoader::loadModel(&GF_StageManager::modelsSkydome,  "res/Models/Levels/GreenForest/", "Skydome");
 }
 
 void GF_StageManager::deleteStaticModels()

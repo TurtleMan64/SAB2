@@ -73,9 +73,9 @@ void SkySphere::loadModels(char* folder, char* objname, char* mtlname)
     std::string mtlfilename = mtlname;
     mtlfilename = mtlfilename + ".mtl";
 
-    if (loadBinaryModelWithMTL(&SkySphere::models, path.c_str(), objfilename.c_str(), mtlfilename.c_str()) != 0)
+    if (ObjLoader::loadBinaryModelWithMTL(&SkySphere::models, path.c_str(), objfilename.c_str(), mtlfilename.c_str()) != 0)
     {
-        loadObjModelWithMTL(&SkySphere::models, path.c_str(), objfilename.c_str(), mtlfilename.c_str());
+        ObjLoader::loadObjModelWithMTL(&SkySphere::models, path.c_str(), objfilename.c_str(), mtlfilename.c_str());
     }
 }
 

@@ -133,7 +133,7 @@ void GF_Vine::loadStaticModels()
     std::fprintf(stdout, "Loading GF_Vine static models...\n");
     #endif
 
-    loadModel(&GF_Vine::models, "res/Models/Levels/GreenForest/Objects/", "Vine");
+    ObjLoader::loadModel(&GF_Vine::models, "res/Models/Levels/GreenForest/Objects/", "Vine");
 }
 
 void GF_Vine::deleteStaticModels()

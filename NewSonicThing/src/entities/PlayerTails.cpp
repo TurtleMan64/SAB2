@@ -363,7 +363,7 @@ void PlayerTails::step()
             onGround = false;
             isJumping = true;
             animationTime = 0;
-            AudioPlayer::play(12, getPosition());
+            AudioPlayer::play(12, &position);
         }
     }
     else
@@ -396,7 +396,7 @@ void PlayerTails::step()
                 float speed = vel.lengthSquared();
                 if (speed > autoUnrollThreshold*autoUnrollThreshold)
                 {
-                    AudioPlayer::play(41, getPosition()); //roll
+                    AudioPlayer::play(41, &position); //roll
                     isBall = true;
                 }
             }
@@ -461,7 +461,7 @@ void PlayerTails::step()
         {
             if (spindashTimer == 0)
             {
-                AudioPlayer::play(39, getPosition()); //peel charge
+                AudioPlayer::play(39, &position); //peel charge
             }
 
             spindashTimer = std::fminf(spindashTimer + dt, spindashTimerMax);
@@ -934,7 +934,7 @@ void PlayerTails::step()
                     homingAttackTimer = -1.0f;
                     isHomingOnPoint = false;
                     hoverTimer = 0.0f;
-                    AudioPlayer::play(8, getPosition());
+                    AudioPlayer::play(8, &position);
                     setPosition(CollisionChecker::getCollidePosition());
                     increasePosition(colNormal->x*FLOOR_OFFSET, colNormal->y*FLOOR_OFFSET, colNormal->z*FLOOR_OFFSET);
                 }
@@ -1359,7 +1359,7 @@ void PlayerTails::step()
             sourceStomp = nullptr;
         }
 
-        AudioPlayer::play(17, getPosition());
+        AudioPlayer::play(17, &position);
 
         int numBubbles = ((int)abs((vel.y/60.0f) * 10)) + 18;
         for (int i = 0; i < numBubbles; i++)
@@ -1513,7 +1513,7 @@ void PlayerTails::spindash()
     //std::fprintf(stdout, "spindash at %f speed\n", storedSpindashSpeed);
     //isBall = true;
     isBall = false; //geeks idea change
-    AudioPlayer::play(40, getPosition()); //peel release
+    AudioPlayer::play(40, &position); //peel release
     storedSpindashSpeed = 0;
 }
 
@@ -1842,7 +1842,7 @@ void PlayerTails::jump()
     hoverTimer = hoverTimerThreshold;
     onGround = false;
     isJumping = true;
-    AudioPlayer::play(12, getPosition());
+    AudioPlayer::play(12, &position);
 }
 
 void PlayerTails::jumpOffPulley(Vector3f forwardDirectionVector)
@@ -1879,7 +1879,7 @@ void PlayerTails::jumpOffPulley(Vector3f forwardDirectionVector)
     
 
     //jump sound
-    AudioPlayer::play(12, getPosition());
+    AudioPlayer::play(12, &position);
 }
 
 void PlayerTails::rebound(Vector3f* source)
@@ -1968,7 +1968,7 @@ void PlayerTails::takeDamage(Vector3f* source)
             }
             else
             {
-                AudioPlayer::play(10, getPosition());
+                AudioPlayer::play(10, &position);
             }
 
             ringsToScatter = std::min(ringsToScatter, 50);
@@ -2139,7 +2139,7 @@ void PlayerTails::homingAttack(Vector3f* target, bool homeInOnIt)
     isStomping = false;
     justBounced = false;
     justHomingAttacked = true;
-    AudioPlayer::play(11, getPosition());
+    AudioPlayer::play(11, &position);
 }
 
 void PlayerTails::setRelativeUp(Vector3f* newUp)
@@ -2766,7 +2766,7 @@ void PlayerTails::die()
 {
     if (deadTimer == -1.0f && Global::finishStageTimer == -1.0f)
     {
-        AudioPlayer::play(9, getPosition());
+        AudioPlayer::play(9, &position);
         deadTimer = 3.0f;
         if (Global::mainHudTimer != nullptr)
         {

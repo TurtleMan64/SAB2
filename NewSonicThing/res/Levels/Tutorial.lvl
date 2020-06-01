@@ -27,6 +27,8 @@ res/Audio/BGM/g_hill_loop.ogg
 water
 -1569.84
 12
+0 0 0
+0
 false
 1500
 
@@ -42,7 +44,7 @@ false
 #69 0 0 0
 
 #Lost Chao
-81 1245.487183 2362.788818 2173.260010
+81 1245.487183 2362.788818 2173.260010 -23
 
 #Race Ghost
 70 res/Models/Levels/Tutorial/MightyRace.ghost 3

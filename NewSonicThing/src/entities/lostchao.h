@@ -16,7 +16,7 @@ private:
 
 public:
     LostChao();
-    LostChao(float x, float y, float z);
+    LostChao(float x, float y, float z, float rot);
     ~LostChao();
 
     void step();

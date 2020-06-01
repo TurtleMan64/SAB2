@@ -393,7 +393,7 @@ void RhinoSpike::loadStaticModels()
     std::fprintf(stdout, "Loading RhinoSpike static models...\n");
     #endif
 
-    loadModel(&RhinoSpike::models, "res/Models/Objects/RhinoSpike/", "RhinoSpike");
+    ObjLoader::loadModel(&RhinoSpike::models, "res/Models/Objects/RhinoSpike/", "RhinoSpike");
 }
 
 void RhinoSpike::deleteStaticModels()

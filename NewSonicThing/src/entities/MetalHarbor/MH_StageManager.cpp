@@ -81,7 +81,7 @@ void MH_StageManager::loadStaticModels()
     std::fprintf(stdout, "Loading MH_StageManager static models...\n");
     #endif
 
-    loadModel(&MH_StageManager::modelsSkydome,  "res/Models/Levels/MetalHarbor/Sky/", "SkySpheroid");
+    ObjLoader::loadModel(&MH_StageManager::modelsSkydome,  "res/Models/Levels/MetalHarbor/Sky/", "SkySpheroid");
 }
 
 void MH_StageManager::deleteStaticModels()

@@ -224,8 +224,8 @@ void Hunter::loadStaticModels()
     std::fprintf(stdout, "Loading Hunter static models...\n");
     #endif
 
-    loadModel(&Hunter::modelsBody,   "res/Models/Objects/Hunter/", "Hunter");
-    loadModel(&Hunter::modelsGun,    "res/Models/Objects/Hunter/", "Gun");
+    ObjLoader::loadModel(&Hunter::modelsBody,   "res/Models/Objects/Hunter/", "Hunter");
+    ObjLoader::loadModel(&Hunter::modelsGun,    "res/Models/Objects/Hunter/", "Gun");
 }
 
 void Hunter::deleteStaticModels()

@@ -141,7 +141,7 @@ void RingMoving::step()
     {
         if ((Global::gameMainPlayer->getCenterPosition() - position).lengthSquared() < (5.0f*5.0f + 9.0f*9.0f))
         {
-            AudioPlayer::play(4, getPosition());
+            AudioPlayer::play(4, &position);
 
             for (int i = 0; i < 10; i++)
             {

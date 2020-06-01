@@ -72,6 +72,7 @@ void ConfigMenu::loadResources()
     buttonsNames.push_back(new Button("BGM Volume",       Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(4)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
     buttonsNames.push_back(new Button("Render Particles", Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(5)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
     buttonsNames.push_back(new Button("Show FPS",         Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(6)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    buttonsNames.push_back(new Button("Controller",       Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(7)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
 
     buttonsValues.clear();
     extern float VFOV_BASE;
@@ -85,6 +86,7 @@ void ConfigMenu::loadResources()
     buttonsValues.push_back(new Button(floatToString(100*AudioPlayer::soundLevelBGM)+"%", Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(4)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
     buttonsValues.push_back(new Button(boolToString(Global::renderParticles),             Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(5)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
     buttonsValues.push_back(new Button(boolToString(Global::displayFPS),                  Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(6)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    buttonsValues.push_back(new Button(Input::getControllerName(),                        Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(7)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
 
     buttonsNames[1]->generateText("FPS Limit", !Global::framerateUnlock);
     buttonsValues[1]->generateText(std::to_string((int)Global::fpsLimit), !Global::framerateUnlock);
@@ -407,6 +409,14 @@ Menu* ConfigMenu::step()
                 buttonsValues[6]->generateText(boolToString(Global::displayFPS));
                 break;
 
+            case 7:
+                if (Input::changeController(-1))
+                {
+                    AudioPlayer::play(36, Global::gameCamera->getFadePosition1());
+                    buttonsValues[7]->generateText(Input::getControllerName());
+                }
+                break;
+
             default:
                 break;
         }
@@ -471,6 +481,14 @@ Menu* ConfigMenu::step()
                 buttonsValues[6]->generateText(boolToString(Global::displayFPS));
                 break;
 
+            case 7:
+                if (Input::changeController(1))
+                {
+                    AudioPlayer::play(36, Global::gameCamera->getFadePosition1());
+                    buttonsValues[7]->generateText(Input::getControllerName());
+                }
+                break;
+
             default:
                 break;
         }
@@ -507,6 +525,8 @@ Menu* ConfigMenu::step()
     {
         AudioPlayer::play(37, Global::gameCamera->getFadePosition1());
         retVal = PopMenu::get();
+
+        Global::saveConfigData();
     }
 
     return retVal;

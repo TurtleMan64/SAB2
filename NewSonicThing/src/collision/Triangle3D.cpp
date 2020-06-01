@@ -90,27 +90,12 @@ void Triangle3D::generateValues()
     minZ = fminf(p1Z, fminf(p2Z, p3Z));
 }
 
-bool Triangle3D::isHeal()
-{
-    return (type == 1);
-}
-
-bool Triangle3D::isSlippery()
+bool Triangle3D::isWall()
 {
     return (type == 2);
 }
 
-bool Triangle3D::isBrake()
+bool Triangle3D::isDiggable()
 {
-    return (type == 3);
-}
-
-bool Triangle3D::isMiniBoost()
-{
-    return (type == 4);
-}
-
-bool Triangle3D::isWall()
-{
-    return (type == 5);
+    return (type == 1);
 }

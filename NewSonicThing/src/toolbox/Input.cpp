@@ -715,3 +715,60 @@ void Input::init()
         joyLog.close();
     }
 }
+
+std::string Input::getControllerName()
+{
+    #if GLFW_VERSION_MAJOR == 3 && GLFW_VERSION_MINOR == 3
+    const char* nameGamepad = glfwGetGamepadName(CONTROLLER_ID);
+    if (nameGamepad != nullptr)
+    {
+        return nameGamepad;
+    }
+    #endif
+
+    const char* nameJoystick = glfwGetJoystickName(CONTROLLER_ID);
+    if (nameJoystick != nullptr)
+    {
+        return nameJoystick;
+    }
+
+    return "None";
+}
+
+bool Input::changeController(int direction)
+{
+    int originalControllerID = CONTROLLER_ID;
+    int maxAttempts = GLFW_JOYSTICK_LAST - GLFW_JOYSTICK_1;
+    int currentAttempt = 0;
+    if (direction >= 0)
+    {
+        direction = 1;
+    }
+    else
+    {
+        direction = -1;
+    }
+
+    while (currentAttempt < maxAttempts)
+    {
+        CONTROLLER_ID = (CONTROLLER_ID + direction);
+        if (CONTROLLER_ID < GLFW_JOYSTICK_1)
+        {
+            CONTROLLER_ID = GLFW_JOYSTICK_LAST;
+        }
+        else if (CONTROLLER_ID > GLFW_JOYSTICK_LAST)
+        {
+            CONTROLLER_ID = GLFW_JOYSTICK_1;
+        }
+
+        if (glfwJoystickPresent(CONTROLLER_ID))
+        {
+            return true;
+        }
+
+        currentAttempt++;
+    }
+
+    CONTROLLER_ID = originalControllerID;
+    return false;
+}

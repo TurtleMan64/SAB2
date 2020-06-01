@@ -199,7 +199,7 @@ void Ring::step()
         float toPlayerDistSquared = (Global::gameMainPlayer->getCenterPosition() - position).lengthSquared();
         if (toPlayerDistSquared < (11.0f*11.0f)) //collect ring range
         {
-            AudioPlayer::play(4, getPosition());
+            AudioPlayer::play(4, &position);
 
             for (int i = 0; i < 10; i++)
             {
@@ -255,7 +255,7 @@ void Ring::loadStaticModels()
     std::fprintf(stdout, "Loading ring static models...\n");
     #endif
 
-    loadModel(&Ring::models, "res/Models/Objects/Ring/", "Ring");
+    ObjLoader::loadModel(&Ring::models, "res/Models/Objects/Ring/", "Ring");
 }
 
 void Ring::deleteStaticModels()

@@ -60,15 +60,15 @@ void PC_StaticObjects::loadStaticModels()
     std::fprintf(stdout, "Loading PC_StaticObjects static models...\n");
     #endif
 
-    loadModel(&PC_StaticObjects::models, "res/Models/Objects/MetalHarbor/StaticObjects/", "StaticObjects");
-    loadModel(&PC_StaticObjects::modelsVertexColours, "res/Models/Objects/MetalHarbor/StaticObjects/", "StaticObjectsVertexColours");
-    loadModel(&PC_StaticObjects::modelsTransparent, "res/Models/Objects/LevelSpecific/PyramidCave/StaticObjects/", "HallwayLight");
+    ObjLoader::loadModel(&PC_StaticObjects::models, "res/Models/Objects/MetalHarbor/StaticObjects/", "StaticObjects");
+    ObjLoader::loadModel(&PC_StaticObjects::modelsVertexColours, "res/Models/Objects/MetalHarbor/StaticObjects/", "StaticObjectsVertexColours");
+    ObjLoader::loadModel(&PC_StaticObjects::modelsTransparent, "res/Models/Objects/LevelSpecific/PyramidCave/StaticObjects/", "HallwayLight");
 
     setModelsRenderOrder(&PC_StaticObjects::modelsTransparent, 1);
 
     if (PC_StaticObjects::cmOriginal == nullptr)
     {
-        PC_StaticObjects::cmOriginal = loadCollisionModel("Models/Objects/MetalHarbor/StaticObjects/", "StaticObjectsCollision");
+        PC_StaticObjects::cmOriginal = ObjLoader::loadCollisionModel("Models/Objects/MetalHarbor/StaticObjects/", "StaticObjectsCollision");
     }
 }
 

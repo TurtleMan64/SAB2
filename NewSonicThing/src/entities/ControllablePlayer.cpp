@@ -7,30 +7,12 @@
 //#include "shieldmagnet.h"
 //#include "shieldgreen.h"
 
-//void          ControllablePlayer::setCameraAngles(float,float)        {}
-//void          ControllablePlayer::setCameraTargetYaw(float)           {}
-//void          ControllablePlayer::setCameraTargetPitch(float)         {}
-//void          ControllablePlayer::increaseGroundSpeed(float,float)    {}
-//float         ControllablePlayer::getSpeed()                          {return 0;}
 void          ControllablePlayer::goUp()                              {}
 void          ControllablePlayer::jump()                              {}
 void          ControllablePlayer::hitDashpad()                        {}
 void          ControllablePlayer::animate()                           {}
 void          ControllablePlayer::refreshCamera()                     {}
 void          ControllablePlayer::setCanMoveTimer(int)                {}
-//void          ControllablePlayer::setGroundSpeed(float,float)         {}
-//float         ControllablePlayer::getXVelGround()                     {return 0;}
-//float         ControllablePlayer::getZVelGround()                     {return 0;}
-//float         ControllablePlayer::getxVel()                           {return 0;}
-//void          ControllablePlayer::setxVel(float)                      {}
-//float         ControllablePlayer::getyVel()                           {return 0;}
-//void          ControllablePlayer::setyVel(float)                      {}
-//float         ControllablePlayer::getzVel()                           {return 0;}
-//void          ControllablePlayer::setzVel(float)                      {}
-//void          ControllablePlayer::setxVelAir(float)                   {}
-//float         ControllablePlayer::getXVelAir()                        {return 0;}
-//void          ControllablePlayer::setzVelAir(float)                   {}
-//float         ControllablePlayer::getZVelAir()                        {return 0;}
 void          ControllablePlayer::setHoverTimer(float)                {}
 float         ControllablePlayer::getHoverTimer()                     {return 0;}
 //void          ControllablePlayer::setOnPlane(bool)                    {}
@@ -66,13 +48,15 @@ ShieldMagnet* ControllablePlayer::getShieldMagnet()                   {return nu
 void          ControllablePlayer::setShieldMagnet(ShieldMagnet*)      {}
 ShieldGreen*  ControllablePlayer::getShieldGreen()                    {return nullptr;}
 void          ControllablePlayer::setShieldGreen(ShieldGreen*)        {}
-//int           ControllablePlayer::getDiggingTimer()                   {return 0;}
+bool          ControllablePlayer::canGrabDiggablePiece()              {return true;}
+bool          ControllablePlayer::canReadHint()                       {return false;}
 void          ControllablePlayer::increaseCombo()                     {}
 void          ControllablePlayer::setInvincibleTimer(float)           {}
 void          ControllablePlayer::setSpeedshoesTimer(float)           {}
-void          ControllablePlayer::startGrabbing()                        {}
-void          ControllablePlayer::stopGrabbing()                     {}
-void          ControllablePlayer::hitSpring(Vector3f*, float, float, bool)  {}
-void          ControllablePlayer::hitSpringTriple(Vector3f*, float, float)  {}
-void          ControllablePlayer::hitSpeedRamp(Vector3f*, float, float) {}
-void          ControllablePlayer::jumpOffPulley(Vector3f) {}
+void          ControllablePlayer::startGrabbing()                     {}
+void          ControllablePlayer::stopGrabbing()                      {}
+float         ControllablePlayer::getDiggingTimer()                   {return 0.0f;}
+void          ControllablePlayer::hitSpring(Vector3f*, float, float, bool) {}
+void          ControllablePlayer::hitSpringTriple(Vector3f*, float, float) {}
+void          ControllablePlayer::hitSpeedRamp(Vector3f*, float, float)    {}
+void          ControllablePlayer::jumpOffPulley(Vector3f)                  {}

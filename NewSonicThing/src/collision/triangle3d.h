@@ -27,7 +27,7 @@ public:
     float C;
     float D;
 
-    char type; //0 = normal, 1 = heal, 2 = slip, 3 = brake, 4 = mini boost, 5 = wall
+    char type; //0 = normal, 1 = diggable, 2 = wall
 
     char sound;
 
@@ -47,15 +47,9 @@ public:
 
     void generateValues();
 
-    bool isHeal();
-
-    bool isSlippery();
-
-    bool isBrake();
-
-    bool isMiniBoost();
-
     bool isWall();
+
+    bool isDiggable();
 };
 
 #endif

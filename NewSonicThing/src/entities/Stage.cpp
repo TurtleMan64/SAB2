@@ -1,15 +1,16 @@
 #include <glad/glad.h>
 #include <string>
 
+#include "../engineTester/main.h"
 #include "entity.h"
 #include "../models/models.h"
 #include "../toolbox/vector.h"
 #include "stage.h"
 #include "../renderEngine/renderEngine.h"
 #include "../objLoader/objLoader.h"
-#include "../engineTester/main.h"
 #include "dummy.h"
 #include "controllableplayer.h"
+#include "camera.h"
 
 #include <list>
 #include <vector>
@@ -54,7 +55,7 @@ void Stage::updateVisibleChunks()
         Vector3f t(0, 0, 0);
         if (Global::gameMainPlayer != nullptr)
         {
-            t.set(Global::gameMainPlayer->getPosition());
+            t.set(&Global::gameCamera->eye);
         }
 
         bool vis = false;
@@ -108,7 +109,7 @@ void Stage::loadModels(
         std::list<TexturedModel*> model;
         Stage::chunkModels.push_back(model);
 
-        loadModel(&Stage::chunkModels[i], path, (*fnames)[i]);
+        ObjLoader::loadModel(&Stage::chunkModels[i], path, (*fnames)[i]);
         Stage::chunkMin.push_back((*mins)[i]);
         Stage::chunkMax.push_back((*maxs)[i]);
     }

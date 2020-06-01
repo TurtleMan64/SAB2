@@ -51,6 +51,7 @@ class ControllablePlayer;
 #define LVL_NOKI_BAY        13
 #define LVL_DELFINO_PLAZA   14
 #define LVL_CLOUD_STAGE     15
+#define LVL_DRY_LAGOON      16
 
 #define DEV_MODE
 
@@ -71,6 +72,7 @@ public:
     static Timer* mainHudTimer;
     static Camera* gameCamera;
     static ControllablePlayer* gameMainPlayer;
+    static Entity* gameStageManager;
     static Stage* gameStage;
     static SkySphere* gameSkySphere;
     static Light* gameLightSun;
@@ -112,6 +114,8 @@ public:
     static int gameTotalPlaytime; //in seconds
     static float gameArcadePlaytime;
     static bool stageUsesWater;
+    static Vector3f stageWaterColor;
+    static float stageWaterBlendAmount;
     static FontType* fontVipnagorgialla;
     static bool renderWithCulling; //if the stage uses backface culling or not
     static bool displayFPS;
@@ -157,6 +161,9 @@ public:
     static int gameArcadeIndex;
     static std::vector<int> gameArcadeLevelIds;
 
+    static std::vector<int> gameActionLevelIds;  //levels for sonic and tails
+    static std::vector<int> gameHuntingLevelIds; //levels for knuckles
+
     //Debug display
     static bool debugDisplay;
     static bool frozen;
@@ -194,6 +201,8 @@ public:
     static void saveSaveData();
 
     static void saveGhostData();
+
+    static void saveConfigData();
 
     static int calculateRankAndUpdate();
 

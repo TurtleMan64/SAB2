@@ -37,7 +37,7 @@ void RH_StageManager::loadStaticModels()
     std::fprintf(stdout, "Loading RH_StageManager static models...\n");
     #endif
 
-    loadModel(&RH_StageManager::modelsSkydome,  "res/Models/Levels/RadicalHighway/Sky/", "Sky");
+    ObjLoader::loadModel(&RH_StageManager::modelsSkydome,  "res/Models/Levels/RadicalHighway/Sky/", "Sky");
 }
 
 void RH_StageManager::deleteStaticModels()

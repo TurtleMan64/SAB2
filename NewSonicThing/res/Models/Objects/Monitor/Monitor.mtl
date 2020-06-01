@@ -1,0 +1,74 @@
+# Material Count: 12
+
+newmtl attach_034F4ED8_material_10
+Ns 1.000000
+Ni 0.000000
+d 1.000000
+map_Kd kabe0.png
+
+newmtl attach_034F4ED8_material_12
+Ns 1.000000
+Ni 0.000000
+d 1.000000
+map_Kd ringside.png
+
+newmtl attach_034F4ED8_material_3
+Ns 1.000000
+Ni 0.000000
+d 1.000000
+map_Kd kaiho_gray.png
+
+newmtl attach_034F4ED8_material_2
+Ns 1.000000
+Ni 0.000000
+d 1.000000
+map_Kd rock_burn.png
+
+newmtl attach_034F4ED8_material_9
+Ns 1.000000
+Ni 0.000000
+d 1.000000
+map_Kd dringside1.png
+
+newmtl attach_034F4ED8_material_13
+Ns 1.000000
+Ni 0.000000
+d 1.000000
+map_Kd yuka.png
+
+newmtl attach_034F4ED8_material_0
+Ns 1.000000
+Ni 0.000000
+d 1.000000
+map_Kd kaiho_asi.png
+
+newmtl attach_034F4ED8_material_11
+Ns 1.000000
+Ni 0.000000
+d 1.000000
+map_Kd boxside1.png
+
+newmtl attach_034F4ED8_material_15
+Ns 1.000000
+Ni 0.000000
+d 1.000000
+map_Kd fine_sky_ref.png
+
+newmtl attach_034F4ED8_material_1
+Ns 1.000000
+Ni 0.000000
+d 1.000000
+map_Kd rock_panel4.png
+
+newmtl attach_034F4ED8_material_5
+Ns 1.000000
+Ni 0.000000
+d 1.000000
+map_Kd rock_hane.png
+
+newmtl attach_034F4ED8_material_14
+Ns 1.000000
+Ni 0.000000
+d 1.000000
+map_Kd kabe4.png
+

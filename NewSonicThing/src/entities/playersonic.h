@@ -247,7 +247,7 @@ public:
 
     void stopGrinding();
 
-    void setIsBall(bool newIsBall);
+    //void setIsBall(bool newIsBall);
 
     void setInWater(float newWaterHeight);
 
@@ -257,7 +257,7 @@ public:
 
     void stopGrabbing();
 
-    void setOnGround(bool newOnGround);
+    //void setOnGround(bool newOnGround);
 
     ShieldMagnet* getShieldMagnet();
 

@@ -1,0 +1,587 @@
+# Blender MTL File: 'None'
+# Material Count: 54
+
+newmtl Mesh_0310.rip
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+map_Kd Tex_0060_0.dds
+
+newmtl Mesh_0370.rip
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+map_Kd Tex_0036_0.dds
+
+newmtl Mesh_0371.rip
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+map_Kd Tex_0028_0.dds
+
+newmtl Mesh_0372.rip
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+map_Kd Tex_0022_0.dds
+
+newmtl Mesh_0414.rip
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+map_Kd Tex_0063_2.dds
+
+newmtl Mesh_0415.rip
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+Tr 0
+renderOrder 2
+map_Kd Tex_0064_0.dds
+
+newmtl Mesh_0426.rip
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+Tr 0
+renderOrder 2
+map_Kd Tex_0068_0.dds
+
+newmtl Mesh_0427.rip
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+map_Kd Tex_0069_0.dds
+
+newmtl Mesh_0481.rip
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 0.000000
+illum 1
+map_Kd Tex_0062_0.dds
+
+newmtl Mesh_0482.rip
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 0.000000
+illum 1
+map_Kd Tex_0063_0.dds
+
+newmtl Mesh_0484.rip
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 0.000000
+illum 1
+map_Kd Tex_0060_0.dds
+
+newmtl Mesh_0522.rip
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+Tr 0
+renderOrder 3
+map_Kd Tex_0070_0.png
+
+newmtl Mesh_0523.rip
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+Tr 0
+renderOrder 2
+map_Kd Tex_0071_0.dds
+
+newmtl Mesh_0524.rip
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+Tr 0
+renderOrder 2
+map_Kd Tex_0072_0.dds
+
+newmtl Mesh_0525.rip
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+Tr 0
+renderOrder 2
+map_Kd Tex_0073_0.dds
+
+newmtl Mesh_0526.rip
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+map_Kd Tex_0074_0.dds
+
+newmtl Mesh_0527.rip
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+Tr 0
+renderOrder 2
+map_Kd Tex_0075_0.dds
+
+newmtl dz_balconymoji_tile.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+map_Kd dz_balconymoji_tile.png
+
+newmtl dz_iron_box.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+map_Kd dz_iron_box.png
+
+newmtl dz_iron_box2.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+map_Kd dz_iron_box2.png
+
+newmtl dz_iron_boxeye.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+map_Kd dz_iron_boxeye.png
+
+newmtl dz_pharaoh_wall.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+map_Kd dz_pharaoh_wall.png
+
+newmtl dz_pharaohmanface.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+map_Kd dz_pharaohmanface.png
+
+newmtl dz_pharaohsit.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+map_Kd dz_pharaohsit.png
+
+newmtl dz_swallpaint.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+type dig
+illum 1
+map_Kd dz_swallpaint.png
+
+newmtl kd_dl_dai1.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+map_Kd kd_dl_dai1.png
+
+newmtl kd_dl_gc003.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+map_Kd kd_dl_gc003.png
+
+newmtl kd_dl_hasira1_vq.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+map_Kd kd_dl_hasira1_vq.png
+
+newmtl kd_dl_hasira2_vq.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+map_Kd kd_dl_hasira2_vq.png
+
+newmtl kd_dl_hasira3_vq.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+map_Kd kd_dl_hasira3_vq.png
+
+newmtl kd_dl_hasira4_vq.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+map_Kd kd_dl_hasira4_vq.png
+
+newmtl kd_dl_ido1.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+type dig
+map_Kd kd_dl_ido1.png
+
+newmtl kd_dl_ido2_vq.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+map_Kd kd_dl_ido2_vq.png
+
+newmtl kd_dl_ido3_vq.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+map_Kd kd_dl_ido3_vq.png
+
+newmtl kd_dl_ido4_vq.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+map_Kd kd_dl_ido4_vq.png
+
+newmtl kd_dl_ido5_vq.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+map_Kd kd_dl_ido5_vq.png
+
+newmtl kd_dl_kabe1.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+type dig
+map_Kd kd_dl_kabe1.png
+
+newmtl kd_dl_kabe3_vq.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+type dig
+map_Kd kd_dl_kabe3_vq.png
+
+newmtl kd_dl_kabe4_vq.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+type dig
+map_Kd kd_dl_kabe4_vq.png
+
+newmtl kd_dl_kabe5_vq.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+type dig
+map_Kd kd_dl_kabe5_vq.png
+
+newmtl kd_dl_kabe6_vq.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+type dig
+map_Kd kd_dl_kabe6_vq.png
+
+newmtl kd_dl_kabe7_vq.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+type dig
+map_Kd kd_dl_kabe7_vq.png
+
+newmtl kd_dl_kabepic1_vq.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+type dig
+map_Kd kd_dl_kabepic1_vq.png
+
+newmtl kd_dl_kao1_vq.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+type dig
+map_Kd kd_dl_kao1_vq.png
+
+newmtl kd_dl_kusa1.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+type dig
+map_Kd kd_dl_kusa1.png
+
+newmtl kd_dl_kusa2.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+Tr 0
+renderOrder 1
+map_Kd kd_dl_kusa2.png
+
+newmtl kd_dl_sekihi1.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+map_Kd kd_dl_sekihi1.png
+
+newmtl kd_dl_sekihi2_vq.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+map_Kd kd_dl_sekihi2_vq.png
+
+newmtl kd_dl_sekihi3.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+map_Kd kd_dl_sekihi3.png
+
+newmtl kd_dl_yuka1_vq.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+map_Kd kd_dl_yuka1_vq.png
+
+newmtl kd_nde_hasira1_vq.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+map_Kd kd_nde_hasira1_vq.png
+
+newmtl kd_nde_hasira3_vq.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+map_Kd kd_nde_hasira3_vq.png
+
+newmtl kd_nde_hasira9_vq.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+map_Kd kd_nde_hasira9_vq.png
+
+newmtl water
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+Tr 0
+renderOrder 1
+animSpeed 30.0
+mixLinear
+numImages 14
+map_Kd Water/0.png
+Water/1.png
+Water/2.png
+Water/3.png
+Water/4.png
+Water/5.png
+Water/6.png
+Water/7.png
+Water/8.png
+Water/9.png
+Water/10.png
+Water/11.png
+Water/12.png
+Water/13.png

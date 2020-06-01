@@ -25,6 +25,7 @@
 #include "CharacterModels/maniasonicmodel.h"
 #include "CharacterModels/maniamightymodel.h"
 #include "CharacterModels/maniatailsmodel.h"
+#include "CharacterModels/maniaknucklesmodel.h"
 #include "ringmoving.h"
 #include "../menu/timer.h"
 #include "stage.h"
@@ -66,7 +67,7 @@ PlayerSonic::PlayerSonic(float x, float y, float z)
     }
     else
     {
-        playerModel = new ManiaMightyModel; INCR_NEW("Entity");
+        playerModel = new ManiaKnucklesModel; INCR_NEW("Entity");
     }
     Global::addEntity(playerModel);
 
@@ -362,7 +363,7 @@ void PlayerSonic::step()
             onGround = false;
             isJumping = true;
             animationTime = 0;
-            AudioPlayer::play(12, getPosition());
+            AudioPlayer::play(12, &position);
         }
     }
     else
@@ -395,7 +396,7 @@ void PlayerSonic::step()
                 float speed = vel.lengthSquared();
                 if (speed > autoUnrollThreshold*autoUnrollThreshold)
                 {
-                    AudioPlayer::play(41, getPosition()); //roll
+                    AudioPlayer::play(41, &position); //roll
                     isBall = true;
                 }
             }
@@ -460,7 +461,7 @@ void PlayerSonic::step()
         {
             if (spindashTimer == 0)
             {
-                AudioPlayer::play(39, getPosition()); //peel charge
+                AudioPlayer::play(39, &position); //peel charge
             }
 
             spindashTimer = std::fminf(spindashTimer + dt, spindashTimerMax);
@@ -549,7 +550,7 @@ void PlayerSonic::step()
                 sourceStomp->stop();
                 sourceStomp = nullptr;
             }
-            sourceStomp = AudioPlayer::play(16, getPosition());
+            sourceStomp = AudioPlayer::play(16, &position);
             isJumping = false;
             isStomping = true;
             vel.y = 0;
@@ -869,7 +870,7 @@ void PlayerSonic::step()
                     homingAttackTimer = -1.0f;
                     isHomingOnPoint = false;
                     hoverTimer = 0.0f;
-                    AudioPlayer::play(8, getPosition());
+                    AudioPlayer::play(8, &position);
                     setPosition(CollisionChecker::getCollidePosition());
                     increasePosition(colNormal->x*FLOOR_OFFSET, colNormal->y*FLOOR_OFFSET, colNormal->z*FLOOR_OFFSET);
                 }
@@ -1280,7 +1281,7 @@ void PlayerSonic::step()
             sourceStomp = nullptr;
         }
 
-        AudioPlayer::play(17, getPosition());
+        AudioPlayer::play(17, &position);
 
         int numBubbles = ((int)abs((vel.y/60.0f) * 10)) + 18;
         for (int i = 0; i < numBubbles; i++)
@@ -1437,7 +1438,7 @@ void PlayerSonic::spindash()
     //std::fprintf(stdout, "spindash at %f speed\n", storedSpindashSpeed);
     //isBall = true;
     isBall = false; //geeks idea change
-    AudioPlayer::play(40, getPosition()); //peel release
+    AudioPlayer::play(40, &position); //peel release
     storedSpindashSpeed = 0;
 }
 
@@ -1760,7 +1761,7 @@ void PlayerSonic::jump()
     hoverTimer = hoverTimerThreshold;
     onGround = false;
     isJumping = true;
-    AudioPlayer::play(12, getPosition());
+    AudioPlayer::play(12, &position);
 }
 
 void PlayerSonic::jumpOffPulley(Vector3f forwardDirectionVector)
@@ -1797,7 +1798,7 @@ void PlayerSonic::jumpOffPulley(Vector3f forwardDirectionVector)
     
 
     //jump sound
-    AudioPlayer::play(12, getPosition());
+    AudioPlayer::play(12, &position);
 }
 
 void PlayerSonic::rebound(Vector3f* source)
@@ -1884,7 +1885,7 @@ void PlayerSonic::takeDamage(Vector3f* source)
             }
             else
             {
-                AudioPlayer::play(10, getPosition());
+                AudioPlayer::play(10, &position);
             }
 
             ringsToScatter = std::min(ringsToScatter, 50);
@@ -2055,7 +2056,7 @@ void PlayerSonic::homingAttack(Vector3f* target, bool homeInOnIt)
     isStomping = false;
     justBounced = false;
     justHomingAttacked = true;
-    AudioPlayer::play(11, getPosition());
+    AudioPlayer::play(11, &position);
 }
 
 void PlayerSonic::setRelativeUp(Vector3f* newUp)
@@ -2514,6 +2515,7 @@ void PlayerSonic::loadVehicleInfo()
     
     ManiaSonicModel::loadStaticModels();
     ManiaMightyModel::loadStaticModels();
+    ManiaKnucklesModel::loadStaticModels();
 }
 
 void PlayerSonic::deleteStaticModels()
@@ -2524,6 +2526,7 @@ void PlayerSonic::deleteStaticModels()
     
     ManiaSonicModel::deleteStaticModels();
     ManiaMightyModel::deleteStaticModels();
+    ManiaKnucklesModel::deleteStaticModels();
 }
 
 const bool PlayerSonic::isVehicle()
@@ -2666,7 +2669,7 @@ void PlayerSonic::die()
 {
     if (deadTimer == -1.0f && Global::finishStageTimer == -1.0f)
     {
-        AudioPlayer::play(9, getPosition());
+        AudioPlayer::play(9, &position);
         deadTimer = 3.0f;
         if (Global::mainHudTimer != nullptr)
         {

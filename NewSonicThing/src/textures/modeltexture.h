@@ -58,5 +58,7 @@ public:
 
     //updates all of the textures animation progress by dt
     static void updateAnimations(float dt);
+
+    bool equalTo(ModelTexture* other);
 };
 #endif

@@ -38,7 +38,7 @@ void CS_StageManager::loadStaticModels()
     std::fprintf(stdout, "Loading CS_StageManager static models...\n");
     #endif
 
-    loadModel(&CS_StageManager::modelsSkydome,  "res/Models/Levels/CloudStage/Sky/", "Sky");
+    ObjLoader::loadModel(&CS_StageManager::modelsSkydome,  "res/Models/Levels/CloudStage/Sky/", "Sky");
 }
 
 void CS_StageManager::deleteStaticModels()

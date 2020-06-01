@@ -21,17 +21,17 @@
 #include <unordered_map>
 #include <stdexcept>
 
-ShaderProgram* shader;
-EntityRenderer* renderer;
-ShadowMapMasterRenderer* shadowMapRenderer;
-ShadowMapMasterRenderer2* shadowMapRenderer2;
+ShaderProgram* shader = nullptr;
+EntityRenderer* renderer = nullptr;
+ShadowMapMasterRenderer* shadowMapRenderer = nullptr;
+ShadowMapMasterRenderer2* shadowMapRenderer2 = nullptr;
 
 std::unordered_map<TexturedModel*, std::list<Entity*>> entitiesMap;
 std::unordered_map<TexturedModel*, std::list<Entity*>> entitiesMapPass2;
 std::unordered_map<TexturedModel*, std::list<Entity*>> entitiesMapPass3;
 std::unordered_map<TexturedModel*, std::list<Entity*>> entitiesMapTransparent;
 
-Matrix4f* projectionMatrix;
+Matrix4f* projectionMatrix = nullptr;
 
 float VFOV_BASE = 60; //Vertical fov
 float VFOV_ADDITION = 0; //additional fov due to the vehicle going fast
@@ -47,6 +47,14 @@ void prepareTransparentRender();
 void prepareTransparentRenderDepthOnly();
 
 GLuint randomMap = GL_NONE;
+
+
+GLuint transparentFrameBuffer  = GL_NONE;
+//GLuint transparentColorTexture = GL_NONE;
+GLuint transparentDepthTexture = GL_NONE;
+
+extern unsigned int SCR_WIDTH;
+extern unsigned int SCR_HEIGHT;
 
 void Master_init()
 {
@@ -133,11 +141,40 @@ void Master_init()
 
     randomMap = Loader::loadTextureNoInterpolation("res/Images/randomMap.png");
 
+
+    //create frame buffer
+    glGenFramebuffers(1, &transparentFrameBuffer); //generate name for frame buffer
+    glBindFramebuffer(GL_FRAMEBUFFER, transparentFrameBuffer); //create the framebuffer
+    glDrawBuffer(GL_COLOR_ATTACHMENT0); //indicate that we will always render to color attachment 0
+
+    //create a color texture for no reason
+    //glGenTextures(1, &transparentColorTexture);
+    //glBindTexture(GL_TEXTURE_2D, transparentColorTexture);
+    //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, SCR_WIDTH, SCR_HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    //glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, transparentColorTexture, 0);
+
+    //create depth texture attachement
+    glGenTextures(1, &transparentDepthTexture);
+    glBindTexture(GL_TEXTURE_2D, transparentDepthTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32F, SCR_WIDTH, SCR_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);  //here is the depth bits
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, transparentDepthTexture, 0);
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+
+
     Master_disableCulling();
 }
 
-void Master_render(Camera* camera, float clipX, float clipY, float clipZ, float clipW)
+void Master_render(Camera* camera, float clipX, float clipY, float clipZ, float clipW, float waterBlendAmount)
 {
+    GLint currFB;
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &currFB);
+
     prepare();
     shader->start();
     shader->loadClipPlane(clipX, clipY, clipZ, clipW);
@@ -161,19 +198,92 @@ void Master_render(Camera* camera, float clipX, float clipY, float clipZ, float 
     shader->loadFogBottomPosition(SkyManager::fogBottomPosition);
     shader->loadFogBottomThickness(SkyManager::fogBottomThickness);
     shader->loadViewMatrix(camera);
+    shader->loadIsRenderingTransparent(false);
+    shader->loadWaterColor(&Global::stageWaterColor);
+    shader->loadWaterBlendAmount(waterBlendAmount);
     shader->connectTextureUnits();
 
     renderer->renderNEW(&entitiesMap, shadowMapRenderer->getToShadowMapSpaceMatrix(), shadowMapRenderer2->getToShadowMapSpaceMatrix());
     renderer->renderNEW(&entitiesMapPass2, shadowMapRenderer->getToShadowMapSpaceMatrix(), shadowMapRenderer2->getToShadowMapSpaceMatrix());
     renderer->renderNEW(&entitiesMapPass3, shadowMapRenderer->getToShadowMapSpaceMatrix(), shadowMapRenderer2->getToShadowMapSpaceMatrix());
+    shader->stop();
 
-    prepareTransparentRender();
+    //prepareTransparentRender();
+    //renderer->renderNEW(&entitiesMapTransparent, shadowMapRenderer->getToShadowMapSpaceMatrix(), shadowMapRenderer2->getToShadowMapSpaceMatrix());
+    //prepareTransparentRenderDepthOnly();
+    //renderer->renderNEW(&entitiesMapTransparent, shadowMapRenderer->getToShadowMapSpaceMatrix(), shadowMapRenderer2->getToShadowMapSpaceMatrix());
+
+    //glBindTexture(GL_TEXTURE_2D, 0);//To make sure the texture isn't bound
+    //glBindFramebuffer(GL_FRAMEBUFFER, transparentFrameBuffer);
+    //glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+
+    //prepareTransparentRenderDepthOnly();
+
+    glBindTexture(GL_TEXTURE_2D, 0);//To make sure the texture isn't bound
+    glBindFramebuffer(GL_FRAMEBUFFER, transparentFrameBuffer);
+    glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+
+    //prepare();
+
+    //glEnable(GL_MULTISAMPLE);
+    //glEnable(GL_BLEND);
+    //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    //glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+
+    //glEnable(GL_DEPTH_TEST);
+    //glDepthMask(true);
+    glClear(GL_DEPTH_BUFFER_BIT);
+    //glClearColor(RED, GREEN, BLUE, 1);
+
+
+    shader->start();
+    shader->loadClipPlane(clipX, clipY, clipZ, clipW);
+    shader->loadClipPlaneBehind(plane.x, plane.y, plane.z, plane.w);
+    shader->loadSkyColour(RED, GREEN, BLUE);
+    shader->loadSun(Global::gameLightSun);
+    shader->loadFogGradient(SkyManager::getFogGradient());
+    shader->loadFogDensity(SkyManager::getFogDensity());
+    shader->loadFogBottomPosition(SkyManager::fogBottomPosition);
+    shader->loadFogBottomThickness(SkyManager::fogBottomThickness);
+    shader->loadViewMatrix(camera);
+    shader->loadIsRenderingTransparent(false);
+    shader->loadWaterColor(&Global::stageWaterColor);
+    shader->loadWaterBlendAmount(waterBlendAmount);
+    shader->connectTextureUnits();
     renderer->renderNEW(&entitiesMapTransparent, shadowMapRenderer->getToShadowMapSpaceMatrix(), shadowMapRenderer2->getToShadowMapSpaceMatrix());
-    prepareTransparentRenderDepthOnly();
+    shader->stop();
+
+    glBindFramebuffer(GL_FRAMEBUFFER, currFB);
+    glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+    //prepareTransparentRender();
+    //glActiveTexture(GL_TEXTURE8);
+    //glBindTexture(GL_TEXTURE_2D, transparentDepthTexture);
+    //shader->loadIsRenderingTransparent(true);
+    //renderer->renderNEW(&entitiesMapTransparent, shadowMapRenderer->getToShadowMapSpaceMatrix(), shadowMapRenderer2->getToShadowMapSpaceMatrix());
+
+    //glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+
+    //shader->stop();
+
+    glActiveTexture(GL_TEXTURE8);
+    glBindTexture(GL_TEXTURE_2D, transparentDepthTexture);
+    shader->start();
+    shader->loadClipPlane(clipX, clipY, clipZ, clipW);
+    shader->loadClipPlaneBehind(plane.x, plane.y, plane.z, plane.w);
+    shader->loadSkyColour(RED, GREEN, BLUE);
+    shader->loadSun(Global::gameLightSun);
+    shader->loadFogGradient(SkyManager::getFogGradient());
+    shader->loadFogDensity(SkyManager::getFogDensity());
+    shader->loadFogBottomPosition(SkyManager::fogBottomPosition);
+    shader->loadFogBottomThickness(SkyManager::fogBottomThickness);
+    shader->loadViewMatrix(camera);
+    shader->loadIsRenderingTransparent(true);
+    shader->loadWaterColor(&Global::stageWaterColor);
+    shader->loadWaterBlendAmount(waterBlendAmount);
+    shader->connectTextureUnits();
     renderer->renderNEW(&entitiesMapTransparent, shadowMapRenderer->getToShadowMapSpaceMatrix(), shadowMapRenderer2->getToShadowMapSpaceMatrix());
-
-    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-
+    glBindTexture(GL_TEXTURE_2D, 0);
     shader->stop();
 }
 
@@ -184,7 +294,7 @@ void Master_processEntity(Entity* entity)
         return;
     }
 
-    if (entity->renderOrderOverride >= 0)
+    if (entity->renderOrderOverride <= 3)
     {
         std::unordered_map<TexturedModel*, std::list<Entity*>>* mapToUse = nullptr;
 
@@ -273,6 +383,9 @@ void prepareTransparentRender()
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+    //new
+    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+
     glEnable(GL_DEPTH_TEST);
     glDepthMask(false);
 
@@ -288,13 +401,23 @@ void prepareTransparentRender()
 
 void prepareTransparentRenderDepthOnly()
 {
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    //glBindTexture(GL_TEXTURE_2D, 0);//To make sure the texture isn't bound
+   // glBindFramebuffer(GL_FRAMEBUFFER, transparentFrameBuffer);
+    //glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
 
-    glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+    //glEnable(GL_BLEND);
+    //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    //glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+    //glDepthMask(true);
+    //glDisable(GL_DEPTH_TEST);
 
-    glEnable(GL_DEPTH_TEST);
-    glDepthMask(true);
+    //glEnable(GL_BLEND);
+    //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    //
+    //glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+    //
+    //glEnable(GL_DEPTH_TEST);
+    //glDepthMask(true);
 
     if (Global::renderWithCulling)
     {
@@ -330,9 +453,6 @@ void Master_disableCulling()
 {
     glDisable(GL_CULL_FACE);
 }
-
-extern unsigned int SCR_WIDTH;
-extern unsigned int SCR_HEIGHT;
 
 void Master_makeProjectionMatrix()
 {

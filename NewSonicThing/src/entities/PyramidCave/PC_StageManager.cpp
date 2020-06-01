@@ -45,7 +45,7 @@ void PC_StageManager::loadStaticModels()
     std::fprintf(stdout, "Loading PC_StageManager static models...\n");
     #endif
 
-    loadModel(&PC_StageManager::modelsSkydome,  "res/Models/Levels/PyramidCave/Sky/", "Sky");
+    ObjLoader::loadModel(&PC_StageManager::modelsSkydome,  "res/Models/Levels/PyramidCave/Sky/", "Sky");
 }
 
 void PC_StageManager::deleteStaticModels()

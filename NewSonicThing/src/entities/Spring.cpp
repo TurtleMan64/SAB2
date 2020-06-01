@@ -87,7 +87,7 @@ void Spring::loadStaticModels()
     std::fprintf(stdout, "Loading spring static models...\n");
     #endif
 
-    loadModel(&Spring::models, "res/Models/Objects/Spring/", "Spring");
+    ObjLoader::loadModel(&Spring::models, "res/Models/Objects/Spring/", "Spring");
 }
 
 void Spring::deleteStaticModels()

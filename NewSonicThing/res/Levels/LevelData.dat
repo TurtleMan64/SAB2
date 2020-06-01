@@ -1,4 +1,4 @@
-16
+17
 
 Tutorial.lvl
 Tutorial
@@ -110,6 +110,14 @@ CloudStage.lvl
 Sacred Sky
 4
 Normal;13000;Learn how to play the game so you don't get mad at simple things.
-Ring;100;60;Collect 100 Rings!
+Ring;60;100;Collect 100 Rings!
 Chao;40;Find the lost chao!
 Race;100;54.755398;Race against Mighty!
+
+DryLagoon.lvl
+Dry Lagoon
+4
+Normal;14000;Find all the pieces of the master emerald!
+Ring;40;100;Collect 100 Rings!
+Chao;25;Find the lost chao!
+Hard;15000;Complete hard mode!

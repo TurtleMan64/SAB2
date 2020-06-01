@@ -112,6 +112,9 @@
     <Filter Include="Source Files\entities\CloudStage">
       <UniqueIdentifier>{08a69956-18d4-41d2-a609-11ec4a34192f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\entities\DryLagoon">
+      <UniqueIdentifier>{ba4631f0-ef28-4e05-8c17-de1516968fe4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\glad.c">
@@ -564,6 +567,48 @@
     <ClCompile Include="src\entities\CloudStage\CS_StageManager.cpp">
       <Filter>Source Files\entities\CloudStage</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\PlayerKnuckles.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\CharacterModels\ManiaKnucklesModel.cpp">
+      <Filter>Source Files\entities\CharacterModels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\toolbox\Format.cpp">
+      <Filter>Source Files\toolbox</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\DryLagoon\DL_StageManager.cpp">
+      <Filter>Source Files\entities\DryLagoon</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\EmeraldManager.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\EmeraldPiece.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\HintMonitor.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\DryLagoon\DL_Plant1.cpp">
+      <Filter>Source Files\entities\DryLagoon</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\DryLagoon\DL_Plant2.cpp">
+      <Filter>Source Files\entities\DryLagoon</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\DryLagoon\DL_Tree.cpp">
+      <Filter>Source Files\entities\DryLagoon</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\DryLagoon\DL_BlueBox.cpp">
+      <Filter>Source Files\entities\DryLagoon</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\DryLagoon\DL_Pot.cpp">
+      <Filter>Source Files\entities\DryLagoon</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\DryLagoon\DL_Turtle.cpp">
+      <Filter>Source Files\entities\DryLagoon</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\DryLagoon\DL_DigTeleport.cpp">
+      <Filter>Source Files\entities\DryLagoon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.h">
@@ -1000,6 +1045,48 @@
     </ClInclude>
     <ClInclude Include="src\entities\CloudStage\csstagemanager.h">
       <Filter>Source Files\entities\CloudStage</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\playerknuckles.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\CharacterModels\maniaknucklesmodel.h">
+      <Filter>Source Files\entities\CharacterModels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\toolbox\format.h">
+      <Filter>Source Files\toolbox</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\DryLagoon\dlstagemanager.h">
+      <Filter>Source Files\entities\DryLagoon</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\emeraldmanager.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\emeraldpiece.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\hintmonitor.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\DryLagoon\dlplant1.h">
+      <Filter>Source Files\entities\DryLagoon</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\DryLagoon\dlplant2.h">
+      <Filter>Source Files\entities\DryLagoon</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\DryLagoon\dltree.h">
+      <Filter>Source Files\entities\DryLagoon</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\DryLagoon\dlbluebox.h">
+      <Filter>Source Files\entities\DryLagoon</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\DryLagoon\dlpot.h">
+      <Filter>Source Files\entities\DryLagoon</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\DryLagoon\dlturtle.h">
+      <Filter>Source Files\entities\DryLagoon</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\DryLagoon\dldigteleport.h">
+      <Filter>Source Files\entities\DryLagoon</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

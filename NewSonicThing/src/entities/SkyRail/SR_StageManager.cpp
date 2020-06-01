@@ -61,10 +61,10 @@ void SR_StageManager::loadStaticModels()
     std::fprintf(stdout, "Loading SR_StageManager static models...\n");
     #endif
 
-    loadModel(&SR_StageManager::modelsSkyPass1,       "res/Models/Levels/SkyRail/Sky/", "Pass1");
-    loadModel(&SR_StageManager::modelsSkyPass2,       "res/Models/Levels/SkyRail/Sky/", "Pass2");
-    loadModel(&SR_StageManager::modelsSkyPass3,       "res/Models/Levels/SkyRail/Sky/", "Pass3");
-    loadModel(&SR_StageManager::modelsSkyTransparent, "res/Models/Levels/SkyRail/Sky/", "Transparent");
+    ObjLoader::loadModel(&SR_StageManager::modelsSkyPass1,       "res/Models/Levels/SkyRail/Sky/", "Pass1");
+    ObjLoader::loadModel(&SR_StageManager::modelsSkyPass2,       "res/Models/Levels/SkyRail/Sky/", "Pass2");
+    ObjLoader::loadModel(&SR_StageManager::modelsSkyPass3,       "res/Models/Levels/SkyRail/Sky/", "Pass3");
+    ObjLoader::loadModel(&SR_StageManager::modelsSkyTransparent, "res/Models/Levels/SkyRail/Sky/", "Transparent");
 
     setModelsRenderOrder(&SR_StageManager::modelsSkyPass2,       1);
     setModelsRenderOrder(&SR_StageManager::modelsSkyPass3,       2);

@@ -102,7 +102,7 @@ void SpringTriple::loadStaticModels()
     std::fprintf(stdout, "Loading triple spring static models...\n");
     #endif
 
-    loadModel(&SpringTriple::models, "res/Models/Objects/Spring/", "TripleSpring");
+    ObjLoader::loadModel(&SpringTriple::models, "res/Models/Objects/Spring/", "TripleSpring");
 }
 
 void SpringTriple::deleteStaticModels()

@@ -1,6 +1,8 @@
 #ifndef INPUT_H
 #define INPUT_H
 
+#include <string>
+
 struct InputStruct
 {
     volatile int uniqueVar;
@@ -57,6 +59,10 @@ public:
     static void init();
 
     static void pollInputs();
+
+    static std::string getControllerName();
+
+    static bool changeController(int direction);
 };
 
 #endif

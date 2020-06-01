@@ -87,7 +87,7 @@ void Rocket::step()
     if (rocketAppearSoundCanPlay())
     {
         rocketAppearSoundPlayed = true;
-        AudioPlayer::play(54, getPosition(), 1, false);
+        AudioPlayer::play(54, &position, 1, false);
     }
     else if (rocketAppearSoundCanReset())
     {
@@ -164,12 +164,12 @@ void Rocket::loadStaticModels()
     std::fprintf(stdout, "Loading Rocket static models...\n");
     #endif
 
-    loadModel(&Rocket::modelsRocket, "res/Models/Objects/Rocket/", "Rocket");
-    loadModel(&Rocket::modelsBase,   "res/Models/Objects/Rocket/", "RocketPlatform");
+    ObjLoader::loadModel(&Rocket::modelsRocket, "res/Models/Objects/Rocket/", "Rocket");
+    ObjLoader::loadModel(&Rocket::modelsBase,   "res/Models/Objects/Rocket/", "RocketPlatform");
 
     if (Rocket::cmBase == nullptr)
     {
-        Rocket::cmBase = loadCollisionModel("Models/Objects/Rocket/", "RocketPlatformCollision");
+        Rocket::cmBase = ObjLoader::loadCollisionModel("Models/Objects/Rocket/", "RocketPlatformCollision");
     }
 }
 
@@ -273,7 +273,7 @@ void Rocket::makeExhaustParticles(float rocketSpeed)
 
 void Rocket::playRocketLaunchSoundStart()
 {
-    rocketAudioSource = AudioPlayer::play(55, getPosition(), 1, false);
+    rocketAudioSource = AudioPlayer::play(55, &position, 1, false);
 }
 
 void Rocket::playRocketLaunchSoundLoop()
@@ -282,13 +282,13 @@ void Rocket::playRocketLaunchSoundLoop()
     {
         if (!rocketAudioSource->isPlaying())
         {
-            rocketAudioSource = AudioPlayer::play(56, getPosition(), 1, true);
+            rocketAudioSource = AudioPlayer::play(56, &position, 1, true);
         }
         rocketAudioSource->setPosition(position.x, position.y, position.z);
     }
     else
     {
-        rocketAudioSource = AudioPlayer::play(56, getPosition(), 1, true);
+        rocketAudioSource = AudioPlayer::play(56, &position, 1, true);
     }
 }
 

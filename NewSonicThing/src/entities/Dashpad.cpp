@@ -73,7 +73,7 @@ void Dashpad::step()
         {
             if (!playerIsIn)
             {
-                AudioPlayer::play(1, getPosition());
+                AudioPlayer::play(1, &position);
                 Global::gameMainPlayer->vel = forward.scaleCopy(power);
                 Global::gameMainPlayer->vel = Maths::projectOntoPlane(&Global::gameMainPlayer->vel, &Global::gameMainPlayer->relativeUp);
                 Global::gameMainPlayer->vel.setLength(power);
@@ -123,7 +123,7 @@ void Dashpad::loadStaticModels()
     std::fprintf(stdout, "Loading Dashpad static models...\n");
     #endif
 
-    loadModel(&Dashpad::models,  "res/Models/Objects/Dashpad/", "Dashpad");
+    ObjLoader::loadModel(&Dashpad::models,  "res/Models/Objects/Dashpad/", "Dashpad");
 }
 
 void Dashpad::deleteStaticModels()

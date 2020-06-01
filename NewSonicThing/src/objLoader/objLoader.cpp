@@ -4,6 +4,7 @@
 #include <cstring>
 #include <iostream>
 #include <vector>
+#include <unordered_map>
 #include <list>
 
 #include "objLoader.h"
@@ -20,34 +21,7 @@
 #include "../collision/quadtreenode.h"
 #include "../toolbox/maths.h"
 
-void parseMtl(std::string filePath, std::string fileName, std::unordered_map<std::string, ModelTexture>* outMtlMap);
-
-void processVertex(char** vertex,
-    std::vector<Vertex*>* vertices,
-    std::vector<int>* indices);
-
-void processVertexBinary(int, int, int,
-    std::vector<Vertex*>* vertices,
-    std::vector<int>* indices);
-
-void dealWithAlreadyProcessedVertex(Vertex*, 
-    int, 
-    int, 
-    std::vector<int>*, 
-    std::vector<Vertex*>*);
-
-void removeUnusedVertices(std::vector<Vertex*>* vertices);
-
-void convertDataToArrays(
-    std::vector<Vertex*>* vertices, 
-    std::vector<Vector2f>* textures,
-    std::vector<Vector3f>* normals, 
-    std::vector<float>* verticesArray, 
-    std::vector<float>* texturesArray,
-    std::vector<float>* normalsArray,
-    std::vector<float>* colorsArray);
-
-int loadModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName)
+int ObjLoader::ObjLoader::loadModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName)
 {
     int attemptBinaryOBJ = loadBinaryModel(models, filePath, fileName+".binobj");
     
@@ -78,7 +52,7 @@ int loadModel(std::list<TexturedModel*>* models, std::string filePath, std::stri
 //int numAdditionalVertices = 0;
 
 //Each TexturedModel contained within 'models' must be deleted later.
-int loadBinaryModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName)
+int ObjLoader::loadBinaryModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName)
 {
     if (models->size() > 0)
     {
@@ -240,16 +214,15 @@ int loadBinaryModel(std::list<TexturedModel*>* models, std::string filePath, std
         delete vertex; INCR_DEL("Vertex");
     }
 
+    deleteUnusedMtl(&mtlMap, &modelTextures);
     modelTextures.clear();
     mtlMap.clear();
-
-    modelTextures.shrink_to_fit();
 
     return 0;
 }
 
 //Each TexturedModel contained within 'models' must be deleted later.
-int loadVclModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName)
+int ObjLoader::loadVclModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName)
 {
     if (models->size() > 0)
     {
@@ -409,15 +382,14 @@ int loadVclModel(std::list<TexturedModel*>* models, std::string filePath, std::s
         delete vertex; INCR_DEL("Vertex");
     }
 
+    deleteUnusedMtl(&mtlMap, &modelTextures);
     modelTextures.clear();
     mtlMap.clear();
-
-    modelTextures.shrink_to_fit();
 
     return 0;
 }
 
-int loadObjModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName)
+int ObjLoader::loadObjModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName)
 {
     if (models->size() > 0)
     {
@@ -581,17 +553,20 @@ int loadObjModel(std::list<TexturedModel*>* models, std::string filePath, std::s
         delete vertex; INCR_DEL("Vertex");
     }
 
+    deleteUnusedMtl(&mtlMap, &modelTextures);
     modelTextures.clear();
     mtlMap.clear();
-
-    modelTextures.shrink_to_fit();
 
     return 0;
 }
 
-void parseMtl(std::string filePath, std::string fileName, std::unordered_map<std::string, ModelTexture>* outMtlMap)
+void ObjLoader::parseMtl(std::string filePath, std::string fileName, std::unordered_map<std::string, ModelTexture>* outMtlMap)
 {
     //map that we fill in, from the mtl file
+    if (!outMtlMap->empty())
+    {
+        std::fprintf(stderr, "Warning: Material map is not empty.\n");
+    }
     outMtlMap->clear();
 
     std::ifstream file(Global::pathToEXE+filePath+fileName);
@@ -781,7 +756,7 @@ void parseMtl(std::string filePath, std::string fileName, std::unordered_map<std
 
 }
 
-int loadObjModelWithMTL(std::list<TexturedModel*>* models, std::string filePath, std::string fileNameOBJ, std::string fileNameMTL)
+int ObjLoader::loadObjModelWithMTL(std::list<TexturedModel*>* models, std::string filePath, std::string fileNameOBJ, std::string fileNameMTL)
 {
     if (models->size() > 0)
     {
@@ -930,15 +905,14 @@ int loadObjModelWithMTL(std::list<TexturedModel*>* models, std::string filePath,
         delete vertex; INCR_DEL("Vertex");
     }
 
+    deleteUnusedMtl(&mtlMap, &modelTextures);
     modelTextures.clear();
     mtlMap.clear();
-
-    modelTextures.shrink_to_fit();
 
     return 0;
 }
 
-int loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::string filePath, std::string fileNameBin, std::string fileNameMTL)
+int ObjLoader::loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::string filePath, std::string fileNameBin, std::string fileNameMTL)
 {
     if (models->size() > 0)
     {
@@ -1099,15 +1073,14 @@ int loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::string filePa
         delete vertex; INCR_DEL("Vertex");
     }
 
+    deleteUnusedMtl(&mtlMap, &modelTextures);
     modelTextures.clear();
     mtlMap.clear();
-
-    modelTextures.shrink_to_fit();
 
     return 0;
 }
 
-void processVertex(char** vertex,
+void ObjLoader::processVertex(char** vertex,
     std::vector<Vertex*>* vertices,
     std::vector<int>* indices)
 {
@@ -1128,7 +1101,7 @@ void processVertex(char** vertex,
     }
 }
 
-void processVertexBinary(int vIndex, int tIndex, int nIndex,
+void ObjLoader::processVertexBinary(int vIndex, int tIndex, int nIndex,
     std::vector<Vertex*>* vertices,
     std::vector<int>* indices)
 {
@@ -1149,7 +1122,7 @@ void processVertexBinary(int vIndex, int tIndex, int nIndex,
     }
 }
 
-void dealWithAlreadyProcessedVertex(
+void ObjLoader::dealWithAlreadyProcessedVertex(
     Vertex* previousVertex,
     int newTextureIndex,
     int newNormalIndex,
@@ -1182,7 +1155,7 @@ void dealWithAlreadyProcessedVertex(
 }
 
 
-void convertDataToArrays(
+void ObjLoader::convertDataToArrays(
     std::vector<Vertex*>* vertices, 
     std::vector<Vector2f>* textures,
     std::vector<Vector3f>* normals, 
@@ -1210,7 +1183,7 @@ void convertDataToArrays(
     }
 }
 
-void removeUnusedVertices(std::vector<Vertex*>* vertices)
+void ObjLoader::removeUnusedVertices(std::vector<Vertex*>* vertices)
 {
     for (auto vertex : (*vertices))
     {
@@ -1222,7 +1195,7 @@ void removeUnusedVertices(std::vector<Vertex*>* vertices)
     }
 }
 
-CollisionModel* loadCollisionModel(std::string filePath, std::string fileName)
+CollisionModel* ObjLoader::loadCollisionModel(std::string filePath, std::string fileName)
 {
     CollisionModel* collisionModel = new CollisionModel; INCR_NEW("CollisionModel");
 
@@ -1336,25 +1309,13 @@ CollisionModel* loadCollisionModel(std::string filePath, std::string fileName)
                         else if (strcmp(lineSplitMTL[0], "type") == 0 ||
                                  strcmp(lineSplitMTL[0], "\ttype") == 0)
                         {
-                            if (strcmp(lineSplitMTL[1], "heal") == 0)
+                            if (strcmp(lineSplitMTL[1], "dig") == 0)
                             {
                                 fakeTextures.back().type = 1;
                             }
-                            else if (strcmp(lineSplitMTL[1], "slip") == 0)
-                            {
-                                fakeTextures.back().type = 2;
-                            }
-                            else if (strcmp(lineSplitMTL[1], "brake") == 0)
-                            {
-                                fakeTextures.back().type = 3;
-                            }
-                            else if (strcmp(lineSplitMTL[1], "boost") == 0)
-                            {
-                                fakeTextures.back().type = 4;
-                            }
                             else if (strcmp(lineSplitMTL[1], "wall") == 0)
                             {
-                                fakeTextures.back().type = 5;
+                                fakeTextures.back().type = 2;
                             }
                         }
                         else if (strcmp(lineSplitMTL[0], "sound") == 0 ||
@@ -1382,7 +1343,7 @@ CollisionModel* loadCollisionModel(std::string filePath, std::string fileName)
     return collisionModel;
 }
 
-void workOnQuadTreeNode(FILE* file, QuadTreeNode* node)
+void ObjLoader::workOnQuadTreeNode(FILE* file, QuadTreeNode* node)
 {
     //read in header for this node
     fread(&node->depth, sizeof(int),   1, file);
@@ -1439,7 +1400,7 @@ void workOnQuadTreeNode(FILE* file, QuadTreeNode* node)
     }
 }
 
-CollisionModel* loadBinaryQuadTree(std::string filePath, std::string fileName)
+CollisionModel* ObjLoader::loadBinaryQuadTree(std::string filePath, std::string fileName)
 {
     FILE* file = nullptr;
     int err = fopen_s(&file, (Global::pathToEXE + "res/" + filePath+fileName+".qtree").c_str(), "rb");
@@ -1488,7 +1449,7 @@ CollisionModel* loadBinaryQuadTree(std::string filePath, std::string fileName)
     return collisionModel;
 }
 
-CollisionModel* loadBinaryCollisionModel(std::string filePath, std::string fileName)
+CollisionModel* ObjLoader::loadBinaryCollisionModel(std::string filePath, std::string fileName)
 {
     std::list<FakeTexture> fakeTextures;
     std::vector<Vector3f> vertices;
@@ -1562,25 +1523,13 @@ CollisionModel* loadBinaryCollisionModel(std::string filePath, std::string fileN
                 else if (strcmp(lineSplitMTL[0], "type") == 0 ||
                          strcmp(lineSplitMTL[0], "\ttype") == 0)
                 {
-                    if (strcmp(lineSplitMTL[1], "heal") == 0)
+                    if (strcmp(lineSplitMTL[1], "dig") == 0)
                     {
                         fakeTextures.back().type = 1;
                     }
-                    else if (strcmp(lineSplitMTL[1], "slip") == 0)
-                    {
-                        fakeTextures.back().type = 2;
-                    }
-                    else if (strcmp(lineSplitMTL[1], "brake") == 0)
-                    {
-                        fakeTextures.back().type = 3;
-                    }
-                    else if (strcmp(lineSplitMTL[1], "boost") == 0)
-                    {
-                        fakeTextures.back().type = 4;
-                    }
                     else if (strcmp(lineSplitMTL[1], "wall") == 0)
                     {
-                        fakeTextures.back().type = 5;
+                        fakeTextures.back().type = 2;
                     }
                 }
                 else if (strcmp(lineSplitMTL[0], "sound") == 0 ||
@@ -1669,4 +1618,33 @@ CollisionModel* loadBinaryCollisionModel(std::string filePath, std::string fileN
     collisionModel->generateMinMaxValues();
 
     return collisionModel;
+}
+
+void ObjLoader::deleteUnusedMtl(std::unordered_map<std::string, ModelTexture>* mtlMap, std::vector<ModelTexture>* usedMtls)
+{
+    //for some extremely bizarre reason, I cannot make a set or a map on the stack in this specific function.
+    // "trying to use deleted function" or something...
+    //so we must do a slow O(n^2) operation here instead of linear...
+
+    //iterate through loaded mtls, check if they are used
+    std::unordered_map<std::string, ModelTexture>::iterator it;
+    for (it = mtlMap->begin(); it != mtlMap->end(); it++)
+    {
+        bool foundTexture = false;
+        for (int i = 0; i < (int)usedMtls->size(); i++)
+        {
+            ModelTexture tex = (*usedMtls)[i]; //get a copy of it
+            if (tex.equalTo(&it->second))
+            {
+                foundTexture = true;
+                break;
+            }
+        }
+
+        if (!foundTexture)
+        {
+            ModelTexture texToDelete = it->second;
+            texToDelete.deleteMe();
+        }
+    }
 }

@@ -33,7 +33,7 @@ StageTransparent::StageTransparent(const char* objFolder, const char* objFilenam
         std::fprintf(stdout, "Loading StageTransparent static models...\n");
         #endif
 
-        loadModel(&StageTransparent::models, objFolder, objFilename);
+        ObjLoader::loadModel(&StageTransparent::models, objFolder, objFilename);
 
         setModelsRenderOrder(&StageTransparent::models, 3);
     }

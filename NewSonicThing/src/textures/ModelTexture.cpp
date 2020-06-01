@@ -147,3 +147,21 @@ void ModelTexture::updateAnimations(float dt)
         }
     }
 }
+
+bool ModelTexture::equalTo(ModelTexture* other)
+{
+    return (
+        std::equal(texIDs.begin(), texIDs.end(), other->getIDs()->begin()) &&
+        isAnimated      == other->isAnimated &&
+        shineDamper     == other->shineDamper &&
+        reflectivity    == other->reflectivity &&
+        scrollX         == other->scrollX &&
+        scrollY         == other->scrollY &&
+        glowAmount      == other->glowAmount &&
+        hasTransparency == other->hasTransparency &&
+        useFakeLighting == other->useFakeLighting &&
+        fogScale        == other->fogScale &&
+        mixingType      == other->mixingType &&
+        animationSpeed  == other->animationSpeed &&
+        renderOrder     == other->renderOrder);
+}

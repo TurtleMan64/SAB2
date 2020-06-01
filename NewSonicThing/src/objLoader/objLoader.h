@@ -3,42 +3,87 @@
 
 class TexturedModel;
 class CollisionModel;
+class Vertex;
+class QuadTreeNode;
 
 #include <list>
 #include <string>
+#include <unordered_map>
+#include <vector>
+#include <stdio.h>
+#include "../textures/modeltexture.h"
+#include "../toolbox/vector.h"
 
-//Attempts to load a mode as either an OBJ or binary format.
-//Checks for binary file first, then tries OBJ.
-//Each TexturedModel contained within 'models' must be deleted later.
-//Returns 0 if successful, 1 if model is already loaded, -1 if file couldn't be loaded
-int loadModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName);
+class ObjLoader
+{
+private:
+    static void parseMtl(std::string filePath, std::string fileName, std::unordered_map<std::string, ModelTexture>* outMtlMap);
 
-//Each TexturedModel contained within 'models' must be deleted later.
-//Returns 0 if successful, 1 if model is already loaded, -1 if file couldn't be loaded
-int loadObjModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName);
+    static void deleteUnusedMtl(std::unordered_map<std::string, ModelTexture>* mtlMap, std::vector<ModelTexture>* usedMtls);
 
-//Each TexturedModel contained within 'models' must be deleted later.
-//Returns 0 if successful, 1 if model is already loaded, -1 if file couldn't be loaded
-int loadBinaryModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName);
+    static void processVertex(char** vertex,
+        std::vector<Vertex*>* vertices,
+        std::vector<int>* indices);
 
-//Each TexturedModel contained within 'models' must be deleted later.
-//Returns 0 if successful, 1 if model is already loaded, -1 if file couldn't be loaded
-int loadVclModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName);
+    static void processVertexBinary(int, int, int,
+        std::vector<Vertex*>* vertices,
+        std::vector<int>* indices);
 
-//Each TexturedModel contained within 'models' must be deleted later.
-//Returns 0 if successful, 1 if model is already loaded, -1 if file couldn't be loaded
-int loadObjModelWithMTL(std::list<TexturedModel*>* models, std::string filePath, std::string fileNameOBJ, std::string fileNameMTL);
+    static void dealWithAlreadyProcessedVertex(Vertex*, 
+        int, 
+        int, 
+        std::vector<int>*, 
+        std::vector<Vertex*>*);
 
-//Each TexturedModel contained within 'models' must be deleted later.
-//Returns 0 if successful, 1 if model is already loaded, -1 if file couldn't be loaded
-int loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::string filePath, std::string fileNameBin, std::string fileNameMTL);
+    static void removeUnusedVertices(std::vector<Vertex*>* vertices);
 
-//The CollisionModel returned must be deleted later.
-CollisionModel* loadCollisionModel(std::string filePath, std::string fileName);
+    static void convertDataToArrays(
+        std::vector<Vertex*>* vertices, 
+        std::vector<Vector2f>* textures,
+        std::vector<Vector3f>* normals, 
+        std::vector<float>* verticesArray, 
+        std::vector<float>* texturesArray,
+        std::vector<float>* normalsArray,
+        std::vector<float>* colorsArray);
 
-//The CollisionModel returned must be deleted later.
-CollisionModel* loadBinaryCollisionModel(std::string filePath, std::string fileName);
+    static void workOnQuadTreeNode(FILE* file, QuadTreeNode* node);
 
-//The CollisionModel returned must be deleted later.
-CollisionModel* loadBinaryQuadTree(std::string filePath, std::string fileName);
+public:
+    //Attempts to load a mode as either an OBJ or binary format.
+    //Checks for binary file first, then tries OBJ.
+    //Each TexturedModel contained within 'models' must be deleted later.
+    //Returns 0 if successful, 1 if model is already loaded, -1 if file couldn't be loaded
+    static int loadModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName);
+
+private:
+    //Each TexturedModel contained within 'models' must be deleted later.
+    //Returns 0 if successful, 1 if model is already loaded, -1 if file couldn't be loaded
+    static int loadObjModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName);
+
+    //Each TexturedModel contained within 'models' must be deleted later.
+    //Returns 0 if successful, 1 if model is already loaded, -1 if file couldn't be loaded
+    static int loadBinaryModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName);
+
+    //Each TexturedModel contained within 'models' must be deleted later.
+    //Returns 0 if successful, 1 if model is already loaded, -1 if file couldn't be loaded
+    static int loadVclModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName);
+
+public:
+    //Each TexturedModel contained within 'models' must be deleted later.
+    //Returns 0 if successful, 1 if model is already loaded, -1 if file couldn't be loaded
+    static int loadObjModelWithMTL(std::list<TexturedModel*>* models, std::string filePath, std::string fileNameOBJ, std::string fileNameMTL);
+
+    //Each TexturedModel contained within 'models' must be deleted later.
+    //Returns 0 if successful, 1 if model is already loaded, -1 if file couldn't be loaded
+    static int loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::string filePath, std::string fileNameBin, std::string fileNameMTL);
+
+    //The CollisionModel returned must be deleted later.
+    static CollisionModel* loadCollisionModel(std::string filePath, std::string fileName);
+
+    //The CollisionModel returned must be deleted later.
+    static CollisionModel* loadBinaryCollisionModel(std::string filePath, std::string fileName);
+
+    //The CollisionModel returned must be deleted later.
+    static CollisionModel* loadBinaryQuadTree(std::string filePath, std::string fileName);
+};
 #endif

@@ -75,6 +75,18 @@
 #include "../entities/light.h"
 #include "../entities/playertails.h"
 #include "../entities/CloudStage/csstagemanager.h"
+#include "../entities/playerknuckles.h"
+#include "../entities/DryLagoon/dlstagemanager.h"
+#include "../entities/emeraldmanager.h"
+#include "../entities/emeraldpiece.h"
+#include "../entities/hintmonitor.h"
+#include "../entities/DryLagoon/dlplant1.h"
+#include "../entities/DryLagoon/dlplant2.h"
+#include "../entities/DryLagoon/dltree.h"
+#include "../entities/DryLagoon/dlbluebox.h"
+#include "../entities/DryLagoon/dlpot.h"
+#include "../entities/DryLagoon/dlturtle.h"
+#include "../entities/DryLagoon/dldigteleport.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -96,6 +108,12 @@ void LevelLoader::loadTitle()
         delete Global::gameMainPlayer; INCR_DEL("Entity");
     }
     Global::gameMainPlayer = nullptr;
+
+    if (Global::gameStageManager != nullptr)
+    {
+        delete Global::gameStageManager; INCR_DEL("Entity");
+    }
+    Global::gameStageManager = nullptr;
 
     Global::deleteAllEntites();
     Global::deleteAllChunkedEntities();
@@ -195,7 +213,8 @@ void LevelLoader::loadLevel(std::string levelFilename)
             else if (currLvl->displayName == "Green Hill Zone") Global::levelID = LVL_GREEN_HILL_ZONE;
             else if (currLvl->displayName == "Windy Valley")    Global::levelID = LVL_WINDY_VALLEY;
             else if (currLvl->displayName == "Delfino Plaza")   Global::levelID = LVL_DELFINO_PLAZA;
-            else if (currLvl->displayName == "Sacred Sky")     Global::levelID = LVL_CLOUD_STAGE;
+            else if (currLvl->displayName == "Sacred Sky")      Global::levelID = LVL_CLOUD_STAGE;
+            else if (currLvl->displayName == "Dry Lagoon")      Global::levelID = LVL_DRY_LAGOON;
         }
 
         Global::spawnAtCheckpoint  = false;
@@ -214,8 +233,14 @@ void LevelLoader::loadLevel(std::string levelFilename)
     if (Global::gameMainPlayer != nullptr)
     {
         delete Global::gameMainPlayer; INCR_DEL("Entity");
+        Global::gameMainPlayer = nullptr;
     }
-    Global::gameMainPlayer = nullptr;
+
+    if (Global::gameStageManager != nullptr)
+    {
+        delete Global::gameStageManager; INCR_DEL("Entity");
+        Global::gameStageManager = nullptr;
+    }
 
     Global::deleteAllEntites();
     Global::deleteAllChunkedEntities();
@@ -341,7 +366,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
             if (colModel == nullptr)
             {
                 //if there is none, load the .bincol and generate a quad tree from scratch
-                colModel = loadBinaryCollisionModel("Models/" + colFLoc + "/", lineSplit[0]);
+                colModel = ObjLoader::loadBinaryCollisionModel("Models/" + colFLoc + "/", lineSplit[0]);
                 colModel->generateQuadTree(std::stoi(lineSplit[1]));
             }
             //printf("Done loading collision.\n");
@@ -643,6 +668,22 @@ void LevelLoader::loadLevel(std::string levelFilename)
         }
     }
 
+    //Underwater water color
+    std::string stageWaterColorLine;
+    getlineSafe(file, stageWaterColorLine);
+    memcpy(finishBuf, stageWaterColorLine.c_str(), stageWaterColorLine.size()+1);
+    finishLength = 0;
+    finishSplit = split(finishBuf, ' ', &finishLength);
+    Global::stageWaterColor.x = toFloat(finishSplit[0]);
+    Global::stageWaterColor.y = toFloat(finishSplit[1]);
+    Global::stageWaterColor.z = toFloat(finishSplit[2]);
+    free(finishSplit);
+
+    //Underwater water color blend amount
+    std::string stageWaterBlendAmountLine;
+    getlineSafe(file, stageWaterBlendAmountLine);
+    Global::stageWaterBlendAmount = toFloat((char*)stageWaterBlendAmountLine.c_str());
+
     //Does the stage use backface culling?
     std::string backfaceCullingLine;
     getlineSafe(file, backfaceCullingLine);
@@ -759,7 +800,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
 
     if (stageFault == 1)
     {
-        //Stage::loadModels((char*)modelFLoc.c_str(), (char*)modelFName.c_str()); //doing this earlier now
+        //Stage::ObjLoader::loadModels((char*)modelFLoc.c_str(), (char*)modelFName.c_str()); //doing this earlier now
     }
 
     if (Global::gameMainPlayer != nullptr)
@@ -771,7 +812,6 @@ void LevelLoader::loadLevel(std::string levelFilename)
         startingDir.y = 0;
         startingDir.setLength(0.001f);
         Global::gameMainPlayer->vel.set(&startingDir);
-        //Global::gameMainPlayer->vel.set(0, 600, 0);
     }
 
     if (waitForSomeTime)
@@ -913,6 +953,7 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             if (Global::gameMainPlayer != nullptr)
             {
                 delete Global::gameMainPlayer; INCR_DEL("Entity");
+                Global::gameMainPlayer = nullptr;
             }
 
             Vector3f pos(toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]));
@@ -927,7 +968,7 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                     break;
 
                 case Global::PlayableCharacter::Knuckles:
-                    Global::gameMainPlayer = new PlayerSonic(pos.x, pos.y, pos.z); INCR_NEW("Entity");
+                    Global::gameMainPlayer = new PlayerKnuckles(pos.x, pos.y, pos.z); INCR_NEW("Entity");
                     break;
 
                 default:
@@ -1099,99 +1140,109 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             return;
         }
 
+        case 73: //Emerald Piece
+        {
+            EmeraldPiece::loadStaticModels();
+            EmeraldPiece* piece = new EmeraldPiece(
+                toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
+                toInt(dat[4]), toInt(dat[5]), //piece number, diggable,
+                toInt(dat[6])); //is a hard mode piece
+            INCR_NEW("Entity");
+            Global::addEntity(piece);
+            return;
+        }
+
+        case 74: //Emerald Manager
+        {
+            EmeraldManager* manager = new EmeraldManager; INCR_NEW("Entity");
+            Global::addEntity(manager);
+            return;
+        }
+
+        case 75: //Hint Monitor
+        {
+            HintMonitor::loadStaticModels();
+            HintMonitor* monitor = new HintMonitor(
+                toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]),
+                toFloat(dat[4])); INCR_NEW("Entity");
+            Global::addEntity(monitor);
+            return;
+        }
+
         case 81: //Lost Chao
         {
             LostChao::loadStaticModels();
             LostChao* chao = new LostChao(
-                toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3])); INCR_NEW("Entity");
+                toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4])); INCR_NEW("Entity");
             Global::addEntity(chao);
             return;
         }
 
         case 91: //General Purpose Stage Manager
         {
+            if (Global::gameStageManager != nullptr)
+            {
+                delete Global::gameStageManager; INCR_DEL("Entity");
+                Global::gameStageManager = nullptr;
+            }
+
             int id2 = std::stoi(dat[1]);
             switch (id2)
             {
                 case 0:
-                {
                     GF_StageManager::loadStaticModels();
-                    GF_StageManager* gf = new GF_StageManager; INCR_NEW("Entity");
-                    Global::addEntity(gf);
+                    Global::gameStageManager = new GF_StageManager; INCR_NEW("Entity");
                     break;
-                }
 
                 case 1:
-                {
                     MH_StageManager::loadStaticModels();
-                    MH_StageManager* mh = new MH_StageManager; INCR_NEW("Entity");
-                    Global::addEntity(mh);
+                    Global::gameStageManager = new MH_StageManager; INCR_NEW("Entity");
                     break;
-                }
 
                 case 2:
-                {
                     SR_StageManager::loadStaticModels();
-                    SR_StageManager* sr = new SR_StageManager; INCR_NEW("Entity");
-                    Global::addEntity(sr);
+                    Global::gameStageManager = new SR_StageManager; INCR_NEW("Entity");
                     break;
-                }
 
                 case 3:
-                {
                     GH_StageManager::loadStaticModels();
-                    GH_StageManager* gh = new GH_StageManager; INCR_NEW("Entity");
-                    Global::addEntity(gh);
+                    Global::gameStageManager = new GH_StageManager; INCR_NEW("Entity");
                     break;
-                }
 
                 case 4:
-                {
                     CE_StageManager::loadStaticModels();
-                    CE_StageManager* ce = new CE_StageManager; INCR_NEW("Entity");
-                    Global::addEntity(ce);
+                    Global::gameStageManager = new CE_StageManager; INCR_NEW("Entity");
                     break;
-                }
 
                 case 5:
-                {
                     DP_StageManager::loadStaticModels();
-                    DP_StageManager* dp = new DP_StageManager; INCR_NEW("Entity");
-                    Global::addEntity(dp);
+                    Global::gameStageManager = new DP_StageManager; INCR_NEW("Entity");
                     break;
-                }
 
                 case 6:
-                {
                     T_StageManager::loadStaticModels();
-                    T_StageManager* tut = new T_StageManager; INCR_NEW("Entity");
-                    Global::addEntity(tut);
+                    Global::gameStageManager = new T_StageManager; INCR_NEW("Entity");
                     break;
-                }
 
                 case 7:
-                {
                     RH_StageManager::loadStaticModels();
-                    RH_StageManager* rh = new RH_StageManager; INCR_NEW("Entity");
-                    Global::addEntity(rh);
+                    Global::gameStageManager = new RH_StageManager; INCR_NEW("Entity");
                     break;
-                }
 
                 case 8:
-                {
                     PC_StageManager::loadStaticModels();
-                    PC_StageManager* pc = new PC_StageManager; INCR_NEW("Entity");
-                    Global::addEntity(pc);
+                    Global::gameStageManager = new PC_StageManager; INCR_NEW("Entity");
                     break;
-                }
 
                 case 9:
-                {
                     CS_StageManager::loadStaticModels();
-                    CS_StageManager* cs = new CS_StageManager; INCR_NEW("Entity");
-                    Global::addEntity(cs);
+                    Global::gameStageManager = new CS_StageManager; INCR_NEW("Entity");
                     break;
-                }
+
+                case 10:
+                    DL_StageManager::loadStaticModels();
+                    Global::gameStageManager = new DL_StageManager; INCR_NEW("Entity");
+                    break;
 
                 default: break;
             }
@@ -1239,8 +1290,9 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                     Global::addEntity(cratePlatform);
                     return;
                 }
+                default:
+                    return;
             }
-            
         }
 
         case 96: //Point (for paths)
@@ -1326,9 +1378,14 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             switch (toInt(dat[1]))
             {
                 case 0: //Static Objects
+                {
                     PC_StaticObjects::loadStaticModels();
                     PC_StaticObjects* staticObjects = new PC_StaticObjects; INCR_NEW("Entity");
                     Global::addEntity(staticObjects);
+                    return;
+                }
+
+                default:
                     return;
             }
         }
@@ -1349,6 +1406,7 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             switch (toInt(dat[1]))
             {
                 case 1: //Vine
+                {
                     GF_Vine::loadStaticModels();
                     GF_Vine* vine = new GF_Vine(
                         toFloat(dat[2]),  toFloat(dat[3]),  toFloat(dat[4]),  //position
@@ -1363,6 +1421,10 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                     INCR_NEW("Entity");
                     Global::addEntity(vine);
                     return;
+                }
+
+                default:
+                    return;
             }
         }
 
@@ -1375,6 +1437,93 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             INCR_NEW("Entity");
             chunkedEntities->push_back(box);
             return;
+        }
+
+        case 104: //Dry Lagoon Specific Objects
+        {
+            switch (toInt(dat[1]))
+            {
+                case 0: //Plant 1
+                {
+                    DL_Plant1::loadStaticModels();
+                    DL_Plant1* plant1 = new DL_Plant1(
+                        toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]), //position
+                        toFloat(dat[5]), toFloat(dat[6]), toFloat(dat[7]), //rotation
+                        toFloat(dat[8])); INCR_NEW("Entity"); //scale
+                    chunkedEntities->push_back(plant1);
+                    return;
+                }
+
+                case 1: //Plant 2
+                {
+                    DL_Plant2::loadStaticModels();
+                    DL_Plant2* plant2 = new DL_Plant2(
+                        toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]), //position
+                        toFloat(dat[5]), toFloat(dat[6]), toFloat(dat[7]), //rotation
+                        toFloat(dat[8])); INCR_NEW("Entity"); //scale
+                    chunkedEntities->push_back(plant2);
+                    return;
+                }
+
+                case 2: //Tree
+                {
+                    DL_Tree::loadStaticModels();
+                    DL_Tree* tree = new DL_Tree(
+                        toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]), //position
+                        toFloat(dat[5]), toFloat(dat[6]), toFloat(dat[7]), //rotation
+                        toFloat(dat[8])); INCR_NEW("Entity"); //scale
+                    Global::addEntity(tree);
+                    return;
+                }
+
+                case 3: //Blue Box
+                {
+                    DL_BlueBox::loadStaticModels();
+                    DL_BlueBox* box = new DL_BlueBox(
+                        toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]), //position
+                        toFloat(dat[5])); INCR_NEW("Entity"); //rotation
+                    chunkedEntities->push_back(box);
+                    return;
+                }
+
+                case 4: //Pot
+                {
+                    DL_Pot::loadStaticModels();
+                    DL_Pot* pot = new DL_Pot(
+                        toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]), //position
+                        toFloat(dat[5])); INCR_NEW("Entity"); //rotation
+                    chunkedEntities->push_back(pot);
+                    return;
+                }
+
+                case 5: //Turtle
+                {
+                    DL_Turtle::loadStaticModels();
+                    DL_Turtle* pot = new DL_Turtle(
+                        toFloat(dat[2]), toFloat(dat[3]),  toFloat(dat[4]), //position
+                        toFloat(dat[5]),                                    //rotation
+                        toFloat(dat[6]), toFloat(dat[7]),  toFloat(dat[8]), //teleport position
+                        toFloat(dat[9]), toFloat(dat[10]), toFloat(dat[11])); INCR_NEW("Entity"); //teleport cam
+                    chunkedEntities->push_back(pot);
+                    return;
+                }
+
+                case 6: //Teleport
+                {
+                    DL_DigTeleport::loadStaticModels();
+                    DL_DigTeleport* warp = new DL_DigTeleport(
+                        toFloat(dat[2]), toFloat(dat[3]),  toFloat(dat[4]),   //position
+                        toFloat(dat[5]),                                      //y rotation
+                        toFloat(dat[6]), toFloat(dat[7]),  toFloat(dat[8]),   //teleport position
+                        toFloat(dat[9]), toFloat(dat[10]), toFloat(dat[11])); //color
+                    INCR_NEW("Entity");
+                    chunkedEntities->push_back(warp);
+                    return;
+                }
+
+                default:
+                    return;
+            }
         }
 
         default:
@@ -1502,7 +1651,18 @@ void LevelLoader::freeAllStaticModels()
     WoodBox::deleteStaticModels();
     NPC::deleteStaticModels();
     PlayerTails::deleteStaticModels();
+    PlayerKnuckles::deleteStaticModels();
     CS_StageManager::deleteStaticModels();
+    DL_StageManager::deleteStaticModels();
+    EmeraldPiece::deleteStaticModels();
+    HintMonitor::deleteStaticModels();
+    DL_Plant1::deleteStaticModels();
+    DL_Plant2::deleteStaticModels();
+    DL_Tree::deleteStaticModels();
+    DL_BlueBox::deleteStaticModels();
+    DL_Pot::deleteStaticModels();
+    DL_Turtle::deleteStaticModels();
+    DL_DigTeleport::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()

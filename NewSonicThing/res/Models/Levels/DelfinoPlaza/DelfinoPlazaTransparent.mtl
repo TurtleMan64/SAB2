@@ -4,5 +4,6 @@ newmtl A_shadow03n.png
 Ns 20
 Ni 0.0
 Tr 0
+renderOrder 3
 map_Kd A_shadow03n.png
 

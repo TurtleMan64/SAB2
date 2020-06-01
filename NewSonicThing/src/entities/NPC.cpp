@@ -109,7 +109,8 @@ NPC::NPC(float x, float y, float z, float dirX, float dirZ, int id, std::string 
         //return;
     }
 
-    if (Global::currentCharacterType != Global::PlayableCharacter::Sonic)
+    if (Global::currentCharacterType != Global::PlayableCharacter::Sonic &&
+        Global::currentCharacterType != Global::PlayableCharacter::Knuckles)
     {
         Global::deleteEntity(this);
         Global::deleteEntity(glasses);
@@ -182,8 +183,8 @@ void NPC::loadStaticModels()
     std::fprintf(stdout, "Loading NPC static models...\n");
     #endif
 
-    loadModel(&NPC::models,        "res/Models/Objects/NPC/", "NPC");
-    loadModel(&NPC::modelsGlasses, "res/Models/Objects/NPC/", "Glasses");
+    ObjLoader::loadModel(&NPC::models,        "res/Models/Objects/NPC/", "NPC");
+    ObjLoader::loadModel(&NPC::modelsGlasses, "res/Models/Objects/NPC/", "Glasses");
 
     setModelsRenderOrder(&NPC::modelsGlasses, 1);
 }

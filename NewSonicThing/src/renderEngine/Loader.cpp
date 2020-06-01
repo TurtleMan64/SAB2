@@ -8,6 +8,7 @@
 #include <iostream>
 #include <fstream>
 #include <cmath>
+#include <cstring>
 
 #include "renderEngine.h"
 #include "../engineTester/main.h"
@@ -341,9 +342,47 @@ GLuint Loader::loadShader(const char* file, int shaderType)
         return 0;
     }
 
+    //Go through and replace WINDOW_SIZE
+    extern unsigned int SCR_WIDTH;
+    extern unsigned int SCR_HEIGHT;
+    for (int i = 0; i < (int)filetext.size(); i++)
+    {
+        if (filetext[i+ 0] == 'W' &&
+            filetext[i+ 1] == 'I' &&
+            filetext[i+ 2] == 'N' &&
+            filetext[i+ 3] == 'D' &&
+            filetext[i+ 4] == 'O' &&
+            filetext[i+ 5] == 'W' &&
+            filetext[i+ 6] == '_' &&
+            filetext[i+ 7] == 'S' &&
+            filetext[i+ 8] == 'I' &&
+            filetext[i+ 9] == 'Z' &&
+            filetext[i+10] == 'E' &&
+            filetext[i+11] == '.')
+        {
+            if (filetext[i+12] == 'x')
+            {
+                memset(&filetext[i], ' ', 13); //replace WINDOW_SIZE.x with all spaces
+                std::string windowSizeX = std::to_string(SCR_WIDTH);
+                for (int c = 0; c < (int)windowSizeX.size(); c++) //fill in with width of screen
+                {
+                    filetext[i+c] = windowSizeX[c];
+                }
+            }
+            else if (filetext[i+12] == 'y')
+            {
+                memset(&filetext[i], ' ', 13); //replace WINDOW_SIZE.y with all spaces
+                std::string windowSizeY = std::to_string(SCR_HEIGHT);
+                for (int c = 0; c < (int)windowSizeY.size(); c++) //fill in with width of screen
+                {
+                    filetext[i+c] = windowSizeY[c];
+                }
+            }
+        }
+    }
+
     unsigned int id = glCreateShader(shaderType);
     const char* src = filetext.c_str();
-    //const int len = filetext.size();
     glShaderSource(id, 1, &src, nullptr);
     glCompileShader(id);
 

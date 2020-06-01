@@ -92,7 +92,7 @@ public:
 };
 
 //Master Renderer
-void Master_render(Camera* camera, float clipX, float clipY, float clipZ, float clipW);
+void Master_render(Camera* camera, float clipX, float clipY, float clipZ, float clipW, float waterBlendAmount);
 
 void Master_cleanUp();
 

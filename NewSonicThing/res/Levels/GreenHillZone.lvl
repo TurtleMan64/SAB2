@@ -27,6 +27,8 @@ res/Audio/BGM/g_hill_loop.ogg
 nowater
 0
 0
+0 0 0
+0
 false
 1000
 
@@ -36,6 +38,9 @@ false
 
 # Stage Manager
 91 3
+
+#Goal Ring
+69 -1967.988403 -1349.240601 -7029.854004
 
 ######## Generated Objects ########
 

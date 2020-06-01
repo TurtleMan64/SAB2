@@ -10,40 +10,40 @@ CollideableObject::CollideableObject()
 
 void CollideableObject::updateCMJustPosition()
 {
-    collideModelOriginal->transformModel(collideModelTransformed, getPosition());
+    collideModelOriginal->transformModel(collideModelTransformed, &position);
 }
 
 void CollideableObject::updateCollisionModel()
 {
-    collideModelOriginal->transformModel(collideModelTransformed, getPosition(), getRotY());
+    collideModelOriginal->transformModel(collideModelTransformed, &position, rotY);
 }
 
 void CollideableObject::updateCollisionModelWithScale()
 {
-    collideModelOriginal->transformModelWithScale(collideModelTransformed, getPosition(), getRotY(), getScale());
+    collideModelOriginal->transformModelWithScale(collideModelTransformed, &position, rotY, scale);
 }
 
 void CollideableObject::updateCollisionModelWithZ()
 {
-    collideModelOriginal->transformModel(collideModelTransformed, getPosition(), getRotY(), getRotZ());
+    collideModelOriginal->transformModel(collideModelTransformed, &position, rotY, rotZ);
 }
 
 void CollideableObject::updateCollisionModelXYZ()
 {
-    collideModelOriginal->transformModel(collideModelTransformed, getPosition(), getRotX(), getRotY(), getRotZ());
+    collideModelOriginal->transformModel(collideModelTransformed, &position, rotX, rotY, rotZ);
 }
 
 void CollideableObject::updateCMJustPosition(CollisionModel* cmBase, CollisionModel* cmToUpdate)
 {
-    cmBase->transformModel(cmToUpdate, getPosition());
+    cmBase->transformModel(cmToUpdate, &position);
 }
 
 void CollideableObject::updateCollisionModel(CollisionModel* cmBase, CollisionModel* cmToUpdate)
 {
-    cmBase->transformModel(cmToUpdate, getPosition(), getRotY());
+    cmBase->transformModel(cmToUpdate, &position, rotY);
 }
 
 void CollideableObject::updateCollisionModelWithZ(CollisionModel* cmBase, CollisionModel* cmToUpdate)
 {
-    cmBase->transformModel(cmToUpdate, getPosition(), getRotY(), getRotZ());
+    cmBase->transformModel(cmToUpdate, &position, rotY, rotZ);
 }

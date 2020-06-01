@@ -128,7 +128,7 @@ void Checkpoint::step()
             Global::gameMainPlayer->getZ() > position.z - colHorizontal - playerColH && Global::gameMainPlayer->getZ() < position.z + colHorizontal + playerColH &&
             Global::gameMainPlayer->getY() > position.y - colVertical   - playerColV && Global::gameMainPlayer->getY() < position.y + colVertical   + playerColV)
         {
-            AudioPlayer::play(45, getPosition());
+            AudioPlayer::play(45, &position);
 
             Checkpoint::savedBGMIntro = AudioPlayer::bgmIntro;
             Checkpoint::savedBGMLoop  = AudioPlayer::bgmLoop;
@@ -183,8 +183,8 @@ void Checkpoint::loadStaticModels()
     std::fprintf(stdout, "Loading Checkpoint static models...\n");
     #endif
 
-    loadModel(&Checkpoint::modelsBase, "res/Models/Objects/Checkpoint/", "Base");
-    loadModel(&Checkpoint::modelsBall, "res/Models/Objects/Checkpoint/", "Ball");
+    ObjLoader::loadModel(&Checkpoint::modelsBase, "res/Models/Objects/Checkpoint/", "Base");
+    ObjLoader::loadModel(&Checkpoint::modelsBall, "res/Models/Objects/Checkpoint/", "Ball");
 }
 
 void Checkpoint::deleteStaticModels()

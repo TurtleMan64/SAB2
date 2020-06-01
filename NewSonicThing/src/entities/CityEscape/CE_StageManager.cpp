@@ -50,7 +50,7 @@ void CE_StageManager::loadStaticModels()
     std::fprintf(stdout, "Loading CE_StageManager static models...\n");
     #endif
 
-    loadModel(&CE_StageManager::modelsSkydome,  "res/Models/Levels/CityEscape/Sky/", "Sky");
+    ObjLoader::loadModel(&CE_StageManager::modelsSkydome,  "res/Models/Levels/CityEscape/Sky/", "Sky");
 }
 
 void CE_StageManager::deleteStaticModels()

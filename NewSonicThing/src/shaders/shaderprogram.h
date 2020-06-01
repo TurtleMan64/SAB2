@@ -45,6 +45,10 @@ private:
     int location_fogScale;
     int location_fogBottomPosition;
     int location_fogBottomThickness;
+    int location_depthBufferTransparent;
+    int location_isRenderingTransparent;
+    int location_waterColor;
+    int location_waterBlendAmount;
 
 public:
     ShaderProgram(const char*, const char*);
@@ -98,6 +102,12 @@ public:
     void loadMixFactor(float factor);
 
     void loadFogScale(float scale);
+
+    void loadIsRenderingTransparent(bool value);
+
+    void loadWaterColor(Vector3f* color);
+
+    void loadWaterBlendAmount(float);
 
     void connectTextureUnits();
 

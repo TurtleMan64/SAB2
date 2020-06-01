@@ -59,9 +59,9 @@ void DP_StageManager::loadStaticModels()
     std::fprintf(stdout, "Loading DP_StageManager static models...\n");
     #endif
 
-    loadModel(&DP_StageManager::modelsSkyPass1,       "res/Models/Levels/DelfinoPlaza/Sky/", "Blue");
-    loadModel(&DP_StageManager::modelsSkyPass2,       "res/Models/Levels/DelfinoPlaza/Sky/", "Pass2");
-    loadModel(&DP_StageManager::modelsSkyTransparent, "res/Models/Levels/DelfinoPlaza/Sky/", "Trans");
+    ObjLoader::loadModel(&DP_StageManager::modelsSkyPass1,       "res/Models/Levels/DelfinoPlaza/Sky/", "Blue");
+    ObjLoader::loadModel(&DP_StageManager::modelsSkyPass2,       "res/Models/Levels/DelfinoPlaza/Sky/", "Pass2");
+    ObjLoader::loadModel(&DP_StageManager::modelsSkyTransparent, "res/Models/Levels/DelfinoPlaza/Sky/", "Trans");
 
     setModelsRenderOrder(&DP_StageManager::modelsSkyPass2,       1);
     setModelsRenderOrder(&DP_StageManager::modelsSkyTransparent, 3);

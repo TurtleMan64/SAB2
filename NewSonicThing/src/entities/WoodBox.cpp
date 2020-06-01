@@ -96,11 +96,11 @@ void WoodBox::loadStaticModels()
     std::fprintf(stdout, "Loading WoodBox static models...\n");
     #endif
 
-    loadModel(&WoodBox::models, "res/Models/Objects/WoodBox/", "WoodBox");
+    ObjLoader::loadModel(&WoodBox::models, "res/Models/Objects/WoodBox/", "WoodBox");
 
     if (WoodBox::cmOriginal == nullptr)
     {
-        WoodBox::cmOriginal = loadCollisionModel("Models/Objects/WoodBox/", "WoodBox");
+        WoodBox::cmOriginal = ObjLoader::loadCollisionModel("Models/Objects/WoodBox/", "WoodBox");
     }
 }
 

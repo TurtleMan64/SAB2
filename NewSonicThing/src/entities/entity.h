@@ -21,7 +21,7 @@ public:
     float baseAlpha = 1.0f;
     Matrix4f transformationMatrix;
     //render order is normally set in each TexturedModel, but can be overrided by using this
-    char renderOrderOverride = -1;
+    char renderOrderOverride = 69;
 
     static void deleteModels(std::list<TexturedModel*>* modelsToDelete);
     static void deleteCollisionModel(CollisionModel** colModelToDelete);

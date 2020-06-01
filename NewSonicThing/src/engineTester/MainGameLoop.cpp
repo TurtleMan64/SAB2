@@ -74,6 +74,7 @@
 #include "../menu/mainmenu.h"
 #include "../menu/timer.h"
 #include "../menu/hud.h"
+#include "../toolbox/format.h"
 #ifdef _WIN32
 #include <windows.h>
 #include <tchar.h>
@@ -104,12 +105,13 @@ std::vector<WaterTile*> Global::gameWaterTiles;
 float dt = 0;
 double timeOld = 0;
 double timeNew = 0;
-Camera*             Global::gameCamera      = nullptr;
-ControllablePlayer* Global::gameMainPlayer  = nullptr;
-Stage*              Global::gameStage       = nullptr;
-SkySphere*          Global::gameSkySphere   = nullptr;
-Light*              Global::gameLightSun    = nullptr;
-Light*              Global::gameLightMoon   = nullptr;
+Camera*             Global::gameCamera       = nullptr;
+ControllablePlayer* Global::gameMainPlayer   = nullptr;
+Entity*             Global::gameStageManager = nullptr;
+Stage*              Global::gameStage        = nullptr;
+SkySphere*          Global::gameSkySphere    = nullptr;
+Light*              Global::gameLightSun     = nullptr;
+Light*              Global::gameLightMoon    = nullptr;
 
 float Global::finishStageTimer = -1;
 
@@ -183,6 +185,8 @@ bool Global::gameIsArcadeMode = false;
 std::vector<Level> Global::gameLevelData;
 std::unordered_map<std::string, std::string> Global::gameSaveData;
 bool Global::stageUsesWater = true;
+Vector3f Global::stageWaterColor(0,0,0);
+float Global::stageWaterBlendAmount = 0.0f;
 FontType* Global::fontVipnagorgialla = nullptr;
 bool Global::renderWithCulling = true;
 bool Global::displayFPS = true;
@@ -197,6 +201,9 @@ std::unordered_map<Global::PlayableCharacter, std::string> Global::characterName
 
 int Global::gameArcadeIndex = 0;
 std::vector<int> Global::gameArcadeLevelIds;
+
+std::vector<int> Global::gameActionLevelIds;
+std::vector<int> Global::gameHuntingLevelIds;
 
 //std::list<std::string> Global::raceLog;
 bool Global::shouldLogRace = false;
@@ -271,6 +278,24 @@ int main(int argc, char** argv)
     Global::gameArcadeLevelIds.push_back(LVL_RADICAL_HIGHWAY);
     Global::gameArcadeLevelIds.push_back(LVL_GREEN_FOREST);
     Global::gameArcadeLevelIds.push_back(LVL_SKY_RAIL);
+
+    Global::gameActionLevelIds.push_back(LVL_TUTORIAL);
+    Global::gameActionLevelIds.push_back(LVL_GREEN_FOREST);
+    Global::gameActionLevelIds.push_back(LVL_METAL_HARBOR);
+    Global::gameActionLevelIds.push_back(LVL_PYRAMID_CAVE);
+    Global::gameActionLevelIds.push_back(LVL_RADICAL_HIGHWAY);
+    Global::gameActionLevelIds.push_back(LVL_GREEN_HILL_ZONE);
+    Global::gameActionLevelIds.push_back(LVL_CITY_ESCAPE);
+    Global::gameActionLevelIds.push_back(LVL_WINDY_VALLEY);
+    Global::gameActionLevelIds.push_back(LVL_SEASIDE_HILL);
+    Global::gameActionLevelIds.push_back(LVL_FROG_FOREST);
+    Global::gameActionLevelIds.push_back(LVL_TEST);
+    Global::gameActionLevelIds.push_back(LVL_SPEED_HIGHWAY);
+    Global::gameActionLevelIds.push_back(LVL_CLOUD_STAGE);
+
+    Global::gameHuntingLevelIds.push_back(LVL_DRY_LAGOON);
+    Global::gameHuntingLevelIds.push_back(LVL_DELFINO_PLAZA);
+    Global::gameHuntingLevelIds.push_back(LVL_NOKI_BAY);
 
     #if !defined(DEV_MODE) && defined(_WIN32)
     FreeConsole();
@@ -367,6 +392,9 @@ int main(int argc, char** argv)
 
     GuiTexture* rankDisplay = nullptr;
 
+    //extern GLuint transparentDepthTexture;
+    //GuiTexture* debugDepth = new GuiTexture(transparentDepthTexture, 0.2f, 0.8f, 0.3f, 0.3f, 0); INCR_NEW("GuiTexture");
+
     std::list<std::unordered_set<Entity*>*> entityChunkedList;
 
     while (Global::gameState != STATE_EXITING && displayWantsToClose() == 0)
@@ -376,14 +404,14 @@ int main(int argc, char** argv)
         #ifndef WIN32
         //spin lock to meet the target fps, and gives extremely consistent dt's.
         // also of course uses a ton of cpu.
-        //if (Global::gameState == STATE_RUNNING && Global::framerateUnlock)
-        //{
-        //    double dtFrameNeedsToTake = 1.0/((double)Global::fpsLimit);
-        //    while ((timeNew - timeOld) < dtFrameNeedsToTake)
-        //    {
-        //        timeNew = glfwGetTime();
-        //    }
-        //}
+        if (Global::gameState == STATE_RUNNING && Global::framerateUnlock)
+        {
+            double dtFrameNeedsToTake = 1.0/((double)Global::fpsLimit);
+            while ((timeNew - timeOld) < dtFrameNeedsToTake)
+            {
+                timeNew = glfwGetTime();
+            }
+        }
         #else
         //another idea: windows only. if you put the thread/process into a above normal priority,
         // and call Sleep, it will actually sleep and return pretty consistently close
@@ -561,6 +589,10 @@ int main(int argc, char** argv)
                         }
                     }
                 }
+                if (Global::gameStageManager != nullptr)
+                {
+                    Global::gameStageManager->step();
+                }
 
                 skySphere.step();
                 ModelTexture::updateAnimations(dt);
@@ -654,10 +686,20 @@ int main(int argc, char** argv)
                 }
             }
         }
-        
+
+        if (Global::gameStageManager != nullptr)
+        {
+            Master_processEntity(Global::gameStageManager);
+        }
         Master_processEntity(&stage);
         Master_renderShadowMaps(&lightSun);
         Master_processEntity(&skySphere);
+
+        float waterBlendAmount = 0.0f;
+        if (cam.inWater || cam.eye.y < Global::waterHeight)
+        {
+            waterBlendAmount = Global::stageWaterBlendAmount;
+        }
 
         glEnable(GL_CLIP_DISTANCE1);
         if (Global::useHighQualityWater && Global::stageUsesWater)
@@ -672,7 +714,7 @@ int main(int argc, char** argv)
             cam.mirrorForWater();
             if (aboveWater)
             {
-                Master_render(&cam, 0, 1, 0, offsetWater - Global::waterHeight);
+                Master_render(&cam, 0, 1, 0, offsetWater - Global::waterHeight, waterBlendAmount);
                 if (Global::renderParticles)
                 {
                     ParticleMaster::renderParticles(&cam, SkyManager::getOverallBrightness(), 1);
@@ -680,7 +722,7 @@ int main(int argc, char** argv)
             }
             else
             {
-                Master_render(&cam, 0, -1, 0, offsetWater + Global::waterHeight);
+                Master_render(&cam, 0, -1, 0, offsetWater + Global::waterHeight, waterBlendAmount);
                 if (Global::renderParticles)
                 {
                     ParticleMaster::renderParticles(&cam, SkyManager::getOverallBrightness(), -1);
@@ -693,7 +735,7 @@ int main(int argc, char** argv)
             Global::gameWaterFBOs->bindRefractionFrameBuffer();
             if (aboveWater)
             {
-                Master_render(&cam, 0, -1, 0, offsetWater + Global::waterHeight);
+                Master_render(&cam, 0, -1, 0, offsetWater + Global::waterHeight, waterBlendAmount);
                 if (Global::renderParticles)
                 {
                     ParticleMaster::renderParticles(&cam, SkyManager::getOverallBrightness(), -1);
@@ -701,7 +743,7 @@ int main(int argc, char** argv)
             }
             else
             {
-                Master_render(&cam, 0, 1, 0, offsetWater - Global::waterHeight);
+                Master_render(&cam, 0, 1, 0, offsetWater - Global::waterHeight, waterBlendAmount);
                 if (Global::renderParticles)
                 {
                     ParticleMaster::renderParticles(&cam, SkyManager::getOverallBrightness(), 1);
@@ -719,7 +761,7 @@ int main(int argc, char** argv)
         {
             Global::gameMultisampleFbo->bindFrameBuffer();
         }
-        Master_render(&cam, 0, 0, 0, 0);
+        Master_render(&cam, 0, 0, 0, 0, waterBlendAmount);
         glDisable(GL_CLIP_DISTANCE1);
 
         if (Global::useHighQualityWater && Global::stageUsesWater)
@@ -743,6 +785,8 @@ int main(int argc, char** argv)
         {
             GuiManager::addGuiToRender(rankDisplay);
         }
+
+        //GuiManager::addGuiToRender(debugDepth);
 
         GuiManager::refresh();
         GuiManager::clearGuisToRender();
@@ -967,6 +1011,12 @@ void Global::deleteAllEntites()
         delete Global::gameMainPlayer; INCR_DEL("Entity");
         Global::gameMainPlayer = nullptr;
     }
+
+    if (Global::gameStageManager != nullptr)
+    {
+        delete Global::gameStageManager; INCR_DEL("Entity");
+        Global::gameStageManager = nullptr;
+    }
 }
 
 void increaseProcessPriority()
@@ -1146,6 +1196,7 @@ void Global::saveGhostData()
                 {
                     //Global::raceLog[i].pos = Global::raceLog[i].pos + Global::raceLog[i].up.scaleCopy(5.5f);
                     std::string line = Global::raceLog[i].toString();
+                    //raceLogFile.write()
                     raceLogFile << line << "\n";
                 }
             }
@@ -1192,6 +1243,76 @@ void Global::saveSaveData()
             
             it++;
         }
+
+        file.close();
+    }
+}
+
+void Global::saveConfigData()
+{
+    std::ofstream file;
+    file.open((Global::pathToEXE + "Settings/GraphicsSettings.ini").c_str(), std::ios::out | std::ios::trunc);
+
+    if (!file.is_open())
+    {
+        std::fprintf(stderr, "Error: Failed to create/access '%s'\n", (Global::pathToEXE + "Settings/GraphicsSettings.ini").c_str());
+        file.close();
+    }
+    else
+    {
+        file << "#High-quality water\n";
+        file << "#Should be 'on' or 'off'\n";
+        if (Global::useHighQualityWater) { file << "HQ_Water on\n\n"; }
+        else                             { file << "HQ_Water off\n\n"; }
+
+        file << "#Resolution of the high quality water\n";
+        file << "HQ_Water_Reflection_Width "  << Global::HQWaterReflectionWidth  << "\n";
+        file << "HQ_Water_Reflection_Height " << Global::HQWaterReflectionHeight << "\n\n";
+        file << "HQ_Water_Refraction_Width "  << Global::HQWaterRefractionWidth  << "\n";
+        file << "HQ_Water_Refraction_Height " << Global::HQWaterRefractionHeight << "\n\n";
+
+        file << "#Render particles\n";
+        if (Global::renderParticles) { file << "Render_Particles on\n\n"; }
+        else                         { file << "Render_Particles off\n\n"; }
+
+        file << "#Render bloom effect\n";
+        if (Global::renderBloom) { file << "Render_Bloom on\n\n"; }
+        else                     { file << "Render_Bloom off\n\n"; }
+
+        extern unsigned int AA_SAMPLES;
+        file << "#Number of multisamples to use for anti-aliasing\n";
+        file << "Anti-Aliasing_Samples " << AA_SAMPLES << "\n\n";
+
+        extern float VFOV_BASE;
+        file << "#Vertical Field of View\n";
+        file << "FOV " << VFOV_BASE << "\n\n";
+
+        file << "#Unlock_Framerate\n";
+        if (Global::framerateUnlock) { file << "Unlock_Framerate on\n\n"; }
+        else                         { file << "Unlock_Framerate off\n\n"; }
+
+        file << "#If framerate is unlocked, fps will not exceed this limit\n";
+        file << "FPS_Limit " << (int)Global::fpsLimit << "\n";
+
+        file.close();
+    }
+
+    file.open((Global::pathToEXE + "Settings/AudioSettings.ini").c_str(), std::ios::out | std::ios::trunc);
+
+    if (!file.is_open())
+    {
+        std::fprintf(stderr, "Error: Failed to create/access '%s'\n", (Global::pathToEXE + "Settings/AudioSettings.ini").c_str());
+        file.close();
+    }
+    else
+    {
+        file << "#Volume of sound effects\n";
+        file << "#Should be 0 for no sfx, 1 for full volume sfx\n";
+        file << "SFX_Volume " << Format::floatToPretty(AudioPlayer::soundLevelSFX, 2) << "\n\n";
+
+        file << "#Volume of music\n";
+        file << "#Should be 0 for no music, 1 for full volume music\n";
+        file << "Music_Volume " << Format::floatToPretty(AudioPlayer::soundLevelBGM, 2) << "\n";
 
         file.close();
     }

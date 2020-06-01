@@ -219,10 +219,10 @@ void MH_AircraftCarrierCart::loadStaticModels()
     std::fprintf(stdout, "Loading MH_AircraftCarrierCart static models...\n");
     #endif
 
-    loadModel(&MH_AircraftCarrierCart::models, "res/Models/Objects/MetalHarbor/AircraftCarrierCart/", "AircraftCarrierCart");
-    loadModel(&MH_AircraftCarrierCart::modelsWheelFront, "res/Models/Objects/MetalHarbor/AircraftCarrierCart/", "AircraftCarrierCartWheelFront");
-    loadModel(&MH_AircraftCarrierCart::modelsWheelBack, "res/Models/Objects/MetalHarbor/AircraftCarrierCart/", "AircraftCarrierCartWheelBack");
-    loadModel(&MH_AircraftCarrierCart::modelsTransparent, "res/Models/Objects/MetalHarbor/AircraftCarrierCart/", "AircraftCarrierCartTransparent");
+    ObjLoader::loadModel(&MH_AircraftCarrierCart::models, "res/Models/Objects/MetalHarbor/AircraftCarrierCart/", "AircraftCarrierCart");
+    ObjLoader::loadModel(&MH_AircraftCarrierCart::modelsWheelFront, "res/Models/Objects/MetalHarbor/AircraftCarrierCart/", "AircraftCarrierCartWheelFront");
+    ObjLoader::loadModel(&MH_AircraftCarrierCart::modelsWheelBack, "res/Models/Objects/MetalHarbor/AircraftCarrierCart/", "AircraftCarrierCartWheelBack");
+    ObjLoader::loadModel(&MH_AircraftCarrierCart::modelsTransparent, "res/Models/Objects/MetalHarbor/AircraftCarrierCart/", "AircraftCarrierCartTransparent");
 
     setModelsRenderOrder(&MH_AircraftCarrierCart::modelsWheelFront,  1);
     setModelsRenderOrder(&MH_AircraftCarrierCart::modelsWheelBack,   1);
@@ -230,7 +230,7 @@ void MH_AircraftCarrierCart::loadStaticModels()
 
     if (MH_AircraftCarrierCart::cmOriginal == nullptr)
     {
-        MH_AircraftCarrierCart::cmOriginal = loadCollisionModel("Models/Objects/MetalHarbor/AircraftCarrierCart/", "AircraftCarrierCartCollision");
+        MH_AircraftCarrierCart::cmOriginal = ObjLoader::loadCollisionModel("Models/Objects/MetalHarbor/AircraftCarrierCart/", "AircraftCarrierCartCollision");
     }
 }
 

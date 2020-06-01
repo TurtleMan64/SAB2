@@ -162,35 +162,39 @@ void ShaderProgram::bindFragOutput(int attatchment, const char* variableName)
 
 void ShaderProgram::getAllUniformLocations()
 {
-    location_transformationMatrix  = getUniformLocation("transformationMatrix");
-    location_projectionMatrix      = getUniformLocation("projectionMatrix");
-    location_viewMatrix            = getUniformLocation("viewMatrix");
-    location_sunDirInv             = getUniformLocation("sunDirInv");
-    location_sunColor              = getUniformLocation("sunColor");
-    location_shineDamper           = getUniformLocation("shineDamper");
-    location_reflectivity          = getUniformLocation("reflectivity");
-    location_useFakeLighting       = getUniformLocation("useFakeLighting");
-    location_hasTransparency       = getUniformLocation("hasTransparency");
-    location_glowAmount            = getUniformLocation("glowAmount");
-    location_baseColour            = getUniformLocation("baseColour");
-    location_baseAlpha             = getUniformLocation("baseAlpha");
-    location_texOffX               = getUniformLocation("texOffX");
-    location_texOffY               = getUniformLocation("texOffY");
-    location_skyColour             = getUniformLocation("skyColour");
-    location_fogDensity            = getUniformLocation("fogDensity");
-    location_fogGradient           = getUniformLocation("fogGradient");
-    location_clipPlane             = getUniformLocation("clipPlane");
-    location_clipPlaneBehind       = getUniformLocation("clipPlaneBehind");
-    location_shadowMapFar          = getUniformLocation("shadowMapFar");
-    location_toShadowMapSpaceFar   = getUniformLocation("toShadowMapSpaceFar");
-    location_shadowMapClose        = getUniformLocation("shadowMapClose");
-    location_toShadowMapSpaceClose = getUniformLocation("toShadowMapSpaceClose");
-    location_randomMap             = getUniformLocation("randomMap");
-    location_mixFactor             = getUniformLocation("mixFactor");
-    location_textureSampler2       = getUniformLocation("textureSampler2");
-    location_fogScale              = getUniformLocation("fogScale");
-    location_fogBottomPosition     = getUniformLocation("fogBottomPosition");
-    location_fogBottomThickness    = getUniformLocation("fogBottomThickness");
+    location_transformationMatrix   = getUniformLocation("transformationMatrix");
+    location_projectionMatrix       = getUniformLocation("projectionMatrix");
+    location_viewMatrix             = getUniformLocation("viewMatrix");
+    location_sunDirInv              = getUniformLocation("sunDirInv");
+    location_sunColor               = getUniformLocation("sunColor");
+    location_shineDamper            = getUniformLocation("shineDamper");
+    location_reflectivity           = getUniformLocation("reflectivity");
+    location_useFakeLighting        = getUniformLocation("useFakeLighting");
+    location_hasTransparency        = getUniformLocation("hasTransparency");
+    location_glowAmount             = getUniformLocation("glowAmount");
+    location_baseColour             = getUniformLocation("baseColour");
+    location_baseAlpha              = getUniformLocation("baseAlpha");
+    location_texOffX                = getUniformLocation("texOffX");
+    location_texOffY                = getUniformLocation("texOffY");
+    location_skyColour              = getUniformLocation("skyColour");
+    location_fogDensity             = getUniformLocation("fogDensity");
+    location_fogGradient            = getUniformLocation("fogGradient");
+    location_clipPlane              = getUniformLocation("clipPlane");
+    location_clipPlaneBehind        = getUniformLocation("clipPlaneBehind");
+    location_shadowMapFar           = getUniformLocation("shadowMapFar");
+    location_toShadowMapSpaceFar    = getUniformLocation("toShadowMapSpaceFar");
+    location_shadowMapClose         = getUniformLocation("shadowMapClose");
+    location_toShadowMapSpaceClose  = getUniformLocation("toShadowMapSpaceClose");
+    location_randomMap              = getUniformLocation("randomMap");
+    location_mixFactor              = getUniformLocation("mixFactor");
+    location_textureSampler2        = getUniformLocation("textureSampler2");
+    location_fogScale               = getUniformLocation("fogScale");
+    location_fogBottomPosition      = getUniformLocation("fogBottomPosition");
+    location_fogBottomThickness     = getUniformLocation("fogBottomThickness");
+    location_depthBufferTransparent = getUniformLocation("depthBufferTransparent");
+    location_isRenderingTransparent = getUniformLocation("isRenderingTransparent");
+    location_waterColor             = getUniformLocation("waterColor");
+    location_waterBlendAmount       = getUniformLocation("waterBlendAmount");
 }
 
 int ShaderProgram::getUniformLocation(const char* uniformName)
@@ -251,6 +255,7 @@ void ShaderProgram::connectTextureUnits()
     }
 
     loadInt(location_textureSampler2, 1);
+    loadInt(location_depthBufferTransparent, 8);
 }
 
 void ShaderProgram::loadToShadowSpaceMatrixFar(Matrix4f* matrix)
@@ -271,4 +276,19 @@ void ShaderProgram::loadMixFactor(float factor)
 void ShaderProgram::loadFogScale(float scale)
 {
     loadFloat(location_fogScale, scale);
+}
+
+void ShaderProgram::loadIsRenderingTransparent(bool value)
+{
+    loadInt(location_isRenderingTransparent, (int)value);
+}
+
+void ShaderProgram::loadWaterColor(Vector3f* color)
+{
+    loadVector(location_waterColor, color);
+}
+
+void ShaderProgram::loadWaterBlendAmount(float amount)
+{
+    loadFloat(location_waterBlendAmount, amount);
 }

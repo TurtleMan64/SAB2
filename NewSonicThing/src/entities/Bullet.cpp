@@ -106,7 +106,7 @@ void Bullet::loadStaticModels()
     std::fprintf(stdout, "Loading Bullet static models...\n");
     #endif
 
-    loadModel(&Bullet::models, "res/Models/Objects/Bullet/", "Bullet");
+    ObjLoader::loadModel(&Bullet::models, "res/Models/Objects/Bullet/", "Bullet");
 
     setModelsRenderOrder(&Bullet::models, 3);
 }

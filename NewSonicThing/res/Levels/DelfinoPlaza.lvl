@@ -27,6 +27,8 @@ res/Audio/BGM/delfino_plaza_loop.ogg
 water
 -1.5
 18
+0 0.839216 0.839216
+0.5
 true
 1000
 
@@ -37,10 +39,10 @@ true
 91 5
 
 # Pass 2
-2 res/Models/Levels/DelfinoPlaza/ DelfinoPlazaPass2
+# 2 res/Models/Levels/DelfinoPlaza/ DelfinoPlazaPass2
 
 # Pass 3
-3 res/Models/Levels/DelfinoPlaza/ DelfinoPlazaPass3
+# 3 res/Models/Levels/DelfinoPlaza/ DelfinoPlazaPass3
 
 # Transparent
 4 res/Models/Levels/DelfinoPlaza/ DelfinoPlazaTransparent

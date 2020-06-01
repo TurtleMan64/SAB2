@@ -60,15 +60,15 @@ void MH_StaticObjects::loadStaticModels()
     std::fprintf(stdout, "Loading MH_StaticObjects static models...\n");
     #endif
 
-    loadModel(&MH_StaticObjects::models, "res/Models/Objects/MetalHarbor/StaticObjects/", "StaticObjects");
-    loadModel(&MH_StaticObjects::modelsVertexColours, "res/Models/Objects/MetalHarbor/StaticObjects/", "StaticObjectsVertexColours");
-    loadModel(&MH_StaticObjects::modelsTransparent, "res/Models/Objects/MetalHarbor/StaticObjects/", "StaticObjectsTransparent");
+    ObjLoader::loadModel(&MH_StaticObjects::models, "res/Models/Objects/MetalHarbor/StaticObjects/", "StaticObjects");
+    ObjLoader::loadModel(&MH_StaticObjects::modelsVertexColours, "res/Models/Objects/MetalHarbor/StaticObjects/", "StaticObjectsVertexColours");
+    ObjLoader::loadModel(&MH_StaticObjects::modelsTransparent, "res/Models/Objects/MetalHarbor/StaticObjects/", "StaticObjectsTransparent");
 
     setModelsRenderOrder(&MH_StaticObjects::modelsTransparent, 1);
 
     if (MH_StaticObjects::cmOriginal == nullptr)
     {
-        MH_StaticObjects::cmOriginal = loadCollisionModel("Models/Objects/MetalHarbor/StaticObjects/", "StaticObjectsCollision");
+        MH_StaticObjects::cmOriginal = ObjLoader::loadCollisionModel("Models/Objects/MetalHarbor/StaticObjects/", "StaticObjectsCollision");
     }
 }
 

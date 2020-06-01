@@ -18,7 +18,7 @@ void WaterFrameBuffers::initialiseReflectionFrameBuffer()
 
 void WaterFrameBuffers::initialiseRefractionFrameBuffer()
 {
-    refractionFrameBuffer = createFrameBuffer();
+    refractionFrameBuffer  = createFrameBuffer();
     refractionTexture      = createTextureAttachment(Global::HQWaterRefractionWidth, Global::HQWaterRefractionHeight);
     refractionDepthTexture = createDepthTextureAttachment(Global::HQWaterRefractionWidth, Global::HQWaterRefractionHeight);
     unbindCurrentFrameBuffer();

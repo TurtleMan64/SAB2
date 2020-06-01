@@ -16,6 +16,8 @@ public:
     Vector3f eyePrevious;
     Vector3f vel;
 
+    bool inWater = false;
+
 public:
     Camera();
 

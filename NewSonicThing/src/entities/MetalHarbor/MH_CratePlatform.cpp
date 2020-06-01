@@ -212,21 +212,21 @@ void MH_CratePlatform::loadStaticModels()
     std::fprintf(stdout, "Loading MH_CratePlatform static models...\n");
     #endif
 
-    loadModel(&MH_CratePlatform::modelsCratePlatformLong, "res/Models/Objects/MetalHarbor/CratePlatform/", "CratePlatformLong");
-    loadModel(&MH_CratePlatform::modelsCratePlatformCrate, "res/Models/Objects/MetalHarbor/CratePlatform/", "CratePlatformCrate");
-    loadModel(&MH_CratePlatform::modelsCratePlatformNoCrate, "res/Models/Objects/MetalHarbor/CratePlatform/", "CratePlatformCrateless");
+    ObjLoader::loadModel(&MH_CratePlatform::modelsCratePlatformLong, "res/Models/Objects/MetalHarbor/CratePlatform/", "CratePlatformLong");
+    ObjLoader::loadModel(&MH_CratePlatform::modelsCratePlatformCrate, "res/Models/Objects/MetalHarbor/CratePlatform/", "CratePlatformCrate");
+    ObjLoader::loadModel(&MH_CratePlatform::modelsCratePlatformNoCrate, "res/Models/Objects/MetalHarbor/CratePlatform/", "CratePlatformCrateless");
 
     if (MH_CratePlatform::cmCratePlatformLong == nullptr)
     {
-        MH_CratePlatform::cmCratePlatformLong = loadCollisionModel("Models/Objects/MetalHarbor/CratePlatform/", "CratePlatformLongCollision");
+        MH_CratePlatform::cmCratePlatformLong = ObjLoader::loadCollisionModel("Models/Objects/MetalHarbor/CratePlatform/", "CratePlatformLongCollision");
     }
     if (MH_CratePlatform::cmCratePlatformCrate == nullptr)
     {
-        MH_CratePlatform::cmCratePlatformCrate = loadCollisionModel("Models/Objects/MetalHarbor/CratePlatform/", "CratePlatformCrateCollision");
+        MH_CratePlatform::cmCratePlatformCrate = ObjLoader::loadCollisionModel("Models/Objects/MetalHarbor/CratePlatform/", "CratePlatformCrateCollision");
     }
     if (MH_CratePlatform::cmCratePlatformNoCrate == nullptr)
     {
-        MH_CratePlatform::cmCratePlatformNoCrate = loadCollisionModel("Models/Objects/MetalHarbor/CratePlatform/", "CratePlatformCratelessCollision");
+        MH_CratePlatform::cmCratePlatformNoCrate = ObjLoader::loadCollisionModel("Models/Objects/MetalHarbor/CratePlatform/", "CratePlatformCratelessCollision");
     }
 }
 
@@ -316,7 +316,7 @@ inline void MH_CratePlatform::playStoppingSound()
 {
     if (platformAudioSource == nullptr)
     {
-        platformAudioSource = AudioPlayer::play(63, getPosition(), 1, false);
+        platformAudioSource = AudioPlayer::play(63, &position, 1, false);
     }
 }
 
