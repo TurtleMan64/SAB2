@@ -191,6 +191,8 @@ private:
     const float punchSpeedSlow = 0.7f*1.5f*60;
     const float punchSpeedThreshold = 1.7f*1.05f*60;
 
+    bool isReadingHint = false;
+
     ShieldMagnet* myShieldMagnet = nullptr;
     ShieldGreen*  myShieldGreen  = nullptr;
 
@@ -338,5 +340,7 @@ public:
     bool canGrabDiggablePiece();
 
     bool canReadHint();
+
+    void setReadingHint(bool isReadingHint);
 };
 #endif

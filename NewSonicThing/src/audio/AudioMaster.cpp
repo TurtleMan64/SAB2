@@ -3,8 +3,11 @@
 //#define _CRT_SECURE_NO_DEPRECATE
 //#endif
 
+#define AL_ALEXT_PROTOTYPES
+
 #include <AL/al.h>
 #include <AL/alc.h>
+#include <AL/efx.h>
 #include <iostream>
 
 #ifdef _WIN32
@@ -47,6 +50,39 @@ void AudioMaster::init()
         fprintf(stderr, "no sound context\n");
         return;
     }
+
+
+    /* Try to create a Filter */
+    ALuint filterLowpass;
+    ALenum erral = alGetError();
+    if (erral != AL_NO_ERROR)
+    {
+        std::fprintf(stderr, "########  AL ERROR  ########\n");
+        std::fprintf(stderr, "%d\n", erral);
+    }
+
+    alGenFilters(1, &filterLowpass);
+    erral = alGetError();
+    if (erral != AL_NO_ERROR)
+    {
+        printf("Could not generate a filter. error code = %d\n", erral);
+    }
+    else if (alIsFilter(filterLowpass))
+    {
+        // Set Filter type to Low-Pass and set parameters
+        alFilteri(filterLowpass, AL_FILTER_TYPE, AL_FILTER_LOWPASS);
+        if (alGetError() != AL_NO_ERROR)
+        {
+            printf("Low Pass Filter not supported\n");
+        }
+        else
+        {
+            alFilterf(filterLowpass, AL_LOWPASS_GAIN, 1.0f); //0.6
+            alFilterf(filterLowpass, AL_LOWPASS_GAINHF, 0.004f); //0.015
+        }
+    }
+
+    Source::filterLowpass = filterLowpass;
 
     AudioPlayer::loadSettings();
     AudioPlayer::createSources();

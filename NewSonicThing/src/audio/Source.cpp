@@ -1,7 +1,10 @@
 #include <AL/al.h>
+#include <AL/efx.h>
 
 #include "source.h"
 #include "../engineTester/main.h"
+
+ALuint Source::filterLowpass = AL_NONE;
 
 Source::Source(float rolloff, float referencedist, float max)
 {
@@ -86,6 +89,18 @@ void Source::setPosition(float x, float y, float z)
 {
     ALfloat sourcePos[] = { x, y, z };
     alSourcefv(sourceID, AL_POSITION, sourcePos);
+}
+
+void Source::setIsUnderwater(bool isUnderwater)
+{
+    if (isUnderwater)
+    {
+        alSourcei(sourceID, AL_DIRECT_FILTER, Source::filterLowpass);
+    }
+    else
+    {
+        alSourcei(sourceID, AL_DIRECT_FILTER, AL_FILTER_NULL);
+    }
 }
 
 ALuint Source::getSourceID()

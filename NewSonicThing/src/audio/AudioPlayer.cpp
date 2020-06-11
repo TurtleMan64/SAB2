@@ -11,8 +11,6 @@
 #include "../toolbox/split.h"
 #include "../toolbox/getline.h"
 
-
-
 float AudioPlayer::soundLevelSFX = 0.05f;
 float AudioPlayer::soundLevelBGM = 0.05f;
 std::vector<Source*> AudioPlayer::sources;
@@ -20,7 +18,7 @@ std::vector<ALuint> AudioPlayer::buffersSFX;
 std::vector<ALuint> AudioPlayer::buffersBGM;
 ALuint AudioPlayer::bgmIntro;
 ALuint AudioPlayer::bgmLoop;
-
+bool AudioPlayer::listenerIsUnderwater = false;
 
 void AudioPlayer::loadSoundEffects()
 {
@@ -312,6 +310,22 @@ void AudioPlayer::setBGMVolume(float percent)
 {
     Source* src = AudioPlayer::sources[14];
     src->setVolume(percent*soundLevelBGM);
+}
+
+void AudioPlayer::setListenerIsUnderwater(bool newIsUnderwater)
+{
+    if (AudioPlayer::listenerIsUnderwater != newIsUnderwater)
+    {
+        //update all sources to use the underwater filter
+
+        for (int i = 0; i < 15; i++)
+        {
+            Source* src = AudioPlayer::sources[i];
+            src->setIsUnderwater(newIsUnderwater);
+        }
+    }
+
+    AudioPlayer::listenerIsUnderwater = newIsUnderwater;
 }
 
 void AudioPlayer::loadSettings()

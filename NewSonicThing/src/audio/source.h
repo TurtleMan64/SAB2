@@ -10,6 +10,8 @@ private:
     ALuint bufferID; //Buffer that we are going to play
 
 public:
+    static ALuint filterLowpass;
+
     Source(float rolloff, float referencedist, float max);
 
     void play(ALuint buffer);
@@ -33,6 +35,8 @@ public:
     void setPitch(float pitch);
 
     void setPosition(float x, float y, float z);
+
+    void setIsUnderwater(bool isUnderwater);
 
     //Returns how much percentage the sound is to being completed.
     // So 0 if the sound just started, 0.5 if the sound is halfway done, 1 if sound is finished.

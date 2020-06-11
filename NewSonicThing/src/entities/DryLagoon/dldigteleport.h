@@ -17,6 +17,8 @@ private:
     static CollisionModel* cmOriginal;
 
     float prevDiggTimer = 0.0f;
+    float timeUntilWarp = -1.0f;
+    bool doTeleport = false;
     Vector3f teleportLocation;
 
 public:

@@ -46,29 +46,42 @@ DL_DigTeleport::DL_DigTeleport(
 
 void DL_DigTeleport::step()
 {
+    extern float dt;
+
     float currDiggTimer = Global::gameMainPlayer->getDiggingTimer();
+
+    float prevTimeUntilWarp = timeUntilWarp;
+    timeUntilWarp -= dt;
 
     if (collideModelTransformed->playerIsOn)
     {
         if (prevDiggTimer > 0.7f && currDiggTimer <= 0.7f)
         {
+            timeUntilWarp = 0.7f;
             Vector3f vel(0, 0, 0);
             ParticleMaster::createParticle(ParticleResources::textureBlackFadeOutAndIn, &Global::gameCamera->fadePosition1, &vel, 0, 1.4f, 0, 400, 0, true, false, 1.0f, false);
         }
-        else if (prevDiggTimer > 0.0f && currDiggTimer <= 0.0f)
-        {
-            Vector3f newCamDir(1, 0, 0);
-            Vector3f yAxis(0, 1, 0);
-            newCamDir = Maths::rotatePoint(&newCamDir, &yAxis, Maths::toRadians(rotY));
-            newCamDir.normalize();
-            Global::gameMainPlayer->position = teleportLocation;
-            Global::gameMainPlayer->camDir = newCamDir;
-            Global::gameMainPlayer->camDirSmooth = newCamDir;
-            Global::gameMainPlayer->relativeUp = newCamDir;
-            //Global::gameMainPlayer->vel = newCamDir.scaleCopy(-500.0f); //doesnt work for some reason
-            //Global::gameMainPlayer->onGround = false;
-            //Global::gameMainPlayer->popOff
-        }
+    }
+
+    if (doTeleport)
+    {
+        doTeleport = false;
+
+        Vector3f newCamDir(1, 0, 0);
+        Vector3f yAxis(0, 1, 0);
+        newCamDir = Maths::rotatePoint(&newCamDir, &yAxis, Maths::toRadians(rotY)); //todo: make new variabel for this
+        newCamDir.normalize();
+        Global::gameMainPlayer->position = teleportLocation;
+        Global::gameMainPlayer->camDir = newCamDir;
+        Global::gameMainPlayer->camDirSmooth = newCamDir;
+        Global::gameMainPlayer->relativeUp.set(0, 1, 0);
+        Global::gameMainPlayer->vel = newCamDir.scaleCopy(-10.0f);
+    }
+
+    if (prevTimeUntilWarp > 0.0f && timeUntilWarp <= 0.0f)
+    {
+        doTeleport = true;
+        Global::gameMainPlayer->onGround = false;
     }
 
     prevDiggTimer = currDiggTimer;

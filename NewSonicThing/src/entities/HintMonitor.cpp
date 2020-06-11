@@ -88,6 +88,11 @@ void HintMonitor::step()
 
         Global::gameMainPlayer->position = storedPlayerPos;
         Global::gameMainPlayer->vel = (position - storedPlayerPos).scaleCopy(0.0001f);
+
+        if (fadeoutTimer <= 0.0f)
+        {
+            Global::gameMainPlayer->setReadingHint(false);
+        }
     }
 
     if (!collected)
@@ -127,6 +132,7 @@ void HintMonitor::step()
                     
                         Global::gameMainPlayer->vel = (position - storedPlayerPos).scaleCopy(0.0001f);
                         Global::gameMainPlayer->canMoveTimer = 100000000000.0f;
+                        Global::gameMainPlayer->setReadingHint(true);
                         Vector3f vel(0,0,0);
                         ParticleMaster::createParticle(ParticleResources::textureBlackFadeOutAndIn, &Global::gameCamera->fadePosition1, &vel, 0, 1.0f, 0, 400, 0, true, false, 1.0f, false);
                     }

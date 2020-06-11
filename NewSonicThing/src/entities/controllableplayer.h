@@ -44,14 +44,6 @@ public:
 
     virtual float getHoverTimer();
 
-    //virtual void setOnPlane(bool on);
-
-    //virtual float getHitboxHorizontal();
-
-    //virtual float getHitboxVertical();
-
-    //virtual void stopMoving();
-
     virtual void setInWater(float newWaterHeight);
 
     virtual void takeDamage(Vector3f* damageSource);
@@ -66,37 +58,7 @@ public:
 
     virtual void die();
 
-    //virtual Vector3f getOverallVel();
-
-    //virtual float getSpindashSpeed();
-
-    //virtual void debugAdjustCamera();
-
-    //virtual void boostMe(float amount);
-
-    //virtual void setDisplacement(float x, float y, float z);
-
-    //virtual void setGravity(float newGrav);
-
     virtual bool isDying();
-
-    //virtual void setOnPlanePrevious(bool on);
-
-    //virtual int getSpindashTimer();
-
-    //virtual void setSpindashTimer(int newTimer);
-
-    //virtual bool isChargingSpindash();
-
-    //virtual void setIsBall(bool newisBall);
-
-    //returns the speed player goes after releasing a spindash
-    //virtual float calculateSpindashSpeed(int spindashCharge);
-
-    //virtual bool isOnGround();
-
-    //Returns the normal of the triangle that the player has collided with
-    //virtual Vector3f* getCurrNorm();
 
     //Returns the center position of where the player is being drawn.
     virtual Vector3f getCenterPosition();
@@ -112,6 +74,8 @@ public:
     virtual bool canGrabDiggablePiece();
 
     virtual bool canReadHint();
+
+    virtual void setReadingHint(bool isReadingHint);
 
     virtual void increaseCombo();
 

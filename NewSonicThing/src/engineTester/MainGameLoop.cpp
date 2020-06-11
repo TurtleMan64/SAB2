@@ -756,6 +756,7 @@ int main(int argc, char** argv)
 
         Vector3f camVel = cam.vel.scaleCopy(0.016666f);
         AudioMaster::updateListenerData(&cam.eye, &cam.target, &cam.up, &camVel);
+        AudioPlayer::setListenerIsUnderwater(cam.inWater || cam.eye.y < Global::waterHeight);
 
         if (Global::renderBloom)
         {

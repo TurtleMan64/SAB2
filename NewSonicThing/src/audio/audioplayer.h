@@ -14,6 +14,8 @@ private:
     static std::vector<ALuint> buffersSFX;
     static std::vector<ALuint> buffersBGM;
 
+    static bool listenerIsUnderwater;
+
 public:
     static float soundLevelSFX; //The master SFX volume
     static float soundLevelBGM; //The master BGM volume
@@ -69,5 +71,7 @@ public:
     //percent should be 0 ... 1
     //this is then multiplied by soundLevelBGM
     static void setBGMVolume(float percent);
+
+    static void setListenerIsUnderwater(bool newisUnderwater);
 };
 #endif

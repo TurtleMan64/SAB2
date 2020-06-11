@@ -2266,7 +2266,8 @@ bool PlayerKnuckles::isVulnerable()
         invincibleTimer > 0.0f  ||
         isDrillDiving           ||
         isGliding               ||
-        punchingTimer > 0.0f);
+        punchingTimer > 0.0f    ||
+        isReadingHint);
 }
 
 bool PlayerKnuckles::findHomingTarget(Vector3f* target)
@@ -3194,7 +3195,7 @@ bool PlayerKnuckles::isDying()
 
 bool PlayerKnuckles::canDealDamage()
 {
-    return (hitTimer == 0.0f && hitFlashingTimer == 0.0f);
+    return (hitTimer == 0.0f && hitFlashingTimer == 0.0f && !isReadingHint);
 }
 
 bool PlayerKnuckles::canBreakObjects()
@@ -3308,5 +3309,10 @@ bool PlayerKnuckles::canGrabDiggablePiece()
 
 bool PlayerKnuckles::canReadHint()
 {
-    return (onGround && diggingTimer == 0.0f);
+    return (onGround && diggingTimer == 0.0f && !isClimbing);
+}
+
+void PlayerKnuckles::setReadingHint(bool newValue)
+{
+    isReadingHint = newValue;
 }

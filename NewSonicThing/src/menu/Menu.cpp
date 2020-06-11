@@ -14,7 +14,6 @@ Menu* PopMenu::get()
     return PopMenu::retVal;
 }
 
-
 Menu* ClearStack::get()
 {
     if (ClearStack::retVal == nullptr)
