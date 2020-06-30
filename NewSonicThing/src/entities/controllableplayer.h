@@ -85,6 +85,8 @@ public:
 
     virtual void startGrabbing();
 
+    virtual void setIsDriving(bool isDriving);
+
     virtual void stopGrabbing();
 
     virtual float getDiggingTimer();

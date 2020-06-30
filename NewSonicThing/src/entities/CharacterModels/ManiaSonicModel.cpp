@@ -72,6 +72,7 @@ std::list<TexturedModel*> ManiaSonicModel::modelLightdash;
 std::list<TexturedModel*> ManiaSonicModel::modelFreefall;
 std::list<TexturedModel*> ManiaSonicModel::modelStomp;
 std::list<TexturedModel*> ManiaSonicModel::modelGrab;
+std::list<TexturedModel*> ManiaSonicModel::modelDrive;
 
 ManiaSonicModel::ManiaSonicModel()
 {
@@ -313,6 +314,16 @@ void ManiaSonicModel::animate(int animIndex, float time)
             break;
         }
 
+        case 27: //drive
+        {
+            setScale(1.0f);
+            models = &ManiaSonicModel::modelDrive;
+            updateTransformationMatrixYXZY();
+            setLimbsVisibility(false);
+            visible = baseVisible;
+            break;
+        }
+
         default:
             break;
     }
@@ -461,6 +472,7 @@ void ManiaSonicModel::loadStaticModels()
     ObjLoader::loadModel(&ManiaSonicModel::modelFreefall , "res/Models/Characters/ManiaSonic/", "Freefall");
     ObjLoader::loadModel(&ManiaSonicModel::modelStomp    , "res/Models/Characters/ManiaSonic/", "Stomp");
     ObjLoader::loadModel(&ManiaSonicModel::modelGrab     , "res/Models/Characters/ManiaSonic/", "Grab");
+    ObjLoader::loadModel(&ManiaSonicModel::modelDrive    , "res/Models/Characters/ManiaSonic/", "Drive");
 }
 
 void ManiaSonicModel::setLimbsVisibility(bool newVisible)
@@ -589,4 +601,5 @@ void ManiaSonicModel::deleteStaticModels()
     Entity::deleteModels(&ManiaSonicModel::modelFreefall);
     Entity::deleteModels(&ManiaSonicModel::modelStomp);
     Entity::deleteModels(&ManiaSonicModel::modelGrab);
+    Entity::deleteModels(&ManiaSonicModel::modelDrive);
 }

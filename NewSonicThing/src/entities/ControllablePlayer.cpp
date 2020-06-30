@@ -34,6 +34,7 @@ void          ControllablePlayer::setInvincibleTimer(float)                {}
 void          ControllablePlayer::setSpeedshoesTimer(float)                {}
 void          ControllablePlayer::startGrabbing()                          {}
 void          ControllablePlayer::stopGrabbing()                           {}
+void          ControllablePlayer::setIsDriving(bool)                       {}
 float         ControllablePlayer::getDiggingTimer()                        {return 0.0f;}
 void          ControllablePlayer::hitSpring(Vector3f*, float, float, bool) {}
 void          ControllablePlayer::hitSpringTriple(Vector3f*, float, float) {}

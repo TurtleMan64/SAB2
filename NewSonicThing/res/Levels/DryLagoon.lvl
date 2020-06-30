@@ -5,7 +5,7 @@ Part2 -800 -100000 2738 1400 100000 4000
 Part3 3455 -100000 -1800 4100 100000 400
 Levels/DryLagoon
 1
-Collision4 8
+Collision 8
 1.0 1.0 1.0
 0.0 0.0 0.0
 0.0 0.0 0.0
@@ -40,6 +40,9 @@ false
 
 # Stage Manager
 91 10
+
+# Help
+32 134.696747 15.100080 -41.073956 Stand on the turtle and punch;to travel to the oasis!
 
 # Lost Chao
 81 3734.189209 0.192877 -380 180

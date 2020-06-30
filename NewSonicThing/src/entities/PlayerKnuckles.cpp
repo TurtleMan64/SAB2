@@ -3200,7 +3200,7 @@ bool PlayerKnuckles::canDealDamage()
 
 bool PlayerKnuckles::canBreakObjects()
 {
-    return ((isBouncing || isBall || isSpindashing) && (vel.lengthSquared() > breakObjectsSpeed*breakObjectsSpeed) ||
+    return (((isBouncing || isBall || isSpindashing) && (vel.lengthSquared() > breakObjectsSpeed*breakObjectsSpeed)) ||
             (isGliding || punchingTimer > 0.0f || isDrillDiving));
 }
 

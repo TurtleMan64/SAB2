@@ -229,8 +229,28 @@ Menu* MainMenu::step()
             {
                 Global::gameIsArcadeMode = true;
                 AudioPlayer::play(38, Global::gameCamera->getFadePosition1());
-                retVal = new CharacterSelect; INCR_NEW("Menu");
+                //retVal = new CharacterSelect; INCR_NEW("Menu");
                 setVisible(false);
+
+                Global::gameMissionNumber = 0;
+                Global::gameArcadeIndex = 0;
+
+                Global::levelID = (Global::gameArcadeLevelIds[Global::gameArcadeIndex]).first;
+                Global::currentCharacterType = (Global::gameArcadeLevelIds[Global::gameArcadeIndex]).second;
+                Level* currentLevel = &Global::gameLevelData[Global::levelID];
+                Global::levelName = currentLevel->fileName;
+                Global::levelNameDisplay = currentLevel->displayName;
+                Global::gameMissionDescription = (currentLevel->missionData[Global::gameMissionNumber])[(currentLevel->missionData[Global::gameMissionNumber]).size() - 1];
+                
+                Global::createTitleCard();
+
+                Global::gameArcadePlaytime = 0.0f;
+
+                Global::isNewLevel = true;
+                Global::shouldLoadLevel = true;
+
+                retVal = SwitchStack::get();
+
                 break;
             }
 

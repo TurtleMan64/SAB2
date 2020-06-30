@@ -89,6 +89,7 @@ private:
     static std::list<TexturedModel*> modelFreefall;
     static std::list<TexturedModel*> modelStomp;
     static std::list<TexturedModel*> modelGrab;
+    static std::list<TexturedModel*> modelDrive;
 
     void setLimbsVisibility(bool newVisible);
 

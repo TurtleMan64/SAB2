@@ -87,6 +87,12 @@
 #include "../entities/DryLagoon/dlpot.h"
 #include "../entities/DryLagoon/dlturtle.h"
 #include "../entities/DryLagoon/dldigteleport.h"
+#include "../entities/RadicalHighway/rhnights.h"
+#include "../entities/RadicalHighway/rhblimp.h"
+#include "../entities/RadicalHighway/rhramp.h"
+#include "../entities/TwinkleCircuit/tckart.h"
+#include "../entities/TwinkleCircuit/tcstagemanager.h"
+#include "../entities/TwinkleCircuit/tcdash.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -215,6 +221,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
             else if (currLvl->displayName == "Delfino Plaza")   Global::levelID = LVL_DELFINO_PLAZA;
             else if (currLvl->displayName == "Sacred Sky")      Global::levelID = LVL_CLOUD_STAGE;
             else if (currLvl->displayName == "Dry Lagoon")      Global::levelID = LVL_DRY_LAGOON;
+            else if (currLvl->displayName == "Twinkle Circuit") Global::levelID = LVL_TWINKLE_CIRCUIT;
         }
 
         Global::spawnAtCheckpoint  = false;
@@ -900,6 +907,9 @@ void LevelLoader::loadLevel(std::string levelFilename)
     timeOld = 0.0;
     //previousTime = 0.0;
 
+    extern float VFOV_ADDITION;
+    VFOV_ADDITION = 0;
+
     //unlock framerate during gameplay
     if (Global::framerateUnlock)
     {
@@ -1244,6 +1254,11 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                     Global::gameStageManager = new DL_StageManager; INCR_NEW("Entity");
                     break;
 
+                case 11:
+                    TC_StageManager::loadStaticModels();
+                    Global::gameStageManager = new TC_StageManager; INCR_NEW("Entity");
+                    break;
+
                 default: break;
             }
             return;
@@ -1526,6 +1541,78 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             }
         }
 
+        case 105: //Radical Highway Specific Objects
+        {
+            switch (toInt(dat[1]))
+            {
+                case 0: //Nights spinning head
+                {
+                    RH_Nights::loadStaticModels();
+                    RH_Nights* nights = new RH_Nights(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4])); //position
+                    INCR_NEW("Entity");
+                    Global::addEntity(nights);
+                    return;
+                }
+
+                case 1: //Blimp
+                {
+                    RH_Blimp::loadStaticModels();
+                    RH_Blimp* blimp = new RH_Blimp(
+                        toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]), //position
+                        toFloat(dat[5])); //rot y
+                    INCR_NEW("Entity");
+                    Global::addEntity(blimp);
+                    return;
+                }
+
+                case 2: //Ramp
+                {
+                    RH_Ramp::loadStaticModels();
+                    RH_Ramp* ramp = new RH_Ramp(
+                        toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]), //position
+                        toFloat(dat[5]), toFloat(dat[6])); //rot y, rot z
+                    INCR_NEW("Entity");
+                    Global::addEntity(ramp);
+                    return;
+                }
+
+                default:
+                    return;
+            }
+        }
+
+        case 106: //Twinkle Circuit Specific Objects
+        {
+            switch (toInt(dat[1]))
+            {
+                case 0: //Kart
+                {
+                    TC_Kart* kart = new TC_Kart(
+                        toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]),  //position
+                        toFloat(dat[5]), toFloat(dat[6]), toFloat(dat[7])); //direction
+                    INCR_NEW("Entity");
+                    Global::gameKart = kart;
+                    Global::addEntity(kart);
+                    return;
+                }
+
+                case 1: //Dash
+                {
+                    TC_Dash::loadStaticModels();
+                    TC_Dash* dash = new TC_Dash(
+                        toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[ 4]),  //position
+                        toFloat(dat[5]), toFloat(dat[6]), toFloat(dat[ 7]),  //at
+                        toFloat(dat[8]), toFloat(dat[9]), toFloat(dat[10])); //up
+                    INCR_NEW("Entity");
+                    Global::addChunkedEntity(dash);
+                    return;
+                }
+
+                default:
+                    return;
+            }
+        }
+
         default:
         {
             return;
@@ -1663,6 +1750,12 @@ void LevelLoader::freeAllStaticModels()
     DL_Pot::deleteStaticModels();
     DL_Turtle::deleteStaticModels();
     DL_DigTeleport::deleteStaticModels();
+    RH_Nights::deleteStaticModels();
+    RH_Blimp::deleteStaticModels();
+    RH_Ramp::deleteStaticModels();
+    TC_Kart::deleteStaticModels();
+    TC_StageManager::deleteStaticModels();
+    TC_Dash::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()

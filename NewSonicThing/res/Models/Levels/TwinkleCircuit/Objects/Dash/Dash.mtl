@@ -1,0 +1,31 @@
+# Material Count: 4
+
+newmtl Tex_0004_0_dds
+Ns 20
+Ni 0.000000
+d 1.000000
+scrollY 1.5
+glow 1
+map_Kd Tex_0004_0.png
+
+newmtl Tex_0003_0_dds
+Ns 20
+Ni 0.000000
+d 1.000000
+glow 1
+map_Kd Tex_0003_0.png
+
+newmtl Tex_0005_0_dds
+Ns 20
+Ni 0.000000
+d 1.000000
+glow 1
+map_Kd Tex_0005_0.png
+
+newmtl Tex_0006_0_dds
+Ns 20
+Ni 0.000000
+d 1.000000
+glow 1
+map_Kd Tex_0006_0.png
+

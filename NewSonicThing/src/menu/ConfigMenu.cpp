@@ -26,20 +26,13 @@
 
 ConfigMenu::ConfigMenu()
 {
-    //std::cout << "Initializing Config Menu\n";
-    fontSize = 0.05f;
     loadResources();
     setVisible(false);
-    offsetCurr = 0.0f;
-    offsetTarget = 0.0f;
-    //std::cout << "Config Menu initialized\n";
 }
 
 ConfigMenu::~ConfigMenu()
 {
-    //std::cout << "Deleting Config Menu\n";
     unloadResources();
-    //std::cout << "Config Menu deleted.\n";
 }
 
 void ConfigMenu::loadResources()
@@ -89,7 +82,14 @@ void ConfigMenu::loadResources()
     buttonsValues.push_back(new Button(Input::getControllerName(),                        Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(7)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
 
     buttonsNames[1]->generateText("FPS Limit", !Global::framerateUnlock);
-    buttonsValues[1]->generateText(std::to_string((int)Global::fpsLimit), !Global::framerateUnlock);
+    if (Global::fpsLimit < 0)
+    {
+        buttonsValues[1]->generateText("Unlimited", !Global::framerateUnlock);
+    }
+    else
+    {
+        buttonsValues[1]->generateText(std::to_string((int)Global::fpsLimit), !Global::framerateUnlock);
+    }
 }
 
 std::string ConfigMenu::boolToString(bool value)
@@ -111,11 +111,12 @@ std::string ConfigMenu::floatToString(float value)
 
 void ConfigMenu::unloadResources()
 {
-    //std::cout << "Unloading Config Menu resources.\n";
     if ((int)buttonsNames.size() == 0)
     {
         std::fprintf(stdout, "Warning: ConfigMenu unloading resources when they are empty.\n");
     }
+
+    GuiManager::clearGuisToRender(); //gets rid of some annoying bug. prints a gl error without this sometimes
 
     Loader::deleteTexture(textureParallelogram);
     Loader::deleteTexture(textureParallelogramBackdrop);
@@ -130,8 +131,6 @@ void ConfigMenu::unloadResources()
     textureParallelogramHalf2         = GL_NONE;
     textureParallelogramHalf2Backdrop = GL_NONE;
 
-    //GuiManager::clearGuisToRender();
-
     for (int i = 0; i < (int)buttonsNames.size(); i++)
     {
         delete buttonsNames[i]; INCR_DEL("Button");
@@ -145,7 +144,6 @@ void ConfigMenu::unloadResources()
     buttonsValues.clear();
 
     currentButtonIndex = 0;
-    //std::cout << "Config Menu resources deleted.\n";
 }
 
 void ConfigMenu::draw()
@@ -158,8 +156,6 @@ void ConfigMenu::draw()
     {
         offsetCurr = offsetTarget;
     }
-
-    //GuiManager::clearGuisToRender();
     
     if (visible)
     {
@@ -357,19 +353,41 @@ Menu* ConfigMenu::step()
             case 0:
                 Global::framerateUnlock = !Global::framerateUnlock;
                 buttonsValues[0]->generateText(boolToString(!Global::framerateUnlock));
-                buttonsValues[1]->generateText(std::to_string((int)Global::fpsLimit), !Global::framerateUnlock);
+                if (Global::fpsLimit < 0)
+                {
+                    buttonsValues[1]->generateText("Unlimited", !Global::framerateUnlock);
+                }
+                else
+                {
+                    buttonsValues[1]->generateText(std::to_string((int)Global::fpsLimit), !Global::framerateUnlock);
+                }
                 buttonsNames[1]->generateText("FPS Limit", !Global::framerateUnlock);
                 break;
 
             case 1:
                 if (Global::framerateUnlock)
                 {
-                    Global::fpsLimit -= 1.0f;
-                    if (Global::fpsLimit < 30)
+                    if (Global::fpsLimit < 0.0f)
                     {
-                        Global::fpsLimit = 30;
+                        Global::fpsLimit = 720.0f;
                     }
-                    buttonsValues[1]->generateText(std::to_string((int)Global::fpsLimit), false);
+                    else
+                    {
+                        Global::fpsLimit -= 1.0f;
+                        if (Global::fpsLimit < 30)
+                        {
+                            Global::fpsLimit = 30;
+                        }
+                    }
+
+                    if (Global::fpsLimit < 0)
+                    {
+                        buttonsValues[1]->generateText("Unlimited", !Global::framerateUnlock);
+                    }
+                    else
+                    {
+                        buttonsValues[1]->generateText(std::to_string((int)Global::fpsLimit), !Global::framerateUnlock);
+                    }
                 }
                 break;
 
@@ -429,19 +447,41 @@ Menu* ConfigMenu::step()
             case 0:
                 Global::framerateUnlock = !Global::framerateUnlock;
                 buttonsValues[0]->generateText(boolToString(!Global::framerateUnlock));
-                buttonsValues[1]->generateText(std::to_string((int)Global::fpsLimit), !Global::framerateUnlock);
+                if (Global::fpsLimit < 0)
+                {
+                    buttonsValues[1]->generateText("Unlimited", !Global::framerateUnlock);
+                }
+                else
+                {
+                    buttonsValues[1]->generateText(std::to_string((int)Global::fpsLimit), !Global::framerateUnlock);
+                }
                 buttonsNames[1]->generateText("FPS Limit", !Global::framerateUnlock);
                 break;
 
             case 1:
                 if (Global::framerateUnlock)
                 {
-                    Global::fpsLimit += 1.0f;
-                    if (Global::fpsLimit > 720)
+                    if (Global::fpsLimit < 0.0f)
                     {
-                        Global::fpsLimit = 720;
+                        //do nothing, already unlimited
                     }
-                    buttonsValues[1]->generateText(std::to_string((int)Global::fpsLimit), false);
+                    else
+                    {
+                        Global::fpsLimit += 1.0f;
+                        if (Global::fpsLimit > 720)
+                        {
+                            Global::fpsLimit = -1.0f;
+                        }
+                    }
+
+                    if (Global::fpsLimit < 0)
+                    {
+                        buttonsValues[1]->generateText("Unlimited", !Global::framerateUnlock);
+                    }
+                    else
+                    {
+                        buttonsValues[1]->generateText(std::to_string((int)Global::fpsLimit), !Global::framerateUnlock);
+                    }
                 }
                 break;
 
@@ -521,12 +561,17 @@ Menu* ConfigMenu::step()
                 break;
         }
     }
-    else if (pressedBack)
+    
+    if (pressedBack)
     {
         AudioPlayer::play(37, Global::gameCamera->getFadePosition1());
         retVal = PopMenu::get();
 
         Global::saveConfigData();
+    }
+    else
+    {
+        draw();
     }
 
     return retVal;

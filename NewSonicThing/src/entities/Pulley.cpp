@@ -101,6 +101,11 @@ void Pulley::step()
             Global::gameMainPlayer->stopGrabbing();
             Global::gameMainPlayer->jumpOffPulley(cameraDirectionVector);
 
+            if (!handleAtTop())
+            {
+                Global::gameMainPlayer->vel.y += PULLEY_SPEED;
+            }
+
             playerIsOnPulley = false;
 
             isBobbing = false;

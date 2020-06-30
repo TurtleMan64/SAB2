@@ -10,9 +10,7 @@ class ParticleTexture;
 class ParticleResources
 {
 public:
-    static std::vector<ParticleTexture*> exhaustTextures;
-
-    static ParticleTexture* particleExhaustBlueFalcon;
+    static ParticleTexture* textureExhaust;
     static ParticleTexture* particleExhaustArwing;
     static ParticleTexture* textureDust;
     static ParticleTexture* textureDirt;

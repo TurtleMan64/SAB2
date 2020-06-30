@@ -211,6 +211,9 @@
     <ClCompile Include="src\entities\PyramidCave\PC_StageManager.cpp" />
     <ClCompile Include="src\entities\PyramidCave\PC_StaticObjects.cpp" />
     <ClCompile Include="src\entities\RaceGhost.cpp" />
+    <ClCompile Include="src\entities\RadicalHighway\RH_Blimp.cpp" />
+    <ClCompile Include="src\entities\RadicalHighway\RH_Nights.cpp" />
+    <ClCompile Include="src\entities\RadicalHighway\RH_Ramp.cpp" />
     <ClCompile Include="src\entities\RadicalHighway\RH_StageManager.cpp" />
     <ClCompile Include="src\entities\Rail.cpp" />
     <ClCompile Include="src\entities\RhinoSpike.cpp" />
@@ -230,6 +233,9 @@
     <ClCompile Include="src\entities\StagePass3.cpp" />
     <ClCompile Include="src\entities\StageTransparent.cpp" />
     <ClCompile Include="src\entities\Tutorial\T_StageManager.cpp" />
+    <ClCompile Include="src\entities\TwinkleCircuit\TC_Dash.cpp" />
+    <ClCompile Include="src\entities\TwinkleCircuit\TC_Kart.cpp" />
+    <ClCompile Include="src\entities\TwinkleCircuit\TC_StageManager.cpp" />
     <ClCompile Include="src\entities\WoodBox.cpp" />
     <ClCompile Include="src\fontMeshCreator\Character.cpp" />
     <ClCompile Include="src\fontMeshCreator\FontType.cpp" />
@@ -378,6 +384,9 @@
     <ClInclude Include="src\entities\PyramidCave\pcstagemanager.h" />
     <ClInclude Include="src\entities\PyramidCave\pcstaticobjects.h" />
     <ClInclude Include="src\entities\raceghost.h" />
+    <ClInclude Include="src\entities\RadicalHighway\rhblimp.h" />
+    <ClInclude Include="src\entities\RadicalHighway\rhnights.h" />
+    <ClInclude Include="src\entities\RadicalHighway\rhramp.h" />
     <ClInclude Include="src\entities\RadicalHighway\rhstagemanager.h" />
     <ClInclude Include="src\entities\rail.h" />
     <ClInclude Include="src\entities\rhinospike.h" />
@@ -396,6 +405,9 @@
     <ClInclude Include="src\entities\stagepass3.h" />
     <ClInclude Include="src\entities\stagetransparent.h" />
     <ClInclude Include="src\entities\Tutorial\tstagemanager.h" />
+    <ClInclude Include="src\entities\TwinkleCircuit\tcdash.h" />
+    <ClInclude Include="src\entities\TwinkleCircuit\tckart.h" />
+    <ClInclude Include="src\entities\TwinkleCircuit\tcstagemanager.h" />
     <ClInclude Include="src\entities\woodbox.h" />
     <ClInclude Include="src\fontMeshCreator\character.h" />
     <ClInclude Include="src\fontMeshCreator\fonttype.h" />

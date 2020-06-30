@@ -48,6 +48,8 @@ public:
     Vector3f operator * (const Vector3f &other);
 
     Vector3f operator / (const Vector3f &other);
+
+    bool operator == (const Vector3f &other);
 };
 
 class Vector2f

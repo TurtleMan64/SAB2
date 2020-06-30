@@ -502,7 +502,7 @@ Matrix4f* Master_getProjectionMatrix()
 
 float Master_getVFOV()
 {
-    return VFOV_BASE;
+    return VFOV_BASE+VFOV_ADDITION;
 }
 
 float Master_getNearPlane()

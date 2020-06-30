@@ -51,6 +51,8 @@ void AudioMaster::init()
         return;
     }
 
+    printf("OpenAL version: %s\n", alGetString(AL_VERSION));
+    printf("OpenAL device:  %s\n", alcGetString(AudioMaster::device, ALC_CAPTURE_DEVICE_SPECIFIER));
 
     /* Try to create a Filter */
     ALuint filterLowpass;

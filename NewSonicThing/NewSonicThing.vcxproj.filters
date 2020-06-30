@@ -115,6 +115,9 @@
     <Filter Include="Source Files\entities\DryLagoon">
       <UniqueIdentifier>{ba4631f0-ef28-4e05-8c17-de1516968fe4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\entities\TwinkleCircuit">
+      <UniqueIdentifier>{7fbd513e-ef6b-4e45-ba88-694bff69fd39}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\glad.c">
@@ -609,6 +612,24 @@
     <ClCompile Include="src\entities\DryLagoon\DL_DigTeleport.cpp">
       <Filter>Source Files\entities\DryLagoon</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\RadicalHighway\RH_Nights.cpp">
+      <Filter>Source Files\entities\RadicalHighway</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\RadicalHighway\RH_Blimp.cpp">
+      <Filter>Source Files\entities\RadicalHighway</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\RadicalHighway\RH_Ramp.cpp">
+      <Filter>Source Files\entities\RadicalHighway</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\TwinkleCircuit\TC_Kart.cpp">
+      <Filter>Source Files\entities\TwinkleCircuit</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\TwinkleCircuit\TC_StageManager.cpp">
+      <Filter>Source Files\entities\TwinkleCircuit</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\TwinkleCircuit\TC_Dash.cpp">
+      <Filter>Source Files\entities\TwinkleCircuit</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.h">
@@ -1087,6 +1108,24 @@
     </ClInclude>
     <ClInclude Include="src\entities\DryLagoon\dldigteleport.h">
       <Filter>Source Files\entities\DryLagoon</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\RadicalHighway\rhnights.h">
+      <Filter>Source Files\entities\RadicalHighway</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\RadicalHighway\rhblimp.h">
+      <Filter>Source Files\entities\RadicalHighway</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\RadicalHighway\rhramp.h">
+      <Filter>Source Files\entities\RadicalHighway</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\TwinkleCircuit\tckart.h">
+      <Filter>Source Files\entities\TwinkleCircuit</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\TwinkleCircuit\tcstagemanager.h">
+      <Filter>Source Files\entities\TwinkleCircuit</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\TwinkleCircuit\tcdash.h">
+      <Filter>Source Files\entities\TwinkleCircuit</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

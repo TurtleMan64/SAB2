@@ -43,7 +43,7 @@ public:
 
     void rotateModelY(float yRot, Vector3f* center);
 
-    //makes a collision model be the transformed version of this collision model
+    //rotation order: z, y
     void transformModel(CollisionModel* targetModel, Vector3f* translate, float yRot, float zRot);
 
     //rotation order: x, z, y

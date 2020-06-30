@@ -13,6 +13,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <list>
+#include <utility>
 
 #include <chrono>
 #include <ctime>
@@ -75,6 +76,7 @@
 #include "../menu/timer.h"
 #include "../menu/hud.h"
 #include "../toolbox/format.h"
+#include "../entities/TwinkleCircuit/tckart.h"
 #ifdef _WIN32
 #include <windows.h>
 #include <tchar.h>
@@ -107,6 +109,7 @@ double timeOld = 0;
 double timeNew = 0;
 Camera*             Global::gameCamera       = nullptr;
 ControllablePlayer* Global::gameMainPlayer   = nullptr;
+TC_Kart*            Global::gameKart         = nullptr;
 Entity*             Global::gameStageManager = nullptr;
 Stage*              Global::gameStage        = nullptr;
 SkySphere*          Global::gameSkySphere    = nullptr;
@@ -200,10 +203,11 @@ Global::PlayableCharacter Global::currentCharacterType = Global::PlayableCharact
 std::unordered_map<Global::PlayableCharacter, std::string> Global::characterNames;
 
 int Global::gameArcadeIndex = 0;
-std::vector<int> Global::gameArcadeLevelIds;
+std::vector<std::pair<int, Global::PlayableCharacter>> Global::gameArcadeLevelIds; //level ids and the character id
 
-std::vector<int> Global::gameActionLevelIds;
-std::vector<int> Global::gameHuntingLevelIds;
+std::vector<int> Global::gameLevelIdsSonic;
+std::vector<int> Global::gameLevelIdsTails;
+std::vector<int> Global::gameLevelIdsKnuckles;
 
 //std::list<std::string> Global::raceLog;
 bool Global::shouldLogRace = false;
@@ -227,7 +231,7 @@ bool Global::unlockedDage4 = true;
 bool Global::unlockedManiaSonic = true;
 bool Global::unlockedAmy = true;
 
-std::vector<std::string> Global::npcList;
+std::unordered_map<int, int> Global::stageNpcCounts;
 
 void increaseProcessPriority();
 
@@ -273,29 +277,50 @@ int main(int argc, char** argv)
     Global::loadSaveData();
 
     //The levels you play in arcade mode, in order
-    Global::gameArcadeLevelIds.push_back(LVL_TUTORIAL);
-    Global::gameArcadeLevelIds.push_back(LVL_METAL_HARBOR);
-    Global::gameArcadeLevelIds.push_back(LVL_RADICAL_HIGHWAY);
-    Global::gameArcadeLevelIds.push_back(LVL_GREEN_FOREST);
-    Global::gameArcadeLevelIds.push_back(LVL_SKY_RAIL);
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_TUTORIAL,        Global::PlayableCharacter::Sonic));
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_METAL_HARBOR,    Global::PlayableCharacter::Knuckles));
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_RADICAL_HIGHWAY, Global::PlayableCharacter::Tails));
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_GREEN_FOREST,    Global::PlayableCharacter::Sonic));
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_SKY_RAIL,        Global::PlayableCharacter::Sonic));
 
-    Global::gameActionLevelIds.push_back(LVL_TUTORIAL);
-    Global::gameActionLevelIds.push_back(LVL_GREEN_FOREST);
-    Global::gameActionLevelIds.push_back(LVL_METAL_HARBOR);
-    Global::gameActionLevelIds.push_back(LVL_PYRAMID_CAVE);
-    Global::gameActionLevelIds.push_back(LVL_RADICAL_HIGHWAY);
-    Global::gameActionLevelIds.push_back(LVL_GREEN_HILL_ZONE);
-    Global::gameActionLevelIds.push_back(LVL_CITY_ESCAPE);
-    Global::gameActionLevelIds.push_back(LVL_WINDY_VALLEY);
-    Global::gameActionLevelIds.push_back(LVL_SEASIDE_HILL);
-    Global::gameActionLevelIds.push_back(LVL_FROG_FOREST);
-    Global::gameActionLevelIds.push_back(LVL_TEST);
-    Global::gameActionLevelIds.push_back(LVL_SPEED_HIGHWAY);
-    Global::gameActionLevelIds.push_back(LVL_CLOUD_STAGE);
+    Global::gameLevelIdsSonic.push_back(LVL_TUTORIAL);
+    Global::gameLevelIdsSonic.push_back(LVL_GREEN_FOREST);
+    Global::gameLevelIdsSonic.push_back(LVL_METAL_HARBOR);
+    Global::gameLevelIdsSonic.push_back(LVL_PYRAMID_CAVE);
+    Global::gameLevelIdsSonic.push_back(LVL_RADICAL_HIGHWAY);
+    Global::gameLevelIdsSonic.push_back(LVL_GREEN_HILL_ZONE);
+    Global::gameLevelIdsSonic.push_back(LVL_CITY_ESCAPE);
+    Global::gameLevelIdsSonic.push_back(LVL_WINDY_VALLEY);
+    Global::gameLevelIdsSonic.push_back(LVL_SEASIDE_HILL);
+    Global::gameLevelIdsSonic.push_back(LVL_FROG_FOREST);
+    Global::gameLevelIdsSonic.push_back(LVL_TEST);
+    Global::gameLevelIdsSonic.push_back(LVL_SPEED_HIGHWAY);
+    Global::gameLevelIdsSonic.push_back(LVL_CLOUD_STAGE);
+    Global::gameLevelIdsSonic.push_back(LVL_TWINKLE_CIRCUIT);
 
-    Global::gameHuntingLevelIds.push_back(LVL_DRY_LAGOON);
-    Global::gameHuntingLevelIds.push_back(LVL_DELFINO_PLAZA);
-    Global::gameHuntingLevelIds.push_back(LVL_NOKI_BAY);
+    Global::gameLevelIdsTails.push_back(LVL_TUTORIAL);
+    Global::gameLevelIdsTails.push_back(LVL_GREEN_FOREST);
+    Global::gameLevelIdsTails.push_back(LVL_METAL_HARBOR);
+    Global::gameLevelIdsTails.push_back(LVL_PYRAMID_CAVE);
+    Global::gameLevelIdsTails.push_back(LVL_RADICAL_HIGHWAY);
+    Global::gameLevelIdsTails.push_back(LVL_GREEN_HILL_ZONE);
+    Global::gameLevelIdsTails.push_back(LVL_CITY_ESCAPE);
+    Global::gameLevelIdsTails.push_back(LVL_WINDY_VALLEY);
+    Global::gameLevelIdsTails.push_back(LVL_SEASIDE_HILL);
+    Global::gameLevelIdsTails.push_back(LVL_FROG_FOREST);
+    Global::gameLevelIdsTails.push_back(LVL_TEST);
+    Global::gameLevelIdsTails.push_back(LVL_SPEED_HIGHWAY);
+    Global::gameLevelIdsTails.push_back(LVL_CLOUD_STAGE);
+
+    Global::gameLevelIdsKnuckles.push_back(LVL_DRY_LAGOON);
+    Global::gameLevelIdsKnuckles.push_back(LVL_DELFINO_PLAZA);
+    Global::gameLevelIdsKnuckles.push_back(LVL_NOKI_BAY);
+
+    //create NPC list
+    Global::stageNpcCounts[LVL_SKY_RAIL] = 1;
+    Global::stageNpcCounts[LVL_DRY_LAGOON] = 1;
+    Global::stageNpcCounts[LVL_METAL_HARBOR] = 4;
+    Global::stageNpcCounts[LVL_RADICAL_HIGHWAY] = 5;
 
     #if !defined(DEV_MODE) && defined(_WIN32)
     FreeConsole();
@@ -425,21 +450,24 @@ int main(int argc, char** argv)
         // it looks very choppy.
         if (Global::gameState == STATE_RUNNING && Global::framerateUnlock)
         {
-            double dtFrameNeedsToTake = 1.0/((double)Global::fpsLimit);
-            timeNew = glfwGetTime();
-        
-            const double sleepBuffer = 0.00175; //sleep will hopefully never take longer than this to return
-            double sleepTime = (dtFrameNeedsToTake - (timeNew - timeOld)) - sleepBuffer;
-            int msToSleep = (int)(sleepTime*1000);
-            if (msToSleep >= 1)
+            if (Global::fpsLimit > 0.0f)
             {
-                Sleep(msToSleep);
-            }
-        
-            timeNew = glfwGetTime();
-            while ((timeNew - timeOld) < dtFrameNeedsToTake)
-            {
+                double dtFrameNeedsToTake = 1.0/((double)Global::fpsLimit);
                 timeNew = glfwGetTime();
+        
+                const double sleepBuffer = 0.00175; //sleep will hopefully never take longer than this to return
+                double sleepTime = (dtFrameNeedsToTake - (timeNew - timeOld)) - sleepBuffer;
+                int msToSleep = (int)(sleepTime*1000);
+                if (msToSleep >= 1)
+                {
+                    Sleep(msToSleep);
+                }
+        
+                timeNew = glfwGetTime();
+                while ((timeNew - timeOld) < dtFrameNeedsToTake)
+                {
+                    timeNew = glfwGetTime();
+                }
             }
         }
         #endif
@@ -570,14 +598,18 @@ int main(int argc, char** argv)
                     }
                 }
 
+                //printf("\nbefore player %f\n", Global::gameCamera->eye.x);
                 if (Global::gameMainPlayer != nullptr)
                 {
                     Global::gameMainPlayer->step();
                 }
+                //printf("after player %f\n", Global::gameCamera->eye.x);
                 for (Entity* e : gameEntities)
                 {
+                    ///printf("    new entity %f  %s\n", Global::gameCamera->eye.x, typeid(*e).name());
                     e->step();
                 }
+                //printf("after kart %f\n", Global::gameCamera->eye.x);
                 if (gameChunkedEntities.size() > 0)
                 {
                     Global::getNearbyEntities(cam.eye.x, cam.eye.z, 2, &entityChunkedList);
@@ -696,7 +728,7 @@ int main(int argc, char** argv)
         Master_processEntity(&skySphere);
 
         float waterBlendAmount = 0.0f;
-        if (cam.inWater || cam.eye.y < Global::waterHeight)
+        if (cam.inWater || (cam.eye.y < Global::waterHeight && Global::stageUsesWater))
         {
             waterBlendAmount = Global::stageWaterBlendAmount;
         }
@@ -756,7 +788,7 @@ int main(int argc, char** argv)
 
         Vector3f camVel = cam.vel.scaleCopy(0.016666f);
         AudioMaster::updateListenerData(&cam.eye, &cam.target, &cam.up, &camVel);
-        AudioPlayer::setListenerIsUnderwater(cam.inWater || cam.eye.y < Global::waterHeight);
+        AudioPlayer::setListenerIsUnderwater(cam.inWater || (cam.eye.y < Global::waterHeight && Global::stageUsesWater));
 
         if (Global::renderBloom)
         {
@@ -853,7 +885,8 @@ int main(int argc, char** argv)
 
                     if (Global::gameArcadeIndex < (int)Global::gameArcadeLevelIds.size())
                     {
-                        Global::levelID = Global::gameArcadeLevelIds[Global::gameArcadeIndex];
+                        Global::levelID = (Global::gameArcadeLevelIds[Global::gameArcadeIndex]).first;
+                        Global::currentCharacterType = (Global::gameArcadeLevelIds[Global::gameArcadeIndex]).second;
                         Level* currentLevel = &Global::gameLevelData[Global::levelID];
                         Global::shouldLoadLevel = true;
                         Global::isNewLevel = true;
@@ -1292,7 +1325,7 @@ void Global::saveConfigData()
         if (Global::framerateUnlock) { file << "Unlock_Framerate on\n\n"; }
         else                         { file << "Unlock_Framerate off\n\n"; }
 
-        file << "#If framerate is unlocked, fps will not exceed this limit\n";
+        file << "#If framerate is unlocked, fps will not exceed this limit. -1 for no limit.\n";
         file << "FPS_Limit " << (int)Global::fpsLimit << "\n";
 
         file.close();

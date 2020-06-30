@@ -121,11 +121,11 @@ int createDisplay()
         return -1;
     }
 
-    std::fprintf(stdout, "Renderer:       %s\n", glGetString(GL_RENDERER));
-    std::fprintf(stdout, "Vendor:         %s\n", glGetString(GL_VENDOR));
+    std::fprintf(stdout, "Video renderer: %s\n", glGetString(GL_RENDERER));
+    std::fprintf(stdout, "Video vendor:   %s\n", glGetString(GL_VENDOR));
     std::fprintf(stdout, "OpenGL version: %s\n", glGetString(GL_VERSION));
     std::fprintf(stdout, "GLSL version:   %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
-    std::fprintf(stdout, "GLFW Version: %s\n",   glfwGetVersionString());
+    std::fprintf(stdout, "GLFW version:   %s\n", glfwGetVersionString());
 
     glfwSwapInterval(1); //1 = vsync. 0 = off. 2 = half monitor refresh rate
     glEnable(GL_MULTISAMPLE);
@@ -347,7 +347,11 @@ void loadGraphicsSettings()
                 else if (strcmp(lineSplit[0], "FPS_Limit") == 0)
                 {
                     Global::fpsLimit = (float)((int)std::stof(lineSplit[1], nullptr));
-                    if (Global::fpsLimit < 30)
+                    if (Global::fpsLimit < 0)
+                    {
+                        Global::fpsLimit = -1;
+                    }
+                    else if (Global::fpsLimit < 30)
                     {
                         Global::fpsLimit = 30;
                     }

@@ -31,6 +31,8 @@ public:
 
     static void createTransformationMatrix(Matrix4f* result, Vector3f* translation, float rX, float rY, float rZ, float rS, float sX, float sY, float sZ);
 
+    static void createTransformationMatrixYXZY(Matrix4f* result, Vector3f* translation, float rX, float rY, float rZ, float rS, float scale);
+
     //For 2D GUI Images
     static void createTransformationMatrix(Matrix4f* result, Vector2f* translation, float roation, Vector2f* scale);
 

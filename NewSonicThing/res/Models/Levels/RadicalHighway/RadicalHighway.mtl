@@ -455,8 +455,9 @@ Ns 20
 Ni 0
 Tr 1
 d 1
-scrollX 0
-scrollY 0
+glow 1.2
+scrollX 12
+scrollY 12
 map_Kd miu32_rh004.png
 
 newmtl shcity128_24.png

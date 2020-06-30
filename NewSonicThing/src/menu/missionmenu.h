@@ -24,6 +24,9 @@ private:
     GLuint textureRankE  = GL_NONE;
     GLuint textureBlank  = GL_NONE;
     GLuint textureSelect = GL_NONE;
+    GLuint textureNpcFound = GL_NONE;
+    GLuint textureNpcLost = GL_NONE;
+    GLuint textureEmeraldLost = GL_NONE;
 
     int moveXPrevious = 0;
     int moveYPrevious = 0;
@@ -42,6 +45,8 @@ private:
     GuiTexture* rankM3 = nullptr;
     GuiTexture* rankM4 = nullptr;
     GuiTexture* missionSelect = nullptr;
+    GuiTexture* npc = nullptr;
+    GuiTexture* emerald = nullptr;
 
     Button* timeButton  = nullptr;
     Button* scoreButton = nullptr;

@@ -1,0 +1,572 @@
+# Material Count: 95
+
+newmtl material_B8BDB8.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea1_11.png
+
+newmtl material_BCF0BC.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m64_cos014.png
+
+newmtl material_AFD714.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea2_9.png
+
+newmtl material_BA6C24.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m64_cos022.png
+
+newmtl material_BE258C.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea1_2.png
+
+newmtl material_B43AF0.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea1_3.png
+
+newmtl material_BBEAE4.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m64_cos023.png
+
+newmtl material_B26CBC.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m64_sea2_2.png
+
+newmtl material_BC8818.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m128_cos005.png
+
+newmtl material_B30F78.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea2_10.png
+
+newmtl material_B6198C.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m64_cos015.png
+
+newmtl material_BCD4CC.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea1_12.png
+
+newmtl material_BEC91C.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea1_29.png
+
+newmtl material_BEE884.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m64_cos006.png
+
+newmtl material_B426B4.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea2_12.png
+
+newmtl material_B780A4.002
+Ns 20
+Ni 0.000000
+d 0.502000
+map_Kd m8_shadows.png
+
+newmtl material_B51718.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m128_cos014.png
+
+newmtl material_BA6C10.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m64_cos013.png
+
+newmtl material_BAF320.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m128_cos006.png
+
+newmtl material_BEA2A0.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea1_21.png
+
+newmtl material_B0540C.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m64_sea2_1.png
+
+newmtl material_BAF334.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m256_cos003.png
+
+newmtl material_B6184C.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m64_cos005.png
+
+newmtl material_B1646C.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea2_13.png
+
+newmtl material_B8BDE0.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea1_35.png
+
+newmtl material_BCD4A4.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea1_22.png
+
+newmtl material_B15210.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m128_cos032.png
+
+newmtl material_B56A48.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea2_7.png
+
+newmtl material_BBC668.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m128_cos015.png
+
+newmtl material_BB58FC.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea1_30.png
+
+newmtl material_BC3B30.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m64_cos012.png
+
+newmtl material_BA7EB8.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m128_cos002.png
+
+newmtl material_B39998.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea2_14.png
+
+newmtl material_AFD6C4.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea2_21.png
+
+newmtl material_B16430.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m256_cos004.png
+
+newmtl material_BBE9E0.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m64_cos011.png
+
+newmtl material_BEA250.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea1_18.png
+
+newmtl material_BE3200.002
+Ns 20
+Ni 0.000000
+d 0.502000
+map_Kd sea1_mado2.png
+
+newmtl material_BE25DC.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea1_9.png
+
+newmtl material_BAE808.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m64_cos007.png
+
+newmtl material_BE3160.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea_4.png
+
+newmtl material_B030F8.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m128_cos020.png
+
+newmtl material_BE3110.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea1_10.png
+
+newmtl material_AFD700.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea2_8.png
+
+newmtl material_BCD4E0.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea1_23.png
+
+newmtl material_C24B58.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m256_ext03.png
+
+newmtl material_BA55AC.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m128_cos003.png
+
+newmtl material_BCD490.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea1_36.png
+
+newmtl material_BE30FC.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea1_1.png
+
+newmtl material_B1F8D4.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m64_sea2_10.png
+
+newmtl material_BC8804.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m128_cos004.png
+
+newmtl material_BD73F8.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea1_19.png
+
+newmtl material_BCD508.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea1_24.png
+
+newmtl material_B16408.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea2_15.png
+
+newmtl material_B1F8C0.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m128_cos034.png
+
+newmtl material_B36D1C.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m64_sea2_7.png
+
+newmtl material_BD5CE0.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea1_16.png
+
+newmtl material_B42704.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea2_16.png
+
+newmtl material_BB3C6C.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m64_cos001.png
+
+newmtl material_BCD4B8.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m128_cos026.png
+
+newmtl material_BD740C.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea1_33.png
+
+newmtl material_B030D0.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m128_cos035.png
+
+newmtl material_AFB2E4.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea2_4.png
+
+newmtl material_BCD51C.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea1_25.png
+
+newmtl material_BF29A8.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea1_7.png
+
+newmtl material_BEC908.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m32_cos003.png
+
+newmtl material_AFD6EC.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea2_6.png
+
+newmtl material_B4CCB0.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea2_17.png
+
+newmtl material_C1ACA8.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea1_17.png
+
+newmtl material_BBE9F4.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m64_cos010.png
+
+newmtl material_BE2618.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea1_34.png
+
+newmtl material_AF5544.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea2_5.png
+
+newmtl material_BBC67C.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m64_cos009.png
+
+newmtl material_B21698.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m64_sea2_9.png
+
+newmtl material_BD6528.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea1_26.png
+
+newmtl material_BA6BD4.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m64_cos018.png
+
+newmtl material_BE30D4.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea1_5.png
+
+newmtl material_AFB2F8.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea2_22.png
+
+newmtl material_B43B04.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea2_18.png
+
+newmtl material_BA6BFC.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m64_cos017.png
+
+newmtl material_BE25A0.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea1_14.png
+
+newmtl material_B2D704.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea2_2.png
+
+newmtl material_B8BDA4.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea1_27.png
+
+newmtl material_BB84AC.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m64_cos004.png
+
+newmtl material_BD6550.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea1_28.png
+
+newmtl material_BB84D4.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m64_cos002.png
+
+newmtl material_BC3B08.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m128_cos008.png
+
+newmtl material_BE31B0.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea1_6.png
+
+newmtl material_B8BDCC.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea1_32.png
+
+newmtl material_B030E4.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m64_sea2_3.png
+
+newmtl material_B151FC.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m128_cos030.png
+
+newmtl material_BCD4F4.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea1_20.png
+
+newmtl material_B06DA4.001
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m128_cos012.png
+
+newmtl material_BB3C58.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd m64_cos003.png
+
+newmtl material_BEA23C.002
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd sea1_15.png
+

@@ -87,6 +87,13 @@ void AudioPlayer::loadSoundEffects()
     AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/Pulley.ogg"));               //62
     AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/MetalHarbor/CratePlatformStop.ogg"));//63
     AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/Player/SwimStroke.ogg"));            //64
+    AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/Kart/Boostpad.ogg"));                //65
+    AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/Kart/Engine.ogg"));                  //66
+    AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/Kart/HitWall.ogg"));                 //67
+    AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/Kart/SlipSlowdown.ogg"));            //68
+    AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/Kart/Strafe.ogg"));                  //69
+    AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/Kart/ExplosionBig.ogg"));            //70
+    AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/Kart/Boost.ogg"));                   //71
 }
 
 void AudioPlayer::loadBGM(char* fileName)

@@ -3,8 +3,6 @@
 #include "../renderEngine/renderEngine.h"
 #include "../engineTester/main.h"
 
-std::vector<ParticleTexture*> ParticleResources::exhaustTextures;
-
 ParticleTexture* ParticleResources::textureDust              = nullptr;
 ParticleTexture* ParticleResources::textureDirt              = nullptr;
 ParticleTexture* ParticleResources::textureSnowDrop          = nullptr;
@@ -41,12 +39,11 @@ ParticleTexture* ParticleResources::textureBlackFadeOutAndIn = nullptr;
 ParticleTexture* ParticleResources::textureInWater           = nullptr;
 ParticleTexture* ParticleResources::textureBlueLine          = nullptr;
 ParticleTexture* ParticleResources::texturePollen            = nullptr;
+ParticleTexture* ParticleResources::textureExhaust           = nullptr;
 
 void ParticleResources::loadParticles()
 {
-    INCR_NEW("ParticleTexture") exhaustTextures.push_back(new ParticleTexture(Loader::loadTexture("res/Images/Particles/ExhaustBlueFalcon.png"), 1, 0.2f, 1));
-    INCR_NEW("ParticleTexture") exhaustTextures.push_back(new ParticleTexture(Loader::loadTexture("res/Images/Particles/ExhaustArwing.png"),     1, 0.3f, 1));
-
+    INCR_NEW("ParticleTexture") textureExhaust           = new ParticleTexture(Loader::loadTexture("res/Images/Particles/ExhaustBlueFalcon.png"),      1, 0.03f, 1);
     INCR_NEW("ParticleTexture") textureSnowDrop          = new ParticleTexture(Loader::loadTexture("res/Images/Particles/SnowDropAtlas.png"),          2, 1.0f,  0);
     INCR_NEW("ParticleTexture") textureDustCloud         = new ParticleTexture(Loader::loadTexture("res/Images/Particles/DustCloud.png"),              1, 0.2f,  0);
     INCR_NEW("ParticleTexture") textureSnowball          = new ParticleTexture(Loader::loadTexture("res/Images/Particles/Snowball.png"),               1, 0.75f, 0);

@@ -16,6 +16,7 @@ class FontType;
 class GUIText;
 class Timer;
 class ControllablePlayer;
+class TC_Kart;
 
 #include <string>
 #include <random>
@@ -23,6 +24,7 @@ class ControllablePlayer;
 #include <vector>
 #include <unordered_map>
 #include <unordered_set>
+#include <utility>
 #include "../toolbox/level.h"
 #include "../menu/menumanager.h"
 #include "../toolbox/vector.h"
@@ -52,6 +54,7 @@ class ControllablePlayer;
 #define LVL_DELFINO_PLAZA   14
 #define LVL_CLOUD_STAGE     15
 #define LVL_DRY_LAGOON      16
+#define LVL_TWINKLE_CIRCUIT 17
 
 #define DEV_MODE
 
@@ -72,6 +75,7 @@ public:
     static Timer* mainHudTimer;
     static Camera* gameCamera;
     static ControllablePlayer* gameMainPlayer;
+    static TC_Kart* gameKart;
     static Entity* gameStageManager;
     static Stage* gameStage;
     static SkySphere* gameSkySphere;
@@ -159,10 +163,11 @@ public:
     static std::unordered_map<std::string, std::string> gameSaveData;
 
     static int gameArcadeIndex;
-    static std::vector<int> gameArcadeLevelIds;
+    static std::vector<std::pair<int, Global::PlayableCharacter>> gameArcadeLevelIds;
 
-    static std::vector<int> gameActionLevelIds;  //levels for sonic and tails
-    static std::vector<int> gameHuntingLevelIds; //levels for knuckles
+    static std::vector<int> gameLevelIdsSonic;    //levels for sonic
+    static std::vector<int> gameLevelIdsTails;    //levels for tails
+    static std::vector<int> gameLevelIdsKnuckles; //levels for knuckles
 
     //Debug display
     static bool debugDisplay;
@@ -192,7 +197,8 @@ public:
     static bool unlockedManiaSonic;
     static bool unlockedAmy;
 
-    static std::vector<std::string> npcList;
+    //how many npcs are in each level
+    static std::unordered_map<int, int> stageNpcCounts;
 
     static void checkErrorAL(const char* description);
 

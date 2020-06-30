@@ -1,0 +1,178 @@
+# Material Count: 29
+
+newmtl material_15
+Ns 20
+Ni 0.02
+d 1.000000
+glow 1
+map_Kd dc/m128_tp2_009.png
+
+newmtl material_65
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd dc/tp1_6.png
+
+newmtl material_11
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd dc/tp2_28.png
+
+newmtl material_16
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd dc/tp1_15.png
+
+newmtl material_3
+Ns 20
+Ni 0.02
+d 1.000000
+glow 1
+map_Kd dc/tp1_19.png
+
+newmtl material_43
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd dc/tp2_10.png
+
+newmtl material_63
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd dc/tp1_2.png
+
+newmtl material_22B9990
+Ns 20.000000
+Ni 0.02
+d 1.000000
+map_Kd dc/tp1_5.png
+
+newmtl material_14
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd dc/black.png
+
+newmtl material_7
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd dc/tp2_18.png
+
+newmtl material_31
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd dc/m64_tp2_024.png
+
+newmtl material_21
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd dc/tp1_18.png
+
+newmtl material_13
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd dc/tp1_13.png
+
+newmtl material_19
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd dc/tp1_1.png
+
+newmtl material_22B997C
+Ns 20.000000
+Ni 0.02
+d 1.000000
+map_Kd dc/tp1_22.png
+
+newmtl material_44
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd dc/tp1_17.png
+
+newmtl material_20
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd dc/tp1_12.png
+
+newmtl material_12
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd dc/tp2_25.png
+
+newmtl material_82
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd dc/tp1_8.png
+
+newmtl material_29
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd dc/tp1_4.png
+
+newmtl material_25
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd dc/tp1_21.png
+
+newmtl material_6
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd dc/tp2_21.png
+
+newmtl material_10
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd dc/tp1_11.png
+
+newmtl material_32
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd dc/tp2_11.png
+
+newmtl material_54
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd dc/tp1_16.png
+
+newmtl material_17
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd dc/tp1_7.png
+
+newmtl material_18
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd dc/tp1_20.png
+
+newmtl material_5
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd dc/tp1_3.png
+
+newmtl material_8
+Ns 20
+Ni 0.02
+d 1.000000
+map_Kd dc/m64_tp2_014.png
+

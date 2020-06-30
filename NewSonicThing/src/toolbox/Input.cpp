@@ -18,6 +18,7 @@
 #include "../engineTester/main.h"
 #include "../entities/camera.h"
 #include "../entities/controllableplayer.h"
+#include "../entities/TwinkleCircuit/tckart.h"
 #include "maths.h"
 #include "../toolbox/split.h"
 #include "../toolbox/getline.h"
@@ -401,15 +402,20 @@ void Input::pollInputs()
             std::fprintf(stdout, "cam pos = [%f, %f, %f]\n", Global::gameCamera->eye.x, Global::gameCamera->eye.y, Global::gameCamera->eye.z);
             std::fprintf(stdout, "cam dir = [%f, %f, %f]\n", Global::gameMainPlayer->camDir.x, Global::gameMainPlayer->camDir.y, Global::gameMainPlayer->camDir.z);
             std::fprintf(stdout, "\n");
-        }
-        std::fprintf(stdout, "diff = %d\n", Global::countNew-Global::countDelete);
 
-        extern std::unordered_map<std::string, int> heapObjects;
-        std::unordered_map<std::string, int>::iterator it = heapObjects.begin();
-        while (it != heapObjects.end())
+            //std::fprintf(stdout, "106 1  %f %f %f  %f %f %f   %f %f %f\n", 
+            //    Global::gameKart->position.x, Global::gameKart->position.y, Global::gameKart->position.z,
+            //    Global::gameKart->vel.x, Global::gameKart->vel.y, Global::gameKart->vel.z, 
+            //    Global::gameKart->currNorm.x, Global::gameKart->currNorm.y, Global::gameKart->currNorm.z);
+        }
+
+        //std::fprintf(stdout, "diff = %d\n", Global::countNew-Global::countDelete);
+        //extern std::unordered_map<std::string, int> heapObjects;
+        //std::unordered_map<std::string, int>::iterator it = heapObjects.begin();
+        //while (it != heapObjects.end())
         {
-            std::fprintf(stdout, "'%s' count: %d\n", it->first.c_str(), it->second);
-            it++;
+            //std::fprintf(stdout, "'%s' count: %d\n", it->first.c_str(), it->second);
+            //it++;
         }
 
         //Loader::printInfo();

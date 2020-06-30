@@ -310,7 +310,7 @@ Menu* CharacterSelect::step()
             Global::gameMissionNumber = 0;
             Global::gameArcadeIndex = 0;
 
-            Global::levelID = Global::gameArcadeLevelIds[Global::gameArcadeIndex];
+            Global::levelID = (Global::gameArcadeLevelIds[Global::gameArcadeIndex]).first;
             Level* currentLevel = &Global::gameLevelData[Global::levelID];
             Global::levelName = currentLevel->fileName;
             Global::levelNameDisplay = currentLevel->displayName;

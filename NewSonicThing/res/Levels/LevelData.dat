@@ -1,4 +1,4 @@
-17
+18
 
 Tutorial.lvl
 Tutorial
@@ -78,7 +78,7 @@ Normal;100;Complete as Blue Falcon
 Ring;100;100;Collect 100 Rings!
 Chao;100;Complete as Soic Phantom
 
-Test.lvl
+EC.lvl
 Epic Test Level
 2
 Normal;100;Complete as Blue Falcon
@@ -121,3 +121,9 @@ Normal;14000;Find all the pieces of the master emerald!
 Ring;40;100;Collect 100 Rings!
 Chao;25;Find the lost chao!
 Hard;15000;Complete hard mode!
+
+TwinkleCircuit.lvl
+Twinkle Circuit
+2
+Normal;11000;Race to the finish!
+Ring;65;150;Collect 150 Rings!

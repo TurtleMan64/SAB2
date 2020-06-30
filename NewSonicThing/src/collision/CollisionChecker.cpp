@@ -155,8 +155,8 @@ bool CollisionChecker::checkCollision(
                                 {
                                     int idx = CollisionChecker::getBiggest(A, B, C);
 
-                                    unsigned int firstAbove  = 0;
-                                    unsigned int secondAbove = 0;
+                                    int firstAbove  = 0;
+                                    int secondAbove = 0;
 
                                     switch (idx)
                                     {
@@ -164,8 +164,8 @@ bool CollisionChecker::checkCollision(
                                         {
                                             float planex1 = (((-B*py1) + (-C*pz1) - D)/A);
                                             float planex2 = (((-B*py2) + (-C*pz2) - D)/A);
-                                            firstAbove  = Maths::getSignBit(px1 - planex1);
-                                            secondAbove = Maths::getSignBit(px2 - planex2);
+                                            firstAbove  = Maths::sign(px1 - planex1);
+                                            secondAbove = Maths::sign(px2 - planex2);
                                             break;
                                         }
 
@@ -173,8 +173,8 @@ bool CollisionChecker::checkCollision(
                                         {
                                             float planey1 = (((-A*px1) + (-C*pz1) - D)/B);
                                             float planey2 = (((-A*px2) + (-C*pz2) - D)/B);
-                                            firstAbove  = Maths::getSignBit(py1 - planey1);
-                                            secondAbove = Maths::getSignBit(py2 - planey2);
+                                            firstAbove  = Maths::sign(py1 - planey1);
+                                            secondAbove = Maths::sign(py2 - planey2);
                                             break;
                                         }
 
@@ -182,8 +182,8 @@ bool CollisionChecker::checkCollision(
                                         {
                                             float planez1 = (((-B*py1) + (-A*px1) - D)/C);
                                             float planez2 = (((-B*py2) + (-A*px2) - D)/C);
-                                            firstAbove  = Maths::getSignBit(pz1 - planez1);
-                                            secondAbove = Maths::getSignBit(pz2 - planez2);
+                                            firstAbove  = Maths::sign(pz1 - planez1);
+                                            secondAbove = Maths::sign(pz2 - planez2);
                                             break;
                                         }
 
@@ -242,8 +242,8 @@ bool CollisionChecker::checkCollision(
                         {
                             int idx = CollisionChecker::getBiggest(A, B, C);
 
-                            unsigned int firstAbove  = 0;
-                            unsigned int secondAbove = 0;
+                            int firstAbove  = 0;
+                            int secondAbove = 0;
 
                             switch (idx)
                             {
@@ -251,8 +251,8 @@ bool CollisionChecker::checkCollision(
                                 {
                                     float planex1 = (((-B*py1) + (-C*pz1) - D)/A);
                                     float planex2 = (((-B*py2) + (-C*pz2) - D)/A);
-                                    firstAbove  = Maths::getSignBit(px1 - planex1);
-                                    secondAbove = Maths::getSignBit(px2 - planex2);
+                                    firstAbove  = Maths::sign(px1 - planex1);
+                                    secondAbove = Maths::sign(px2 - planex2);
                                     break;
                                 }
 
@@ -260,8 +260,8 @@ bool CollisionChecker::checkCollision(
                                 {
                                     float planey1 = (((-A*px1) + (-C*pz1) - D)/B);
                                     float planey2 = (((-A*px2) + (-C*pz2) - D)/B);
-                                    firstAbove  = Maths::getSignBit(py1 - planey1);
-                                    secondAbove = Maths::getSignBit(py2 - planey2);
+                                    firstAbove  = Maths::sign(py1 - planey1);
+                                    secondAbove = Maths::sign(py2 - planey2);
                                     break;
                                 }
 
@@ -269,8 +269,8 @@ bool CollisionChecker::checkCollision(
                                 {
                                     float planez1 = (((-B*py1) + (-A*px1) - D)/C);
                                     float planez2 = (((-B*py2) + (-A*px2) - D)/C);
-                                    firstAbove  = Maths::getSignBit(pz1 - planez1);
-                                    secondAbove = Maths::getSignBit(pz2 - planez2);
+                                    firstAbove  = Maths::sign(pz1 - planez1);
+                                    secondAbove = Maths::sign(pz2 - planez2);
                                     break;
                                 }
 

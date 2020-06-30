@@ -60,10 +60,12 @@ void MissionMenu::loadResources()
     float aspectRatio = (float)SCR_WIDTH / SCR_HEIGHT;
     levelButtons.clear();
 
-    std::vector<int>* levelIDsToUse = &Global::gameActionLevelIds;
-    if (Global::currentCharacterType == Global::PlayableCharacter::Knuckles)
+    std::vector<int>* levelIDsToUse = &Global::gameLevelIdsKnuckles;
+    switch (Global::currentCharacterType)
     {
-        levelIDsToUse = &Global::gameHuntingLevelIds;
+        case Global::PlayableCharacter::Sonic: levelIDsToUse = &Global::gameLevelIdsSonic; break;
+        case Global::PlayableCharacter::Tails: levelIDsToUse = &Global::gameLevelIdsTails; break;
+        default: break;
     }
 
     for (int i = 0; i < levelIDsToUse->size(); i++)
@@ -83,14 +85,20 @@ void MissionMenu::loadResources()
     textureRankE  = Loader::loadTexture("res/Images/MainMenu/RankE.png");
     textureBlank  = Loader::loadTexture("res/Images/MainMenu/NoRank.png");
     textureSelect = Loader::loadTexture("res/Images/MainMenu/MissionSelect.png");
+    textureNpcFound = Loader::loadTexture("res/Images/MainMenu/NpcFound.png");
+    textureNpcLost = Loader::loadTexture("res/Images/MainMenu/NpcMissing.png");
+    textureEmeraldLost = Loader::loadTexture("res/Images/MainMenu/EmeraldMissing.png");
 
     const float rankWidth = 0.07f/aspectRatio;
     missionButton = new Button("_____", Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.69f, 0.5f, 0.56f / aspectRatio, 0.07f, true); INCR_NEW("Button");
-    rankM1        = new GuiTexture(textureRankA,  0.69f-rankWidth*1.5f, 0.4967f, rankWidth,      rankWidth*aspectRatio,      0); INCR_NEW("GuiTexture")
-    rankM2        = new GuiTexture(textureRankB,  0.69f-rankWidth*0.5f, 0.4967f, rankWidth,      rankWidth*aspectRatio,      0); INCR_NEW("GuiTexture")
-    rankM3        = new GuiTexture(textureRankC,  0.69f+rankWidth*0.5f, 0.4967f, rankWidth,      rankWidth*aspectRatio,      0); INCR_NEW("GuiTexture")
-    rankM4        = new GuiTexture(textureRankD,  0.69f+rankWidth*1.5f, 0.4967f, rankWidth,      rankWidth*aspectRatio,      0); INCR_NEW("GuiTexture")
-    missionSelect = new GuiTexture(textureSelect, 0.69f-rankWidth*1.5f, 0.4967f, rankWidth*1.5f, rankWidth*aspectRatio*1.5f, 0); INCR_NEW("GuiTexture")
+    rankM1        = new GuiTexture(textureRankA,  0.69f-rankWidth*1.5f, 0.4967f, rankWidth,      rankWidth*aspectRatio,      0); INCR_NEW("GuiTexture");
+    rankM2        = new GuiTexture(textureRankB,  0.69f-rankWidth*0.5f, 0.4967f, rankWidth,      rankWidth*aspectRatio,      0); INCR_NEW("GuiTexture");
+    rankM3        = new GuiTexture(textureRankC,  0.69f+rankWidth*0.5f, 0.4967f, rankWidth,      rankWidth*aspectRatio,      0); INCR_NEW("GuiTexture");
+    rankM4        = new GuiTexture(textureRankD,  0.69f+rankWidth*1.5f, 0.4967f, rankWidth,      rankWidth*aspectRatio,      0); INCR_NEW("GuiTexture");
+    missionSelect = new GuiTexture(textureSelect, 0.69f-rankWidth*1.5f, 0.4967f, rankWidth*1.5f, rankWidth*aspectRatio*1.5f, 0); INCR_NEW("GuiTexture");
+    
+    npc     = new GuiTexture(textureNpcLost,     0.69f-rankWidth*1.0f, 0.4f, 0.15f/aspectRatio, 0.15f, 0); INCR_NEW("GuiTexture");
+    emerald = new GuiTexture(textureEmeraldLost, 0.69f+rankWidth*1.0f, 0.4f, 0.12f/aspectRatio, 0.12f, 0); INCR_NEW("GuiTexture");
 
     timeButton  = new Button("Time: ", Global::fontVipnagorgialla, textureParallelogramHalf2, textureParallelogramHalf2Backdrop, 0.69f + 0.56f/4, 0.65f, 1.12f / aspectRatio, 0.07f, true, true); INCR_NEW("Button");
     scoreButton = new Button("Score:", Global::fontVipnagorgialla, textureParallelogramHalf2, textureParallelogramHalf2Backdrop, 0.69f + 0.56f/4, 0.8f,  1.12f / aspectRatio, 0.07f, true, true); INCR_NEW("Button");
@@ -144,14 +152,24 @@ void MissionMenu::unloadResources()
     textureBlank  = GL_NONE;
     textureSelect = GL_NONE;
 
-    delete rankM1;        rankM1        = nullptr; INCR_DEL("GuiTexture")
-    delete rankM2;        rankM2        = nullptr; INCR_DEL("GuiTexture")
-    delete rankM3;        rankM3        = nullptr; INCR_DEL("GuiTexture")
-    delete rankM4;        rankM4        = nullptr; INCR_DEL("GuiTexture")
-    delete missionSelect; missionSelect = nullptr; INCR_DEL("GuiTexture")
+    Loader::deleteTexture(textureNpcFound);
+    Loader::deleteTexture(textureNpcLost);
+    Loader::deleteTexture(textureEmeraldLost);
+    textureNpcFound = GL_NONE;
+    textureNpcLost = GL_NONE;
+    textureEmeraldLost = GL_NONE;
 
-    delete timeButton;  timeButton  = nullptr; INCR_DEL("Button")
-    delete scoreButton; scoreButton = nullptr; INCR_DEL("Button")
+    delete rankM1;        rankM1        = nullptr; INCR_DEL("GuiTexture");
+    delete rankM2;        rankM2        = nullptr; INCR_DEL("GuiTexture");
+    delete rankM3;        rankM3        = nullptr; INCR_DEL("GuiTexture");
+    delete rankM4;        rankM4        = nullptr; INCR_DEL("GuiTexture");
+    delete missionSelect; missionSelect = nullptr; INCR_DEL("GuiTexture");
+
+    delete npc;     npc     = nullptr; INCR_DEL("GuiTexture");
+    delete emerald; emerald = nullptr; INCR_DEL("GuiTexture");
+
+    delete timeButton;  timeButton  = nullptr; INCR_DEL("Button");
+    delete scoreButton; scoreButton = nullptr; INCR_DEL("Button");
 
     //std::cout << "Mission Menu resources deleted.\n";
 }
@@ -191,12 +209,15 @@ void MissionMenu::draw(bool updateMissionText)
         scoreButton->setHighlight(false);
         scoreButton->setHighlight(true);
 
-        std::vector<int>* levelIDsToUse = &Global::gameActionLevelIds;
-        if (Global::currentCharacterType == Global::PlayableCharacter::Knuckles)
+        std::vector<int>* levelIDsToUse = &Global::gameLevelIdsKnuckles;
+        switch (Global::currentCharacterType)
         {
-            levelIDsToUse = &Global::gameHuntingLevelIds;
+            case Global::PlayableCharacter::Sonic: levelIDsToUse = &Global::gameLevelIdsSonic; break;
+            case Global::PlayableCharacter::Tails: levelIDsToUse = &Global::gameLevelIdsTails; break;
+            default: break;
         }
-        Level level = Global::gameLevelData[(*levelIDsToUse)[currButtonID]];
+        int buttLvlID = (*levelIDsToUse)[currButtonID];
+        Level level = Global::gameLevelData[buttLvlID];
 
         int numMissions = level.numMissions;
         switch (numMissions)
@@ -323,6 +344,36 @@ void MissionMenu::draw(bool updateMissionText)
             {
                 scoreButton->generateText("Score: ");
             }
+        }
+
+        //update npc and emerald
+        GuiManager::addGuiToRender(emerald);
+        if (Global::stageNpcCounts.find(buttLvlID) != Global::stageNpcCounts.end())
+        {
+            int numNpcs = Global::stageNpcCounts[buttLvlID];
+            int foundNpcs = 0;
+            for (int i = 0; i < numNpcs; i++)
+            {
+                std::string key = level.displayName + "_NPC_" + std::to_string(i);
+                if (Global::gameSaveData.find(key) != Global::gameSaveData.end())
+                {
+                    if (Global::gameSaveData[key] == "true")
+                    {
+                        foundNpcs++;
+                    }
+                }
+            }
+
+            if (foundNpcs == numNpcs)
+            {
+                npc->setTexture(textureNpcFound);
+            }
+            else
+            {
+                npc->setTexture(textureNpcLost);
+            }
+
+            GuiManager::addGuiToRender(npc);
         }
     }
 }
@@ -470,10 +521,12 @@ Menu* MissionMenu::step()
     }
     if (shouldGoRight)
     {
-        std::vector<int>* levelIDsToUse = &Global::gameActionLevelIds;
-        if (Global::currentCharacterType == Global::PlayableCharacter::Knuckles)
+        std::vector<int>* levelIDsToUse = &Global::gameLevelIdsKnuckles;
+        switch (Global::currentCharacterType)
         {
-            levelIDsToUse = &Global::gameHuntingLevelIds;
+            case Global::PlayableCharacter::Sonic: levelIDsToUse = &Global::gameLevelIdsSonic; break;
+            case Global::PlayableCharacter::Tails: levelIDsToUse = &Global::gameLevelIdsTails; break;
+            default: break;
         }
 
         int numMissions = Global::gameLevelData[(*levelIDsToUse)[currButtonID]].numMissions;
@@ -493,10 +546,12 @@ Menu* MissionMenu::step()
         this->setVisible(false);
         AudioPlayer::play(38, Global::gameCamera->getFadePosition1());
 
-        std::vector<int>* levelIDsToUse = &Global::gameActionLevelIds;
-        if (Global::currentCharacterType == Global::PlayableCharacter::Knuckles)
+        std::vector<int>* levelIDsToUse = &Global::gameLevelIdsKnuckles;
+        switch (Global::currentCharacterType)
         {
-            levelIDsToUse = &Global::gameHuntingLevelIds;
+            case Global::PlayableCharacter::Sonic: levelIDsToUse = &Global::gameLevelIdsSonic; break;
+            case Global::PlayableCharacter::Tails: levelIDsToUse = &Global::gameLevelIdsTails; break;
+            default: break;
         }
 
         Level* currentLevel = &Global::gameLevelData[(*levelIDsToUse)[currButtonID]];

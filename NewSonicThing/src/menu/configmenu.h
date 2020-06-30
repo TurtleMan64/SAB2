@@ -21,12 +21,12 @@ private:
     int moveXPrevious = 0;
     int moveYPrevious = 0;
     bool selectInputPrevious = false;
-    bool backInputPrevious = false;
+    bool backInputPrevious   = false;
 
-    float holdDownTimer = 0;
-    float holdUpTimer = 0;
-    float holdLeftTimer = 0;
-    float holdRightTimer = 0;
+    float holdDownTimer  = 0.0f;
+    float holdUpTimer    = 0.0f;
+    float holdLeftTimer  = 0.0f;
+    float holdRightTimer = 0.0f;
 
     int currentButtonIndex = 0;
     std::vector<Button*> buttonsNames;
@@ -34,9 +34,11 @@ private:
 
     bool visible = false;
 
+    float fontSize = 0.05f;
+
     // Animation
-    float offsetTarget = 0;
-    float offsetCurr = 0;
+    float offsetTarget = 0.0f;
+    float offsetCurr   = 0.0f;
 
 private:
     void draw();
@@ -52,8 +54,6 @@ public:
     ConfigMenu();
     ~ConfigMenu();
     Menu* step();
-    
-    float fontSize;
 };
 
 #endif

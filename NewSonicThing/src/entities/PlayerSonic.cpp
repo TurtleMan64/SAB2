@@ -142,7 +142,7 @@ void PlayerSonic::step()
     //Start Lightdash
     if (!isLightdashing)
     {
-        if (inputAction3 && !inputAction3Previous)
+        if (inputAction3 && !inputAction3Previous && !isDriving)
         {
             lightdashTrail.clear();
             lightdashTrailProgress = -1.0f;
@@ -2076,6 +2076,10 @@ void PlayerSonic::updateAnimationValues()
     {
         animationTime = 0;
     }
+    else if (isDriving)
+    {
+        animationTime = 0;
+    }
     else if (isGrabbing)
     {
         animationTime = 0;
@@ -2315,6 +2319,11 @@ void PlayerSonic::animate()
         playerModel->setOrientation(dspX, dspY, dspZ, 0, airYaw, 90, airPitch, &relativeUpAnim);
         playerModel->animate(18, 0);
     }
+    else if (isDriving)
+    {
+        playerModel->setOrientation(dspX, dspY, dspZ, rotX, rotY, rotZ, rotRoll, &relativeUp);
+        playerModel->animate(27, 0);
+    }
     else if (isGrabbing)
     {
         playerModel->setOrientation(dspX, dspY, dspZ, diffGround, yawAngleGround, pitchAngleGround, 0, &relativeUpAnim);
@@ -2547,6 +2556,15 @@ void PlayerSonic::stopGrabbing()
 {
     isGrabbing = false;
     velocityMovesPlayer = true;
+}
+
+void PlayerSonic::setIsDriving(bool newIsDriving)
+{
+    isDriving = newIsDriving;
+    onGround = false;
+    isBall = false;
+    isJumping = false;
+    velocityMovesPlayer = !newIsDriving;
 }
 
 float PlayerSonic::getHitboxHorizontal()

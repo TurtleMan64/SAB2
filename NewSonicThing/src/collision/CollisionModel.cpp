@@ -111,7 +111,7 @@ void CollisionModel::rotateModelY(float yRot, Vector3f* center)
     generateMinMaxValues();
 }
 
-//makes a collision model be the transformed version of this collision model
+//rotation order: z, y
 void CollisionModel::transformModel(CollisionModel* targetModel, Vector3f* translate, float yRot, float zRot)
 {
     if (targetModel->triangles.size() != triangles.size())
@@ -130,18 +130,18 @@ void CollisionModel::transformModel(CollisionModel* targetModel, Vector3f* trans
     for (Triangle3D* tri : triangles)
     {
         Vector3f newPoint1(tri->p1X, tri->p1Y, tri->p1Z);
-        newPoint1 = Maths::rotatePoint(&newPoint1, &yAxis, angleRadY);
         newPoint1 = Maths::rotatePoint(&newPoint1, &zAxis, angleRadZ);
+        newPoint1 = Maths::rotatePoint(&newPoint1, &yAxis, angleRadY);
         newPoint1 = newPoint1 + translate;
 
         Vector3f newPoint2(tri->p2X, tri->p2Y, tri->p2Z);
-        newPoint2 = Maths::rotatePoint(&newPoint2, &yAxis, angleRadY);
         newPoint2 = Maths::rotatePoint(&newPoint2, &zAxis, angleRadZ);
+        newPoint2 = Maths::rotatePoint(&newPoint2, &yAxis, angleRadY);
         newPoint2 = newPoint2 + translate;
 
         Vector3f newPoint3(tri->p3X, tri->p3Y, tri->p3Z);
-        newPoint3 = Maths::rotatePoint(&newPoint3, &yAxis, angleRadY);
         newPoint3 = Maths::rotatePoint(&newPoint3, &zAxis, angleRadZ);
+        newPoint3 = Maths::rotatePoint(&newPoint3, &yAxis, angleRadY);
         newPoint3 = newPoint3 + translate;
 
         //new, keep already allocated triangles and change their values

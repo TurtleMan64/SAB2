@@ -37,9 +37,8 @@ void PlayerModel::log()
     frame.time = Global::mainHudTimer->totalTime;
     frame.animIndex = currentAnimIndex;
     frame.animTime = currentAnimTime;
-    //Vector3f sdff = position + currentUpDirection.scaleCopy(6.0f);
-    //frame.pos.set(&sdff);
     frame.pos.set(&position);
+    //frame.pos = frame.pos + currentUpDirection.scaleCopy(8.0f); //todo: doesnt work on kart??
     frame.rot.set(rotX, rotY, rotZ, rotRoll);
     frame.up.set(&currentUpDirection);
 

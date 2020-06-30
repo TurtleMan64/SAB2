@@ -131,7 +131,10 @@ void Rocket::step()
             Global::gameMainPlayer->position = calculateNewPlayerPosition();
 
             percentOfPathCompleted += calculatePathMovementPercentForThisFrame();
-        }    
+        }
+
+        Global::gameMainPlayer->animate();
+        Global::gameMainPlayer->refreshCamera();
     }
 
     if (fullPathTraveled()) //stop moving and deactivate rocket
@@ -144,8 +147,6 @@ void Rocket::step()
     }
 
     updateTransformationMatrix();
-    Global::gameMainPlayer->animate();
-    Global::gameMainPlayer->refreshCamera();
 }
 
 std::list<TexturedModel*>* Rocket::getModels()

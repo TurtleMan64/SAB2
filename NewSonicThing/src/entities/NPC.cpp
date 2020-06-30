@@ -102,11 +102,12 @@ NPC::NPC(float x, float y, float z, float dirX, float dirZ, int id, std::string 
     glasses->updateTransformationMatrix();
     Global::addEntity(glasses);
 
-    //if (found)
+    if (found)
     {
-        //Global::deleteEntity(this);
-        //Global::deleteEntity(glasses);
-        //return;
+        baseAlpha = 0.35f;
+        glasses->baseAlpha = 0.35f;
+        renderOrderOverride = 3;
+        glasses->renderOrderOverride = 3;
     }
 
     if (Global::currentCharacterType != Global::PlayableCharacter::Sonic &&

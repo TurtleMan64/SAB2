@@ -1,0 +1,61 @@
+# Material Count: 10
+
+newmtl material_7
+Ns 20
+Ni 0.000000
+d 1.000000
+glow 1
+map_Kd bamp_l.png
+
+newmtl material_8
+Ns 20
+Ni 0.000000
+d 1.000000
+glow 1
+map_Kd face.png
+
+newmtl material_1
+Ns 20
+Ni 0.000000
+Tr 0
+renderOrder 2
+d 1.000000
+map_Kd grass.png
+
+newmtl material_0
+Ns 20
+Ni 0.6
+d 1.000000
+map_Kd blue.png
+
+newmtl material_11
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd enjinecov.png
+
+newmtl material_4
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd seat0.png
+
+newmtl material_2
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd cover.png
+
+newmtl material_3
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd panel.png
+
+newmtl material_10
+Ns 20
+Ni 0.000000
+d 1.000000
+glow 1
+map_Kd console.png
+

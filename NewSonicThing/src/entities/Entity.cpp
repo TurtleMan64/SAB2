@@ -223,6 +223,11 @@ void Entity::updateTransformationMatrix()
     Maths::createTransformationMatrix(&transformationMatrix, &position, rotX, rotY, rotZ, rotRoll, scale);
 }
 
+void Entity::updateTransformationMatrixYXZY()
+{
+    Maths::createTransformationMatrixYXZY(&transformationMatrix, &position, rotX, rotY, rotZ, rotRoll, scale);
+}
+
 void Entity::updateTransformationMatrix(float scaleX, float scaleY, float scaleZ)
 {
     Maths::createTransformationMatrix(&transformationMatrix, &position, rotX, rotY, rotZ, rotRoll, scaleX, scaleY, scaleZ);

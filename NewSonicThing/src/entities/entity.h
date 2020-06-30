@@ -94,6 +94,9 @@ public:
 
     void updateTransformationMatrix();
 
+    //for kart stages
+    void updateTransformationMatrixYXZY();
+
     void updateTransformationMatrix(float scaleX, float scaleY, float scaleZ);
 
     void updateTransformationMatrixYXZ();

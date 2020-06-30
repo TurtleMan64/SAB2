@@ -109,6 +109,8 @@ private:
 
     bool isGrabbing = false;
 
+    bool isDriving = false;
+
     //If true, the velocity the player has will make them move.
     //If false, the velocity will only change the camera direction.
     bool velocityMovesPlayer = true;
@@ -247,8 +249,6 @@ public:
 
     void stopGrinding();
 
-    //void setIsBall(bool newIsBall);
-
     void setInWater(float newWaterHeight);
 
     void increaseCombo();
@@ -257,7 +257,7 @@ public:
 
     void stopGrabbing();
 
-    //void setOnGround(bool newOnGround);
+    void setIsDriving(bool isDriving);
 
     ShieldMagnet* getShieldMagnet();
 

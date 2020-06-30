@@ -200,6 +200,10 @@ Vector3f Vector3f::operator / (const Vector3f &other)
     return Vector3f(x / other.x, y / other.y, z / other.z);
 }
 
+bool Vector3f::operator == (const Vector3f &other)
+{
+    return (x == other.x && y == other.y && z == other.z);
+}
 
 Vector3f::Vector3f()
 {
