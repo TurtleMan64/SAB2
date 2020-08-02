@@ -35,13 +35,13 @@ void MH_StageManager::step()
     }
 
     //make skybox invis if cam is too high
-    if (Global::gameCamera->eye.y > 1775*scale + Global::waterHeight)
+    //if (Global::gameCamera->eye.y > 2975*scale + Global::waterHeight)
     {
-        visible = false;
+        //visible = false;
     }
-    else
+    //else
     {
-        visible = true;
+        //visible = true;
     }
 
     if (timer == 1.666666f)

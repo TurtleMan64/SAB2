@@ -21,6 +21,7 @@ uniform vec3  sunDirInv;
 uniform vec3  sunColor;
 uniform float shineDamper;
 uniform float reflectivity;
+uniform float useFakeLighting;
 uniform vec3  skyColour;
 uniform int   hasTransparency;
 uniform float glowAmount;
@@ -73,6 +74,12 @@ void main(void)
     float brightness = nDotl*0.5+0.5;  //two different types of lighting options
     //float brightness = max(nDotl, 0.5);  //two different types of lighting options
     
+    //make full brightness if glow
+    if (useFakeLighting > 0.5)
+    {
+        brightness = 1.0;
+    }
+    
     //make more ambient light happen during the daytime, less at night
     float ambientLight = 0.5+0.5*dot(vec3(0, 1, 0), sunDirInv);
     ambientLight = (0.02+ambientLight*0.3);
@@ -109,7 +116,7 @@ void main(void)
     out_Color = mix(vec4(skyColour, 1.0), out_Color, (1 - fogScale*(1 - clamp(exp(-pow((length(toCameraVector)*fogDensity), fogGradient)), 0.0, 1.0))));
     
     //bottom fog
-    out_Color.rgb = mix(out_Color.rgb, skyColour, fogScale*clamp((fogBottomPosition-worldPosition.y)*fogBottomThickness, 0.0, 1.0));
+    out_Color.rgb = mix(out_Color.rgb, skyColour, fogScale*(0.5 - 0.5*sin(3.141592653589*((clamp((fogBottomPosition-worldPosition.y)*fogBottomThickness, 0.0, 1.0)) + 0.5))));
     
     //water
     out_Color.rgb = mix(out_Color.rgb, waterColor, waterBlendAmount);

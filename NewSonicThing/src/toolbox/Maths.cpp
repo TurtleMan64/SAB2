@@ -492,20 +492,30 @@ Vector3f Maths::interpolateVectorDebug(Vector3f* A, Vector3f* B, float percent)
 
 float Maths::angleBetweenVectors(Vector3f* A, Vector3f* B)
 {
-    float dotProduct = A->dot(B);
     float mag = A->length()*B->length();
 
     if (mag < 0.0000001f)
     {
         return 0;
     }
-    float range = dotProduct/mag;
-    if (range > 0.9999999f) //Vectors are extremely similar already, just return 0
+
+    Vector3f A2(A);
+    Vector3f B2(B);
+    A2.normalize();
+    B2.normalize();
+
+    float dotProduct = A2.dot(&B2);
+
+    if (dotProduct >= 1.0f) //Vectors are extremely similar, return 0
     {
         return 0;
     }
+    else if (dotProduct <= -1.0f) //Vectors are opposite direction, return pi
+    {
+        return Maths::PI;
+    }
 
-    return acosf(range);
+    return acosf(dotProduct);
 }
 
 Vector3f Maths::getCloserPoint(Vector3f* A, Vector3f* B, Vector3f* testPoint)

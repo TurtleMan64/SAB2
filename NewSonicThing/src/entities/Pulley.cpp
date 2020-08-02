@@ -290,3 +290,13 @@ inline void Pulley::bobPulley()
 
     bobTimer += dt * 20;
 }
+
+const bool Pulley::canHomingAttackOn()
+{
+    return handleAtBottom();
+}
+
+const Vector3f Pulley::getHomingCenter()
+{
+    return position;
+}

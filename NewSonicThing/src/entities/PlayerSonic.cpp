@@ -1246,10 +1246,24 @@ void PlayerSonic::step()
                 }
                 else //the ground is right below us, ignore any speed changes from it
                 {
+                    Vector3f yAxis(0, 1, 0);
+                    float stickAngle = -atan2f(inputY, inputX) - Maths::PI/2; //angle you are holding on the stick, with 0 being up
+                    float stickRadius = sqrtf(inputX*inputX + inputY*inputY);
+                    Vector3f dirForward = Maths::projectOntoPlane(&camDir, &yAxis);
+                    dirForward.setLength(stickRadius);
+
+                    Vector3f stickDirection = Maths::rotatePoint(&dirForward, &yAxis, stickAngle);
                     vel.y = 0;
-                    //note: this also ignores speed changes from player stick input. too lazy to think of a fix
-                    // for that atm. maybe in the future TODO
-                    vel.setLength(velBefore.length());
+
+                    if (stickRadius > 0.1f)
+                    {
+                        vel = Maths::interpolateVector(&velBefore, &stickDirection, dt*(60.0f/12.0f));
+                        vel.setLength(velBefore.length());
+                    }
+                    else
+                    {
+                        vel.setLength(runningOnWaterSpeedThreshold - 1.0f);
+                    }
                 }
             }
             else //we are running from the ground onto water for the first time
@@ -1613,6 +1627,11 @@ void PlayerSonic::moveMeGround()
         {
             vel.setLength(velBefore.length());
         }
+    }
+
+    if (skidded)
+    {
+        vel = Maths::applyDrag(&velBefore, skidPower, dt);
     }
 
     //extension of geeks idea

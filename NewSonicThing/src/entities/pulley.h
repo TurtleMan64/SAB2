@@ -114,6 +114,10 @@ public:
 
     std::list<TexturedModel*>* getModels();
 
+    const bool canHomingAttackOn();
+
+    const Vector3f getHomingCenter();
+
     static void loadStaticModels();
 
     static void deleteStaticModels();

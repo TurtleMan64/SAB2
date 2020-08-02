@@ -1,0 +1,82 @@
+# Blender MTL File: 'sketch2.blend'
+# Material Count: 8
+
+newmtl Mesh_0132.rip
+Ns 20
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 0.000000
+d 1.000000
+illum 2
+map_Kd tex\Mountain.png
+
+newmtl Mesh_0132.rip_Tex_0005_0.dds
+Ns 20
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 0.000000
+d 1.000000
+illum 2
+map_Kd tex\Tex_0005_0.png
+
+newmtl Mesh_0132.rip_cloud.png
+Ns 20
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 0.000000
+d 1.000000
+illum 2
+map_Kd tex\cloud.png
+
+newmtl Mesh_0132.rip_ssz_ground_km1_greenglass01_dif.png
+Ns 20
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 0.000000
+d 1.000000
+illum 2
+map_Kd tex\ssz_ground_km1_greenglass01_dif.png
+
+newmtl Mesh_0132.rip_ssz_rock_km1_relief03_dif.png
+Ns 20
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 0.000000
+d 1.000000
+illum 2
+map_Kd tex\ssz_rock_km1_relief03_dif.png
+
+newmtl Mesh_0132.rip_ssz_rock_km1_relief04_dif.png
+Ns 20
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 0.000000
+d 1.000000
+illum 2
+map_Kd tex\ssz_rock_km1_relief04_dif.png
+
+newmtl Mesh_0132.rip_ssz_rock_km1_wall02_dif.png
+Ns 20
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 0.000000
+d 1.000000
+illum 2
+map_Kd tex\ssz_rock_km1_wall02_dif.png
+
+newmtl Mesh_0132.rip_ssz_rock_km1_wall03_dif.png
+Ns 20
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 0.000000
+d 1.000000
+illum 2
+map_Kd tex\ssz_rock_km1_wall03_dif.png

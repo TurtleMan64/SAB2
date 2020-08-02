@@ -113,9 +113,9 @@ NPC::NPC(float x, float y, float z, float dirX, float dirZ, int id, std::string 
     if (Global::currentCharacterType != Global::PlayableCharacter::Sonic &&
         Global::currentCharacterType != Global::PlayableCharacter::Knuckles)
     {
-        Global::deleteEntity(this);
-        Global::deleteEntity(glasses);
-        return;
+        //Global::deleteEntity(this);
+        //Global::deleteEntity(glasses);
+        //return;
     }
 }
 

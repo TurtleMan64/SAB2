@@ -1,0 +1,9 @@
+# Blender MTL File: 'None'
+# Material Count: 1
+
+newmtl white.png
+Ns 20.000000
+Ni 0.000000
+fogScale 0
+d 0
+map_Kd white.png

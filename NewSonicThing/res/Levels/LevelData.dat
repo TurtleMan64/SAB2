@@ -1,4 +1,4 @@
-18
+19
 
 Tutorial.lvl
 Tutorial
@@ -106,7 +106,7 @@ Normal;100;Collect emerald pieces
 Ring;100;100;Collect 100 Rings!
 Chao;100;Complete as Soic Phantom
 
-CloudStage.lvl
+SacredSky.lvl
 Sacred Sky
 4
 Normal;13000;Learn how to play the game so you don't get mad at simple things.
@@ -127,3 +127,11 @@ Twinkle Circuit
 2
 Normal;11000;Race to the finish!
 Ring;65;150;Collect 150 Rings!
+
+CloudTemple.lvl
+Cloud Temple
+4
+Normal;11000;Race to the finish!
+Ring;45;110;Collect 110 Rings!
+Chao;30;Find the lost chao!
+Race;100;62.010754;Race against Mighty!

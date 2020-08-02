@@ -1,9 +1,0 @@
-# Material Count: 1
-
-newmtl white.png
-Ns 20
-Ni 0.0
-d 0
-fogScale 0
-map_Kd white.png
-

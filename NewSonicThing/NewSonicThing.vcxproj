@@ -168,7 +168,7 @@
     <ClCompile Include="src\entities\CharacterModels\ManiaSonicModel.cpp" />
     <ClCompile Include="src\entities\CharacterModels\ManiaTailsModel.cpp" />
     <ClCompile Include="src\entities\CharacterModels\PlayerModel.cpp" />
-    <ClCompile Include="src\entities\CloudStage\CS_StageManager.cpp" />
+    <ClCompile Include="src\entities\CloudTemple\CT_StageManager.cpp" />
     <ClCompile Include="src\entities\Dashpad.cpp" />
     <ClCompile Include="src\entities\Camera.cpp" />
     <ClCompile Include="src\entities\ControllablePlayer.cpp" />
@@ -192,6 +192,7 @@
     <ClCompile Include="src\entities\LostChao.cpp" />
     <ClCompile Include="src\entities\MetalHarbor\MH_AircraftCarrierCart.cpp" />
     <ClCompile Include="src\entities\MetalHarbor\MH_CratePlatform.cpp" />
+    <ClCompile Include="src\entities\MetalHarbor\MH_Missle.cpp" />
     <ClCompile Include="src\entities\MetalHarbor\MH_StaticObjects.cpp" />
     <ClCompile Include="src\entities\NPC.cpp" />
     <ClCompile Include="src\entities\PlayerKnuckles.cpp" />
@@ -221,6 +222,7 @@
     <ClCompile Include="src\entities\RingMoving.cpp" />
     <ClCompile Include="src\entities\Rocket.cpp" />
     <ClCompile Include="src\entities\Pulley.cpp" />
+    <ClCompile Include="src\entities\SacredSky\SS_StageManager.cpp" />
     <ClCompile Include="src\entities\ShieldGreen.cpp" />
     <ClCompile Include="src\entities\ShieldMagnet.cpp" />
     <ClCompile Include="src\entities\SkyRail\SR_StageManager.cpp" />
@@ -340,7 +342,7 @@
     <ClInclude Include="src\entities\CharacterModels\maniasonicmodel.h" />
     <ClInclude Include="src\entities\CharacterModels\maniatailsmodel.h" />
     <ClInclude Include="src\entities\CharacterModels\playermodel.h" />
-    <ClInclude Include="src\entities\CloudStage\csstagemanager.h" />
+    <ClInclude Include="src\entities\CloudTemple\ctstagemanager.h" />
     <ClInclude Include="src\entities\dashpad.h" />
     <ClInclude Include="src\entities\camera.h" />
     <ClInclude Include="src\entities\controllableplayer.h" />
@@ -364,6 +366,7 @@
     <ClInclude Include="src\entities\lostchao.h" />
     <ClInclude Include="src\entities\MetalHarbor\mhaircraftcarriercart.h" />
     <ClInclude Include="src\entities\MetalHarbor\mhcrateplatform.h" />
+    <ClInclude Include="src\entities\MetalHarbor\mhmissle.h" />
     <ClInclude Include="src\entities\MetalHarbor\mhstaticobjects.h" />
     <ClInclude Include="src\entities\npc.h" />
     <ClInclude Include="src\entities\playerknuckles.h" />
@@ -393,6 +396,7 @@
     <ClInclude Include="src\entities\ring.h" />
     <ClInclude Include="src\entities\ringmoving.h" />
     <ClInclude Include="src\entities\rocket.h" />
+    <ClInclude Include="src\entities\SacredSky\ssstagemanager.h" />
     <ClInclude Include="src\entities\shieldgreen.h" />
     <ClInclude Include="src\entities\shieldmagnet.h" />
     <ClInclude Include="src\entities\SkyRail\srstagemanager.h" />

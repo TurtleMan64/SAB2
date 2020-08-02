@@ -1042,7 +1042,7 @@ void PlayerKnuckles::step()
             Vector3f dir = velInf + neutralDirection.scaleCopy(climbSpeed*1.6f); //full climb speed goes 45 degree angle
             camDir.normalize();
             dir.y -= climbSpeed/2; //look down a little bit
-            dir.setLength(0.03f);
+            dir.setLength(0.03f*60*dt);
             camDir = camDir + dir;
             camDir.normalize();
         }
@@ -1847,6 +1847,11 @@ void PlayerKnuckles::moveMeGround()
         {
             vel.setLength(velBefore.length());
         }
+    }
+
+    if (skidded)
+    {
+        vel = Maths::applyDrag(&velBefore, skidPower, dt);
     }
 
     //extension of geeks idea

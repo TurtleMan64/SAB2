@@ -38,13 +38,17 @@ false
 ######## Human placed objects #######
 
 # Player
-6 0 570 75
+#6 0 570 75
+6 4687 570 -9247.65
 
 # Ring
 0 0 0 0
 
 # Stage Manager
 91 1
+
+# End Missle
+93 3 4913 -240 -10215
 
 # Rails
 92 res/Models/Levels/MetalHarbor/Rails/Rail4.txt

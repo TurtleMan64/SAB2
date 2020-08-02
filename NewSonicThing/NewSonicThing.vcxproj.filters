@@ -109,14 +109,17 @@
     <Filter Include="Source Files\entities\CharacterModels">
       <UniqueIdentifier>{def54bef-5d81-476c-82b3-83b2fd812c5e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\entities\CloudStage">
-      <UniqueIdentifier>{08a69956-18d4-41d2-a609-11ec4a34192f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\entities\DryLagoon">
       <UniqueIdentifier>{ba4631f0-ef28-4e05-8c17-de1516968fe4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\entities\TwinkleCircuit">
       <UniqueIdentifier>{7fbd513e-ef6b-4e45-ba88-694bff69fd39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entities\SacredSky">
+      <UniqueIdentifier>{08a69956-18d4-41d2-a609-11ec4a34192f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entities\CloudTemple">
+      <UniqueIdentifier>{4b4c1b70-d37c-4f17-98c1-3ab148f2a024}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -567,9 +570,6 @@
     <ClCompile Include="src\entities\PlayerTails.cpp">
       <Filter>Source Files\entities</Filter>
     </ClCompile>
-    <ClCompile Include="src\entities\CloudStage\CS_StageManager.cpp">
-      <Filter>Source Files\entities\CloudStage</Filter>
-    </ClCompile>
     <ClCompile Include="src\entities\PlayerKnuckles.cpp">
       <Filter>Source Files\entities</Filter>
     </ClCompile>
@@ -629,6 +629,15 @@
     </ClCompile>
     <ClCompile Include="src\entities\TwinkleCircuit\TC_Dash.cpp">
       <Filter>Source Files\entities\TwinkleCircuit</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\SacredSky\SS_StageManager.cpp">
+      <Filter>Source Files\entities\SacredSky</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\MetalHarbor\MH_Missle.cpp">
+      <Filter>Source Files\entities\MetalHarbor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\CloudTemple\CT_StageManager.cpp">
+      <Filter>Source Files\entities\CloudTemple</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1064,9 +1073,6 @@
     <ClInclude Include="src\entities\playertails.h">
       <Filter>Source Files\entities</Filter>
     </ClInclude>
-    <ClInclude Include="src\entities\CloudStage\csstagemanager.h">
-      <Filter>Source Files\entities\CloudStage</Filter>
-    </ClInclude>
     <ClInclude Include="src\entities\playerknuckles.h">
       <Filter>Source Files\entities</Filter>
     </ClInclude>
@@ -1126,6 +1132,15 @@
     </ClInclude>
     <ClInclude Include="src\entities\TwinkleCircuit\tcdash.h">
       <Filter>Source Files\entities\TwinkleCircuit</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\SacredSky\ssstagemanager.h">
+      <Filter>Source Files\entities\SacredSky</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\MetalHarbor\mhmissle.h">
+      <Filter>Source Files\entities\MetalHarbor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\CloudTemple\ctstagemanager.h">
+      <Filter>Source Files\entities\CloudTemple</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

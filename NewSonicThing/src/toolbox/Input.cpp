@@ -51,7 +51,7 @@ float stickSensitivityY = 2.5f;
 
 float triggerSensitivity = 2;
 
-int CONTROLLER_ID = 0;
+int CONTROLLER_ID = 0; //-1 = no controller. otherwise, controller id
 
 int BUTTON_A      = 0;
 int BUTTON_X      = 1;
@@ -132,7 +132,7 @@ void Input::pollInputs()
     bool joystickIsPresent = false;
 
     #if GLFW_VERSION_MAJOR == 3 && GLFW_VERSION_MINOR == 3
-    if (glfwJoystickIsGamepad(CONTROLLER_ID)) //joystick is both present and has a pre defined mapping
+    if ((CONTROLLER_ID != (GLFW_JOYSTICK_1 - 1)) && glfwJoystickIsGamepad(CONTROLLER_ID)) //joystick is both present and has a pre defined mapping
     {
         GLFWgamepadstate state;
         if (glfwGetGamepadState(CONTROLLER_ID, &state))
@@ -162,7 +162,7 @@ void Input::pollInputs()
     }
     #endif
 
-    if (!joystickIsPresent && glfwJoystickPresent(CONTROLLER_ID))
+    if (!joystickIsPresent && (CONTROLLER_ID != (GLFW_JOYSTICK_1 - 1)) && glfwJoystickPresent(CONTROLLER_ID))
     {
         joystickIsPresent = true;
 
@@ -613,7 +613,7 @@ void Input::init()
                         case 13: CONTROLLER_ID = GLFW_JOYSTICK_14; break;
                         case 14: CONTROLLER_ID = GLFW_JOYSTICK_15; break;
                         case 15: CONTROLLER_ID = GLFW_JOYSTICK_16; break;
-                        default: CONTROLLER_ID = GLFW_JOYSTICK_1;  break;
+                        default: CONTROLLER_ID = GLFW_JOYSTICK_1-1;break;
                     }
                 }
             }
@@ -672,7 +672,7 @@ void Input::init()
     glfwPollEvents();
 
     //make sure no index goes out of bounds
-    if (glfwJoystickPresent(CONTROLLER_ID) == GLFW_TRUE)
+    if ((CONTROLLER_ID != (GLFW_JOYSTICK_1 - 1)) && glfwJoystickPresent(CONTROLLER_ID) == GLFW_TRUE)
     {
         int axesCount;
         glfwGetJoystickAxes(CONTROLLER_ID, &axesCount);
@@ -724,6 +724,11 @@ void Input::init()
 
 std::string Input::getControllerName()
 {
+    if (CONTROLLER_ID == (GLFW_JOYSTICK_1 - 1))
+    {
+        return "None";    
+    }
+
     #if GLFW_VERSION_MAJOR == 3 && GLFW_VERSION_MINOR == 3
     const char* nameGamepad = glfwGetGamepadName(CONTROLLER_ID);
     if (nameGamepad != nullptr)
@@ -744,7 +749,7 @@ std::string Input::getControllerName()
 bool Input::changeController(int direction)
 {
     int originalControllerID = CONTROLLER_ID;
-    int maxAttempts = GLFW_JOYSTICK_LAST - GLFW_JOYSTICK_1;
+    int maxAttempts = (GLFW_JOYSTICK_LAST - GLFW_JOYSTICK_1) + 1;
     int currentAttempt = 0;
     if (direction >= 0)
     {
@@ -758,16 +763,16 @@ bool Input::changeController(int direction)
     while (currentAttempt < maxAttempts)
     {
         CONTROLLER_ID = (CONTROLLER_ID + direction);
-        if (CONTROLLER_ID < GLFW_JOYSTICK_1)
+        if (CONTROLLER_ID < GLFW_JOYSTICK_1 - 1)
         {
             CONTROLLER_ID = GLFW_JOYSTICK_LAST;
         }
         else if (CONTROLLER_ID > GLFW_JOYSTICK_LAST)
         {
-            CONTROLLER_ID = GLFW_JOYSTICK_1;
+            CONTROLLER_ID = GLFW_JOYSTICK_1 - 1;
         }
 
-        if (glfwJoystickPresent(CONTROLLER_ID))
+        if (CONTROLLER_ID == GLFW_JOYSTICK_1 - 1 || glfwJoystickPresent(CONTROLLER_ID))
         {
             return true;
         }

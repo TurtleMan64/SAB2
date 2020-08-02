@@ -295,7 +295,7 @@ int main(int argc, char** argv)
     Global::gameLevelIdsSonic.push_back(LVL_FROG_FOREST);
     Global::gameLevelIdsSonic.push_back(LVL_TEST);
     Global::gameLevelIdsSonic.push_back(LVL_SPEED_HIGHWAY);
-    Global::gameLevelIdsSonic.push_back(LVL_CLOUD_STAGE);
+    Global::gameLevelIdsSonic.push_back(LVL_SACRED_SKY);
     Global::gameLevelIdsSonic.push_back(LVL_TWINKLE_CIRCUIT);
 
     Global::gameLevelIdsTails.push_back(LVL_TUTORIAL);
@@ -310,7 +310,8 @@ int main(int argc, char** argv)
     Global::gameLevelIdsTails.push_back(LVL_FROG_FOREST);
     Global::gameLevelIdsTails.push_back(LVL_TEST);
     Global::gameLevelIdsTails.push_back(LVL_SPEED_HIGHWAY);
-    Global::gameLevelIdsTails.push_back(LVL_CLOUD_STAGE);
+    Global::gameLevelIdsTails.push_back(LVL_SACRED_SKY);
+    Global::gameLevelIdsTails.push_back(LVL_CLOUD_TEMPLE);
 
     Global::gameLevelIdsKnuckles.push_back(LVL_DRY_LAGOON);
     Global::gameLevelIdsKnuckles.push_back(LVL_DELFINO_PLAZA);

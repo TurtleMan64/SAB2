@@ -74,7 +74,7 @@
 #include "../entities/npc.h"
 #include "../entities/light.h"
 #include "../entities/playertails.h"
-#include "../entities/CloudStage/csstagemanager.h"
+#include "../entities/SacredSky/ssstagemanager.h"
 #include "../entities/playerknuckles.h"
 #include "../entities/DryLagoon/dlstagemanager.h"
 #include "../entities/emeraldmanager.h"
@@ -93,6 +93,8 @@
 #include "../entities/TwinkleCircuit/tckart.h"
 #include "../entities/TwinkleCircuit/tcstagemanager.h"
 #include "../entities/TwinkleCircuit/tcdash.h"
+#include "../entities/MetalHarbor/mhmissle.h"
+#include "../entities/CloudTemple/ctstagemanager.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -219,9 +221,10 @@ void LevelLoader::loadLevel(std::string levelFilename)
             else if (currLvl->displayName == "Green Hill Zone") Global::levelID = LVL_GREEN_HILL_ZONE;
             else if (currLvl->displayName == "Windy Valley")    Global::levelID = LVL_WINDY_VALLEY;
             else if (currLvl->displayName == "Delfino Plaza")   Global::levelID = LVL_DELFINO_PLAZA;
-            else if (currLvl->displayName == "Sacred Sky")      Global::levelID = LVL_CLOUD_STAGE;
+            else if (currLvl->displayName == "Sacred Sky")      Global::levelID = LVL_SACRED_SKY;
             else if (currLvl->displayName == "Dry Lagoon")      Global::levelID = LVL_DRY_LAGOON;
             else if (currLvl->displayName == "Twinkle Circuit") Global::levelID = LVL_TWINKLE_CIRCUIT;
+            else if (currLvl->displayName == "Cloud Temple")    Global::levelID = LVL_CLOUD_TEMPLE;
         }
 
         Global::spawnAtCheckpoint  = false;
@@ -1245,8 +1248,8 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                     break;
 
                 case 9:
-                    CS_StageManager::loadStaticModels();
-                    Global::gameStageManager = new CS_StageManager; INCR_NEW("Entity");
+                    SS_StageManager::loadStaticModels();
+                    Global::gameStageManager = new SS_StageManager; INCR_NEW("Entity");
                     break;
 
                 case 10:
@@ -1257,6 +1260,11 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                 case 11:
                     TC_StageManager::loadStaticModels();
                     Global::gameStageManager = new TC_StageManager; INCR_NEW("Entity");
+                    break;
+
+                case 12:
+                    CT_StageManager::loadStaticModels();
+                    Global::gameStageManager = new CT_StageManager; INCR_NEW("Entity");
                     break;
 
                 default: break;
@@ -1282,6 +1290,7 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                     Global::addEntity(staticObjects);
                     return;
                 }
+
                 case 1: //Aircraft Carrier Cart
                 {
                     MH_AircraftCarrierCart::loadStaticModels();
@@ -1293,6 +1302,7 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                     Global::addEntity(yellowMovingPlatform);
                     return;
                 }
+
                 case 2: //Crate Platform
                 {
                     MH_CratePlatform::loadStaticModels();
@@ -1305,6 +1315,17 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                     Global::addEntity(cratePlatform);
                     return;
                 }
+
+                case 3: //Missle
+                {
+                    MH_Missle::loadStaticModels();
+                    MH_Missle* missle = new MH_Missle(
+                        toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]));
+                    INCR_NEW("Entity");
+                    Global::addEntity(missle);
+                    return;
+                }
+
                 default:
                     return;
             }
@@ -1739,7 +1760,7 @@ void LevelLoader::freeAllStaticModels()
     NPC::deleteStaticModels();
     PlayerTails::deleteStaticModels();
     PlayerKnuckles::deleteStaticModels();
-    CS_StageManager::deleteStaticModels();
+    SS_StageManager::deleteStaticModels();
     DL_StageManager::deleteStaticModels();
     EmeraldPiece::deleteStaticModels();
     HintMonitor::deleteStaticModels();
@@ -1756,6 +1777,8 @@ void LevelLoader::freeAllStaticModels()
     TC_Kart::deleteStaticModels();
     TC_StageManager::deleteStaticModels();
     TC_Dash::deleteStaticModels();
+    MH_Missle::deleteStaticModels();
+    CT_StageManager::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()

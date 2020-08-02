@@ -52,9 +52,10 @@ class TC_Kart;
 #define LVL_SPEED_HIGHWAY   12
 #define LVL_NOKI_BAY        13
 #define LVL_DELFINO_PLAZA   14
-#define LVL_CLOUD_STAGE     15
+#define LVL_SACRED_SKY      15
 #define LVL_DRY_LAGOON      16
 #define LVL_TWINKLE_CIRCUIT 17
+#define LVL_CLOUD_TEMPLE    18
 
 #define DEV_MODE
 
