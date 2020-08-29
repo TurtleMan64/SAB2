@@ -6,7 +6,7 @@ in vec3 surfaceNormal;
 //in vec3 toLightVector;
 in vec3 toCameraVector;
 //in float visibility;
-in vec3 color;
+in vec4 pass_vertexColor;
 
 out vec4 out_Color;
 
@@ -41,8 +41,8 @@ void main(void)
 {
     if (isRenderingTransparent != 0)
     {
-        float closestDepth = texture(depthBufferTransparent, vec2(gl_FragCoord.x/WINDOW_SIZE.x, gl_FragCoord.y/WINDOW_SIZE.y)).r;
-        
+        //float closestDepth = texture(depthBufferTransparent, vec2(gl_FragCoord.x/WINDOW_SIZE.x, gl_FragCoord.y/WINDOW_SIZE.y)).r;
+        float closestDepth = texelFetch(depthBufferTransparent, ivec2(gl_FragCoord.xy), 0).r;
         if (!(closestDepth > gl_FragCoord.z-0.00005))
         {
             discard;
@@ -50,8 +50,8 @@ void main(void)
     }
     
     vec4 rawTextureColour = mix(texture(textureSampler, pass_textureCoords), texture(textureSampler2, pass_textureCoords), mixFactor);
-    rawTextureColour.rgb *= baseColour*color;
-    rawTextureColour.a   *= baseAlpha;
+    rawTextureColour.rgb *= baseColour*pass_vertexColor.rgb;
+    rawTextureColour.a   *= baseAlpha*pass_vertexColor.a;
     
     
     if (hasTransparency == 0)
@@ -103,7 +103,7 @@ void main(void)
     //same as above, but no branching
     diffuse = diffuse*((floatBitsToInt(glowAmount-0.001) >> 31) & 1) + vec3(glowAmount)*((floatBitsToInt(0.001-glowAmount) >> 31) & 1);
     
-    out_Color = vec4(diffuse, rawTextureColour.a) * rawTextureColour + vec4(finalSpecular, rawTextureColour.a);
+    out_Color = vec4(diffuse, 1.0)*rawTextureColour + vec4(finalSpecular, rawTextureColour.a);
     
     
     //float distance = length(toCameraVector);
@@ -121,4 +121,3 @@ void main(void)
     //water
     out_Color.rgb = mix(out_Color.rgb, waterColor, waterBlendAmount);
 }
-

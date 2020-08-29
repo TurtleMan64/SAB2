@@ -96,7 +96,6 @@ ManiaTailsModel::ManiaTailsModel()
     models = &ManiaTailsModel::modelDash0;
 
     flyTails = new Dummy(&ManiaTailsModel::modelFlyTails); INCR_NEW("Entity");
-
     Global::addEntity(flyTails);
 
     myBody =         new Body(&modelBody);                                                                   INCR_NEW("Entity");

@@ -67,7 +67,7 @@ void Maths::createTransformationMatrix(Matrix4f* matrix, Vector3f* translation, 
     vec.set(1, 0, 0);
     matrix->rotate(toRadians(rx), &vec);
 
-    vec.set(0, 1, 0);
+    vec.set(0, 0, 1);
     matrix->rotate(toRadians(rs), &vec);
 
     vec.set(scaleX, scaleY, scaleZ);

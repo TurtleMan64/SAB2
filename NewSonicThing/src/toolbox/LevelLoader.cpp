@@ -95,6 +95,8 @@
 #include "../entities/TwinkleCircuit/tcdash.h"
 #include "../entities/MetalHarbor/mhmissle.h"
 #include "../entities/CloudTemple/ctstagemanager.h"
+#include "../entities/chaosemerald.h"
+#include "../entities/DragonRoad/drstagemanager.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -225,6 +227,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
             else if (currLvl->displayName == "Dry Lagoon")      Global::levelID = LVL_DRY_LAGOON;
             else if (currLvl->displayName == "Twinkle Circuit") Global::levelID = LVL_TWINKLE_CIRCUIT;
             else if (currLvl->displayName == "Cloud Temple")    Global::levelID = LVL_CLOUD_TEMPLE;
+            else if (currLvl->displayName == "Dragon Road")     Global::levelID = LVL_DRAGON_ROAD;
         }
 
         Global::spawnAtCheckpoint  = false;
@@ -693,6 +696,11 @@ void LevelLoader::loadLevel(std::string levelFilename)
     std::string stageWaterBlendAmountLine;
     getlineSafe(file, stageWaterBlendAmountLine);
     Global::stageWaterBlendAmount = toFloat((char*)stageWaterBlendAmountLine.c_str());
+
+    //Water is murky
+    std::string stageWaterMurkyLine;
+    getlineSafe(file, stageWaterMurkyLine);
+    Global::stageWaterMurkyAmount = toFloat((char*)stageWaterMurkyLine.c_str());
 
     //Does the stage use backface culling?
     std::string backfaceCullingLine;
@@ -1267,6 +1275,11 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                     Global::gameStageManager = new CT_StageManager; INCR_NEW("Entity");
                     break;
 
+                case 13:
+                    DR_StageManager::loadStaticModels();
+                    Global::gameStageManager = new DR_StageManager; INCR_NEW("Entity");
+                    break;
+
                 default: break;
             }
             return;
@@ -1634,6 +1647,17 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             }
         }
 
+        case 107: //Chaos Emerald
+        {
+            ChaosEmerald::loadStaticModels();
+            ChaosEmerald* emerald = new ChaosEmerald(
+                    toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position x,y,z
+                    toInt(dat[4]));                                    //id
+            INCR_NEW("Entity");
+            Global::addEntity(emerald);
+            return;
+        }
+
         default:
         {
             return;
@@ -1779,6 +1803,8 @@ void LevelLoader::freeAllStaticModels()
     TC_Dash::deleteStaticModels();
     MH_Missle::deleteStaticModels();
     CT_StageManager::deleteStaticModels();
+    ChaosEmerald::deleteStaticModels();
+    DR_StageManager::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()

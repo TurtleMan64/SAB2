@@ -29,6 +29,7 @@ ShadowMapMasterRenderer2* shadowMapRenderer2 = nullptr;
 std::unordered_map<TexturedModel*, std::list<Entity*>> entitiesMap;
 std::unordered_map<TexturedModel*, std::list<Entity*>> entitiesMapPass2;
 std::unordered_map<TexturedModel*, std::list<Entity*>> entitiesMapPass3;
+std::unordered_map<TexturedModel*, std::list<Entity*>> entitiesMapNoDepth;
 std::unordered_map<TexturedModel*, std::list<Entity*>> entitiesMapTransparent;
 
 Matrix4f* projectionMatrix = nullptr;
@@ -44,7 +45,7 @@ float BLUE = 1.0f;
 
 void prepare();
 void prepareTransparentRender();
-void prepareTransparentRenderDepthOnly();
+void prepareRenderDepthOnly();
 
 GLuint randomMap = GL_NONE;
 
@@ -172,6 +173,7 @@ void Master_init()
 
 void Master_render(Camera* camera, float clipX, float clipY, float clipZ, float clipW, float waterBlendAmount)
 {
+    ANALYSIS_START("Master Render");
     GLint currFB;
     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &currFB);
 
@@ -206,6 +208,12 @@ void Master_render(Camera* camera, float clipX, float clipY, float clipZ, float 
     renderer->renderNEW(&entitiesMap, shadowMapRenderer->getToShadowMapSpaceMatrix(), shadowMapRenderer2->getToShadowMapSpaceMatrix());
     renderer->renderNEW(&entitiesMapPass2, shadowMapRenderer->getToShadowMapSpaceMatrix(), shadowMapRenderer2->getToShadowMapSpaceMatrix());
     renderer->renderNEW(&entitiesMapPass3, shadowMapRenderer->getToShadowMapSpaceMatrix(), shadowMapRenderer2->getToShadowMapSpaceMatrix());
+    glDepthMask(false);
+    renderer->renderNEW(&entitiesMapNoDepth, shadowMapRenderer->getToShadowMapSpaceMatrix(), shadowMapRenderer2->getToShadowMapSpaceMatrix());
+    prepareRenderDepthOnly();
+    glDepthMask(true);
+    renderer->renderNEW(&entitiesMapNoDepth, shadowMapRenderer->getToShadowMapSpaceMatrix(), shadowMapRenderer2->getToShadowMapSpaceMatrix());
+    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
     shader->stop();
 
     //prepareTransparentRender();
@@ -234,6 +242,7 @@ void Master_render(Camera* camera, float clipX, float clipY, float clipZ, float 
     //glEnable(GL_DEPTH_TEST);
     //glDepthMask(true);
     glClear(GL_DEPTH_BUFFER_BIT);
+    //glDisable(GL_MULTISAMPLE); //dont multisample for depth buffer calc... doesnt really make a difference though
     //glClearColor(RED, GREEN, BLUE, 1);
 
 
@@ -253,7 +262,7 @@ void Master_render(Camera* camera, float clipX, float clipY, float clipZ, float 
     shader->connectTextureUnits();
     renderer->renderNEW(&entitiesMapTransparent, shadowMapRenderer->getToShadowMapSpaceMatrix(), shadowMapRenderer2->getToShadowMapSpaceMatrix());
     shader->stop();
-
+    //glEnable(GL_MULTISAMPLE); //re enable depth buffer after rendering depth buffer
     glBindFramebuffer(GL_FRAMEBUFFER, currFB);
     glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
     //prepareTransparentRender();
@@ -285,6 +294,7 @@ void Master_render(Camera* camera, float clipX, float clipY, float clipZ, float 
     renderer->renderNEW(&entitiesMapTransparent, shadowMapRenderer->getToShadowMapSpaceMatrix(), shadowMapRenderer2->getToShadowMapSpaceMatrix());
     glBindTexture(GL_TEXTURE_2D, 0);
     shader->stop();
+    ANALYSIS_DONE("Master Render");
 }
 
 void Master_processEntity(Entity* entity)
@@ -294,7 +304,7 @@ void Master_processEntity(Entity* entity)
         return;
     }
 
-    if (entity->renderOrderOverride <= 3)
+    if (entity->renderOrderOverride <= 4)
     {
         std::unordered_map<TexturedModel*, std::list<Entity*>>* mapToUse = nullptr;
 
@@ -304,6 +314,7 @@ void Master_processEntity(Entity* entity)
             case 1: mapToUse = &entitiesMapPass2;       break;
             case 2: mapToUse = &entitiesMapPass3;       break;
             case 3: mapToUse = &entitiesMapTransparent; break;
+            case 4: mapToUse = &entitiesMapNoDepth;     break;
             default: break;
         }
 
@@ -329,6 +340,7 @@ void Master_processEntity(Entity* entity)
                 case 1: mapToUse = &entitiesMapPass2;       break;
                 case 2: mapToUse = &entitiesMapPass3;       break;
                 case 3: mapToUse = &entitiesMapTransparent; break;
+                case 4: mapToUse = &entitiesMapNoDepth;     break;
                 default: break;
             }
 
@@ -344,6 +356,7 @@ void Master_clearAllEntities()
     entitiesMapPass2.clear();
     entitiesMapPass3.clear();
     entitiesMapTransparent.clear();
+    entitiesMapNoDepth.clear();
 }
 
 void prepare()
@@ -399,10 +412,10 @@ void prepareTransparentRender()
     }
 }
 
-void prepareTransparentRenderDepthOnly()
+void prepareRenderDepthOnly()
 {
     //glBindTexture(GL_TEXTURE_2D, 0);//To make sure the texture isn't bound
-   // glBindFramebuffer(GL_FRAMEBUFFER, transparentFrameBuffer);
+    //glBindFramebuffer(GL_FRAMEBUFFER, transparentFrameBuffer);
     //glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
 
     //glEnable(GL_BLEND);
@@ -411,13 +424,10 @@ void prepareTransparentRenderDepthOnly()
     //glDepthMask(true);
     //glDisable(GL_DEPTH_TEST);
 
-    //glEnable(GL_BLEND);
-    //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    //
-    //glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
-    //
-    //glEnable(GL_DEPTH_TEST);
-    //glDepthMask(true);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+    glEnable(GL_DEPTH_TEST);
 
     if (Global::renderWithCulling)
     {

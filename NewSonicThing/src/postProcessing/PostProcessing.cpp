@@ -42,6 +42,7 @@ void PostProcessing::init()
 
 void PostProcessing::doPostProcessing(int colourTexture, int brightTexture)
 {
+    ANALYSIS_START("Post Processing");
     PostProcessing::start();
     PostProcessing::hBlur2->render(brightTexture);
     PostProcessing::vBlur2->render(PostProcessing::hBlur2->getOutputTexture());
@@ -49,6 +50,7 @@ void PostProcessing::doPostProcessing(int colourTexture, int brightTexture)
     PostProcessing::vBlur->render(PostProcessing::hBlur->getOutputTexture());
     PostProcessing::combineFilter->render(colourTexture, PostProcessing::vBlur->getOutputTexture());
     PostProcessing::end();
+    ANALYSIS_DONE("Post Processing");
 }
 
 void PostProcessing::cleanUp()

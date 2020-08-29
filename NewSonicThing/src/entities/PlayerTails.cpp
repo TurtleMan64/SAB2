@@ -652,7 +652,8 @@ void PlayerTails::step()
         int audioIdLand = 59;
 
         if (Global::levelID == LVL_GREEN_FOREST || 
-            Global::levelID == LVL_FROG_FOREST)
+            Global::levelID == LVL_FROG_FOREST  ||
+            Global::levelID == LVL_DRAGON_ROAD)
         {
             audioIdLoop = 58;
             audioIdLand = 60;
@@ -770,6 +771,7 @@ void PlayerTails::step()
 
             //vertical check - rotate down if too high or too low
             float dot = camDir.dot(&relativeUp);
+            //printf("dot = %f\n", dot);
             //if (dot < -0.325f)
             if (dot < -0.2f) //had to change this because of new change in camera rotation to remove annoying jitter
             {
@@ -796,7 +798,8 @@ void PlayerTails::step()
                     currentAngle = acosf(dotNew);
                     maxAngle = currentAngle-targetAngle;
                     camDir = Maths::rotatePoint(&camDir, &perpen, maxAngle);
-                    dotNew = camDir.dot(&relativeUp);
+                    //dotNew = camDir.dot(&relativeUp);
+                    //printf("    dotNew1 = %f\n", dotNew);
                 }
             }
             else if (dot > -0.2f)
@@ -829,10 +832,15 @@ void PlayerTails::step()
                 float dotSmooth = camDirSmooth.dot(&relativeUp);
                 if (dotSmooth > 0.0f)
                 {
-                    targetAngle = acosf(0.0f);
-                    currentAngle = acosf(dotSmooth);
-                    maxAngle = currentAngle-targetAngle;
-                    camDirSmooth = Maths::rotatePoint(&camDirSmooth, &perpen, maxAngle);
+                    //targetAngle = acosf(0.0f);
+                    //currentAngle = acosf(dotSmooth);
+                    //maxAngle = currentAngle-targetAngle;
+                    //camDirSmooth = Maths::rotatePoint(&camDirSmooth, &perpen, maxAngle);
+                    //relativeUpSmooth = relativeUp; //lol
+
+                    //speed up smoothing
+                    camDirSmooth = Maths::interpolateVector(&camDirSmooth, &camDir, 10*dt);
+                    relativeUpSmooth = Maths::interpolateVector(&relativeUpSmooth, &relativeUp, 3*dt);
                 }
             }
         }
@@ -921,7 +929,12 @@ void PlayerTails::step()
         {
             Vector3f* colNormal = &CollisionChecker::getCollideTriangle()->normal;
 
-            if (onGround  == false) //Air to ground
+            if (CollisionChecker::getCollideTriangle()->isDeath())
+            {
+                die();
+                increasePosition(vel.x*dt, vel.y*dt, vel.z*dt);
+            }
+            else if (onGround  == false) //Air to ground
             {
                 if (isBouncing)
                 {

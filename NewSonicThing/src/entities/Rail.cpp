@@ -199,6 +199,9 @@ void Rail::step()
                         playerSpeed = Maths::sign(dot)*newVel.length();
 
                         timer = timeBeforeLandAgain; //seconds before we can land on the rail again
+
+                        //printf("landing on rail #%d\n", currentSegmentIndex);
+                        break;
                     }
                 }
             }
@@ -210,6 +213,7 @@ void Rail::step()
     }
     else
     {
+        //printf("  start 1\n");
         playerSpeed += currentSegment->speedToAdd*dt;
         if (Input::inputs.INPUT_ACTION2)
         {
@@ -220,6 +224,7 @@ void Rail::step()
 
         if (Input::inputs.INPUT_ACTION1 && !Input::inputs.INPUT_PREVIOUS_ACTION1)
         {
+            //printf("   if 1\n");
             Global::gameMainPlayer->stopGrinding();
             Global::gameMainPlayer->jump();
             currentSegment = nullptr;
@@ -227,6 +232,7 @@ void Rail::step()
         }
         else if (Input::inputs.INPUT_LB && !Input::inputs.INPUT_PREVIOUS_LB)
         {
+            //printf("   if 2\n");
             Global::gameMainPlayer->stopGrinding();
 
             Vector3f forward = Global::gameMainPlayer->vel;
@@ -242,6 +248,7 @@ void Rail::step()
         }
         else if (Input::inputs.INPUT_RB && !Input::inputs.INPUT_PREVIOUS_RB)
         {
+            //printf("   if 3\n");
             Global::gameMainPlayer->stopGrinding();
 
             Vector3f forward = Global::gameMainPlayer->vel;
@@ -258,12 +265,13 @@ void Rail::step()
         }
         else
         {
+            //printf("   if 4\n");
             float distanceRemaining = playerSpeed*dt;
-
+            //printf("    distanceRemaining = %f\n", distanceRemaining);
             while (distanceRemaining != 0.0f)
             {
                 float newProgress = currentSegment->playerProgress + (distanceRemaining/currentSegment->length);
-
+                //printf("        newProgress = %f\n", newProgress);
                 Vector3f newVel(currentSegment->pointsDiff);
                 newVel.normalize();
                 newVel.scale(playerSpeed);
@@ -271,16 +279,13 @@ void Rail::step()
 
                 //interpolate the normal vector between the start and end points
                 Vector3f interpolatedNormal = Maths::interpolateVector(&currentSegment->normalBegin, &currentSegment->normalEnd, newProgress);
-                //printf("[%f, %f, %f]  [%f, %f, %f]\n", 
-                //    currentSegment->normalBegin.x, currentSegment->normalBegin.y, currentSegment->normalBegin.z,
-                //    currentSegment->normalEnd.x, currentSegment->normalEnd.y, currentSegment->normalEnd.z);
-                //printf("prog = %f\n\n", newProgress);
                 Global::gameMainPlayer->relativeUp = interpolatedNormal;
 
                 if (newProgress < 0) //go to previous rail segment
                 {
-                    float distanceUsed = currentSegment->playerProgress/currentSegment->length;
+                    float distanceUsed = currentSegment->playerProgress*currentSegment->length;
                     distanceRemaining += distanceUsed; //this might be minus
+                    //printf("            distanceUsed = %f\n", distanceUsed);
 
                     if (currentSegmentIndex > 0)
                     {
@@ -312,6 +317,7 @@ void Rail::step()
                 }
                 else if (newProgress < 1) //stay on current segment
                 {
+                    //printf("            staying on current segment\n");
                     currentSegment->playerProgress = newProgress;
                     Vector3f progressVec = currentSegment->pointsDiff.scaleCopy(newProgress);
                     Vector3f nP = currentSegment->pointBegin + progressVec;
@@ -325,8 +331,9 @@ void Rail::step()
                 }
                 else //go to next rail segment
                 {
-                    float distanceUsed = (1.0f - currentSegment->playerProgress)/currentSegment->length;
+                    float distanceUsed = (1.0f - currentSegment->playerProgress)*currentSegment->length;
                     distanceRemaining -= distanceUsed; //this might be plus
+                    //printf("            distanceUsed = %f\n", distanceUsed);
 
                     if (currentSegmentIndex < ((int)rails.size())-1)
                     {
@@ -362,6 +369,7 @@ void Rail::step()
 
     if (currentSegment != nullptr)
     {
+        //printf("on rail #%d\n", currentSegmentIndex);
         Global::gameMainPlayer->animate();
         Global::gameMainPlayer->refreshCamera();
     }

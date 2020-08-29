@@ -56,8 +56,10 @@ class TC_Kart;
 #define LVL_DRY_LAGOON      16
 #define LVL_TWINKLE_CIRCUIT 17
 #define LVL_CLOUD_TEMPLE    18
+#define LVL_DRAGON_ROAD     19
 
 #define DEV_MODE
+//#define PERFORMANCE_ANALYSIS
 
 #ifdef DEV_MODE
     #include <thread>
@@ -67,6 +69,17 @@ class TC_Kart;
     #define INCR_NEW(NAME) ;
     #define INCR_DEL(NAME) ;
 #endif
+
+#ifdef PERFORMANCE_ANALYSIS
+    #define ANALYSIS_START(NAME) Global::performanceAnalysisStart(NAME);
+    #define ANALYSIS_DONE(NAME)  Global::performanceAnalysisDone(NAME);
+    #define ANALYSIS_REPORT()    Global::performanceAnalysisReport();
+#else
+    #define ANALYSIS_START(NAME) ;
+    #define ANALYSIS_DONE(NAME)  ;
+    #define ANALYSIS_REPORT()    ;
+#endif
+
 
 class Global
 {
@@ -121,6 +134,7 @@ public:
     static bool stageUsesWater;
     static Vector3f stageWaterColor;
     static float stageWaterBlendAmount;
+    static float stageWaterMurkyAmount;
     static FontType* fontVipnagorgialla;
     static bool renderWithCulling; //if the stage uses backface culling or not
     static bool displayFPS;
@@ -248,5 +262,11 @@ public:
     static void debugNew(const char* name);
 
     static void debugDel(const char* name);
+
+    static void performanceAnalysisStart(const char* name);
+
+    static void performanceAnalysisDone(const char* name);
+
+    static void performanceAnalysisReport();
 };
 #endif

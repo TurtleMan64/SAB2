@@ -190,6 +190,7 @@ std::unordered_map<std::string, std::string> Global::gameSaveData;
 bool Global::stageUsesWater = true;
 Vector3f Global::stageWaterColor(0,0,0);
 float Global::stageWaterBlendAmount = 0.0f;
+float Global::stageWaterMurkyAmount = 0.0f;
 FontType* Global::fontVipnagorgialla = nullptr;
 bool Global::renderWithCulling = true;
 bool Global::displayFPS = true;
@@ -284,8 +285,10 @@ int main(int argc, char** argv)
     Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_SKY_RAIL,        Global::PlayableCharacter::Sonic));
 
     Global::gameLevelIdsSonic.push_back(LVL_TUTORIAL);
+    Global::gameLevelIdsSonic.push_back(LVL_DRAGON_ROAD);
     Global::gameLevelIdsSonic.push_back(LVL_GREEN_FOREST);
     Global::gameLevelIdsSonic.push_back(LVL_METAL_HARBOR);
+    Global::gameLevelIdsSonic.push_back(LVL_SKY_RAIL);
     Global::gameLevelIdsSonic.push_back(LVL_PYRAMID_CAVE);
     Global::gameLevelIdsSonic.push_back(LVL_RADICAL_HIGHWAY);
     Global::gameLevelIdsSonic.push_back(LVL_GREEN_HILL_ZONE);
@@ -322,6 +325,7 @@ int main(int argc, char** argv)
     Global::stageNpcCounts[LVL_DRY_LAGOON] = 1;
     Global::stageNpcCounts[LVL_METAL_HARBOR] = 4;
     Global::stageNpcCounts[LVL_RADICAL_HIGHWAY] = 5;
+    Global::stageNpcCounts[LVL_DRAGON_ROAD] = 7;
 
     #if !defined(DEV_MODE) && defined(_WIN32)
     FreeConsole();
@@ -425,6 +429,8 @@ int main(int argc, char** argv)
 
     while (Global::gameState != STATE_EXITING && displayWantsToClose() == 0)
     {
+        ANALYSIS_START("Frame Time");
+
         timeNew = glfwGetTime();
 
         #ifndef WIN32
@@ -510,6 +516,7 @@ int main(int argc, char** argv)
         //long double thisTime = std::time(0);
         //std::fprintf(stdout, "time: %f time\n", thisTime);
 
+        ANALYSIS_START("Entity Management");
         //entities managment
         for (auto entityToAdd : gameEntitiesToAdd)
         {
@@ -562,11 +569,13 @@ int main(int argc, char** argv)
             }
         }
         gameChunkedEntitiesToDelete.clear();
+        ANALYSIS_DONE("Entity Management");
 
         switch (Global::gameState)
         {
             case STATE_RUNNING:
             {
+                ANALYSIS_START("Object Logic");
                 //game logic
 
                 //unlock framerate during gameplay
@@ -646,6 +655,7 @@ int main(int argc, char** argv)
                         Global::mainHudTimer->freeze(true);
                     }
                 }
+                ANALYSIS_DONE("Object Logic");
                 break;
             }
 
@@ -725,7 +735,7 @@ int main(int argc, char** argv)
             Master_processEntity(Global::gameStageManager);
         }
         Master_processEntity(&stage);
-        Master_renderShadowMaps(&lightSun);
+        //Master_renderShadowMaps(&lightSun);
         Master_processEntity(&skySphere);
 
         float waterBlendAmount = 0.0f;
@@ -989,6 +999,9 @@ int main(int argc, char** argv)
             }
         }
         //std::fprintf(stdout, "dt: %f\n", dt);
+
+        ANALYSIS_DONE("Frame Time");
+        ANALYSIS_REPORT();
     }
 
     Global::saveSaveData();
@@ -1877,4 +1890,65 @@ void Global::debugDel(const char* name)
     #else
     name;
     #endif
+}
+
+std::unordered_map<std::string, float> operationTotalTimes;
+std::unordered_map<std::string, float> operationStartTimes;
+
+void Global::performanceAnalysisStart(const char* name)
+{
+    auto startTime = operationStartTimes.find(name);
+    if (startTime == operationStartTimes.end())
+    {
+        operationStartTimes[name] = (float)glfwGetTime();
+    }
+    else
+    {
+        printf("Starting operation %s but that operation is already happening...\n", name);
+    }
+}
+
+void Global::performanceAnalysisDone(const char* name)
+{
+    auto startTime = operationStartTimes.find(name);
+    if (startTime != operationStartTimes.end())
+    {
+        float timeTaken = ((float)glfwGetTime()) - startTime->second;
+        operationStartTimes.erase(startTime);
+
+        auto totalTime = operationTotalTimes.find(name);
+        if (totalTime == operationTotalTimes.end())
+        {
+            operationTotalTimes[name] = timeTaken;
+        }
+        else
+        {
+            operationTotalTimes[name] = totalTime->second + timeTaken;
+        }
+    }
+    else
+    {
+        printf("Operation %s hasn't been started yet. Or a recursive operation, which is a no no.\n", name);
+    }
+}
+
+void Global::performanceAnalysisReport()
+{
+    printf("Performance Report\n");
+
+    auto it = operationTotalTimes.begin();
+    while (it != operationTotalTimes.end())
+    {
+        printf("%s    %f\n", it->first.c_str(), 1000*it->second);
+        it++;
+    }
+
+    printf("\n");
+
+    if (!operationStartTimes.empty())
+    {
+        printf("operationTotalTimes was not empty. Some operations were not finished when doing the report.\n");
+    }
+    operationStartTimes.clear();
+    operationTotalTimes.clear();
 }

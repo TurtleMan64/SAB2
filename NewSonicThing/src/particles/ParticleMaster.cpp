@@ -23,6 +23,7 @@ void ParticleMaster::init(Matrix4f* projectionMatrix)
 
 void ParticleMaster::update(Camera* /*cam*/)
 {
+    ANALYSIS_START("Particle Updating");
     //standard
     {
         std::unordered_map<ParticleTexture*, std::list<ParticleStandard*>>::iterator mapIt = ParticleMaster::particlesStandard.begin();
@@ -106,14 +107,17 @@ void ParticleMaster::update(Camera* /*cam*/)
             }
         }
     }
+    ANALYSIS_DONE("Particle Updating");
 }
 
 void ParticleMaster::renderParticles(Camera* camera, float brightness, int clipSide)
 {
+    ANALYSIS_START("Particle Rendering");
     ParticleMaster::renderer->render(
         &ParticleMaster::particlesStandard,
         &ParticleMaster::particlesGF,
         camera, brightness, clipSide);
+    ANALYSIS_DONE("Particle Rendering");
 }
 
 void ParticleMaster::cleanUp()

@@ -3,14 +3,14 @@
 in vec3 position;
 in vec2 textureCoords;
 in vec3 normal;
-in vec3 vertexColor;
+in vec4 vertexColor;
 
 out vec2 pass_textureCoords;
 out vec4 worldPosition;
 out vec3 surfaceNormal;
 out vec3 toCameraVector;
 //out float visibility;
-out vec3 color;
+out vec4 pass_vertexColor;
 
 uniform mat4 transformationMatrix;
 uniform mat4 projectionMatrix;
@@ -57,5 +57,5 @@ void main(void)
 	//visibility = exp(-pow((distance*fogDensity), fogGradient));
 	//visibility = clamp(visibility, 0.0, 1.0);
 	
-	color = vertexColor;
+	pass_vertexColor = vertexColor;
 }

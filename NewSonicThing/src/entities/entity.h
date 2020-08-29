@@ -76,8 +76,6 @@ public:
     const bool getVisible();
     void setVisible(bool newVisible);
 
-    void setModelsRenderOrder(char newOrder);
-
     const float getX();
 
     const float getY();

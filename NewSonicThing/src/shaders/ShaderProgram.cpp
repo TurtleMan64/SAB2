@@ -195,6 +195,7 @@ void ShaderProgram::getAllUniformLocations()
     location_isRenderingTransparent = getUniformLocation("isRenderingTransparent");
     location_waterColor             = getUniformLocation("waterColor");
     location_waterBlendAmount       = getUniformLocation("waterBlendAmount");
+    location_waterMurkyAmount       = getUniformLocation("waterMurkyAmount");
 }
 
 int ShaderProgram::getUniformLocation(const char* uniformName)

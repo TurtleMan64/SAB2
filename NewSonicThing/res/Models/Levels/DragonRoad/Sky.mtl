@@ -1,0 +1,57 @@
+# Blender MTL File: 'None'
+# Material Count: 5
+
+newmtl Mesh_0532.rip
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd E:\\Programs\\NinjaRipper\\rips\\_NinjaRipper\\2020.08.06_21.16.53_SonicGenerations.fxpipeline.exe_1340\\2020.08.06_21.18.00_SonicGenerations.fxpipeline.exe\\Tex_0104_0.dds
+
+newmtl Mesh_0533.rip
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd E:\\Programs\\NinjaRipper\\rips\\_NinjaRipper\\2020.08.06_21.16.53_SonicGenerations.fxpipeline.exe_1340\\2020.08.06_21.18.00_SonicGenerations.fxpipeline.exe\\Tex_0105_0.dds
+
+newmtl Mesh_0534.rip
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd E:\\Programs\\NinjaRipper\\rips\\_NinjaRipper\\2020.08.06_21.16.53_SonicGenerations.fxpipeline.exe_1340\\2020.08.06_21.18.00_SonicGenerations.fxpipeline.exe\\Tex_0106_0.dds
+
+newmtl Mesh_0535.rip
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd E:\\Programs\\NinjaRipper\\rips\\_NinjaRipper\\2020.08.06_21.16.53_SonicGenerations.fxpipeline.exe_1340\\2020.08.06_21.18.00_SonicGenerations.fxpipeline.exe\\Tex_0107_0.dds
+
+newmtl Mesh_0536.rip
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd E:\\Programs\\NinjaRipper\\rips\\_NinjaRipper\\2020.08.06_21.16.53_SonicGenerations.fxpipeline.exe_1340\\2020.08.06_21.18.00_SonicGenerations.fxpipeline.exe\\Tex_0108_0.dds

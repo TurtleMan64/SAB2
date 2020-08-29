@@ -588,7 +588,8 @@ void PlayerSonic::step()
         int audioIdLand = 59;
 
         if (Global::levelID == LVL_GREEN_FOREST || 
-            Global::levelID == LVL_FROG_FOREST)
+            Global::levelID == LVL_FROG_FOREST  ||
+            Global::levelID == LVL_DRAGON_ROAD)
         {
             audioIdLoop = 58;
             audioIdLand = 60;
@@ -732,7 +733,12 @@ void PlayerSonic::step()
                     currentAngle = acosf(dotNew);
                     maxAngle = currentAngle-targetAngle;
                     camDir = Maths::rotatePoint(&camDir, &perpen, maxAngle);
-                    dotNew = camDir.dot(&relativeUp);
+
+                    //speed up smoothing
+                    //printf("speed up smoothing\n");
+                    //this works but makes this a little more choppy... not sure if worth
+                    //camDirSmooth = Maths::interpolateVector(&camDirSmooth, &camDir, 3*dt);
+                    //relativeUpSmooth = Maths::interpolateVector(&relativeUpSmooth, &relativeUp, 1*dt);
                 }
             }
             else if (dot > -0.2f)
@@ -765,10 +771,14 @@ void PlayerSonic::step()
                 float dotSmooth = camDirSmooth.dot(&relativeUp);
                 if (dotSmooth > 0.0f)
                 {
-                    targetAngle = acosf(0.0f);
-                    currentAngle = acosf(dotSmooth);
-                    maxAngle = currentAngle-targetAngle;
-                    camDirSmooth = Maths::rotatePoint(&camDirSmooth, &perpen, maxAngle);
+                    //targetAngle = acosf(0.0f);
+                    //currentAngle = acosf(dotSmooth);
+                    //maxAngle = currentAngle-targetAngle;
+                    //camDirSmooth = Maths::rotatePoint(&camDirSmooth, &perpen, maxAngle);
+
+                    //speed up smoothing
+                    camDirSmooth = Maths::interpolateVector(&camDirSmooth, &camDir, 10*dt);
+                    relativeUpSmooth = Maths::interpolateVector(&relativeUpSmooth, &relativeUp, 3*dt);
                 }
             }
         }
@@ -857,7 +867,12 @@ void PlayerSonic::step()
         {
             Vector3f* colNormal = &CollisionChecker::getCollideTriangle()->normal;
 
-            if (onGround  == false) //Air to ground
+            if (CollisionChecker::getCollideTriangle()->isDeath())
+            {
+                die();
+                increasePosition(vel.x*dt, vel.y*dt, vel.z*dt);
+            }
+            else if (onGround  == false) //Air to ground
             {
                 if (isBouncing)
                 {
@@ -1454,6 +1469,18 @@ void PlayerSonic::spindash()
     isBall = false; //geeks idea change
     AudioPlayer::play(40, &position); //peel release
     storedSpindashSpeed = 0;
+
+    //burst of speed = burst of particles
+    for (int i = 0; i < 30; i++)
+    {
+        Vector3f rng(Maths::nextUniform()-0.5f, Maths::nextUniform()-0.5f, Maths::nextUniform()-0.5f);
+        rng.scale(300.0f);
+        rng = Maths::projectOntoPlane(&rng, &relativeUp);
+
+        Vector3f spd = relativeUp.scaleCopy(55.0f) + rng;
+        Vector3f partPos = position + relativeUp.scaleCopy(1.5f);
+        ParticleMaster::createParticle(ParticleResources::textureDust, &partPos, &spd, 0, 0.25f + (0.125f*Maths::nextGaussian()), 0, 5.0f+Maths::nextGaussian(), 0.0f, false, false, 1.0f, true);
+    }
 }
 
 void PlayerSonic::calcSpindashDirection()

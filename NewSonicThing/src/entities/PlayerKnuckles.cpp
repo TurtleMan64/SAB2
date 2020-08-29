@@ -783,7 +783,8 @@ void PlayerKnuckles::step()
         int audioIdLand = 59;
 
         if (Global::levelID == LVL_GREEN_FOREST || 
-            Global::levelID == LVL_FROG_FOREST)
+            Global::levelID == LVL_FROG_FOREST  ||
+            Global::levelID == LVL_DRAGON_ROAD)
         {
             audioIdLoop = 58;
             audioIdLand = 60;
@@ -929,7 +930,7 @@ void PlayerKnuckles::step()
                         currentAngle = acosf(dotNew);
                         maxAngle = currentAngle-targetAngle;
                         camDir = Maths::rotatePoint(&camDir, &perpen, maxAngle);
-                        dotNew = camDir.dot(&relativeUp);
+                        //dotNew = camDir.dot(&relativeUp);
                     }
                 }
                 else if (dot > -0.2f)
@@ -962,10 +963,14 @@ void PlayerKnuckles::step()
                     float dotSmooth = camDirSmooth.dot(&relativeUp);
                     if (dotSmooth > 0.0f)
                     {
-                        targetAngle = acosf(0.0f);
-                        currentAngle = acosf(dotSmooth);
-                        maxAngle = currentAngle-targetAngle;
-                        camDirSmooth = Maths::rotatePoint(&camDirSmooth, &perpen, maxAngle);
+                        //targetAngle = acosf(0.0f);
+                        //currentAngle = acosf(dotSmooth);
+                        //maxAngle = currentAngle-targetAngle;
+                        //camDirSmooth = Maths::rotatePoint(&camDirSmooth, &perpen, maxAngle);
+
+                        //speed up smoothing
+                        camDirSmooth = Maths::interpolateVector(&camDirSmooth, &camDir, 10*dt);
+                        relativeUpSmooth = Maths::interpolateVector(&relativeUpSmooth, &relativeUp, 3*dt);
                     }
                 }
             }

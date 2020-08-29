@@ -59,20 +59,20 @@ ModelTexture::ModelTexture(ModelTexture* other)
     {
         texIDs.push_back(id);
     }
-    shineDamper       = other->shineDamper;
-    reflectivity      = other->reflectivity;
-    hasTransparency   = other->hasTransparency;
-    useFakeLighting   = other->useFakeLighting;
-    glowAmount        = other->glowAmount;
-    isAnimated        = other->isAnimated;
-    animatedProgress  = other->animatedProgress;
-    animationSpeed    = other->animationSpeed;
-    currentImageIndex = other->currentImageIndex;
-    mixingType        = other->mixingType;
-    scrollX           = other->scrollX;
-    scrollY           = other->scrollY;
-    fogScale          = other->fogScale;
-    renderOrder       = other->renderOrder;
+    shineDamper         = other->shineDamper;
+    reflectivity        = other->reflectivity;
+    hasTransparency     = other->hasTransparency;
+    useFakeLighting     = other->useFakeLighting;
+    glowAmount          = other->glowAmount;
+    isAnimated          = other->isAnimated;
+    animatedProgress    = other->animatedProgress;
+    animationSpeed      = other->animationSpeed;
+    currentImageIndex   = other->currentImageIndex;
+    mixingType          = other->mixingType;
+    scrollX             = other->scrollX;
+    scrollY             = other->scrollY;
+    fogScale            = other->fogScale;
+    renderOrder         = other->renderOrder;
 
     if (texIDs.size() > 1)
     {
@@ -152,16 +152,16 @@ bool ModelTexture::equalTo(ModelTexture* other)
 {
     return (
         std::equal(texIDs.begin(), texIDs.end(), other->getIDs()->begin()) &&
-        isAnimated      == other->isAnimated &&
-        shineDamper     == other->shineDamper &&
-        reflectivity    == other->reflectivity &&
-        scrollX         == other->scrollX &&
-        scrollY         == other->scrollY &&
-        glowAmount      == other->glowAmount &&
+        isAnimated      == other->isAnimated      &&
+        shineDamper     == other->shineDamper     &&
+        reflectivity    == other->reflectivity    &&
+        scrollX         == other->scrollX         &&
+        scrollY         == other->scrollY         &&
+        glowAmount      == other->glowAmount      &&
         hasTransparency == other->hasTransparency &&
         useFakeLighting == other->useFakeLighting &&
-        fogScale        == other->fogScale &&
-        mixingType      == other->mixingType &&
-        animationSpeed  == other->animationSpeed &&
+        fogScale        == other->fogScale        &&
+        mixingType      == other->mixingType      &&
+        animationSpeed  == other->animationSpeed  &&
         renderOrder     == other->renderOrder);
 }

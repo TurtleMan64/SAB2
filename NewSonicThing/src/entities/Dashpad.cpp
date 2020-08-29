@@ -36,29 +36,25 @@ Dashpad::Dashpad(
     position.x = x;
     position.y = y;
     position.z = z;
-    scale = 1;
-    visible = true;
-    playerIsIn = false;
 
     this->rotX = rotX;
     this->rotY = rotY;
     this->rotZ = rotZ;
-    this->rotRoll = 0;
     this->power = power;
     this->controlLockTime = controlLockTime;
-    updateTransformationMatrixYXZ();
+    updateTransformationMatrix();
 
-    forward = Vector3f(0, 0, 1);
+    forward = Vector3f(1, 0, 0);
     up = Vector3f(0, 1, 0);
     Vector3f xAxis(1, 0, 0);
     Vector3f yAxis(0, 1, 0);
     Vector3f zAxis(0, 0, 1);
-    forward = Maths::rotatePoint(&forward, &yAxis, Maths::toRadians(rotY));
     forward = Maths::rotatePoint(&forward, &xAxis, Maths::toRadians(rotX));
     forward = Maths::rotatePoint(&forward, &zAxis, Maths::toRadians(rotZ));
-    up = Maths::rotatePoint(&up, &yAxis, Maths::toRadians(rotY));
+    forward = Maths::rotatePoint(&forward, &yAxis, Maths::toRadians(rotY));
     up = Maths::rotatePoint(&up, &xAxis, Maths::toRadians(rotX));
     up = Maths::rotatePoint(&up, &zAxis, Maths::toRadians(rotZ));
+    up = Maths::rotatePoint(&up, &yAxis, Maths::toRadians(rotY));
 }
 
 void Dashpad::step()

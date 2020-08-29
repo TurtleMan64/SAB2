@@ -14,6 +14,7 @@
 #include "../../animation/animationresources.h"
 #include "../../particles/particletexture.h"
 #include "../../particles/particleresources.h"
+#include "../dummy.h"
 
 #include <list>
 #include <iostream>
@@ -72,6 +73,9 @@ std::list<TexturedModel*> ManiaMightyModel::modelLightdash;
 std::list<TexturedModel*> ManiaMightyModel::modelFreefall;
 std::list<TexturedModel*> ManiaMightyModel::modelStomp;
 std::list<TexturedModel*> ManiaMightyModel::modelGrab;
+std::list<TexturedModel*> ManiaMightyModel::modelFlyBody;
+std::list<TexturedModel*> ManiaMightyModel::modelFlyBodyTired;
+std::list<TexturedModel*> ManiaMightyModel::modelFlyPropeller;
 
 ManiaMightyModel::ManiaMightyModel()
 {
@@ -84,6 +88,9 @@ ManiaMightyModel::ManiaMightyModel()
     scale = 0.27f;
     visible = false;
     models = &ManiaMightyModel::modelDash0;
+
+    flyPropeller = new Dummy(&ManiaMightyModel::modelFlyPropeller); INCR_NEW("Entity");
+    Global::addEntity(flyPropeller);
 
     myBody =         new Body(&modelBody); INCR_NEW("Entity")
     myHead =         new Limb(&modelHead,         1.2f,  -0.3f,   0,     myBody,   nullptr);        INCR_NEW("Entity")
@@ -152,6 +159,7 @@ void ManiaMightyModel::animate(int animIndex, float time)
             updateLimbs(0, fmodf(time, 100.0f));
             updateLimbsMatrix();
             setLimbsVisibility(baseVisible);
+            setFlyVisibility(false);
             visible = false;
             break;
         }
@@ -178,6 +186,7 @@ void ManiaMightyModel::animate(int animIndex, float time)
             }
             updateTransformationMatrix();
             setLimbsVisibility(false);
+            setFlyVisibility(false);
             visible = baseVisible;
             break;
         }
@@ -189,6 +198,7 @@ void ManiaMightyModel::animate(int animIndex, float time)
             updateLimbs(3, 100);
             updateLimbsMatrix();
             setLimbsVisibility(baseVisible);
+            setFlyVisibility(false);
             visible = false;
             break;
         }
@@ -200,6 +210,7 @@ void ManiaMightyModel::animate(int animIndex, float time)
             updateLimbs(8, 0);
             updateLimbsMatrix();
             setLimbsVisibility(baseVisible);
+            setFlyVisibility(false);
             visible = false;
             break;
         }
@@ -211,6 +222,7 @@ void ManiaMightyModel::animate(int animIndex, float time)
             updateLimbs(11, 0);
             updateLimbsMatrix();
             setLimbsVisibility(baseVisible);
+            setFlyVisibility(false);
             visible = false;
             break;
         }
@@ -221,6 +233,7 @@ void ManiaMightyModel::animate(int animIndex, float time)
             models = &ManiaMightyModel::modelJump;
             updateTransformationMatrix();
             setLimbsVisibility(false);
+            setFlyVisibility(false);
             visible = baseVisible;
             break;
         }
@@ -233,6 +246,7 @@ void ManiaMightyModel::animate(int animIndex, float time)
             updateLimbs(14, time);
             updateLimbsMatrix();
             setLimbsVisibility(baseVisible);
+            setFlyVisibility(false);
             visible = false;
             break;
         }
@@ -265,6 +279,7 @@ void ManiaMightyModel::animate(int animIndex, float time)
             }
             updateTransformationMatrix();
             setLimbsVisibility(false);
+            setFlyVisibility(false);
             visible = baseVisible;
             break;
         }
@@ -276,6 +291,7 @@ void ManiaMightyModel::animate(int animIndex, float time)
             updateLimbs(18, 0);
             updateLimbsMatrix();
             setLimbsVisibility(baseVisible);
+            setFlyVisibility(false);
             visible = false;
             break;
         }
@@ -287,7 +303,22 @@ void ManiaMightyModel::animate(int animIndex, float time)
             updateLimbs(19, 0);
             updateLimbsMatrix();
             setLimbsVisibility(baseVisible);
+            setFlyVisibility(false);
             visible = false;
+            break;
+        }
+
+        case 20: //fly
+        {
+            scale = 0.84f;
+            setLimbsVisibility(false);
+            setFlyVisibility(true);
+            visible = baseVisible;
+            setFlyVisibility(baseVisible);
+            models = &ManiaMightyModel::modelFlyBody;
+            flyPropeller->rotY += time*0.6f;
+            updateFlyMatrix();
+            updateTransformationMatrix();
             break;
         }
 
@@ -298,6 +329,7 @@ void ManiaMightyModel::animate(int animIndex, float time)
             updateLimbs(21, 0);
             updateLimbsMatrix();
             setLimbsVisibility(baseVisible);
+            setFlyVisibility(false);
             visible = false;
             break;
         }
@@ -308,6 +340,7 @@ void ManiaMightyModel::animate(int animIndex, float time)
             models = &ManiaMightyModel::modelGrab;
             updateTransformationMatrix();
             setLimbsVisibility(false);
+            setFlyVisibility(false);
             visible = baseVisible;
             break;
         }
@@ -318,7 +351,22 @@ void ManiaMightyModel::animate(int animIndex, float time)
             models = &ManiaMightyModel::modelGrind;
             updateTransformationMatrix();
             setLimbsVisibility(false);
+            setFlyVisibility(false);
             visible = baseVisible;
+            break;
+        }
+
+        case 27: //fly tired
+        {
+            scale = 0.84f;
+            setLimbsVisibility(false);
+            setFlyVisibility(true);
+            visible = baseVisible;
+            setFlyVisibility(baseVisible);
+            models = &ManiaMightyModel::modelFlyBodyTired;
+            flyPropeller->rotY += time*0.2f;
+            updateFlyMatrix();
+            updateTransformationMatrix();
             break;
         }
 
@@ -337,6 +385,8 @@ void ManiaMightyModel::setOrientation(float x, float y, float z, float xRot, flo
     rotZ       = zRot;
     rotRoll    = spinRot;
     currentUpDirection.set(newUp);
+    flyPropeller->position.set(x, y, z);
+    flyPropeller->setRotation(xRot, yRot, zRot, spinRot);
 }
 
 void ManiaMightyModel::setBaseColor(float r, float g, float b)
@@ -432,43 +482,46 @@ void ManiaMightyModel::loadStaticModels()
     ObjLoader::loadModel(&ManiaMightyModel::modelRightShin,    "res/Models/Characters/ManiaMighty/", "LimbShin");
     ObjLoader::loadModel(&ManiaMightyModel::modelRightFoot,    "res/Models/Characters/ManiaMighty/", "LimbShoeRight");
 
-    ObjLoader::loadModel(&ManiaMightyModel::modelDash0    , "res/Models/Characters/ManiaMighty/", "MightyDash0");
-    ObjLoader::loadModel(&ManiaMightyModel::modelDash1    , "res/Models/Characters/ManiaMighty/", "MightyDash1");
-    ObjLoader::loadModel(&ManiaMightyModel::modelDash2    , "res/Models/Characters/ManiaMighty/", "MightyDash2");
-    ObjLoader::loadModel(&ManiaMightyModel::modelDash3    , "res/Models/Characters/ManiaMighty/", "MightyDash3");
-    ObjLoader::loadModel(&ManiaMightyModel::modelDash4    , "res/Models/Characters/ManiaMighty/", "MightyDash4");
-    ObjLoader::loadModel(&ManiaMightyModel::modelDash5    , "res/Models/Characters/ManiaMighty/", "MightyDash5");
-    ObjLoader::loadModel(&ManiaMightyModel::modelDash6    , "res/Models/Characters/ManiaMighty/", "MightyDash6");
-    ObjLoader::loadModel(&ManiaMightyModel::modelDash7    , "res/Models/Characters/ManiaMighty/", "MightyDash7");
-    ObjLoader::loadModel(&ManiaMightyModel::modelDash8    , "res/Models/Characters/ManiaMighty/", "MightyDash8");
-    ObjLoader::loadModel(&ManiaMightyModel::modelDash9    , "res/Models/Characters/ManiaMighty/", "MightyDash9");
-    ObjLoader::loadModel(&ManiaMightyModel::modelDash10   , "res/Models/Characters/ManiaMighty/", "MightyDash10");
-    ObjLoader::loadModel(&ManiaMightyModel::modelDash11   , "res/Models/Characters/ManiaMighty/", "MightyDash11");
-    ObjLoader::loadModel(&ManiaMightyModel::modelJump     , "res/Models/Characters/ManiaMighty/", "MightyJump");
-    ObjLoader::loadModel(&ManiaMightyModel::modelJog0     , "res/Models/Characters/ManiaMighty/", "MightyJog0");
-    ObjLoader::loadModel(&ManiaMightyModel::modelJog1     , "res/Models/Characters/ManiaMighty/", "MightyJog1");
-    ObjLoader::loadModel(&ManiaMightyModel::modelJog2     , "res/Models/Characters/ManiaMighty/", "MightyJog2");
-    ObjLoader::loadModel(&ManiaMightyModel::modelJog3     , "res/Models/Characters/ManiaMighty/", "MightyJog3");
-    ObjLoader::loadModel(&ManiaMightyModel::modelJog4     , "res/Models/Characters/ManiaMighty/", "MightyJog4");
-    ObjLoader::loadModel(&ManiaMightyModel::modelJog5     , "res/Models/Characters/ManiaMighty/", "MightyJog5");
-    ObjLoader::loadModel(&ManiaMightyModel::modelJog6     , "res/Models/Characters/ManiaMighty/", "MightyJog6");
-    ObjLoader::loadModel(&ManiaMightyModel::modelJog7     , "res/Models/Characters/ManiaMighty/", "MightyJog7");
-    ObjLoader::loadModel(&ManiaMightyModel::modelJog8     , "res/Models/Characters/ManiaMighty/", "MightyJog8");
-    ObjLoader::loadModel(&ManiaMightyModel::modelJog9     , "res/Models/Characters/ManiaMighty/", "MightyJog9");
-    ObjLoader::loadModel(&ManiaMightyModel::modelJog10    , "res/Models/Characters/ManiaMighty/", "MightyJog10");
-    ObjLoader::loadModel(&ManiaMightyModel::modelJog11    , "res/Models/Characters/ManiaMighty/", "MightyJog11");
-    ObjLoader::loadModel(&ManiaMightyModel::modelJog12    , "res/Models/Characters/ManiaMighty/", "MightyJog12");
-    ObjLoader::loadModel(&ManiaMightyModel::modelJog13    , "res/Models/Characters/ManiaMighty/", "MightyJog13");
-    ObjLoader::loadModel(&ManiaMightyModel::modelJog14    , "res/Models/Characters/ManiaMighty/", "MightyJog14");
-    ObjLoader::loadModel(&ManiaMightyModel::modelJog15    , "res/Models/Characters/ManiaMighty/", "MightyJog15");
-    ObjLoader::loadModel(&ManiaMightyModel::modelJog16    , "res/Models/Characters/ManiaMighty/", "MightyJog16");
-    ObjLoader::loadModel(&ManiaMightyModel::modelJog17    , "res/Models/Characters/ManiaMighty/", "MightyJog17");
-    ObjLoader::loadModel(&ManiaMightyModel::modelGrind    , "res/Models/Characters/ManiaMighty/", "MightyGrind");
-    ObjLoader::loadModel(&ManiaMightyModel::modelSkid     , "res/Models/Characters/ManiaMighty/", "MightySkid");
-    ObjLoader::loadModel(&ManiaMightyModel::modelLightdash, "res/Models/Characters/ManiaMighty/", "MightyLightdash");
-    ObjLoader::loadModel(&ManiaMightyModel::modelFreefall , "res/Models/Characters/ManiaMighty/", "MightyFreefall");
-    ObjLoader::loadModel(&ManiaMightyModel::modelStomp    , "res/Models/Characters/ManiaMighty/", "MightyStomp");
-    ObjLoader::loadModel(&ManiaMightyModel::modelGrab     , "res/Models/Characters/ManiaMighty/", "MightyGrab");
+    ObjLoader::loadModel(&ManiaMightyModel::modelDash0       , "res/Models/Characters/ManiaMighty/", "MightyDash0");
+    ObjLoader::loadModel(&ManiaMightyModel::modelDash1       , "res/Models/Characters/ManiaMighty/", "MightyDash1");
+    ObjLoader::loadModel(&ManiaMightyModel::modelDash2       , "res/Models/Characters/ManiaMighty/", "MightyDash2");
+    ObjLoader::loadModel(&ManiaMightyModel::modelDash3       , "res/Models/Characters/ManiaMighty/", "MightyDash3");
+    ObjLoader::loadModel(&ManiaMightyModel::modelDash4       , "res/Models/Characters/ManiaMighty/", "MightyDash4");
+    ObjLoader::loadModel(&ManiaMightyModel::modelDash5       , "res/Models/Characters/ManiaMighty/", "MightyDash5");
+    ObjLoader::loadModel(&ManiaMightyModel::modelDash6       , "res/Models/Characters/ManiaMighty/", "MightyDash6");
+    ObjLoader::loadModel(&ManiaMightyModel::modelDash7       , "res/Models/Characters/ManiaMighty/", "MightyDash7");
+    ObjLoader::loadModel(&ManiaMightyModel::modelDash8       , "res/Models/Characters/ManiaMighty/", "MightyDash8");
+    ObjLoader::loadModel(&ManiaMightyModel::modelDash9       , "res/Models/Characters/ManiaMighty/", "MightyDash9");
+    ObjLoader::loadModel(&ManiaMightyModel::modelDash10      , "res/Models/Characters/ManiaMighty/", "MightyDash10");
+    ObjLoader::loadModel(&ManiaMightyModel::modelDash11      , "res/Models/Characters/ManiaMighty/", "MightyDash11");
+    ObjLoader::loadModel(&ManiaMightyModel::modelJump        , "res/Models/Characters/ManiaMighty/", "MightyJump");
+    ObjLoader::loadModel(&ManiaMightyModel::modelJog0        , "res/Models/Characters/ManiaMighty/", "MightyJog0");
+    ObjLoader::loadModel(&ManiaMightyModel::modelJog1        , "res/Models/Characters/ManiaMighty/", "MightyJog1");
+    ObjLoader::loadModel(&ManiaMightyModel::modelJog2        , "res/Models/Characters/ManiaMighty/", "MightyJog2");
+    ObjLoader::loadModel(&ManiaMightyModel::modelJog3        , "res/Models/Characters/ManiaMighty/", "MightyJog3");
+    ObjLoader::loadModel(&ManiaMightyModel::modelJog4        , "res/Models/Characters/ManiaMighty/", "MightyJog4");
+    ObjLoader::loadModel(&ManiaMightyModel::modelJog5        , "res/Models/Characters/ManiaMighty/", "MightyJog5");
+    ObjLoader::loadModel(&ManiaMightyModel::modelJog6        , "res/Models/Characters/ManiaMighty/", "MightyJog6");
+    ObjLoader::loadModel(&ManiaMightyModel::modelJog7        , "res/Models/Characters/ManiaMighty/", "MightyJog7");
+    ObjLoader::loadModel(&ManiaMightyModel::modelJog8        , "res/Models/Characters/ManiaMighty/", "MightyJog8");
+    ObjLoader::loadModel(&ManiaMightyModel::modelJog9        , "res/Models/Characters/ManiaMighty/", "MightyJog9");
+    ObjLoader::loadModel(&ManiaMightyModel::modelJog10       , "res/Models/Characters/ManiaMighty/", "MightyJog10");
+    ObjLoader::loadModel(&ManiaMightyModel::modelJog11       , "res/Models/Characters/ManiaMighty/", "MightyJog11");
+    ObjLoader::loadModel(&ManiaMightyModel::modelJog12       , "res/Models/Characters/ManiaMighty/", "MightyJog12");
+    ObjLoader::loadModel(&ManiaMightyModel::modelJog13       , "res/Models/Characters/ManiaMighty/", "MightyJog13");
+    ObjLoader::loadModel(&ManiaMightyModel::modelJog14       , "res/Models/Characters/ManiaMighty/", "MightyJog14");
+    ObjLoader::loadModel(&ManiaMightyModel::modelJog15       , "res/Models/Characters/ManiaMighty/", "MightyJog15");
+    ObjLoader::loadModel(&ManiaMightyModel::modelJog16       , "res/Models/Characters/ManiaMighty/", "MightyJog16");
+    ObjLoader::loadModel(&ManiaMightyModel::modelJog17       , "res/Models/Characters/ManiaMighty/", "MightyJog17");
+    ObjLoader::loadModel(&ManiaMightyModel::modelGrind       , "res/Models/Characters/ManiaMighty/", "MightyGrind");
+    ObjLoader::loadModel(&ManiaMightyModel::modelSkid        , "res/Models/Characters/ManiaMighty/", "MightySkid");
+    ObjLoader::loadModel(&ManiaMightyModel::modelLightdash   , "res/Models/Characters/ManiaMighty/", "MightyLightdash");
+    ObjLoader::loadModel(&ManiaMightyModel::modelFreefall    , "res/Models/Characters/ManiaMighty/", "MightyFreefall");
+    ObjLoader::loadModel(&ManiaMightyModel::modelStomp       , "res/Models/Characters/ManiaMighty/", "MightyStomp");
+    ObjLoader::loadModel(&ManiaMightyModel::modelGrab        , "res/Models/Characters/ManiaMighty/", "MightyGrab");
+    ObjLoader::loadModel(&ManiaMightyModel::modelFlyBody     , "res/Models/Characters/ManiaMighty/", "MightyFlyBody");
+    ObjLoader::loadModel(&ManiaMightyModel::modelFlyBodyTired, "res/Models/Characters/ManiaMighty/", "MightyFlyBodyTired");
+    ObjLoader::loadModel(&ManiaMightyModel::modelFlyPropeller, "res/Models/Characters/ManiaMighty/", "MightyFlyPropeller");
 }
 
 void ManiaMightyModel::setLimbsVisibility(bool newVisible)
@@ -539,6 +592,16 @@ void ManiaMightyModel::updateLimbsMatrix()
     myRightFoot->updateTransformationMatrix();
 }
 
+void ManiaMightyModel::setFlyVisibility(bool newVisible)
+{
+    flyPropeller->visible = newVisible;
+}
+
+void ManiaMightyModel::updateFlyMatrix()
+{
+    flyPropeller->updateTransformationMatrix();
+}
+
 void ManiaMightyModel::deleteStaticModels()
 {
     #ifdef DEV_MODE
@@ -597,4 +660,7 @@ void ManiaMightyModel::deleteStaticModels()
     Entity::deleteModels(&ManiaMightyModel::modelFreefall);
     Entity::deleteModels(&ManiaMightyModel::modelStomp);
     Entity::deleteModels(&ManiaMightyModel::modelGrab);
+    Entity::deleteModels(&ManiaMightyModel::modelFlyBody);
+    Entity::deleteModels(&ManiaMightyModel::modelFlyBodyTired);
+    Entity::deleteModels(&ManiaMightyModel::modelFlyPropeller);
 }

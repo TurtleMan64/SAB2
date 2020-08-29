@@ -7,7 +7,7 @@
 #include <iostream>
 
 
-Vertex::Vertex(int index, Vector3f* position, Vector3f* color)
+Vertex::Vertex(int index, Vector3f* position, Vector4f* color)
 {
     this->index = index;
     this->color.set(color);
@@ -22,7 +22,7 @@ Vertex::Vertex(int index, Vector3f* position)
 {
     this->index = index;
     //this->color.set(Maths::nextUniform(), Maths::nextUniform(), Maths::nextUniform());
-    this->color.set(1.0f, 1.0f, 1.0f);
+    this->color.set(1.0f, 1.0f, 1.0f, 1.0f);
     this->position.set(position->x, position->y, position->z);
     this->length = position->length();
     this->textureIndex = NO_INDEX;

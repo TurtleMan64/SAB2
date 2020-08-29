@@ -170,9 +170,9 @@ int createDisplay()
 
 void updateDisplay()
 {
-    // glfw: swap buffers
-    // -------------------------------------------------------------------------------
+    ANALYSIS_START("Glfw Swap Buffers");
     glfwSwapBuffers(window);
+    ANALYSIS_DONE("Glfw Swap Buffers");
 }
 
 void closeDisplay()

@@ -286,7 +286,7 @@ int ObjLoader::loadVclModel(std::list<TexturedModel*>* models, std::string fileP
         float red   = ((float)c[0])/255.0f;
         float green = ((float)c[1])/255.0f;
         float blue  = ((float)c[2])/255.0f;
-        newVertex->color.set(red, green, blue);
+        newVertex->color.set(red, green, blue, 1.0f); //no vertex alpha in VCOL file...
         vertices.push_back(newVertex);
     }
 
@@ -454,7 +454,25 @@ int ObjLoader::loadObjModel(std::list<TexturedModel*>* models, std::string fileP
                         std::string c2(lineSplit[5]);
                         std::string c3(lineSplit[6]);
                         Vector3f vertex(std::stof(p1, nullptr), std::stof(p2, nullptr), std::stof(p3, nullptr));
-                        Vector3f colors(std::stof(c1, nullptr), std::stof(c2, nullptr), std::stof(c3, nullptr));
+
+                        float r = std::stof(c1, nullptr);
+                        float g = std::stof(c2, nullptr);
+                        float b;
+                        float a;
+                        if (r == 0.6f && g == 0.4f) //special case, use b as alpha
+                        {
+                            r = 1.0f;
+                            g = 1.0f;
+                            b = 1.0f;
+                            a = std::stof(c3, nullptr)/2.0f; //for some bizarre reason, 0.5 alpha is seen as full opaque...
+                        }
+                        else
+                        {
+                            b = std::stof(c3, nullptr);
+                            a = 1.0f;
+                        }
+                        Vector4f colors(r, g, b, a);
+
                         Vertex* newVertex = new Vertex((int)vertices.size(), &vertex, &colors); INCR_NEW("Vertex");
                         vertices.push_back(newVertex);
                     }
@@ -743,7 +761,7 @@ void ObjLoader::parseMtl(std::string filePath, std::string fileName, std::unorde
             }
             else if (strcmp(lineSplit[0], "\trenderOrder") == 0 || strcmp(lineSplit[0], "renderOrder") == 0)
             {
-                currentRenderOrder = Maths::clamp(0, std::stoi(lineSplit[1]), 3);
+                currentRenderOrder = Maths::clamp(0, std::stoi(lineSplit[1]), 4);
             }
         }
 
@@ -811,7 +829,25 @@ int ObjLoader::loadObjModelWithMTL(std::list<TexturedModel*>* models, std::strin
                         std::string c2(lineSplit[5]);
                         std::string c3(lineSplit[6]);
                         Vector3f vertex(std::stof(p1, nullptr), std::stof(p2, nullptr), std::stof(p3, nullptr));
-                        Vector3f colors(std::stof(c1, nullptr), std::stof(c2, nullptr), std::stof(c3, nullptr));
+                        
+                        float r = std::stof(c1, nullptr);
+                        float g = std::stof(c2, nullptr);
+                        float b;
+                        float a;
+                        if (r == 0.6f && g == 0.4f) //special case, use b as alpha
+                        {
+                            r = 1.0f;
+                            g = 1.0f;
+                            b = 1.0f;
+                            a = std::stof(c3, nullptr)/2.0f; //for some bizarre reason, 0.5 alpha is seen as full opaque...
+                        }
+                        else
+                        {
+                            b = std::stof(c3, nullptr);
+                            a = 1.0f;
+                        }
+                        Vector4f colors(r, g, b, a);
+
                         Vertex* newVertex = new Vertex((int)vertices.size(), &vertex, &colors); INCR_NEW("Vertex");
                         vertices.push_back(newVertex);
                     }
@@ -1180,6 +1216,7 @@ void ObjLoader::convertDataToArrays(
         colorsArray->push_back(currentVertex->color.x);
         colorsArray->push_back(currentVertex->color.y);
         colorsArray->push_back(currentVertex->color.z);
+        colorsArray->push_back(currentVertex->color.w);
     }
 }
 
@@ -1316,6 +1353,10 @@ CollisionModel* ObjLoader::loadCollisionModel(std::string filePath, std::string 
                             else if (strcmp(lineSplitMTL[1], "wall") == 0)
                             {
                                 fakeTextures.back().type = 2;
+                            }
+                            else if (strcmp(lineSplitMTL[1], "death") == 0)
+                            {
+                                fakeTextures.back().type = 3;
                             }
                         }
                         else if (strcmp(lineSplitMTL[0], "sound") == 0 ||
@@ -1530,6 +1571,10 @@ CollisionModel* ObjLoader::loadBinaryCollisionModel(std::string filePath, std::s
                     else if (strcmp(lineSplitMTL[1], "wall") == 0)
                     {
                         fakeTextures.back().type = 2;
+                    }
+                    else if (strcmp(lineSplitMTL[1], "death") == 0)
+                    {
+                        fakeTextures.back().type = 3;
                     }
                 }
                 else if (strcmp(lineSplitMTL[0], "sound") == 0 ||

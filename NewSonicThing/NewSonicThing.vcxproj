@@ -163,6 +163,7 @@
     <ClCompile Include="src\engineTester\MainGameLoop.cpp" />
     <ClCompile Include="src\entities\Beetle.cpp" />
     <ClCompile Include="src\entities\Bullet.cpp" />
+    <ClCompile Include="src\entities\ChaosEmerald.cpp" />
     <ClCompile Include="src\entities\CharacterModels\ManiaKnucklesModel.cpp" />
     <ClCompile Include="src\entities\CharacterModels\ManiaMightyModel.cpp" />
     <ClCompile Include="src\entities\CharacterModels\ManiaSonicModel.cpp" />
@@ -173,6 +174,7 @@
     <ClCompile Include="src\entities\Camera.cpp" />
     <ClCompile Include="src\entities\ControllablePlayer.cpp" />
     <ClCompile Include="src\entities\DelfinoPlaza\DP_StageManager.cpp" />
+    <ClCompile Include="src\entities\DragonRoad\DR_StageManager.cpp" />
     <ClCompile Include="src\entities\DryLagoon\DL_BlueBox.cpp" />
     <ClCompile Include="src\entities\DryLagoon\DL_DigTeleport.cpp" />
     <ClCompile Include="src\entities\DryLagoon\DL_Plant1.cpp" />
@@ -337,6 +339,7 @@
     <ClInclude Include="src\engineTester\main.h" />
     <ClInclude Include="src\entities\beetle.h" />
     <ClInclude Include="src\entities\bullet.h" />
+    <ClInclude Include="src\entities\chaosemerald.h" />
     <ClInclude Include="src\entities\CharacterModels\maniaknucklesmodel.h" />
     <ClInclude Include="src\entities\CharacterModels\maniamightymodel.h" />
     <ClInclude Include="src\entities\CharacterModels\maniasonicmodel.h" />
@@ -347,6 +350,7 @@
     <ClInclude Include="src\entities\camera.h" />
     <ClInclude Include="src\entities\controllableplayer.h" />
     <ClInclude Include="src\entities\DelfinoPlaza\dpstagemanager.h" />
+    <ClInclude Include="src\entities\DragonRoad\drstagemanager.h" />
     <ClInclude Include="src\entities\DryLagoon\dlbluebox.h" />
     <ClInclude Include="src\entities\DryLagoon\dldigteleport.h" />
     <ClInclude Include="src\entities\DryLagoon\dlplant1.h" />

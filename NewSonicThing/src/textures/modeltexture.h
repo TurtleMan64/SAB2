@@ -30,7 +30,7 @@ public:
     float fogScale;
     int mixingType; //interpolation. 1 = binary, 2 = linear, 3 = sinusoid
     float animationSpeed; //delta per second
-    char renderOrder; //0 = rendered first (default), 1 = second, 2 = third, 3 = fourth + transparent (no depth testing)
+    char renderOrder; //0 = rendered first (default), 1 = second, 2 = third, 3 = fifth + transparent (no depth testing), 4 = fourth + no depth writing
 
     ModelTexture();
 

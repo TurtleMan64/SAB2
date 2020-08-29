@@ -38,7 +38,7 @@ void PlayerModel::log()
     frame.animIndex = currentAnimIndex;
     frame.animTime = currentAnimTime;
     frame.pos.set(&position);
-    //frame.pos = frame.pos + currentUpDirection.scaleCopy(8.0f); //todo: doesnt work on kart??
+    //frame.pos = frame.pos + currentUpDirection.scaleCopy(6.0f); //todo: doesnt work on kart??
     frame.rot.set(rotX, rotY, rotZ, rotRoll);
     frame.up.set(&currentUpDirection);
 

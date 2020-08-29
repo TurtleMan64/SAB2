@@ -33,6 +33,8 @@ private:
     int location_toShadowMapSpace;
     int location_waterHeight;
     int location_clipPlaneBehind;
+    int location_murkiness;
+    int location_waterColor;
 
     float matrixBuffer[16];
 
@@ -50,6 +52,10 @@ public:
     void loadSun(Light* sun);
 
     void loadWaterHeight(float waterHeight);
+
+    void loadWaterMurkyAmount(float waterMurkyAmount);
+
+    void loadWaterColor(Vector3f* waterColor);
 
     void loadMoveFactor(float factor);
 

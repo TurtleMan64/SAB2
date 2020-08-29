@@ -11,9 +11,9 @@ class Dashpad : public Entity
 {
 private:
     static std::list<TexturedModel*> models;
-    bool playerIsIn;
-    float power;
-    float controlLockTime;
+    bool playerIsIn = false;
+    float power = 100.0f;
+    float controlLockTime = 1.0f;
     Vector3f forward;
     Vector3f up;
 

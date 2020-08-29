@@ -1,0 +1,74 @@
+# Material Count: 12
+
+newmtl Mesh_0432.rip
+Ns 20
+Ni 1.000000
+d 1.000000
+map_Kd tex/DragonSymbol.dds
+
+newmtl Mesh_0400.rip
+Ns 20
+Ni 1.000000
+d 1.000000
+map_Kd tex/Rock1.dds
+
+newmtl Mesh_0423.rip
+Ns 20
+Ni 1.000000
+d 1.000000
+map_Kd tex/Brick1.dds
+
+newmtl Mesh_0439.rip
+Ns 20
+Ni 1.000000
+d 1.000000
+map_Kd tex/Brick2.dds
+
+newmtl Mesh_0459.rip
+Ns 20
+Ni 1.000000
+d 1.000000
+map_Kd tex/Brick3.dds
+
+newmtl Mesh_0449.rip
+Ns 20
+Ni 1.000000
+d 1.000000
+map_Kd tex/GreatWallRailing.png
+
+newmtl Mesh_0445.rip
+Ns 20
+Ni 1.000000
+d 1.000000
+map_Kd tex/Brick4.dds
+
+newmtl Mesh_0472.rip
+Ns 20
+Ni 1.000000
+d 1.000000
+map_Kd tex/Decor1.dds
+
+newmtl Mesh_0465.rip
+Ns 20
+Ni 1.000000
+d 1.000000
+map_Kd tex/Decor2.dds
+
+newmtl Mesh_0421.rip
+Ns 20
+Ni 1.000000
+d 1.000000
+map_Kd tex/GreatWallSide.png
+
+newmtl Mesh_0396.rip
+Ns 20
+Ni 1.000000
+d 1.000000
+map_Kd tex/Rock2.dds
+
+newmtl Mesh_0453.rip
+Ns 20
+Ni 1.000000
+d 1.000000
+map_Kd tex/Brick5.dds
+

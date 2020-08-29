@@ -49,6 +49,7 @@ private:
     int location_isRenderingTransparent;
     int location_waterColor;
     int location_waterBlendAmount;
+    int location_waterMurkyAmount;
 
 public:
     ShaderProgram(const char*, const char*);

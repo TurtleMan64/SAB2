@@ -9,7 +9,7 @@ public:
     const int NO_INDEX = -1;
 
     Vector3f position;
-    Vector3f color;
+    Vector4f color;
     int textureIndex = NO_INDEX;
     int normalIndex = NO_INDEX;
     Vertex* duplicateVertex;
@@ -18,7 +18,7 @@ public:
 
 public:
 
-    Vertex(int index, Vector3f* position, Vector3f* color);
+    Vertex(int index, Vector3f* position, Vector4f* color);
 
     Vertex(int index, Vector3f* position);
 

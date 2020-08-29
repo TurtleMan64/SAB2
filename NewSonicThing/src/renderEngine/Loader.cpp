@@ -40,7 +40,7 @@ RawModel Loader::loadToVAO(std::vector<float>* positions,
     vboIDs.push_back(storeDataInAttributeList(0, 3, positions));
     vboIDs.push_back(storeDataInAttributeList(1, 2, textureCoords));
     vboIDs.push_back(storeDataInAttributeList(2, 3, normals));
-    vboIDs.push_back(storeDataInAttributeList(3, 3, vertexColors));
+    vboIDs.push_back(storeDataInAttributeList(3, 4, vertexColors));
 
     unbindVAO();
 

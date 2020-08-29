@@ -42,7 +42,6 @@ void WaterRenderer::prepareRender(Camera* camera, Light* sun)
     Vector4f plane = Maths::calcPlaneValues(&startPos, &camDir);
     shader->loadClipPlaneBehind(&plane);
 
-
     if (Global::renderShadowsFar)
     {
         shader->loadToShadowSpaceMatrix(shadowMapRenderer->getToShadowMapSpaceMatrix());
@@ -52,6 +51,8 @@ void WaterRenderer::prepareRender(Camera* camera, Light* sun)
     shader->loadMoveFactor(moveFactor);
     shader->loadSun(sun);
     shader->loadWaterHeight(Global::waterHeight);
+    shader->loadWaterMurkyAmount(Global::stageWaterMurkyAmount);
+    shader->loadWaterColor(&Global::stageWaterColor);
     glBindVertexArray(quad->getVaoID());
     glEnableVertexAttribArray(0);
     glActiveTexture(GL_TEXTURE0);
@@ -99,6 +100,7 @@ void WaterRenderer::setUpVAO()
 
 void WaterRenderer::render(std::vector<WaterTile*>* water, Camera* camera, Light* sun)
 {
+    ANALYSIS_START("Water Rendering");
     prepareRender(camera, sun);
     float xOff = WaterTile::TILE_SIZE*((int)(camera->eye.x/WaterTile::TILE_SIZE));
     float zOff = WaterTile::TILE_SIZE*((int)(camera->eye.z/WaterTile::TILE_SIZE));
@@ -111,6 +113,7 @@ void WaterRenderer::render(std::vector<WaterTile*>* water, Camera* camera, Light
         glDrawArrays(GL_TRIANGLES, 0, quad->getVertexCount());
     }
     unbind();
+    ANALYSIS_DONE("Water Rendering");
 }
 
 void WaterRenderer::updateProjectionMatrix(Matrix4f* projectionMatrix)

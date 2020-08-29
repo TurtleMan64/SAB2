@@ -82,6 +82,7 @@ bool CollisionChecker::checkCollision(
     float px1, float py1, float pz1,
     float px2, float py2, float pz2)
 {
+    ANALYSIS_START("Collision Checking");
     bool triangleCollide = false;
     CollisionModel* finalModel = nullptr;
 
@@ -332,6 +333,7 @@ bool CollisionChecker::checkCollision(
     CollisionChecker::checkPlayer = false;
     CollisionChecker::debug = false;
 
+    ANALYSIS_DONE("Collision Checking");
     return triangleCollide;
 }
 

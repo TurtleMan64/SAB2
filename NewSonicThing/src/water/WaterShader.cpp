@@ -76,6 +76,16 @@ void WaterShader::loadWaterHeight(float waterHeight)
     loadFloat(location_waterHeight, waterHeight);
 }
 
+void WaterShader::loadWaterMurkyAmount(float murkyAmount)
+{
+    loadFloat(location_murkiness, murkyAmount);
+}
+
+void WaterShader::loadWaterColor(Vector3f* waterColor)
+{
+    loadVector(location_waterColor, waterColor);
+}
+
 void WaterShader::loadMoveFactor(float factor)
 {
     loadFloat(location_moveFactor, factor);
@@ -144,6 +154,8 @@ void WaterShader::getAllUniformLocations()
     location_toShadowMapSpace  = getUniformLocation("toShadowMapSpace");
     location_waterHeight       = getUniformLocation("waterHeight");
     location_clipPlaneBehind   = getUniformLocation("clipPlaneBehind");
+    location_murkiness         = getUniformLocation("murkiness");
+    location_waterColor        = getUniformLocation("waterColor");
 }
 
 int WaterShader::getUniformLocation(const char* uniformName)

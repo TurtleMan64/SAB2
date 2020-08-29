@@ -27,7 +27,7 @@ public:
     float C;
     float D;
 
-    char type; //0 = normal, 1 = diggable, 2 = wall
+    char type; //0 = normal, 1 = diggable, 2 = wall, 3 = death
 
     char sound;
 
@@ -50,6 +50,8 @@ public:
     bool isWall();
 
     bool isDiggable();
+
+    bool isDeath();
 };
 
 #endif

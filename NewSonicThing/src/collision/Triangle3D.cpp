@@ -99,3 +99,8 @@ bool Triangle3D::isDiggable()
 {
     return (type == 1);
 }
+
+bool Triangle3D::isDeath()
+{
+    return (type == 3);
+}
