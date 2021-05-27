@@ -1,6 +1,8 @@
 # Sonic Adventure Blast 2
 
-A sequel to [Sonic Adventure Blast](https://github.com/TurtleMan64/Sonic3DGamev3), my older 3D Sonic fangame. SAB2 will have many improvements and other new features. Currently still a work in progress.
+A sequel to [Sonic Adventure Blast](https://github.com/TurtleMan64/Sonic3DGamev3), my older 3D Sonic fangame. SAB2 will have many improvements and other new features. 
+
+**Currently still a work in progress.**
 
 
 ## Screenshots
