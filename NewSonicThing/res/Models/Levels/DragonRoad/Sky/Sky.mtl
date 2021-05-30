@@ -8,7 +8,7 @@ d 0
 renderOrder 1
 glow 1
 Tr 0
-map_Kd Tex_0107_0.dds
+map_Kd Tex_0107_0.png
 
 newmtl Mesh_0533.rip
 Ns 20.000000
@@ -17,7 +17,7 @@ fogScale 0
 d 0
 glow 1
 Tr 0
-map_Kd Tex_0105_0.dds
+map_Kd Tex_0105_0.png
 
 newmtl Mesh_0532.rip
 Ns 20.000000
@@ -26,4 +26,4 @@ fogScale 0
 glow 1
 d 0
 Tr 0
-map_Kd Tex_0104_0.dds
+map_Kd Tex_0104_0.png

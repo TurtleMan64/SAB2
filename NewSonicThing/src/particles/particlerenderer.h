@@ -13,6 +13,7 @@ class GF_Particle;
 
 #include "../renderEngine/renderEngine.h"
 #include <list>
+#include <vector>
 #include <unordered_map>
 #include <glad/glad.h>
 
@@ -22,11 +23,25 @@ private:
     RawModel* quad;
     ParticleShader* shader;
 
+    const int MAX_INSTANCES = 10000;
+    const int INSTANCED_DATA_LENGTH = 21;
+
+    std::vector<float> vboDataBuffer;
+    int vboBufferIdx = 0;
+
+    GLuint vbo;
+
     void prepare();
+
+    void bindTexture(ParticleTexture* texture);
 
     void finishRendering();
 
     void updateModelViewMatrix(Vector3f* position, float rotation, float scaleX, float scaleY, Matrix4f* viewMatrix);
+
+    void storeMatrixData(Matrix4f* matrix);
+
+    void updateTexCoordInfo(Particle* particle);
 
 public:
     ParticleRenderer(Matrix4f* projectionMatrix);

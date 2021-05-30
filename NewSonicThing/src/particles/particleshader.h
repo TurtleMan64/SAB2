@@ -17,11 +17,8 @@ private:
     GLuint vertexShaderID;
     GLuint fragmentShaderID;
 
-    int location_modelViewMatrix;
     int location_projectionMatrix;
-    int location_texOffset1;
-    int location_texOffset2;
-    int location_texCoordInfo;
+    int location_numberOfRows;
     int location_brightness;
     int location_opacity;
     int location_glow;
@@ -37,8 +34,6 @@ public:
 
     void cleanUp();
 
-    void loadTextureCoordInfo(Vector2f* offset1, Vector2f* offset2, float numRows, float blend);
-
     void loadBrightness(float brightness);
 
     void loadOpacity(float opacity);
@@ -47,7 +42,7 @@ public:
 
     void loadProjectionMatrix(Matrix4f* projectionMatrix);
 
-    void loadModelViewMatrix(Matrix4f* modelView);
+    void loadNumberOfRows(float numRows);
 
 
 protected:

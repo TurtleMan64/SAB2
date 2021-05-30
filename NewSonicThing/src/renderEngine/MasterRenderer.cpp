@@ -201,6 +201,7 @@ void Master_render(Camera* camera, float clipX, float clipY, float clipZ, float 
     shader->loadFogBottomThickness(SkyManager::fogBottomThickness);
     shader->loadViewMatrix(camera);
     shader->loadIsRenderingTransparent(false);
+    shader->loadIsRenderingDepth(false);
     shader->loadWaterColor(&Global::stageWaterColor);
     shader->loadWaterBlendAmount(waterBlendAmount);
     shader->connectTextureUnits();
@@ -208,6 +209,7 @@ void Master_render(Camera* camera, float clipX, float clipY, float clipZ, float 
     renderer->renderNEW(&entitiesMap, shadowMapRenderer->getToShadowMapSpaceMatrix(), shadowMapRenderer2->getToShadowMapSpaceMatrix());
     renderer->renderNEW(&entitiesMapPass2, shadowMapRenderer->getToShadowMapSpaceMatrix(), shadowMapRenderer2->getToShadowMapSpaceMatrix());
     renderer->renderNEW(&entitiesMapPass3, shadowMapRenderer->getToShadowMapSpaceMatrix(), shadowMapRenderer2->getToShadowMapSpaceMatrix());
+
     glDepthMask(false);
     renderer->renderNEW(&entitiesMapNoDepth, shadowMapRenderer->getToShadowMapSpaceMatrix(), shadowMapRenderer2->getToShadowMapSpaceMatrix());
     prepareRenderDepthOnly();
@@ -216,35 +218,13 @@ void Master_render(Camera* camera, float clipX, float clipY, float clipZ, float 
     glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
     shader->stop();
 
-    //prepareTransparentRender();
-    //renderer->renderNEW(&entitiesMapTransparent, shadowMapRenderer->getToShadowMapSpaceMatrix(), shadowMapRenderer2->getToShadowMapSpaceMatrix());
-    //prepareTransparentRenderDepthOnly();
-    //renderer->renderNEW(&entitiesMapTransparent, shadowMapRenderer->getToShadowMapSpaceMatrix(), shadowMapRenderer2->getToShadowMapSpaceMatrix());
-
-    //glBindTexture(GL_TEXTURE_2D, 0);//To make sure the texture isn't bound
-    //glBindFramebuffer(GL_FRAMEBUFFER, transparentFrameBuffer);
-    //glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
-
-    //prepareTransparentRenderDepthOnly();
-
-    glBindTexture(GL_TEXTURE_2D, 0);//To make sure the texture isn't bound
+    //Calculate the depth buffer of all transparent entities, before making a 2nd pass.
+    glBindTexture(GL_TEXTURE_2D, 0);
     glBindFramebuffer(GL_FRAMEBUFFER, transparentFrameBuffer);
     glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
 
-    //prepare();
-
-    //glEnable(GL_MULTISAMPLE);
-    //glEnable(GL_BLEND);
-    //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    //glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-
-    //glEnable(GL_DEPTH_TEST);
-    //glDepthMask(true);
     glClear(GL_DEPTH_BUFFER_BIT);
     //glDisable(GL_MULTISAMPLE); //dont multisample for depth buffer calc... doesnt really make a difference though
-    //glClearColor(RED, GREEN, BLUE, 1);
-
 
     shader->start();
     shader->loadClipPlane(clipX, clipY, clipZ, clipW);
@@ -257,26 +237,27 @@ void Master_render(Camera* camera, float clipX, float clipY, float clipZ, float 
     shader->loadFogBottomThickness(SkyManager::fogBottomThickness);
     shader->loadViewMatrix(camera);
     shader->loadIsRenderingTransparent(false);
+    shader->loadIsRenderingDepth(true);
     shader->loadWaterColor(&Global::stageWaterColor);
     shader->loadWaterBlendAmount(waterBlendAmount);
     shader->connectTextureUnits();
+
     renderer->renderNEW(&entitiesMapTransparent, shadowMapRenderer->getToShadowMapSpaceMatrix(), shadowMapRenderer2->getToShadowMapSpaceMatrix());
     shader->stop();
-    //glEnable(GL_MULTISAMPLE); //re enable depth buffer after rendering depth buffer
-    glBindFramebuffer(GL_FRAMEBUFFER, currFB);
+    
+    //We have finished creating depth buffer for transparent entities. Now go and do a 2nd pass, this time
+    // using the depth buffer to only render the pixels closest to the screen.
+    glBindFramebuffer(GL_FRAMEBUFFER, currFB); //Switch back to rendering to whatever we were before.
     glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
-    //prepareTransparentRender();
-    //glActiveTexture(GL_TEXTURE8);
-    //glBindTexture(GL_TEXTURE_2D, transparentDepthTexture);
-    //shader->loadIsRenderingTransparent(true);
-    //renderer->renderNEW(&entitiesMapTransparent, shadowMapRenderer->getToShadowMapSpaceMatrix(), shadowMapRenderer2->getToShadowMapSpaceMatrix());
 
-    //glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-
-    //shader->stop();
+    //Note: There is some sort of bug somewhere around here. Transparent entities don't seem to get rendered to the bloom effect.
+    // This means that things like the skybox color can "leak" into the bloom if your skybox model is all marked as transparent.
+    // It will also just mean in general that transparent entities won;t have bloom I think. Not really sure why this is happening
+    // or how to fix it.
 
     glActiveTexture(GL_TEXTURE8);
-    glBindTexture(GL_TEXTURE_2D, transparentDepthTexture);
+    glBindTexture(GL_TEXTURE_2D, transparentDepthTexture); //Assign the depth buffer we just calculated to TEXTURE8
+
     shader->start();
     shader->loadClipPlane(clipX, clipY, clipZ, clipW);
     shader->loadClipPlaneBehind(plane.x, plane.y, plane.z, plane.w);
@@ -288,9 +269,11 @@ void Master_render(Camera* camera, float clipX, float clipY, float clipZ, float 
     shader->loadFogBottomThickness(SkyManager::fogBottomThickness);
     shader->loadViewMatrix(camera);
     shader->loadIsRenderingTransparent(true);
+    shader->loadIsRenderingDepth(false);
     shader->loadWaterColor(&Global::stageWaterColor);
     shader->loadWaterBlendAmount(waterBlendAmount);
     shader->connectTextureUnits();
+
     renderer->renderNEW(&entitiesMapTransparent, shadowMapRenderer->getToShadowMapSpaceMatrix(), shadowMapRenderer2->getToShadowMapSpaceMatrix());
     glBindTexture(GL_TEXTURE_2D, 0);
     shader->stop();
@@ -414,16 +397,6 @@ void prepareTransparentRender()
 
 void prepareRenderDepthOnly()
 {
-    //glBindTexture(GL_TEXTURE_2D, 0);//To make sure the texture isn't bound
-    //glBindFramebuffer(GL_FRAMEBUFFER, transparentFrameBuffer);
-    //glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
-
-    //glEnable(GL_BLEND);
-    //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    //glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-    //glDepthMask(true);
-    //glDisable(GL_DEPTH_TEST);
-
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);

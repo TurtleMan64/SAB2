@@ -1968,7 +1968,10 @@ void PlayerKnuckles::moveMeAir()
             }
         }
 
-        if (vel.lengthSquared() < airGlideSpeedMin*airGlideSpeedMin)
+        Vector3f velFlat = vel;
+        velFlat.y = 0;
+
+        if (velFlat.lengthSquared() < airGlideSpeedMin*airGlideSpeedMin)
         {
             float storedVelY = vel.y;
             vel.y = 0;
@@ -1976,7 +1979,7 @@ void PlayerKnuckles::moveMeAir()
             vel.y = storedVelY;
         }
 
-        if (vel.lengthSquared() > airGlideSpeedMax*airGlideSpeedMax)
+        if (velFlat.lengthSquared() > airGlideSpeedMax*airGlideSpeedMax)
         {
             float storedVelY = vel.y;
             vel.y = 0;

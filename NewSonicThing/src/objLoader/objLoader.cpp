@@ -464,7 +464,7 @@ int ObjLoader::loadObjModel(std::list<TexturedModel*>* models, std::string fileP
                             r = 1.0f;
                             g = 1.0f;
                             b = 1.0f;
-                            a = std::stof(c3, nullptr)/2.0f; //for some bizarre reason, 0.5 alpha is seen as full opaque...
+                            a = std::stof(c3, nullptr);
                         }
                         else
                         {
@@ -839,7 +839,7 @@ int ObjLoader::loadObjModelWithMTL(std::list<TexturedModel*>* models, std::strin
                             r = 1.0f;
                             g = 1.0f;
                             b = 1.0f;
-                            a = std::stof(c3, nullptr)/2.0f; //for some bizarre reason, 0.5 alpha is seen as full opaque...
+                            a = std::stof(c3, nullptr);
                         }
                         else
                         {

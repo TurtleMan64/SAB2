@@ -70,6 +70,13 @@ public:
     //for water
     static RawModel loadToVAO(std::vector<float>* positions, int dimensions);
 
+    //for instanced rendering particles
+    static GLuint createEmptyVBO(int floatCount);
+
+    static void addInstancedAttribute(GLuint vao, GLuint vbo, int attribute, int dataSize, int instancedDataLength, int offset);
+
+    static void updateVBO(GLuint vbo, int bufferNumFloats, std::vector<float>* buffer);
+
     //Loads a texture into GPU memory, returns the GLuint id
     static GLuint loadTexture(const char* filename);
 

@@ -58,7 +58,7 @@ ChaosEmerald::ChaosEmerald(float x, float y, float z, int id)
 
     if (found)
     {
-        baseAlpha = 0.25f;
+        baseAlpha = 0.2f;
         renderOrderOverride = 2;
     }
 

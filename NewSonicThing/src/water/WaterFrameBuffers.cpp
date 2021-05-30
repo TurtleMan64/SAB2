@@ -2,6 +2,9 @@
 #include "waterframebuffers.h"
 #include "../engineTester/main.h"
 
+extern unsigned int SCR_WIDTH;
+extern unsigned int SCR_HEIGHT;
+
 WaterFrameBuffers::WaterFrameBuffers()
 {
     initialiseReflectionFrameBuffer();
@@ -11,16 +14,29 @@ WaterFrameBuffers::WaterFrameBuffers()
 void WaterFrameBuffers::initialiseReflectionFrameBuffer()
 {
     reflectionFrameBuffer = createFrameBuffer();
-    reflectionTexture     = createTextureAttachment(Global::HQWaterReflectionWidth, Global::HQWaterReflectionHeight);
-    reflectionDepthBuffer = createDepthBufferAttachment(Global::HQWaterReflectionWidth, Global::HQWaterReflectionHeight);
+
+    //reflectionTexture     = createTextureAttachment(Global::HQWaterReflectionWidth, Global::HQWaterReflectionHeight);
+    //reflectionDepthBuffer = createDepthBufferAttachment(Global::HQWaterReflectionWidth, Global::HQWaterReflectionHeight);
+
+    //Curently a bug if the water texture sizes are different than window size. Bug makes refracted and reflected 
+    // particles to be displaced.
+    reflectionTexture = createTextureAttachment(SCR_WIDTH, SCR_HEIGHT);
+    reflectionDepthBuffer = createDepthBufferAttachment(SCR_WIDTH, SCR_HEIGHT);
+
     unbindCurrentFrameBuffer();
 }
 
 void WaterFrameBuffers::initialiseRefractionFrameBuffer()
 {
     refractionFrameBuffer  = createFrameBuffer();
-    refractionTexture      = createTextureAttachment(Global::HQWaterRefractionWidth, Global::HQWaterRefractionHeight);
-    refractionDepthTexture = createDepthTextureAttachment(Global::HQWaterRefractionWidth, Global::HQWaterRefractionHeight);
+
+    //Bug "fix" (refer above)
+    //refractionTexture      = createTextureAttachment(Global::HQWaterRefractionWidth, Global::HQWaterRefractionHeight);
+    //refractionDepthTexture = createDepthTextureAttachment(Global::HQWaterRefractionWidth, Global::HQWaterRefractionHeight);
+
+    refractionTexture = createTextureAttachment(SCR_WIDTH, SCR_HEIGHT);
+    refractionDepthTexture = createDepthTextureAttachment(SCR_WIDTH, SCR_HEIGHT);
+
     unbindCurrentFrameBuffer();
 }
 
@@ -89,19 +105,22 @@ void WaterFrameBuffers::cleanUp()
 
 void WaterFrameBuffers::bindReflectionFrameBuffer()
 {
-    bindFrameBuffer(reflectionFrameBuffer, Global::HQWaterReflectionWidth, Global::HQWaterReflectionHeight);
+    //Bug "fix" (refer above)
+    //bindFrameBuffer(reflectionFrameBuffer, Global::HQWaterReflectionWidth, Global::HQWaterReflectionHeight);
+
+    bindFrameBuffer(reflectionFrameBuffer, SCR_WIDTH, SCR_HEIGHT);
 }
 
 void WaterFrameBuffers::bindRefractionFrameBuffer()
 {
-    bindFrameBuffer(refractionFrameBuffer, Global::HQWaterRefractionWidth, Global::HQWaterRefractionHeight);
+    //Bug "fix" (refer above)
+    //bindFrameBuffer(refractionFrameBuffer, Global::HQWaterRefractionWidth, Global::HQWaterRefractionHeight);
+
+    bindFrameBuffer(refractionFrameBuffer, SCR_WIDTH, SCR_HEIGHT);
 }
 
 void WaterFrameBuffers::unbindCurrentFrameBuffer()
 {
-    extern unsigned SCR_WIDTH;
-    extern unsigned SCR_HEIGHT;
-
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
 }

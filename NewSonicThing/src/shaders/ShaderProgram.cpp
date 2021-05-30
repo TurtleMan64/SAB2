@@ -196,6 +196,7 @@ void ShaderProgram::getAllUniformLocations()
     location_waterColor             = getUniformLocation("waterColor");
     location_waterBlendAmount       = getUniformLocation("waterBlendAmount");
     location_waterMurkyAmount       = getUniformLocation("waterMurkyAmount");
+    location_isRenderingDepth       = getUniformLocation("isRenderingDepth");
 }
 
 int ShaderProgram::getUniformLocation(const char* uniformName)
@@ -282,6 +283,11 @@ void ShaderProgram::loadFogScale(float scale)
 void ShaderProgram::loadIsRenderingTransparent(bool value)
 {
     loadInt(location_isRenderingTransparent, (int)value);
+}
+
+void ShaderProgram::loadIsRenderingDepth(bool value)
+{
+    loadInt(location_isRenderingDepth, (int)value);
 }
 
 void ShaderProgram::loadWaterColor(Vector3f* color)

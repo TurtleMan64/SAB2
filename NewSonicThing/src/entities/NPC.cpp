@@ -104,8 +104,8 @@ NPC::NPC(float x, float y, float z, float dirX, float dirZ, int id, std::string 
 
     if (found)
     {
-        baseAlpha = 0.35f;
-        glasses->baseAlpha = 0.35f;
+        baseAlpha = 0.25f;
+        glasses->baseAlpha = 0.25f;
         renderOrderOverride = 3;
         glasses->renderOrderOverride = 3;
     }

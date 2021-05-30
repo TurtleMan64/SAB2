@@ -46,14 +46,6 @@ void ParticleShader::cleanUp()
     glDeleteProgram(programID);
 }
 
-void ParticleShader::loadTextureCoordInfo(Vector2f* offset1, Vector2f* offset2, float numRows, float blend)
-{
-    load2DVector(location_texOffset1, offset1);
-    load2DVector(location_texOffset2, offset2);
-    Vector2f info(numRows, blend);
-    load2DVector(location_texCoordInfo, &info);
-}
-
 void ParticleShader::loadBrightness(float brightness)
 {
     loadFloat(location_brightness, brightness);
@@ -69,19 +61,22 @@ void ParticleShader::loadGlow(float glow)
     loadFloat(location_glow, glow);
 }
 
+void ParticleShader::loadNumberOfRows(float numberRows)
+{
+    loadFloat(location_numberOfRows, numberRows);
+}
+
 void ParticleShader::loadProjectionMatrix(Matrix4f* projectionMatrix)
 {
     loadMatrix(location_projectionMatrix, projectionMatrix);
 }
 
-void ParticleShader::loadModelViewMatrix(Matrix4f* modelView)
-{
-    loadMatrix(location_modelViewMatrix, modelView);
-}
-
 void ParticleShader::bindAttributes()
 {
     bindAttribute(0, "position");
+    bindAttribute(1, "modelViewMatrix");
+    bindAttribute(5, "textureOffsets");
+    bindAttribute(6, "blendFactor");
 }
 
 void ParticleShader::bindAttribute(int attribute, const char* variableName)
@@ -91,11 +86,8 @@ void ParticleShader::bindAttribute(int attribute, const char* variableName)
 
 void ParticleShader::getAllUniformLocations()
 {
-    location_modelViewMatrix  = getUniformLocation("modelViewMatrix");
     location_projectionMatrix = getUniformLocation("projectionMatrix");
-    location_texOffset1       = getUniformLocation("texOffset1");
-    location_texOffset2       = getUniformLocation("texOffset2");
-    location_texCoordInfo     = getUniformLocation("texCoordInfo");
+    location_numberOfRows     = getUniformLocation("numberOfRows");
     location_brightness       = getUniformLocation("brightness");
     location_opacity          = getUniformLocation("opacity");
     location_glow             = getUniformLocation("glow");

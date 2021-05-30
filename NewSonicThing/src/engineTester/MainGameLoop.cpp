@@ -433,7 +433,7 @@ int main(int argc, char** argv)
 
         timeNew = glfwGetTime();
 
-        #ifndef WIN32
+        #ifndef WIN32LOL
         //spin lock to meet the target fps, and gives extremely consistent dt's.
         // also of course uses a ton of cpu.
         if (Global::gameState == STATE_RUNNING && Global::framerateUnlock)
@@ -455,6 +455,7 @@ int main(int argc, char** argv)
         // which is the video looks choppy at bad fps targets. For example, if you set the target to 
         // 60fps on a 60fps monitor, then it looks fine. But, if you set the target to 90fps, then
         // it looks very choppy.
+        // EDIT: Sleep no longer does this and always does like intervals of 16ms... so this is pointless now...
         if (Global::gameState == STATE_RUNNING && Global::framerateUnlock)
         {
             if (Global::fpsLimit > 0.0f)

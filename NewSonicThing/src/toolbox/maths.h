@@ -58,7 +58,7 @@ public:
     static unsigned int getSignBit(float value);
 
     //calculates the number of base 10 decimal digits in the number. 
-    // examples: numDigits(38)    = 2  
+    // examples: numDigits(38)    = 2
     //           numDigits(68932) = 5
     static int numDigits(int number);
 

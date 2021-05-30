@@ -50,6 +50,7 @@ private:
     int location_waterColor;
     int location_waterBlendAmount;
     int location_waterMurkyAmount;
+    int location_isRenderingDepth;
 
 public:
     ShaderProgram(const char*, const char*);
@@ -109,6 +110,8 @@ public:
     void loadWaterColor(Vector3f* color);
 
     void loadWaterBlendAmount(float);
+
+    void loadIsRenderingDepth(bool value);
 
     void connectTextureUnits();
 

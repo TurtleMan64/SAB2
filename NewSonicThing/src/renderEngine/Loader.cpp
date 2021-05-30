@@ -73,6 +73,38 @@ RawModel Loader::loadToVAO(std::vector<float>* positions, int dimensions)
     return RawModel(vaoID, (int)positions->size() / dimensions, &vboIDs);
 }
 
+//for instanced rendering particles
+GLuint Loader::createEmptyVBO(int floatCount)
+{
+    GLuint vboID;
+    glGenBuffers(1, &vboID);
+    vbos.push_back(vboID);
+    vboNumber++;
+    glBindBuffer(GL_ARRAY_BUFFER, vboID);
+    glBufferData(GL_ARRAY_BUFFER, floatCount*sizeof(float), nullptr, GL_STREAM_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    return vboID;
+}
+
+void Loader::addInstancedAttribute(GLuint vao, GLuint vbo, int attribute, int dataSize, int instancedDataLength, int offset)
+{
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBindVertexArray(vao);
+    glVertexAttribPointer(attribute, dataSize, GL_FLOAT, false, instancedDataLength*4, (const void*)(offset*4)); //might need to do something different here
+    glVertexAttribDivisor(attribute, 1);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+}
+
+void Loader::updateVBO(GLuint vbo, int bufferNumFloats, std::vector<float>* buffer)
+{
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, buffer->size()*4, nullptr, GL_STREAM_DRAW); //clear current buffer (unnessesary but adds speed up apparently)
+    glBufferSubData(GL_ARRAY_BUFFER, 0, bufferNumFloats*4, &(*buffer)[0]);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
 GLuint Loader::loadTexture(const char* fileName)
 {
     if (Loader::textures.find(fileName) != Loader::textures.end())

@@ -17,6 +17,7 @@ uniform sampler2D textureSampler;
 uniform sampler2D textureSampler2;
 uniform sampler2D depthBufferTransparent;
 uniform int   isRenderingTransparent;
+uniform int   isRenderingDepth;
 uniform vec3  sunDirInv;
 uniform vec3  sunColor;
 uniform float shineDamper;
@@ -39,11 +40,54 @@ uniform float fogBottomThickness;
 
 void main(void)
 {
-    if (isRenderingTransparent != 0)
+    if (isRenderingDepth != 0)
+    {
+        //uint depth = floatBitsToInt(gl_FragCoord.z/gl_FragCoord.w);
+        
+        //uint intR = (((depth    )    )    ) % 256;
+        //uint intG = (((depth/256)    )    ) % 256;
+        //uint intB = (((depth/256)/256)    ) % 256;
+        //uint intA = (((depth/256)/256)/256) % 256;
+        
+        //out_Color = vec4(intR/255.0f, intG/255.0f, intB/255.0f, intA/255.0f);
+        return;
+    }
+    else if (isRenderingTransparent != 0)
     {
         //float closestDepth = texture(depthBufferTransparent, vec2(gl_FragCoord.x/WINDOW_SIZE.x, gl_FragCoord.y/WINDOW_SIZE.y)).r;
         float closestDepth = texelFetch(depthBufferTransparent, ivec2(gl_FragCoord.xy), 0).r;
-        if (!(closestDepth > gl_FragCoord.z-0.00005))
+        
+        //float offset = 0.00005;
+        //float linear = (gl_FragCoord.z/gl_FragCoord.w);
+        //float offset = 0.00005 * (gl_FragCoord.z+10);
+        //float val = mod(closestDepth*0.5, 1.0);
+        //float val = (gl_FragCoord.z/gl_FragCoord.w);
+        //val = mod(val*0.1, 1.0);
+        //out_Color.rbga = vec4(val, val, val, 1.0);
+        //return;
+        
+        //some ambient occlusion testing
+        //float mydepth = texelFetch(depthBufferTransparent, ivec2(gl_FragCoord.x         , gl_FragCoord.y),          0).r;
+        //float factor = 1.0;
+        //const int num = 10;
+        //for (int x = -num; x < num; x++)
+        //{
+        //    for (int y = 1; y < num; y++)
+        //    {
+        //        float depth1 = texelFetch(depthBufferTransparent, ivec2(gl_FragCoord.x-x, gl_FragCoord.y-y), 0).r;
+        //        float depth2 = texelFetch(depthBufferTransparent, ivec2(gl_FragCoord.x+x, gl_FragCoord.y+y), 0).r;
+        //        if (depth1 < mydepth && depth2 < mydepth)
+        //        {
+        //            factor -= 1 / (num*num*0.5);
+        //        }
+        //    }
+        //}
+        
+        //out_Color.rbga = vec4(factor, factor, factor, 1.0);
+        //return;
+        //rawTextureColour = vec4(rawTextureColour.r*factor, rawTextureColour.g*factor, rawTextureColour.b*factor, rawTextureColour.a);
+        
+        if (!(closestDepth > gl_FragCoord.z - 0.00005))
         {
             discard;
         }
@@ -51,12 +95,12 @@ void main(void)
     
     vec4 rawTextureColour = mix(texture(textureSampler, pass_textureCoords), texture(textureSampler2, pass_textureCoords), mixFactor);
     rawTextureColour.rgb *= baseColour*pass_vertexColor.rgb;
-    rawTextureColour.a   *= baseAlpha*pass_vertexColor.a;
-    
+    rawTextureColour.a   *= baseAlpha*pass_vertexColor.a*0.5; //for some bizarre reason, 0.5 alpha is seen as full opaque...
+
     
     if (hasTransparency == 0)
     {
-        if (rawTextureColour.a < 0.9)
+        if (rawTextureColour.a < 0.45)
         {
             discard;
         }
@@ -120,4 +164,8 @@ void main(void)
     
     //water
     out_Color.rgb = mix(out_Color.rgb, waterColor, waterBlendAmount);
+    
+    //float z = (gl_FragCoord.z/gl_FragCoord.w)*0.001;
+    //float z = (gl_FragCoord.z);
+    //out_Color = vec4(z, z, z, rawTextureColour.a);
 }
