@@ -35,7 +35,7 @@ Timer::Timer(FontType* font, float posX, float posY, float height, int alignment
 
 Timer::~Timer()
 {
-    //std::cout << "Deleting timer\n";
+    //printf("deleting Timer object");
     if (Global::mainHudTimer == this)
     {
         Global::mainHudTimer = nullptr;

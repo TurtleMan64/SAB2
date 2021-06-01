@@ -21,7 +21,7 @@
 #include "../collision/quadtreenode.h"
 #include "../toolbox/maths.h"
 
-int ObjLoader::ObjLoader::loadModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName)
+int ObjLoader::loadModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName)
 {
     int attemptBinaryOBJ = loadBinaryModel(models, filePath, fileName+".binobj");
     
@@ -677,7 +677,8 @@ void ObjLoader::parseMtl(std::string filePath, std::string fileName, std::unorde
                     currentNumImages--;
                 }
 
-                ModelTexture newTexture(&textureIDs);
+                std::vector<unsigned int>* texturesPointer = &textureIDs;
+                ModelTexture newTexture = ModelTexture(texturesPointer);
 
                 newTexture.shineDamper = currentShineDamperValue;
                 newTexture.reflectivity = currentReflectivityValue;
@@ -1678,8 +1679,9 @@ void ObjLoader::deleteUnusedMtl(std::unordered_map<std::string, ModelTexture>* m
         bool foundTexture = false;
         for (int i = 0; i < (int)usedMtls->size(); i++)
         {
-            ModelTexture tex = (*usedMtls)[i]; //get a copy of it
-            if (tex.equalTo(&it->second))
+            ModelTexture texUsed = (*usedMtls)[i]; //get a copy of it
+            ModelTexture texInBigMap = it->second;
+            if (texUsed.equalTo(&texInBigMap))
             {
                 foundTexture = true;
                 break;

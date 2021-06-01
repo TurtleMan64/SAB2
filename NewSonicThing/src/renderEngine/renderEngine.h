@@ -15,6 +15,7 @@ class ShadowMapMasterRenderer2;
 #include <GLFW/glfw3.h>
 #include <list>
 #include <vector>
+#include <string>
 #include <unordered_map>
 #include "../models/models.h"
 
@@ -73,7 +74,7 @@ public:
     //for instanced rendering particles
     static GLuint createEmptyVBO(int floatCount);
 
-    static void addInstancedAttribute(GLuint vao, GLuint vbo, int attribute, int dataSize, int instancedDataLength, int offset);
+    static void addInstancedAttribute(GLuint vao, GLuint vbo, int attribute, int dataSize, int instancedDataLength, long long offset);
 
     static void updateVBO(GLuint vbo, int bufferNumFloats, std::vector<float>* buffer);
 

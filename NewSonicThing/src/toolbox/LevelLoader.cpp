@@ -181,6 +181,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
             if (Global::gameLives < 0)
             {
                 LevelLoader::loadTitle();
+                printf("playerFailedArcadeMode = true\n");
                 MenuManager::playerFailedArcadeMode = true;
                 return;
             }

@@ -464,7 +464,7 @@ void ManiaKnucklesModel::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading mania mighty static models...\n");
+    std::fprintf(stdout, "Loading mania knuckles static models...\n");
     #endif
 
     ObjLoader::ObjLoader::loadModel(&ManiaKnucklesModel::modelBody,         "res/Models/Characters/ManiaKnuckles/", "Body");

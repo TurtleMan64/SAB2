@@ -31,6 +31,7 @@
 #include "shieldgreen.h"
 #include "shieldmagnet.h"
 #include "../guis/guitexture.h"
+#include "../menu/hud.h"
 
 #include <list>
 #include <vector>
@@ -704,6 +705,7 @@ void PlayerTails::step()
         if (combo > 1)
         {
             Global::gameScore += 100*(combo - 1);
+            HUD::displayPointBonus(combo - 1);
         }
         combo = 0;
     }

@@ -22,8 +22,8 @@ SR_StageManager::SR_StageManager()
     skyTransparent = new Dummy(&SR_StageManager::modelsSkyTransparent); INCR_NEW("Entity");
 
     skyPass2->visible = true;
-    skyPass3->visible = true;
-    skyTransparent->visible = true;
+    skyPass3->visible = false;
+    skyTransparent->visible = false;
 
     Global::addEntity(skyPass2);
     Global::addEntity(skyPass3);
@@ -62,7 +62,7 @@ void SR_StageManager::loadStaticModels()
     #endif
 
     ObjLoader::loadModel(&SR_StageManager::modelsSkyPass1,       "res/Models/Levels/SkyRail/Sky/", "Pass1");
-    ObjLoader::loadModel(&SR_StageManager::modelsSkyPass2,       "res/Models/Levels/SkyRail/Sky/", "Pass2");
+    ObjLoader::loadModel(&SR_StageManager::modelsSkyPass2,       "res/Models/Levels/SkyRail/Sky/", "Pass2New");
     ObjLoader::loadModel(&SR_StageManager::modelsSkyPass3,       "res/Models/Levels/SkyRail/Sky/", "Pass3");
     ObjLoader::loadModel(&SR_StageManager::modelsSkyTransparent, "res/Models/Levels/SkyRail/Sky/", "Transparent");
 

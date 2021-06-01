@@ -6,6 +6,7 @@ Ni 0.000000
 fogScale 0
 d 0
 renderOrder 1
+scrollX 0.015
 glow 1
 Tr 0
 map_Kd Tex_0107_0.png
@@ -16,6 +17,7 @@ Ni 0.000000
 fogScale 0
 d 0
 glow 1
+scrollX 0.0
 Tr 0
 map_Kd Tex_0105_0.png
 
@@ -24,6 +26,7 @@ Ns 20.000000
 Ni 0.000000
 fogScale 0
 glow 1
+scrollX 0.0
 d 0
 Tr 0
 map_Kd Tex_0104_0.png

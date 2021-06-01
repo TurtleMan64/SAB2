@@ -68,7 +68,7 @@ void MissionMenu::loadResources()
         default: break;
     }
 
-    for (int i = 0; i < levelIDsToUse->size(); i++)
+    for (int i = 0; i < (int)levelIDsToUse->size(); i++)
     {
         Level level = Global::gameLevelData[(*levelIDsToUse)[i]];
         std::string buttonText = "";

@@ -87,7 +87,7 @@ GLuint Loader::createEmptyVBO(int floatCount)
     return vboID;
 }
 
-void Loader::addInstancedAttribute(GLuint vao, GLuint vbo, int attribute, int dataSize, int instancedDataLength, int offset)
+void Loader::addInstancedAttribute(GLuint vao, GLuint vbo, int attribute, int dataSize, int instancedDataLength, long long offset)
 {
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBindVertexArray(vao);

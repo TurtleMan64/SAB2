@@ -58,6 +58,7 @@ void MenuManager::switchStack()
         this->currentStack = &this->gameStack;
         if (this->currentStack->empty())
         {
+            //printf("creating HUD object, adding to stack\n");
             this->currentStack->push(new HUD); INCR_NEW("Menu");
         }
     }
@@ -74,8 +75,11 @@ void MenuManager::switchStack()
 
 void MenuManager::step()
 {
+    //printf("MenuManager::step()\n");
+    //printf("playerFailedArcadeMode = %d\n", (int)MenuManager::playerFailedArcadeMode);
     if (MenuManager::playerFailedArcadeMode) //end of arcade mode, return to main menu
     {
+        //printf("end of arcade mode, return to main menu\n");
         MenuManager::playerFailedArcadeMode = false;
         clearMenuStack();
         clearGameStack();
@@ -86,11 +90,13 @@ void MenuManager::step()
     {
         if (!Global::gameIsArcadeMode) //end of a mission, return to mission select
         {
+            //printf("end of a mission, return to mission select\n");
             clearGameStack();
             currentStack = &menuStack;
         }
         else if (MenuManager::arcadeModeIsDone) //end of arcade mode, return to main menu and show results screen
         {
+            //printf("end of arcade mode, return to main menu and show results screen\n");
             MenuManager::arcadeModeIsDone = false;
             clearMenuStack();
             clearGameStack();
@@ -103,6 +109,7 @@ void MenuManager::step()
     // Only run if there's a menu in the working stack
     if (!this->currentStack->empty())
     {
+        //printf("MenuManager about to run currentStack.top.step()\n");
         Menu* retVal = this->currentStack->top()->step();
 
         // If return is null, do nothing
@@ -111,14 +118,17 @@ void MenuManager::step()
             // Singleton menus to return stack commands
             if (retVal == PopMenu::get())
             {
+                //printf("currentStack returned popped\n");
                 this->pop();
             }
             else if (retVal == SwitchStack::get())
             {
+                //printf("currentStack returned switched\n");
                 this->switchStack();
             }
             else if (retVal == ClearStack::get())
             {
+                //printf("currentStack returned clear\n");
                 this->clearStack();
                 this->switchStack();
             }
@@ -126,6 +136,7 @@ void MenuManager::step()
             // If a menu is returned, push the menu
             else if (retVal != nullptr)
             {
+                //printf("currentStack returned a menu\n");
                 this->push(retVal);
             }
         }

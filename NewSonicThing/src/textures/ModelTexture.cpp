@@ -150,8 +150,20 @@ void ModelTexture::updateAnimations(float dt)
 
 bool ModelTexture::equalTo(ModelTexture* other)
 {
+    if (texIDs.size() != other->getIDs()->size())
+    {
+        return false;
+    }
+
+    for (int i = 0; i < (int)texIDs.size(); i++)
+    {
+        if (texIDs[i] != other->getIDs()->at(i))
+        {
+            return false;
+        }
+    }
+
     return (
-        std::equal(texIDs.begin(), texIDs.end(), other->getIDs()->begin()) &&
         isAnimated      == other->isAnimated      &&
         shineDamper     == other->shineDamper     &&
         reflectivity    == other->reflectivity    &&

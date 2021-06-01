@@ -1,8 +1,8 @@
 #include <glad/glad.h>
 #include <list>
 #include <iostream>
-#include <algorithm>
 #include <fstream>
+#include <cstring>
 
 #include "tckart.h"
 
@@ -206,10 +206,10 @@ void TC_Kart::step()
         //slipTimer = slipTimerMax;
     }
 
-    slipAccumulated += 100*std::fabsf(inputWheelJerk)*dt*(vel.length()/terminalSpeed);
+    slipAccumulated += 100*std::fabs(inputWheelJerk)*dt*(vel.length()/terminalSpeed);
     if (slipTimer > 0.0f)
     {
-        slipAccumulated += 25*std::fabsf(inputWheel)*dt*(vel.length()/terminalSpeed);
+        slipAccumulated += 25*std::fabs(inputWheel)*dt*(vel.length()/terminalSpeed);
     }
 
     slipAccumulated = Maths::approach(slipAccumulated, 0.0f, 5.0f, dt);
@@ -235,7 +235,7 @@ void TC_Kart::step()
 
     slipAngle = Maths::approach(slipAngle, slipAngleTarget, slipAngleAccel, dt);
 
-    if (fabsf(slipAngle) <= 10.0f)
+    if (fabs(slipAngle) <= 10.0f)
     {
         slipTimerRight = 0;
         slipTimerLeft  = 0;
@@ -251,7 +251,7 @@ void TC_Kart::step()
         slipTimerRight = 0;
     }
 
-    float slipPunishScale = std::fabsf((slipAngle*slipAngle) / (slipAngleMax*slipAngleMax));
+    float slipPunishScale = std::fabs((slipAngle*slipAngle) / (slipAngleMax*slipAngleMax));
     //if (slipPunishScale < 0.75f) //TODO: fix this so that you cant gain insane speed by holding the magic angle
     {
         //slipPunishScale = -slipPunishScale;
@@ -278,7 +278,7 @@ void TC_Kart::step()
     
     //turn due to slipping
     float xIn2 = -slipPower*(slipAngle/slipAngleMax)*dt;
-    vel.scale(1 - slipPunishScale*(std::fabsf((slipAngle/slipAngleMax)*dt))); //slow down or speed up
+    vel.scale(1 - slipPunishScale*(std::fabs((slipAngle/slipAngleMax)*dt))); //slow down or speed up
     float u2 = currNorm.x;
     float v2 = currNorm.y;
     float w2 = currNorm.z;
@@ -327,13 +327,13 @@ void TC_Kart::step()
     Vector3f totalStrafe = (strafeRAmount + strafeLAmount);
     totalStrafe.scale(strafePercentage);
     totalStrafe.scale(vel.length());
-    float strafeScale = std::fabsf(inputR-inputL);
+    float strafeScale = std::fabs(inputR-inputL);
     float strafePunish = 1.0f - strafeScale*(1.0f - strafeTerminalPunish);
 
     //Side attack
     if (onPlane && inputAttackSide && !inputAttackSidePrevious)
     {
-        if (sideAttackTimer == 0.0f && fabsf(inputWheel) > 0.2f && vel.length() > 5.0f)
+        if (sideAttackTimer == 0.0f && fabs(inputWheel) > 0.2f && vel.length() > 5.0f)
         {
             sideAttackTimer = sideAttackTimeMax;
             sideAttackDir = -1.0f;
@@ -468,7 +468,7 @@ void TC_Kart::step()
 
     //Turning
     float xIn = (-inputWheel*turnSpeed)*dt;
-    vel.scale(1 - turnPunish*(std::fabsf(xIn))); //slow down when turning
+    vel.scale(1 - turnPunish*(std::fabs(xIn))); //slow down when turning
     float u = currNorm.x;
     float v = currNorm.y;
     float w = currNorm.z;
@@ -514,7 +514,7 @@ void TC_Kart::step()
         float oldAngle = Maths::toDegrees(atan2f(-vel.z,  vel.x));
         float newAngle = Maths::toDegrees(atan2f(-buf[2], buf[0]));
 
-        if (fabsf(Maths::compareTwoAngles(newAngle, oldAngle)) < 90)
+        if (fabs(Maths::compareTwoAngles(newAngle, oldAngle)) < 90)
         {
             if (vel.y < 0 && buf[1] > 0)
             {
@@ -628,7 +628,7 @@ void TC_Kart::step()
                 Vector3f overallVelNorm(&overallVel);
                 overallVelNorm.normalize();
                 //float speedFactor = overallVel.length()/terminalSpeed;
-                //float angleFactor = std::fabsf(overallVelNorm.dot(colNormal));
+                //float angleFactor = std::fabs(overallVelNorm.dot(colNormal));
                 //health -= hitWallHealthPunish*angleFactor*speedFactor;
 
                 //if (health < 0.0f)
@@ -705,7 +705,7 @@ void TC_Kart::step()
                             Vector3f overallVelNorm(&overallVel);
                             overallVelNorm.normalize();
                             //float speedFactor = overallVel.length()/terminalSpeed;
-                            //float angleFactor = std::fabsf(overallVelNorm.dot(colNormal));
+                            //float angleFactor = std::fabs(overallVelNorm.dot(colNormal));
                             //health -= hitWallHealthPunish*angleFactor*speedFactor;
 
                             //if (health < 0.0f)
@@ -820,7 +820,7 @@ void TC_Kart::step()
                 Vector3f overallVelNorm(&overallVel);
                 overallVelNorm.normalize();
                 //float speedFactor = overallVel.length()/terminalSpeed;
-                //float angleFactor = std::fabsf(overallVelNorm.dot(colNormal));
+                //float angleFactor = std::fabs(overallVelNorm.dot(colNormal));
                 //health -= hitWallHealthPunish*angleFactor*speedFactor;
 
                 //if (health < 0.0f)
@@ -1247,7 +1247,7 @@ void TC_Kart::step()
         }
     }
 
-    if (fabsf(slipPunishScale) > 0.03f)
+    if (fabs(slipPunishScale) > 0.03f)
     {
         if (sourceSlipSlowdown == nullptr)
         {
