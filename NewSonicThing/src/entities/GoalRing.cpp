@@ -103,11 +103,13 @@ void GoalRing::step()
 
     if (Global::finishStageTimer >= 0.0f)
     {
-        visible = false;
-        text->setVisible(false);
-
         if (Global::finishStageTimer < 1.0f)
         {
+            float size = 1.0f - 2.5f*Global::finishStageTimer;
+
+            scale = size;
+            text->scale = size;
+
             if (sourceRing != nullptr)
             {
                 sourceRing->setVolume(AudioPlayer::soundLevelSFX*(1.0f - Global::finishStageTimer));
@@ -115,6 +117,9 @@ void GoalRing::step()
         }
         else
         {
+            visible = false;
+            text->setVisible(false);
+
             if (sourceRing != nullptr)
             {
                 sourceRing->stop();
