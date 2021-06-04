@@ -1,8 +1,15 @@
-# Material Count: 1
+# Material Count: 2
 
 newmtl col
 Ns 17.647059
 Ni 1.000000
 d 1.000000
 map_Kd greenhill128_1.png
+
+newmtl staticwater
+Ns 17.647059
+Ni 1.000000
+d 1.000000
+type death
+map_Kd Water\1.png
 
