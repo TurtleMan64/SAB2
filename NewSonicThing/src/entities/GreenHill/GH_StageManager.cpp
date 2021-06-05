@@ -3,10 +3,9 @@
 #include "../entity.h"
 #include "ghstagemanager.h"
 #include "../../engineTester/main.h"
-#include "../playersonic.h"
+#include "../controllableplayer.h"
 #include "../dummy.h"
 #include "../../objLoader/objLoader.h"
-#include "../../toolbox/maths.h"
 
 std::list<TexturedModel*> GH_StageManager::modelsSkyCylinder;
 std::list<TexturedModel*> GH_StageManager::modelsSkyClouds;

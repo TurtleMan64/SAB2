@@ -15,9 +15,9 @@ private:
     static std::list<TexturedModel*> modelsWaterFlat;
     static std::list<TexturedModel*> modelsWaterVertical;
 
-    Dummy* skyClouds;
-    Dummy* waterFlat;
-    Dummy* waterVertical;
+    Dummy* skyClouds = nullptr;
+    Dummy* waterFlat = nullptr;
+    Dummy* waterVertical = nullptr;
 
 public:
     GH_StageManager();

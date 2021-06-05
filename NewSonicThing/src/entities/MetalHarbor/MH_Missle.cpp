@@ -26,7 +26,7 @@ void MH_Missle::step()
     {
         Vector3f handlePos(position.x+88, position.y+532, position.z);
         Vector3f roughDiff = handlePos - Global::gameMainPlayer->position;
-        printf("roughDiff = %f %f %f\n", roughDiff.x, roughDiff.y, roughDiff.z);
+        //printf("roughDiff = %f %f %f\n", roughDiff.x, roughDiff.y, roughDiff.z);
         if (roughDiff.lengthSquared() < 20*20)
         {
             Vector3f end1(position.x + 87.7854f, position.y + 532.0f, position.z - 10.0f);

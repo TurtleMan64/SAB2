@@ -97,6 +97,15 @@
 #include "../entities/CloudTemple/ctstagemanager.h"
 #include "../entities/chaosemerald.h"
 #include "../entities/DragonRoad/drstagemanager.h"
+#include "../entities/GreenHill/ghfloatingplatform.h"
+#include "../entities/GreenHill/ghfallingplatform.h"
+#include "../entities/GreenHill/ghrock.h"
+#include "../entities/GreenHill/ghtotem.h"
+#include "../entities/GreenHill/ghtotemwings.h"
+#include "../entities/GreenHill/ghtree.h"
+#include "../entities/GreenHill/ghgrass.h"
+#include "../entities/GreenHill/ghsunflower.h"
+#include "../entities/GreenHill/ghflower.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -1065,6 +1074,105 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             chunkedEntities->push_back(spring);
             return;
         }
+
+        case 16: //Green Hill Rock
+		{
+			GH_Rock::loadStaticModels();
+			GH_Rock* rock = new GH_Rock(
+				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
+				toFloat(dat[4]), 1.0f); //yrot, scale
+			INCR_NEW("Entity");
+			chunkedEntities->push_back(rock);
+			return;
+		}
+
+		case 17: //Green Hill Tree
+		{
+			GH_Tree::loadStaticModels();
+			GH_Tree* tree = new GH_Tree(
+				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
+				toFloat(dat[4]), 1.0f); //yrot, scale
+			INCR_NEW("Entity");
+			chunkedEntities->push_back(tree);
+			return;
+		}
+
+		case 18: //Green Hill Sunflower
+		{
+			GH_Sunflower::loadStaticModels();
+			GH_Sunflower* flower = new GH_Sunflower(
+				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
+				toFloat(dat[4]), 1.0f, chunkedEntities); //yrot, scale
+			INCR_NEW("Entity");
+			chunkedEntities->push_back(flower);
+			return;
+		}
+
+		case 19: //Green Hill Flower
+		{
+			GH_Flower::loadStaticModels();
+			GH_Flower* flower = new GH_Flower(
+				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
+				toFloat(dat[4]), 1.0f, chunkedEntities); //yrot, scale
+			INCR_NEW("Entity");
+			chunkedEntities->push_back(flower);
+			return;
+		}
+
+		case 20: //Green Hill Totem
+		{
+			GH_Totem::loadStaticModels();
+			GH_Totem* totem = new GH_Totem(
+				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
+				toFloat(dat[4]), 1.0f); //yrot, scale
+			INCR_NEW("Entity");
+			chunkedEntities->push_back(totem);
+			return;
+		}
+
+		case 21: //Green Hill Totem Wings
+		{
+			GH_TotemWings::loadStaticModels();
+			GH_TotemWings* totem = new GH_TotemWings(
+				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
+				toFloat(dat[4]), 1.0f); //yrot, scale
+			INCR_NEW("Entity");
+			chunkedEntities->push_back(totem);
+			return;
+		}
+
+		case 22: //Green Hill Grass
+		{
+			GH_Grass::loadStaticModels();
+			GH_Grass* grass = new GH_Grass(
+				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
+				toFloat(dat[4]), 1.0f); //yrot, scale
+			INCR_NEW("Entity");
+			chunkedEntities->push_back(grass);
+			return;
+		}
+
+		case 23: //Green Hill Falling Platform
+		{
+			GH_FallingPlatform::loadStaticModels();
+			GH_FallingPlatform* platform = new GH_FallingPlatform(
+				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
+				toFloat(dat[4]), 1.0f); //yrot, scale
+			INCR_NEW("Entity");
+			chunkedEntities->push_back(platform);
+			return;
+		}
+
+		case 24: //Green Hill Floating Platform
+		{
+			GH_FloatingPlatform::loadStaticModels();
+			GH_FloatingPlatform* platform = new GH_FloatingPlatform(
+				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
+				toFloat(dat[4]), 1.0f); //yrot, scale
+			INCR_NEW("Entity");
+			chunkedEntities->push_back(platform);
+			return;
+		}
 
         case 27: //Item Capsule
         {

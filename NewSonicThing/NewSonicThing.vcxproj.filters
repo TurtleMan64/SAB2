@@ -648,6 +648,33 @@
     <ClCompile Include="src\entities\DragonRoad\DR_StageManager.cpp">
       <Filter>Source Files\entities\DragonRoad</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\GreenHill\GH_FallingPlatform.cpp">
+      <Filter>Source Files\entities\GreenHill</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\GreenHill\GH_FloatingPlatform.cpp">
+      <Filter>Source Files\entities\GreenHill</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\GreenHill\GH_Flower.cpp">
+      <Filter>Source Files\entities\GreenHill</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\GreenHill\GH_Grass.cpp">
+      <Filter>Source Files\entities\GreenHill</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\GreenHill\GH_Rock.cpp">
+      <Filter>Source Files\entities\GreenHill</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\GreenHill\GH_Sunflower.cpp">
+      <Filter>Source Files\entities\GreenHill</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\GreenHill\GH_Totem.cpp">
+      <Filter>Source Files\entities\GreenHill</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\GreenHill\GH_TotemWings.cpp">
+      <Filter>Source Files\entities\GreenHill</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\GreenHill\GH_Tree.cpp">
+      <Filter>Source Files\entities\GreenHill</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.h">
@@ -1156,6 +1183,33 @@
     </ClInclude>
     <ClInclude Include="src\entities\DragonRoad\drstagemanager.h">
       <Filter>Source Files\entities\DragonRoad</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\GreenHill\ghfallingplatform.h">
+      <Filter>Source Files\entities\GreenHill</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\GreenHill\ghfloatingplatform.h">
+      <Filter>Source Files\entities\GreenHill</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\GreenHill\ghflower.h">
+      <Filter>Source Files\entities\GreenHill</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\GreenHill\ghgrass.h">
+      <Filter>Source Files\entities\GreenHill</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\GreenHill\ghrock.h">
+      <Filter>Source Files\entities\GreenHill</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\GreenHill\ghsunflower.h">
+      <Filter>Source Files\entities\GreenHill</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\GreenHill\ghtotem.h">
+      <Filter>Source Files\entities\GreenHill</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\GreenHill\ghtotemwings.h">
+      <Filter>Source Files\entities\GreenHill</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\GreenHill\ghtree.h">
+      <Filter>Source Files\entities\GreenHill</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
