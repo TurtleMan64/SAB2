@@ -9,18 +9,18 @@ class TexturedModel;
 class GH_Tree : public Entity
 {
 private:
-	static std::list<TexturedModel*> models;
+    static std::list<TexturedModel*> models;
 
 public:
-	GH_Tree();
-	GH_Tree(float x, float y, float z, float rotY, float scale);
+    GH_Tree();
+    GH_Tree(float x, float y, float z, float rotY, float scale);
 
-	void step();
+    void step();
 
-	std::list<TexturedModel*>* getModels();
+    std::list<TexturedModel*>* getModels();
 
-	static void loadStaticModels();
+    static void loadStaticModels();
 
-	static void deleteStaticModels();
+    static void deleteStaticModels();
 };
 #endif

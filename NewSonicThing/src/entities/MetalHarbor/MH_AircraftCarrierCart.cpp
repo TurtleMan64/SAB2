@@ -1,28 +1,3 @@
-/*
- TODO
- -Making the platform move
-    -perhaps use a state machine?
-    -add a displacement variable to track the distance moved, direction inspecific
-    -0 is starting displacement, displacementMax is ending
-    DONE
- -do the platform stop and switch directions
-    DONE
- -make the platform shake when it stops
-    DONE
- -Make the wheels properly rotate in the direction of movement
-    -basically done, multiply by -1 in step when reversing direction of movement
-    -done
- -Make sure collisions work properly
-    -fix collisions on the front and back of the platfrom when moving
-    -use two circles to make the collision box, easier to calculate than rectangles
-    -move into place the same way as the wheels, then update positions as it moves
-    -functional, could be switched to a box check instead of cylinders,
-    this would require a fair bit of rewrite in the pushSonicAway function
- -Is there a sound?
-    -no
- -make framerate independant
-*/
-
 #include "mhaircraftcarriercart.h"
 #include "../entity.h"
 #include "../camera.h"

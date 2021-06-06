@@ -1,10 +1,3 @@
-/*
- TODO
-    -3 models and collision models for each type of crate platform, option to pick needed one, don't even load unneeded ones DONE
-    -setup sound when it stops DONE
-    -fix push collisions 
-*/
-
 #include "mhcrateplatform.h"
 #include "../entity.h"
 #include "../camera.h"

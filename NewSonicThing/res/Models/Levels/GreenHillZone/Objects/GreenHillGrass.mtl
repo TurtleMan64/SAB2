@@ -1,13 +1,8 @@
-# Blender MTL File: 'None'
 # Material Count: 1
 
 newmtl happa5
-Ns 11.000000
-Ka 0.000000 0.000000 0.000000
-Kd 0.800000 0.800000 0.800000
-Ks 0.200000 0.200000 0.200000
-Ni 0.000000
-d 0.000000
-illum 2
-map_Kd E:\CWorkspace\NewSonicThing\NewSonicThing\res\Models\Levels\GreenHillZone\komonoA.png
-map_Ka E:\\CWorkspace\\NewSonicThing\\NewSonicThing\\res\\Models\\Levels\\GreenHillZone\\komonoA.png
+Ns 20
+Ni 0.5
+d 1.000000
+map_Kd komonoA.png
+

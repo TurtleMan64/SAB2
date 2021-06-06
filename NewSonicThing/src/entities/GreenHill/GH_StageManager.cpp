@@ -68,10 +68,10 @@ void GH_StageManager::loadStaticModels()
     std::fprintf(stdout, "Loading GH_StageManager static models...\n");
     #endif
 
-    ObjLoader::loadModel(&GH_StageManager::modelsSkyCylinder,   "res/Models/Levels/GreenHillNew/Sky/",   "SkyCylinder");
-    ObjLoader::loadModel(&GH_StageManager::modelsSkyClouds,     "res/Models/Levels/GreenHillNew/Sky/",   "SkyClouds");
-    ObjLoader::loadModel(&GH_StageManager::modelsWaterFlat,     "res/Models/Levels/GreenHillNew/Water/", "StaticWater");
-    ObjLoader::loadModel(&GH_StageManager::modelsWaterVertical, "res/Models/Levels/GreenHillNew/Water/", "FlowingWater");
+    ObjLoader::loadModel(&GH_StageManager::modelsSkyCylinder,   "res/Models/Levels/GreenHillZone/Sky/",   "SkyCylinder");
+    ObjLoader::loadModel(&GH_StageManager::modelsSkyClouds,     "res/Models/Levels/GreenHillZone/Sky/",   "SkyClouds");
+    ObjLoader::loadModel(&GH_StageManager::modelsWaterFlat,     "res/Models/Levels/GreenHillZone/Water/", "StaticWater");
+    ObjLoader::loadModel(&GH_StageManager::modelsWaterVertical, "res/Models/Levels/GreenHillZone/Water/", "FlowingWater");
 }
 
 void GH_StageManager::deleteStaticModels()

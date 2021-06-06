@@ -37,7 +37,7 @@ void ParticleMaster::update(Camera* /*cam*/)
 
             deletedEntry = false;
 
-            while (!deletedEntry && it != list->end())
+            while (it != list->end())
             {
                 ParticleStandard* p = *it;
 
@@ -51,6 +51,7 @@ void ParticleMaster::update(Camera* /*cam*/)
                     {
                         mapIt = ParticleMaster::particlesStandard.erase(mapIt);
                         deletedEntry = true;
+                        break;
                     }
                 }
                 else
@@ -79,7 +80,7 @@ void ParticleMaster::update(Camera* /*cam*/)
 
             deletedEntry = false;
 
-            while (!deletedEntry && it != list->end())
+            while (it != list->end())
             {
                 GF_Particle* p = *it;
 
@@ -93,6 +94,7 @@ void ParticleMaster::update(Camera* /*cam*/)
                     {
                         mapIt = ParticleMaster::particlesGF.erase(mapIt);
                         deletedEntry = true;
+                        break;
                     }
                 }
                 else
@@ -190,71 +192,43 @@ void ParticleMaster::updateProjectionMatrix(Matrix4f* projectionMatrix)
 
 void ParticleMaster::deleteAllParticles()
 {
-    //Standard
+    //Standard particles
     {
-        std::unordered_map<ParticleTexture*, std::list<ParticleStandard*>>::iterator mapIt = ParticleMaster::particlesStandard.begin();
-        bool deletedEntry = false;
+        std::vector<ParticleStandard*> particlesToDelete;
 
-        while (mapIt != ParticleMaster::particlesStandard.end())
+        for (auto particlesMap : ParticleMaster::particlesStandard)
         {
-            std::list<ParticleStandard*>* list = &mapIt->second;
-
-            std::list<ParticleStandard*>::iterator it = list->begin();
-
-            deletedEntry = false;
-
-            while (it != list->end())
+            for (auto particle : particlesMap.second)
             {
-                ParticleStandard* p = *it;
-
-                delete p; INCR_DEL("ParticleStandard");
-                it = list->erase(it);
-
-                if (list->size() == 0)
-                {
-                    mapIt = ParticleMaster::particlesStandard.erase(mapIt);
-                    deletedEntry = true;
-                }
-            }
-
-            if (deletedEntry == false)
-            {
-                mapIt++;
+                particlesToDelete.push_back(particle);
             }
         }
+
+        for (ParticleStandard* particle : particlesToDelete)
+        {
+            delete particle; INCR_DEL("ParticleStandard");
+        }
+
+        ParticleMaster::particlesStandard.clear();
     }
 
     //GF
     {
-        std::unordered_map<ParticleTexture*, std::list<GF_Particle*>>::iterator mapIt = ParticleMaster::particlesGF.begin();
-        bool deletedEntry = false;
+        std::vector<GF_Particle*> particlesToDelete;
 
-        while (mapIt != ParticleMaster::particlesGF.end())
+        for (auto particlesMap : ParticleMaster::particlesGF)
         {
-            std::list<GF_Particle*>* list = &mapIt->second;
-
-            std::list<GF_Particle*>::iterator it = list->begin();
-
-            deletedEntry = false;
-
-            while (it != list->end())
+            for (auto particle : particlesMap.second)
             {
-                GF_Particle* p = *it;
-
-                delete p; INCR_DEL("GF_Particle");
-                it = list->erase(it);
-
-                if (list->size() == 0)
-                {
-                    mapIt = ParticleMaster::particlesGF.erase(mapIt);
-                    deletedEntry = true;
-                }
-            }
-
-            if (deletedEntry == false)
-            {
-                mapIt++;
+                particlesToDelete.push_back(particle);
             }
         }
+
+        for (GF_Particle* particle : particlesToDelete)
+        {
+            delete particle; INCR_DEL("GF_Particle");
+        }
+
+        ParticleMaster::particlesGF.clear();
     }
 }

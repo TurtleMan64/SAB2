@@ -321,11 +321,12 @@ int main(int argc, char** argv)
     Global::gameLevelIdsKnuckles.push_back(LVL_NOKI_BAY);
 
     //create NPC list
-    Global::stageNpcCounts[LVL_SKY_RAIL] = 1;
-    Global::stageNpcCounts[LVL_DRY_LAGOON] = 1;
-    Global::stageNpcCounts[LVL_METAL_HARBOR] = 4;
+    Global::stageNpcCounts[LVL_SKY_RAIL]        = 3;
+    Global::stageNpcCounts[LVL_DRY_LAGOON]      = 1;
+    Global::stageNpcCounts[LVL_METAL_HARBOR]    = 4;
     Global::stageNpcCounts[LVL_RADICAL_HIGHWAY] = 5;
-    Global::stageNpcCounts[LVL_DRAGON_ROAD] = 7;
+    Global::stageNpcCounts[LVL_DRAGON_ROAD]     = 7;
+    Global::stageNpcCounts[LVL_GREEN_HILL_ZONE] = 1;
 
     #if !defined(DEV_MODE) && defined(_WIN32)
     FreeConsole();

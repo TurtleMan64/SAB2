@@ -252,10 +252,6 @@ void TC_Kart::step()
     }
 
     float slipPunishScale = std::fabs((slipAngle*slipAngle) / (slipAngleMax*slipAngleMax));
-    //if (slipPunishScale < 0.75f) //TODO: fix this so that you cant gain insane speed by holding the magic angle
-    {
-        //slipPunishScale = -slipPunishScale;
-    }
 
     if (slipTimerRight+slipTimerLeft < slipTimerThreshold)
     {

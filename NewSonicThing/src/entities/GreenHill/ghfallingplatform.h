@@ -11,20 +11,20 @@ class CollisionModel;
 class GH_FallingPlatform : public CollideableObject
 {
 private:
-	static std::list<TexturedModel*> models;
-	static CollisionModel* cmOriginal;
-	float timer = 0;
+    static std::list<TexturedModel*> models;
+    static CollisionModel* cmOriginal;
+    float timer = 0;
 
 public:
-	GH_FallingPlatform();
-	GH_FallingPlatform(float x, float y, float z, float rotY, float scale);
+    GH_FallingPlatform();
+    GH_FallingPlatform(float x, float y, float z, float rotY, float scale);
 
-	void step();
+    void step();
 
-	std::list<TexturedModel*>* getModels();
+    std::list<TexturedModel*>* getModels();
 
-	static void loadStaticModels();
+    static void loadStaticModels();
 
-	static void deleteStaticModels();
+    static void deleteStaticModels();
 };
 #endif
