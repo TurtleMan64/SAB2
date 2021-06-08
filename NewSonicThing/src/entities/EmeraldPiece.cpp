@@ -40,7 +40,7 @@ EmeraldPiece::EmeraldPiece(
     this->isDiggable = (isDiggable != 0);
     this->hardModePiece = (hardModePiece != 0);
     collectTimer = 0.0f;
-    this->baseAlpha = 0.75f;
+    this->baseAlpha = 0.85f;
     scale = EmeraldPiece::baseScale;
     EmeraldPiece::lastPieceCollectedTimestamp = Global::gameClock;
 }

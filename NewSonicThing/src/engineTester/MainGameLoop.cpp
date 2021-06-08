@@ -279,10 +279,18 @@ int main(int argc, char** argv)
 
     //The levels you play in arcade mode, in order
     Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_TUTORIAL,        Global::PlayableCharacter::Sonic));
-    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_METAL_HARBOR,    Global::PlayableCharacter::Knuckles));
-    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_RADICAL_HIGHWAY, Global::PlayableCharacter::Tails));
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_CLOUD_TEMPLE,    Global::PlayableCharacter::Tails));
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_DRY_LAGOON,      Global::PlayableCharacter::Knuckles));
     Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_GREEN_FOREST,    Global::PlayableCharacter::Sonic));
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_METAL_HARBOR,    Global::PlayableCharacter::Sonic));
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_NOKI_BAY,        Global::PlayableCharacter::Knuckles));
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_DRAGON_ROAD,     Global::PlayableCharacter::Sonic));
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_GREEN_HILL_ZONE, Global::PlayableCharacter::Sonic));
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_TWINKLE_CIRCUIT, Global::PlayableCharacter::Sonic));
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_DELFINO_PLAZA,   Global::PlayableCharacter::Knuckles));
     Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_SKY_RAIL,        Global::PlayableCharacter::Sonic));
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_RADICAL_HIGHWAY, Global::PlayableCharacter::Sonic));
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_SACRED_SKY,      Global::PlayableCharacter::Sonic));
 
     Global::gameLevelIdsSonic.push_back(LVL_TUTORIAL);
     Global::gameLevelIdsSonic.push_back(LVL_DRAGON_ROAD);

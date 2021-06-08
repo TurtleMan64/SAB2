@@ -440,14 +440,20 @@ void PlayerKnuckles::step()
             jump();
         }
     }
-    else
+
+    //Hover
+    if (!onGround)
     {
-        if (inputJump && hoverTimer > 0.0f && isJumping && !inWater) //Add vel from hover
+        if (inputJump)
         {
-            if (!(isHomingOnPoint && homingAttackTimer > 0))
+            if (hoverTimer > 0.0f && !inWater)
             {
                 vel = vel + relativeUpSmooth.scaleCopy(hoverPower*dt);
             }
+        }
+        else
+        {
+            hoverTimer = 0.0f;
         }
     }
 
@@ -2153,6 +2159,11 @@ void PlayerKnuckles::jumpOffPulley(Vector3f forwardDirectionVector)
 
     //jump sound
     AudioPlayer::play(12, &position);
+}
+
+void PlayerKnuckles::setHoverTimer(float newTime)
+{
+    hoverTimer = newTime;
 }
 
 void PlayerKnuckles::rebound(Vector3f* source)

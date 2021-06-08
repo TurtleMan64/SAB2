@@ -317,6 +317,8 @@ public:
     //forward with neutral stick.
     void jumpOffPulley(Vector3f forwardDirectionVector);
 
+    void setHoverTimer(float newTime);
+
     void setRelativeUp(Vector3f* newUp);
 
     std::list<TexturedModel*>* getModels();

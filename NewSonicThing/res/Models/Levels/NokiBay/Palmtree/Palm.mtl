@@ -1,0 +1,13 @@
+# Material Count: 2
+
+newmtl m0_mat119_J_tree_Leaf.png
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd J_tree_Leaf.png
+
+newmtl m0_mat119
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd J_tree_C.png

@@ -7,7 +7,7 @@ Tr 0
 d 1
 scrollX 0
 scrollY 0
-map_Kd plam_ougi.png
+map_Kd plam_ougiOG.png
 
 newmtl HAYAwave2a.png
 Ns 20
@@ -20,4 +20,3 @@ mixLinear
 numImages 2
 map_Kd HAYAwave2a.png 
 HAYAwave2aShift.png 
-

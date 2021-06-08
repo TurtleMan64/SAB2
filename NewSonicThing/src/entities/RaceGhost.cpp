@@ -232,7 +232,7 @@ void RaceGhost::step()
 
     if (ghostType == 0)
     {
-        myModel->setBaseAlpha(sinf(currentTime*20)/4 + 0.3f); //make ghost flash alpha
+        myModel->setBaseAlpha(sinf(currentTime*20)/4 + 0.5f); //make ghost flash alpha
     }
 
     GhostFrame* lastFrame = &frames[frames.size()-1];

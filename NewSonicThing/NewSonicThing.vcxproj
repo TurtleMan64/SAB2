@@ -206,6 +206,10 @@
     <ClCompile Include="src\entities\MetalHarbor\MH_CratePlatform.cpp" />
     <ClCompile Include="src\entities\MetalHarbor\MH_Missle.cpp" />
     <ClCompile Include="src\entities\MetalHarbor\MH_StaticObjects.cpp" />
+    <ClCompile Include="src\entities\NokiBay\NB_Palmtree.cpp" />
+    <ClCompile Include="src\entities\NokiBay\NB_Waterfall.cpp" />
+    <ClCompile Include="src\entities\NokiBay\NB_WaterPlatform.cpp" />
+    <ClCompile Include="src\entities\NokiBay\NB_WaterPlatformBounce.cpp" />
     <ClCompile Include="src\entities\NPC.cpp" />
     <ClCompile Include="src\entities\PlayerKnuckles.cpp" />
     <ClCompile Include="src\entities\PlayerSonic.cpp" />
@@ -391,6 +395,10 @@
     <ClInclude Include="src\entities\MetalHarbor\mhcrateplatform.h" />
     <ClInclude Include="src\entities\MetalHarbor\mhmissle.h" />
     <ClInclude Include="src\entities\MetalHarbor\mhstaticobjects.h" />
+    <ClInclude Include="src\entities\NokiBay\nbpalmtree.h" />
+    <ClInclude Include="src\entities\NokiBay\nbwaterfall.h" />
+    <ClInclude Include="src\entities\NokiBay\nbwaterplatform.h" />
+    <ClInclude Include="src\entities\NokiBay\nbwaterplatformbounce.h" />
     <ClInclude Include="src\entities\npc.h" />
     <ClInclude Include="src\entities\playerknuckles.h" />
     <ClInclude Include="src\entities\playersonic.h" />

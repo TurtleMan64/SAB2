@@ -1,0 +1,13 @@
+# Material Count: 2
+
+newmtl m0_huchi
+Ns 20
+Ni 0
+d 1.000000
+map_Kd shell04.png
+
+newmtl m1_humidai_D_Net.png
+Ns 20
+Ni 0
+d 1.000000
+map_Kd D_Net.png

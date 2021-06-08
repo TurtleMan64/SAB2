@@ -1,0 +1,13 @@
+# Material Count: 2
+
+newmtl m0_kabe
+Ns 20
+Ni 0
+d 1.000000
+map_Kd shell04.png
+
+newmtl m2_okujou
+Ns 20
+Ni 0
+d 1.000000
+map_Kd shell08.png

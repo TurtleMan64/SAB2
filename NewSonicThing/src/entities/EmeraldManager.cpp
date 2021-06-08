@@ -262,7 +262,7 @@ EmeraldManager::EmeraldManager()
             }
         }
     }
-    else
+    else //Ring or chao mode, delete all emerald pieces
     {
         for (Entity* e : gameEntitiesToAdd)
         {

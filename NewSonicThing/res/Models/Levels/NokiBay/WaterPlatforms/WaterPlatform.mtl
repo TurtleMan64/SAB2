@@ -1,0 +1,25 @@
+# Material Count: 4
+
+newmtl m0_kabe
+Ns 20
+Ni 0
+d 1.000000
+map_Kd shell04.png
+
+newmtl m1_madowaku1
+Ns 20
+Ni 0
+d 1.000000
+map_Kd white.png
+
+newmtl m2_okujou
+Ns 20
+Ni 0
+d 1.000000
+map_Kd shell08.png
+
+newmtl m3_yuka
+Ns 20
+Ni 0
+d 1.000000
+map_Kd D_Net.png

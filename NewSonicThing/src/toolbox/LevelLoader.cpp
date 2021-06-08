@@ -106,6 +106,10 @@
 #include "../entities/GreenHill/ghgrass.h"
 #include "../entities/GreenHill/ghsunflower.h"
 #include "../entities/GreenHill/ghflower.h"
+#include "../entities/NokiBay/nbpalmtree.h"
+#include "../entities/NokiBay/nbwaterplatform.h"
+#include "../entities/NokiBay/nbwaterplatformbounce.h"
+#include "../entities/NokiBay/nbwaterfall.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -1299,6 +1303,39 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             return;
         }
 
+        case 78: //Noki Bay Palmtree
+        {
+            NB_Palmtree::loadStaticModels();
+            NB_Palmtree* tree = new NB_Palmtree(
+                toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
+                toFloat(dat[4])); //rotation 
+            INCR_NEW("Entity");
+            chunkedEntities->push_back(tree);
+            return;
+        }
+
+        case 79: //Noki Bay Water Platform
+        {
+            NB_WaterPlatform::loadStaticModels();
+            NB_WaterPlatform* platform = new NB_WaterPlatform(
+                toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
+                toFloat(dat[4])); //rotation
+            INCR_NEW("Entity");
+            chunkedEntities->push_back(platform);
+            return;
+        }
+
+        case 80: //Noki Bay Water Platform Bounce
+        {
+            NB_WaterPlatformBounce::loadStaticModels();
+            NB_WaterPlatformBounce* platform = new NB_WaterPlatformBounce(
+                toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
+                toFloat(dat[4])); //rotation
+            INCR_NEW("Entity");
+            chunkedEntities->push_back(platform);
+            return;
+        }
+
         case 81: //Lost Chao
         {
             LostChao::loadStaticModels();
@@ -1767,6 +1804,23 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             return;
         }
 
+        case 108: //Noki Bay specific
+        {
+            switch (toInt(dat[1]))
+            {
+                case 0: //Waterfall
+                {
+                    NB_Waterfall::loadStaticModels();
+                    NB_Waterfall* waterfall = new NB_Waterfall; INCR_NEW("Entity");
+                    Global::addEntity(waterfall);
+                    return;
+                }
+
+                default:
+                    return;
+            }
+        }
+
         default:
         {
             return;
@@ -1914,6 +1968,19 @@ void LevelLoader::freeAllStaticModels()
     CT_StageManager::deleteStaticModels();
     ChaosEmerald::deleteStaticModels();
     DR_StageManager::deleteStaticModels();
+    GH_FloatingPlatform::deleteStaticModels();
+    GH_FallingPlatform::deleteStaticModels();
+    GH_Rock::deleteStaticModels();
+    GH_Totem::deleteStaticModels();
+    GH_TotemWings::deleteStaticModels();
+    GH_Tree::deleteStaticModels();
+    GH_Grass::deleteStaticModels();
+    GH_Sunflower::deleteStaticModels();
+    GH_Flower::deleteStaticModels();
+    NB_Palmtree::deleteStaticModels();
+    NB_WaterPlatform::deleteStaticModels();
+    NB_WaterPlatformBounce::deleteStaticModels();
+    NB_Waterfall::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()

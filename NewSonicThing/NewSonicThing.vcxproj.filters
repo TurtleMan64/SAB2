@@ -124,6 +124,9 @@
     <Filter Include="Source Files\entities\DragonRoad">
       <UniqueIdentifier>{fccd7927-7141-4158-a749-d2cc62f651ad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\entities\NokiBay">
+      <UniqueIdentifier>{606aad94-c878-4db9-a2c2-896054275e5e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\glad.c">
@@ -675,6 +678,18 @@
     <ClCompile Include="src\entities\GreenHill\GH_Tree.cpp">
       <Filter>Source Files\entities\GreenHill</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\NokiBay\NB_Palmtree.cpp">
+      <Filter>Source Files\entities\NokiBay</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\NokiBay\NB_WaterPlatform.cpp">
+      <Filter>Source Files\entities\NokiBay</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\NokiBay\NB_WaterPlatformBounce.cpp">
+      <Filter>Source Files\entities\NokiBay</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\NokiBay\NB_Waterfall.cpp">
+      <Filter>Source Files\entities\NokiBay</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.h">
@@ -1210,6 +1225,18 @@
     </ClInclude>
     <ClInclude Include="src\entities\GreenHill\ghtree.h">
       <Filter>Source Files\entities\GreenHill</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\NokiBay\nbpalmtree.h">
+      <Filter>Source Files\entities\NokiBay</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\NokiBay\nbwaterplatform.h">
+      <Filter>Source Files\entities\NokiBay</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\NokiBay\nbwaterplatformbounce.h">
+      <Filter>Source Files\entities\NokiBay</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\NokiBay\nbwaterfall.h">
+      <Filter>Source Files\entities\NokiBay</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
