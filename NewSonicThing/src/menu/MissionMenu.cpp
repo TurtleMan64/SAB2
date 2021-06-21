@@ -23,21 +23,17 @@
 
 MissionMenu::MissionMenu()
 {
-    //std::cout << "Initializing Mission Menu\n";
     this->fontSize = 0.05f;
     this->loadResources();
     this->visible = true;
     this->offsetCurr = 0.0f;
     this->offsetTarget = 0.0f;
     this->currButtonID = 0;
-    //std::cout << "Mission Menu initialized\n";
 }
 
 MissionMenu::~MissionMenu()
 {
-    //std::cout << "Deleting Mission Menu\n";
     this->unloadResources();
-    //std::cout << "Mission Menu deleted.\n";
 }
 
 void MissionMenu::loadResources()
@@ -106,7 +102,6 @@ void MissionMenu::loadResources()
 
 void MissionMenu::unloadResources()
 {
-    //std::cout << "Unloading Mission Menu resources.\n";
     if ((int)levelButtons.size() == 0)
     {
         std::fprintf(stdout, "Warning: MissionMenu unloading resources when they are empty.\n");
@@ -170,8 +165,6 @@ void MissionMenu::unloadResources()
 
     delete timeButton;  timeButton  = nullptr; INCR_DEL("Button");
     delete scoreButton; scoreButton = nullptr; INCR_DEL("Button");
-
-    //std::cout << "Mission Menu resources deleted.\n";
 }
 
 void MissionMenu::draw(bool updateMissionText)

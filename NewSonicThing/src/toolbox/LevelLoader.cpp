@@ -1189,7 +1189,7 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             chunkedEntities->push_back(capsule);
             return;
         }
-
+        
         case 28: //Beetle
         {
             Beetle::loadStaticModels();

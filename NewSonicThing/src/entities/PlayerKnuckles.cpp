@@ -171,7 +171,7 @@ void PlayerKnuckles::step()
             //keep track of rings we've already used, to not use them again
             std::unordered_set<Entity*> alreadyUsedRings;
 
-            float closest = 100000000.0f;
+            float closest = lightdashStartRingMinDist*lightdashStartRingMinDist + 10.0f;
             Vector3f* closestPoint = nullptr;
             Entity* closestEntity = nullptr;
 
@@ -186,7 +186,7 @@ void PlayerKnuckles::step()
 
                     Vector3f diff = position - e->position;
                     float thisdist = diff.lengthSquared();
-                    if (thisdist < closest)
+                    if (thisdist < closest && !CollisionChecker::checkCollision(&position, &e->position)) //Check that the path to first ring doesnt go through a wall
                     {
                         closest = thisdist;
                         closestPoint = &e->position;
@@ -241,7 +241,7 @@ void PlayerKnuckles::step()
                                 diffDir.normalize();
                                 float thisScore = (lightdashContinueRingMinDist - thisDist)*currentLightdashDir.dot(&diffDir);
 
-                                if (thisScore > bestScore)
+                                if (thisScore > bestScore && !CollisionChecker::checkCollision(&center, &e->position))
                                 {
                                     bestScore = thisScore;
                                     bestPoint = &e->position;

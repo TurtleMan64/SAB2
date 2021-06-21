@@ -134,8 +134,8 @@ private:
     bool isLightdashing = false;
     std::vector<Vector3f> lightdashTrail;
     float lightdashTrailProgress = -1.0f;
-    const float lightdashStartRingMinDist = 45.0f; //how close does the ring need to be to start lightdashing?
-    const float lightdashContinueRingMinDist = 80.0f; //how close does the next ring have to be to coninue the trail?
+    const float lightdashStartRingMinDist = 35.0f; //how close does the ring need to be to start lightdashing?
+    const float lightdashContinueRingMinDist = 40.0f; //how close does the next ring have to be to coninue the trail?
     const float lightdashSpeed = 600.0f;
     const float lightdashExitSpeed = 300.0f;
 

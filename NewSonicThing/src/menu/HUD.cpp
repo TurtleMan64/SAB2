@@ -16,7 +16,7 @@
 
 float HUD::bonusTimer = 0.0f;
 GuiTexture* HUD::pointBonus = nullptr;
-GLuint HUD::pointBonusIds[9];
+GLuint HUD::pointBonusIds[10] = {0};
 
 HUD::HUD()
 {
@@ -38,7 +38,6 @@ HUD::HUD()
     this->numberScore = new GUINumber(Global::gameScore,      safeAreaX,       safeAreaY,       s, 0, false, 8, true);  INCR_NEW("GUINumber");
     this->timer       = new Timer(Global::fontVipnagorgialla, safeAreaX,       safeAreaY + s,   s, 0, false);           INCR_NEW("Timer");
     this->numberRings = new GUINumber(Global::gameRingCount,  safeAreaX + w*2, safeAreaY + s*3, s, 0, false, 3, false); INCR_NEW("GUINumber");
-    //printf("creating HUD object\n");
     Global::mainHudTimer = this->timer;
 
     //this->speedometerScale = 1.5f;
@@ -92,7 +91,6 @@ Timer* HUD::getTimer()
 
 void HUD::draw()
 {
-    //printf("HUd.draw being called\n");
     if (Global::startStageTimer > 0.999f || Global::finishStageTimer >= 9.166f-0.05f)
     {
         this->timer->setVisible(false);
@@ -177,7 +175,6 @@ void HUD::draw()
 
 Menu* HUD::step()
 {
-    //printf("          HUD.step being called\n");
     extern float dt;
 
     Menu* retVal = nullptr;
@@ -192,7 +189,6 @@ Menu* HUD::step()
     {
         pauseTimer = 0.5f;
         retVal = new PauseScreen; INCR_NEW("Menu");
-        //printf("          HUD.step going into pause menu\n");
     }
 
     if (Global::startStageTimer <= 0.0f)

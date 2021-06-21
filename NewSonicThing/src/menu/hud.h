@@ -32,7 +32,7 @@ private:
 
     static float bonusTimer;
     static GuiTexture* pointBonus;
-    static GLuint pointBonusIds[9];
+    static GLuint pointBonusIds[10];
 
 public:
     HUD();

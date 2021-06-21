@@ -48,7 +48,6 @@ MainMenu::~MainMenu()
 
 void MainMenu::loadResources()
 {
-    //printf("Loading MainMenu resources\n");
     if (menuButtons.size() != 0)
     {
         std::fprintf(stdout, "Main Menu trying to load resources when they are already loaded!\n");
@@ -84,8 +83,6 @@ void MainMenu::loadResources()
     }
 
     buttonCount = numButtonsToMake;
-
-    //printf("MainMenu Resources loaded\n");
 }
 
 void MainMenu::draw()
@@ -149,7 +146,6 @@ void MainMenu::setVisible(bool visibleStatus)
 
 void MainMenu::unloadResources()
 {
-    //std::cout << "Unloading Main Menu resources...\n";
     if (menuButtons.size() == 0)
     {
         std::fprintf(stdout, "Main Menu trying to unload resources when they are already unloaded!\n");
@@ -172,9 +168,6 @@ void MainMenu::unloadResources()
     textureParallelogramBackdrop = GL_NONE;
     textureLogo                  = GL_NONE;
     logo.setTexture(GL_NONE);
-
-    //GuiManager::clearGuisToRender();
-    //std::cout << "Main Menu resources unloaded!\n";
 }
 
 void MainMenu::resetAnimation()

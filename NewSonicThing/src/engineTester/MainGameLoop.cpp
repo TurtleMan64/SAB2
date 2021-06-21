@@ -962,6 +962,7 @@ int main(int argc, char** argv)
             {
                 if (Global::gameIsArcadeMode && Global::gameArcadeIndex+1 >= (int)Global::gameArcadeLevelIds.size())
                 {
+                    printf("setting MenuManager::arcadeModeIsDone to true\n");
                     MenuManager::arcadeModeIsDone = true;
                 }
                 int rank = Global::calculateRankAndUpdate();
