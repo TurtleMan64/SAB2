@@ -14,9 +14,9 @@
 
 Camera::Camera()
 {
-    eye.set(0,20,0);
-    target.set(1,20,0);
-    up.set(0,1,0);
+    eye.set(0, 20, 0);
+    target.set(1, 20, 0);
+    up.set(0, 1, 0);
 }
 
 void Camera::mirrorForWater()

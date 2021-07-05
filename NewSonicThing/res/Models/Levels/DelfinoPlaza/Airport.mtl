@@ -1,0 +1,108 @@
+# Material Count: 17
+
+newmtl m7_m00suna
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd A_suna_sire.png
+
+newmtl m5_kage2
+Ns 20
+Ni 0.000000
+d 1.000000
+Tr 0
+renderOrder 1
+map_Kd A_portkage.png
+
+newmtl m26_o1153
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd A_portkabe02.png
+
+newmtl m0_00yuka_op
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd A_port_ji03.png
+
+newmtl m3_env0
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd A_tankmetal_01.png
+
+newmtl m15_o1153
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd Default.png
+
+newmtl m17_o750_2
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd A_portkabe01.png
+
+newmtl m25_o1085_2_
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd A_tent03.png
+
+newmtl m11_m_water
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd B_ENKEIwave.png
+
+newmtl m27_o1153_2_
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd A_portnaka01.png
+
+newmtl m4_kage
+Ns 20
+Ni 0.000000
+d 1.000000
+Tr 0
+renderOrder 1
+map_Kd A_kikage07_2.png
+
+newmtl m10_m_poster
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd poster_s9.png
+
+newmtl m14_o1144
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd A_portobj02.png
+
+newmtl m24_m_kusa_4_2_
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd A_portnaka_nuki01.png
+
+newmtl m23_m00yuka4_2_
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd A_pirtji01.png
+
+newmtl m18_o840
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd A_portyane02.png
+
+newmtl m19_o846
+Ns 20
+Ni 0.000000
+d 1.000000
+map_Kd A_saku01.png
+

@@ -110,6 +110,9 @@
 #include "../entities/NokiBay/nbwaterplatform.h"
 #include "../entities/NokiBay/nbwaterplatformbounce.h"
 #include "../entities/NokiBay/nbwaterfall.h"
+#include "../entities/DelfinoPlaza/dppalmtree.h"
+#include "../entities/DelfinoPlaza/dpleaves.h"
+#include "../entities/DelfinoPlaza/dpbigshine.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -148,6 +151,7 @@ void LevelLoader::loadTitle()
     Global::startStageTimer = -1;
 
     Global::stageUsesWater = true;
+    Global::waterHeight = 0.0f;
 
     Global::gameRingCount = 0;
     Global::gameScore = 0;
@@ -170,6 +174,12 @@ void LevelLoader::loadTitle()
     Global::checkpointTime = 0.0f;
 
     Global::raceLogSize = 0;
+
+    Global::gameCamera->eye.set(0, 20, 0);
+    Global::gameCamera->target.set(1, 20, 0);
+    Global::gameCamera->up.set(0, 1, 0);
+
+    Global::gameLightSun->direction.set(0, -1, 0);
 
     //use vsync on the title screen
     glfwSwapInterval(1); 
@@ -1303,6 +1313,28 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             return;
         }
 
+        case 76: //Delfino Plaza Palmtree
+		{
+			DP_Palmtree::loadStaticModels();
+			DP_Palmtree* tree = new DP_Palmtree(
+				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
+				toFloat(dat[4])); //rotation
+			INCR_NEW("Entity");
+			Global::addEntity(tree);
+			return;
+		}
+
+		case 77: //Delfino Plaza Leaves
+		{
+			DP_Leaves::loadStaticModels();
+			DP_Leaves* leaves = new DP_Leaves(
+				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
+				toFloat(dat[4])); //rotation
+			INCR_NEW("Entity");
+			Global::addEntity(leaves);
+			return;
+		}
+
         case 78: //Noki Bay Palmtree
         {
             NB_Palmtree::loadStaticModels();
@@ -1821,6 +1853,15 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             }
         }
 
+        case 109: //Delfino Plaza Big Shine
+		{
+			DP_BigShine::loadStaticModels();
+			DP_BigShine* leaves = new DP_BigShine(
+				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3])); INCR_NEW("Entity");
+			Global::addEntity(leaves);
+			return;
+		}
+
         default:
         {
             return;
@@ -1981,6 +2022,8 @@ void LevelLoader::freeAllStaticModels()
     NB_WaterPlatform::deleteStaticModels();
     NB_WaterPlatformBounce::deleteStaticModels();
     NB_Waterfall::deleteStaticModels();
+    DP_Leaves::deleteStaticModels();
+    DP_Palmtree::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()

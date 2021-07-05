@@ -79,8 +79,8 @@ void AudioMaster::init()
         }
         else
         {
-            alFilterf(filterLowpass, AL_LOWPASS_GAIN, 1.0f); //0.6
-            alFilterf(filterLowpass, AL_LOWPASS_GAINHF, 0.004f); //0.015
+            alFilterf(filterLowpass, AL_LOWPASS_GAIN, 1.0f); //1.0
+            alFilterf(filterLowpass, AL_LOWPASS_GAINHF, 0.015f); //0.004
         }
     }
 

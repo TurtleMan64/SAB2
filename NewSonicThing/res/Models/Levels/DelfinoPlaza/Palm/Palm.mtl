@@ -1,5 +1,5 @@
 # Blender MTL File: 'None'
-# Material Count: 1
+# Material Count: 2
 
 newmtl m0_mat1
 Ns 20.000000
@@ -10,3 +10,13 @@ Ni 0.000000
 d 1.000000
 illum 1
 map_Kd J_tree_A.png
+
+newmtl m0_mat1_J_tree_B.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+map_Kd J_tree_B.png

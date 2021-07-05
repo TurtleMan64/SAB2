@@ -1,0 +1,23 @@
+# Blender MTL File: 'None'
+# Material Count: 2
+
+newmtl P_dokan_amienv1.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.700000
+d 1.000000
+illum 1
+map_Kd P_dokan_amienv1.png
+
+newmtl P_dokan_amienv1.png_Ring3.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.700000
+d 1.000000
+scrollX -0.5
+illum 1
+map_Kd Ring3.png

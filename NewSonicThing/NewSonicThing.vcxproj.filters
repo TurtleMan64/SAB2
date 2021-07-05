@@ -690,6 +690,15 @@
     <ClCompile Include="src\entities\NokiBay\NB_Waterfall.cpp">
       <Filter>Source Files\entities\NokiBay</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\DelfinoPlaza\DP_Leaves.cpp">
+      <Filter>Source Files\entities\DelfinoPlaza</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\DelfinoPlaza\DP_Palmtree.cpp">
+      <Filter>Source Files\entities\DelfinoPlaza</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\DelfinoPlaza\DP_BigShine.cpp">
+      <Filter>Source Files\entities\DelfinoPlaza</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.h">
@@ -1237,6 +1246,15 @@
     </ClInclude>
     <ClInclude Include="src\entities\NokiBay\nbwaterfall.h">
       <Filter>Source Files\entities\NokiBay</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\DelfinoPlaza\dpleaves.h">
+      <Filter>Source Files\entities\DelfinoPlaza</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\DelfinoPlaza\dppalmtree.h">
+      <Filter>Source Files\entities\DelfinoPlaza</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\DelfinoPlaza\dpbigshine.h">
+      <Filter>Source Files\entities\DelfinoPlaza</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
