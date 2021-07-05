@@ -36,7 +36,7 @@ newmtl m15_o1153
 Ns 20
 Ni 0.000000
 d 1.000000
-map_Kd Default.png
+map_Kd white.png
 
 newmtl m17_o750_2
 Ns 20

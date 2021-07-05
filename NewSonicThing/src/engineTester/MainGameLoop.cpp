@@ -581,6 +581,8 @@ int main(int argc, char** argv)
         gameChunkedEntitiesToDelete.clear();
         ANALYSIS_DONE("Entity Management");
 
+        cam.inWater = false;
+
         switch (Global::gameState)
         {
             case STATE_RUNNING:

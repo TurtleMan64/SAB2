@@ -113,6 +113,7 @@
 #include "../entities/DelfinoPlaza/dppalmtree.h"
 #include "../entities/DelfinoPlaza/dpleaves.h"
 #include "../entities/DelfinoPlaza/dpbigshine.h"
+#include "../entities/waterzone.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -1859,6 +1860,15 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
 			DP_BigShine* leaves = new DP_BigShine(
 				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3])); INCR_NEW("Entity");
 			Global::addEntity(leaves);
+			return;
+		}
+
+        case 110: //Water Zone
+		{
+			WaterZone* water = new WaterZone(
+				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]),
+                toFloat(dat[4]), toFloat(dat[5]), toFloat(dat[6])); INCR_NEW("Entity");
+			Global::addEntity(water);
 			return;
 		}
 

@@ -257,6 +257,7 @@
     <ClCompile Include="src\entities\TwinkleCircuit\TC_Dash.cpp" />
     <ClCompile Include="src\entities\TwinkleCircuit\TC_Kart.cpp" />
     <ClCompile Include="src\entities\TwinkleCircuit\TC_StageManager.cpp" />
+    <ClCompile Include="src\entities\WaterZone.cpp" />
     <ClCompile Include="src\entities\WoodBox.cpp" />
     <ClCompile Include="src\fontMeshCreator\Character.cpp" />
     <ClCompile Include="src\fontMeshCreator\FontType.cpp" />
@@ -449,6 +450,7 @@
     <ClInclude Include="src\entities\TwinkleCircuit\tcdash.h" />
     <ClInclude Include="src\entities\TwinkleCircuit\tckart.h" />
     <ClInclude Include="src\entities\TwinkleCircuit\tcstagemanager.h" />
+    <ClInclude Include="src\entities\waterzone.h" />
     <ClInclude Include="src\entities\woodbox.h" />
     <ClInclude Include="src\fontMeshCreator\character.h" />
     <ClInclude Include="src\fontMeshCreator\fonttype.h" />

@@ -699,6 +699,9 @@
     <ClCompile Include="src\entities\DelfinoPlaza\DP_BigShine.cpp">
       <Filter>Source Files\entities\DelfinoPlaza</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\WaterZone.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.h">
@@ -1255,6 +1258,9 @@
     </ClInclude>
     <ClInclude Include="src\entities\DelfinoPlaza\dpbigshine.h">
       <Filter>Source Files\entities\DelfinoPlaza</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\waterzone.h">
+      <Filter>Source Files\entities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
