@@ -279,8 +279,8 @@ int main(int argc, char** argv)
 
     //The levels you play in arcade mode, in order
     Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_TUTORIAL,        Global::PlayableCharacter::Sonic));
-    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_CLOUD_TEMPLE,    Global::PlayableCharacter::Tails));
     Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_DRY_LAGOON,      Global::PlayableCharacter::Knuckles));
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_CLOUD_TEMPLE,    Global::PlayableCharacter::Tails));
     Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_GREEN_FOREST,    Global::PlayableCharacter::Sonic));
     Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_METAL_HARBOR,    Global::PlayableCharacter::Sonic));
     Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_NOKI_BAY,        Global::PlayableCharacter::Knuckles));
@@ -335,6 +335,7 @@ int main(int argc, char** argv)
     Global::stageNpcCounts[LVL_RADICAL_HIGHWAY] = 5;
     Global::stageNpcCounts[LVL_DRAGON_ROAD]     = 7;
     Global::stageNpcCounts[LVL_GREEN_HILL_ZONE] = 1;
+    Global::stageNpcCounts[LVL_DELFINO_PLAZA]   = 3;
 
     #if !defined(DEV_MODE) && defined(_WIN32)
     FreeConsole();

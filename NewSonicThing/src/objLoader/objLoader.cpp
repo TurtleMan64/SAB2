@@ -9,6 +9,7 @@
 
 #include "objLoader.h"
 #include "../models/models.h"
+#include "../textures/modeltexture.h"
 #include "../renderEngine/renderEngine.h"
 #include "../toolbox/vector.h"
 #include "vertex.h"
@@ -677,8 +678,8 @@ void ObjLoader::parseMtl(std::string filePath, std::string fileName, std::unorde
                     currentNumImages--;
                 }
 
-                std::vector<unsigned int>* texturesPointer = &textureIDs;
-                ModelTexture newTexture = ModelTexture(texturesPointer);
+                std::vector<GLuint>* texturesPointer = &textureIDs;
+                ModelTexture newTexture(texturesPointer);
 
                 newTexture.shineDamper = currentShineDamperValue;
                 newTexture.reflectivity = currentReflectivityValue;
@@ -1359,6 +1360,12 @@ CollisionModel* ObjLoader::loadCollisionModel(std::string filePath, std::string 
                             {
                                 fakeTextures.back().type = 3;
                             }
+                            else if (strcmp(lineSplitMTL[1], "bounce") == 0)
+                            {
+                                fakeTextures.back().type = 4;
+
+                                fakeTextures.back().type |= (((char)round(std::stof(lineSplitMTL[2])/50.0f)) << 4);
+                            }
                         }
                         else if (strcmp(lineSplitMTL[0], "sound") == 0 ||
                                  strcmp(lineSplitMTL[0], "\tsound") == 0)
@@ -1576,6 +1583,12 @@ CollisionModel* ObjLoader::loadBinaryCollisionModel(std::string filePath, std::s
                     else if (strcmp(lineSplitMTL[1], "death") == 0)
                     {
                         fakeTextures.back().type = 3;
+                    }
+                    else if (strcmp(lineSplitMTL[1], "bounce") == 0)
+                    {
+                        fakeTextures.back().type = 4;
+
+                        fakeTextures.back().type |= (((char)round(std::stof(lineSplitMTL[2])/50.0f)) << 4);
                     }
                 }
                 else if (strcmp(lineSplitMTL[0], "sound") == 0 ||

@@ -45,21 +45,7 @@ NB_WaterPlatformBounce::NB_WaterPlatformBounce(float x, float y, float z, float 
 
 void NB_WaterPlatformBounce::step()
 {
-    if (collideModelTransformed->playerIsOn)
-    {
-        if (Global::gameMainPlayer->position.y >= position.y + 16.453f)
-        {
-            Global::gameMainPlayer->increasePosition(0, 1, 0);
-            Global::gameMainPlayer->onGround = false;
 
-            float bounceSpeed = std::fmaxf(9*60, -Global::gameMainPlayer->vel.y);
-            Global::gameMainPlayer->vel.y = bounceSpeed;
-
-            Global::gameMainPlayer->setHoverTimer(1.0f);
-
-            AudioPlayer::play(6, &position, 0.6f);
-        }
-    }
 }
 
 std::list<TexturedModel*>* NB_WaterPlatformBounce::getModels()

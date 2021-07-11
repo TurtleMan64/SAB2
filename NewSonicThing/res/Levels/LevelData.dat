@@ -95,17 +95,18 @@ Hard;100;Complete as Black Shadow
 NokiBay.lvl
 Noki Bay
 4
-Normal;100;Collect emerald pieces
-Ring;100;100;Collect 100 Rings!
-Chao;100;Find the lost chao!
+Normal;15000;Find all the pieces of the master emerald!
+Ring;80;100;Collect 100 Rings!
+Chao;20;Find the lost chao!
 Hard;15000;Clear hard mode!
 
 DelfinoPlaza.lvl
 Delfino Plaza
-3
-Normal;100;Collect emerald pieces
-Ring;100;100;Collect 100 Rings!
-Chao;100;Complete as Soic Phantom
+4
+Normal;15000;Find all the pieces of the master emerald!
+Ring;90;100;Collect 100 Rings!
+Chao;40;Find the lost chao!
+Hard;14000;Clear hard mode!
 
 SacredSky.lvl
 Sacred Sky

@@ -1101,7 +1101,7 @@ void PlayerKnuckles::step()
         //speed before adjusting
         float originalSpeed = vel.length();
         CollisionChecker::setCheckPlayer(true);
-        if (CollisionChecker::checkCollision(getX(), getY(), getZ(), getX()+vel.x*dt, getY()+vel.y*dt, getZ()+vel.z*dt))
+        if (CollisionChecker::checkCollision(position.x, position.y, position.z, position.x + vel.x*dt, position.y + vel.y*dt, position.z + vel.z*dt))
         {
             Vector3f* colNormal = &CollisionChecker::getCollideTriangle()->normal;
 
@@ -1499,6 +1499,32 @@ void PlayerKnuckles::step()
     }
 
     camDir.normalize();
+
+    //Bouncing from collision type
+    if (onGround)
+    {
+        float bounceStrength = currentTriangle->bounceStrength();
+        if (bounceStrength > 0.0f)
+        {
+            position = position + currentTriangle->normal;
+            onGround = false;
+
+            Vector3f velAlongLine = Maths::projectAlongLine(&vel, &currentTriangle->normal);
+            float speedAlongLine = velAlongLine.length();
+
+            float bounceSpeed = std::fmaxf(bounceStrength, speedAlongLine);
+
+            vel = vel + currentTriangle->normal.scaleCopy(bounceSpeed);
+
+            setHoverTimer(1.0f);
+            relativeUp.set(0, 1, 0);
+            
+            float pitch = 1.0f - bounceSpeed/1000.0f;
+            pitch = Maths::clamp(0.5f, pitch, 1.0f);
+
+            AudioPlayer::play(6, &position, pitch);
+        }
+    }
 
     //wall sticking
     if (!onGround)

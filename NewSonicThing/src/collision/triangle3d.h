@@ -27,7 +27,13 @@ public:
     float C;
     float D;
 
-    char type; //0 = normal, 1 = diggable, 2 = wall, 3 = death
+    //first 4 ls bits is the type. 0 = normal, 1 = diggable, 2 = wall, 3 = death, 4 = bounce
+    //4 ms bits are strength of bounce.
+    // example:
+    // bit 7 6 5 4  3 2 1 0
+    //     1 0 1 0  0 1 0 0
+    // this is bounce strength 10. bounce strength is then multiplied by 50 for final bounce speed.
+    char type;
 
     char sound;
 
@@ -52,6 +58,8 @@ public:
     bool isDiggable();
 
     bool isDeath();
+
+    float bounceStrength();
 };
 
 #endif

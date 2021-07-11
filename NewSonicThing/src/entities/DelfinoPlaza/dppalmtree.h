@@ -10,19 +10,19 @@ class TexturedModel;
 class DP_Palmtree : public CollideableObject
 {
 private:
-	static std::list<TexturedModel*> models;
-	static CollisionModel* cmOriginal;
+    static std::list<TexturedModel*> models;
+    static CollisionModel* cmOriginal;
 
 public:
-	DP_Palmtree();
-	DP_Palmtree(float x, float y, float z, float rotY);
+    DP_Palmtree();
+    DP_Palmtree(float x, float y, float z, float rotY);
 
-	void step();
+    void step();
 
-	std::list<TexturedModel*>* getModels();
+    std::list<TexturedModel*>* getModels();
 
-	static void loadStaticModels();
+    static void loadStaticModels();
 
-	static void deleteStaticModels();
+    static void deleteStaticModels();
 };
 #endif

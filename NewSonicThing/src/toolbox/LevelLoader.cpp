@@ -1315,26 +1315,26 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
         }
 
         case 76: //Delfino Plaza Palmtree
-		{
-			DP_Palmtree::loadStaticModels();
-			DP_Palmtree* tree = new DP_Palmtree(
-				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
-				toFloat(dat[4])); //rotation
-			INCR_NEW("Entity");
-			Global::addEntity(tree);
-			return;
-		}
+        {
+            DP_Palmtree::loadStaticModels();
+            DP_Palmtree* tree = new DP_Palmtree(
+                toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
+                toFloat(dat[4])); //rotation
+            INCR_NEW("Entity");
+            Global::addEntity(tree);
+            return;
+        }
 
-		case 77: //Delfino Plaza Leaves
-		{
-			DP_Leaves::loadStaticModels();
-			DP_Leaves* leaves = new DP_Leaves(
-				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
-				toFloat(dat[4])); //rotation
-			INCR_NEW("Entity");
-			Global::addEntity(leaves);
-			return;
-		}
+        case 77: //Delfino Plaza Leaves
+        {
+            DP_Leaves::loadStaticModels();
+            DP_Leaves* leaves = new DP_Leaves(
+                toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
+                toFloat(dat[4])); //rotation
+            INCR_NEW("Entity");
+            Global::addEntity(leaves);
+            return;
+        }
 
         case 78: //Noki Bay Palmtree
         {
@@ -1855,22 +1855,22 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
         }
 
         case 109: //Delfino Plaza Big Shine
-		{
-			DP_BigShine::loadStaticModels();
-			DP_BigShine* leaves = new DP_BigShine(
-				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3])); INCR_NEW("Entity");
-			Global::addEntity(leaves);
-			return;
-		}
+        {
+            DP_BigShine::loadStaticModels();
+            DP_BigShine* leaves = new DP_BigShine(
+                toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3])); INCR_NEW("Entity");
+            Global::addEntity(leaves);
+            return;
+        }
 
         case 110: //Water Zone
-		{
-			WaterZone* water = new WaterZone(
-				toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]),
+        {
+            WaterZone* water = new WaterZone(
+                toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]),
                 toFloat(dat[4]), toFloat(dat[5]), toFloat(dat[6])); INCR_NEW("Entity");
-			Global::addEntity(water);
-			return;
-		}
+            Global::addEntity(water);
+            return;
+        }
 
         default:
         {

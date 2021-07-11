@@ -92,15 +92,27 @@ void Triangle3D::generateValues()
 
 bool Triangle3D::isWall()
 {
-    return (type == 2);
+    return ((type & 0xF) == 2);
 }
 
 bool Triangle3D::isDiggable()
 {
-    return (type == 1);
+    return ((type & 0xF) == 1);
 }
 
 bool Triangle3D::isDeath()
 {
-    return (type == 3);
+    return ((type & 0xF) == 3);
+}
+
+float Triangle3D::bounceStrength()
+{
+    if ((type & 0xF) == 4)
+    {
+        int strength = (type >> 4) & 0xF;
+
+        return strength*50.0f;
+    }
+
+    return 0.0f;
 }
