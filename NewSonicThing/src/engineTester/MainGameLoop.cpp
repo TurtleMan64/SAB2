@@ -284,6 +284,7 @@ int main(int argc, char** argv)
     Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_GREEN_FOREST,    Global::PlayableCharacter::Sonic));
     Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_METAL_HARBOR,    Global::PlayableCharacter::Sonic));
     Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_NOKI_BAY,        Global::PlayableCharacter::Knuckles));
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_FROG_FOREST,     Global::PlayableCharacter::Tails));
     Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_DRAGON_ROAD,     Global::PlayableCharacter::Sonic));
     Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_GREEN_HILL_ZONE, Global::PlayableCharacter::Sonic));
     Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_TWINKLE_CIRCUIT, Global::PlayableCharacter::Sonic));

@@ -114,6 +114,7 @@
 #include "../entities/DelfinoPlaza/dpleaves.h"
 #include "../entities/DelfinoPlaza/dpbigshine.h"
 #include "../entities/waterzone.h"
+#include "../entities/FrogForest/ffstagemanager.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -1459,6 +1460,11 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                     Global::gameStageManager = new DR_StageManager; INCR_NEW("Entity");
                     break;
 
+                case 14:
+                    FF_StageManager::loadStaticModels();
+                    Global::gameStageManager = new FF_StageManager; INCR_NEW("Entity");
+                    break;
+
                 default: break;
             }
             return;
@@ -2034,6 +2040,7 @@ void LevelLoader::freeAllStaticModels()
     NB_Waterfall::deleteStaticModels();
     DP_Leaves::deleteStaticModels();
     DP_Palmtree::deleteStaticModels();
+    FF_StageManager::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()
