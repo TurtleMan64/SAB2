@@ -76,7 +76,7 @@ private:
     //functions for the constructor start here
     
     //Get the vector for the horizontal direction the camera should point using the y rotation
-    inline Vector3f calculateCameraDirectionVector();
+    inline Vector3f calculateCameraDirectionVector() const;
     //Setup the visual model of the rope of the pulley as a separate entity, 
     //allowing it to move separately from the handle.
     inline void setupPulleyRope();
@@ -89,9 +89,9 @@ private:
     //Check if the player has collided with the rocket handle.
     inline bool playerWithinHandleHitbox();
     //Check if the pulley is at the bottom position where it can be grabbed.
-    inline bool handleAtBottom();
+    inline bool handleAtBottom() const;
     //Check if the pulley is at the very top where it stops moving.
-    inline bool handleAtTop();
+    inline bool handleAtTop() const;
     //Play and loop the sound the pulley makes while it moves.
     inline void playPulleySound();
     //Stop playing the pulley sound.
@@ -100,9 +100,9 @@ private:
     inline void movePulley(bool movePulleyUp);
     //Returns either 1 to move down or -1 to move up, used to multiply the speed to control direction
     //and reduce duplicate code.
-    inline int getPulleyMoveDirection(bool movePulleyUp);
+    inline int getPulleyMoveDirection(bool movePulleyUp) const;
     //Check if the player has jumped.
-    inline bool jumpInputPressed();
+    inline bool jumpInputPressed() const;
     //Handle the animation of the Pulley bobbing up and down when it hits the top with the player on it
     inline void bobPulley();
 
@@ -114,9 +114,9 @@ public:
 
     std::list<TexturedModel*>* getModels();
 
-    const bool canHomingAttackOn();
+    bool canHomingAttackOn() const;
 
-    const Vector3f getHomingCenter();
+    Vector3f getHomingCenter() const;
 
     static void loadStaticModels();
 

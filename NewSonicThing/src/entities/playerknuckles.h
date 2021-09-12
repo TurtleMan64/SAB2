@@ -329,7 +329,7 @@ public:
 
     static void deleteStaticModels();
 
-    const bool isVehicle();
+    bool isVehicle() const;
 
     float getHitboxHorizontal();
 

@@ -22,7 +22,7 @@ void PlayerModel::setBaseVisibility(bool) {}
 
 void PlayerModel::setRenderOrderOverride(char) {}
 
-const float PlayerModel::getDisplayBallOffset() {return 0.0f;}
+float PlayerModel::getDisplayBallOffset() const {return 0.0f;}
 
 ParticleTexture* PlayerModel::getBallTexture() {return nullptr;}
 

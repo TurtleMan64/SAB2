@@ -184,17 +184,17 @@ void Beetle::deleteStaticModels()
     Entity::deleteModels(&Beetle::modelsBlades);
 }
 
-const bool Beetle::canHomingAttackOn()
+bool Beetle::canHomingAttackOn() const
 {
     return true;
 }
 
-const Vector3f Beetle::getHomingCenter()
+Vector3f Beetle::getHomingCenter() const
 {
     return position;
 }
 
-const bool Beetle::isEnemy()
+bool Beetle::isEnemy() const
 {
     return true;
 }

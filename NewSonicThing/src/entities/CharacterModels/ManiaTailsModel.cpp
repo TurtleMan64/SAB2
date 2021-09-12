@@ -140,7 +140,7 @@ void ManiaTailsModel::step()
 
 }
 
-const float ManiaTailsModel::getDisplayBallOffset()
+float ManiaTailsModel::getDisplayBallOffset() const
 {
     return displayBallOffset;
 }

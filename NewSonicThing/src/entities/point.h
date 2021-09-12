@@ -16,6 +16,6 @@ public:
 
     int getID();
 
-    const bool isPoint();
+    bool isPoint() const;
 };
 #endif

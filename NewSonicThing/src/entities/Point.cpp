@@ -30,7 +30,7 @@ int Point::getID()
     return id;
 }
 
-const bool Point::isPoint()
+bool Point::isPoint() const
 {
     return true;
 }

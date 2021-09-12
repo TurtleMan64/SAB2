@@ -129,7 +129,7 @@ public:
 
     void setRenderOrderOverride(char newOrder);
 
-    const float getDisplayBallOffset();
+    float getDisplayBallOffset() const;
 
     ParticleTexture* getBallTexture();
 

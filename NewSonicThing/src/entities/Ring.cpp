@@ -160,7 +160,7 @@ void Ring::deleteStaticModels()
     Entity::deleteModels(&Ring::models);
 }
 
-const inline bool Ring::canLightdashOn()
+inline bool Ring::canLightdashOn() const
 {
     return true;
 }

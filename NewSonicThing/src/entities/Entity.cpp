@@ -50,27 +50,27 @@ void Entity::step()
 
 }
 
-const bool Entity::isVehicle()
+bool Entity::isVehicle() const
 {
     return false;
 }
 
-const bool Entity::isEmeraldPiece()
+bool Entity::isEmeraldPiece() const
 {
     return false;
 }
 
-const bool Entity::isGoalTrigger()
+bool Entity::isGoalTrigger() const
 {
     return false;
 }
 
-const bool Entity::isEnemy()
+bool Entity::isEnemy() const
 {
     return false;
 }
 
-const bool Entity::isPoint()
+bool Entity::isPoint() const
 {
     return false;
 }
@@ -134,7 +134,7 @@ void Entity::setModelsRenderOrder(std::list<TexturedModel*>* models, char newOrd
     }
 }
 
-const float Entity::getRotX()
+float Entity::getRotX() const
 {
     return rotX;
 }
@@ -143,7 +143,7 @@ void Entity::setRotX(float newRotX)
     rotX = newRotX;
 }
 
-const float Entity::getRotY()
+float Entity::getRotY() const
 {
     return rotY;
 }
@@ -152,7 +152,7 @@ void Entity::setRotY(float newRotY)
     rotY = newRotY;
 }
 
-const float Entity::getRotZ()
+float Entity::getRotZ() const
 {
     return rotZ;
 }
@@ -161,7 +161,7 @@ void Entity::setRotZ(float newRotZ)
     rotZ = newRotZ;
 }
 
-const float Entity::getRotSpin()
+float Entity::getRotSpin() const
 {
     return rotRoll;
 }
@@ -170,7 +170,7 @@ void Entity::setRotSpin(float newRotSpin)
     rotRoll = newRotSpin;
 }
 
-const float Entity::getScale()
+float Entity::getScale() const
 {
     return scale;
 }
@@ -179,7 +179,7 @@ void Entity::setScale(float newScale)
     scale = newScale;
 }
 
-const bool Entity::getVisible()
+bool Entity::getVisible() const
 {
     return visible;
 }
@@ -188,17 +188,17 @@ void Entity::setVisible(bool newVisible)
     visible = newVisible;
 }
 
-const float Entity::getX()
+float Entity::getX() const
 {
     return position.x;
 }
 
-const float Entity::getY()
+float Entity::getY() const
 {
     return position.y;
 }
 
-const float Entity::getZ()
+float Entity::getZ() const
 {
     return position.z;
 }
@@ -243,17 +243,17 @@ Matrix4f* Entity::getTransformationMatrix()
     return &transformationMatrix;
 }
 
-const bool Entity::canLightdashOn()
+bool Entity::canLightdashOn() const
 {
     return false;
 }
 
-const bool Entity::canHomingAttackOn()
+bool Entity::canHomingAttackOn() const
 {
     return false;
 }
 
-const Vector3f Entity::getHomingCenter()
+Vector3f Entity::getHomingCenter() const
 {
     return Vector3f(0,0,0);
 }

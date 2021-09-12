@@ -128,7 +128,7 @@ void ManiaSonicModel::step()
 
 }
 
-const float ManiaSonicModel::getDisplayBallOffset()
+float ManiaSonicModel::getDisplayBallOffset() const
 {
     return displayBallOffset;
 }

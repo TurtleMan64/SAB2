@@ -273,7 +273,7 @@ int EmeraldPiece::getPieceNumber()
     return pieceNumber;
 }
 
-const bool EmeraldPiece::isEmeraldPiece()
+bool EmeraldPiece::isEmeraldPiece() const
 {
     return true;
 }

@@ -2695,7 +2695,7 @@ void PlayerTails::deleteStaticModels()
     ManiaTailsModel::deleteStaticModels();
 }
 
-const bool PlayerTails::isVehicle()
+bool PlayerTails::isVehicle() const
 {
     return true;
 }

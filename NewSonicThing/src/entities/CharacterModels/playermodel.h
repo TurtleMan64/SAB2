@@ -27,7 +27,7 @@ public:
 
     virtual void setRenderOrderOverride(char newOrder);
 
-    const virtual float getDisplayBallOffset();
+    virtual float getDisplayBallOffset() const;
 
     virtual ParticleTexture* getBallTexture();
 

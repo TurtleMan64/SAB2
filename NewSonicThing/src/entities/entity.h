@@ -35,15 +35,15 @@ public:
 
     virtual void step();
 
-    virtual const bool isVehicle();
+    virtual bool isVehicle() const;
 
-    virtual const bool isEmeraldPiece();
+    virtual bool isEmeraldPiece() const;
 
-    virtual const bool isGoalTrigger();
+    virtual bool isGoalTrigger() const;
 
-    virtual const bool isEnemy();
+    virtual bool isEnemy() const;
 
-    virtual const bool isPoint();
+    virtual bool isPoint() const;
 
     void increasePosition(float dx, float dy, float dz);
 
@@ -58,29 +58,29 @@ public:
     Vector3f* getBaseColour();
     void setBaseColour(float red, float green, float blue);
 
-    const float getRotX();
+    float getRotX() const;
     void setRotX(float newRotX);
 
-    const float getRotY();
+    float getRotY() const;
     void setRotY(float newRotY);
 
-    const float getRotZ();
+    float getRotZ() const;
     void setRotZ(float newRotZ);
 
-    const float getRotSpin();
+    float getRotSpin() const;
     void setRotSpin(float newRotSpin);
 
-    const float getScale();
+    float getScale() const;
     void setScale(float newScale);
 
-    const bool getVisible();
+    bool getVisible() const;
     void setVisible(bool newVisible);
 
-    const float getX();
+    float getX() const;
 
-    const float getY();
+    float getY() const;
 
-    const float getZ();
+    float getZ() const;
 
     void setX(float newX);
 
@@ -99,11 +99,11 @@ public:
 
     void updateTransformationMatrixYXZ();
 
-    virtual const bool canLightdashOn();
+    virtual bool canLightdashOn() const;
 
-    virtual const bool canHomingAttackOn();
+    virtual bool canHomingAttackOn() const;
 
-    virtual const Vector3f getHomingCenter();
+    virtual Vector3f getHomingCenter() const;
 
     virtual void die();
 };

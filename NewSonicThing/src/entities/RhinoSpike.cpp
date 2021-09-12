@@ -405,19 +405,19 @@ void RhinoSpike::deleteStaticModels()
     Entity::deleteModels(&RhinoSpike::models);
 }
 
-const bool RhinoSpike::canHomingAttackOn()
+bool RhinoSpike::canHomingAttackOn() const
 {
     return true;
 }
 
-const Vector3f RhinoSpike::getHomingCenter()
+Vector3f RhinoSpike::getHomingCenter() const
 {
-    Vector3f homingCenter(&position);
+    Vector3f homingCenter = position;
     homingCenter.y += 13.2651f;
     return homingCenter;
 }
 
-const bool RhinoSpike::isEnemy()
+bool RhinoSpike::isEnemy() const
 {
     return true;
 }

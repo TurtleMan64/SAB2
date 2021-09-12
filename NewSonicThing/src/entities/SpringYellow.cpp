@@ -102,12 +102,12 @@ void SpringYellow::deleteStaticModels()
     Entity::deleteModels(&SpringYellow::models);
 }
 
-const bool SpringYellow::canHomingAttackOn()
+bool SpringYellow::canHomingAttackOn() const
 {
     return true;
 }
 
-const Vector3f SpringYellow::getHomingCenter()
+Vector3f SpringYellow::getHomingCenter() const
 {
     return hitCenter;
 }

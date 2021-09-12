@@ -183,7 +183,7 @@ void Pulley::deleteStaticModels()
     Entity::deleteModels(&Pulley::modelsTop);
 }
 
-inline Vector3f Pulley::calculateCameraDirectionVector()
+inline Vector3f Pulley::calculateCameraDirectionVector() const
 {
     return Vector3f(sin(Maths::toRadians(rotY)) * 1000, 0, -cos(Maths::toRadians(rotY)) * 1000);
 }
@@ -219,12 +219,12 @@ inline bool Pulley::playerWithinHandleHitbox()
             fabsf(playerPulleyDistance.y) <= HITBOX_HEIGHT);
 }
 
-inline bool Pulley::handleAtBottom()
+inline bool Pulley::handleAtBottom() const
 {
     return handleVerticalDisplacement >= handleVerticalDisplacementBottom;
 }
 
-inline bool Pulley::handleAtTop()
+inline bool Pulley::handleAtTop() const
 {
     return handleVerticalDisplacement <= HANDLE_VERTICAL_DISPLACEMENT_MINIMUM;
 }
@@ -260,7 +260,7 @@ inline void Pulley::movePulley(bool movePulleyUp)
     handleVerticalDisplacement += PULLEY_SPEED * pulleyDirection * dt;
 }
 
-inline int Pulley::getPulleyMoveDirection(bool movePulleyUp)
+inline int Pulley::getPulleyMoveDirection(bool movePulleyUp) const
 {
     if (movePulleyUp)
     {
@@ -272,7 +272,7 @@ inline int Pulley::getPulleyMoveDirection(bool movePulleyUp)
     }
 }
 
-inline bool Pulley::jumpInputPressed()
+inline bool Pulley::jumpInputPressed() const
 {
     return Input::inputs.INPUT_ACTION1 && !Input::inputs.INPUT_PREVIOUS_ACTION1;
 }
@@ -291,12 +291,12 @@ inline void Pulley::bobPulley()
     bobTimer += dt * 20;
 }
 
-const bool Pulley::canHomingAttackOn()
+bool Pulley::canHomingAttackOn() const
 {
     return handleAtBottom();
 }
 
-const Vector3f Pulley::getHomingCenter()
+Vector3f Pulley::getHomingCenter() const
 {
     return position;
 }

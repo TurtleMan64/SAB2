@@ -1708,7 +1708,7 @@ void TC_Kart::deleteStaticModels()
     Entity::deleteModels(&TC_Kart::modelsEngine);
 }
 
-const bool TC_Kart::isVehicle()
+bool TC_Kart::isVehicle() const
 {
     return true;
 }

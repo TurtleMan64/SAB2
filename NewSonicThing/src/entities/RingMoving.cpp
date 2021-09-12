@@ -174,7 +174,7 @@ std::list<TexturedModel*>* RingMoving::getModels()
     return &Ring::models;
 }
 
-const inline bool RingMoving::canLightdashOn()
+inline bool RingMoving::canLightdashOn() const
 {
     if (ageTimer < 0.0f)
     {

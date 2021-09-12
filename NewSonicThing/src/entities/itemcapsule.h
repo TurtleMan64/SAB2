@@ -29,8 +29,8 @@ private:
     Vector3f centerPos;
     Vector3f upDir;
 
-    int itemType;
-    int boxType;
+    int itemType = 0;
+    int boxType = 0;
     Dummy* entityGlass = nullptr;
     Dummy* entityItem = nullptr;
 
@@ -48,8 +48,8 @@ public:
 
     static void deleteStaticModels();
 
-    const bool canHomingAttackOn();
+    bool canHomingAttackOn() const;
 
-    const Vector3f getHomingCenter();
+    Vector3f getHomingCenter() const;
 };
 #endif

@@ -134,7 +134,7 @@ void ManiaMightyModel::step()
 
 }
 
-const float ManiaMightyModel::getDisplayBallOffset()
+float ManiaMightyModel::getDisplayBallOffset() const
 {
     return displayBallOffset;
 }

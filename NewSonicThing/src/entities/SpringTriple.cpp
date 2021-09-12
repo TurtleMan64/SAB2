@@ -114,12 +114,12 @@ void SpringTriple::deleteStaticModels()
     Entity::deleteModels(&SpringTriple::models);
 }
 
-const bool SpringTriple::canHomingAttackOn()
+bool SpringTriple::canHomingAttackOn() const
 {
     return true;
 }
 
-const Vector3f SpringTriple::getHomingCenter()
+Vector3f SpringTriple::getHomingCenter() const
 {
     return hitCenter2;
 }

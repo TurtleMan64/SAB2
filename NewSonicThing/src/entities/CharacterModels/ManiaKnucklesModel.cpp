@@ -126,7 +126,7 @@ void ManiaKnucklesModel::step()
 
 }
 
-const float ManiaKnucklesModel::getDisplayBallOffset()
+float ManiaKnucklesModel::getDisplayBallOffset() const
 {
     return displayBallOffset;
 }

@@ -99,12 +99,12 @@ void Spring::deleteStaticModels()
     Entity::deleteModels(&Spring::models);
 }
 
-const bool Spring::canHomingAttackOn()
+bool Spring::canHomingAttackOn() const
 {
     return true;
 }
 
-const Vector3f Spring::getHomingCenter()
+Vector3f Spring::getHomingCenter() const
 {
     return hitCenter;
 }

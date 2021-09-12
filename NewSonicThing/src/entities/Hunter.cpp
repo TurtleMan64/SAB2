@@ -238,17 +238,17 @@ void Hunter::deleteStaticModels()
     Entity::deleteModels(&Hunter::modelsGun);
 }
 
-const bool Hunter::canHomingAttackOn()
+bool Hunter::canHomingAttackOn() const
 {
     return true;
 }
 
-const Vector3f Hunter::getHomingCenter()
+Vector3f Hunter::getHomingCenter() const
 {
     return centerPos;
 }
 
-const bool Hunter::isEnemy()
+bool Hunter::isEnemy() const
 {
     return true;
 }

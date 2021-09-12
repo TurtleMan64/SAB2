@@ -32,6 +32,6 @@ public:
 
     static void deleteStaticModels();
 
-    const inline bool canLightdashOn();
+    inline bool canLightdashOn() const;
 };
 #endif

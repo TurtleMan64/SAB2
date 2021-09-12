@@ -25,6 +25,6 @@ public:
 
     std::list<TexturedModel*>* getModels();
 
-    const inline bool canLightdashOn();
+    inline bool canLightdashOn() const;
 };
 #endif

@@ -213,12 +213,13 @@ void MissionMenu::draw(bool updateMissionText)
         Level level = Global::gameLevelData[buttLvlID];
 
         int numMissions = level.numMissions;
+
         switch (numMissions)
         {
-            case 4: GuiManager::addGuiToRender(rankM4);
-            case 3: GuiManager::addGuiToRender(rankM3);
-            case 2: GuiManager::addGuiToRender(rankM2);
-            case 1: GuiManager::addGuiToRender(rankM1);
+            case 4: GuiManager::addGuiToRender(rankM4); [[fallthrough]];
+            case 3: GuiManager::addGuiToRender(rankM3); [[fallthrough]];
+            case 2: GuiManager::addGuiToRender(rankM2); [[fallthrough]];
+            case 1: GuiManager::addGuiToRender(rankM1); [[fallthrough]];
             default: break;
         }
 
@@ -229,11 +230,11 @@ void MissionMenu::draw(bool updateMissionText)
             if (Global::gameSaveData.find(level.displayName+"_"+Global::characterNames[Global::currentCharacterType]+"_M4_RANK") != Global::gameSaveData.end())
             {
                 rank = Global::gameSaveData[level.displayName+"_"+Global::characterNames[Global::currentCharacterType]+"_M4_RANK"];
-                if (rank == "A") rankM4->setTexture(textureRankA);
-                if (rank == "B") rankM4->setTexture(textureRankB);
-                if (rank == "C") rankM4->setTexture(textureRankC);
-                if (rank == "D") rankM4->setTexture(textureRankD);
-                if (rank == "E") rankM4->setTexture(textureRankE);
+                if (rank == "A") { rankM4->setTexture(textureRankA); }
+                if (rank == "B") { rankM4->setTexture(textureRankB); }
+                if (rank == "C") { rankM4->setTexture(textureRankC); }
+                if (rank == "D") { rankM4->setTexture(textureRankD); }
+                if (rank == "E") { rankM4->setTexture(textureRankE); }
             }
         }
         if (numMissions >= 3)
@@ -243,11 +244,11 @@ void MissionMenu::draw(bool updateMissionText)
             if (Global::gameSaveData.find(level.displayName+"_"+Global::characterNames[Global::currentCharacterType]+"_M3_RANK") != Global::gameSaveData.end())
             {
                 rank = Global::gameSaveData[level.displayName+"_"+Global::characterNames[Global::currentCharacterType]+"_M3_RANK"];
-                if (rank == "A") rankM3->setTexture(textureRankA);
-                if (rank == "B") rankM3->setTexture(textureRankB);
-                if (rank == "C") rankM3->setTexture(textureRankC);
-                if (rank == "D") rankM3->setTexture(textureRankD);
-                if (rank == "E") rankM3->setTexture(textureRankE);
+                if (rank == "A") { rankM3->setTexture(textureRankA); }
+                if (rank == "B") { rankM3->setTexture(textureRankB); }
+                if (rank == "C") { rankM3->setTexture(textureRankC); }
+                if (rank == "D") { rankM3->setTexture(textureRankD); }
+                if (rank == "E") { rankM3->setTexture(textureRankE); }
             }
         }
         if (numMissions >= 2)
@@ -257,11 +258,11 @@ void MissionMenu::draw(bool updateMissionText)
             if (Global::gameSaveData.find(level.displayName+"_"+Global::characterNames[Global::currentCharacterType]+"_M2_RANK") != Global::gameSaveData.end())
             {
                 rank = Global::gameSaveData[level.displayName+"_"+Global::characterNames[Global::currentCharacterType]+"_M2_RANK"];
-                if (rank == "A") rankM2->setTexture(textureRankA);
-                if (rank == "B") rankM2->setTexture(textureRankB);
-                if (rank == "C") rankM2->setTexture(textureRankC);
-                if (rank == "D") rankM2->setTexture(textureRankD);
-                if (rank == "E") rankM2->setTexture(textureRankE);
+                if (rank == "A") { rankM2->setTexture(textureRankA); }
+                if (rank == "B") { rankM2->setTexture(textureRankB); }
+                if (rank == "C") { rankM2->setTexture(textureRankC); }
+                if (rank == "D") { rankM2->setTexture(textureRankD); }
+                if (rank == "E") { rankM2->setTexture(textureRankE); }
             }
         }
         if (numMissions >= 1)
@@ -271,11 +272,11 @@ void MissionMenu::draw(bool updateMissionText)
             if (Global::gameSaveData.find(level.displayName+"_"+Global::characterNames[Global::currentCharacterType]+"_M1_RANK") != Global::gameSaveData.end())
             {
                 rank = Global::gameSaveData[level.displayName+"_"+Global::characterNames[Global::currentCharacterType]+"_M1_RANK"];
-                if (rank == "A") rankM1->setTexture(textureRankA);
-                if (rank == "B") rankM1->setTexture(textureRankB);
-                if (rank == "C") rankM1->setTexture(textureRankC);
-                if (rank == "D") rankM1->setTexture(textureRankD);
-                if (rank == "E") rankM1->setTexture(textureRankE);
+                if (rank == "A") { rankM1->setTexture(textureRankA); }
+                if (rank == "B") { rankM1->setTexture(textureRankB); }
+                if (rank == "C") { rankM1->setTexture(textureRankC); }
+                if (rank == "D") { rankM1->setTexture(textureRankD); }
+                if (rank == "E") { rankM1->setTexture(textureRankE); }
             }
         }
 

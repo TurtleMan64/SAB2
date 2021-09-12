@@ -37,8 +37,8 @@ public:
 
     static void deleteStaticModels();
 
-    const bool canHomingAttackOn();
+    bool canHomingAttackOn() const;
 
-    const Vector3f getHomingCenter();
+    Vector3f getHomingCenter() const;
 };
 #endif

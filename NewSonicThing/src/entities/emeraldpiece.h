@@ -35,7 +35,7 @@ public:
 
     void step();
 
-    const bool isEmeraldPiece();
+    bool isEmeraldPiece() const;
 
     std::list<TexturedModel*>* getModels();
 

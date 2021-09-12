@@ -3033,7 +3033,7 @@ void PlayerKnuckles::deleteStaticModels()
     ManiaKnucklesModel::deleteStaticModels();
 }
 
-const bool PlayerKnuckles::isVehicle()
+bool PlayerKnuckles::isVehicle() const
 {
     return true;
 }

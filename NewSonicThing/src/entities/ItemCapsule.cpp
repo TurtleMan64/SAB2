@@ -343,12 +343,12 @@ void ItemCapsule::deleteStaticModels()
     Entity::deleteModels(&ItemCapsule::modelsItemBarrierB);
 }
 
-const bool ItemCapsule::canHomingAttackOn()
+bool ItemCapsule::canHomingAttackOn() const
 {
     return true;
 }
 
-const Vector3f ItemCapsule::getHomingCenter()
+Vector3f ItemCapsule::getHomingCenter() const
 {
     return centerPos;
 }

@@ -2627,7 +2627,7 @@ void PlayerSonic::deleteStaticModels()
     ManiaKnucklesModel::deleteStaticModels();
 }
 
-const bool PlayerSonic::isVehicle()
+bool PlayerSonic::isVehicle() const
 {
     return true;
 }
