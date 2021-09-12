@@ -76,7 +76,7 @@ void GoalRing::step()
     increaseRotation(0, dt*100, 0);
     text->setRotation(0, rotY, 0, 0);
     
-    float distToPlayerSquared = (Global::gameMainPlayer->position - position).lengthSquared();
+    float distToPlayerSquared = (Global::gameMainPlayer->getCenterPosition() - position).lengthSquared();
 
     if (distToPlayerSquared < 800.0f*800.0f)
     {
@@ -94,7 +94,7 @@ void GoalRing::step()
         }
     }
 
-    if (distToPlayerSquared < 30.0f*30.0f &&
+    if (distToPlayerSquared < 31.7177f*31.7177f && //25.7177 from ring + 6 from sonic
         Global::finishStageTimer < 0.0f)
     {
         Global::mainHudTimer->freeze(true);
@@ -105,7 +105,7 @@ void GoalRing::step()
     {
         if (Global::finishStageTimer < 1.0f)
         {
-            float size = 1.0f - 2.5f*Global::finishStageTimer;
+            float size = 1.0f - 2.4f*Global::finishStageTimer;
 
             scale = size;
             text->scale = size;

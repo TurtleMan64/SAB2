@@ -90,28 +90,33 @@ void Triangle3D::generateValues()
     minZ = fminf(p1Z, fminf(p2Z, p3Z));
 }
 
-bool Triangle3D::isWall()
-{
-    return ((type & 0xF) == 2);
-}
-
 bool Triangle3D::isDiggable()
 {
-    return ((type & 0xF) == 1);
+    return (type & 1);
+}
+
+bool Triangle3D::isWall()
+{
+    return (type & 2);
 }
 
 bool Triangle3D::isDeath()
 {
-    return ((type & 0xF) == 3);
+    return (type & 4);
+}
+
+bool Triangle3D::isNoCam()
+{
+    return (type & 16);
 }
 
 float Triangle3D::bounceStrength()
 {
-    if ((type & 0xF) == 4)
+    if (type & 8)
     {
-        int strength = (type >> 4) & 0xF;
+        int strength = (type >> 5) & 0b00000111;
 
-        return strength*50.0f;
+        return strength*100.0f;
     }
 
     return 0.0f;

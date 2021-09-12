@@ -493,7 +493,7 @@ int main(int argc, char** argv)
 
         dt = (float)(timeNew - timeOld);
         dt = std::fminf(dt, 0.04f); //Anything lower than 25fps will slow the gameplay down
-        //dt*=0.2f;
+        //dt *= 0.5f;
         timeOld = timeNew;
 
         Input::pollInputs();
@@ -636,14 +636,17 @@ int main(int argc, char** argv)
                 //printf("after kart %f\n", Global::gameCamera->eye.x);
                 if (gameChunkedEntities.size() > 0)
                 {
+                    //int chunkCt = 0;
                     Global::getNearbyEntities(cam.eye.x, cam.eye.z, 2, &entityChunkedList);
                     for (std::unordered_set<Entity*>* entitySet : entityChunkedList)
                     {
                         for (Entity* e : (*entitySet))
                         {
                             e->step();
+                            //chunkCt++;
                         }
                     }
+                    //printf("%d\n", chunkCt);
                 }
                 if (Global::gameStageManager != nullptr)
                 {

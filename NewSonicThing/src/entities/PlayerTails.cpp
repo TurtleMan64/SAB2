@@ -131,6 +131,9 @@ void PlayerTails::step()
 
     setInputs();
 
+    //Vector3f dfdg = getCenterPosition();
+    //printf("%f %f %f\n", dfdg.x + relativeUp.x*7, dfdg.y + relativeUp.y*7, dfdg.z + relativeUp.z*7);
+
     //to use later when doing running on water stuff
     Vector3f posBefore = position;
     Vector3f velBefore = vel;
@@ -1308,6 +1311,13 @@ void PlayerTails::step()
 
             setHoverTimer(1.0f);
             relativeUp.set(0, 1, 0);
+
+            justBounced = false;
+            justHomingAttacked = false;
+            isBall = false;
+            isStomping = false;
+            isBouncing = false;
+            isJumping = true;
 
             float pitch = 1.0f - bounceSpeed/1000.0f;
             pitch = Maths::clamp(0.5f, pitch, 1.0f);
@@ -2781,6 +2791,7 @@ void PlayerTails::refreshCamera()
         camDelta.setLength(5); //this is what causes metal harbor to go through cam at beginning
         Vector3f camStart = target + camDelta;
         CollisionChecker::setCheckPlayer(false);
+        CollisionChecker::setCheckCamera(true);
         if (CollisionChecker::checkCollision(camStart.x, camStart.y, camStart.z, eye.x, eye.y, eye.z))
         {
             Vector3f delta = eye - target;
@@ -2927,6 +2938,31 @@ void PlayerTails::hitSpring(Vector3f* direction, float power, float lockInputTim
         camDir.set(direction);
         camDir.normalize();
     }
+}
+
+void PlayerTails::hitSpringYellow(Vector3f* direction, float power, float lockInputTime)
+{
+    float speedInDir = Maths::projectAlongLine(&vel, direction).length();
+    float newLineSpeed = fmaxf(speedInDir, power);
+    vel = Maths::projectOntoPlane(&vel, direction);
+    vel = vel + direction->scaleCopy(newLineSpeed);
+
+    onGround = false;
+    isSkidding = false;
+    isBall = false;
+    isJumping = true;
+    isLightdashing = false;
+    isSpindashing = false;
+    isGrinding = false;
+    isStomping = false;
+    isBouncing = false;
+    isHomingOnPoint = false;
+    justBounced = false;
+    justHomingAttacked = false;
+    isFlying = false;
+    hoverTimer = 0.0f;
+    canMoveTimer = lockInputTime;
+    hitSpringTimer = lockInputTime;
 }
 
 void PlayerTails::hitSpringTriple(Vector3f* direction, float power, float lockInputTime)

@@ -1,0 +1,32 @@
+# Blender MTL File: 'BeachTest.blend'
+# Material Count: 3
+
+newmtl None
+Ns 20
+Ka 0.000000 0.000000 0.000000
+Kd 0.8 0.8 0.8
+Ks 0.8 0.8 0.8
+Ni 0.02
+d 1
+illum 2
+map_Kd sea1_12.png
+
+newmtl None_m128_cos020.png
+Ns 20
+Ka 0.000000 0.000000 0.000000
+Kd 0.8 0.8 0.8
+Ks 0.8 0.8 0.8
+Ni 0.02
+d 1
+illum 2
+map_Kd m128_cos020.png
+
+newmtl None_m256_cos004.png
+Ns 20
+Ka 0.000000 0.000000 0.000000
+Kd 0.8 0.8 0.8
+Ks 0.8 0.8 0.8
+Ni 0.02
+d 1
+illum 2
+map_Kd m256_cos004.png

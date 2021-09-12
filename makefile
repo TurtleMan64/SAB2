@@ -10,7 +10,7 @@ DEPS := $(OBJS:.o=.d)
 INC_DIRS := $(shell find $(SRC_DIRS) -type d) ./Libraries/Include/
 INC_FLAGS := $(addprefix -I,$(INC_DIRS)) `pkg-config --cflags glfw3 ogg vorbis vorbisfile openal gl`
 
-CPPFLAGS ?= -g -Wall $(INC_FLAGS) -MMD -MP# -D_GLIBCXX_USE_CXX11_ABI=0
+CPPFLAGS ?= -O2 -Wall -Wextra $(INC_FLAGS) -MMD -MP # -D_GLIBCXX_USE_CXX11_ABI=0
 LDFLAGS := -lSOIL -lm -lpthread -ldl `pkg-config --static --libs glfw3 ogg vorbis vorbisfile openal gl`
 CPPFLAGS += -D'fopen_s(pFile,filename,mode)=((*(pFile))=fopen((filename),(mode)))==NULL'
 

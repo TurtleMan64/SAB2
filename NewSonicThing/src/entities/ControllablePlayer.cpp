@@ -38,5 +38,6 @@ void          ControllablePlayer::setIsDriving(bool)                       {}
 float         ControllablePlayer::getDiggingTimer()                        {return 0.0f;}
 void          ControllablePlayer::hitSpring(Vector3f*, float, float, bool) {}
 void          ControllablePlayer::hitSpringTriple(Vector3f*, float, float) {}
+void          ControllablePlayer::hitSpringYellow(Vector3f*, float, float) {}
 void          ControllablePlayer::hitSpeedRamp(Vector3f*, float, float)    {}
 void          ControllablePlayer::jumpOffPulley(Vector3f)                  {}

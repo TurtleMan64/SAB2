@@ -28,11 +28,24 @@ uniform float texOffY;
 uniform vec4 clipPlane;
 uniform vec4 clipPlaneBehind;
 
+//for playstation 1 tye effect
+//vec4 snap(vec4 vertex, vec2 resolution)
+//{
+//    vec4 snappedPos = vertex;
+//    snappedPos.xyz = vertex.xyz / vertex.w; // convert to normalised device coordinates (NDC)
+//    snappedPos.xy = floor(resolution * snappedPos.xy) / resolution; // snap the vertex to the lower-resolution grid
+//    snappedPos.xyz *= vertex.w; // convert back to projection-space
+//    return snappedPos;
+//}
+
 void main(void)
 {
 	worldPosition = transformationMatrix * vec4(position, 1.0);
 	vec4 positionRelativeToCam = viewMatrix * worldPosition;
+    
 	gl_Position = projectionMatrix * positionRelativeToCam;
+    
+    //gl_Position = snap(gl_Position, vec2(256/1.5, 224/1.5));
 	
 	gl_ClipDistance[0] = dot(worldPosition, clipPlane);
     gl_ClipDistance[1] = dot(worldPosition, clipPlaneBehind);

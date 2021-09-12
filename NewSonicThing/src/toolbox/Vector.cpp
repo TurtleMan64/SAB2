@@ -251,6 +251,11 @@ float Vector2f::length()
     return sqrtf((x * x) + (y * y));
 }
 
+float Vector2f::lengthSquared()
+{
+    return (x * x) + (y * y);
+}
+
 Vector2f Vector2f::normalized()
 {
     float mag = length();
@@ -267,6 +272,11 @@ void Vector2f::neg()
 float Vector2f::dot(Vector2f* other)
 {
     return x * other->getX() + y * other->getY();
+}
+
+Vector2f Vector2f::scaleCopy(float scale)
+{
+    return Vector2f(x*scale, y*scale);
 }
 
 Vector2f Vector2f::operator + (const Vector2f &other)

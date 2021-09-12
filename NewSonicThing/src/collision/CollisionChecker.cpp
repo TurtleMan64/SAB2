@@ -1,6 +1,6 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <cmath>
 #include <list>
-#include <algorithm>
 #include <unordered_set>
 
 #include "collisionchecker.h"
@@ -9,23 +9,23 @@
 #include "quadtreenode.h"
 #include "../engineTester/main.h"
 #include "../toolbox/maths.h"
+#include "../toolbox/vector.h"
 
-Vector3f CollisionChecker::collidePosition;
-Triangle3D* CollisionChecker::collideTriangle;
+Vector3f CollisionChecker::collidePosition(0, 0, 0);
+Triangle3D* CollisionChecker::collideTriangle = nullptr;
 std::list<CollisionModel*> CollisionChecker::collideModels;
-bool CollisionChecker::checkPlayer;
-bool CollisionChecker::debug;
+bool CollisionChecker::checkPlayer = false;
+bool CollisionChecker::checkCamera = false;
+
+//bool CollisionChecker::debug = false;
+//std::string CollisionChecker::debugFilename = "collision1.obj";
 //int debugCount = 1;
+
+//std::vector<std::string> out;
 
 void CollisionChecker::initChecker()
 {
-    CollisionChecker::collidePosition.x = 0;
-    CollisionChecker::collidePosition.y = 0;
-    CollisionChecker::collidePosition.z = 0;
-
-    CollisionChecker::collideTriangle = nullptr;
-
-    CollisionChecker::checkPlayer = false;
+    //out.reserve(1000000);
 }
 
 void CollisionChecker::setCheckPlayer(bool checkPlayerNew)
@@ -33,6 +33,10 @@ void CollisionChecker::setCheckPlayer(bool checkPlayerNew)
     CollisionChecker::checkPlayer = checkPlayerNew;
 }
 
+void CollisionChecker::setCheckCamera(bool checkCameraNew)
+{
+    CollisionChecker::checkCamera = checkCameraNew;
+}
 
 void CollisionChecker::falseAlarm()
 {
@@ -78,6 +82,10 @@ int CollisionChecker::getBiggest(float A, float B, float C)
     }
 }
 
+//long long tCountTotal = 0;
+//long long tCountN = 0;
+//int tCountWorse = 0;
+
 bool CollisionChecker::checkCollision(
     float px1, float py1, float pz1,
     float px2, float py2, float pz2)
@@ -88,12 +96,13 @@ bool CollisionChecker::checkCollision(
 
     //the distance squared from p1 to the current collision location
     float minDistSquared = 100000000000000.0f;
-
+     
+    //out.clear();
     //if (CollisionChecker::debug)
-    {
-        //std::fprintf(stdout, "vt 0 0\n");
-        //std::fprintf(stdout, "vt 1 1\n");
-    }
+    //{
+    //    out.push_back("vt 0 0");
+    //    out.push_back("vn 0 1 0");
+    //}
 
     for (CollisionModel* cm : CollisionChecker::collideModels)
     {
@@ -113,30 +122,56 @@ bool CollisionChecker::checkCollision(
               (pz1 < cm->minZ && pz2 < cm->minZ) || (pz1 > cm->maxZ && pz2 > cm->maxZ) ||
               (py1 < cm->minY && py2 < cm->minY) || (py1 > cm->maxY && py2 > cm->maxY)))
         {
-            if (cm->hasQuadTree() == true)
+            if (cm->hasQuadTree())
             {
                 std::unordered_set<QuadTreeNode*> set;
                 CollisionChecker::fetchNodesToCheck(&set, cm, px1, pz1, px2, pz2);
 
+                //int nodeCount = 0;
+                //int nodeCount2 = 0;
+                //int triangleCount = 0;
+                //int deepCount = 0;
+                //debugCount = 1;
+                // tCountN++;
+                //int nodeCount = 0;
+
                 for (QuadTreeNode* node : set)
                 {
+                    //nodeCount++;
                     //Bounds check on entire node
                     //if any of these are true, we can skip the node
-                    if (!((px1 < node->xMin && px2 < node->xMin) || (px1 > node->xMax && px2 > node->xMax) ||
-                          (pz1 < node->zMin && pz2 < node->zMin) || (pz1 > node->zMax && pz2 > node->zMax) ||
-                          (py1 < node->yMin && py2 < node->yMin) || (py1 > node->yMax && py2 > node->yMax)))
+                    if (!((px1 < node->xMinHorizontal && px2 < node->xMinHorizontal) || (px1 > node->xMaxHorizontal && px2 > node->xMaxHorizontal) ||
+                          (pz1 < node->zMinHorizontal && pz2 < node->zMinHorizontal) || (pz1 > node->zMaxHorizontal && pz2 > node->zMaxHorizontal) ||
+                          (py1 < node->yMinHorizontal && py2 < node->yMinHorizontal) || (py1 > node->yMaxHorizontal && py2 > node->yMaxHorizontal)))
                     {
-                        for (Triangle3D* currTriangle : node->tris)
+                        //if (CollisionChecker::debug)
+                        //{
+                        //    //std::fprintf(fptr, "g group_horiz_%d\n", nodeCount);
+                        //    //std::fprintf(fptr, "o object_horiz_%d\n", nodeCount);
+                        //    out.push_back("g group_horiz_" + std::to_string(nodeCount));
+                        //    out.push_back("o object_horiz_" + std::to_string(nodeCount));
+                        //    nodeCount++;
+                        //}
+
+                        //nodeCount2++;
+                        for (Triangle3D* currTriangle : node->trisHorizontal)
                         {
+                            //triangleCount++;
+                            //tCountTotal++;
                             //if (CollisionChecker::debug)
-                            {
-                                //print the triangles being checked
-                                //std::fprintf(stdout, "v %f %f %f\n", currTriangle->p1X, currTriangle->p1Y, currTriangle->p1Z);
-                                //std::fprintf(stdout, "v %f %f %f\n", currTriangle->p2X, currTriangle->p2Y, currTriangle->p2Z);
-                                //std::fprintf(stdout, "v %f %f %f\n", currTriangle->p3X, currTriangle->p3Y, currTriangle->p3Z);
-                                //std::fprintf(stdout, "f %d// %d// %d\n", debugCount,   debugCount+1, debugCount+2);
-                                //debugCount+=3;
-                            }
+                            //{
+                            //    //print the triangles being checked
+                            //    //std::fprintf(fptr, "v %f %f %f\n", currTriangle->p1X, currTriangle->p1Y, currTriangle->p1Z);
+                            //    //std::fprintf(fptr, "v %f %f %f\n", currTriangle->p2X, currTriangle->p2Y, currTriangle->p2Z);
+                            //    //std::fprintf(fptr, "v %f %f %f\n", currTriangle->p3X, currTriangle->p3Y, currTriangle->p3Z);
+                            //    //std::fprintf(fptr, "f %d/1/1 %d/1/1 %d/1/1\n", debugCount, debugCount+1, debugCount+2);
+                            //
+                            //    out.push_back("v " + std::to_string(currTriangle->p1X) + " " + std::to_string(currTriangle->p1Y) + " " + std::to_string(currTriangle->p1Z));
+                            //    out.push_back("v " + std::to_string(currTriangle->p2X) + " " + std::to_string(currTriangle->p2Y) + " " + std::to_string(currTriangle->p2Z));
+                            //    out.push_back("v " + std::to_string(currTriangle->p3X) + " " + std::to_string(currTriangle->p3Y) + " " + std::to_string(currTriangle->p3Z));
+                            //    out.push_back("f " + std::to_string(debugCount) + "/1/1 " + std::to_string(debugCount+1) + "/1/1 " + std::to_string(debugCount+2) + "/1/1");
+                            //    debugCount+=3;
+                            //}
                             
                             //Bounds check on individual triangle
                             //if any of these are true, we can skip the triangle
@@ -144,6 +179,7 @@ bool CollisionChecker::checkCollision(
                                   (pz1 < currTriangle->minZ && pz2 < currTriangle->minZ) || (pz1 > currTriangle->maxZ && pz2 > currTriangle->maxZ) ||
                                   (py1 < currTriangle->minY && py2 < currTriangle->minY) || (py1 > currTriangle->maxY && py2 > currTriangle->maxY)))
                             {
+                                //deepCount++;
                                 float A = currTriangle->A;
                                 float B = currTriangle->B;
                                 float C = currTriangle->C;
@@ -205,13 +241,137 @@ bool CollisionChecker::checkCollision(
                                             float thisDist = (cix - px1)*(cix - px1) + (ciy - py1)*(ciy - py1) + (ciz - pz1)*(ciz - pz1);
                                             if (thisDist < minDistSquared)
                                             {
-                                                triangleCollide = true;
-                                                collideTriangle = currTriangle;
-                                                collidePosition.x = cix;
-                                                collidePosition.y = ciy;
-                                                collidePosition.z = ciz;
-                                                minDistSquared = thisDist;
-                                                finalModel = cm;
+                                                if (!CollisionChecker::checkCamera || !currTriangle->isNoCam())
+                                                {
+                                                    triangleCollide = true;
+                                                    collideTriangle = currTriangle;
+                                                    collidePosition.x = cix;
+                                                    collidePosition.y = ciy;
+                                                    collidePosition.z = ciz;
+                                                    minDistSquared = thisDist;
+                                                    finalModel = cm;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if (!((px1 < node->xMinVertical && px2 < node->xMinVertical) || (px1 > node->xMaxVertical && px2 > node->xMaxVertical) ||
+                          (pz1 < node->zMinVertical && pz2 < node->zMinVertical) || (pz1 > node->zMaxVertical && pz2 > node->zMaxVertical) ||
+                          (py1 < node->yMinVertical && py2 < node->yMinVertical) || (py1 > node->yMaxVertical && py2 > node->yMaxVertical)))
+                    {
+                        //nodeCount2++;
+
+                        //if (CollisionChecker::debug)
+                        //{
+                        //    //std::fprintf(fptr, "g group_vert_%d\n", nodeCount);
+                        //    //std::fprintf(fptr, "o object_vert_%d\n", nodeCount);
+                        //
+                        //    out.push_back("g group_horiz_" + std::to_string(nodeCount));
+                        //    out.push_back("o object_horiz_" + std::to_string(nodeCount));
+                        //    nodeCount++;
+                        //}
+
+                        for (Triangle3D* currTriangle : node->trisVertical)
+                        {
+                            //triangleCount++;
+                            //tCountTotal++;
+                            //if (CollisionChecker::debug)
+                            //{
+                            //    //print the triangles being checked
+                            //    //std::fprintf(fptr, "v %f %f %f\n", currTriangle->p1X, currTriangle->p1Y, currTriangle->p1Z);
+                            //    //std::fprintf(fptr, "v %f %f %f\n", currTriangle->p2X, currTriangle->p2Y, currTriangle->p2Z);
+                            //    //std::fprintf(fptr, "v %f %f %f\n", currTriangle->p3X, currTriangle->p3Y, currTriangle->p3Z);
+                            //    //std::fprintf(fptr, "f %d/1/1 %d/1/1 %d/1/1\n", debugCount, debugCount+1, debugCount+2);
+                            //
+                            //    out.push_back("v " + std::to_string(currTriangle->p1X) + " " + std::to_string(currTriangle->p1Y) + " " + std::to_string(currTriangle->p1Z));
+                            //    out.push_back("v " + std::to_string(currTriangle->p2X) + " " + std::to_string(currTriangle->p2Y) + " " + std::to_string(currTriangle->p2Z));
+                            //    out.push_back("v " + std::to_string(currTriangle->p3X) + " " + std::to_string(currTriangle->p3Y) + " " + std::to_string(currTriangle->p3Z));
+                            //    out.push_back("f " + std::to_string(debugCount) + "/1/1 " + std::to_string(debugCount+1) + "/1/1 " + std::to_string(debugCount+2) + "/1/1");
+                            //    debugCount+=3;
+                            //}
+                            
+                            //Bounds check on individual triangle
+                            //if any of these are true, we can skip the triangle
+                            if (!((px1 < currTriangle->minX && px2 < currTriangle->minX) || (px1 > currTriangle->maxX && px2 > currTriangle->maxX) ||
+                                  (pz1 < currTriangle->minZ && pz2 < currTriangle->minZ) || (pz1 > currTriangle->maxZ && pz2 > currTriangle->maxZ) ||
+                                  (py1 < currTriangle->minY && py2 < currTriangle->minY) || (py1 > currTriangle->maxY && py2 > currTriangle->maxY)))
+                            {
+                                //deepCount++;
+                                float A = currTriangle->A;
+                                float B = currTriangle->B;
+                                float C = currTriangle->C;
+                                float D = currTriangle->D;
+
+                                float numerator   = (A*px1 + B*py1 + C*pz1 + D);
+                                float denominator = (A*(px1 - px2) + B*(py1 - py2) + C*(pz1 - pz2));
+
+                                if (denominator != 0)
+                                {
+                                    int idx = CollisionChecker::getBiggest(A, B, C);
+
+                                    int firstAbove  = 0;
+                                    int secondAbove = 0;
+
+                                    switch (idx)
+                                    {
+                                        case 0: 
+                                        {
+                                            float planex1 = (((-B*py1) + (-C*pz1) - D)/A);
+                                            float planex2 = (((-B*py2) + (-C*pz2) - D)/A);
+                                            firstAbove  = Maths::sign(px1 - planex1);
+                                            secondAbove = Maths::sign(px2 - planex2);
+                                            break;
+                                        }
+
+                                        case 1: 
+                                        {
+                                            float planey1 = (((-A*px1) + (-C*pz1) - D)/B);
+                                            float planey2 = (((-A*px2) + (-C*pz2) - D)/B);
+                                            firstAbove  = Maths::sign(py1 - planey1);
+                                            secondAbove = Maths::sign(py2 - planey2);
+                                            break;
+                                        }
+
+                                        case 2: 
+                                        {
+                                            float planez1 = (((-B*py1) + (-A*px1) - D)/C);
+                                            float planez2 = (((-B*py2) + (-A*px2) - D)/C);
+                                            firstAbove  = Maths::sign(pz1 - planez1);
+                                            secondAbove = Maths::sign(pz2 - planez2);
+                                            break;
+                                        }
+
+                                        default:
+                                            break;
+                                    }
+
+                                    if (secondAbove != firstAbove)
+                                    {
+                                        float u = (numerator/denominator);
+                                        float cix = px1 + u*(px2 - px1);
+                                        float ciy = py1 + u*(py2 - py1);
+                                        float ciz = pz1 + u*(pz2 - pz1);
+
+                                        if (checkPointInTriangle3D(cix, ciy, ciz, currTriangle))
+                                        {
+                                            //what is the distance to the triangle? set it to maxdist
+                                            float thisDist = (cix - px1)*(cix - px1) + (ciy - py1)*(ciy - py1) + (ciz - pz1)*(ciz - pz1);
+                                            if (thisDist < minDistSquared)
+                                            {
+                                                if (!CollisionChecker::checkCamera || !currTriangle->isNoCam())
+                                                {
+                                                    triangleCollide = true;
+                                                    collideTriangle = currTriangle;
+                                                    collidePosition.x = cix;
+                                                    collidePosition.y = ciy;
+                                                    collidePosition.z = ciz;
+                                                    minDistSquared = thisDist;
+                                                    finalModel = cm;
+                                                }
                                             }
                                         }
                                     }
@@ -220,6 +380,17 @@ bool CollisionChecker::checkCollision(
                         }
                     }
                 }
+                //if (triangleCount > tCountWorse)
+                {
+                    //tCountWorse = triangleCount;
+                }
+                //printf("nodeCount     = %d\n", nodeCount);
+                //printf("nodeCount2    = %d\n", nodeCount2);
+                //printf("triangleCount = %d\n", triangleCount);
+                //printf("deepCount     = %d\n\n", deepCount);
+                //printf("avg   t count = %lld\n", tCountTotal/tCountN);
+                //printf("worst t count = %d\n", tCountWorse);
+                //printf("\n");
             }
             else
             {
@@ -326,12 +497,36 @@ bool CollisionChecker::checkCollision(
         //debugCount+=2;
     }
 
+    //if (CollisionChecker::debug)
+    //{
+    //    fclose(fptr);
+    //}
+
+    //if (CollisionChecker::debug && CollisionChecker::checkPlayer && finalModel == nullptr)
+    //{
+    //    out.push_back("v " + std::to_string(px1) + " " + std::to_string(py1) + " " + std::to_string(pz1));
+    //    out.push_back("v " + std::to_string(px2) + " " + std::to_string(py2) + " " + std::to_string(pz2));
+    //    out.push_back("l " + std::to_string(debugCount) + "/2 " + std::to_string(debugCount+1) + "/2");
+    //
+    //    FILE* fptr = fopen(CollisionChecker::debugFilename.c_str(), "w");
+    //
+    //    for (int i = 0; i < out.size(); i++)
+    //    {
+    //        std::fprintf(fptr, "%s\n", out[i].c_str());
+    //    }
+    //
+    //    fclose(fptr);
+    //
+    //    //CollisionChecker::debug = false;
+    //}
+
     if (CollisionChecker::checkPlayer && finalModel != nullptr)
     {
         finalModel->playerIsOn = true;
     }
     CollisionChecker::checkPlayer = false;
-    CollisionChecker::debug = false;
+    CollisionChecker::checkCamera = false;
+    //CollisionChecker::debug = false;
 
     ANALYSIS_DONE("Collision Checking");
     return triangleCollide;
@@ -372,6 +567,40 @@ bool CollisionChecker::checkPointInTriangle3D(
             tri->p3X, tri->p3Y));
 }
 
+//https://stackoverflow.com/questions/849211/shortest-distance-between-a-point-and-a-line-segment
+float CollisionChecker::pointToSegmentDistanceSquared(
+    float x, float y,
+    float x1, float y1,
+    float x2, float y2)
+{
+    Vector2f v(x1, y1);
+    Vector2f w(x2, y2);
+    Vector2f p(x, y);
+
+    float l2 = (w - v).lengthSquared();
+    if (l2 == 0.0f) //line segment is same points
+    {
+        return (w - p).lengthSquared();
+    }
+
+    Vector2f wv = w - v;
+    float t =  ((p - v).dot(&wv)) / l2;
+
+    if (t > 1.0f)
+    {
+        t = 1.0f;
+    }
+    else if (t < 0.0f)
+    {
+        t = 0.0f;
+    }
+
+    Vector2f projection = v + (w - v).scaleCopy(t);
+
+    return (p - projection).lengthSquared();
+}
+
+//http://totologic.blogspot.com/2014/01/accurate-point-in-triangle-test.html
 bool CollisionChecker::checkPointInTriangle2D(
     float x,  float y,
     float x1, float y1,
@@ -383,7 +612,37 @@ bool CollisionChecker::checkPointInTriangle2D(
     float b = ((y3 - y1)*(x - x3) + (x1 - x3)*(y - y3)) / denominator;
     float c = 1 - a - b;
 
-    return (0 <= a && a <= 1 && 0 <= b && b <= 1 && 0 <= c && c <= 1);
+    if (0 <= a && a <= 1 && 0 <= b && b <= 1 && 0 <= c && c <= 1)
+    {
+        return true;
+    }
+
+    //handle a literal edge case where the point falls extremely close to an edge
+    const float EPSILON_SQUARED = 0.0001f*0.0001f;
+    float distToEdgeSquared = 0.0f;
+
+    distToEdgeSquared = pointToSegmentDistanceSquared(x, y, x1, y1, x2, y2);
+    if (distToEdgeSquared <= EPSILON_SQUARED)
+    {
+        printf("Edge case detected with distToEdgeSquared %f\n", distToEdgeSquared);
+        return true;
+    }
+
+    distToEdgeSquared = pointToSegmentDistanceSquared(x, y, x2, y2, x3, y3);
+    if (distToEdgeSquared <= EPSILON_SQUARED)
+    {
+        printf("Edge case detected with distToEdgeSquared %f\n", distToEdgeSquared);
+        return true;
+    }
+
+    distToEdgeSquared = pointToSegmentDistanceSquared(x, y, x3, y3, x1, y1);
+    if (distToEdgeSquared <= EPSILON_SQUARED)
+    {
+        printf("Edge case detected with distToEdgeSquared %f\n", distToEdgeSquared);
+        return true;
+    }
+    
+    return false;
 }
 
 //this is implemented in an "inneficient" way:

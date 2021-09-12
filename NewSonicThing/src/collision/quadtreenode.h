@@ -18,13 +18,21 @@ public:
     float zMid;
 
     //used for bounds checking. NOT the total size of the entire node, JUST of the node's triangles.
-    float xMin;
-    float xMax;
-    float yMin;
-    float yMax;
-    float zMin;
-    float zMax;
-    std::vector<Triangle3D*> tris;
+    float xMinHorizontal;
+    float xMaxHorizontal;
+    float yMinHorizontal;
+    float yMaxHorizontal;
+    float zMinHorizontal;
+    float zMaxHorizontal;
+    std::vector<Triangle3D*> trisHorizontal;
+
+    float xMinVertical;
+    float xMaxVertical;
+    float yMinVertical;
+    float yMaxVertical;
+    float zMinVertical;
+    float zMaxVertical;
+    std::vector<Triangle3D*> trisVertical;
 
     int depth; //this can probably be a char instead
 

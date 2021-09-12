@@ -1350,21 +1350,28 @@ CollisionModel* ObjLoader::loadCollisionModel(std::string filePath, std::string 
                         {
                             if (strcmp(lineSplitMTL[1], "dig") == 0)
                             {
-                                fakeTextures.back().type = 1;
+                                fakeTextures.back().type |= 1;
                             }
                             else if (strcmp(lineSplitMTL[1], "wall") == 0)
                             {
-                                fakeTextures.back().type = 2;
+                                fakeTextures.back().type |= 2;
                             }
                             else if (strcmp(lineSplitMTL[1], "death") == 0)
                             {
-                                fakeTextures.back().type = 3;
+                                fakeTextures.back().type |= 4;
                             }
                             else if (strcmp(lineSplitMTL[1], "bounce") == 0)
                             {
-                                fakeTextures.back().type = 4;
+                                fakeTextures.back().type |= 8;
 
-                                fakeTextures.back().type |= (((char)round(std::stof(lineSplitMTL[2])/50.0f)) << 4);
+                                float bouncePower = std::fminf(std::stof(lineSplitMTL[2]), 700.0f);
+                        
+                                //bounce speed only has resolution of 100
+                                fakeTextures.back().type |= (((char)round(bouncePower/100.0f)) << 5);
+                            }
+                            else if (strcmp(lineSplitMTL[1], "nocam") == 0)
+                            {
+                                fakeTextures.back().type |= 16;
                             }
                         }
                         else if (strcmp(lineSplitMTL[0], "sound") == 0 ||
@@ -1398,15 +1405,15 @@ void ObjLoader::workOnQuadTreeNode(FILE* file, QuadTreeNode* node)
     fread(&node->depth, sizeof(int),   1, file);
     fread(&node->xMid,  sizeof(float), 1, file);
     fread(&node->zMid,  sizeof(float), 1, file);
-    fread(&node->xMin,  sizeof(float), 1, file);
-    fread(&node->xMax,  sizeof(float), 1, file);
-    fread(&node->yMin,  sizeof(float), 1, file);
-    fread(&node->yMax,  sizeof(float), 1, file);
-    fread(&node->zMin,  sizeof(float), 1, file);
-    fread(&node->zMax,  sizeof(float), 1, file);
+    fread(&node->xMinHorizontal,  sizeof(float), 1, file);
+    fread(&node->xMaxHorizontal,  sizeof(float), 1, file);
+    fread(&node->yMinHorizontal,  sizeof(float), 1, file);
+    fread(&node->yMaxHorizontal,  sizeof(float), 1, file);
+    fread(&node->zMinHorizontal,  sizeof(float), 1, file);
+    fread(&node->zMaxHorizontal,  sizeof(float), 1, file);
     int numTriangles;
     fread(&numTriangles, sizeof(int),   1, file);
-    node->tris.reserve(numTriangles+1); //not sure if i need to +1 but might as well
+    node->trisHorizontal.reserve(numTriangles+1); //not sure if i need to +1 but might as well
 
     //read in all the triangles
     for (int i = 0; i < numTriangles; i++)
@@ -1414,7 +1421,7 @@ void ObjLoader::workOnQuadTreeNode(FILE* file, QuadTreeNode* node)
         char triBuf[92];
         fread(triBuf, sizeof(char), 92, file);
         Triangle3D* newTri = new Triangle3D(triBuf); INCR_NEW("Triangle3D");
-        node->tris.push_back(newTri);
+        node->trisHorizontal.push_back(newTri);
     }
 
     char children[4];
@@ -1574,21 +1581,28 @@ CollisionModel* ObjLoader::loadBinaryCollisionModel(std::string filePath, std::s
                 {
                     if (strcmp(lineSplitMTL[1], "dig") == 0)
                     {
-                        fakeTextures.back().type = 1;
+                        fakeTextures.back().type |= 1;
                     }
                     else if (strcmp(lineSplitMTL[1], "wall") == 0)
                     {
-                        fakeTextures.back().type = 2;
+                        fakeTextures.back().type |= 2;
                     }
                     else if (strcmp(lineSplitMTL[1], "death") == 0)
                     {
-                        fakeTextures.back().type = 3;
+                        fakeTextures.back().type |= 4;
                     }
                     else if (strcmp(lineSplitMTL[1], "bounce") == 0)
                     {
-                        fakeTextures.back().type = 4;
+                        fakeTextures.back().type |= 8;
 
-                        fakeTextures.back().type |= (((char)round(std::stof(lineSplitMTL[2])/50.0f)) << 4);
+                        float bouncePower = std::fminf(std::stof(lineSplitMTL[2]), 700.0f);
+                        
+                        //bounce speed only has resolution of 100
+                        fakeTextures.back().type |= (((char)round(bouncePower/100.0f)) << 5);
+                    }
+                    else if (strcmp(lineSplitMTL[1], "nocam") == 0)
+                    {
+                        fakeTextures.back().type |= 16;
                     }
                 }
                 else if (strcmp(lineSplitMTL[0], "sound") == 0 ||

@@ -29,6 +29,7 @@
 #ifdef DEV_MODE
 #include <iostream>
 #include <fstream>
+#include "../collision/collisionchecker.h"
 #endif
 
 extern GLFWwindow* window;
@@ -364,6 +365,13 @@ void Input::pollInputs()
         Input::inputs.INPUT_X = 1;
     }
 
+    #ifdef DEV_MODE
+    if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS)
+    {
+        //CollisionChecker::debug = true;
+    }
+    #endif
+
 
     if (glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS)
     {
@@ -398,13 +406,13 @@ void Input::pollInputs()
             Maths::sphereAnglesFromPosition(&Global::gameMainPlayer->vel, &yrot, &zrot);
             //std::fprintf(stdout, "Time of day: %f\n", SkyManager::getTimeOfDay());
             //std::fprintf(stdout, "position = [%f, %f, %f]\n", Global::gameMainPlayer->position.x, Global::gameMainPlayer->position.y, Global::gameMainPlayer->position.z);
-            std::fprintf(stdout, "%f %f %f\n", Global::gameMainPlayer->position.x, Global::gameMainPlayer->position.y + 6, Global::gameMainPlayer->position.z);
+            std::fprintf(stdout, "%f %f %f\n", Global::gameMainPlayer->position.x, Global::gameMainPlayer->position.y, Global::gameMainPlayer->position.z);
             //std::fprintf(stdout, "velocity = [%f, %f, %f]\n", Global::gameMainPlayer->vel.x, Global::gameMainPlayer->vel.y, Global::gameMainPlayer->vel.z);
             //std::fprintf(stdout, "normal   = [%f, %f, %f]\n", Global::gameMainPlayer->relativeUp.x, Global::gameMainPlayer->relativeUp.y, Global::gameMainPlayer->relativeUp.z);
             //std::fprintf(stdout, "player rot = %f\n", yrot);
             //std::fprintf(stdout, "cam yaw: %f,   cam pitch: %f\n", Global::gameCamera->getYaw(), Global::gameCamera->getPitch());
             //std::fprintf(stdout, "cam pos = [%f, %f, %f]\n", Global::gameCamera->eye.x, Global::gameCamera->eye.y, Global::gameCamera->eye.z);
-            //std::fprintf(stdout, "cam dir = [%f, %f, %f]\n", Global::gameMainPlayer->camDir.x, Global::gameMainPlayer->camDir.y, Global::gameMainPlayer->camDir.z);
+            std::fprintf(stdout, "cam dir = [%f, %f, %f]\n", Global::gameMainPlayer->camDir.x, Global::gameMainPlayer->camDir.y, Global::gameMainPlayer->camDir.z);
             //std::fprintf(stdout, "\n");
 
             //std::fprintf(stdout, "106 1  %f %f %f  %f %f %f   %f %f %f\n", 

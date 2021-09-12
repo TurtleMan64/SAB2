@@ -3,7 +3,7 @@ Levels/DragonRoad
 DragonRoad -100000 -100000 -100000 100000 100000 100000
 Levels/DragonRoad
 1
-Collision 8
+Collision 12
 1.0 1.0 1.0
 0.0 0.0 0.0
 0.0 0.0 0.0

@@ -3128,6 +3128,7 @@ void PlayerKnuckles::refreshCamera()
         camDelta.setLength(5); //this is what causes metal harbor to go through cam at beginning
         Vector3f camStart = target + camDelta;
         CollisionChecker::setCheckPlayer(false);
+        CollisionChecker::setCheckCamera(true);
         if (CollisionChecker::checkCollision(camStart.x, camStart.y, camStart.z, eye.x, eye.y, eye.z))
         {
             Vector3f delta = eye - target;
@@ -3260,8 +3261,6 @@ void PlayerKnuckles::hitSpring(Vector3f* direction, float power, float lockInput
 {
     vel = direction->scaleCopy(power);
     onGround = false;
-    //isBall = false;
-    //isJumping = false;
     isSkidding = false;
     isLightdashing = false;
     isSpindashing = false;
@@ -3279,6 +3278,29 @@ void PlayerKnuckles::hitSpring(Vector3f* direction, float power, float lockInput
         camDir.set(direction);
         camDir.normalize();
     }
+}
+
+void PlayerKnuckles::hitSpringYellow(Vector3f* direction, float power, float lockInputTime)
+{
+    float speedInDir = Maths::projectAlongLine(&vel, direction).length();
+    float newLineSpeed = fmaxf(speedInDir, power);
+    vel = Maths::projectOntoPlane(&vel, direction);
+    vel = vel + direction->scaleCopy(newLineSpeed);
+
+    onGround = false;
+    isBall = false;
+    isJumping = true;
+    isSkidding = false;
+    isLightdashing = false;
+    isSpindashing = false;
+    isGrinding = false;
+    isStomping = false;
+    isBouncing = false;
+    isHomingOnPoint = false;
+    justBounced = false;
+    hoverTimer = 0.0f;
+    canMoveTimer = lockInputTime;
+    hitSpringTimer = lockInputTime;
 }
 
 void PlayerKnuckles::hitSpringTriple(Vector3f* direction, float power, float lockInputTime)
@@ -3326,6 +3348,7 @@ void PlayerKnuckles::hitSpeedRamp(Vector3f* direction, float speed, float lockIn
     isBouncing = false;
     isHomingOnPoint = false;
     justBounced = false;
+    justHomingAttacked = false;
     hoverTimer = 0.0f;
     canMoveTimer = lockInputTime;
 

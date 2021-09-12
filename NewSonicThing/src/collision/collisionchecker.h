@@ -17,6 +17,7 @@ private:
     static Triangle3D* collideTriangle;
     static std::list<CollisionModel*> collideModels;
     static bool checkPlayer;
+    static bool checkCamera;
 
     //given two coords, populates a set with all of the quadtree nodes
     // that the line can intersect with
@@ -28,7 +29,8 @@ private:
     static int getBiggest(float A, float B, float C);
 
 public:
-    static bool debug;
+    //static bool debug;
+    //static std::string debugFilename;
 
 public:
     static void initChecker();
@@ -37,6 +39,8 @@ public:
     // model the player has collided with, and sets that model
     // to touching the player.
     static void setCheckPlayer(bool checkPlayer);
+
+    static void setCheckCamera(bool checkCamera);
 
     // Sets all collision models to not have the player on them
     static void falseAlarm();
@@ -51,6 +55,11 @@ public:
     static bool checkPointInTriangle3D(
         float checkx, float checky, float checkz,
         Triangle3D* tri);
+
+    static float pointToSegmentDistanceSquared(
+        float x, float y,
+        float x1, float y1,
+        float x2, float y2);
 
     static bool checkPointInTriangle2D(
         float x,  float y,

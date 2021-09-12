@@ -73,17 +73,20 @@
     <IncludePath>../Libraries/Include;$(IncludePath)</IncludePath>
     <LibraryPath>../Libraries/StaticCode;$(LibraryPath)</LibraryPath>
     <OutDir>..\$(ProjectName)\</OutDir>
+    <TargetName>Sonic Adventure Blast 2</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>../Libraries/Include;$(IncludePath)</IncludePath>
     <LibraryPath>../Libraries/StaticCode;$(LibraryPath)</LibraryPath>
     <OutDir>..\$(ProjectName)\</OutDir>
+    <TargetName>Sonic Adventure Blast 2</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>..\$(ProjectName)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>..\$(ProjectName)\</OutDir>
+    <TargetName>Sonic Adventure Blast 2</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -103,7 +106,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;SOIL.lib;OpenAL32.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3_mt.lib;SOIL.lib;OpenAL32.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -141,7 +144,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;SOIL.lib;OpenAL32.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3_mt.lib;SOIL.lib;OpenAL32.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>
       </AdditionalOptions>
     </Link>
@@ -250,6 +253,7 @@
     <ClCompile Include="src\entities\SpeedRamp.cpp" />
     <ClCompile Include="src\entities\Spring.cpp" />
     <ClCompile Include="src\entities\SpringTriple.cpp" />
+    <ClCompile Include="src\entities\SpringYellow.cpp" />
     <ClCompile Include="src\entities\Stage.cpp" />
     <ClCompile Include="src\entities\StagePass2.cpp" />
     <ClCompile Include="src\entities\StagePass3.cpp" />
@@ -341,6 +345,7 @@
     <ClCompile Include="src\water\WaterTile.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
     <ClInclude Include="src\animation\animation.h" />
     <ClInclude Include="src\animation\animationresources.h" />
     <ClInclude Include="src\animation\body.h" />
@@ -444,6 +449,7 @@
     <ClInclude Include="src\entities\speedramp.h" />
     <ClInclude Include="src\entities\spring.h" />
     <ClInclude Include="src\entities\springtriple.h" />
+    <ClInclude Include="src\entities\springyellow.h" />
     <ClInclude Include="src\entities\stage.h" />
     <ClInclude Include="src\entities\stagepass2.h" />
     <ClInclude Include="src\entities\stagepass3.h" />
@@ -528,6 +534,12 @@
     <ClInclude Include="src\water\waterrenderer.h" />
     <ClInclude Include="src\water\watershader.h" />
     <ClInclude Include="src\water\watertile.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="NewSonicThing.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Icon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

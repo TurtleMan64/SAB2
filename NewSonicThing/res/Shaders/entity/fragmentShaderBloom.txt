@@ -1,5 +1,6 @@
 #version 400 core
 
+//noperspective in vec2 pass_textureCoords; for playstation mode
 in vec2 pass_textureCoords;
 in vec4 worldPosition;
 in vec3 surfaceNormal;

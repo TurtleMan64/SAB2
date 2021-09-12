@@ -865,6 +865,8 @@ void PlayerSonic::step()
         //speed before adjusting
         float originalSpeed = vel.length();
         CollisionChecker::setCheckPlayer(true);
+        //CollisionChecker::debug = false;
+        //CollisionChecker::debugFilename = "1.obj";
         if (CollisionChecker::checkCollision(getX(), getY(), getZ(), getX()+vel.x*dt, getY()+vel.y*dt, getZ()+vel.z*dt))
         {
             Vector3f* colNormal = &CollisionChecker::getCollideTriangle()->normal;
@@ -925,6 +927,7 @@ void PlayerSonic::step()
                             //move additional distance
                             if (distLeftToMove > 0)
                             {
+                                //CollisionChecker::debugFilename = "2.obj";
                                 if (CollisionChecker::checkCollision(getX(), getY(), getZ(), getX()+velToMove.x, getY()+velToMove.y, getZ()+velToMove.z) == false)
                                 {
                                     increasePosition(velToMove.x, velToMove.y, velToMove.z);
@@ -1041,6 +1044,7 @@ void PlayerSonic::step()
                     while (distanceRemaining > 0.0f)
                     {
                         CollisionChecker::setCheckPlayer(true);
+                        //CollisionChecker::debugFilename = std::to_string(distanceRemaining) + ".obj";
                         if (CollisionChecker::checkCollision(getX(), getY(), getZ(), getX()+nextVel.x, getY()+nextVel.y, getZ()+nextVel.z))
                         {
                             colNormal = &CollisionChecker::getCollideTriangle()->normal;
@@ -1115,7 +1119,9 @@ void PlayerSonic::step()
             bool checkPassed = false;
             if (onGround)
             {
+                //CollisionChecker::debug = true;
                 CollisionChecker::setCheckPlayer(true);
+                //CollisionChecker::debugFilename = "4.obj";
                 checkPassed = CollisionChecker::checkCollision(getX(), getY(), getZ(), getX() - relativeUp.x*surfaceTension, getY() - relativeUp.y*surfaceTension, getZ() - relativeUp.z*surfaceTension);
             }
             if (checkPassed)
@@ -1186,6 +1192,7 @@ void PlayerSonic::step()
             else
             {
                 CollisionChecker::falseAlarm();
+                //CollisionChecker::debug = false;
                 onGround = false;
 
                 relativeUp.set(0, 1, 0);
@@ -1209,6 +1216,7 @@ void PlayerSonic::step()
                     #endif
                 }
             }
+            //CollisionChecker::debug = false;
         }
     }
 
@@ -1232,6 +1240,13 @@ void PlayerSonic::step()
 
             setHoverTimer(1.0f);
             relativeUp.set(0, 1, 0);
+
+            justBounced = false;
+            justHomingAttacked = false;
+            isBall = false;
+            isStomping = false;
+            isBouncing = false;
+            isJumping = true;
 
             float pitch = 1.0f - bounceSpeed/1000.0f;
             pitch = Maths::clamp(0.5f, pitch, 1.0f);
@@ -2716,6 +2731,7 @@ void PlayerSonic::refreshCamera()
         camDelta.setLength(5); //this is what causes metal harbor to go through cam at beginning
         Vector3f camStart = target + camDelta;
         CollisionChecker::setCheckPlayer(false);
+        CollisionChecker::setCheckCamera(true);
         if (CollisionChecker::checkCollision(camStart.x, camStart.y, camStart.z, eye.x, eye.y, eye.z))
         {
             Vector3f delta = eye - target;
@@ -2842,8 +2858,6 @@ void PlayerSonic::hitSpring(Vector3f* direction, float power, float lockInputTim
 {
     vel = direction->scaleCopy(power);
     onGround = false;
-    //isBall = false;
-    //isJumping = false;
     isSkidding = false;
     isLightdashing = false;
     isSpindashing = false;
@@ -2861,6 +2875,30 @@ void PlayerSonic::hitSpring(Vector3f* direction, float power, float lockInputTim
         camDir.set(direction);
         camDir.normalize();
     }
+}
+
+void PlayerSonic::hitSpringYellow(Vector3f* direction, float power, float lockInputTime)
+{
+    float speedInDir = Maths::projectAlongLine(&vel, direction).length();
+    float newLineSpeed = fmaxf(speedInDir, power);
+    vel = Maths::projectOntoPlane(&vel, direction);
+    vel = vel + direction->scaleCopy(newLineSpeed);
+
+    onGround = false;
+    isSkidding = false;
+    isBall = false;
+    isJumping = true;
+    isLightdashing = false;
+    isSpindashing = false;
+    isGrinding = false;
+    isStomping = false;
+    isBouncing = false;
+    isHomingOnPoint = false;
+    justBounced = false;
+    justHomingAttacked = false;
+    hoverTimer = 0.0f;
+    canMoveTimer = lockInputTime;
+    hitSpringTimer = lockInputTime;
 }
 
 void PlayerSonic::hitSpringTriple(Vector3f* direction, float power, float lockInputTime)

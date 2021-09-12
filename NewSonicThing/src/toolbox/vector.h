@@ -71,11 +71,15 @@ public:
 
     float length();
 
+    float lengthSquared();
+
     Vector2f normalized();
 
     void neg();
 
     float dot(Vector2f* other);
+
+    Vector2f scaleCopy(float scale);
 
     Vector2f operator + (const Vector2f &other);
 

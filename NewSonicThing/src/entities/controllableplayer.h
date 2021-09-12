@@ -95,6 +95,8 @@ public:
 
     virtual void hitSpringTriple(Vector3f* direction, float power, float lockInputTime);
 
+    virtual void hitSpringYellow(Vector3f* direction, float power, float lockInputTime);
+
     virtual void hitSpeedRamp(Vector3f* direction, float speed, float lockInputTime);
 
     virtual void jumpOffPulley(Vector3f forwardDirectionVector);

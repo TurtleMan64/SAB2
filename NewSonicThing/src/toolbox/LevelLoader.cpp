@@ -115,6 +115,7 @@
 #include "../entities/DelfinoPlaza/dpbigshine.h"
 #include "../entities/waterzone.h"
 #include "../entities/FrogForest/ffstagemanager.h"
+#include "../entities/springyellow.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -1878,6 +1879,18 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             return;
         }
 
+        case 111: //Spring Yellow
+        {
+            SpringYellow::loadStaticModels();
+            SpringYellow* spring = new SpringYellow(
+                toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]),  //position
+                toFloat(dat[4]), toFloat(dat[5]), toFloat(dat[6]),  //rotation direction
+                toFloat(dat[7]), toFloat(dat[8]), toFloat(dat[9])); //power, time, radius
+            INCR_NEW("Entity");
+            chunkedEntities->push_back(spring);
+            return;
+        }
+
         default:
         {
             return;
@@ -2041,6 +2054,7 @@ void LevelLoader::freeAllStaticModels()
     DP_Leaves::deleteStaticModels();
     DP_Palmtree::deleteStaticModels();
     FF_StageManager::deleteStaticModels();
+    SpringYellow::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()

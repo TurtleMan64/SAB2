@@ -11,9 +11,9 @@ QuadTreeNode::QuadTreeNode()
 
 QuadTreeNode::QuadTreeNode(float xBoundMin, float xBoundMax, float zBoundMin, float zBoundMax, std::vector<Triangle3D*> pool, int depth, int depthMax)
 {
-    topLeft = nullptr;
+    topLeft  = nullptr;
     topRight = nullptr;
-    botLeft = nullptr;
+    botLeft  = nullptr;
     botRight = nullptr;
 
     this->depth = depth;
@@ -31,13 +31,20 @@ QuadTreeNode::QuadTreeNode(float xBoundMin, float xBoundMax, float zBoundMin, fl
         //Claim our triangles
         for (Triangle3D* tri : pool)
         {
-            tris.push_back(tri);
-            xMin = fminf(xMin, tri->minX);
-            xMax = fmaxf(xMax, tri->maxX);
-            yMin = fminf(yMin, tri->minY);
-            yMax = fmaxf(yMax, tri->maxY);
-            zMin = fminf(zMin, tri->minZ);
-            zMax = fmaxf(zMax, tri->maxZ);
+            trisHorizontal.push_back(tri);
+            xMinHorizontal = fminf(xMinHorizontal, tri->minX);
+            xMaxHorizontal = fmaxf(xMaxHorizontal, tri->maxX);
+            yMinHorizontal = fminf(yMinHorizontal, tri->minY);
+            yMaxHorizontal = fmaxf(yMaxHorizontal, tri->maxY);
+            zMinHorizontal = fminf(zMinHorizontal, tri->minZ);
+            zMaxHorizontal = fmaxf(zMaxHorizontal, tri->maxZ);
+
+            xMinVertical = 0;
+            xMaxVertical = 0;
+            yMinVertical = 0;
+            yMaxVertical = 0;
+            zMinVertical = 0;
+            zMaxVertical = 0;
         }
 
         //std::fprintf(stdout, "leaf node rectangle = x: %f to %f,\tz: %f to %f\n", xBoundMin, xBoundMax, zBoundMin, zBoundMax);
@@ -59,16 +66,25 @@ QuadTreeNode::QuadTreeNode(float xBoundMin, float xBoundMax, float zBoundMin, fl
         //Claim our triangles, split up pool into 4 smaller pools
         for (Triangle3D* tri : pool)
         {
-            if ((tri->minX <= xMid && tri->maxX >= xMid) ||
-                (tri->minZ <= zMid && tri->maxZ >= zMid))
+            if (tri->minX <= xMid && tri->maxX >= xMid)
             {
-                tris.push_back(tri); //We claim the triangle
-                xMin = fminf(xMin, tri->minX);
-                xMax = fmaxf(xMax, tri->maxX);
-                yMin = fminf(yMin, tri->minY);
-                yMax = fmaxf(yMax, tri->maxY);
-                zMin = fminf(zMin, tri->minZ);
-                zMax = fmaxf(zMax, tri->maxZ);
+                trisVertical.push_back(tri); //We claim the triangle
+                xMinVertical = fminf(xMinVertical, tri->minX);
+                xMaxVertical = fmaxf(xMaxVertical, tri->maxX);
+                yMinVertical = fminf(yMinVertical, tri->minY);
+                yMaxVertical = fmaxf(yMaxVertical, tri->maxY);
+                zMinVertical = fminf(zMinVertical, tri->minZ);
+                zMaxVertical = fmaxf(zMaxVertical, tri->maxZ);
+            }
+            else if (tri->minZ <= zMid && tri->maxZ >= zMid)
+            {
+                trisHorizontal.push_back(tri); //We claim the triangle
+                xMinHorizontal = fminf(xMinHorizontal, tri->minX);
+                xMaxHorizontal = fmaxf(xMaxHorizontal, tri->maxX);
+                yMinHorizontal = fminf(yMinHorizontal, tri->minY);
+                yMaxHorizontal = fmaxf(yMaxHorizontal, tri->maxY);
+                zMinHorizontal = fminf(zMinHorizontal, tri->minZ);
+                zMaxHorizontal = fmaxf(zMaxHorizontal, tri->maxZ);
             }
             else if (tri->maxX <= xMid)
             {
@@ -146,5 +162,6 @@ void QuadTreeNode::deleteMe()
         botRight = nullptr;
     }
 
-    tris.clear();
+    trisHorizontal.clear();
+    trisVertical.clear();
 }

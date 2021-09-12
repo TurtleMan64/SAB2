@@ -708,6 +708,9 @@
     <ClCompile Include="src\entities\FrogForest\FF_StageManager.cpp">
       <Filter>Source Files\entities\FrogForest</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\SpringYellow.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.h">
@@ -1271,5 +1274,21 @@
     <ClInclude Include="src\entities\FrogForest\ffstagemanager.h">
       <Filter>Source Files\entities\FrogForest</Filter>
     </ClInclude>
+    <ClInclude Include="src\entities\springyellow.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="NewSonicThing.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Icon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

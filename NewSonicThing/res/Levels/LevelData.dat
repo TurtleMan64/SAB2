@@ -78,7 +78,7 @@ Normal;100;Complete as Blue Falcon
 Ring;100;100;Collect 100 Rings!
 Chao;100;Complete as Soic Phantom
 
-Test2.lvl
+EmeraldCoast.lvl
 Epic Test Level
 2
 Normal;100;Complete as Blue Falcon
@@ -141,6 +141,14 @@ Race;100;62.010754;Race against Mighty!
 
 DragonRoad.lvl
 Dragon Road
+4
+Normal;15000;Race to the finish!
+Ring;90;200;Collect 200 Rings!
+Chao;60;Find the lost chao!
+Race;110;108.235413;Race against Mighty!
+
+EmeraldCoast.lvl
+Emerald Coast
 4
 Normal;15000;Race to the finish!
 Ring;90;200;Collect 200 Rings!
