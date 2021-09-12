@@ -2,6 +2,7 @@
 #define INPUT_H
 
 #include <string>
+#include <SDL2/SDL.h>
 
 struct InputStruct
 {
@@ -53,6 +54,9 @@ struct InputStruct
 
 class Input
 {
+private:
+    static SDL_GameController* controller;
+
 public:
     static InputStruct inputs;
 
@@ -63,6 +67,8 @@ public:
     static std::string getControllerName();
 
     static bool changeController(int direction);
+
+    static void cleanUp();
 };
 
 #endif

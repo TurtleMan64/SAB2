@@ -2,6 +2,7 @@
 
 #ifdef _WIN32
 #include <GLFW/glfw3.h>
+#include <SDL2/SDL.h>
 #else
 #include "/usr/include/GLFW/glfw3.h"
 #endif
@@ -34,6 +35,8 @@
 
 extern GLFWwindow* window;
 
+SDL_GameController* Input::controller = nullptr;
+
 InputStruct Input::inputs{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 //vars for use by us
@@ -54,16 +57,16 @@ float triggerSensitivity = 2;
 
 int CONTROLLER_ID = 0; //-1 = no controller. otherwise, controller id
 
-int BUTTON_A      = 0;
-int BUTTON_X      = 1;
-int BUTTON_B      = 2;
-int BUTTON_Y      = 3;
-int BUTTON_LB     = 4;
-int BUTTON_RB     = 5;
-int BUTTON_SELECT = 6;
-int BUTTON_START  = 7;
-int BUTTON_DPADU  = 11;
-int BUTTON_DPADD  = 13;
+int BUTTON_IDX_A      =  0;
+int BUTTON_IDX_X      =  1;
+int BUTTON_IDX_B      =  2;
+int BUTTON_IDX_Y      =  3;
+int BUTTON_IDX_LB     =  9;
+int BUTTON_IDX_RB     = 10;
+int BUTTON_IDX_SELECT =  4;
+int BUTTON_IDX_START  =  6;
+int BUTTON_IDX_DPADU  = 11;
+int BUTTON_IDX_DPADD  = 12;
 
 int   STICK_LX       = 0;
 float STICK_LX_SCALE = 1;
@@ -112,7 +115,6 @@ void Input::pollInputs()
     Input::inputs.INPUT_PREVIOUS_R2 = Input::inputs.INPUT_L2;
     Input::inputs.INPUT_PREVIOUS_L2 = Input::inputs.INPUT_R2;
 
-
     Input::inputs.INPUT_ACTION1 = false;
     Input::inputs.INPUT_ACTION2 = false;
     Input::inputs.INPUT_ACTION3 = false;
@@ -132,65 +134,46 @@ void Input::pollInputs()
 
     bool joystickIsPresent = false;
 
-    #if GLFW_VERSION_MAJOR == 3 && GLFW_VERSION_MINOR == 3
-    if ((CONTROLLER_ID != (GLFW_JOYSTICK_1 - 1)) && glfwJoystickIsGamepad(CONTROLLER_ID)) //joystick is both present and has a pre defined mapping
-    {
-        GLFWgamepadstate state;
-        if (glfwGetGamepadState(CONTROLLER_ID, &state))
-        {
-            joystickIsPresent = true;
-
-            Input::inputs.INPUT_ACTION1 = state.buttons[BUTTON_A];
-            Input::inputs.INPUT_ACTION2 = state.buttons[BUTTON_X];
-            Input::inputs.INPUT_ACTION3 = state.buttons[BUTTON_B];
-            Input::inputs.INPUT_ACTION4 = state.buttons[BUTTON_Y];
-
-            Input::inputs.INPUT_LB      = state.buttons[BUTTON_LB];
-            Input::inputs.INPUT_RB      = state.buttons[BUTTON_RB];
-            Input::inputs.INPUT_SELECT  = state.buttons[BUTTON_SELECT];
-            Input::inputs.INPUT_START   = state.buttons[BUTTON_START];
-
-            Input::inputs.INPUT_DPADU   = state.buttons[BUTTON_DPADU];
-            Input::inputs.INPUT_DPADD   = state.buttons[BUTTON_DPADD];
-
-            Input::inputs.INPUT_X  = state.axes[STICK_LX];
-            Input::inputs.INPUT_Y  = state.axes[STICK_LY];
-            Input::inputs.INPUT_X2 = state.axes[STICK_RX];
-            Input::inputs.INPUT_Y2 = state.axes[STICK_RY];
-            Input::inputs.INPUT_L2 = state.axes[TRIGGER_L];
-            Input::inputs.INPUT_R2 = state.axes[TRIGGER_R];
-        }
-    }
-    #endif
-
-    if (!joystickIsPresent && (CONTROLLER_ID != (GLFW_JOYSTICK_1 - 1)) && glfwJoystickPresent(CONTROLLER_ID))
+    if (Input::controller != nullptr)
     {
         joystickIsPresent = true;
 
-        int buttonCount;
-        const unsigned char *buttons = glfwGetJoystickButtons(CONTROLLER_ID, &buttonCount);
+        SDL_GameControllerUpdate();
 
-        Input::inputs.INPUT_ACTION1  = buttons[BUTTON_A];
-        Input::inputs.INPUT_ACTION2  = buttons[BUTTON_B];
-        Input::inputs.INPUT_ACTION3  = buttons[BUTTON_X];
-        Input::inputs.INPUT_ACTION4  = buttons[BUTTON_Y];
-        Input::inputs.INPUT_RB       = buttons[BUTTON_RB];
-        Input::inputs.INPUT_LB       = buttons[BUTTON_LB];
-        Input::inputs.INPUT_START    = buttons[BUTTON_START];
-        Input::inputs.INPUT_DPADU    = buttons[BUTTON_DPADU];
-        Input::inputs.INPUT_DPADD    = buttons[BUTTON_DPADD];
+        Input::inputs.INPUT_ACTION1 = (bool)SDL_GameControllerGetButton(Input::controller, (SDL_GameControllerButton)BUTTON_IDX_A);
+        Input::inputs.INPUT_ACTION2 = (bool)SDL_GameControllerGetButton(Input::controller, (SDL_GameControllerButton)BUTTON_IDX_X);
+        Input::inputs.INPUT_ACTION3 = (bool)SDL_GameControllerGetButton(Input::controller, (SDL_GameControllerButton)BUTTON_IDX_B);
+        Input::inputs.INPUT_ACTION4 = (bool)SDL_GameControllerGetButton(Input::controller, (SDL_GameControllerButton)BUTTON_IDX_Y);
 
-        int axesCount;
-        const float *axes = glfwGetJoystickAxes(CONTROLLER_ID, &axesCount);
+        Input::inputs.INPUT_LB      = (bool)SDL_GameControllerGetButton(Input::controller, (SDL_GameControllerButton)BUTTON_IDX_LB);
+        Input::inputs.INPUT_RB      = (bool)SDL_GameControllerGetButton(Input::controller, (SDL_GameControllerButton)BUTTON_IDX_RB);
+        Input::inputs.INPUT_SELECT  = (bool)SDL_GameControllerGetButton(Input::controller, (SDL_GameControllerButton)BUTTON_IDX_SELECT);
+        Input::inputs.INPUT_START   = (bool)SDL_GameControllerGetButton(Input::controller, (SDL_GameControllerButton)BUTTON_IDX_START);
 
-        Input::inputs.INPUT_X = axes[STICK_LX];
-        Input::inputs.INPUT_Y = axes[STICK_LY];
+        Input::inputs.INPUT_DPADU   = (bool)SDL_GameControllerGetButton(Input::controller, (SDL_GameControllerButton)BUTTON_IDX_DPADU);
+        Input::inputs.INPUT_DPADD   = (bool)SDL_GameControllerGetButton(Input::controller, (SDL_GameControllerButton)BUTTON_IDX_DPADD);
 
-        Input::inputs.INPUT_X2 = axes[STICK_RX];
-        Input::inputs.INPUT_Y2 = axes[STICK_RY];
+        int leftX    = (int)SDL_GameControllerGetAxis(controller, (SDL_GameControllerAxis)STICK_LX);
+        int leftY    = (int)SDL_GameControllerGetAxis(controller, (SDL_GameControllerAxis)STICK_LY);
+        int rightX   = (int)SDL_GameControllerGetAxis(controller, (SDL_GameControllerAxis)STICK_RX);
+        int rightY   = (int)SDL_GameControllerGetAxis(controller, (SDL_GameControllerAxis)STICK_RY);
+        int triggerL = (int)SDL_GameControllerGetAxis(controller, (SDL_GameControllerAxis)TRIGGER_L);
+        int triggerR = (int)SDL_GameControllerGetAxis(controller, (SDL_GameControllerAxis)TRIGGER_R);
 
-        Input::inputs.INPUT_L2 = axes[TRIGGER_L];
-        Input::inputs.INPUT_R2 = axes[TRIGGER_R];
+        //positive range is from 0 to 32767. lets make it 32768
+        if (leftX    > 0) { leftX    += 1; }
+        if (leftY    > 0) { leftY    += 1; }
+        if (rightX   > 0) { rightX   += 1; }
+        if (rightY   > 0) { rightY   += 1; }
+        if (triggerL > 0) { triggerL += 1; }
+        if (triggerR > 0) { triggerR += 1; }
+
+        Input::inputs.INPUT_X  = leftX   /32768.0f;
+        Input::inputs.INPUT_Y  = leftY   /32768.0f;
+        Input::inputs.INPUT_X2 = rightX  /32768.0f;
+        Input::inputs.INPUT_Y2 = rightY  /32768.0f;
+        Input::inputs.INPUT_L2 = 2*(triggerL/32768.0f) - 1.0f;
+        Input::inputs.INPUT_R2 = 2*(triggerR/32768.0f) - 1.0f;
     }
 
     if (joystickIsPresent) //apply scaling and deadzones
@@ -245,7 +228,6 @@ void Input::pollInputs()
                 Input::inputs.INPUT_X2 = (Input::inputs.INPUT_X2 + STICK_RXDEADZONE)/RANGE;
             }
         }
-
 
         if (abs(Input::inputs.INPUT_Y2) < STICK_RYDEADZONE)
         {
@@ -306,9 +288,6 @@ void Input::pollInputs()
     }
     mousePreviousX = xpos;
     mousePreviousY = ypos;
-
-
-
 
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
     {
@@ -494,6 +473,11 @@ void Input::init()
 {
     Input::inputs.uniqueVar = 1149650285; //Value that is very easy to find with a memory scan
 
+    SDL_SetHintWithPriority(SDL_HINT_GAMECONTROLLER_USE_BUTTON_LABELS, "0", SDL_HINT_OVERRIDE);
+
+    SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER);
+    SDL_InitSubSystem(SDL_INIT_JOYSTICK);
+
     //load sensitivity and button mappings from external file
 
     std::ifstream file(Global::pathToEXE + "Settings/CameraSensitivity.ini");
@@ -570,63 +554,47 @@ void Input::init()
             {
                 if (strcmp(lineSplit[0], "A") == 0)
                 {
-                    BUTTON_A = std::stoi(lineSplit[1], nullptr, 10);
+                    BUTTON_IDX_A = std::stoi(lineSplit[1], nullptr, 10);
                 }
                 else if (strcmp(lineSplit[0], "B") == 0)
                 {
-                    BUTTON_B = std::stoi(lineSplit[1], nullptr, 10);
+                    BUTTON_IDX_B = std::stoi(lineSplit[1], nullptr, 10);
                 }
                 else if (strcmp(lineSplit[0], "X") == 0)
                 {
-                    BUTTON_X = std::stoi(lineSplit[1], nullptr, 10);
+                    BUTTON_IDX_X = std::stoi(lineSplit[1], nullptr, 10);
                 }
                 else if (strcmp(lineSplit[0], "Y") == 0)
                 {
-                    BUTTON_Y = std::stoi(lineSplit[1], nullptr, 10);
+                    BUTTON_IDX_Y = std::stoi(lineSplit[1], nullptr, 10);
                 }
                 else if (strcmp(lineSplit[0], "LB") == 0)
                 {
-                    BUTTON_LB = std::stoi(lineSplit[1], nullptr, 10);
+                    BUTTON_IDX_LB = std::stoi(lineSplit[1], nullptr, 10);
                 }
                 else if (strcmp(lineSplit[0], "RB") == 0)
                 {
-                    BUTTON_RB = std::stoi(lineSplit[1], nullptr, 10);
+                    BUTTON_IDX_RB = std::stoi(lineSplit[1], nullptr, 10);
+                }
+                else if (strcmp(lineSplit[0], "Select") == 0)
+                {
+                    BUTTON_IDX_SELECT = std::stoi(lineSplit[1], nullptr, 10);
                 }
                 else if (strcmp(lineSplit[0], "Start") == 0)
                 {
-                    BUTTON_START = std::stoi(lineSplit[1], nullptr, 10);
+                    BUTTON_IDX_START = std::stoi(lineSplit[1], nullptr, 10);
                 }
                 else if (strcmp(lineSplit[0], "DpadU") == 0)
                 {
-                    BUTTON_DPADU = std::stoi(lineSplit[1], nullptr, 10);
+                    BUTTON_IDX_DPADU = std::stoi(lineSplit[1], nullptr, 10);
                 }
                 else if (strcmp(lineSplit[0], "DpadD") == 0)
                 {
-                    BUTTON_DPADD = std::stoi(lineSplit[1], nullptr, 10);
+                    BUTTON_IDX_DPADD = std::stoi(lineSplit[1], nullptr, 10);
                 }
                 else if (strcmp(lineSplit[0], "Controller_ID") == 0)
                 {
-                    int raw = std::stoi(lineSplit[1], nullptr, 10);
-                    switch (raw)
-                    {
-                        case 0:  CONTROLLER_ID = GLFW_JOYSTICK_1;  break;
-                        case 1:  CONTROLLER_ID = GLFW_JOYSTICK_2;  break;
-                        case 2:  CONTROLLER_ID = GLFW_JOYSTICK_3;  break;
-                        case 3:  CONTROLLER_ID = GLFW_JOYSTICK_4;  break;
-                        case 4:  CONTROLLER_ID = GLFW_JOYSTICK_5;  break;
-                        case 5:  CONTROLLER_ID = GLFW_JOYSTICK_6;  break;
-                        case 6:  CONTROLLER_ID = GLFW_JOYSTICK_7;  break;
-                        case 7:  CONTROLLER_ID = GLFW_JOYSTICK_8;  break;
-                        case 8:  CONTROLLER_ID = GLFW_JOYSTICK_9;  break;
-                        case 9:  CONTROLLER_ID = GLFW_JOYSTICK_10; break;
-                        case 10: CONTROLLER_ID = GLFW_JOYSTICK_11; break;
-                        case 11: CONTROLLER_ID = GLFW_JOYSTICK_12; break;
-                        case 12: CONTROLLER_ID = GLFW_JOYSTICK_13; break;
-                        case 13: CONTROLLER_ID = GLFW_JOYSTICK_14; break;
-                        case 14: CONTROLLER_ID = GLFW_JOYSTICK_15; break;
-                        case 15: CONTROLLER_ID = GLFW_JOYSTICK_16; break;
-                        default: CONTROLLER_ID = GLFW_JOYSTICK_1-1;break;
-                    }
+                    CONTROLLER_ID = std::stoi(lineSplit[1], nullptr, 10);
                 }
             }
             else if (splitLength == 4)
@@ -684,28 +652,25 @@ void Input::init()
     glfwPollEvents();
 
     //make sure no index goes out of bounds
-    if ((CONTROLLER_ID != (GLFW_JOYSTICK_1 - 1)) && glfwJoystickPresent(CONTROLLER_ID) == GLFW_TRUE)
+    if (Input::controller != nullptr)
     {
-        int axesCount;
-        glfwGetJoystickAxes(CONTROLLER_ID, &axesCount);
-        STICK_LX  = std::min(STICK_LX,  axesCount - 1);
-        STICK_LY  = std::min(STICK_LY,  axesCount - 1);
-        STICK_RX  = std::min(STICK_RX,  axesCount - 1);
-        STICK_RY  = std::min(STICK_RY,  axesCount - 1);
-        TRIGGER_L = std::min(TRIGGER_L, axesCount - 1);
-        TRIGGER_R = std::min(TRIGGER_R, axesCount - 1);
+        STICK_LX  = std::min(STICK_LX,  SDL_CONTROLLER_AXIS_MAX - 1);
+        STICK_LY  = std::min(STICK_LY,  SDL_CONTROLLER_AXIS_MAX - 1);
+        STICK_RX  = std::min(STICK_RX,  SDL_CONTROLLER_AXIS_MAX - 1);
+        STICK_RY  = std::min(STICK_RY,  SDL_CONTROLLER_AXIS_MAX - 1);
+        TRIGGER_L = std::min(TRIGGER_L, SDL_CONTROLLER_AXIS_MAX - 1);
+        TRIGGER_R = std::min(TRIGGER_R, SDL_CONTROLLER_AXIS_MAX - 1);
 
-        int buttonCount;
-        glfwGetJoystickButtons(CONTROLLER_ID, &buttonCount);
-        BUTTON_A     = std::min(BUTTON_A,     buttonCount - 1);
-        BUTTON_B     = std::min(BUTTON_B,     buttonCount - 1);
-        BUTTON_X     = std::min(BUTTON_X,     buttonCount - 1);
-        BUTTON_Y     = std::min(BUTTON_Y,     buttonCount - 1);
-        BUTTON_LB    = std::min(BUTTON_LB,    buttonCount - 1);
-        BUTTON_RB    = std::min(BUTTON_RB,    buttonCount - 1);
-        BUTTON_START = std::min(BUTTON_START, buttonCount - 1);
-        BUTTON_DPADU = std::min(BUTTON_DPADU, buttonCount - 1);
-        BUTTON_DPADD = std::min(BUTTON_DPADD, buttonCount - 1);
+        BUTTON_IDX_A      = std::min(BUTTON_IDX_A,      SDL_CONTROLLER_BUTTON_MAX - 1);
+        BUTTON_IDX_B      = std::min(BUTTON_IDX_B,      SDL_CONTROLLER_BUTTON_MAX - 1);
+        BUTTON_IDX_X      = std::min(BUTTON_IDX_X,      SDL_CONTROLLER_BUTTON_MAX - 1);
+        BUTTON_IDX_Y      = std::min(BUTTON_IDX_Y,      SDL_CONTROLLER_BUTTON_MAX - 1);
+        BUTTON_IDX_LB     = std::min(BUTTON_IDX_LB,     SDL_CONTROLLER_BUTTON_MAX - 1);
+        BUTTON_IDX_RB     = std::min(BUTTON_IDX_RB,     SDL_CONTROLLER_BUTTON_MAX - 1);
+        BUTTON_IDX_SELECT = std::min(BUTTON_IDX_SELECT, SDL_CONTROLLER_BUTTON_MAX - 1);
+        BUTTON_IDX_START  = std::min(BUTTON_IDX_START,  SDL_CONTROLLER_BUTTON_MAX - 1);
+        BUTTON_IDX_DPADU  = std::min(BUTTON_IDX_DPADU,  SDL_CONTROLLER_BUTTON_MAX - 1);
+        BUTTON_IDX_DPADD  = std::min(BUTTON_IDX_DPADD,  SDL_CONTROLLER_BUTTON_MAX - 1);
     }
 
     //log the controllers we see for humans if needed
@@ -719,49 +684,66 @@ void Input::init()
     }
     else
     {
-        for (int i = GLFW_JOYSTICK_1; i < GLFW_JOYSTICK_LAST; i++)
+        int numJoysticks = SDL_NumJoysticks();
+
+        if (CONTROLLER_ID >= numJoysticks)
         {
-            joyLog << "Controller " + std::to_string(i) + " Name: ";
-            const char* name = glfwGetJoystickName(i);
-            if (name != nullptr)
+            CONTROLLER_ID = -1;
+        }
+
+        for (int i = 0; i < numJoysticks; i++)
+        {
+            if (SDL_IsGameController(i))
             {
-                joyLog << name;
+                SDL_GameController* c = SDL_GameControllerOpen(i);
+                if (c != nullptr)
+                {
+                    joyLog << "Controller " + std::to_string(i) + " Name: " + SDL_GameControllerName(c) << "\n";
+                    SDL_GameControllerClose(c);
+                }
             }
-            joyLog << "\n";
+            else
+            {
+                SDL_Joystick* j = SDL_JoystickOpen(i);
+                if (j != nullptr)
+                {
+                    joyLog << "Controller " + std::to_string(i) + " Name: " + SDL_JoystickName(j) << " (Unsupported)" << "\n";
+                    SDL_JoystickClose(j);
+                }
+            }
         }
 
         joyLog.close();
+    }
+
+    // Open the controller
+    if (CONTROLLER_ID > -1)
+    {
+        Input::controller = SDL_GameControllerOpen(CONTROLLER_ID);
     }
 }
 
 std::string Input::getControllerName()
 {
-    if (CONTROLLER_ID == (GLFW_JOYSTICK_1 - 1))
+    if (Input::controller == nullptr)
     {
-        return "None";    
+        return "None";
     }
 
-    #if GLFW_VERSION_MAJOR == 3 && GLFW_VERSION_MINOR == 3
-    const char* nameGamepad = glfwGetGamepadName(CONTROLLER_ID);
-    if (nameGamepad != nullptr)
-    {
-        return nameGamepad;
-    }
-    #endif
-
-    const char* nameJoystick = glfwGetJoystickName(CONTROLLER_ID);
-    if (nameJoystick != nullptr)
-    {
-        return nameJoystick;
-    }
-
-    return "None";
+    return SDL_GameControllerName(Input::controller);
 }
 
 bool Input::changeController(int direction)
 {
+    if (Input::controller != nullptr)
+    {
+        SDL_GameControllerClose(Input::controller);
+        Input::controller = nullptr;
+    }
+
     int originalControllerID = CONTROLLER_ID;
-    int maxAttempts = (GLFW_JOYSTICK_LAST - GLFW_JOYSTICK_1) + 1;
+    int numJoysticks = SDL_NumJoysticks();
+    int maxAttempts = numJoysticks + 1;
     int currentAttempt = 0;
     if (direction >= 0)
     {
@@ -772,21 +754,35 @@ bool Input::changeController(int direction)
         direction = -1;
     }
 
+    if (numJoysticks == 0)
+    {
+        return false;
+    }
+
     while (currentAttempt < maxAttempts)
     {
         CONTROLLER_ID = (CONTROLLER_ID + direction);
-        if (CONTROLLER_ID < GLFW_JOYSTICK_1 - 1)
+        if (CONTROLLER_ID < -1)
         {
-            CONTROLLER_ID = GLFW_JOYSTICK_LAST;
+            CONTROLLER_ID = numJoysticks - 1;
         }
-        else if (CONTROLLER_ID > GLFW_JOYSTICK_LAST)
+        else if (CONTROLLER_ID >= numJoysticks)
         {
-            CONTROLLER_ID = GLFW_JOYSTICK_1 - 1;
+            CONTROLLER_ID = -1;
         }
 
-        if (CONTROLLER_ID == GLFW_JOYSTICK_1 - 1 || glfwJoystickPresent(CONTROLLER_ID))
+        if (CONTROLLER_ID == -1)
         {
             return true;
+        }
+
+        if (SDL_IsGameController(CONTROLLER_ID))
+        {
+            Input::controller = SDL_GameControllerOpen(CONTROLLER_ID);
+            if (Input::controller != nullptr)
+            {
+                return true;
+            }
         }
 
         currentAttempt++;
@@ -794,4 +790,11 @@ bool Input::changeController(int direction)
 
     CONTROLLER_ID = originalControllerID;
     return false;
+}
+
+void Input::cleanUp()
+{
+    SDL_QuitSubSystem(SDL_INIT_GAMECONTROLLER);
+    SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
+    SDL_Quit();
 }
