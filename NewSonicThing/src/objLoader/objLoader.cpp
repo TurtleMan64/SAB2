@@ -70,7 +70,7 @@ int ObjLoader::loadBinaryModel(std::list<TexturedModel*>* models, std::string fi
     }
 
     char fileType[4];
-    fread(fileType, sizeof(char), 4, file);
+    ObjLoader::read(fileType, 4, file);
     if (fileType[0] != 'o' || 
         fileType[1] != 'b' ||
         fileType[2] != 'j' ||
@@ -90,11 +90,11 @@ int ObjLoader::loadBinaryModel(std::list<TexturedModel*>* models, std::string fi
     std::vector<ModelTexture> modelTextures;
 
     int mtllibLength;
-    fread(&mtllibLength, sizeof(int), 1, file);
+    ObjLoader::read(&mtllibLength, 4, file);
     for (int i = 0; i < mtllibLength; i++)
     {
         char nextChar;
-        fread(&nextChar, sizeof(char), 1, file);
+        ObjLoader::read(&nextChar, 1, file);
         mtlname = mtlname + nextChar;
     }
 
@@ -103,12 +103,12 @@ int ObjLoader::loadBinaryModel(std::list<TexturedModel*>* models, std::string fi
 
 
     int numVertices;
-    fread(&numVertices, sizeof(int), 1, file);
+    ObjLoader::read(&numVertices, 4, file);
     vertices.reserve(numVertices*2);
     for (int i = 0; i < numVertices; i++)
     {
         float t[3];
-        fread(t, sizeof(float), 3, file);
+        ObjLoader::read(t, 12, file);
 
         Vector3f vertex(t[0], t[1], t[2]);
         Vertex* newVertex = new Vertex((int)vertices.size(), &vertex); INCR_NEW("Vertex");
@@ -116,24 +116,24 @@ int ObjLoader::loadBinaryModel(std::list<TexturedModel*>* models, std::string fi
     }
 
     int numTexCoords;
-    fread(&numTexCoords, sizeof(int), 1, file);
+    ObjLoader::read(&numTexCoords, 4, file);
     textures.reserve(numTexCoords);
     for (int i = 0; i < numTexCoords; i++)
     {
         float t[2];
-        fread(t, sizeof(float), 2, file);
+        ObjLoader::read(t, 8, file);
 
         Vector2f texCoord(t[0], t[1]);
         textures.push_back(texCoord);
     }
 
     int numNormals;
-    fread(&numNormals, sizeof(int), 1, file);
+    ObjLoader::read(&numNormals, 4, file);
     normals.reserve(numNormals);
     for (int i = 0; i < numNormals; i++)
     {
         float t[3];
-        fread(t, sizeof(float), 3, file);
+        ObjLoader::read(t, 12, file);
 
         Vector3f normal(t[0], t[1], t[2]);
         normals.push_back(normal);
@@ -147,17 +147,17 @@ int ObjLoader::loadBinaryModel(std::list<TexturedModel*>* models, std::string fi
     //fread(&bytesPerIndVN, sizeof(int), 1, file);
 
     int numMaterials;
-    fread(&numMaterials, sizeof(int), 1, file);
+    ObjLoader::read(&numMaterials, 4, file);
     rawModelsList.reserve(numMaterials);
     for (int m = 0; m < numMaterials; m++)
     {
         int matnameLength;
-        fread(&matnameLength, sizeof(int), 1, file);
+        ObjLoader::read(&matnameLength, 4, file);
         std::string matname = "";
         for (int c = 0; c < matnameLength; c++)
         {
             char nextChar;
-            fread(&nextChar, sizeof(char), 1, file);
+            ObjLoader::read(&nextChar, 1, file);
             matname = matname + nextChar;
         }
 
@@ -165,7 +165,7 @@ int ObjLoader::loadBinaryModel(std::list<TexturedModel*>* models, std::string fi
 
         std::vector<int> indices;
         int numFaces;
-        fread(&numFaces, sizeof(int), 1, file);
+        ObjLoader::read(&numFaces, 4, file);
         indices.reserve(numFaces*9);
         for (int i = 0; i < numFaces; i++)
         {
@@ -183,7 +183,7 @@ int ObjLoader::loadBinaryModel(std::list<TexturedModel*>* models, std::string fi
 
             int f[9];
 
-            fread(&f[0], sizeof(int), 9, file);
+            ObjLoader::read(&f[0], 36, file);
 
             processVertexBinary(f[0], f[1], f[2], &vertices, &indices);
             processVertexBinary(f[3], f[4], f[5], &vertices, &indices);
@@ -240,7 +240,7 @@ int ObjLoader::loadVclModel(std::list<TexturedModel*>* models, std::string fileP
     }
 
     char fileType[4];
-    fread(fileType, sizeof(char), 4, file);
+    ObjLoader::read(fileType, 4, file);
     if (fileType[0] != 'v' || 
         fileType[1] != 'c' ||
         fileType[2] != 'l' ||
@@ -260,11 +260,11 @@ int ObjLoader::loadVclModel(std::list<TexturedModel*>* models, std::string fileP
     std::vector<ModelTexture> modelTextures;
 
     int mtllibLength;
-    fread(&mtllibLength, sizeof(int), 1, file);
+    ObjLoader::read(&mtllibLength, 4, file);
     for (int i = 0; i < mtllibLength; i++)
     {
         char nextChar;
-        fread(&nextChar, sizeof(char), 1, file);
+        ObjLoader::read(&nextChar, 1, file);
         mtlname = mtlname + nextChar;
     }
 
@@ -272,18 +272,18 @@ int ObjLoader::loadVclModel(std::list<TexturedModel*>* models, std::string fileP
     parseMtl(filePath, mtlname, &mtlMap);
 
     int numVertices;
-    fread(&numVertices, sizeof(int), 1, file);
+    ObjLoader::read(&numVertices, 4, file);
     vertices.reserve(numVertices*2);
     for (int i = 0; i < numVertices; i++)
     {
         float t[3];
-        fread(t, sizeof(float), 3, file);
+        ObjLoader::read(t, 12, file);
 
         Vector3f vertex(t[0], t[1], t[2]);
         Vertex* newVertex = new Vertex((int)vertices.size(), &vertex); INCR_NEW("Vertex");
 
         unsigned char c[3];
-        fread(c, sizeof(unsigned char), 3, file);
+        ObjLoader::read(c, 3, file);
         float red   = ((float)c[0])/255.0f;
         float green = ((float)c[1])/255.0f;
         float blue  = ((float)c[2])/255.0f;
@@ -295,12 +295,12 @@ int ObjLoader::loadVclModel(std::list<TexturedModel*>* models, std::string fileP
     //numAdditionalVertices = 0;
 
     int numTexCoords;
-    fread(&numTexCoords, sizeof(int), 1, file);
+    ObjLoader::read(&numTexCoords, 4, file);
     textures.reserve(numTexCoords);
     for (int i = 0; i < numTexCoords; i++)
     {
         float t[2];
-        fread(t, sizeof(float), 2, file);
+        ObjLoader::read(t, 8, file);
 
         Vector2f texCoord(t[0], t[1]);
         textures.push_back(texCoord);
@@ -315,18 +315,18 @@ int ObjLoader::loadVclModel(std::list<TexturedModel*>* models, std::string fileP
     normals.push_back(normal);
 
     int numMaterials;
-    fread(&numMaterials, sizeof(int), 1, file);
+    ObjLoader::read(&numMaterials, 4, file);
     rawModelsList.reserve(numMaterials);
     modelTextures.reserve(numMaterials);
     for (int m = 0; m < numMaterials; m++)
     {
         int matnameLength;
-        fread(&matnameLength, sizeof(int), 1, file);
+        ObjLoader::read(&matnameLength, 4, file);
         std::string matname = "";
         for (int c = 0; c < matnameLength; c++)
         {
             char nextChar;
-            fread(&nextChar, sizeof(char), 1, file);
+            ObjLoader::read(&nextChar, 1, file);
             matname = matname + nextChar;
         }
 
@@ -334,7 +334,7 @@ int ObjLoader::loadVclModel(std::list<TexturedModel*>* models, std::string fileP
 
         std::vector<int> indices;
         int numFaces;
-        fread(&numFaces, sizeof(int), 1, file);
+        ObjLoader::read(&numFaces, 4, file);
         indices.reserve(numFaces*9);
         for (int i = 0; i < numFaces; i++)
         {
@@ -349,7 +349,7 @@ int ObjLoader::loadVclModel(std::list<TexturedModel*>* models, std::string fileP
 
             int f[6];
 
-            fread(&f[0], sizeof(int), 6, file);
+            ObjLoader::read(&f[0], 24, file);
 
             processVertexBinary(f[0], f[1], 1, &vertices, &indices);
             processVertexBinary(f[2], f[3], 1, &vertices, &indices);
@@ -967,7 +967,7 @@ int ObjLoader::loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::st
     }
 
     char fileType[4];
-    fread(fileType, sizeof(char), 4, file);
+    ObjLoader::read(fileType, 4, file);
     if (fileType[0] != 'o' || 
         fileType[1] != 'b' ||
         fileType[2] != 'j' ||
@@ -987,11 +987,11 @@ int ObjLoader::loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::st
     std::vector<ModelTexture> modelTextures;
 
     int mtllibLength;
-    fread(&mtllibLength, sizeof(int), 1, file);
+    ObjLoader::read(&mtllibLength, 4, file);
     for (int i = 0; i < mtllibLength; i++)
     {
         char nextChar;
-        fread(&nextChar, sizeof(char), 1, file);
+        ObjLoader::read(&nextChar, 1, file);
         mtlname = mtlname + nextChar;
     }
 
@@ -999,12 +999,12 @@ int ObjLoader::loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::st
     parseMtl(filePath, fileNameMTL, &mtlMap);
 
     int numVertices;
-    fread(&numVertices, sizeof(int), 1, file);
+    ObjLoader::read(&numVertices, 4, file);
     vertices.reserve(numVertices);
     for (int i = 0; i < numVertices; i++)
     {
         float t[3];
-        fread(t, sizeof(float), 3, file);
+        ObjLoader::read(t, 12, file);
 
         Vector3f vertex(t[0], t[1], t[2]);
         Vertex* newVertex = new Vertex((int)vertices.size(), &vertex); INCR_NEW("Vertex");
@@ -1012,24 +1012,24 @@ int ObjLoader::loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::st
     }
 
     int numTexCoords;
-    fread(&numTexCoords, sizeof(int), 1, file);
+    ObjLoader::read(&numTexCoords, 4, file);
     textures.reserve(numTexCoords);
     for (int i = 0; i < numTexCoords; i++)
     {
         float t[2];
-        fread(t, sizeof(float), 2, file);
+        ObjLoader::read(t, 8, file);
 
         Vector2f texCoord(t[0], t[1]);
         textures.push_back(texCoord);
     }
 
     int numNormals;
-    fread(&numNormals, sizeof(int), 1, file);
+    ObjLoader::read(&numNormals, 4, file);
     normals.reserve(numNormals);
     for (int i = 0; i < numNormals; i++)
     {
         float t[3];
-        fread(t, sizeof(float), 3, file);
+        ObjLoader::read(t, 12, file);
 
         Vector3f normal(t[0], t[1], t[2]);
         normals.push_back(normal);
@@ -1043,17 +1043,17 @@ int ObjLoader::loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::st
     //fread(&bytesPerIndVN, sizeof(int), 1, file);
 
     int numMaterials;
-    fread(&numMaterials, sizeof(int), 1, file);
+    ObjLoader::read(&numMaterials, 4, file);
     rawModelsList.reserve(numMaterials);
     for (int m = 0; m < numMaterials; m++)
     {
         int matnameLength;
-        fread(&matnameLength, sizeof(int), 1, file);
+        ObjLoader::read(&matnameLength, 4, file);
         std::string matname = "";
         for (int c = 0; c < matnameLength; c++)
         {
             char nextChar;
-            fread(&nextChar, sizeof(char), 1, file);
+            ObjLoader::read(&nextChar, 1, file);
             matname = matname + nextChar;
         }
 
@@ -1061,7 +1061,7 @@ int ObjLoader::loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::st
 
         std::vector<int> indices;
         int numFaces;
-        fread(&numFaces, sizeof(int), 1, file);
+        ObjLoader::read(&numFaces, 4, file);
         indices.reserve(numFaces*9);
         for (int i = 0; i < numFaces; i++)
         {
@@ -1079,7 +1079,7 @@ int ObjLoader::loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::st
 
             int f[9];
 
-            fread(&f[0], sizeof(int), 9, file);
+            ObjLoader::read(&f[0], 36, file);
 
             processVertexBinary(f[0], f[1], f[2], &vertices, &indices);
             processVertexBinary(f[3], f[4], f[5], &vertices, &indices);
@@ -1402,30 +1402,30 @@ CollisionModel* ObjLoader::loadCollisionModel(std::string filePath, std::string 
 void ObjLoader::workOnQuadTreeNode(FILE* file, QuadTreeNode* node)
 {
     //read in header for this node
-    fread(&node->depth, sizeof(int),   1, file);
-    fread(&node->xMid,  sizeof(float), 1, file);
-    fread(&node->zMid,  sizeof(float), 1, file);
-    fread(&node->xMinHorizontal,  sizeof(float), 1, file);
-    fread(&node->xMaxHorizontal,  sizeof(float), 1, file);
-    fread(&node->yMinHorizontal,  sizeof(float), 1, file);
-    fread(&node->yMaxHorizontal,  sizeof(float), 1, file);
-    fread(&node->zMinHorizontal,  sizeof(float), 1, file);
-    fread(&node->zMaxHorizontal,  sizeof(float), 1, file);
+    ObjLoader::read(&node->depth,          4, file);
+    ObjLoader::read(&node->xMid,           4, file);
+    ObjLoader::read(&node->zMid,           4, file);
+    ObjLoader::read(&node->xMinHorizontal, 4, file);
+    ObjLoader::read(&node->xMaxHorizontal, 4, file);
+    ObjLoader::read(&node->yMinHorizontal, 4, file);
+    ObjLoader::read(&node->yMaxHorizontal, 4, file);
+    ObjLoader::read(&node->zMinHorizontal, 4, file);
+    ObjLoader::read(&node->zMaxHorizontal, 4, file);
     int numTriangles;
-    fread(&numTriangles, sizeof(int),   1, file);
+    ObjLoader::read(&numTriangles,         4, file);
     node->trisHorizontal.reserve(numTriangles+1); //not sure if i need to +1 but might as well
 
     //read in all the triangles
     for (int i = 0; i < numTriangles; i++)
     {
         char triBuf[92];
-        fread(triBuf, sizeof(char), 92, file);
+        ObjLoader::read(triBuf, 92, file);
         Triangle3D* newTri = new Triangle3D(triBuf); INCR_NEW("Triangle3D");
         node->trisHorizontal.push_back(newTri);
     }
 
     char children[4];
-    fread(children, sizeof(char), 4, file);
+    ObjLoader::read(children, 4, file);
 
     if (children[0] != 0) //top left
     {
@@ -1456,6 +1456,15 @@ void ObjLoader::workOnQuadTreeNode(FILE* file, QuadTreeNode* node)
     }
 }
 
+inline void ObjLoader::read(void* buf, int numBytesToRead, FILE* file)
+{
+    int numRead = (int)fread(buf, sizeof(char), numBytesToRead, file);
+    if (numRead != numBytesToRead)
+    {
+        printf("Warning: Read only %d bytes instead of %d\n", numRead, numBytesToRead);
+    }
+}
+
 CollisionModel* ObjLoader::loadBinaryQuadTree(std::string filePath, std::string fileName)
 {
     FILE* file = nullptr;
@@ -1469,7 +1478,7 @@ CollisionModel* ObjLoader::loadBinaryQuadTree(std::string filePath, std::string 
     CollisionModel* collisionModel = new CollisionModel; INCR_NEW("CollisionModel");
 
     char fileType[4];
-    fread(fileType, sizeof(char), 4, file);
+    ObjLoader::read(fileType, 4, file);
     if (fileType[0] != 'q' ||
         fileType[1] != 't' ||
         fileType[2] != 'r' ||
@@ -1480,17 +1489,17 @@ CollisionModel* ObjLoader::loadBinaryQuadTree(std::string filePath, std::string 
     }
 
     //collision model header
-    fread(&collisionModel->treeMaxDepth,   sizeof(int),   1, file);
-    fread(&collisionModel->leafNodeWidth,  sizeof(float), 1, file);
-    fread(&collisionModel->leafNodeHeight, sizeof(float), 1, file);
-    fread(&collisionModel->maxX,           sizeof(float), 1, file);
-    fread(&collisionModel->minX,           sizeof(float), 1, file);
-    fread(&collisionModel->maxY,           sizeof(float), 1, file);
-    fread(&collisionModel->minY,           sizeof(float), 1, file);
-    fread(&collisionModel->maxZ,           sizeof(float), 1, file);
-    fread(&collisionModel->minZ,           sizeof(float), 1, file);
+    ObjLoader::read(&collisionModel->treeMaxDepth,   4, file);
+    ObjLoader::read(&collisionModel->leafNodeWidth,  4, file);
+    ObjLoader::read(&collisionModel->leafNodeHeight, 4, file);
+    ObjLoader::read(&collisionModel->maxX,           4, file);
+    ObjLoader::read(&collisionModel->minX,           4, file);
+    ObjLoader::read(&collisionModel->maxY,           4, file);
+    ObjLoader::read(&collisionModel->minY,           4, file);
+    ObjLoader::read(&collisionModel->maxZ,           4, file);
+    ObjLoader::read(&collisionModel->minZ,           4, file);
     int hasRootNode;
-    fread(&hasRootNode,                    sizeof(int),   1, file);
+    ObjLoader::read(&hasRootNode,                    4, file);
 
     //read rest of file recursively in helper function
     if (hasRootNode)
@@ -1525,7 +1534,7 @@ CollisionModel* ObjLoader::loadBinaryCollisionModel(std::string filePath, std::s
     CollisionModel* collisionModel = new CollisionModel; INCR_NEW("CollisionModel");
 
     char fileType[4];
-    fread(fileType, sizeof(char), 4, file);
+    ObjLoader::read(fileType, 4, file);
     if (fileType[0] != 'c' || 
         fileType[1] != 'o' ||
         fileType[2] != 'l' ||
@@ -1537,11 +1546,11 @@ CollisionModel* ObjLoader::loadBinaryCollisionModel(std::string filePath, std::s
 
     std::string mtlname = "";
     int mtllibLength;
-    fread(&mtllibLength, sizeof(int), 1, file);
+    ObjLoader::read(&mtllibLength, 4, file);
     for (int i = 0; i < mtllibLength; i++)
     {
         char nextChar;
-        fread(&nextChar, sizeof(char), 1, file);
+        ObjLoader::read(&nextChar, 1, file);
         mtlname = mtlname + nextChar;
     }
 
@@ -1623,12 +1632,12 @@ CollisionModel* ObjLoader::loadBinaryCollisionModel(std::string filePath, std::s
 
 
     int numVertices;
-    fread(&numVertices, sizeof(int), 1, file);
+    ObjLoader::read(&numVertices, 4, file);
     vertices.reserve(numVertices);
     for (int i = 0; i < numVertices; i++)
     {
         float t[3];
-        fread(t, sizeof(float), 3, file);
+        ObjLoader::read(t, 12, file);
 
         Vector3f vertex(t[0], t[1], t[2]);
         vertices.push_back(vertex);
@@ -1638,16 +1647,16 @@ CollisionModel* ObjLoader::loadBinaryCollisionModel(std::string filePath, std::s
     //fread(&bytesPerIndV, sizeof(int), 1, file);
 
     int numMaterials;
-    fread(&numMaterials, sizeof(int), 1, file);
+    ObjLoader::read(&numMaterials, 4, file);
     for (int m = 0; m < numMaterials; m++)
     {
         int matnameLength;
-        fread(&matnameLength, sizeof(int), 1, file);
+        ObjLoader::read(&matnameLength, 4, file);
         std::string matname = "";
         for (int c = 0; c < matnameLength; c++)
         {
             char nextChar;
-            fread(&nextChar, sizeof(char), 1, file);
+            ObjLoader::read(&nextChar, 1, file);
             matname = matname + nextChar;
         }
 
@@ -1667,7 +1676,7 @@ CollisionModel* ObjLoader::loadBinaryCollisionModel(std::string filePath, std::s
 
         std::vector<int> indices;
         int numFaces;
-        fread(&numFaces, sizeof(int), 1, file);
+        ObjLoader::read(&numFaces, 4, file);
         indices.reserve(numFaces*3);
         for (int i = 0; i < numFaces; i++)
         {
@@ -1679,7 +1688,7 @@ CollisionModel* ObjLoader::loadBinaryCollisionModel(std::string filePath, std::s
 
             int f[3];
 
-            fread(&f[0], sizeof(int), 3, file);
+            ObjLoader::read(&f[0], 12, file);
 
             Triangle3D* tri = new Triangle3D(&vertices[f[0]-1], &vertices[f[1]-1], &vertices[f[2]-1], currType, currSound, currParticle); INCR_NEW("Triangle3D");
 

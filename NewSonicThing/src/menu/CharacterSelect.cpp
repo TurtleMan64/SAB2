@@ -148,13 +148,13 @@ Menu* CharacterSelect::step()
 
     bool shouldGoDown = false;
     bool shouldGoUp = false;
-    bool shouldGoLeft = false;
-    bool shouldGoRight = false;
+    //bool shouldGoLeft = false;
+    //bool shouldGoRight = false;
     bool pressedSelect = false;
     bool pressedBack = false;
 
     int moveY = (int)round(Input::inputs.INPUT_Y);
-    int moveX = (int)round(Input::inputs.INPUT_X);
+    //int moveX = (int)round(Input::inputs.INPUT_X);
 
     setVisible(true);
 
@@ -221,57 +221,57 @@ Menu* CharacterSelect::step()
         }
     }
 
-    if (moveX != moveXPrevious)
-    {
-        if (moveX == 1)
-        {
-            shouldGoRight = true;
-        }
-        else if (moveX == -1)
-        {
-            shouldGoLeft = true;
-        }
-    }
+    //if (moveX != moveXPrevious)
+    //{
+    //    if (moveX == 1)
+    //    {
+    //        shouldGoRight = true;
+    //    }
+    //    else if (moveX == -1)
+    //    {
+    //        shouldGoLeft = true;
+    //    }
+    //}
 
-    moveXPrevious = moveX;
+    //moveXPrevious = moveX;
 
-    if (moveX == 1)
-    {
-        holdRightTimer += dt;
-    }
-    else
-    {
-        holdRightTimer = 0.0f;
-    }
+    //if (moveX == 1)
+    //{
+    //    holdRightTimer += dt;
+    //}
+    //else
+    //{
+    //    holdRightTimer = 0.0f;
+    //}
+    //
+    //if (moveX == -1)
+    //{
+    //    holdLeftTimer += dt;
+    //}
+    //else
+    //{
+    //    holdLeftTimer = 0.0f;
+    //}
 
-    if (moveX == -1)
-    {
-        holdLeftTimer += dt;
-    }
-    else
-    {
-        holdLeftTimer = 0.0f;
-    }
-
-    if (holdRightTimer >= 0.25f)
-    {
-        holdTick += dt;
-        if (holdTick >= 0.03f)
-        {
-            shouldGoRight = true;
-            holdTick -= 0.03f;
-        }
-    }
-
-    if (holdLeftTimer >= 0.25f)
-    {
-        holdTick += dt;
-        if (holdTick >= 0.03f)
-        {
-            shouldGoLeft = true;
-            holdTick -= 0.03f;
-        }
-    }
+    //if (holdRightTimer >= 0.25f)
+    //{
+    //    holdTick += dt;
+    //    if (holdTick >= 0.03f)
+    //    {
+    //        shouldGoRight = true;
+    //        holdTick -= 0.03f;
+    //    }
+    //}
+    //
+    //if (holdLeftTimer >= 0.25f)
+    //{
+    //    holdTick += dt;
+    //    if (holdTick >= 0.03f)
+    //    {
+    //        shouldGoLeft = true;
+    //        holdTick -= 0.03f;
+    //    }
+    //}
 
     if (shouldGoUp)
     {

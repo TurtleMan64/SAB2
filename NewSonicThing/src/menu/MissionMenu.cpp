@@ -74,15 +74,15 @@ void MissionMenu::loadResources()
     }
     currButtonID = 0;
 
-    textureRankA  = Loader::loadTexture("res/Images/MainMenu/RankA.png");
-    textureRankB  = Loader::loadTexture("res/Images/MainMenu/RankB.png");
-    textureRankC  = Loader::loadTexture("res/Images/MainMenu/RankC.png");
-    textureRankD  = Loader::loadTexture("res/Images/MainMenu/RankD.png");
-    textureRankE  = Loader::loadTexture("res/Images/MainMenu/RankE.png");
-    textureBlank  = Loader::loadTexture("res/Images/MainMenu/NoRank.png");
-    textureSelect = Loader::loadTexture("res/Images/MainMenu/MissionSelect.png");
-    textureNpcFound = Loader::loadTexture("res/Images/MainMenu/NpcFound.png");
-    textureNpcLost = Loader::loadTexture("res/Images/MainMenu/NpcMissing.png");
+    textureRankA       = Loader::loadTexture("res/Images/MainMenu/RankA.png");
+    textureRankB       = Loader::loadTexture("res/Images/MainMenu/RankB.png");
+    textureRankC       = Loader::loadTexture("res/Images/MainMenu/RankC.png");
+    textureRankD       = Loader::loadTexture("res/Images/MainMenu/RankD.png");
+    textureRankE       = Loader::loadTexture("res/Images/MainMenu/RankE.png");
+    textureBlank       = Loader::loadTexture("res/Images/MainMenu/NoRank.png");
+    textureSelect      = Loader::loadTexture("res/Images/MainMenu/MissionSelect.png");
+    textureNpcFound    = Loader::loadTexture("res/Images/MainMenu/NpcFound.png");
+    textureNpcLost     = Loader::loadTexture("res/Images/MainMenu/NpcMissing.png");
     textureEmeraldLost = Loader::loadTexture("res/Images/MainMenu/EmeraldMissing.png");
 
     const float rankWidth = 0.07f/aspectRatio;
@@ -214,14 +214,10 @@ void MissionMenu::draw(bool updateMissionText)
 
         int numMissions = level.numMissions;
 
-        switch (numMissions)
-        {
-            case 4: GuiManager::addGuiToRender(rankM4); [[fallthrough]];
-            case 3: GuiManager::addGuiToRender(rankM3); [[fallthrough]];
-            case 2: GuiManager::addGuiToRender(rankM2); [[fallthrough]];
-            case 1: GuiManager::addGuiToRender(rankM1); [[fallthrough]];
-            default: break;
-        }
+        if (numMissions >= 4) { GuiManager::addGuiToRender(rankM4); }
+        if (numMissions >= 3) { GuiManager::addGuiToRender(rankM3); }
+        if (numMissions >= 2) { GuiManager::addGuiToRender(rankM2); }
+        if (numMissions >= 1) { GuiManager::addGuiToRender(rankM1); }
 
         if (numMissions >= 4)
         {

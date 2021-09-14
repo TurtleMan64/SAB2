@@ -18,15 +18,15 @@ private:
     GLuint textureTails                 = GL_NONE;
     GLuint textureKnuckles              = GL_NONE;
 
-    int moveXPrevious = 0;
+    //int moveXPrevious = 0;
     int moveYPrevious = 0;
     bool selectInputPrevious = false;
     bool backInputPrevious = false;
 
     float holdDownTimer = 0;
     float holdUpTimer = 0;
-    float holdLeftTimer = 0;
-    float holdRightTimer = 0;
+    //float holdLeftTimer = 0;
+    //float holdRightTimer = 0;
 
     const float separation = 0.2f;
 

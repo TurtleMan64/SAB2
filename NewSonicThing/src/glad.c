@@ -173,7 +173,7 @@ static int get_exts(void) {
 #if _MSC_VER >= 1400
                 strncpy_s(local_str, len+1, gl_str_tmp, len);
 #else
-                strncpy(local_str, gl_str_tmp, len+1);
+                memcpy(local_str, gl_str_tmp, len+1);
 #endif
             }
             exts_i[index] = local_str;

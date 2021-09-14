@@ -270,7 +270,8 @@ int Maths::clamp(int lower, int value, int higher)
 
 unsigned int Maths::getSignBit(float value)
 {
-    unsigned int v = *(unsigned int*)&value; //get bits of value casted as an int
+    void* vp = (void*)(&value);
+    unsigned int v = *((unsigned int*)vp); //get bits of value casted as an int
 
     return v & 0b10000000000000000000000000000000;
 }

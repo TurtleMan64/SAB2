@@ -48,6 +48,8 @@ private:
 
     static void workOnQuadTreeNode(FILE* file, QuadTreeNode* node);
 
+    static inline void read(void* buf, int numBytesToRead, FILE* file);
+
 public:
     //Attempts to load a mode as either an OBJ or binary format.
     //Checks for binary file first, then tries OBJ.
