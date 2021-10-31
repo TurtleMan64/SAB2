@@ -1340,11 +1340,11 @@ void Global::saveConfigData()
         if (Global::useHighQualityWater) { file << "HQ_Water on\n\n"; }
         else                             { file << "HQ_Water off\n\n"; }
 
-        file << "#Resolution of the high quality water\n";
-        file << "HQ_Water_Reflection_Width "  << Global::HQWaterReflectionWidth  << "\n";
-        file << "HQ_Water_Reflection_Height " << Global::HQWaterReflectionHeight << "\n\n";
-        file << "HQ_Water_Refraction_Width "  << Global::HQWaterRefractionWidth  << "\n";
-        file << "HQ_Water_Refraction_Height " << Global::HQWaterRefractionHeight << "\n\n";
+        //file << "#Resolution of the high quality water\n";
+        //file << "HQ_Water_Reflection_Width "  << Global::HQWaterReflectionWidth  << "\n";
+        //file << "HQ_Water_Reflection_Height " << Global::HQWaterReflectionHeight << "\n\n";
+        //file << "HQ_Water_Refraction_Width "  << Global::HQWaterRefractionWidth  << "\n";
+        //file << "HQ_Water_Refraction_Height " << Global::HQWaterRefractionHeight << "\n\n";
 
         file << "#Render particles\n";
         if (Global::renderParticles) { file << "Render_Particles on\n\n"; }
