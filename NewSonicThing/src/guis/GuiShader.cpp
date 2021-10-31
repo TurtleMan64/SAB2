@@ -13,20 +13,20 @@
 
 GuiShader::GuiShader(const char* vertexFile, const char* fragmentFile)
 {
-    vertexShaderID = Loader::loadShader(vertexFile, GL_VERTEX_SHADER);
-    fragmentShaderID = Loader::loadShader(fragmentFile, GL_FRAGMENT_SHADER);
-    programID = glCreateProgram();
-    glAttachShader(programID, vertexShaderID);
-    glAttachShader(programID, fragmentShaderID);
+    vertexShaderId = Loader::loadShader(vertexFile, GL_VERTEX_SHADER);
+    fragmentShaderId = Loader::loadShader(fragmentFile, GL_FRAGMENT_SHADER);
+    programId = glCreateProgram();
+    glAttachShader(programId, vertexShaderId);
+    glAttachShader(programId, fragmentShaderId);
     bindAttributes();
-    glLinkProgram(programID);
-    glValidateProgram(programID);
+    glLinkProgram(programId);
+    glValidateProgram(programId);
     getAllUniformLocations();
 }
 
 void GuiShader::start()
 {
-    glUseProgram(programID);
+    glUseProgram(programId);
 }
 
 void GuiShader::stop()
@@ -37,11 +37,11 @@ void GuiShader::stop()
 void GuiShader::cleanUp()
 {
     stop();
-    glDetachShader(programID, vertexShaderID);
-    glDetachShader(programID, fragmentShaderID);
-    glDeleteShader(vertexShaderID);
-    glDeleteShader(fragmentShaderID);
-    glDeleteProgram(programID);
+    glDetachShader(programId, vertexShaderId);
+    glDetachShader(programId, fragmentShaderId);
+    glDeleteShader(vertexShaderId);
+    glDeleteShader(fragmentShaderId);
+    glDeleteProgram(programId);
 }
 
 void GuiShader::loadTransformation(Matrix4f* matrix)
@@ -56,7 +56,7 @@ void GuiShader::bindAttributes()
 
 void GuiShader::bindAttribute(int attribute, const char* variableName)
 {
-    glBindAttribLocation(programID, attribute, variableName);
+    glBindAttribLocation(programId, attribute, variableName);
 }
 
 void GuiShader::getAllUniformLocations()
@@ -66,7 +66,7 @@ void GuiShader::getAllUniformLocations()
 
 int GuiShader::getUniformLocation(const char* uniformName)
 {
-    return glGetUniformLocation(programID, uniformName);
+    return glGetUniformLocation(programId, uniformName);
 }
 
 float guiMatrixBuffer[16];

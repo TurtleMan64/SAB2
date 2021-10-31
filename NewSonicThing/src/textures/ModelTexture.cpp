@@ -25,11 +25,11 @@ ModelTexture::ModelTexture()
     renderOrder = 0;
 }
 
-ModelTexture::ModelTexture(std::vector<GLuint>* texIDs)
+ModelTexture::ModelTexture(std::vector<GLuint>* texIds)
 {
-    for (GLuint id : (*texIDs))
+    for (GLuint id : (*texIds))
     {
-        this->texIDs.push_back(id);
+        this->texIds.push_back(id);
     }
     shineDamper = 20.0f;
     reflectivity = 0.0f;
@@ -46,7 +46,7 @@ ModelTexture::ModelTexture(std::vector<GLuint>* texIDs)
     fogScale = 1.0f;
     renderOrder = 0;
 
-    if (this->texIDs.size() > 1)
+    if (this->texIds.size() > 1)
     {
         isAnimated = true;
     }
@@ -54,10 +54,10 @@ ModelTexture::ModelTexture(std::vector<GLuint>* texIDs)
 
 ModelTexture::ModelTexture(ModelTexture* other)
 {
-    std::vector<GLuint>* otherIDs = other->getIDs();
-    for (GLuint id : (*otherIDs))
+    std::vector<GLuint>* otherIds = other->getIds();
+    for (GLuint id : (*otherIds))
     {
-        texIDs.push_back(id);
+        texIds.push_back(id);
     }
     shineDamper         = other->shineDamper;
     reflectivity        = other->reflectivity;
@@ -74,20 +74,20 @@ ModelTexture::ModelTexture(ModelTexture* other)
     fogScale            = other->fogScale;
     renderOrder         = other->renderOrder;
 
-    if (texIDs.size() > 1)
+    if (texIds.size() > 1)
     {
         isAnimated = true;
     }
 }
 
-GLuint ModelTexture::getID()
+GLuint ModelTexture::getId()
 {
-    return texIDs[currentImageIndex];
+    return texIds[currentImageIndex];
 }
 
-GLuint ModelTexture::getID2()
+GLuint ModelTexture::getId2()
 {
-    return texIDs[(currentImageIndex+1)%texIDs.size()];
+    return texIds[(currentImageIndex+1)%texIds.size()];
 }
 
 bool ModelTexture::hasMultipleImages()
@@ -97,11 +97,11 @@ bool ModelTexture::hasMultipleImages()
 
 void ModelTexture::deleteMe()
 {
-    for (GLuint id : texIDs)
+    for (GLuint id : texIds)
     {
         Loader::deleteTexture(id);
     }
-    texIDs.clear();
+    texIds.clear();
     ModelTexture::animatedTextureReferences.erase(this);
 }
 
@@ -122,9 +122,9 @@ float ModelTexture::mixFactor()
     return 0.0f;
 }
 
-std::vector<GLuint>* ModelTexture::getIDs()
+std::vector<GLuint>* ModelTexture::getIds()
 {
-    return &texIDs;
+    return &texIds;
 }
 
 void ModelTexture::addMeToAnimationsSetIfNeeded()
@@ -142,7 +142,7 @@ void ModelTexture::updateAnimations(float dt)
         tex->animatedProgress += tex->animationSpeed*dt;
         if (tex->animatedProgress >= 1.0f)
         {
-            tex->currentImageIndex = (tex->currentImageIndex+1)%tex->texIDs.size();
+            tex->currentImageIndex = (tex->currentImageIndex+1)%tex->texIds.size();
             tex->animatedProgress-=1.0f;
         }
     }
@@ -150,14 +150,14 @@ void ModelTexture::updateAnimations(float dt)
 
 bool ModelTexture::equalTo(ModelTexture* other)
 {
-    if (texIDs.size() != other->getIDs()->size())
+    if (texIds.size() != other->getIds()->size())
     {
         return false;
     }
 
-    for (int i = 0; i < (int)texIDs.size(); i++)
+    for (int i = 0; i < (int)texIds.size(); i++)
     {
-        if (texIDs[i] != other->getIDs()->at(i))
+        if (texIds[i] != other->getIds()->at(i))
         {
             return false;
         }

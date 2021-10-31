@@ -18,20 +18,20 @@ float matrixBuffer[16];
 
 ShaderProgram::ShaderProgram(const char* vertexFile, const char* fragmentFile)
 {
-    vertexShaderID = Loader::loadShader(vertexFile, GL_VERTEX_SHADER);
-    fragmentShaderID = Loader::loadShader(fragmentFile, GL_FRAGMENT_SHADER);
-    programID = glCreateProgram();
-    glAttachShader(programID, vertexShaderID);
-    glAttachShader(programID, fragmentShaderID);
+    vertexShaderId = Loader::loadShader(vertexFile, GL_VERTEX_SHADER);
+    fragmentShaderId = Loader::loadShader(fragmentFile, GL_FRAGMENT_SHADER);
+    programId = glCreateProgram();
+    glAttachShader(programId, vertexShaderId);
+    glAttachShader(programId, fragmentShaderId);
     bindAttributes();
-    glLinkProgram(programID);
-    glValidateProgram(programID);
+    glLinkProgram(programId);
+    glValidateProgram(programId);
     getAllUniformLocations();
 }
 
 void ShaderProgram::start()
 {
-    glUseProgram(programID);
+    glUseProgram(programId);
 }
 
 void ShaderProgram::stop()
@@ -42,11 +42,11 @@ void ShaderProgram::stop()
 void ShaderProgram::cleanUp()
 {
     stop();
-    glDetachShader(programID, vertexShaderID);
-    glDetachShader(programID, fragmentShaderID);
-    glDeleteShader(vertexShaderID);
-    glDeleteShader(fragmentShaderID);
-    glDeleteProgram(programID);
+    glDetachShader(programId, vertexShaderId);
+    glDetachShader(programId, fragmentShaderId);
+    glDeleteShader(vertexShaderId);
+    glDeleteShader(fragmentShaderId);
+    glDeleteProgram(programId);
 }
 
 void ShaderProgram::loadTransformationMatrix(Matrix4f* matrix)
@@ -152,12 +152,12 @@ void ShaderProgram::bindAttributes()
 
 void ShaderProgram::bindAttribute(int attribute, const char* variableName)
 {
-    glBindAttribLocation(programID, attribute, variableName);
+    glBindAttribLocation(programId, attribute, variableName);
 }
 
 void ShaderProgram::bindFragOutput(int attatchment, const char* variableName)
 {
-    glBindFragDataLocation(programID, attatchment, variableName);
+    glBindFragDataLocation(programId, attatchment, variableName);
 }
 
 void ShaderProgram::getAllUniformLocations()
@@ -201,7 +201,7 @@ void ShaderProgram::getAllUniformLocations()
 
 int ShaderProgram::getUniformLocation(const char* uniformName)
 {
-    return glGetUniformLocation(programID, uniformName);
+    return glGetUniformLocation(programId, uniformName);
 }
 
 void ShaderProgram::loadFloat(int location, float value)

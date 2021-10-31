@@ -1368,33 +1368,33 @@ void TC_Kart::checkpointTest()
     }
 
     Checkpoint* myCheck = nullptr;
-    int newCheckpointID = -1;
+    int newCheckpointId = -1;
     for (Checkpoint* check : Global::gameCheckpointList)
     {
         if (check->isPointInsideMe(getPosition()))
         {
-            if (newCheckpointID == -1 || check->ID < newCheckpointID)
+            if (newCheckpointId == -1 || check->Id < newCheckpointId)
             {
-                newCheckpointID = check->ID;
+                newCheckpointId = check->Id;
                 myCheck = check;
             }
         }
     }
 
-    if (newCheckpointID == -1 && fallOutTimer < 0.0f)
+    if (newCheckpointId == -1 && fallOutTimer < 0.0f)
     {
         AudioPlayer::play(12, getPosition());
         fallOutTimer = 0.0f;
     }
 
-    if (newCheckpointID != -1 && newCheckpointID != lastCheckpointID)
+    if (newCheckpointId != -1 && newCheckpointId != lastCheckpointId)
     {
-        int diff = newCheckpointID-lastCheckpointID;
-        if (newCheckpointID == 0 && lastCheckpointID == Global::gameCheckpointLast)
+        int diff = newCheckpointId-lastCheckpointId;
+        if (newCheckpointId == 0 && lastCheckpointId == Global::gameCheckpointLast)
         {
             diff = 1;
         }
-        if (newCheckpointID == Global::gameCheckpointLast && lastCheckpointID == 0)
+        if (newCheckpointId == Global::gameCheckpointLast && lastCheckpointId == 0)
         {
             diff = -1;
         }
@@ -1439,12 +1439,12 @@ void TC_Kart::checkpointTest()
         }
     }
 
-    if (newCheckpointID != -1)
+    if (newCheckpointId != -1)
     {
-        lastCheckpointID = newCheckpointID;
+        lastCheckpointId = newCheckpointId;
     }
 
-    //std::fprintf(stdout, "currentLap = %d    lapDistance = %d    checkID = %d\n", currentLap, lapDistance, newCheckpointID);
+    //std::fprintf(stdout, "currentLap = %d    lapDistance = %d    checkId = %d\n", currentLap, lapDistance, newCheckpointId);
     */
 
 }
@@ -1612,7 +1612,7 @@ void TC_Kart::loadVehicleInfo()
                 if (splitLength == 7 && lineSplit[0][0] != '#')
                 {
                     EngineExhaust newExahust;
-                    newExahust.textureID         = std::stoi(lineSplit[0], nullptr, 10);
+                    newExahust.textureId         = std::stoi(lineSplit[0], nullptr, 10);
                     newExahust.posUp             = std::stof(lineSplit[1]);
                     newExahust.posAt             = std::stof(lineSplit[2]) + std::stof(lineSplit[4]);
                     newExahust.posSide           = std::stof(lineSplit[3]);

@@ -8,9 +8,9 @@ GuiTexture::GuiTexture()
     
 }
 
-GuiTexture::GuiTexture(GLuint textureID, Vector2f* position, Vector2f* size, float rotation)
+GuiTexture::GuiTexture(GLuint textureId, Vector2f* position, Vector2f* size, float rotation)
 {
-    this->textureID = textureID;
+    this->textureId = textureId;
     this->position.x = (position->x*2.0f)-1;
     this->position.y = -((position->y*2.0f)-1);
     this->sizeRaw.set(size);
@@ -20,9 +20,9 @@ GuiTexture::GuiTexture(GLuint textureID, Vector2f* position, Vector2f* size, flo
     this->rotation = rotation;
 }
 
-GuiTexture::GuiTexture(GLuint textureID, float posX, float posY, float sizeX, float sizeY, float rotation)
+GuiTexture::GuiTexture(GLuint textureId, float posX, float posY, float sizeX, float sizeY, float rotation)
 {
-    this->textureID = textureID;
+    this->textureId = textureId;
     this->position.x = (posX*2.0f)-1;
     this->position.y = -((posY*2.0f)-1);
     this->sizeRaw.x = sizeX;
@@ -36,7 +36,7 @@ GuiTexture::GuiTexture(GLuint textureID, float posX, float posY, float sizeX, fl
 
 GLuint GuiTexture::getTexture()
 {
-    return textureID;
+    return textureId;
 }
 
 Vector2f* GuiTexture::getPosition()
@@ -49,9 +49,9 @@ Vector2f* GuiTexture::getSizeRaw()
     return &sizeRaw;
 }
 
-void GuiTexture::setTexture(GLuint newTextureID)
+void GuiTexture::setTexture(GLuint newTextureId)
 {
-    textureID = newTextureID;
+    textureId = newTextureId;
 }
 
 void GuiTexture::setX(float newX)

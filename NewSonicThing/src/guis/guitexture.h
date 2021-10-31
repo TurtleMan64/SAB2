@@ -7,7 +7,7 @@
 class GuiTexture
 {
 private:
-    GLuint textureID;
+    GLuint textureId;
     Vector2f position;
     Vector2f sizeRaw;
     Vector2f sizeScaled;
@@ -20,15 +20,15 @@ public:
 
     //position is (0,0) = top left of screen, (1,1) is bottom right
     //Note that the image is drawn with its CENTER at position
-    GuiTexture(GLuint textureID, Vector2f* position, Vector2f* size, float rotation);
+    GuiTexture(GLuint textureId, Vector2f* position, Vector2f* size, float rotation);
 
     //position is (0,0) = top left of screen, (1,1) is bottom right
     //Note that the image is drawn with its CENTER at position
-    GuiTexture(GLuint textureID, float posX, float posY, float sizeX, float sizeY, float rotation);
+    GuiTexture(GLuint textureId, float posX, float posY, float sizeX, float sizeY, float rotation);
 
     GLuint getTexture();
 
-    void setTexture(GLuint newTextureID);
+    void setTexture(GLuint newTextureId);
 
     //WARNING: ONLY use this to read the position, do NOT use this to write to the position, use setX and setY
     Vector2f* getPosition();

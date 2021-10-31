@@ -9,7 +9,7 @@
 class ModelTexture
 {
 private:
-    std::vector<GLuint> texIDs;
+    std::vector<GLuint> texIds;
 
     //animation 
     bool isAnimated; //has more than 1 image
@@ -34,24 +34,24 @@ public:
 
     ModelTexture();
 
-    ModelTexture(std::vector<GLuint>* texIDs);
+    ModelTexture(std::vector<GLuint>* texIds);
 
     ModelTexture(ModelTexture* other);
 
     bool hasMultipleImages();
 
     //returns image 1
-    GLuint getID();
+    GLuint getId();
 
     //returns image 2 (next image in the animation)
-    GLuint getID2();
+    GLuint getId2();
 
     //how much the 2nd image should be mixed with the first (for animations)
     float mixFactor();
 
-    std::vector<GLuint>* getIDs();
+    std::vector<GLuint>* getIds();
 
-    //deletes all of the texture IDs out of gpu memory
+    //deletes all of the texture Ids out of gpu memory
     void deleteMe();
 
     void addMeToAnimationsSetIfNeeded();

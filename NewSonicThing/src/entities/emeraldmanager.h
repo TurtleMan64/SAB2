@@ -18,12 +18,12 @@ private:
     static float pingTimer2;
     static float pingTimer3;
 
-    static GLuint radarGreyID;
-    static GLuint radarBlueID;
-    static GLuint radarGreenID;
-    static GLuint radarYellowID;
-    static GLuint radarRedID;
-    static GLuint nearPieceID;
+    static GLuint radarGreyId;
+    static GLuint radarBlueId;
+    static GLuint radarGreenId;
+    static GLuint radarYellowId;
+    static GLuint radarRedId;
+    static GLuint nearPieceId;
 
     static GuiTexture* radar1;
     static GuiTexture* radar2;

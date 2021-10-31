@@ -596,7 +596,7 @@ void Input::init()
                 {
                     BUTTON_IDX_DPADD = std::stoi(lineSplit[1], nullptr, 10);
                 }
-                else if (strcmp(lineSplit[0], "Controller_ID") == 0)
+                else if (strcmp(lineSplit[0], "Controller_Id") == 0)
                 {
                     CONTROLLER_ID = std::stoi(lineSplit[1], nullptr, 10);
                 }
@@ -745,7 +745,7 @@ bool Input::changeController(int direction)
         Input::controller = nullptr;
     }
 
-    int originalControllerID = CONTROLLER_ID;
+    int originalControllerId = CONTROLLER_ID;
     int numJoysticks = SDL_NumJoysticks();
     int maxAttempts = numJoysticks + 1;
     int currentAttempt = 0;
@@ -792,7 +792,7 @@ bool Input::changeController(int direction)
         currentAttempt++;
     }
 
-    CONTROLLER_ID = originalControllerID;
+    CONTROLLER_ID = originalControllerId;
     return false;
 }
 

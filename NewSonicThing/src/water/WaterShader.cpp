@@ -18,26 +18,26 @@ WaterShader::WaterShader()
 {
     if (Global::renderShadowsFar)
     {
-        vertexShaderID = Loader::loadShader("res/Shaders/water/waterVertexWithShadows.txt", GL_VERTEX_SHADER);
-        fragmentShaderID = Loader::loadShader("res/Shaders/water/waterFragmentWithShadows.txt", GL_FRAGMENT_SHADER);
+        vertexShaderId = Loader::loadShader("res/Shaders/water/waterVertexWithShadows.txt", GL_VERTEX_SHADER);
+        fragmentShaderId = Loader::loadShader("res/Shaders/water/waterFragmentWithShadows.txt", GL_FRAGMENT_SHADER);
     }
     else
     {
-        vertexShaderID = Loader::loadShader("res/Shaders/water/waterVertex.txt", GL_VERTEX_SHADER);
-        fragmentShaderID = Loader::loadShader("res/Shaders/water/waterFragment.txt", GL_FRAGMENT_SHADER);
+        vertexShaderId = Loader::loadShader("res/Shaders/water/waterVertex.txt", GL_VERTEX_SHADER);
+        fragmentShaderId = Loader::loadShader("res/Shaders/water/waterFragment.txt", GL_FRAGMENT_SHADER);
     }
-    programID = glCreateProgram();
-    glAttachShader(programID, vertexShaderID);
-    glAttachShader(programID, fragmentShaderID);
+    programId = glCreateProgram();
+    glAttachShader(programId, vertexShaderId);
+    glAttachShader(programId, fragmentShaderId);
     bindAttributes();
-    glLinkProgram(programID);
-    glValidateProgram(programID);
+    glLinkProgram(programId);
+    glValidateProgram(programId);
     getAllUniformLocations();
 }
 
 void WaterShader::start()
 {
-    glUseProgram(programID);
+    glUseProgram(programId);
 }
 
 void WaterShader::stop()
@@ -48,11 +48,11 @@ void WaterShader::stop()
 void WaterShader::cleanUp()
 {
     stop();
-    glDetachShader(programID, vertexShaderID);
-    glDetachShader(programID, fragmentShaderID);
-    glDeleteShader(vertexShaderID);
-    glDeleteShader(fragmentShaderID);
-    glDeleteProgram(programID);
+    glDetachShader(programId, vertexShaderId);
+    glDetachShader(programId, fragmentShaderId);
+    glDeleteShader(vertexShaderId);
+    glDeleteShader(fragmentShaderId);
+    glDeleteProgram(programId);
 }
 
 void WaterShader::connectTextureUnits()
@@ -128,12 +128,12 @@ void WaterShader::bindAttributes()
 
 void WaterShader::bindAttribute(int attribute, const char* variableName)
 {
-    glBindAttribLocation(programID, attribute, variableName);
+    glBindAttribLocation(programId, attribute, variableName);
 }
 
 void WaterShader::bindFragOutput(int attatchment, const char* variableName)
 {
-    glBindFragDataLocation(programID, attatchment, variableName);
+    glBindFragDataLocation(programId, attatchment, variableName);
 }
 
 void WaterShader::getAllUniformLocations()
@@ -160,7 +160,7 @@ void WaterShader::getAllUniformLocations()
 
 int WaterShader::getUniformLocation(const char* uniformName)
 {
-    return glGetUniformLocation(programID, uniformName);
+    return glGetUniformLocation(programId, uniformName);
 }
 
 void WaterShader::loadInt(int location, int value)

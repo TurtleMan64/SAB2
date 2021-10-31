@@ -36,7 +36,7 @@ private:
     float holdUpTimer = 0;
     float holdDownTimer = 0;
 
-    int currButtonID = 0;
+    int currButtonId = 0;
     std::vector<Button*> levelButtons;
 
     Button* missionButton = nullptr;

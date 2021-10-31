@@ -10,25 +10,25 @@ RawModel::RawModel()
 
 }
 
-RawModel::RawModel(GLuint vaoID, int vertexCount, std::list<GLuint>* vboIDs)
+RawModel::RawModel(GLuint vaoId, int vertexCount, std::list<GLuint>* vboIds)
 {
-    this->vaoID = vaoID;
+    this->vaoId = vaoId;
     this->vertexCount = vertexCount;
 
-    for (auto id : (*vboIDs))
+    for (auto id : (*vboIds))
     {
-        this->vboIDs.push_back(id);
+        this->vboIds.push_back(id);
     }
 }
 
-GLuint RawModel::getVaoID()
+GLuint RawModel::getVaoId()
 {
-    return vaoID;
+    return vaoId;
 }
 
-void RawModel::setVaoID(GLuint newID)
+void RawModel::setVaoId(GLuint newId)
 {
-    this->vaoID = newID;
+    this->vaoId = newId;
 }
 
 int RawModel::getVertexCount()
@@ -41,17 +41,17 @@ void RawModel::setVertexCount(int newCount)
     this->vertexCount = newCount;
 }
 
-std::list<GLuint>* RawModel::getVboIDs()
+std::list<GLuint>* RawModel::getVboIds()
 {
-    return &vboIDs;
+    return &vboIds;
 }
 
 void RawModel::deleteMe()
 {
-    Loader::deleteVAO(vaoID);
-    for (auto vbo : vboIDs)
+    Loader::deleteVAO(vaoId);
+    for (auto vbo : vboIds)
     {
         Loader::deleteVBO(vbo);
     }
-    vboIDs.clear();
+    vboIds.clear();
 }

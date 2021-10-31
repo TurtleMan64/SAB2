@@ -23,9 +23,9 @@ LowQualityWater::LowQualityWater(
     float x, float y, float z, 
     float r, float g, float b, float a)
 {
-	position.x = x;
-	position.y = y;
-	position.z = z;
+    position.x = x;
+    position.y = y;
+    position.z = z;
     baseColour.set(r, g, b);
     baseAlpha = a;
     updateTransformationMatrix();
@@ -38,28 +38,28 @@ void LowQualityWater::step()
 
 std::list<TexturedModel*>* LowQualityWater::getModels()
 {
-	return &LowQualityWater::models;
+    return &LowQualityWater::models;
 }
 
 void LowQualityWater::loadStaticModels()
 {
-	if (LowQualityWater::models.size() > 0)
-	{
-		return;
-	}
+    if (LowQualityWater::models.size() > 0)
+    {
+        return;
+    }
 
-	#ifdef DEV_MODE
-	std::fprintf(stdout, "Loading LowQualityWater static models...\n");
-	#endif
+    #ifdef DEV_MODE
+    std::fprintf(stdout, "Loading LowQualityWater static models...\n");
+    #endif
 
-	ObjLoader::loadModel(&LowQualityWater::models, "res/Models/Objects/Water/", "LowQualityWater");
+    ObjLoader::loadModel(&LowQualityWater::models, "res/Models/Objects/Water/", "LowQualityWater");
 }
 
 void LowQualityWater::deleteStaticModels()
 {
-	#ifdef DEV_MODE
-	std::fprintf(stdout, "Deleting LowQualityWater models...\n");
-	#endif
+    #ifdef DEV_MODE
+    std::fprintf(stdout, "Deleting LowQualityWater models...\n");
+    #endif
 
-	Entity::deleteModels(&LowQualityWater::models);
+    Entity::deleteModels(&LowQualityWater::models);
 }

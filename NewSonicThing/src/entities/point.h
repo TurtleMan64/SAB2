@@ -14,7 +14,7 @@ public:
 
     void step();
 
-    int getID();
+    int getId();
 
     bool isPoint() const;
 };

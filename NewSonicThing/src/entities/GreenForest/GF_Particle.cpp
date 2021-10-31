@@ -66,5 +66,5 @@ bool GF_Particle::update()
 
     updateTextureCoordInfo();
 
-    return Global::levelID == LVL_GREEN_FOREST;
+    return Global::levelId == LVL_GREEN_FOREST;
 }

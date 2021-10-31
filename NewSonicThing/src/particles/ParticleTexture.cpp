@@ -1,17 +1,17 @@
 #include "particletexture.h"
 #include <glad/glad.h>
 
-ParticleTexture::ParticleTexture(GLuint textureID, int numberOfRows, float opacity, float glow)
+ParticleTexture::ParticleTexture(GLuint textureId, int numberOfRows, float opacity, float glow)
 {
-    this->textureID = textureID;
+    this->textureId = textureId;
     this->numberOfRows = numberOfRows;
     this->opacity = opacity;
     this->glow = glow;
 }
 
-GLuint ParticleTexture::getTextureID()
+GLuint ParticleTexture::getTextureId()
 {
-    return textureID;
+    return textureId;
 }
 
 int ParticleTexture::getNumberOfRows()

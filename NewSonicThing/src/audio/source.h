@@ -6,8 +6,8 @@
 class Source
 {
 private:
-    ALuint sourceID;
-    ALuint bufferID; //Buffer that we are going to play
+    ALuint sourceId;
+    ALuint bufferId; //Buffer that we are going to play
 
 public:
     static ALuint filterLowpass;
@@ -42,8 +42,8 @@ public:
     // So 0 if the sound just started, 0.5 if the sound is halfway done, 1 if sound is finished.
     float getSoundCompletion();
 
-    ALuint getSourceID();
+    ALuint getSourceId();
 
-    ALuint getLastPlayedBufferID();
+    ALuint getLastPlayedBufferId();
 };
 #endif

@@ -156,7 +156,7 @@ public:
     void cleanUp();
 
     /**
-    * @return The ID of the shadow map texture. The ID will always stay the
+    * @return The Id of the shadow map texture. The Id will always stay the
     *         same, even when the contents of the shadow map texture change
     *         each frame.
     */

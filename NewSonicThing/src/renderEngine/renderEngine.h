@@ -91,11 +91,11 @@ public:
 
     static void cleanUp();
 
-    static void deleteVAO(GLuint vaoID);
+    static void deleteVAO(GLuint vaoId);
 
-    static void deleteVBO(GLuint vboID);
+    static void deleteVBO(GLuint vboId);
 
-    static void deleteTexture(GLuint texID);
+    static void deleteTexture(GLuint texId);
 
     static void deleteTexturedModels(std::list<TexturedModel*>* tm);
 

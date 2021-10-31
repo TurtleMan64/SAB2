@@ -159,7 +159,7 @@ extern unsigned int SCR_HEIGHT;
 int Global::countNew = 0;
 int Global::countDelete = 0;
 int Global::gameState = 0;
-int Global::levelID = 0;
+int Global::levelId = 0;
 float Global::startStageTimer = -1;
 bool Global::shouldLoadLevel = false;
 bool Global::isNewLevel = false;
@@ -299,12 +299,12 @@ int main(int argc, char** argv)
     Global::gameLevelIdsSonic.push_back(LVL_GREEN_FOREST);
     Global::gameLevelIdsSonic.push_back(LVL_METAL_HARBOR);
     Global::gameLevelIdsSonic.push_back(LVL_SKY_RAIL);
-    Global::gameLevelIdsSonic.push_back(LVL_PYRAMID_CAVE);
+    Global::gameLevelIdsSonic.push_back(LVL_PYRAMId_CAVE);
     Global::gameLevelIdsSonic.push_back(LVL_RADICAL_HIGHWAY);
     Global::gameLevelIdsSonic.push_back(LVL_GREEN_HILL_ZONE);
     Global::gameLevelIdsSonic.push_back(LVL_CITY_ESCAPE);
     Global::gameLevelIdsSonic.push_back(LVL_WINDY_VALLEY);
-    Global::gameLevelIdsSonic.push_back(LVL_SEASIDE_HILL);
+    Global::gameLevelIdsSonic.push_back(LVL_SEASIdE_HILL);
     Global::gameLevelIdsSonic.push_back(LVL_FROG_FOREST);
     Global::gameLevelIdsSonic.push_back(LVL_TEST);
     Global::gameLevelIdsSonic.push_back(LVL_SPEED_HIGHWAY);
@@ -315,12 +315,12 @@ int main(int argc, char** argv)
     Global::gameLevelIdsTails.push_back(LVL_TUTORIAL);
     Global::gameLevelIdsTails.push_back(LVL_GREEN_FOREST);
     Global::gameLevelIdsTails.push_back(LVL_METAL_HARBOR);
-    Global::gameLevelIdsTails.push_back(LVL_PYRAMID_CAVE);
+    Global::gameLevelIdsTails.push_back(LVL_PYRAMId_CAVE);
     Global::gameLevelIdsTails.push_back(LVL_RADICAL_HIGHWAY);
     Global::gameLevelIdsTails.push_back(LVL_GREEN_HILL_ZONE);
     Global::gameLevelIdsTails.push_back(LVL_CITY_ESCAPE);
     Global::gameLevelIdsTails.push_back(LVL_WINDY_VALLEY);
-    Global::gameLevelIdsTails.push_back(LVL_SEASIDE_HILL);
+    Global::gameLevelIdsTails.push_back(LVL_SEASIdE_HILL);
     Global::gameLevelIdsTails.push_back(LVL_FROG_FOREST);
     Global::gameLevelIdsTails.push_back(LVL_TEST);
     Global::gameLevelIdsTails.push_back(LVL_SPEED_HIGHWAY);
@@ -921,9 +921,9 @@ int main(int argc, char** argv)
 
                     if (Global::gameArcadeIndex < (int)Global::gameArcadeLevelIds.size())
                     {
-                        Global::levelID = (Global::gameArcadeLevelIds[Global::gameArcadeIndex]).first;
+                        Global::levelId = (Global::gameArcadeLevelIds[Global::gameArcadeIndex]).first;
                         Global::currentCharacterType = (Global::gameArcadeLevelIds[Global::gameArcadeIndex]).second;
-                        Level* currentLevel = &Global::gameLevelData[Global::levelID];
+                        Level* currentLevel = &Global::gameLevelData[Global::levelId];
                         Global::shouldLoadLevel = true;
                         Global::isNewLevel = true;
                         Global::levelName = currentLevel->fileName;
@@ -1019,9 +1019,9 @@ int main(int argc, char** argv)
             //recreate all fbos and other things to the new size of the window
             //if (Global::renderBloom)
             {
-                //Global::gameMultisampleFbo->resize(SCR_WIDTH, SCR_HEIGHT); //memory leaks
-                //Global::gameOutputFbo->resize(SCR_WIDTH, SCR_HEIGHT);
-                //Global::gameOutputFbo2->resize(SCR_WIDTH, SCR_HEIGHT);
+                //Global::gameMultisampleFbo->resize(SCR_WIdTH, SCR_HEIGHT); //memory leaks
+                //Global::gameOutputFbo->resize(SCR_WIdTH, SCR_HEIGHT);
+                //Global::gameOutputFbo2->resize(SCR_WIdTH, SCR_HEIGHT);
             }
         }
         //std::fprintf(stdout, "dt: %f\n", dt);
@@ -1114,13 +1114,13 @@ void increaseProcessPriority()
     
 
     
-    //if (!SetPriorityClass(GetCurrentProcess(), IDLE_PRIORITY_CLASS))
+    //if (!SetPriorityClass(GetCurrentProcess(), IdLE_PRIORITY_CLASS))
     //{
     //    dwError = GetLastError();
     //    _tprintf(TEXT("Failed to enter below normal mode (%d)\n"), (int)dwError);
     //}
     //
-    //if (!SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_IDLE))
+    //if (!SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_IdLE))
     //{
     //    dwError = GetLastError();
     //    _tprintf(TEXT("Failed to enter below normal mode (%d)\n"), (int)dwError);
@@ -1208,7 +1208,7 @@ void Global::saveGhostData()
     std::string ghostFilename = Global::pathToEXE + 
         "res/SaveData/" + 
         Global::characterNames[Global::currentCharacterType] + "_" +
-        std::to_string(Global::levelID) + "_" + 
+        std::to_string(Global::levelId) + "_" + 
         std::to_string(Global::gameMissionNumber) + 
         ".ghost";
 
@@ -1410,7 +1410,7 @@ int Global::calculateRankAndUpdate()
 {
     int newRank = 0; //0 = E, 4 = A
 
-    Level* currentLevel = &Global::gameLevelData[Global::levelID];
+    Level* currentLevel = &Global::gameLevelData[Global::levelId];
 
     if (Global::gameMissionNumber < currentLevel->numMissions)
     {
@@ -1641,14 +1641,14 @@ int Global::getChunkIndex(float x, float z)
     float relativeX = x - chunkedEntitiesMinX;
     float relativeZ = z - chunkedEntitiesMinZ;
 
-    //const float DIVIDE_OFFSET = 1.0f;
+    //const float DIVIdE_OFFSET = 1.0f;
 
     //ensure the coords arent out of bounds
     //relativeX = std::fmaxf(0.0f, relativeX);
-    //relativeX = std::fminf(relativeX, chunkedEntitiesWidth*chunkedEntitiesChunkSize - DIVIDE_OFFSET);
+    //relativeX = std::fminf(relativeX, chunkedEntitiesWidth*chunkedEntitiesChunkSize - DIVIdE_OFFSET);
 
     //relativeZ = std::fmaxf(0.0f, relativeZ);
-    //relativeZ = std::fminf(relativeZ, chunkedEntitiesHeight*chunkedEntitiesChunkSize - DIVIDE_OFFSET);
+    //relativeZ = std::fminf(relativeZ, chunkedEntitiesHeight*chunkedEntitiesChunkSize - DIVIdE_OFFSET);
 
     //calculate 2d array indices
     int iX = (int)(relativeX/chunkedEntitiesChunkSize);

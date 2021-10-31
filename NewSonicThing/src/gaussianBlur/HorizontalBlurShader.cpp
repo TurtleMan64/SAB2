@@ -5,20 +5,20 @@
 
 HorizontalBlurShader::HorizontalBlurShader(const char* vFile, const char* fFile)
 {
-    vertexShaderID = Loader::loadShader(vFile, GL_VERTEX_SHADER);
-    fragmentShaderID = Loader::loadShader(fFile, GL_FRAGMENT_SHADER);
-    programID = glCreateProgram();
-    glAttachShader(programID, vertexShaderID);
-    glAttachShader(programID, fragmentShaderID);
+    vertexShaderId = Loader::loadShader(vFile, GL_VERTEX_SHADER);
+    fragmentShaderId = Loader::loadShader(fFile, GL_FRAGMENT_SHADER);
+    programId = glCreateProgram();
+    glAttachShader(programId, vertexShaderId);
+    glAttachShader(programId, fragmentShaderId);
     bindAttributes();
-    glLinkProgram(programID);
-    glValidateProgram(programID);
+    glLinkProgram(programId);
+    glValidateProgram(programId);
     getAllUniformLocations();
 }
 
 void HorizontalBlurShader::start()
 {
-    glUseProgram(programID);
+    glUseProgram(programId);
 }
 
 void HorizontalBlurShader::stop()
@@ -29,11 +29,11 @@ void HorizontalBlurShader::stop()
 void HorizontalBlurShader::cleanUp()
 {
     stop();
-    glDetachShader(programID, vertexShaderID);
-    glDetachShader(programID, fragmentShaderID);
-    glDeleteShader(vertexShaderID);
-    glDeleteShader(fragmentShaderID);
-    glDeleteProgram(programID);
+    glDetachShader(programId, vertexShaderId);
+    glDetachShader(programId, fragmentShaderId);
+    glDeleteShader(vertexShaderId);
+    glDeleteShader(fragmentShaderId);
+    glDeleteProgram(programId);
 }
 
 void HorizontalBlurShader::loadTargetWidth(float width)
@@ -48,7 +48,7 @@ void HorizontalBlurShader::bindAttributes()
 
 void HorizontalBlurShader::bindAttribute(int attribute, const char* variableName)
 {
-    glBindAttribLocation(programID, attribute, variableName);
+    glBindAttribLocation(programId, attribute, variableName);
 }
 
 void HorizontalBlurShader::getAllUniformLocations()
@@ -58,7 +58,7 @@ void HorizontalBlurShader::getAllUniformLocations()
 
 int HorizontalBlurShader::getUniformLocation(const char* uniformName)
 {
-    return glGetUniformLocation(programID, uniformName);
+    return glGetUniformLocation(programId, uniformName);
 }
 
 void HorizontalBlurShader::loadFloat(int location, float value)

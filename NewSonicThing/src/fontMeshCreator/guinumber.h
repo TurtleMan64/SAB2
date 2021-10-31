@@ -13,7 +13,7 @@ class GUINumber
 {
 private:
     static void createNumber(int i, float x, float y, float w, float h);
-    static GLuint numberMeshIDs[10];
+    static GLuint numberMeshIds[10];
     static GLuint numberMeshVertexCounts[10];
     Vector2f position;
 
@@ -22,7 +22,7 @@ public:
     static void loadMeshData();
 
     //please consider these read only outside of the GUINumber functions
-    std::vector<GLuint>   meshIDs;
+    std::vector<GLuint>   meshIds;
     std::vector<GLsizei>  meshVertexCounts;
     std::vector<Vector2f> meshPositions;
 

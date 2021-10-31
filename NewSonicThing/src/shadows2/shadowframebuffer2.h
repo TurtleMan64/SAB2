@@ -41,7 +41,7 @@ private:
     * it. The draw buffer is set to none, indicating that there's no colour
     * buffer to be rendered to.
     *
-    * @return The newly created frame buffer's ID.
+    * @return The newly created frame buffer's Id.
     */
     static int createFrameBuffer();
 
@@ -52,7 +52,7 @@ private:
     *            - the width of the texture.
     * @param height
     *            - the height of the texture.
-    * @return The ID of the depth texture.
+    * @return The Id of the depth texture.
     */
     static int createDepthBufferAttachment(int width, int height);
 
@@ -84,7 +84,7 @@ public:
     void unbindFrameBuffer();
 
     /**
-    * @return The ID of the shadow map texture.
+    * @return The Id of the shadow map texture.
     */
     GLuint getShadowMap();
 };

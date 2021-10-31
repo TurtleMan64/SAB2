@@ -32,7 +32,7 @@ void GuiRenderer::init()
 void GuiRenderer::render(std::list<GuiTexture*>* guis)
 {
     GuiRenderer::shader->start();
-    glBindVertexArray(GuiRenderer::quadModel.getVaoID());
+    glBindVertexArray(GuiRenderer::quadModel.getVaoId());
     glEnableVertexAttribArray(0);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

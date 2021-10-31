@@ -10,9 +10,9 @@ class Vector3f;
 class ShadowShader2
 {
 private:
-    GLuint programID;
-    GLuint vertexShaderID;
-    GLuint fragmentShaderID;
+    GLuint programId;
+    GLuint vertexShaderId;
+    GLuint fragmentShaderId;
 
     int location_mvpMatrix;
 
@@ -26,7 +26,6 @@ public:
     void cleanUp();
 
     void loadMvpMatrix(Matrix4f* mvpMatrix);
-
 
 protected:
     void bindAttributes();

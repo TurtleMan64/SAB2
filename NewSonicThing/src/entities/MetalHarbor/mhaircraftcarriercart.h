@@ -55,11 +55,11 @@ private:
     const float SHAKE_TIMER_MAX = 31.4159265359f;
 
     //used for player collisions with the front and back of the platform when moving
-    const float COLLISION_POSITION_SIDEWAYS = 9.9351f;
+    const float COLLISION_POSITION_SIdEWAYS = 9.9351f;
     const float COLLISION_POSITION_FORWARD = 20.407f;
     const float COLLISION_POSITION_BACKWARD_INNER = -23.0f;
     const float COLLISION_POSITION_BACKWARD_OUTER = -25.0f;
-    const float COLLISION_POSITION_BACKSIDEWAYS_INNER = 5.0f;
+    const float COLLISION_POSITION_BACKSIdEWAYS_INNER = 5.0f;
     const float COLLISION_RADIUS = 5.0f; 
     const float COLLISION_HEIGHT = 11.5f;
 

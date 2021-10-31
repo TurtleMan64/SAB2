@@ -13,7 +13,7 @@ class Dummy;
 
 struct EngineExhaust
 {
-    int textureID;
+    int textureId;
     float posUp;
     float posAt;
     float posSide;
@@ -186,7 +186,7 @@ private:
     const float exhaustApproach = 5.0f; //How fast the exhaustLength approaches exhaustLengthTarget
 
     //Variables to keep track of what lap you're on
-    int lastCheckpointID = 0;
+    int lastCheckpointId = 0;
     int currentLap = 0;
     int lapDistance = 0; //Accumulator for how many checkpoints youve passed through (in the right direction)
 

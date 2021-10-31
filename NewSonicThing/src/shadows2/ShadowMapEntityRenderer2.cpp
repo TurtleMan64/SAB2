@@ -23,7 +23,7 @@ void ShadowMapEntityRenderer2::render(std::unordered_map<TexturedModel*, std::li
         RawModel* rawModel = texturedModel->getRawModel();
         bindModel(rawModel);
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texturedModel->getTexture()->getID());
+        glBindTexture(GL_TEXTURE_2D, texturedModel->getTexture()->getId());
 
         std::list<Entity*>* entityList = &entry.second;
 
@@ -40,7 +40,7 @@ void ShadowMapEntityRenderer2::render(std::unordered_map<TexturedModel*, std::li
 
 void ShadowMapEntityRenderer2::bindModel(RawModel* rawModel)
 {
-    glBindVertexArray(rawModel->getVaoID());
+    glBindVertexArray(rawModel->getVaoId());
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
 }

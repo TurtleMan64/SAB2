@@ -25,7 +25,7 @@ void Point::step()
     Global::deleteEntity(this);
 }
 
-int Point::getID()
+int Point::getId()
 {
     return id;
 }

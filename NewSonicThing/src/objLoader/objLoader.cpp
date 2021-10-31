@@ -650,8 +650,8 @@ void ObjLoader::parseMtl(std::string filePath, std::string fileName, std::unorde
                 std::string imageFilenameString = filePath+lineSplit[1];
                 char* fname = (char*)imageFilenameString.c_str();
 
-                std::vector<GLuint> textureIDs;
-                textureIDs.push_back(Loader::loadTexture(fname)); //generate new texture
+                std::vector<GLuint> textureIds;
+                textureIds.push_back(Loader::loadTexture(fname)); //generate new texture
 
                 currentNumImages--;
                 while (currentNumImages > 0)
@@ -673,12 +673,12 @@ void ObjLoader::parseMtl(std::string filePath, std::string fileName, std::unorde
 
                     imageFilenameString = filePath+nextFilename;
                     fname = (char*)imageFilenameString.c_str();
-                    textureIDs.push_back(Loader::loadTexture(fname)); //load the new texture
+                    textureIds.push_back(Loader::loadTexture(fname)); //load the new texture
 
                     currentNumImages--;
                 }
 
-                std::vector<GLuint>* texturesPointer = &textureIDs;
+                std::vector<GLuint>* texturesPointer = &textureIds;
                 ModelTexture newTexture(texturesPointer);
 
                 newTexture.shineDamper = currentShineDamperValue;

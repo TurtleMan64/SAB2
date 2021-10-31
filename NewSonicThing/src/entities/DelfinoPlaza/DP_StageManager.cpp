@@ -44,7 +44,7 @@ void DP_StageManager::step()
     skyPass2->updateTransformationMatrix();
     skyTransparent->updateTransformationMatrix();
 
-    if (Global::levelID == LVL_DELFINO_PLAZA)
+    if (Global::levelId == LVL_DELFINO_PLAZA)
     {
         extern float dt;
 

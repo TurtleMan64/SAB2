@@ -73,4 +73,3 @@ int ShadowFrameBuffer2::createDepthBufferAttachment(int width, int height)
     glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, texture, 0);
     return texture;
 }
-

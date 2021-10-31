@@ -64,7 +64,7 @@ void PostProcessing::cleanUp()
 
 void PostProcessing::start()
 {
-    glBindVertexArray(PostProcessing::quadModel.getVaoID());
+    glBindVertexArray(PostProcessing::quadModel.getVaoId());
     glEnableVertexAttribArray(0);
     glDisable(GL_DEPTH_TEST);
 }

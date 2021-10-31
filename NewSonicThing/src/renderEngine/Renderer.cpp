@@ -54,7 +54,7 @@ void EntityRenderer::renderNEW(std::unordered_map<TexturedModel*, std::list<Enti
 void EntityRenderer::prepareTexturedModel(TexturedModel* model)
 {
     RawModel* rawModel = model->getRawModel();
-    glBindVertexArray(rawModel->getVaoID());
+    glBindVertexArray(rawModel->getVaoId());
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
     glEnableVertexAttribArray(2);
@@ -81,9 +81,9 @@ void EntityRenderer::prepareTexturedModel(TexturedModel* model)
     shader->loadMixFactor(texture->mixFactor());
     shader->loadFogScale(texture->fogScale);
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture->getID());
+    glBindTexture(GL_TEXTURE_2D, texture->getId());
     glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, texture->getID2());
+    glBindTexture(GL_TEXTURE_2D, texture->getId2());
 }
 
 void EntityRenderer::unbindTexturedModel()

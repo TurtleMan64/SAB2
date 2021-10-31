@@ -221,7 +221,7 @@ Source* AudioPlayer::playBGM(ALuint bufferLoop)
     src->stop();
     src->setLooping(false);
 
-    alSourcei(src->getSourceID(), AL_BUFFER, AL_NONE);
+    alSourcei(src->getSourceId(), AL_BUFFER, AL_NONE);
 
     src->setLooping(true);
     src->setVolume(AudioPlayer::soundLevelBGM);
@@ -256,16 +256,16 @@ Source* AudioPlayer::playBGMWithIntro(ALuint bufferIntro, ALuint bufferLoop)
     src->setLooping(false);
 
 
-    alSourcei(src->getSourceID(), AL_BUFFER, AL_NONE); //Get rid of queued buffers 
+    alSourcei(src->getSourceId(), AL_BUFFER, AL_NONE); //Get rid of queued buffers 
 
     AudioPlayer::bgmIntro = bufferIntro;
     AudioPlayer::bgmLoop  = bufferLoop;
 
-    alSourceQueueBuffers(src->getSourceID(), 1, &AudioPlayer::bgmIntro);
-    alSourceQueueBuffers(src->getSourceID(), 1, &AudioPlayer::bgmLoop);
-    alSourcePlay(src->getSourceID());
+    alSourceQueueBuffers(src->getSourceId(), 1, &AudioPlayer::bgmIntro);
+    alSourceQueueBuffers(src->getSourceId(), 1, &AudioPlayer::bgmLoop);
+    alSourcePlay(src->getSourceId());
 
-    //if (!src->isPlaying() || src->getLastPlayedBufferID() != AudioPlayer::buffersBGM[buffer])
+    //if (!src->isPlaying() || src->getLastPlayedBufferId() != AudioPlayer::buffersBGM[buffer])
     {
         //src->setLooping(true);
         //src->setVolume(AudioPlayer::soundLevelBGM);
@@ -283,10 +283,10 @@ void AudioPlayer::refreshBGM()
     if (AudioPlayer::bgmIntro != AL_NONE)
     {
         ALint currentBufferIndex;
-        alGetSourcei(src->getSourceID(), AL_BUFFERS_PROCESSED, &currentBufferIndex);
+        alGetSourcei(src->getSourceId(), AL_BUFFERS_PROCESSED, &currentBufferIndex);
         if (currentBufferIndex == 1)
         {
-            alSourceUnqueueBuffers(src->getSourceID(), 1, &AudioPlayer::bgmIntro);
+            alSourceUnqueueBuffers(src->getSourceId(), 1, &AudioPlayer::bgmIntro);
             AudioPlayer::bgmIntro = AL_NONE;
             src->setLooping(true);
         }
@@ -299,7 +299,7 @@ void AudioPlayer::stopBGM()
     src->stop();
     src->setLooping(false);
 
-    alSourcei(src->getSourceID(), AL_BUFFER, AL_NONE); //Get rid of queued buffers 
+    alSourcei(src->getSourceId(), AL_BUFFER, AL_NONE); //Get rid of queued buffers 
 
     AudioPlayer::bgmIntro = AL_NONE;
     AudioPlayer::bgmLoop  = AL_NONE;

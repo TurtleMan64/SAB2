@@ -45,10 +45,10 @@ private:
     //this set is for the long crate platform
     const float COL_LONGPLAT_POS_FORWARD_WITH_BAR = 31.3f;
     const float COL_LONGPLAT_POS_FORWARD_WO_BAR = 26.27f;
-    const float COL_LONGPLAT_POS_SIDE_WITH_BAR = 5.15f;
-    const float COL_LONGPLAT_POS_SIDE_WO_BAR = 5.29f;
-    const float COL_LONGPLAT_RADIUS_SIDE_WITH_BAR = 6.35f;
-    const float COL_LONGPLAT_RADIUS_SIDE_WO_BAR = 5.29f;
+    const float COL_LONGPLAT_POS_SIdE_WITH_BAR = 5.15f;
+    const float COL_LONGPLAT_POS_SIdE_WO_BAR = 5.29f;
+    const float COL_LONGPLAT_RADIUS_SIdE_WITH_BAR = 6.35f;
+    const float COL_LONGPLAT_RADIUS_SIdE_WO_BAR = 5.29f;
 
     const float COLLISION_RADIUS = 5.0f; 
     const float COLLISION_HEIGHT = 11.5f;

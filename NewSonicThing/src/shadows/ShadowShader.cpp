@@ -15,20 +15,20 @@
 
 ShadowShader::ShadowShader(const char* vertexFile, const char* fragmentFile)
 {
-    vertexShaderID = Loader::loadShader(vertexFile, GL_VERTEX_SHADER);
-    fragmentShaderID = Loader::loadShader(fragmentFile, GL_FRAGMENT_SHADER);
-    programID = glCreateProgram();
-    glAttachShader(programID, vertexShaderID);
-    glAttachShader(programID, fragmentShaderID);
+    vertexShaderId = Loader::loadShader(vertexFile, GL_VERTEX_SHADER);
+    fragmentShaderId = Loader::loadShader(fragmentFile, GL_FRAGMENT_SHADER);
+    programId = glCreateProgram();
+    glAttachShader(programId, vertexShaderId);
+    glAttachShader(programId, fragmentShaderId);
     bindAttributes();
-    glLinkProgram(programID);
-    glValidateProgram(programID);
+    glLinkProgram(programId);
+    glValidateProgram(programId);
     getAllUniformLocations();
 }
 
 void ShadowShader::start()
 {
-    glUseProgram(programID);
+    glUseProgram(programId);
 }
 
 void ShadowShader::stop()
@@ -39,11 +39,11 @@ void ShadowShader::stop()
 void ShadowShader::cleanUp()
 {
     stop();
-    glDetachShader(programID, vertexShaderID);
-    glDetachShader(programID, fragmentShaderID);
-    glDeleteShader(vertexShaderID);
-    glDeleteShader(fragmentShaderID);
-    glDeleteProgram(programID);
+    glDetachShader(programId, vertexShaderId);
+    glDetachShader(programId, fragmentShaderId);
+    glDeleteShader(vertexShaderId);
+    glDeleteShader(fragmentShaderId);
+    glDeleteProgram(programId);
 }
 
 void ShadowShader::loadMvpMatrix(Matrix4f* matrix)
@@ -59,7 +59,7 @@ void ShadowShader::bindAttributes()
 
 void ShadowShader::bindAttribute(int attribute, const char* variableName)
 {
-    glBindAttribLocation(programID, attribute, variableName);
+    glBindAttribLocation(programId, attribute, variableName);
 }
 
 void ShadowShader::getAllUniformLocations()
@@ -69,7 +69,7 @@ void ShadowShader::getAllUniformLocations()
 
 int ShadowShader::getUniformLocation(const char* uniformName)
 {
-    return glGetUniformLocation(programID, uniformName);
+    return glGetUniformLocation(programId, uniformName);
 }
 
 float shadowMatrixBuffer[16];

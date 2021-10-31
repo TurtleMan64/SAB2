@@ -6,13 +6,12 @@ class Vector3f;
 
 #include <glad/glad.h>
 
-
 class GuiShader
 {
 private:
-    GLuint programID;
-    GLuint vertexShaderID;
-    GLuint fragmentShaderID;
+    GLuint programId;
+    GLuint vertexShaderId;
+    GLuint fragmentShaderId;
 
     int location_transformationMatrix;
 

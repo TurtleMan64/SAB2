@@ -116,7 +116,7 @@ public:
     bool isVisible();
 
     /**
-    * @return the ID of the text's VAO, which contains all the vertex data for
+    * @return the Id of the text's VAO, which contains all the vertex data for
     *         the quads on which the text will be rendered.
     */
     int getMesh();

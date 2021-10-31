@@ -6,15 +6,15 @@
 class ParticleTexture
 {
 private:
-    GLuint textureID;
+    GLuint textureId;
     int numberOfRows;
     float opacity;
     float glow;
 
 public:
-    ParticleTexture(GLuint textureID, int numberOfRows, float opacity, float glow);
+    ParticleTexture(GLuint textureId, int numberOfRows, float opacity, float glow);
 
-    GLuint getTextureID();
+    GLuint getTextureId();
 
     int getNumberOfRows();
 

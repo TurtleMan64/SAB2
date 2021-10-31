@@ -13,11 +13,11 @@ TexturedModel::TexturedModel()
 TexturedModel::TexturedModel(RawModel* model, ModelTexture* texture)
 {
     //Copy over the RawModel data
-    this->rawModel.setVaoID(model->getVaoID());
+    this->rawModel.setVaoId(model->getVaoId());
     this->rawModel.setVertexCount(model->getVertexCount());
 
-    std::list<GLuint>* myVBOs = this->rawModel.getVboIDs();
-    std::list<GLuint>* theirVBOs = model->getVboIDs();
+    std::list<GLuint>* myVBOs = this->rawModel.getVboIds();
+    std::list<GLuint>* theirVBOs = model->getVboIds();
 
     for (GLuint vbo : (*theirVBOs))
     {

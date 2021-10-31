@@ -53,7 +53,7 @@ void WaterRenderer::prepareRender(Camera* camera, Light* sun)
     shader->loadWaterHeight(Global::waterHeight);
     shader->loadWaterMurkyAmount(Global::stageWaterMurkyAmount);
     shader->loadWaterColor(&Global::stageWaterColor);
-    glBindVertexArray(quad->getVaoID());
+    glBindVertexArray(quad->getVaoId());
     glEnableVertexAttribArray(0);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture  (GL_TEXTURE_2D, fbos->getReflectionTexture());

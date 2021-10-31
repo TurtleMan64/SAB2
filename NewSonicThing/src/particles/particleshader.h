@@ -13,9 +13,9 @@ class Vector2f;
 class ParticleShader
 {
 private:
-    GLuint programID;
-    GLuint vertexShaderID;
-    GLuint fragmentShaderID;
+    GLuint programId;
+    GLuint vertexShaderId;
+    GLuint fragmentShaderId;
 
     int location_projectionMatrix;
     int location_numberOfRows;

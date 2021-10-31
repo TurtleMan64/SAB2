@@ -7,12 +7,10 @@
 #include "fontshader.h"
 #include "../engineTester/main.h"
 
-
 FontRenderer::FontRenderer()
 {
     shader = new FontShader("res/Shaders/fontRendering/fontVertex.txt", "res/Shaders/fontRendering/fontFragment.txt"); INCR_NEW("FontShader");
 }
-
 
 void FontRenderer::render(
     std::unordered_map<FontType*, std::list<GUIText*>>* texts, 
@@ -80,11 +78,11 @@ void FontRenderer::renderText(GUIText* text)
 
 void FontRenderer::renderNumber(GUINumber* number)
 {
-    int numChars = (int)number->meshIDs.size();
+    int numChars = (int)number->meshIds.size();
     shader->loadScale(number->size);
     for (int i = 0; i < numChars; i++)
     {
-        glBindVertexArray(number->meshIDs[i]);
+        glBindVertexArray(number->meshIds[i]);
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
         shader->loadColour(&number->colours[i]);

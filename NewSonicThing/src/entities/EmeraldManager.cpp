@@ -27,12 +27,12 @@ float EmeraldManager::pingTimer1 = 0;
 float EmeraldManager::pingTimer2 = 0;
 float EmeraldManager::pingTimer3 = 0;
 
-GLuint EmeraldManager::radarGreyID   = 0;
-GLuint EmeraldManager::radarBlueID   = 0;
-GLuint EmeraldManager::radarGreenID  = 0;
-GLuint EmeraldManager::radarYellowID = 0;
-GLuint EmeraldManager::radarRedID    = 0;
-GLuint EmeraldManager::nearPieceID   = 0;
+GLuint EmeraldManager::radarGreyId   = 0;
+GLuint EmeraldManager::radarBlueId   = 0;
+GLuint EmeraldManager::radarGreenId  = 0;
+GLuint EmeraldManager::radarYellowId = 0;
+GLuint EmeraldManager::radarRedId    = 0;
+GLuint EmeraldManager::nearPieceId   = 0;
 
 GuiTexture* EmeraldManager::radar1    = nullptr;
 GuiTexture* EmeraldManager::radar2    = nullptr;
@@ -66,46 +66,46 @@ EmeraldManager::~EmeraldManager()
         EmeraldManager::nearPiece = nullptr;
     }
 
-    Loader::deleteTexture(EmeraldManager::radarGreyID);
-    Loader::deleteTexture(EmeraldManager::radarBlueID);
-    Loader::deleteTexture(EmeraldManager::radarGreenID);
-    Loader::deleteTexture(EmeraldManager::radarYellowID);
-    Loader::deleteTexture(EmeraldManager::radarRedID);
-    Loader::deleteTexture(EmeraldManager::nearPieceID);
+    Loader::deleteTexture(EmeraldManager::radarGreyId);
+    Loader::deleteTexture(EmeraldManager::radarBlueId);
+    Loader::deleteTexture(EmeraldManager::radarGreenId);
+    Loader::deleteTexture(EmeraldManager::radarYellowId);
+    Loader::deleteTexture(EmeraldManager::radarRedId);
+    Loader::deleteTexture(EmeraldManager::nearPieceId);
     
-    EmeraldManager::radarGreyID   = 0;
-    EmeraldManager::radarBlueID   = 0;
-    EmeraldManager::radarGreenID  = 0;
-    EmeraldManager::radarYellowID = 0;
-    EmeraldManager::radarRedID    = 0;
-    EmeraldManager::nearPieceID   = 0;
+    EmeraldManager::radarGreyId   = 0;
+    EmeraldManager::radarBlueId   = 0;
+    EmeraldManager::radarGreenId  = 0;
+    EmeraldManager::radarYellowId = 0;
+    EmeraldManager::radarRedId    = 0;
+    EmeraldManager::nearPieceId   = 0;
 }
 
 EmeraldManager::EmeraldManager()
 {
     //Load images of radar
-    EmeraldManager::radarGreyID   = Loader::loadTexture("res/Images/TreasureHunting/RadarGrey.png");
-    EmeraldManager::radarBlueID   = Loader::loadTexture("res/Images/TreasureHunting/RadarBlue.png");
-    EmeraldManager::radarGreenID  = Loader::loadTexture("res/Images/TreasureHunting/RadarGreen.png");
-    EmeraldManager::radarYellowID = Loader::loadTexture("res/Images/TreasureHunting/RadarYellow.png");
-    EmeraldManager::radarRedID    = Loader::loadTexture("res/Images/TreasureHunting/RadarRed.png");
-    EmeraldManager::nearPieceID   = Loader::loadTexture("res/Images/TreasureHunting/NearPiece.png");
+    EmeraldManager::radarGreyId   = Loader::loadTexture("res/Images/TreasureHunting/RadarGrey.png");
+    EmeraldManager::radarBlueId   = Loader::loadTexture("res/Images/TreasureHunting/RadarBlue.png");
+    EmeraldManager::radarGreenId  = Loader::loadTexture("res/Images/TreasureHunting/RadarGreen.png");
+    EmeraldManager::radarYellowId = Loader::loadTexture("res/Images/TreasureHunting/RadarYellow.png");
+    EmeraldManager::radarRedId    = Loader::loadTexture("res/Images/TreasureHunting/RadarRed.png");
+    EmeraldManager::nearPieceId   = Loader::loadTexture("res/Images/TreasureHunting/NearPiece.png");
 
     extern unsigned int SCR_WIDTH;
     extern unsigned int SCR_HEIGHT;
 
-    //float px = 1.0f/(SCR_WIDTH);  //1 pixel in x dimension
+    //float px = 1.0f/(SCR_WIdTH);  //1 pixel in x dimension
     //float py = 1.0f/(SCR_HEIGHT); //1 pixel in y dimension
 
     float r = ((float)SCR_WIDTH)/SCR_HEIGHT; //screen ratio
     float s = 0.05f; //size of radar tiles
 
     //Create Radar gui textures
-    EmeraldManager::radar1 = new GuiTexture(EmeraldManager::radarGreyID, 0.5f-((1.5f*s)/r), 1-s, s/r, s, 0); INCR_NEW("GuiTexture");
-    EmeraldManager::radar2 = new GuiTexture(EmeraldManager::radarGreyID, 0.5f,              1-s, s/r, s, 0); INCR_NEW("GuiTexture");
-    EmeraldManager::radar3 = new GuiTexture(EmeraldManager::radarGreyID, 0.5f+((1.5f*s)/r), 1-s, s/r, s, 0); INCR_NEW("GuiTexture");
+    EmeraldManager::radar1 = new GuiTexture(EmeraldManager::radarGreyId, 0.5f-((1.5f*s)/r), 1-s, s/r, s, 0); INCR_NEW("GuiTexture");
+    EmeraldManager::radar2 = new GuiTexture(EmeraldManager::radarGreyId, 0.5f,              1-s, s/r, s, 0); INCR_NEW("GuiTexture");
+    EmeraldManager::radar3 = new GuiTexture(EmeraldManager::radarGreyId, 0.5f+((1.5f*s)/r), 1-s, s/r, s, 0); INCR_NEW("GuiTexture");
 
-    EmeraldManager::nearPiece = new GuiTexture(EmeraldManager::nearPieceID, 0, 0, 0.1f/r, 0.1f, 0); INCR_NEW("GuiTexture");
+    EmeraldManager::nearPiece = new GuiTexture(EmeraldManager::nearPieceId, 0, 0, 0.1f/r, 0.1f, 0); INCR_NEW("GuiTexture");
 
     std::vector<EmeraldPiece*> piece1List;
     std::vector<EmeraldPiece*> piece2List;
@@ -288,7 +288,7 @@ void EmeraldManager::updatePiece(EmeraldPiece* piece, float* pingTimer, GuiTextu
         radar->setVisible(false);
         return;
     }
-    radar->setTexture(EmeraldManager::radarGreyID);
+    radar->setTexture(EmeraldManager::radarGreyId);
     radar->setScale(1);
 
     float distToPiece =  (piece->position - Global::gameMainPlayer->position).length();
@@ -317,7 +317,7 @@ void EmeraldManager::updatePiece(EmeraldPiece* piece, float* pingTimer, GuiTextu
         {
             *pingTimer += 1.0f;
         }
-        radar->setTexture(EmeraldManager::radarBlueID);
+        radar->setTexture(EmeraldManager::radarBlueId);
         radar->setScale(1 + 0.5f*(*pingTimer));
     }
     else if (distToPiece >= 200 && distToPiece < 600)
@@ -326,7 +326,7 @@ void EmeraldManager::updatePiece(EmeraldPiece* piece, float* pingTimer, GuiTextu
         {
             *pingTimer = 0.5f;
         }
-        radar->setTexture(EmeraldManager::radarGreenID);
+        radar->setTexture(EmeraldManager::radarGreenId);
         radar->setScale(1 + 0.5f*(*pingTimer/0.5f));
     }
     else if (distToPiece >= 50 && distToPiece < 200)
@@ -335,7 +335,7 @@ void EmeraldManager::updatePiece(EmeraldPiece* piece, float* pingTimer, GuiTextu
         {
             *pingTimer = 0.25f;
         }
-        radar->setTexture(EmeraldManager::radarYellowID);
+        radar->setTexture(EmeraldManager::radarYellowId);
         radar->setScale(1 + 0.5f*(*pingTimer/0.25f));
     }
     else if (distToPiece >= 0 && distToPiece < 50)
@@ -344,7 +344,7 @@ void EmeraldManager::updatePiece(EmeraldPiece* piece, float* pingTimer, GuiTextu
         {
             *pingTimer = 0.2f;
         }
-        radar->setTexture(EmeraldManager::radarRedID);
+        radar->setTexture(EmeraldManager::radarRedId);
         radar->setScale(1 + 0.5f*(*pingTimer/0.2f));
     }
 }

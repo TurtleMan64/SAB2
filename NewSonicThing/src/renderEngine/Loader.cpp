@@ -46,18 +46,18 @@ RawModel Loader::loadToVAO(std::vector<float>* positions,
                            std::vector<float>* vertexColors, 
                            std::vector<int>* indicies)
 {
-    GLuint vaoID = createVAO();
-    std::list<GLuint> vboIDs;
+    GLuint vaoId = createVAO();
+    std::list<GLuint> vboIds;
 
-    vboIDs.push_back(bindIndiciesBuffer(indicies));
-    vboIDs.push_back(storeDataInAttributeList(0, 3, positions));
-    vboIDs.push_back(storeDataInAttributeList(1, 2, textureCoords));
-    vboIDs.push_back(storeDataInAttributeList(2, 3, normals));
-    vboIDs.push_back(storeDataInAttributeList(3, 4, vertexColors));
+    vboIds.push_back(bindIndiciesBuffer(indicies));
+    vboIds.push_back(storeDataInAttributeList(0, 3, positions));
+    vboIds.push_back(storeDataInAttributeList(1, 2, textureCoords));
+    vboIds.push_back(storeDataInAttributeList(2, 3, normals));
+    vboIds.push_back(storeDataInAttributeList(3, 4, vertexColors));
 
     unbindVAO();
 
-    return RawModel(vaoID, (int)indicies->size(), &vboIDs);
+    return RawModel(vaoId, (int)indicies->size(), &vboIds);
 }
 
 //for text
@@ -76,28 +76,28 @@ std::vector<int> Loader::loadToVAO(std::vector<float>* positions, std::vector<fl
 //for water
 RawModel Loader::loadToVAO(std::vector<float>* positions, int dimensions)
 {
-    GLuint vaoID = createVAO();
-    std::list<GLuint> vboIDs;
+    GLuint vaoId = createVAO();
+    std::list<GLuint> vboIds;
 
-    vboIDs.push_back(storeDataInAttributeList(0, dimensions, positions));
+    vboIds.push_back(storeDataInAttributeList(0, dimensions, positions));
 
     unbindVAO();
 
-    return RawModel(vaoID, (int)positions->size() / dimensions, &vboIDs);
+    return RawModel(vaoId, (int)positions->size() / dimensions, &vboIds);
 }
 
 //for instanced rendering particles
 GLuint Loader::createEmptyVBO(int floatCount)
 {
-    GLuint vboID;
-    glGenBuffers(1, &vboID);
-    vbos.push_back(vboID);
+    GLuint vboId;
+    glGenBuffers(1, &vboId);
+    vbos.push_back(vboId);
     vboNumber++;
-    glBindBuffer(GL_ARRAY_BUFFER, vboID);
+    glBindBuffer(GL_ARRAY_BUFFER, vboId);
     glBufferData(GL_ARRAY_BUFFER, floatCount*sizeof(float), nullptr, GL_STREAM_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    return vboID;
+    return vboId;
 }
 
 void Loader::addInstancedAttribute(GLuint vao, GLuint vbo, int attribute, int dataSize, int instancedDataLength, long long offset)
@@ -138,16 +138,16 @@ GLuint Loader::loadTexture(const char* fileName)
         return GL_NONE;
     }
 
-    GLuint textureID = 0;
-    glGenTextures(1, &textureID);
+    GLuint textureId = 0;
+    glGenTextures(1, &textureId);
 
     TextureEntry entry;
     entry.count = 1;
-    entry.id = textureID;
+    entry.id = textureId;
     textures[fileName] = entry;
-    Loader::texIdToFilename[textureID] = fileName;
+    Loader::texIdToFilename[textureId] = fileName;
 
-    glBindTexture(GL_TEXTURE_2D, textureID);
+    glBindTexture(GL_TEXTURE_2D, textureId);
 
     //Texture wrapping
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -177,7 +177,7 @@ GLuint Loader::loadTexture(const char* fileName)
 
     glBindTexture(GL_TEXTURE_2D, 0);
 
-    return textureID;
+    return textureId;
 }
 
 GLuint Loader::loadTextureNoInterpolation(const char* fileName)
@@ -200,16 +200,16 @@ GLuint Loader::loadTextureNoInterpolation(const char* fileName)
         return GL_NONE;
     }
 
-    GLuint textureID = 0;
-    glGenTextures(1, &textureID);
+    GLuint textureId = 0;
+    glGenTextures(1, &textureId);
 
     TextureEntry entry;
     entry.count = 1;
-    entry.id = textureID;
+    entry.id = textureId;
     textures[fileName] = entry;
-    Loader::texIdToFilename[textureID] = fileName;
+    Loader::texIdToFilename[textureId] = fileName;
 
-    glBindTexture(GL_TEXTURE_2D, textureID);
+    glBindTexture(GL_TEXTURE_2D, textureId);
 
     //Texture wrapping
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -227,45 +227,45 @@ GLuint Loader::loadTextureNoInterpolation(const char* fileName)
     glBindTexture(GL_TEXTURE_2D, 0);
     
 
-    return textureID;
+    return textureId;
 }
 
 GLuint Loader::createVAO()
 {
-    GLuint vaoID = 0;
-    glGenVertexArrays(1, &vaoID);
+    GLuint vaoId = 0;
+    glGenVertexArrays(1, &vaoId);
     vaoNumber++;
-    vaos.push_back(vaoID);
-    glBindVertexArray(vaoID);
-    return vaoID;
+    vaos.push_back(vaoId);
+    glBindVertexArray(vaoId);
+    return vaoId;
 }
 
 GLuint Loader::storeDataInAttributeList(int attributeNumber, int coordinateSize, std::vector<float>* data)
 {
-    GLuint vboID = 0;
-    glGenBuffers(1, &vboID);
+    GLuint vboId = 0;
+    glGenBuffers(1, &vboId);
     vboNumber++;
-    vbos.push_back(vboID);
-    glBindBuffer(GL_ARRAY_BUFFER, vboID);
+    vbos.push_back(vboId);
+    glBindBuffer(GL_ARRAY_BUFFER, vboId);
 
     glBufferData(GL_ARRAY_BUFFER, data->size()*sizeof(float), (GLvoid*)(&((*data)[0])), GL_STATIC_DRAW); 
     glVertexAttribPointer(attributeNumber, coordinateSize, GL_FLOAT, GL_FALSE, 0, 0); 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    return vboID;
+    return vboId;
 }
 
 GLuint Loader::bindIndiciesBuffer(std::vector<int>* indicies)
 {
-    GLuint vboID = 0;
-    glGenBuffers(1, &vboID);
-    vbos.push_back(vboID);
+    GLuint vboId = 0;
+    glGenBuffers(1, &vboId);
+    vbos.push_back(vboId);
     vboNumber++;
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboID);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboId);
 
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies->size() * sizeof(int), (GLvoid*)(&((*indicies)[0])), GL_STATIC_DRAW);
 
-    return vboID;
+    return vboId;
 }
 
 void Loader::unbindVAO()
@@ -275,16 +275,16 @@ void Loader::unbindVAO()
 
 void Loader::cleanUp()
 {
-    for (auto vaoID : vaos)
+    for (auto vaoId : vaos)
     {
-        glDeleteVertexArrays(1, &vaoID);
+        glDeleteVertexArrays(1, &vaoId);
         vaoNumber--;
     }
     vaos.clear();
 
-    for (auto vboID : vbos)
+    for (auto vboId : vbos)
     {
-        glDeleteBuffers(1, &vboID);
+        glDeleteBuffers(1, &vboId);
         vboNumber--;
     }
     vbos.clear();
@@ -299,31 +299,31 @@ void Loader::cleanUp()
     texIdToFilename.clear();
 }
 
-void Loader::deleteVAO(GLuint vaoID)
+void Loader::deleteVAO(GLuint vaoId)
 {
     vaoNumber--;
-    glDeleteVertexArrays(1, &vaoID);
-    vaos.remove(vaoID);
+    glDeleteVertexArrays(1, &vaoId);
+    vaos.remove(vaoId);
 }
 
-void Loader::deleteVBO(GLuint vboID)
+void Loader::deleteVBO(GLuint vboId)
 {
     vboNumber--;
-    glDeleteBuffers(1, &vboID);
-    vbos.remove(vboID);
+    glDeleteBuffers(1, &vboId);
+    vbos.remove(vboId);
 }
 
-void Loader::deleteTexture(GLuint texID)
+void Loader::deleteTexture(GLuint texId)
 {
-    std::string filename = texIdToFilename[texID];
+    std::string filename = texIdToFilename[texId];
     TextureEntry* entry = &textures[filename];
     entry->count = entry->count - 1;
 
     if (entry->count == 0)
     {
-        glDeleteTextures(1, &texID);
+        glDeleteTextures(1, &texId);
 
-        texIdToFilename.erase(texID);
+        texIdToFilename.erase(texId);
         textures.erase(filename);
     }
 }

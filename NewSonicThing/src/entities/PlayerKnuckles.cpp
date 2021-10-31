@@ -789,9 +789,9 @@ void PlayerKnuckles::step()
         int audioIdLoop = 57;
         int audioIdLand = 59;
 
-        if (Global::levelID == LVL_GREEN_FOREST || 
-            Global::levelID == LVL_FROG_FOREST  ||
-            Global::levelID == LVL_DRAGON_ROAD)
+        if (Global::levelId == LVL_GREEN_FOREST || 
+            Global::levelId == LVL_FROG_FOREST  ||
+            Global::levelId == LVL_DRAGON_ROAD)
         {
             audioIdLoop = 58;
             audioIdLand = 60;

@@ -44,9 +44,9 @@ void ResultsScreen::loadResources()
         std::fprintf(stdout, "Warning: ResultsScreen loading resources when they are already loaded.\n");
     }
 
-    //extern unsigned int SCR_WIDTH;
+    //extern unsigned int SCR_WIdTH;
     //extern unsigned int SCR_HEIGHT;
-    //float aspectRatio = (float)SCR_WIDTH / SCR_HEIGHT;
+    //float aspectRatio = (float)SCR_WIdTH / SCR_HEIGHT;
 
     textArcadeModeClear = new GUIText("Congrats bro", 0.2f, Global::fontVipnagorgialla, 0.5f, 0.5f, 4, false); INCR_NEW("GUIText")
 

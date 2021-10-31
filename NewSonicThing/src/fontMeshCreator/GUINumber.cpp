@@ -7,7 +7,7 @@
 #include "../menu/pausescreen.h"
 #include "../toolbox/maths.h"
 
-GLuint GUINumber::numberMeshIDs[10];
+GLuint GUINumber::numberMeshIds[10];
 GLuint GUINumber::numberMeshVertexCounts[10];
 
 void GUINumber::createNumber(int i, float x, float y, float w, float h)
@@ -51,7 +51,7 @@ void GUINumber::createNumber(int i, float x, float y, float w, float h)
     texCoords.push_back(y+h);
 
     std::vector<int> vertexObjects = Loader::loadToVAO(&positions, &texCoords);
-    GUINumber::numberMeshIDs[i] = (GLuint)vertexObjects[0];
+    GUINumber::numberMeshIds[i] = (GLuint)vertexObjects[0];
     GUINumber::numberMeshVertexCounts[i] = 6;
 }
 
@@ -91,7 +91,7 @@ GUINumber::GUINumber(int number, float x, float y, float size, int alignment, bo
 //must be called every time you want to change the number, or its position, or anything else
 void GUINumber::refresh()
 {
-    meshIDs.clear();
+    meshIds.clear();
     meshVertexCounts.clear();
     meshPositions.clear();
     colours.clear();
@@ -145,7 +145,7 @@ void GUINumber::refresh()
         case 2:
             for (int i = 0; i < numChars; i++)
             {
-                meshIDs.push_back         (GUINumber::numberMeshIDs[currentNumber % 10]);
+                meshIds.push_back         (GUINumber::numberMeshIds[currentNumber % 10]);
                 meshVertexCounts.push_back(GUINumber::numberMeshVertexCounts[currentNumber % 10]);
                 meshPositions.push_back   (Vector2f(position.x - i*distanceBetweenCharacters - distanceBetweenCharacters/2, position.y + size/2));
                 currentNumber = currentNumber/10;
@@ -155,7 +155,7 @@ void GUINumber::refresh()
         case 1:
             for (int i = 0; i < numChars; i++)
             {
-                meshIDs.push_back         (GUINumber::numberMeshIDs[currentNumber % 10]);
+                meshIds.push_back         (GUINumber::numberMeshIds[currentNumber % 10]);
                 meshVertexCounts.push_back(GUINumber::numberMeshVertexCounts[currentNumber % 10]);
                 meshPositions.push_back   (Vector2f(position.x - i*distanceBetweenCharacters + numChars*distanceBetweenCharacters/2 - distanceBetweenCharacters/2, position.y + size/2));
                 currentNumber = currentNumber/10;
@@ -165,7 +165,7 @@ void GUINumber::refresh()
         case 0:
             for (int i = 0; i < numChars; i++)
             {
-                meshIDs.push_back         (GUINumber::numberMeshIDs[currentNumber % 10]);
+                meshIds.push_back         (GUINumber::numberMeshIds[currentNumber % 10]);
                 meshVertexCounts.push_back(GUINumber::numberMeshVertexCounts[currentNumber % 10]);
                 meshPositions.push_back   (Vector2f(position.x - i*distanceBetweenCharacters + numChars*distanceBetweenCharacters - distanceBetweenCharacters/2, position.y + size/2));
                 currentNumber = currentNumber/10;
@@ -175,7 +175,7 @@ void GUINumber::refresh()
         case 5:
             for (int i = 0; i < numChars; i++)
             {
-                meshIDs.push_back         (GUINumber::numberMeshIDs[currentNumber % 10]);
+                meshIds.push_back         (GUINumber::numberMeshIds[currentNumber % 10]);
                 meshVertexCounts.push_back(GUINumber::numberMeshVertexCounts[currentNumber % 10]);
                 meshPositions.push_back   (Vector2f(position.x - i*distanceBetweenCharacters - distanceBetweenCharacters/2, position.y));
                 currentNumber = currentNumber/10;
@@ -185,7 +185,7 @@ void GUINumber::refresh()
         case 4:
             for (int i = 0; i < numChars; i++)
             {
-                meshIDs.push_back         (GUINumber::numberMeshIDs[currentNumber % 10]);
+                meshIds.push_back         (GUINumber::numberMeshIds[currentNumber % 10]);
                 meshVertexCounts.push_back(GUINumber::numberMeshVertexCounts[currentNumber % 10]);
                 meshPositions.push_back   (Vector2f(position.x - i*distanceBetweenCharacters + numChars*distanceBetweenCharacters/2 - distanceBetweenCharacters/2, position.y));
                 currentNumber = currentNumber/10;
@@ -195,7 +195,7 @@ void GUINumber::refresh()
         case 3:
             for (int i = 0; i < numChars; i++)
             {
-                meshIDs.push_back         (GUINumber::numberMeshIDs[currentNumber % 10]);
+                meshIds.push_back         (GUINumber::numberMeshIds[currentNumber % 10]);
                 meshVertexCounts.push_back(GUINumber::numberMeshVertexCounts[currentNumber % 10]);
                 meshPositions.push_back   (Vector2f(position.x - i*distanceBetweenCharacters + numChars*distanceBetweenCharacters - distanceBetweenCharacters/2, position.y));
                 currentNumber = currentNumber/10;
@@ -205,7 +205,7 @@ void GUINumber::refresh()
         case 8:
             for (int i = 0; i < numChars; i++)
             {
-                meshIDs.push_back         (GUINumber::numberMeshIDs[currentNumber % 10]);
+                meshIds.push_back         (GUINumber::numberMeshIds[currentNumber % 10]);
                 meshVertexCounts.push_back(GUINumber::numberMeshVertexCounts[currentNumber % 10]);
                 meshPositions.push_back   (Vector2f(position.x - i*distanceBetweenCharacters - distanceBetweenCharacters/2, position.y - size/2));
                 currentNumber = currentNumber/10;
@@ -215,7 +215,7 @@ void GUINumber::refresh()
         case 7:
             for (int i = 0; i < numChars; i++)
             {
-                meshIDs.push_back         (GUINumber::numberMeshIDs[currentNumber % 10]);
+                meshIds.push_back         (GUINumber::numberMeshIds[currentNumber % 10]);
                 meshVertexCounts.push_back(GUINumber::numberMeshVertexCounts[currentNumber % 10]);
                 meshPositions.push_back   (Vector2f(position.x - i*distanceBetweenCharacters + numChars*distanceBetweenCharacters/2 - distanceBetweenCharacters/2, position.y - size/2));
                 currentNumber = currentNumber/10;
@@ -225,7 +225,7 @@ void GUINumber::refresh()
         case 6:
             for (int i = 0; i < numChars; i++)
             {
-                meshIDs.push_back         (GUINumber::numberMeshIDs[currentNumber % 10]);
+                meshIds.push_back         (GUINumber::numberMeshIds[currentNumber % 10]);
                 meshVertexCounts.push_back(GUINumber::numberMeshVertexCounts[currentNumber % 10]);
                 meshPositions.push_back   (Vector2f(position.x - i*distanceBetweenCharacters + numChars*distanceBetweenCharacters - distanceBetweenCharacters/2, position.y - size/2));
                 currentNumber = currentNumber/10;

@@ -33,12 +33,12 @@ ParticleRenderer::ParticleRenderer(Matrix4f* projectionMatrix)
     vertices.push_back(-0.5f);
     quad = new RawModel(Loader::loadToVAO(&vertices, 2)); INCR_NEW("RawModel");
 
-    Loader::addInstancedAttribute(quad->getVaoID(), vbo, 1, 4, INSTANCED_DATA_LENGTH,  0);
-    Loader::addInstancedAttribute(quad->getVaoID(), vbo, 2, 4, INSTANCED_DATA_LENGTH,  4);
-    Loader::addInstancedAttribute(quad->getVaoID(), vbo, 3, 4, INSTANCED_DATA_LENGTH,  8);
-    Loader::addInstancedAttribute(quad->getVaoID(), vbo, 4, 4, INSTANCED_DATA_LENGTH, 12);
-    Loader::addInstancedAttribute(quad->getVaoID(), vbo, 5, 4, INSTANCED_DATA_LENGTH, 16);
-    Loader::addInstancedAttribute(quad->getVaoID(), vbo, 6, 1, INSTANCED_DATA_LENGTH, 20);
+    Loader::addInstancedAttribute(quad->getVaoId(), vbo, 1, 4, INSTANCED_DATA_LENGTH,  0);
+    Loader::addInstancedAttribute(quad->getVaoId(), vbo, 2, 4, INSTANCED_DATA_LENGTH,  4);
+    Loader::addInstancedAttribute(quad->getVaoId(), vbo, 3, 4, INSTANCED_DATA_LENGTH,  8);
+    Loader::addInstancedAttribute(quad->getVaoId(), vbo, 4, 4, INSTANCED_DATA_LENGTH, 12);
+    Loader::addInstancedAttribute(quad->getVaoId(), vbo, 5, 4, INSTANCED_DATA_LENGTH, 16);
+    Loader::addInstancedAttribute(quad->getVaoId(), vbo, 6, 1, INSTANCED_DATA_LENGTH, 20);
 
     shader = new ParticleShader; INCR_NEW("ParticleShader");
     shader->start();
@@ -267,7 +267,7 @@ void ParticleRenderer::updateProjectionMatrix(Matrix4f* projectionMatrix)
 void ParticleRenderer::bindTexture(ParticleTexture* texture)
 {
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture->getTextureID());
+    glBindTexture(GL_TEXTURE_2D, texture->getTextureId());
     shader->loadGlow(texture->getGlow());
     shader->loadNumberOfRows((float)texture->getNumberOfRows());
 }
@@ -275,7 +275,7 @@ void ParticleRenderer::bindTexture(ParticleTexture* texture)
 void ParticleRenderer::prepare()
 {
     shader->start();
-    glBindVertexArray(quad->getVaoID());
+    glBindVertexArray(quad->getVaoId());
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
     glEnableVertexAttribArray(2);

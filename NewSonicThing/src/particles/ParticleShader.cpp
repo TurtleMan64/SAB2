@@ -15,20 +15,20 @@
 
 ParticleShader::ParticleShader()
 {
-    vertexShaderID = Loader::loadShader("res/Shaders/particles/particleVShader.txt", GL_VERTEX_SHADER);
-    fragmentShaderID = Loader::loadShader("res/Shaders/particles/particleFShader.txt", GL_FRAGMENT_SHADER);
-    programID = glCreateProgram();
-    glAttachShader(programID, vertexShaderID);
-    glAttachShader(programID, fragmentShaderID);
+    vertexShaderId = Loader::loadShader("res/Shaders/particles/particleVShader.txt", GL_VERTEX_SHADER);
+    fragmentShaderId = Loader::loadShader("res/Shaders/particles/particleFShader.txt", GL_FRAGMENT_SHADER);
+    programId = glCreateProgram();
+    glAttachShader(programId, vertexShaderId);
+    glAttachShader(programId, fragmentShaderId);
     bindAttributes();
-    glLinkProgram(programID);
-    glValidateProgram(programID);
+    glLinkProgram(programId);
+    glValidateProgram(programId);
     getAllUniformLocations();
 }
 
 void ParticleShader::start()
 {
-    glUseProgram(programID);
+    glUseProgram(programId);
 }
 
 void ParticleShader::stop()
@@ -39,11 +39,11 @@ void ParticleShader::stop()
 void ParticleShader::cleanUp()
 {
     stop();
-    glDetachShader(programID, vertexShaderID);
-    glDetachShader(programID, fragmentShaderID);
-    glDeleteShader(vertexShaderID);
-    glDeleteShader(fragmentShaderID);
-    glDeleteProgram(programID);
+    glDetachShader(programId, vertexShaderId);
+    glDetachShader(programId, fragmentShaderId);
+    glDeleteShader(vertexShaderId);
+    glDeleteShader(fragmentShaderId);
+    glDeleteProgram(programId);
 }
 
 void ParticleShader::loadBrightness(float brightness)
@@ -81,7 +81,7 @@ void ParticleShader::bindAttributes()
 
 void ParticleShader::bindAttribute(int attribute, const char* variableName)
 {
-    glBindAttribLocation(programID, attribute, variableName);
+    glBindAttribLocation(programId, attribute, variableName);
 }
 
 void ParticleShader::getAllUniformLocations()
@@ -95,7 +95,7 @@ void ParticleShader::getAllUniformLocations()
 
 int ParticleShader::getUniformLocation(const char* uniformName)
 {
-    return glGetUniformLocation(programID, uniformName);
+    return glGetUniformLocation(programId, uniformName);
 }
 
 void ParticleShader::loadInt(int location, int value)

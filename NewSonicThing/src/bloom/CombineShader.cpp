@@ -5,20 +5,20 @@
 
 CombineShader::CombineShader(const char* vFile, const char* fFile)
 {
-    vertexShaderID = Loader::loadShader(vFile, GL_VERTEX_SHADER);
-    fragmentShaderID = Loader::loadShader(fFile, GL_FRAGMENT_SHADER);
-    programID = glCreateProgram();
-    glAttachShader(programID, vertexShaderID);
-    glAttachShader(programID, fragmentShaderID);
+    vertexShaderId = Loader::loadShader(vFile, GL_VERTEX_SHADER);
+    fragmentShaderId = Loader::loadShader(fFile, GL_FRAGMENT_SHADER);
+    programId = glCreateProgram();
+    glAttachShader(programId, vertexShaderId);
+    glAttachShader(programId, fragmentShaderId);
     bindAttributes();
-    glLinkProgram(programID);
-    glValidateProgram(programID);
+    glLinkProgram(programId);
+    glValidateProgram(programId);
     getAllUniformLocations();
 }
 
 void CombineShader::start()
 {
-    glUseProgram(programID);
+    glUseProgram(programId);
 }
 
 void CombineShader::stop()
@@ -29,11 +29,11 @@ void CombineShader::stop()
 void CombineShader::cleanUp()
 {
     stop();
-    glDetachShader(programID, vertexShaderID);
-    glDetachShader(programID, fragmentShaderID);
-    glDeleteShader(vertexShaderID);
-    glDeleteShader(fragmentShaderID);
-    glDeleteProgram(programID);
+    glDetachShader(programId, vertexShaderId);
+    glDetachShader(programId, fragmentShaderId);
+    glDeleteShader(vertexShaderId);
+    glDeleteShader(fragmentShaderId);
+    glDeleteProgram(programId);
 }
 
 void CombineShader::connectTextureUnits()
@@ -49,7 +49,7 @@ void CombineShader::bindAttributes()
 
 void CombineShader::bindAttribute(int attribute, const char* variableName)
 {
-    glBindAttribLocation(programID, attribute, variableName);
+    glBindAttribLocation(programId, attribute, variableName);
 }
 
 void CombineShader::getAllUniformLocations()
@@ -60,7 +60,7 @@ void CombineShader::getAllUniformLocations()
 
 int CombineShader::getUniformLocation(const char* uniformName)
 {
-    return glGetUniformLocation(programID, uniformName);
+    return glGetUniformLocation(programId, uniformName);
 }
 
 void CombineShader::loadInt(int location, int value)

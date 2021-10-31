@@ -1,5 +1,5 @@
-#ifndef COLLIDEABLEOBJECT_H
-#define COLLIDEABLEOBJECT_H
+#ifndef COLLIdEABLEOBJECT_H
+#define COLLIdEABLEOBJECT_H
 
 class CollisionModel;
 

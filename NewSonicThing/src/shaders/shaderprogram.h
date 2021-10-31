@@ -12,9 +12,9 @@ class Vector3f;
 class ShaderProgram
 {
 private:
-    GLuint programID;
-    GLuint vertexShaderID;
-    GLuint fragmentShaderID;
+    GLuint programId;
+    GLuint vertexShaderId;
+    GLuint fragmentShaderId;
 
     int location_transformationMatrix;
     int location_projectionMatrix;

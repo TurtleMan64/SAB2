@@ -33,7 +33,7 @@ MainMenu::MainMenu()
 
     aspectRatio = (float) SCR_WIDTH / SCR_HEIGHT;
     buttonCount = 0;
-    menuSelectionID = 0;
+    menuSelectionId = 0;
     textureParallelogram = GL_NONE;
     textureParallelogramBackdrop = GL_NONE;
     textureLogo = GL_NONE;
@@ -79,7 +79,7 @@ void MainMenu::loadResources()
     for (int i = 0; i < numButtonsToMake; i++)
     {
         menuButtons.push_back(new Button(buttonNames[i], Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop,
-            0.5f + (0.5f * (i - menuSelectionID) / aspectRatio), 0.8f, (fontScale * 8.0f / aspectRatio), fontScale, true)); INCR_NEW("Button");
+            0.5f + (0.5f * (i - menuSelectionId) / aspectRatio), 0.8f, (fontScale * 8.0f / aspectRatio), fontScale, true)); INCR_NEW("Button");
     }
 
     buttonCount = numButtonsToMake;
@@ -89,11 +89,11 @@ void MainMenu::draw()
 {
     extern float dt;
 
-    if (oldSelection != menuSelectionID)
+    if (oldSelection != menuSelectionId)
     {
         animationTime = 0.25f;
         animating = true;
-        if (oldSelection < menuSelectionID)
+        if (oldSelection < menuSelectionId)
         {
             animationDirection = 1;
         }
@@ -124,15 +124,15 @@ void MainMenu::draw()
 
         for (int i = 0; i < buttonCount; i++)
         {
-            menuButtons[i]->setPos(0.5f + (0.75f * (i - menuSelectionID) / aspectRatio) + animationOffset / aspectRatio, 0.8f);
+            menuButtons[i]->setPos(0.5f + (0.75f * (i - menuSelectionId) / aspectRatio) + animationOffset / aspectRatio, 0.8f);
             menuButtons[i]->setVisible(true);
             menuButtons[i]->setHighlight(false);
         }
 
-        menuButtons[menuSelectionID]->setHighlight(true);
+        menuButtons[menuSelectionId]->setHighlight(true);
     }
 
-    oldSelection = menuSelectionID;
+    oldSelection = menuSelectionId;
 }
 
 void MainMenu::setVisible(bool visibleStatus)
@@ -195,16 +195,16 @@ Menu* MainMenu::step()
     int moveX = (int)round(Input::inputs.INPUT_X);
     //int moveY = (int)round(Input::inputs.INPUT_Y);
 
-    if (moveX == -1 && moveX != xPrev && menuSelectionID > 0)
+    if (moveX == -1 && moveX != xPrev && menuSelectionId > 0)
     {
         xPrev = -1;
-        menuSelectionID--;
+        menuSelectionId--;
         AudioPlayer::play(36, Global::gameCamera->getFadePosition1());
     }
-    else if (moveX == 1 && moveX != xPrev && menuSelectionID < (buttonCount - 1))
+    else if (moveX == 1 && moveX != xPrev && menuSelectionId < (buttonCount - 1))
     {
         xPrev = 1;
-        menuSelectionID++;
+        menuSelectionId++;
         AudioPlayer::play(36, Global::gameCamera->getFadePosition1());
     }
         
@@ -216,7 +216,7 @@ Menu* MainMenu::step()
     if (pressedSelect)
     {
         resetAnimation();
-        switch (menuSelectionID)
+        switch (menuSelectionId)
         {
             case arcade:
             {
@@ -228,9 +228,9 @@ Menu* MainMenu::step()
                 Global::gameMissionNumber = 0;
                 Global::gameArcadeIndex = 0;
 
-                Global::levelID = (Global::gameArcadeLevelIds[Global::gameArcadeIndex]).first;
+                Global::levelId = (Global::gameArcadeLevelIds[Global::gameArcadeIndex]).first;
                 Global::currentCharacterType = (Global::gameArcadeLevelIds[Global::gameArcadeIndex]).second;
-                Level* currentLevel = &Global::gameLevelData[Global::levelID];
+                Level* currentLevel = &Global::gameLevelData[Global::levelId];
                 Global::levelName = currentLevel->fileName;
                 Global::levelNameDisplay = currentLevel->displayName;
                 Global::gameMissionDescription = (currentLevel->missionData[Global::gameMissionNumber])[(currentLevel->missionData[Global::gameMissionNumber]).size() - 1];

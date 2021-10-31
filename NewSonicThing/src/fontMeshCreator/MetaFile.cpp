@@ -9,7 +9,6 @@
 
 #include "../engineTester/main.h"
 
-
 extern unsigned int SCR_WIDTH;
 extern unsigned int SCR_HEIGHT;
 

@@ -170,7 +170,7 @@ void LevelLoader::loadTitle()
     GuiManager::clearGuisToRender();
 
     Global::gameState = STATE_TITLE;
-    Global::levelID = -1;
+    Global::levelId = -1;
     Global::gameIsNormalMode = false;
     Global::gameIsHardMode = false;
     Global::gameIsChaoMode = false;
@@ -229,7 +229,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
         stageFault = 1;
         waitForSomeTime = true;
 
-        //Set the Global levelID based on the name of the level
+        //Set the Global levelId based on the name of the level
         Level* currLvl = nullptr;
         for (int i = 0; i < (int)Global::gameLevelData.size(); i++)
         {
@@ -242,27 +242,27 @@ void LevelLoader::loadLevel(std::string levelFilename)
         }
         if (currLvl != nullptr)
         {
-            if      (currLvl->displayName == "Tutorial")        Global::levelID = LVL_TUTORIAL;
-            else if (currLvl->displayName == "City Escape")     Global::levelID = LVL_CITY_ESCAPE;
-            else if (currLvl->displayName == "Seaside Hill")    Global::levelID = LVL_SEASIDE_HILL;
-            else if (currLvl->displayName == "Green Forest")    Global::levelID = LVL_GREEN_FOREST;
-            else if (currLvl->displayName == "Metal Harbor")    Global::levelID = LVL_METAL_HARBOR;
-            else if (currLvl->displayName == "Pyramid Cave")    Global::levelID = LVL_PYRAMID_CAVE;
-            else if (currLvl->displayName == "Speed Highway")   Global::levelID = LVL_SPEED_HIGHWAY;
-            else if (currLvl->displayName == "Radical Highway") Global::levelID = LVL_RADICAL_HIGHWAY;
-            else if (currLvl->displayName == "Frog Forest")     Global::levelID = LVL_FROG_FOREST;
-            else if (currLvl->displayName == "Epic Test Level") Global::levelID = LVL_TEST;
-            else if (currLvl->displayName == "Sky Rail")        Global::levelID = LVL_SKY_RAIL;
-            else if (currLvl->displayName == "Noki Bay")        Global::levelID = LVL_NOKI_BAY;
-            else if (currLvl->displayName == "Green Hill Zone") Global::levelID = LVL_GREEN_HILL_ZONE;
-            else if (currLvl->displayName == "Windy Valley")    Global::levelID = LVL_WINDY_VALLEY;
-            else if (currLvl->displayName == "Delfino Plaza")   Global::levelID = LVL_DELFINO_PLAZA;
-            else if (currLvl->displayName == "Sacred Sky")      Global::levelID = LVL_SACRED_SKY;
-            else if (currLvl->displayName == "Dry Lagoon")      Global::levelID = LVL_DRY_LAGOON;
-            else if (currLvl->displayName == "Twinkle Circuit") Global::levelID = LVL_TWINKLE_CIRCUIT;
-            else if (currLvl->displayName == "Cloud Temple")    Global::levelID = LVL_CLOUD_TEMPLE;
-            else if (currLvl->displayName == "Dragon Road")     Global::levelID = LVL_DRAGON_ROAD;
-            else if (currLvl->displayName == "Emerald Coast")   Global::levelID = LVL_EMERALD_COAST;
+            if      (currLvl->displayName == "Tutorial")        Global::levelId = LVL_TUTORIAL;
+            else if (currLvl->displayName == "City Escape")     Global::levelId = LVL_CITY_ESCAPE;
+            else if (currLvl->displayName == "Seaside Hill")    Global::levelId = LVL_SEASIdE_HILL;
+            else if (currLvl->displayName == "Green Forest")    Global::levelId = LVL_GREEN_FOREST;
+            else if (currLvl->displayName == "Metal Harbor")    Global::levelId = LVL_METAL_HARBOR;
+            else if (currLvl->displayName == "Pyramid Cave")    Global::levelId = LVL_PYRAMId_CAVE;
+            else if (currLvl->displayName == "Speed Highway")   Global::levelId = LVL_SPEED_HIGHWAY;
+            else if (currLvl->displayName == "Radical Highway") Global::levelId = LVL_RADICAL_HIGHWAY;
+            else if (currLvl->displayName == "Frog Forest")     Global::levelId = LVL_FROG_FOREST;
+            else if (currLvl->displayName == "Epic Test Level") Global::levelId = LVL_TEST;
+            else if (currLvl->displayName == "Sky Rail")        Global::levelId = LVL_SKY_RAIL;
+            else if (currLvl->displayName == "Noki Bay")        Global::levelId = LVL_NOKI_BAY;
+            else if (currLvl->displayName == "Green Hill Zone") Global::levelId = LVL_GREEN_HILL_ZONE;
+            else if (currLvl->displayName == "Windy Valley")    Global::levelId = LVL_WINDY_VALLEY;
+            else if (currLvl->displayName == "Delfino Plaza")   Global::levelId = LVL_DELFINO_PLAZA;
+            else if (currLvl->displayName == "Sacred Sky")      Global::levelId = LVL_SACRED_SKY;
+            else if (currLvl->displayName == "Dry Lagoon")      Global::levelId = LVL_DRY_LAGOON;
+            else if (currLvl->displayName == "Twinkle Circuit") Global::levelId = LVL_TWINKLE_CIRCUIT;
+            else if (currLvl->displayName == "Cloud Temple")    Global::levelId = LVL_CLOUD_TEMPLE;
+            else if (currLvl->displayName == "Dragon Road")     Global::levelId = LVL_DRAGON_ROAD;
+            else if (currLvl->displayName == "Emerald Coast")   Global::levelId = LVL_EMERALD_COAST;
         }
 
         Global::spawnAtCheckpoint  = false;
@@ -756,7 +756,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
     Global::gameIsRingMode = false;
     Global::gameIsRaceMode = false;
 
-    Level* currentLevel = &Global::gameLevelData[Global::levelID];
+    Level* currentLevel = &Global::gameLevelData[Global::levelId];
     std::string missionType = (currentLevel->missionData[Global::gameMissionNumber])[0];
 
     if (missionType == "Normal") Global::gameIsNormalMode = true;
@@ -811,7 +811,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
     RaceGhost* playerGhost = new RaceGhost(
         ("res/SaveData/" + 
         Global::characterNames[Global::currentCharacterType] + "_" +
-        std::to_string(Global::levelID) + "_" +
+        std::to_string(Global::levelId) + "_" +
         std::to_string(Global::gameMissionNumber) +
         ".ghost").c_str(),
         -1); INCR_NEW("Entity");

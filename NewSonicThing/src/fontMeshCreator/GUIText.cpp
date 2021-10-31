@@ -43,9 +43,9 @@ GUIText::GUIText(std::string text, float fontSize, FontType* font, float x, floa
 void GUIText::deleteMe()
 {
     TextMaster::removeText(this);
-    for (int vboID : textMeshVbos)
+    for (int vboId : textMeshVbos)
     {
-        Loader::deleteVBO(vboID);
+        Loader::deleteVBO(vboId);
     }
     Loader::deleteVAO(textMeshVao);
 }

@@ -14,20 +14,20 @@
 
 FontShader::FontShader(const char* vertexFile, const char* fragmentFile)
 {
-    vertexShaderID = loadShader(vertexFile, GL_VERTEX_SHADER);
-    fragmentShaderID = loadShader(fragmentFile, GL_FRAGMENT_SHADER);
-    programID = glCreateProgram();
-    glAttachShader(programID, vertexShaderID);
-    glAttachShader(programID, fragmentShaderID);
+    vertexShaderId = loadShader(vertexFile, GL_VERTEX_SHADER);
+    fragmentShaderId = loadShader(fragmentFile, GL_FRAGMENT_SHADER);
+    programId = glCreateProgram();
+    glAttachShader(programId, vertexShaderId);
+    glAttachShader(programId, fragmentShaderId);
     bindAttributes();
-    glLinkProgram(programID);
-    glValidateProgram(programID);
+    glLinkProgram(programId);
+    glValidateProgram(programId);
     getAllUniformLocations();
 }
 
 void FontShader::start()
 {
-    glUseProgram(programID);
+    glUseProgram(programId);
 }
 
 void FontShader::stop()
@@ -38,11 +38,11 @@ void FontShader::stop()
 void FontShader::cleanUp()
 {
     stop();
-    glDetachShader(programID, vertexShaderID);
-    glDetachShader(programID, fragmentShaderID);
-    glDeleteShader(vertexShaderID);
-    glDeleteShader(fragmentShaderID);
-    glDeleteProgram(programID);
+    glDetachShader(programId, vertexShaderId);
+    glDetachShader(programId, fragmentShaderId);
+    glDeleteShader(vertexShaderId);
+    glDeleteShader(fragmentShaderId);
+    glDeleteProgram(programId);
 }
 
 
@@ -54,7 +54,7 @@ void FontShader::bindAttributes()
 
 void FontShader::bindAttribute(int attribute, const char* variableName)
 {
-    glBindAttribLocation(programID, attribute, variableName);
+    glBindAttribLocation(programId, attribute, variableName);
 }
 
 void FontShader::getAllUniformLocations()
@@ -81,7 +81,7 @@ void FontShader::loadScale(float scale)
 
 int FontShader::getUniformLocation(const char* uniformName)
 {
-    return glGetUniformLocation(programID, uniformName);
+    return glGetUniformLocation(programId, uniformName);
 }
 
 void FontShader::loadFloat(int location, float value)

@@ -12,9 +12,9 @@ class Button;
 class MainMenu : public Menu
 {
 private:
-    enum ButtonID { arcade, mission, extra, config, exit };
+    enum ButtonId { arcade, mission, extra, config, exit };
 
-    int menuSelectionID;    // Current menu selection highlighted
+    int menuSelectionId;    // Current menu selection highlighted
 
     // Title card text graphics
     GLuint textureParallelogram; // Texture for button

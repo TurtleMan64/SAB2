@@ -6,9 +6,9 @@
 class CombineShader
 {
 private:
-    GLuint programID;
-    GLuint vertexShaderID;
-    GLuint fragmentShaderID;
+    GLuint programId;
+    GLuint vertexShaderId;
+    GLuint fragmentShaderId;
 
     int location_colourTexture;
     int location_highlightTexture;

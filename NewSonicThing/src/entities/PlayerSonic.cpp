@@ -588,9 +588,9 @@ void PlayerSonic::step()
         int audioIdLoop = 57;
         int audioIdLand = 59;
 
-        if (Global::levelID == LVL_GREEN_FOREST || 
-            Global::levelID == LVL_FROG_FOREST  ||
-            Global::levelID == LVL_DRAGON_ROAD)
+        if (Global::levelId == LVL_GREEN_FOREST || 
+            Global::levelId == LVL_FROG_FOREST  ||
+            Global::levelId == LVL_DRAGON_ROAD)
         {
             audioIdLoop = 58;
             audioIdLand = 60;
@@ -1284,7 +1284,7 @@ void PlayerSonic::step()
     }
 
     //transition from running on ground to water
-    if (onGroundBefore && Global::stageUsesWater && Global::levelID != LVL_EMERALD_COAST &&
+    if (onGroundBefore && Global::stageUsesWater && Global::levelId != LVL_EMERALD_COAST &&
         posBefore.y >= Global::waterHeight &&
         position.y  <= Global::waterHeight)
     {
