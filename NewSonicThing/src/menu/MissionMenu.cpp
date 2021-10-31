@@ -7,7 +7,7 @@
 
 #include "../fontMeshCreator/guitext.h"
 #include "../fontMeshCreator/fonttype.h"
-#include "../renderEngine/renderEngine.h"
+#include "../renderEngine/loader.h"
 #include "../toolbox/input.h"
 #include "../toolbox/levelloader.h"
 #include "../fontMeshCreator/guitext.h"

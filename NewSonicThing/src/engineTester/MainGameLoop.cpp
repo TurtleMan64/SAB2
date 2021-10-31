@@ -28,6 +28,7 @@
 
 #include "main.h"
 #include "../renderEngine/renderEngine.h"
+#include "../renderEngine/loader.h"
 #include "../toolbox/input.h"
 #include "../models/models.h"
 #include "../shaders/shaderprogram.h"

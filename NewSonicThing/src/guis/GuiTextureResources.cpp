@@ -1,6 +1,6 @@
 #include "guitextureresources.h"
 #include "guitexture.h"
-#include "../renderEngine/renderEngine.h"
+#include "../renderEngine/loader.h"
 #include "../engineTester/main.h"
 
 GuiTexture* GuiTextureResources::textureRing        = nullptr;

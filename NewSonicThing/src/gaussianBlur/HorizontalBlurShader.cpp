@@ -1,5 +1,5 @@
 #include "horizontalblurshader.h"
-#include "../renderEngine/renderEngine.h"
+#include "../renderEngine/loader.h"
 
 #include <glad/glad.h>
 

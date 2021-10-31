@@ -7,7 +7,7 @@
 #include "../gaussianBlur/horizontalblur.h"
 #include "../gaussianBlur/verticalblur.h"
 #include "../bloom/combinefilter.h"
-#include "../renderEngine/renderEngine.h"
+#include "../renderEngine/loader.h"
 
 std::vector<float> PostProcessing::POSITIONS;
 RawModel        PostProcessing::quadModel;

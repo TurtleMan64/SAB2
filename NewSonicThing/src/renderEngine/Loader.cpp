@@ -10,7 +10,7 @@
 #include <cmath>
 #include <cstring>
 
-#include "renderEngine.h"
+#include "loader.h"
 #include "../engineTester/main.h"
 
 #include "../models/models.h"
@@ -23,7 +23,7 @@ std::list<GLuint> Loader::vaos;
 std::list<GLuint> Loader::vbos;
 //std::list<GLuint> Loader::textures;
 
-std::unordered_map<std::string, TextureEntry> Loader::textures;
+std::unordered_map<std::string, Loader::TextureEntry> Loader::textures;
 std::unordered_map<GLuint, std::string> Loader::texIdToFilename;
 
 int Loader::vaoNumber = 0;

@@ -522,6 +522,8 @@
     <ClInclude Include="src\postProcessing\fbo.h" />
     <ClInclude Include="src\postProcessing\imagerenderer.h" />
     <ClInclude Include="src\postProcessing\postprocessing.h" />
+    <ClInclude Include="src\renderEngine\display.h" />
+    <ClInclude Include="src\renderEngine\loader.h" />
     <ClInclude Include="src\renderEngine\renderEngine.h" />
     <ClInclude Include="src\renderEngine\skymanager.h" />
     <ClInclude Include="src\shaders\shaderprogram.h" />

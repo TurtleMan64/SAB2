@@ -1,6 +1,6 @@
 #include "particleresources.h"
 #include "particletexture.h"
-#include "../renderEngine/renderEngine.h"
+#include "../renderEngine/loader.h"
 #include "../engineTester/main.h"
 
 ParticleTexture* ParticleResources::textureDust              = nullptr;

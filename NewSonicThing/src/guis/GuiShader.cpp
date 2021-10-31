@@ -9,7 +9,7 @@
 #include "../toolbox/vector.h"
 #include "../toolbox/matrix.h"
 #include "../toolbox/maths.h"
-#include "../renderEngine/renderEngine.h"
+#include "../renderEngine/loader.h"
 
 GuiShader::GuiShader(const char* vertexFile, const char* fragmentFile)
 {

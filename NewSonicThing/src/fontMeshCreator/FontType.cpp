@@ -4,7 +4,7 @@
 #include "textmeshcreator.h"
 #include "textmeshdata.h"
 
-#include "../renderEngine/renderEngine.h"
+#include "../renderEngine/loader.h"
 
 #include "../engineTester/main.h"
 

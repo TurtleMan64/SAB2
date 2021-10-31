@@ -1325,6 +1325,12 @@
     <ClInclude Include="src\entities\lowqualitywater.h">
       <Filter>Source Files\entities</Filter>
     </ClInclude>
+    <ClInclude Include="src\renderEngine\loader.h">
+      <Filter>Source Files\renderEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderEngine\display.h">
+      <Filter>Source Files\renderEngine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="NewSonicThing.rc">

@@ -13,10 +13,10 @@
 #include "../guis/guitextureresources.h"
 #include "../guis/guitexture.h"
 #include "../menu/timer.h"
+#include "../renderEngine/loader.h"
 
 #include <vector>
 #include <list>
-#include <algorithm>
 #include <unordered_map>
 
 EmeraldPiece* EmeraldManager::piece1 = nullptr;

@@ -2,7 +2,7 @@
 #include <unordered_map>
 
 #include "textmaster.h"
-#include "../renderEngine/renderEngine.h"
+#include "../renderEngine/loader.h"
 #include "../fontMeshCreator/textmeshdata.h"
 #include "../fontMeshCreator/fonttype.h"
 #include "../fontMeshCreator/guitext.h"

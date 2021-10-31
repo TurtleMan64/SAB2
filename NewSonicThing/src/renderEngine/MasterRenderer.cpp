@@ -6,7 +6,7 @@
 #include "../shaders/shaderprogram.h"
 #include "../entities/entity.h"
 #include "../models/models.h"
-#include "renderEngine.h"
+#include "loader.h"
 #include "../toolbox/maths.h"
 #include "../toolbox/matrix.h"
 #include "../engineTester/main.h"

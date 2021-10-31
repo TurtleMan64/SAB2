@@ -10,7 +10,7 @@
 #include "../entities/camera.h"
 #include "../toolbox/maths.h"
 #include "../entities/light.h"
-#include "../renderEngine/renderEngine.h"
+#include "../renderEngine/loader.h"
 #include "particleshader.h"
 
 ParticleShader::ParticleShader()

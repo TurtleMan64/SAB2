@@ -1,5 +1,5 @@
 #include "guitext.h"
-#include "../renderEngine/renderEngine.h"
+#include "../renderEngine/loader.h"
 #include "../fontRendering/textmaster.h"
 #include "fonttype.h"
 
