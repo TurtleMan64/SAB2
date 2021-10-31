@@ -1,0 +1,35 @@
+# Material Count: 6
+
+newmtl Mesh_0240.rip
+Ns 20
+Ni 0.5
+map_Kd Tex_0057_0.png
+
+newmtl Mesh_0236.rip
+Ns 20
+Ni 0.0
+Tr 0
+renderOrder 1
+glow 1.0
+map_Kd Tex_0054_0.png
+
+newmtl Mesh_0238.rip
+Ns 20
+Ni 0.5
+map_Kd Tex_0056_0.png
+
+newmtl Mesh_0241.rip
+Ns 20
+Ni 0.5
+map_Kd Tex_0058_0.png
+
+newmtl Mesh_0237.rip
+Ns 20
+Ni 0.5
+map_Kd Tex_0055_0.png
+
+newmtl Mesh_0244.rip
+Ns 20
+Ni 0.5
+map_Kd Tex_0059_0.png
+

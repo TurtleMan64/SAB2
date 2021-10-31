@@ -37,6 +37,9 @@ struct TextureEntry
 class Loader
 {
 private:
+    static int anisotropicFilterIsSupported;
+    static float anisotropyLevel;
+
     static std::list<GLuint> vaos;
     static std::list<GLuint> vbos;
     //static std::list<GLuint> textures;
@@ -57,6 +60,8 @@ private:
     static GLuint bindIndiciesBuffer(std::vector<int>*);
 
 public:
+    static void init();
+
     //For 3D Models
     static RawModel loadToVAO(std::vector<float>* positions, 
                               std::vector<float>* textureCoords, 

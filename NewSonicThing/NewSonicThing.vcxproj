@@ -167,6 +167,7 @@
     <ClCompile Include="src\collision\Triangle3D.cpp" />
     <ClCompile Include="src\engineTester\MainGameLoop.cpp" />
     <ClCompile Include="src\entities\Beetle.cpp" />
+    <ClCompile Include="src\entities\Bomb.cpp" />
     <ClCompile Include="src\entities\Bullet.cpp" />
     <ClCompile Include="src\entities\ChaosEmerald.cpp" />
     <ClCompile Include="src\entities\CharacterModels\ManiaKnucklesModel.cpp" />
@@ -191,6 +192,10 @@
     <ClCompile Include="src\entities\DryLagoon\DL_StageManager.cpp" />
     <ClCompile Include="src\entities\DryLagoon\DL_Tree.cpp" />
     <ClCompile Include="src\entities\DryLagoon\DL_Turtle.cpp" />
+    <ClCompile Include="src\entities\E1000.cpp" />
+    <ClCompile Include="src\entities\EmeraldCoast\EC_Dolphin.cpp" />
+    <ClCompile Include="src\entities\EmeraldCoast\EC_Seagull.cpp" />
+    <ClCompile Include="src\entities\EmeraldCoast\EC_Orca.cpp" />
     <ClCompile Include="src\entities\EmeraldManager.cpp" />
     <ClCompile Include="src\entities\EmeraldPiece.cpp" />
     <ClCompile Include="src\entities\FrogForest\FF_StageManager.cpp" />
@@ -209,7 +214,9 @@
     <ClCompile Include="src\entities\HintMonitor.cpp" />
     <ClCompile Include="src\entities\Hunter.cpp" />
     <ClCompile Include="src\entities\ItemCapsule.cpp" />
+    <ClCompile Include="src\entities\Kiki.cpp" />
     <ClCompile Include="src\entities\LostChao.cpp" />
+    <ClCompile Include="src\entities\LowQualityWater.cpp" />
     <ClCompile Include="src\entities\MetalHarbor\MH_AircraftCarrierCart.cpp" />
     <ClCompile Include="src\entities\MetalHarbor\MH_CratePlatform.cpp" />
     <ClCompile Include="src\entities\MetalHarbor\MH_Missle.cpp" />
@@ -363,6 +370,7 @@
     <ClInclude Include="src\collision\triangle3d.h" />
     <ClInclude Include="src\engineTester\main.h" />
     <ClInclude Include="src\entities\beetle.h" />
+    <ClInclude Include="src\entities\bomb.h" />
     <ClInclude Include="src\entities\bullet.h" />
     <ClInclude Include="src\entities\chaosemerald.h" />
     <ClInclude Include="src\entities\CharacterModels\maniaknucklesmodel.h" />
@@ -387,6 +395,10 @@
     <ClInclude Include="src\entities\DryLagoon\dlstagemanager.h" />
     <ClInclude Include="src\entities\DryLagoon\dltree.h" />
     <ClInclude Include="src\entities\DryLagoon\dlturtle.h" />
+    <ClInclude Include="src\entities\e1000.h" />
+    <ClInclude Include="src\entities\EmeraldCoast\ecdolphin.h" />
+    <ClInclude Include="src\entities\EmeraldCoast\ecseagull.h" />
+    <ClInclude Include="src\entities\EmeraldCoast\ecorca.h" />
     <ClInclude Include="src\entities\emeraldmanager.h" />
     <ClInclude Include="src\entities\emeraldpiece.h" />
     <ClInclude Include="src\entities\FrogForest\ffstagemanager.h" />
@@ -405,7 +417,9 @@
     <ClInclude Include="src\entities\hintmonitor.h" />
     <ClInclude Include="src\entities\hunter.h" />
     <ClInclude Include="src\entities\itemcapsule.h" />
+    <ClInclude Include="src\entities\kiki.h" />
     <ClInclude Include="src\entities\lostchao.h" />
+    <ClInclude Include="src\entities\lowqualitywater.h" />
     <ClInclude Include="src\entities\MetalHarbor\mhaircraftcarriercart.h" />
     <ClInclude Include="src\entities\MetalHarbor\mhcrateplatform.h" />
     <ClInclude Include="src\entities\MetalHarbor\mhmissle.h" />

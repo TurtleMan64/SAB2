@@ -763,7 +763,7 @@ void ObjLoader::parseMtl(std::string filePath, std::string fileName, std::unorde
             }
             else if (strcmp(lineSplit[0], "\trenderOrder") == 0 || strcmp(lineSplit[0], "renderOrder") == 0)
             {
-                currentRenderOrder = Maths::clamp(0, std::stoi(lineSplit[1]), 4);
+                currentRenderOrder = Maths::clamp(0, std::stoi(lineSplit[1]), 5);
             }
         }
 

@@ -72,6 +72,8 @@ int createDisplay()
 
         SCR_WIDTH = F_WIDTH;
         SCR_HEIGHT = F_HEIGHT;
+
+        glfwWindowHint(GLFW_REFRESH_RATE, F_HZ);
     }
 
     unsigned int screenWidth  = SCR_WIDTH;

@@ -20,7 +20,6 @@
 
 #include <list>
 #include <iostream>
-#include <algorithm>
 #include <cmath>
 
 std::list<TexturedModel*> Hunter::modelsBody;
@@ -126,16 +125,16 @@ void Hunter::step()
         if ((toPlayerDiff.lengthSquared()) < (hitRadius*scale)*(hitRadius*scale) &&
             toPlayerDiffY >= 0 && toPlayerDiffY <= hitHeight*scale)
         {
-            if (Global::gameMainPlayer->isVulnerable())
-            {
-                Global::gameMainPlayer->takeDamage(&position);
-            }
-            else if (Global::gameMainPlayer->canDealDamage())
+            if (Global::gameMainPlayer->canDealDamage())
             {
                 die();
                 Global::gameMainPlayer->rebound(&centerPos);
                 Global::gameMainPlayer->increaseCombo();
                 return;
+            }
+            else
+            {
+                Global::gameMainPlayer->takeDamage(&centerPos);
             }
         }
 
@@ -174,11 +173,7 @@ void Hunter::die()
     AudioPlayer::play(3, &position);
     
     Global::deleteChunkedEntity(this);
-    if (gun != nullptr)
-    {
-        Global::deleteChunkedEntity(gun);
-        gun = nullptr;
-    }
+    Global::deleteChunkedEntity(gun);
 
     float height = 10.0f;
     float spread = 20.0f;

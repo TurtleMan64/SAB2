@@ -2,6 +2,8 @@
 #include "waterframebuffers.h"
 #include "../engineTester/main.h"
 
+extern GLuint currentBoundFramebuffer;
+
 extern unsigned int SCR_WIDTH;
 extern unsigned int SCR_HEIGHT;
 
@@ -44,6 +46,7 @@ void WaterFrameBuffers::bindFrameBuffer(GLuint frameBuffer, int width, int heigh
 {
     glBindTexture(GL_TEXTURE_2D, 0);//To make sure the texture isn't bound
     glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+    currentBoundFramebuffer = frameBuffer;
     glViewport(0, 0, width, height);
 }
 
@@ -53,6 +56,7 @@ GLuint WaterFrameBuffers::createFrameBuffer()
     glGenFramebuffers(1, &frameBufferID);
     //generate name for frame buffer
     glBindFramebuffer(GL_FRAMEBUFFER, frameBufferID);
+    currentBoundFramebuffer = frameBufferID;
     //create the framebuffer
     glDrawBuffer(GL_COLOR_ATTACHMENT0);
     //indicate that we will always render to color attachment 0
@@ -122,6 +126,7 @@ void WaterFrameBuffers::bindRefractionFrameBuffer()
 void WaterFrameBuffers::unbindCurrentFrameBuffer()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    currentBoundFramebuffer = 0;
     glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
 }
 

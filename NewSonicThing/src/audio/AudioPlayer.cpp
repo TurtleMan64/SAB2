@@ -94,6 +94,8 @@ void AudioPlayer::loadSoundEffects()
     AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/Kart/Strafe.ogg"));                  //69
     AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/Kart/ExplosionBig.ogg"));            //70
     AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/Kart/Boost.ogg"));                   //71
+    AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/BombThrow.ogg"));            //72
+    AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/BombExplosion.ogg"));        //73
 }
 
 void AudioPlayer::loadBGM(char* fileName)

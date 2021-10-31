@@ -57,6 +57,7 @@ class TC_Kart;
 #define LVL_TWINKLE_CIRCUIT 17
 #define LVL_CLOUD_TEMPLE    18
 #define LVL_DRAGON_ROAD     19
+#define LVL_EMERALD_COAST   20
 
 #define DEV_MODE
 //#define PERFORMANCE_ANALYSIS

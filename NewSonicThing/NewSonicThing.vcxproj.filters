@@ -130,6 +130,9 @@
     <Filter Include="Source Files\entities\FrogForest">
       <UniqueIdentifier>{0b1888dc-f34b-44e6-bf1d-4ae96b694402}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\entities\EmeraldCoast">
+      <UniqueIdentifier>{c2e947e3-9195-4e79-a270-4c1f94f95981}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\glad.c">
@@ -711,6 +714,27 @@
     <ClCompile Include="src\entities\SpringYellow.cpp">
       <Filter>Source Files\entities</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\EmeraldCoast\EC_Seagull.cpp">
+      <Filter>Source Files\entities\EmeraldCoast</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\EmeraldCoast\EC_Orca.cpp">
+      <Filter>Source Files\entities\EmeraldCoast</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\E1000.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\Kiki.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\Bomb.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\EmeraldCoast\EC_Dolphin.cpp">
+      <Filter>Source Files\entities\EmeraldCoast</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\LowQualityWater.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.h">
@@ -1279,6 +1303,27 @@
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\EmeraldCoast\ecseagull.h">
+      <Filter>Source Files\entities\EmeraldCoast</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\EmeraldCoast\ecorca.h">
+      <Filter>Source Files\entities\EmeraldCoast</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\e1000.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\kiki.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\bomb.h">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\EmeraldCoast\ecdolphin.h">
+      <Filter>Source Files\entities\EmeraldCoast</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\lowqualitywater.h">
+      <Filter>Source Files\entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

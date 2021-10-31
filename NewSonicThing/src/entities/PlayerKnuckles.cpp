@@ -1498,6 +1498,11 @@ void PlayerKnuckles::step()
         }
     }
 
+    if (onGround && currentTriangle->isDeath())
+    {
+        die();
+    }
+
     camDir.normalize();
 
     //Bouncing from collision type
@@ -3248,7 +3253,8 @@ bool PlayerKnuckles::isDying()
 
 bool PlayerKnuckles::canDealDamage()
 {
-    return (hitTimer == 0.0f && hitFlashingTimer == 0.0f && !isReadingHint);
+    //return (hitTimer == 0.0f && hitFlashingTimer == 0.0f && !isReadingHint);
+    return (isGliding || isDrillDiving || isJumping || punchingTimer > 0.0f);
 }
 
 bool PlayerKnuckles::canBreakObjects()

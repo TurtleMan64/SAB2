@@ -38,7 +38,7 @@ private:
     ModelTexture texture;
 
 public:
-    char renderOrder = 0; //0 = rendered first (default), 1 = second, 2 = third, 3 = fifth + transparent (only render top), 4 = fourth + tmp disable depth test 
+    char renderOrder = 0; //0 = rendered first (default), 1 = second, 2 = third, 3 = fifth + transparent (only render top), 4 = fourth + tmp disable depth test , 5 = sixth
 
     TexturedModel(RawModel* rawModel, ModelTexture* texture);
 

@@ -1,0 +1,34 @@
+# Blender MTL File: 'None'
+# Material Count: 4
+
+newmtl material_C4A2A8
+	Ns 20
+	Ni 0.50000
+	d 1.000000
+	illum 2
+	map_Kd am_sea02_32.png
+	map_Ka am_sea02_32.png
+
+newmtl material_C4A2BC
+	Ns 20
+	Ni 0.50000
+	d 1.000000
+	illum 2
+	map_Kd am_sea01_32.png
+	map_Ka am_sea01_32.png
+
+newmtl material_C4A2D0
+	Ns 20
+	Ni 0.50000
+	d 1.000000
+	illum 2
+	map_Kd am_sea03_64.png
+	map_Ka am_sea03_64.png
+
+newmtl material_C4A2E4
+	Ns 20
+	Ni 0.50000
+	d 1.000000
+	illum 2
+	map_Kd am_sea04_64.png
+	map_Ka am_sea04_64.png

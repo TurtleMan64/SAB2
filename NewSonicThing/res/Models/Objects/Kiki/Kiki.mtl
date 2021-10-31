@@ -1,0 +1,74 @@
+# Material Count: 12
+
+newmtl material_2
+Ns 20.000000
+Ni 0.2
+d 1.000000
+map_Kd orange.png
+
+newmtl material_8
+Ns 20.000000
+Ni 0.2
+d 1.000000
+map_Kd hand0.png
+
+newmtl material_6
+Ns 20.000000
+Ni 0.2
+d 1.000000
+map_Kd arm1.png
+
+newmtl material_3
+Ns 20.000000
+Ni 0.2
+d 1.000000
+map_Kd kuti0.png
+
+newmtl material_4
+Ns 20.000000
+Ni 0.2
+d 1.000000
+map_Kd sarueye.png
+
+newmtl material_0
+Ns 20.000000
+Ni 0.2
+d 1.000000
+map_Kd board0.png
+
+newmtl material_7
+Ns 20.000000
+Ni 0.2
+d 1.000000
+map_Kd gray.png
+
+newmtl material_10
+Ns 20.000000
+Ni 0.2
+d 1.000000
+map_Kd arm0.png
+
+newmtl material_12
+Ns 20.000000
+Ni 0.2
+d 1.000000
+map_Kd ita.png
+
+newmtl material_1
+Ns 20.000000
+Ni 0.2
+d 1.000000
+map_Kd body1.png
+
+newmtl material_5
+Ns 20.000000
+Ni 0.2
+d 1.000000
+map_Kd mimi0.png
+
+newmtl material_9
+Ns 20.000000
+Ni 0.2
+d 1.000000
+map_Kd yubi.png
+

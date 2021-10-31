@@ -1220,6 +1220,11 @@ void PlayerSonic::step()
         }
     }
 
+    if (onGround && currentTriangle->isDeath())
+    {
+        die();
+    }
+
     camDir.normalize();
 
     //Bouncing from collision type
@@ -1279,8 +1284,8 @@ void PlayerSonic::step()
     }
 
     //transition from running on ground to water
-    if (onGroundBefore && Global::stageUsesWater && 
-        posBefore.y >= Global::waterHeight && 
+    if (onGroundBefore && Global::stageUsesWater && Global::levelID != LVL_EMERALD_COAST &&
+        posBefore.y >= Global::waterHeight &&
         position.y  <= Global::waterHeight)
     {
         Vector3f waterNormal(0, 1, 0);
@@ -2048,17 +2053,19 @@ bool PlayerSonic::findHomingTarget(Vector3f* target)
                     continue;
                 }
 
-                Vector3f diff = position - e->getHomingCenter();
+                Vector3f otherHomingCenter = e->getHomingCenter();
+
+                Vector3f diff = position - otherHomingCenter;
                 if (diff.y < -12 || diff.y > 80)
                 {
                     continue;
                 }
 
                 float thisdist = diff.lengthSquared();
-                if (thisdist < closestDist)
+                if (thisdist < closestDist && !CollisionChecker::checkCollision(&position, &otherHomingCenter))
                 {
                     closestDist = thisdist;
-                    homeTargetPoint = e->getHomingCenter();
+                    homeTargetPoint = otherHomingCenter;
                     homeInOnPoint = true;
                 }
             }
@@ -2075,7 +2082,9 @@ bool PlayerSonic::findHomingTarget(Vector3f* target)
                     continue;
                 }
 
-                Vector3f diff = position - e->getHomingCenter();
+                Vector3f otherHomingCenter = e->getHomingCenter();
+
+                Vector3f diff = position - otherHomingCenter;
                 if (diff.y < -12 || diff.y > 80)
                 {
                     continue;
@@ -2091,10 +2100,10 @@ bool PlayerSonic::findHomingTarget(Vector3f* target)
                 diff.normalize();
 
                 float thisdot = diff.dot(&stickDirection);
-                if (thisdot > bestDotProduct)
+                if (thisdot > bestDotProduct && !CollisionChecker::checkCollision(&position, &otherHomingCenter))
                 {
                     bestDotProduct = thisdot;
-                    homeTargetPoint = e->getHomingCenter();
+                    homeTargetPoint = otherHomingCenter;
                 }
             }
         }
@@ -2846,7 +2855,8 @@ bool PlayerSonic::isDying()
 
 bool PlayerSonic::canDealDamage()
 {
-    return (hitTimer == 0.0f && hitFlashingTimer == 0.0f);
+    //return (hitTimer == 0.0f && hitFlashingTimer == 0.0f);
+    return (isBouncing || isBall || isJumping || isSpindashing || isStomping);
 }
 
 bool PlayerSonic::canBreakObjects()

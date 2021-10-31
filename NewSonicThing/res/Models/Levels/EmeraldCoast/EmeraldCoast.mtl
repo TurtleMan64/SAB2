@@ -63,8 +63,8 @@ map_Kd am_sea21_32.png
 newmtl material_C3B4E8
 Ns 20
 Ni 0.02
-d 0
 Tr 0
+d 0
 renderOrder 4
 map_Kd am_sea22_32.png
 
@@ -143,8 +143,8 @@ map_Kd sea1_28.png
 newmtl material_487_chair.png
 Ns 20
 Ni 0.02
-d 1
 Tr 0
+d 1
 renderOrder 1
 map_Kd chair.png
 
@@ -157,8 +157,8 @@ map_Kd b07cc196.png
 newmtl material_171.001
 Ns 20
 Ni 0.02
-d 1
 Tr 0
+d 1
 renderOrder 1
 map_Kd 99134d45.png
 
@@ -237,8 +237,8 @@ map_Kd sea1_22.png
 newmtl material_B030F8.000
 Ns 20
 Ni 0.02
-d 1
 Tr 0
+d 1
 renderOrder 3
 map_Kd m128_cos020.png
 

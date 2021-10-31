@@ -2,6 +2,8 @@
 
 #include "fbo.h"
 
+extern GLuint currentBoundFramebuffer;
+
 extern unsigned int SCR_WIDTH;
 extern unsigned int SCR_HEIGHT;
 extern unsigned int AA_SAMPLES;
@@ -49,12 +51,14 @@ void Fbo::resize(int newWidth, int newHeight)
 void Fbo::bindFrameBuffer()
 {
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, frameBuffer);
+    currentBoundFramebuffer = frameBuffer;
     glViewport(0, 0, width, height);
 }
 
 void Fbo::unbindFrameBuffer()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    currentBoundFramebuffer = 0;
     glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
 }
 
@@ -66,6 +70,7 @@ GLuint Fbo::getColourTexture()
 void Fbo::resolveToFbo(int readBuffer, Fbo* outputFbo)
 {
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, outputFbo->frameBuffer);
+    currentBoundFramebuffer = outputFbo->frameBuffer;
     glBindFramebuffer(GL_READ_FRAMEBUFFER, this->frameBuffer);
     glReadBuffer(readBuffer);
     glBlitFramebuffer(0, 0, width, height, 0, 0, outputFbo->width, outputFbo->height, 
@@ -101,6 +106,7 @@ void Fbo::createFrameBuffer()
 {
     glGenFramebuffers(1, &frameBuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+    currentBoundFramebuffer = frameBuffer;
     determineDrawBuffers();
 }
 

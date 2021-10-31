@@ -213,7 +213,7 @@ std::vector<int> Global::gameLevelIdsKnuckles;
 //std::list<std::string> Global::raceLog;
 bool Global::shouldLogRace = false;
 
-int Global::raceLogSize;
+int Global::raceLogSize = 0;
 GhostFrame Global::raceLog[Global::raceLogSizeMax]; //enough for 10 minutes at 720fps
 
 bool Global::spawnAtCheckpoint = false;
@@ -310,6 +310,7 @@ int main(int argc, char** argv)
     Global::gameLevelIdsSonic.push_back(LVL_SPEED_HIGHWAY);
     Global::gameLevelIdsSonic.push_back(LVL_SACRED_SKY);
     Global::gameLevelIdsSonic.push_back(LVL_TWINKLE_CIRCUIT);
+    Global::gameLevelIdsSonic.push_back(LVL_EMERALD_COAST);
 
     Global::gameLevelIdsTails.push_back(LVL_TUTORIAL);
     Global::gameLevelIdsTails.push_back(LVL_GREEN_FOREST);
@@ -325,6 +326,7 @@ int main(int argc, char** argv)
     Global::gameLevelIdsTails.push_back(LVL_SPEED_HIGHWAY);
     Global::gameLevelIdsTails.push_back(LVL_SACRED_SKY);
     Global::gameLevelIdsTails.push_back(LVL_CLOUD_TEMPLE);
+    Global::gameLevelIdsTails.push_back(LVL_EMERALD_COAST);
 
     Global::gameLevelIdsKnuckles.push_back(LVL_DRY_LAGOON);
     Global::gameLevelIdsKnuckles.push_back(LVL_DELFINO_PLAZA);
@@ -338,10 +340,13 @@ int main(int argc, char** argv)
     Global::stageNpcCounts[LVL_DRAGON_ROAD]     = 7;
     Global::stageNpcCounts[LVL_GREEN_HILL_ZONE] = 1;
     Global::stageNpcCounts[LVL_DELFINO_PLAZA]   = 3;
+    Global::stageNpcCounts[LVL_EMERALD_COAST]   = 5;
 
     #if !defined(DEV_MODE) && defined(_WIN32)
     FreeConsole();
     #endif
+
+    Loader::init();
 
     Input::init();
 
@@ -512,6 +517,7 @@ int main(int argc, char** argv)
             Global::gameArcadePlaytime+=dt;
         }
 
+        #ifdef DEV_MODE
         GLenum err = glGetError();
         if (err != GL_NO_ERROR)
         {
@@ -525,6 +531,7 @@ int main(int argc, char** argv)
             std::fprintf(stderr, "########  AL ERROR  ########\n");
             std::fprintf(stderr, "%d\n", erral);
         }
+        #endif
 
         //long double thisTime = std::time(0);
         //std::fprintf(stdout, "time: %f time\n", thisTime);

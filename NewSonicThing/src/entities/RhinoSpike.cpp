@@ -62,11 +62,7 @@ void RhinoSpike::step()
 
         if (playerIsInHitbox())
         {
-            if (Global::gameMainPlayer->isVulnerable())
-            {
-                Global::gameMainPlayer->takeDamage(&position);
-            }
-            else if (Global::gameMainPlayer->canDealDamage())
+            if (Global::gameMainPlayer->canDealDamage())
             {
                 die();
                 Vector3f homingCenter(&position);
@@ -74,10 +70,14 @@ void RhinoSpike::step()
                 Global::gameMainPlayer->rebound(&homingCenter);
                 Global::gameMainPlayer->increaseCombo();
             }
+            else
+            {
+                Global::gameMainPlayer->takeDamage(&position);
+            }
         }
         else if (playerIsInHurtbox())
         {
-            if (Global::gameMainPlayer->canDealDamage())
+            //if (Global::gameMainPlayer->canDealDamage())
             {
                 Global::gameMainPlayer->takeDamage(&position);
             }

@@ -81,7 +81,7 @@ void Bullet::step()
     float dist = diff.lengthSquared();
     if (dist < 7*7)
     {
-        if (Global::gameMainPlayer->canDealDamage())
+        //if (Global::gameMainPlayer->canDealDamage())
         {
             Global::gameMainPlayer->takeDamage(&position);
             Global::deleteEntity(this);

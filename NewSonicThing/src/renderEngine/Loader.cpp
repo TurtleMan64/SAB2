@@ -16,6 +16,9 @@
 #include "../models/models.h"
 #include "../toolbox/getline.h"
 
+int Loader::anisotropicFilterIsSupported = 0;
+float Loader::anisotropyLevel = 0.0f;
+
 std::list<GLuint> Loader::vaos;
 std::list<GLuint> Loader::vbos;
 //std::list<GLuint> Loader::textures;
@@ -26,6 +29,16 @@ std::unordered_map<GLuint, std::string> Loader::texIdToFilename;
 int Loader::vaoNumber = 0;
 int Loader::vboNumber = 0;
 //int Loader::texNumber = 0;
+
+void Loader::init()
+{
+    Loader::anisotropicFilterIsSupported = glfwExtensionSupported("GL_EXT_texture_filter_anisotropic");
+
+    const GLuint GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT = 0x84FF;
+    float maxAnisotropyLevel;
+    glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnisotropyLevel);
+    Loader::anisotropyLevel = fmin(4.0f, maxAnisotropyLevel);
+}
 
 RawModel Loader::loadToVAO(std::vector<float>* positions, 
                            std::vector<float>* textureCoords, 
@@ -118,7 +131,7 @@ GLuint Loader::loadTexture(const char* fileName)
     int width, height, channels;
     unsigned char* image = SOIL_load_image((Global::pathToEXE + fileName).c_str(), &width, &height, &channels, SOIL_LOAD_RGBA);
 
-    if (image == 0)
+    if (image == nullptr)
     {
         const char* err = SOIL_last_result();
         std::fprintf(stdout, "Error loading image '%s', because '%s'\n", (Global::pathToEXE + fileName).c_str(), err);
@@ -152,22 +165,17 @@ GLuint Loader::loadTexture(const char* fileName)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, 0.0f); //set to 0 if using anisotropic, around -0.4f if not
 
-    if (glfwExtensionSupported("GL_EXT_texture_filter_anisotropic"))
+    if (Loader::anisotropicFilterIsSupported)
     {
         //Not sure why these aren't defined... but I've spent too much time trying to fix it.
         const GLuint GL_TEXTURE_MAX_ANISOTROPY_EXT  = 0x84FE;
-        const GLuint GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT = 0x84FF;
 
-        float maxAnisotropyLevel;
-        glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnisotropyLevel);
-        float amountToUse = fmin(4.0f, maxAnisotropyLevel);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, amountToUse);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, Loader::anisotropyLevel);
     }
 
     SOIL_free_image_data(image);
 
     glBindTexture(GL_TEXTURE_2D, 0);
-    
 
     return textureID;
 }

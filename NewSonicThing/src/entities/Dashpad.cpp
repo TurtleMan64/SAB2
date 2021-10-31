@@ -31,7 +31,8 @@ Dashpad::Dashpad()
 Dashpad::Dashpad(
     float x,     float y,     float z,
     float power, float controlLockTime,
-    float rotX, float rotY, float rotZ)
+    float rotX, float rotY, float rotZ,
+    float camScale)
 {
     position.x = x;
     position.y = y;
@@ -42,6 +43,7 @@ Dashpad::Dashpad(
     this->rotZ = rotZ;
     this->power = power;
     this->controlLockTime = controlLockTime;
+    this->camScale = camScale;
     updateTransformationMatrix();
 
     forward = Vector3f(1, 0, 0);
@@ -73,7 +75,7 @@ void Dashpad::step()
                 Global::gameMainPlayer->vel = forward.scaleCopy(power);
                 Global::gameMainPlayer->vel = Maths::projectOntoPlane(&Global::gameMainPlayer->vel, &Global::gameMainPlayer->relativeUp);
                 Global::gameMainPlayer->vel.setLength(power);
-                Global::gameMainPlayer->camDir = forward;
+                Global::gameMainPlayer->camDir = forward.scaleCopy(camScale);
                 Global::gameMainPlayer->canMoveTimer = controlLockTime;
                 Global::gameMainPlayer->hitDashpad();
 

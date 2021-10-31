@@ -31,6 +31,7 @@ std::unordered_map<TexturedModel*, std::list<Entity*>> entitiesMapPass2;
 std::unordered_map<TexturedModel*, std::list<Entity*>> entitiesMapPass3;
 std::unordered_map<TexturedModel*, std::list<Entity*>> entitiesMapNoDepth;
 std::unordered_map<TexturedModel*, std::list<Entity*>> entitiesMapTransparent;
+std::unordered_map<TexturedModel*, std::list<Entity*>> entitiesMapPass6;
 
 Matrix4f* projectionMatrix = nullptr;
 
@@ -49,10 +50,11 @@ void prepareRenderDepthOnly();
 
 GLuint randomMap = GL_NONE;
 
-
 GLuint transparentFrameBuffer  = GL_NONE;
 //GLuint transparentColorTexture = GL_NONE;
 GLuint transparentDepthTexture = GL_NONE;
+
+GLuint currentBoundFramebuffer = 0;
 
 extern unsigned int SCR_WIDTH;
 extern unsigned int SCR_HEIGHT;
@@ -146,6 +148,7 @@ void Master_init()
     //create frame buffer
     glGenFramebuffers(1, &transparentFrameBuffer); //generate name for frame buffer
     glBindFramebuffer(GL_FRAMEBUFFER, transparentFrameBuffer); //create the framebuffer
+    currentBoundFramebuffer = transparentFrameBuffer;
     glDrawBuffer(GL_COLOR_ATTACHMENT0); //indicate that we will always render to color attachment 0
 
     //create a color texture for no reason
@@ -165,8 +168,8 @@ void Master_init()
     glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, transparentDepthTexture, 0);
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    currentBoundFramebuffer = 0;
     glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
-
 
     Master_disableCulling();
 }
@@ -174,8 +177,8 @@ void Master_init()
 void Master_render(Camera* camera, float clipX, float clipY, float clipZ, float clipW, float waterBlendAmount)
 {
     ANALYSIS_START("Master Render");
-    GLint currFB;
-    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &currFB);
+    //GLint currFB;
+    //glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &currFB);
 
     prepare();
     shader->start();
@@ -216,10 +219,10 @@ void Master_render(Camera* camera, float clipX, float clipY, float clipZ, float 
     glDepthMask(true);
     renderer->renderNEW(&entitiesMapNoDepth, shadowMapRenderer->getToShadowMapSpaceMatrix(), shadowMapRenderer2->getToShadowMapSpaceMatrix());
     glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+    glBindTexture(GL_TEXTURE_2D, 0);
     shader->stop();
 
     //Calculate the depth buffer of all transparent entities, before making a 2nd pass.
-    glBindTexture(GL_TEXTURE_2D, 0);
     glBindFramebuffer(GL_FRAMEBUFFER, transparentFrameBuffer);
     glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
 
@@ -247,7 +250,7 @@ void Master_render(Camera* camera, float clipX, float clipY, float clipZ, float 
     
     //We have finished creating depth buffer for transparent entities. Now go and do a 2nd pass, this time
     // using the depth buffer to only render the pixels closest to the screen.
-    glBindFramebuffer(GL_FRAMEBUFFER, currFB); //Switch back to rendering to whatever we were before.
+    glBindFramebuffer(GL_FRAMEBUFFER, currentBoundFramebuffer); //Switch back to rendering to whatever we were before.
     glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
 
     //Note: There is some sort of bug somewhere around here. Transparent entities don't seem to get rendered to the bloom effect.
@@ -277,6 +280,30 @@ void Master_render(Camera* camera, float clipX, float clipY, float clipZ, float 
     renderer->renderNEW(&entitiesMapTransparent, shadowMapRenderer->getToShadowMapSpaceMatrix(), shadowMapRenderer2->getToShadowMapSpaceMatrix());
     glBindTexture(GL_TEXTURE_2D, 0);
     shader->stop();
+
+    if (!entitiesMapPass6.empty())
+    {
+        shader->start();
+        shader->loadClipPlane(clipX, clipY, clipZ, clipW);
+        shader->loadClipPlaneBehind(plane.x, plane.y, plane.z, plane.w);
+        shader->loadSkyColour(RED, GREEN, BLUE);
+        shader->loadSun(Global::gameLightSun);
+        shader->loadFogGradient(SkyManager::getFogGradient());
+        shader->loadFogDensity(SkyManager::getFogDensity());
+        shader->loadFogBottomPosition(SkyManager::fogBottomPosition);
+        shader->loadFogBottomThickness(SkyManager::fogBottomThickness);
+        shader->loadViewMatrix(camera);
+        shader->loadIsRenderingTransparent(false);
+        shader->loadIsRenderingDepth(false);
+        shader->loadWaterColor(&Global::stageWaterColor);
+        shader->loadWaterBlendAmount(waterBlendAmount);
+        shader->connectTextureUnits();
+
+        renderer->renderNEW(&entitiesMapPass6, shadowMapRenderer->getToShadowMapSpaceMatrix(), shadowMapRenderer2->getToShadowMapSpaceMatrix());
+
+        shader->stop();
+    }
+
     ANALYSIS_DONE("Master Render");
 }
 
@@ -287,7 +314,7 @@ void Master_processEntity(Entity* entity)
         return;
     }
 
-    if (entity->renderOrderOverride <= 4)
+    if (entity->renderOrderOverride <= 5)
     {
         std::unordered_map<TexturedModel*, std::list<Entity*>>* mapToUse = nullptr;
 
@@ -298,6 +325,7 @@ void Master_processEntity(Entity* entity)
             case 2: mapToUse = &entitiesMapPass3;       break;
             case 3: mapToUse = &entitiesMapTransparent; break;
             case 4: mapToUse = &entitiesMapNoDepth;     break;
+            case 5: mapToUse = &entitiesMapPass6;       break;
             default: break;
         }
 
@@ -324,6 +352,7 @@ void Master_processEntity(Entity* entity)
                 case 2: mapToUse = &entitiesMapPass3;       break;
                 case 3: mapToUse = &entitiesMapTransparent; break;
                 case 4: mapToUse = &entitiesMapNoDepth;     break;
+                case 5: mapToUse = &entitiesMapPass6;       break;
                 default: break;
             }
 
@@ -340,6 +369,7 @@ void Master_clearAllEntities()
     entitiesMapPass3.clear();
     entitiesMapTransparent.clear();
     entitiesMapNoDepth.clear();
+    entitiesMapPass6.clear();
 }
 
 void prepare()

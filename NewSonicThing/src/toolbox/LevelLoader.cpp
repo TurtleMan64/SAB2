@@ -116,6 +116,13 @@
 #include "../entities/waterzone.h"
 #include "../entities/FrogForest/ffstagemanager.h"
 #include "../entities/springyellow.h"
+#include "../entities/EmeraldCoast/ecorca.h"
+#include "../entities/e1000.h"
+#include "../entities/kiki.h"
+#include "../entities/bomb.h"
+#include "../entities/EmeraldCoast/ecseagull.h"
+#include "../entities/EmeraldCoast/ecdolphin.h"
+#include "../entities/lowqualitywater.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -255,6 +262,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
             else if (currLvl->displayName == "Twinkle Circuit") Global::levelID = LVL_TWINKLE_CIRCUIT;
             else if (currLvl->displayName == "Cloud Temple")    Global::levelID = LVL_CLOUD_TEMPLE;
             else if (currLvl->displayName == "Dragon Road")     Global::levelID = LVL_DRAGON_ROAD;
+            else if (currLvl->displayName == "Emerald Coast")   Global::levelID = LVL_EMERALD_COAST;
         }
 
         Global::spawnAtCheckpoint  = false;
@@ -1038,10 +1046,16 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
         case 8: //Boostpad
         {
             Dashpad::loadStaticModels();
+            float camScale = 1.0f;
+            if (datLength >= 10)
+            {
+                camScale = toFloat(dat[9]);
+            }
+
             Dashpad* pad = new Dashpad(
                 toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]),
                 toFloat(dat[4]), toFloat(dat[5]),
-                toFloat(dat[6]), toFloat(dat[7]), toFloat(dat[8])); INCR_NEW("Entity");
+                toFloat(dat[6]), toFloat(dat[7]), toFloat(dat[8]), camScale); INCR_NEW("Entity");
             chunkedEntities->push_back(pad);
             return;
         }
@@ -1267,6 +1281,40 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                 message);                                          //message
             INCR_NEW("Entity");
             Global::addEntity(npc);
+            return;
+        }
+
+        case 37: //Low Quality Water
+        {
+            if (!Global::useHighQualityWater)
+            {
+                LowQualityWater::loadStaticModels();
+                LowQualityWater* water = new LowQualityWater(
+                    toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
+                    toFloat(dat[4]), toFloat(dat[5]), toFloat(dat[6]), //color
+                    toFloat(dat[7]));                                  //alpha
+                INCR_NEW("Entity");
+                Global::addEntity(water);
+            }
+            return;
+        }
+
+        case 48: //Dolphin
+        {
+            EC_Dolphin::loadStaticModels();
+            EC_Dolphin* dolphin = new EC_Dolphin(
+                toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]),
+                toFloat(dat[4]), toFloat(dat[5]), toFloat(dat[6]),
+                toFloat(dat[7]), toFloat(dat[8]), toFloat(dat[9])); INCR_NEW("Entity");
+            chunkedEntities->push_back(dolphin);
+            return;
+        }
+
+        case 58: //Seagull
+        {
+            EC_Seagull::loadStaticModels();
+            EC_Seagull* seagull = new EC_Seagull(toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3])); INCR_NEW("Entity");
+            chunkedEntities->push_back(seagull);
             return;
         }
 
@@ -1891,6 +1939,45 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             return;
         }
 
+        case 112: //Emerald Coast specific
+        {
+            switch (toInt(dat[1]))
+            {
+                case 0: //Orca
+                {
+                    EC_Orca::loadStaticModels();
+                    EC_Orca* orca = new EC_Orca; INCR_NEW("Entity");
+                    Global::addEntity(orca);
+                    return;
+                }
+
+                default:
+                    return;
+            }
+        }
+
+        case 113: //E1000
+        {
+            E1000::loadStaticModels();
+            Bullet::loadStaticModels();
+            E1000* e1000 = new E1000(toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]),
+                                     toFloat(dat[4]), toFloat(dat[5]),
+                                     chunkedEntities); INCR_NEW("Entity");
+            chunkedEntities->push_back(e1000);
+            return;
+        }
+
+        case 114: //Kiki
+        {
+            Kiki::loadStaticModels();
+            Bomb::loadStaticModels();
+            Kiki* kiki = new Kiki(toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]),
+                                  toFloat(dat[4]), toFloat(dat[5]),
+                                  chunkedEntities); INCR_NEW("Entity");
+            chunkedEntities->push_back(kiki);
+            return;
+        }
+
         default:
         {
             return;
@@ -2055,6 +2142,13 @@ void LevelLoader::freeAllStaticModels()
     DP_Palmtree::deleteStaticModels();
     FF_StageManager::deleteStaticModels();
     SpringYellow::deleteStaticModels();
+    EC_Orca::deleteStaticModels();
+    E1000::deleteStaticModels();
+    Kiki::deleteStaticModels();
+    Bomb::deleteStaticModels();
+    EC_Seagull::deleteStaticModels();
+    EC_Dolphin::deleteStaticModels();
+    LowQualityWater::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()
