@@ -46,9 +46,6 @@
     <Filter Include="Source Files\models">
       <UniqueIdentifier>{63fdb333-8eac-470f-9963-e6d0cad1eeaf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\objLoader">
-      <UniqueIdentifier>{eac1cc2b-3fac-4edb-9c67-e3193881bcb9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\particles">
       <UniqueIdentifier>{5c48bf20-ad26-473e-b60a-a1340cf3275d}</UniqueIdentifier>
     </Filter>
@@ -132,6 +129,9 @@
     </Filter>
     <Filter Include="Source Files\entities\EmeraldCoast">
       <UniqueIdentifier>{c2e947e3-9195-4e79-a270-4c1f94f95981}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\loading">
+      <UniqueIdentifier>{8d5ece52-87e7-49bc-a9c9-629760562f6b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -285,15 +285,6 @@
     <ClCompile Include="src\models\TexturedModel.cpp">
       <Filter>Source Files\models</Filter>
     </ClCompile>
-    <ClCompile Include="src\objLoader\FakeTexture.cpp">
-      <Filter>Source Files\objLoader</Filter>
-    </ClCompile>
-    <ClCompile Include="src\objLoader\objLoader.cpp">
-      <Filter>Source Files\objLoader</Filter>
-    </ClCompile>
-    <ClCompile Include="src\objLoader\Vertex.cpp">
-      <Filter>Source Files\objLoader</Filter>
-    </ClCompile>
     <ClCompile Include="src\particles\InsertionSort.cpp">
       <Filter>Source Files\particles</Filter>
     </ClCompile>
@@ -323,9 +314,6 @@
     </ClCompile>
     <ClCompile Include="src\postProcessing\PostProcessing.cpp">
       <Filter>Source Files\postProcessing</Filter>
-    </ClCompile>
-    <ClCompile Include="src\renderEngine\Loader.cpp">
-      <Filter>Source Files\renderEngine</Filter>
     </ClCompile>
     <ClCompile Include="src\renderEngine\MasterRenderer.cpp">
       <Filter>Source Files\renderEngine</Filter>
@@ -370,9 +358,6 @@
       <Filter>Source Files\toolbox</Filter>
     </ClCompile>
     <ClCompile Include="src\toolbox\Level.cpp">
-      <Filter>Source Files\toolbox</Filter>
-    </ClCompile>
-    <ClCompile Include="src\toolbox\LevelLoader.cpp">
       <Filter>Source Files\toolbox</Filter>
     </ClCompile>
     <ClCompile Include="src\toolbox\Split.cpp">
@@ -735,6 +720,21 @@
     <ClCompile Include="src\renderEngine\Display.cpp">
       <Filter>Source Files\renderEngine</Filter>
     </ClCompile>
+    <ClCompile Include="src\loading\LevelLoader.cpp">
+      <Filter>Source Files\loading</Filter>
+    </ClCompile>
+    <ClCompile Include="src\loading\Loader.cpp">
+      <Filter>Source Files\loading</Filter>
+    </ClCompile>
+    <ClCompile Include="src\loading\FakeTexture.cpp">
+      <Filter>Source Files\loading</Filter>
+    </ClCompile>
+    <ClCompile Include="src\loading\Vertex.cpp">
+      <Filter>Source Files\loading</Filter>
+    </ClCompile>
+    <ClCompile Include="src\loading\ModelLoader.cpp">
+      <Filter>Source Files\loading</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.h">
@@ -881,15 +881,6 @@
     <ClInclude Include="src\models\models.h">
       <Filter>Source Files\models</Filter>
     </ClInclude>
-    <ClInclude Include="src\objLoader\fakeTexture.h">
-      <Filter>Source Files\objLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="src\objLoader\objLoader.h">
-      <Filter>Source Files\objLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="src\objLoader\vertex.h">
-      <Filter>Source Files\objLoader</Filter>
-    </ClInclude>
     <ClInclude Include="src\particles\insertionsort.h">
       <Filter>Source Files\particles</Filter>
     </ClInclude>
@@ -960,9 +951,6 @@
       <Filter>Source Files\toolbox</Filter>
     </ClInclude>
     <ClInclude Include="src\toolbox\level.h">
-      <Filter>Source Files\toolbox</Filter>
-    </ClInclude>
-    <ClInclude Include="src\toolbox\levelloader.h">
       <Filter>Source Files\toolbox</Filter>
     </ClInclude>
     <ClInclude Include="src\toolbox\maths.h">
@@ -1319,9 +1307,6 @@
     <ClInclude Include="src\entities\lowqualitywater.h">
       <Filter>Source Files\entities</Filter>
     </ClInclude>
-    <ClInclude Include="src\renderEngine\loader.h">
-      <Filter>Source Files\renderEngine</Filter>
-    </ClInclude>
     <ClInclude Include="src\renderEngine\display.h">
       <Filter>Source Files\renderEngine</Filter>
     </ClInclude>
@@ -1333,6 +1318,21 @@
     </ClInclude>
     <ClInclude Include="src\renderEngine\masterrenderer.h">
       <Filter>Source Files\renderEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\loading\levelloader.h">
+      <Filter>Source Files\loading</Filter>
+    </ClInclude>
+    <ClInclude Include="src\loading\loader.h">
+      <Filter>Source Files\loading</Filter>
+    </ClInclude>
+    <ClInclude Include="src\loading\fakeTexture.h">
+      <Filter>Source Files\loading</Filter>
+    </ClInclude>
+    <ClInclude Include="src\loading\vertex.h">
+      <Filter>Source Files\loading</Filter>
+    </ClInclude>
+    <ClInclude Include="src\loading\modelloader.h">
+      <Filter>Source Files\loading</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

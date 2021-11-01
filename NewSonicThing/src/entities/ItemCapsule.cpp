@@ -4,7 +4,7 @@
 #include "../models/models.h"
 #include "../toolbox/vector.h"
 #include "itemcapsule.h"
-#include "../objLoader/objLoader.h"
+#include "../loading/modelloader.h"
 #include "../engineTester/main.h"
 #include "../entities/playersonic.h"
 #include "../toolbox/maths.h"
@@ -300,20 +300,20 @@ void ItemCapsule::loadStaticModels()
     std::fprintf(stdout, "Loading ItemCapsule static models...\n");
     #endif
 
-    ObjLoader::loadModel(&ItemCapsule::modelsAnchoredBase,   "res/Models/Objects/ItemBox/", "ItemBoxBase");
-    ObjLoader::loadModel(&ItemCapsule::modelsAnchoredGlass,  "res/Models/Objects/ItemBox/", "ItemBoxShell");
-    ObjLoader::loadModel(&ItemCapsule::modelsFloatingBase,   "res/Models/Objects/ItemBox/", "ItemBoxAirBase");
-    ObjLoader::loadModel(&ItemCapsule::modelsFloatingGlass,  "res/Models/Objects/ItemBox/", "ItemBoxAirShell");
+    ModelLoader::loadModel(&ItemCapsule::modelsAnchoredBase,   "res/Models/Objects/ItemBox/", "ItemBoxBase");
+    ModelLoader::loadModel(&ItemCapsule::modelsAnchoredGlass,  "res/Models/Objects/ItemBox/", "ItemBoxShell");
+    ModelLoader::loadModel(&ItemCapsule::modelsFloatingBase,   "res/Models/Objects/ItemBox/", "ItemBoxAirBase");
+    ModelLoader::loadModel(&ItemCapsule::modelsFloatingGlass,  "res/Models/Objects/ItemBox/", "ItemBoxAirShell");
 
-    ObjLoader::loadModel(&ItemCapsule::modelsItem1Up,        "res/Models/Objects/ItemBox/Items/", "Item1Up");
-    ObjLoader::loadModel(&ItemCapsule::modelsItemBomb,       "res/Models/Objects/ItemBox/Items/", "ItemBomb");
-    ObjLoader::loadModel(&ItemCapsule::modelsItemInvincible, "res/Models/Objects/ItemBox/Items/", "ItemInvincible");
-    ObjLoader::loadModel(&ItemCapsule::modelsItemBarrierG,   "res/Models/Objects/ItemBox/Items/", "ItemBarrierG");
-    ObjLoader::loadModel(&ItemCapsule::modelsItemRing5,      "res/Models/Objects/ItemBox/Items/", "ItemRing5");
-    ObjLoader::loadModel(&ItemCapsule::modelsItemRing10,     "res/Models/Objects/ItemBox/Items/", "ItemRing10");
-    ObjLoader::loadModel(&ItemCapsule::modelsItemRing20,     "res/Models/Objects/ItemBox/Items/", "ItemRing20");
-    ObjLoader::loadModel(&ItemCapsule::modelsItemSpeedUp,    "res/Models/Objects/ItemBox/Items/", "ItemSpeedUp");
-    ObjLoader::loadModel(&ItemCapsule::modelsItemBarrierB,   "res/Models/Objects/ItemBox/Items/", "ItemBarrierB");
+    ModelLoader::loadModel(&ItemCapsule::modelsItem1Up,        "res/Models/Objects/ItemBox/Items/", "Item1Up");
+    ModelLoader::loadModel(&ItemCapsule::modelsItemBomb,       "res/Models/Objects/ItemBox/Items/", "ItemBomb");
+    ModelLoader::loadModel(&ItemCapsule::modelsItemInvincible, "res/Models/Objects/ItemBox/Items/", "ItemInvincible");
+    ModelLoader::loadModel(&ItemCapsule::modelsItemBarrierG,   "res/Models/Objects/ItemBox/Items/", "ItemBarrierG");
+    ModelLoader::loadModel(&ItemCapsule::modelsItemRing5,      "res/Models/Objects/ItemBox/Items/", "ItemRing5");
+    ModelLoader::loadModel(&ItemCapsule::modelsItemRing10,     "res/Models/Objects/ItemBox/Items/", "ItemRing10");
+    ModelLoader::loadModel(&ItemCapsule::modelsItemRing20,     "res/Models/Objects/ItemBox/Items/", "ItemRing20");
+    ModelLoader::loadModel(&ItemCapsule::modelsItemSpeedUp,    "res/Models/Objects/ItemBox/Items/", "ItemSpeedUp");
+    ModelLoader::loadModel(&ItemCapsule::modelsItemBarrierB,   "res/Models/Objects/ItemBox/Items/", "ItemBarrierB");
 
     setModelsRenderOrder(&ItemCapsule::modelsAnchoredGlass, 3);
     setModelsRenderOrder(&ItemCapsule::modelsFloatingGlass, 3);

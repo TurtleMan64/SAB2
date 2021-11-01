@@ -4,7 +4,7 @@
 #include "pcstagemanager.h"
 #include "../../engineTester/main.h"
 #include "../controllableplayer.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../camera.h"
 
 std::list<TexturedModel*> PC_StageManager::modelsSkydome;
@@ -45,7 +45,7 @@ void PC_StageManager::loadStaticModels()
     std::fprintf(stdout, "Loading PC_StageManager static models...\n");
     #endif
 
-    ObjLoader::loadModel(&PC_StageManager::modelsSkydome,  "res/Models/Levels/PyramidCave/Sky/", "Sky");
+    ModelLoader::loadModel(&PC_StageManager::modelsSkydome,  "res/Models/Levels/PyramidCave/Sky/", "Sky");
 }
 
 void PC_StageManager::deleteStaticModels()

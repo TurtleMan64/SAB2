@@ -2,7 +2,7 @@
 #include "../entity.h"
 #include "../../engineTester/main.h"
 #include "../../models/models.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 
 std::list<TexturedModel*> RH_Nights::models;
 
@@ -50,7 +50,7 @@ void RH_Nights::loadStaticModels()
     std::fprintf(stdout, "Loading RH_Nights static models...\n");
     #endif
 
-    ObjLoader::loadModel(&RH_Nights::models, "res/Models/Levels/RadicalHighway/Objects/", "Nights");
+    ModelLoader::loadModel(&RH_Nights::models, "res/Models/Levels/RadicalHighway/Objects/", "Nights");
 }
 
 void RH_Nights::deleteStaticModels()

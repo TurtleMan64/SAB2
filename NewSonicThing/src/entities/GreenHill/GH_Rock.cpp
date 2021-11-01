@@ -4,7 +4,7 @@
 #include "../../models/models.h"
 #include "../../toolbox/vector.h"
 #include "ghrock.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../../engineTester/main.h"
 #include "../../collision/collisionmodel.h"
 #include "../../collision/collisionchecker.h"
@@ -61,11 +61,11 @@ void GH_Rock::loadStaticModels()
     std::fprintf(stdout, "Loading GH_Rock static models...\n");
     #endif
 
-    ObjLoader::loadModel(&GH_Rock::models, "res/Models/Levels/GreenHillZone/Objects/", "GreenHillRock");
+    ModelLoader::loadModel(&GH_Rock::models, "res/Models/Levels/GreenHillZone/Objects/", "GreenHillRock");
 
     if (GH_Rock::cmOriginal == nullptr)
     {
-        GH_Rock::cmOriginal = ObjLoader::loadCollisionModel("Models/Levels/GreenHillZone/Objects/", "GreenHillRockCollision");
+        GH_Rock::cmOriginal = ModelLoader::loadCollisionModel("Models/Levels/GreenHillZone/Objects/", "GreenHillRockCollision");
     }
 }
 

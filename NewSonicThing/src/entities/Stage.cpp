@@ -6,7 +6,7 @@
 #include "../models/models.h"
 #include "../toolbox/vector.h"
 #include "stage.h"
-#include "../objLoader/objLoader.h"
+#include "../loading/modelloader.h"
 #include "dummy.h"
 #include "controllableplayer.h"
 #include "camera.h"
@@ -108,7 +108,7 @@ void Stage::loadModels(
         std::list<TexturedModel*> model;
         Stage::chunkModels.push_back(model);
 
-        ObjLoader::loadModel(&Stage::chunkModels[i], path, (*fnames)[i]);
+        ModelLoader::loadModel(&Stage::chunkModels[i], path, (*fnames)[i]);
         Stage::chunkMin.push_back((*mins)[i]);
         Stage::chunkMax.push_back((*maxs)[i]);
     }

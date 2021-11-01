@@ -1,6 +1,6 @@
 #include <glad/glad.h>
 
-#include "../objLoader/objLoader.h"
+#include "../loading/modelloader.h"
 #include "entity.h"
 #include "../models/models.h"
 #include "stagetransparent.h"
@@ -32,7 +32,7 @@ StageTransparent::StageTransparent(const char* objFolder, const char* objFilenam
         std::fprintf(stdout, "Loading StageTransparent static models...\n");
         #endif
 
-        ObjLoader::loadModel(&StageTransparent::models, objFolder, objFilename);
+        ModelLoader::loadModel(&StageTransparent::models, objFolder, objFilename);
 
         setModelsRenderOrder(&StageTransparent::models, 3);
     }

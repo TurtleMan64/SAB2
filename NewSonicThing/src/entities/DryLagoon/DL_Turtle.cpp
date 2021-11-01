@@ -4,7 +4,7 @@
 #include "../../models/models.h"
 #include "../../toolbox/vector.h"
 #include "dlturtle.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../../engineTester/main.h"
 #include "../../toolbox/maths.h"
 #include "../camera.h"
@@ -104,11 +104,11 @@ void DL_Turtle::loadStaticModels()
     std::fprintf(stdout, "Loading DL_Turtle static models...\n");
     #endif
 
-    ObjLoader::loadModel(&DL_Turtle::models, "res/Models/Levels/DryLagoon/Objects/", "Turtle");
+    ModelLoader::loadModel(&DL_Turtle::models, "res/Models/Levels/DryLagoon/Objects/", "Turtle");
 
     if (DL_Turtle::cmOriginal == nullptr)
     {
-        DL_Turtle::cmOriginal = ObjLoader::loadCollisionModel("Models/Levels/DryLagoon/Objects/", "TurtleCollision");
+        DL_Turtle::cmOriginal = ModelLoader::loadCollisionModel("Models/Levels/DryLagoon/Objects/", "TurtleCollision");
     }
 }
 

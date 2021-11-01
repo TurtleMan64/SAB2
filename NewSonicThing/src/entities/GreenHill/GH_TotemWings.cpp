@@ -4,7 +4,7 @@
 #include "../../models/models.h"
 #include "../../toolbox/vector.h"
 #include "ghtotemwings.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../../engineTester/main.h"
 #include "../../collision/collisionmodel.h"
 #include "../../collision/collisionchecker.h"
@@ -61,11 +61,11 @@ void GH_TotemWings::loadStaticModels()
     std::fprintf(stdout, "Loading GH_TotemWings static models...\n");
     #endif
 
-    ObjLoader::loadModel(&GH_TotemWings::models, "res/Models/Levels/GreenHillZone/Objects/", "GreenHillTotemWings");
+    ModelLoader::loadModel(&GH_TotemWings::models, "res/Models/Levels/GreenHillZone/Objects/", "GreenHillTotemWings");
 
     if (GH_TotemWings::cmOriginal == nullptr)
     {
-        GH_TotemWings::cmOriginal = ObjLoader::loadCollisionModel("Models/Levels/GreenHillZone/Objects/", "GreenHillTotemCollision");
+        GH_TotemWings::cmOriginal = ModelLoader::loadCollisionModel("Models/Levels/GreenHillZone/Objects/", "GreenHillTotemCollision");
     }
 }
 

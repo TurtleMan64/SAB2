@@ -4,7 +4,7 @@
 #include "../../models/models.h"
 #include "../../toolbox/vector.h"
 #include "rhramp.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../../engineTester/main.h"
 #include "../../entities/playersonic.h"
 #include "../../toolbox/maths.h"
@@ -64,11 +64,11 @@ void RH_Ramp::loadStaticModels()
     std::fprintf(stdout, "Loading RH_Ramp static models...\n");
     #endif
 
-    ObjLoader::loadModel(&RH_Ramp::models, "res/Models/Levels/RadicalHighway/Objects/", "Ramp");
+    ModelLoader::loadModel(&RH_Ramp::models, "res/Models/Levels/RadicalHighway/Objects/", "Ramp");
 
     if (RH_Ramp::cmOriginal == nullptr)
     {
-        RH_Ramp::cmOriginal = ObjLoader::loadCollisionModel("Models/Levels/RadicalHighway/Objects/", "Ramp");
+        RH_Ramp::cmOriginal = ModelLoader::loadCollisionModel("Models/Levels/RadicalHighway/Objects/", "Ramp");
     }
 }
 

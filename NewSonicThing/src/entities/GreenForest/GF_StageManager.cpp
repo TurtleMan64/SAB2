@@ -5,7 +5,7 @@
 #include "../../engineTester/main.h"
 #include "../dummy.h"
 #include "../controllableplayer.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../camera.h"
 #include "../../toolbox/maths.h"
 #include "../../particles/particle.h"
@@ -107,7 +107,7 @@ void GF_StageManager::loadStaticModels()
     std::fprintf(stdout, "Loading GF_StageManager static models...\n");
     #endif
 
-    ObjLoader::loadModel(&GF_StageManager::modelsSkydome,  "res/Models/Levels/GreenForest/", "Skydome");
+    ModelLoader::loadModel(&GF_StageManager::modelsSkydome,  "res/Models/Levels/GreenForest/", "Skydome");
 }
 
 void GF_StageManager::deleteStaticModels()

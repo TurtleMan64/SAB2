@@ -3,7 +3,7 @@
 #include "../camera.h"
 #include "../../engineTester/main.h"
 #include "../../models/models.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../../toolbox/maths.h"
 #include "../../collision/collisionmodel.h"
 #include "../../collision/collisionchecker.h"
@@ -95,11 +95,11 @@ void DL_BlueBox::loadStaticModels()
     std::fprintf(stdout, "Loading DL_BlueBox static models...\n");
     #endif
 
-    ObjLoader::loadModel(&DL_BlueBox::models, "res/Models/Levels/DryLagoon/Objects/", "Box");
+    ModelLoader::loadModel(&DL_BlueBox::models, "res/Models/Levels/DryLagoon/Objects/", "Box");
 
     if (DL_BlueBox::cmOriginal == nullptr)
     {
-        DL_BlueBox::cmOriginal = ObjLoader::loadCollisionModel("Models/Levels/DryLagoon/Objects/", "Box");
+        DL_BlueBox::cmOriginal = ModelLoader::loadCollisionModel("Models/Levels/DryLagoon/Objects/", "Box");
     }
 }
 

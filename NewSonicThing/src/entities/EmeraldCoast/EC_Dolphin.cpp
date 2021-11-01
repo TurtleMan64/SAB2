@@ -4,7 +4,7 @@
 #include "../../models/models.h"
 #include "../../toolbox/vector.h"
 #include "ecdolphin.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../../engineTester/main.h"
 #include "../../entities/playersonic.h"
 #include "../../toolbox/maths.h"
@@ -147,7 +147,7 @@ void EC_Dolphin::loadStaticModels()
     std::fprintf(stdout, "Loading EC_Dolphin static models...\n");
     #endif
 
-    ObjLoader::loadModel(&EC_Dolphin::models, "res/Models/Levels/EmeraldCoast/Dolphin/", "Dolphin");
+    ModelLoader::loadModel(&EC_Dolphin::models, "res/Models/Levels/EmeraldCoast/Dolphin/", "Dolphin");
 }
 
 void EC_Dolphin::deleteStaticModels()

@@ -4,7 +4,7 @@
 #include "../models/models.h"
 #include "../toolbox/vector.h"
 #include "speedramp.h"
-#include "../objLoader/objLoader.h"
+#include "../loading/modelloader.h"
 #include "../engineTester/main.h"
 #include "../entities/playersonic.h"
 #include "../toolbox/maths.h"
@@ -85,11 +85,11 @@ void SpeedRamp::loadStaticModels()
     std::fprintf(stdout, "Loading SpeedRamp static models...\n");
     #endif
 
-    ObjLoader::loadModel(&SpeedRamp::models, "res/Models/Objects/BigJump/", "BigJump");
+    ModelLoader::loadModel(&SpeedRamp::models, "res/Models/Objects/BigJump/", "BigJump");
 
     if (SpeedRamp::cmOriginal == nullptr)
     {
-        SpeedRamp::cmOriginal = ObjLoader::loadCollisionModel("Models/Objects/BigJump/", "BigJump");
+        SpeedRamp::cmOriginal = ModelLoader::loadCollisionModel("Models/Objects/BigJump/", "BigJump");
     }
 }
 

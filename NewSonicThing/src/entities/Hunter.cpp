@@ -4,7 +4,7 @@
 #include "../models/models.h"
 #include "../toolbox/vector.h"
 #include "hunter.h"
-#include "../objLoader/objLoader.h"
+#include "../loading/modelloader.h"
 #include "../engineTester/main.h"
 #include "controllableplayer.h"
 #include "../toolbox/maths.h"
@@ -218,8 +218,8 @@ void Hunter::loadStaticModels()
     std::fprintf(stdout, "Loading Hunter static models...\n");
     #endif
 
-    ObjLoader::loadModel(&Hunter::modelsBody,   "res/Models/Objects/Hunter/", "Hunter");
-    ObjLoader::loadModel(&Hunter::modelsGun,    "res/Models/Objects/Hunter/", "Gun");
+    ModelLoader::loadModel(&Hunter::modelsBody,   "res/Models/Objects/Hunter/", "Hunter");
+    ModelLoader::loadModel(&Hunter::modelsGun,    "res/Models/Objects/Hunter/", "Gun");
 }
 
 void Hunter::deleteStaticModels()

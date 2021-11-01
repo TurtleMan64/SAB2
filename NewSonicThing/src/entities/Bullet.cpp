@@ -4,7 +4,7 @@
 #include "../models/models.h"
 #include "../toolbox/vector.h"
 #include "bullet.h"
-#include "../objLoader/objLoader.h"
+#include "../loading/modelloader.h"
 #include "../engineTester/main.h"
 #include "../entities/controllableplayer.h"
 #include "../toolbox/maths.h"
@@ -105,7 +105,7 @@ void Bullet::loadStaticModels()
     std::fprintf(stdout, "Loading Bullet static models...\n");
     #endif
 
-    ObjLoader::loadModel(&Bullet::models, "res/Models/Objects/Bullet/", "Bullet");
+    ModelLoader::loadModel(&Bullet::models, "res/Models/Objects/Bullet/", "Bullet");
 
     setModelsRenderOrder(&Bullet::models, 3);
 }

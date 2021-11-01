@@ -4,7 +4,7 @@
 #include "../models/models.h"
 #include "../toolbox/vector.h"
 #include "rocket.h"
-#include "../objLoader/objLoader.h"
+#include "../loading/modelloader.h"
 #include "../engineTester/main.h"
 #include "../entities/controllableplayer.h"
 #include "../toolbox/maths.h"
@@ -163,12 +163,12 @@ void Rocket::loadStaticModels()
     std::fprintf(stdout, "Loading Rocket static models...\n");
     #endif
 
-    ObjLoader::loadModel(&Rocket::modelsRocket, "res/Models/Objects/Rocket/", "Rocket");
-    ObjLoader::loadModel(&Rocket::modelsBase,   "res/Models/Objects/Rocket/", "RocketPlatform");
+    ModelLoader::loadModel(&Rocket::modelsRocket, "res/Models/Objects/Rocket/", "Rocket");
+    ModelLoader::loadModel(&Rocket::modelsBase,   "res/Models/Objects/Rocket/", "RocketPlatform");
 
     if (Rocket::cmBase == nullptr)
     {
-        Rocket::cmBase = ObjLoader::loadCollisionModel("Models/Objects/Rocket/", "RocketPlatformCollision");
+        Rocket::cmBase = ModelLoader::loadCollisionModel("Models/Objects/Rocket/", "RocketPlatformCollision");
     }
 }
 

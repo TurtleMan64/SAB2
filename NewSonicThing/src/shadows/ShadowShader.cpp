@@ -6,7 +6,7 @@
 #include "../entities/camera.h"
 #include "../toolbox/maths.h"
 #include "../entities/light.h"
-#include "../renderEngine/loader.h"
+#include "../loading/loader.h"
 
 ShadowShader::ShadowShader(const char* vertexFile, const char* fragmentFile)
 {

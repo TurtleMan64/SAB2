@@ -4,7 +4,7 @@
 #include "../../models/models.h"
 #include "../../toolbox/vector.h"
 #include "nbpalmtree.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../../engineTester/main.h"
 #include "../../collision/collisionmodel.h"
 #include "../../collision/collisionchecker.h"
@@ -61,11 +61,11 @@ void NB_Palmtree::loadStaticModels()
     std::fprintf(stdout, "Loading NB_Palmtree static models...\n");
     #endif
 
-    ObjLoader::loadModel(&NB_Palmtree::models, "res/Models/Levels/NokiBay/Palmtree/", "Palm");
+    ModelLoader::loadModel(&NB_Palmtree::models, "res/Models/Levels/NokiBay/Palmtree/", "Palm");
 
     if (NB_Palmtree::cmOriginal == nullptr)
     {
-        NB_Palmtree::cmOriginal = ObjLoader::loadCollisionModel("Models/Levels/NokiBay/Palmtree/", "Collision");
+        NB_Palmtree::cmOriginal = ModelLoader::loadCollisionModel("Models/Levels/NokiBay/Palmtree/", "Collision");
     }
 }
 

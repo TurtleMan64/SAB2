@@ -4,7 +4,7 @@
 #include "../../models/models.h"
 #include "../../toolbox/vector.h"
 #include "dpbigshine.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../../engineTester/main.h"
 
 #include <list>
@@ -55,7 +55,7 @@ void DP_BigShine::loadStaticModels()
     std::fprintf(stdout, "Loading DP_BigShine static models...\n");
     #endif
 
-    ObjLoader::loadModel(&DP_BigShine::models, "res/Models/Levels/DelfinoPlaza/BigShine/", "BigShine");
+    ModelLoader::loadModel(&DP_BigShine::models, "res/Models/Levels/DelfinoPlaza/BigShine/", "BigShine");
 }
 
 void DP_BigShine::deleteStaticModels()

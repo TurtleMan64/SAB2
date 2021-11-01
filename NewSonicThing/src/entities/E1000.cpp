@@ -4,7 +4,7 @@
 #include "../models/models.h"
 #include "../toolbox/vector.h"
 #include "e1000.h"
-#include "../objLoader/objLoader.h"
+#include "../loading/modelloader.h"
 #include "../engineTester/main.h"
 #include "controllableplayer.h"
 #include "../toolbox/maths.h"
@@ -274,8 +274,8 @@ void E1000::loadStaticModels()
     std::fprintf(stdout, "Loading E1000 static models...\n");
     #endif
 
-    ObjLoader::loadModel(&E1000::modelsBody,   "res/Models/Objects/E1000/", "E1000");
-    ObjLoader::loadModel(&E1000::modelsGun,    "res/Models/Objects/E1000/", "Gun");
+    ModelLoader::loadModel(&E1000::modelsBody,   "res/Models/Objects/E1000/", "E1000");
+    ModelLoader::loadModel(&E1000::modelsGun,    "res/Models/Objects/E1000/", "Gun");
 }
 
 void E1000::deleteStaticModels()

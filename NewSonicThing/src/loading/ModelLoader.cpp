@@ -7,10 +7,10 @@
 #include <unordered_map>
 #include <list>
 
-#include "objLoader.h"
+#include "modelloader.h"
 #include "../models/models.h"
 #include "../textures/modeltexture.h"
-#include "../renderEngine/loader.h"
+#include "../loading/loader.h"
 #include "../toolbox/vector.h"
 #include "vertex.h"
 #include "../engineTester/main.h"
@@ -22,7 +22,7 @@
 #include "../collision/quadtreenode.h"
 #include "../toolbox/maths.h"
 
-int ObjLoader::loadModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName)
+int ModelLoader::loadModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName)
 {
     int attemptBinaryOBJ = loadBinaryModel(models, filePath, fileName+".binobj");
     
@@ -53,7 +53,7 @@ int ObjLoader::loadModel(std::list<TexturedModel*>* models, std::string filePath
 //int numAdditionalVertices = 0;
 
 //Each TexturedModel contained within 'models' must be deleted later.
-int ObjLoader::loadBinaryModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName)
+int ModelLoader::loadBinaryModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName)
 {
     if (models->size() > 0)
     {
@@ -70,7 +70,7 @@ int ObjLoader::loadBinaryModel(std::list<TexturedModel*>* models, std::string fi
     }
 
     char fileType[4];
-    ObjLoader::read(fileType, 4, file);
+    ModelLoader::read(fileType, 4, file);
     if (fileType[0] != 'o' || 
         fileType[1] != 'b' ||
         fileType[2] != 'j' ||
@@ -90,11 +90,11 @@ int ObjLoader::loadBinaryModel(std::list<TexturedModel*>* models, std::string fi
     std::vector<ModelTexture> modelTextures;
 
     int mtllibLength;
-    ObjLoader::read(&mtllibLength, 4, file);
+    ModelLoader::read(&mtllibLength, 4, file);
     for (int i = 0; i < mtllibLength; i++)
     {
         char nextChar;
-        ObjLoader::read(&nextChar, 1, file);
+        ModelLoader::read(&nextChar, 1, file);
         mtlname = mtlname + nextChar;
     }
 
@@ -103,12 +103,12 @@ int ObjLoader::loadBinaryModel(std::list<TexturedModel*>* models, std::string fi
 
 
     int numVertices;
-    ObjLoader::read(&numVertices, 4, file);
+    ModelLoader::read(&numVertices, 4, file);
     vertices.reserve(numVertices*2);
     for (int i = 0; i < numVertices; i++)
     {
         float t[3];
-        ObjLoader::read(t, 12, file);
+        ModelLoader::read(t, 12, file);
 
         Vector3f vertex(t[0], t[1], t[2]);
         Vertex* newVertex = new Vertex((int)vertices.size(), &vertex); INCR_NEW("Vertex");
@@ -116,24 +116,24 @@ int ObjLoader::loadBinaryModel(std::list<TexturedModel*>* models, std::string fi
     }
 
     int numTexCoords;
-    ObjLoader::read(&numTexCoords, 4, file);
+    ModelLoader::read(&numTexCoords, 4, file);
     textures.reserve(numTexCoords);
     for (int i = 0; i < numTexCoords; i++)
     {
         float t[2];
-        ObjLoader::read(t, 8, file);
+        ModelLoader::read(t, 8, file);
 
         Vector2f texCoord(t[0], t[1]);
         textures.push_back(texCoord);
     }
 
     int numNormals;
-    ObjLoader::read(&numNormals, 4, file);
+    ModelLoader::read(&numNormals, 4, file);
     normals.reserve(numNormals);
     for (int i = 0; i < numNormals; i++)
     {
         float t[3];
-        ObjLoader::read(t, 12, file);
+        ModelLoader::read(t, 12, file);
 
         Vector3f normal(t[0], t[1], t[2]);
         normals.push_back(normal);
@@ -147,17 +147,17 @@ int ObjLoader::loadBinaryModel(std::list<TexturedModel*>* models, std::string fi
     //fread(&bytesPerIndVN, sizeof(int), 1, file);
 
     int numMaterials;
-    ObjLoader::read(&numMaterials, 4, file);
+    ModelLoader::read(&numMaterials, 4, file);
     rawModelsList.reserve(numMaterials);
     for (int m = 0; m < numMaterials; m++)
     {
         int matnameLength;
-        ObjLoader::read(&matnameLength, 4, file);
+        ModelLoader::read(&matnameLength, 4, file);
         std::string matname = "";
         for (int c = 0; c < matnameLength; c++)
         {
             char nextChar;
-            ObjLoader::read(&nextChar, 1, file);
+            ModelLoader::read(&nextChar, 1, file);
             matname = matname + nextChar;
         }
 
@@ -165,7 +165,7 @@ int ObjLoader::loadBinaryModel(std::list<TexturedModel*>* models, std::string fi
 
         std::vector<int> indices;
         int numFaces;
-        ObjLoader::read(&numFaces, 4, file);
+        ModelLoader::read(&numFaces, 4, file);
         indices.reserve(numFaces*9);
         for (int i = 0; i < numFaces; i++)
         {
@@ -183,7 +183,7 @@ int ObjLoader::loadBinaryModel(std::list<TexturedModel*>* models, std::string fi
 
             int f[9];
 
-            ObjLoader::read(&f[0], 36, file);
+            ModelLoader::read(&f[0], 36, file);
 
             processVertexBinary(f[0], f[1], f[2], &vertices, &indices);
             processVertexBinary(f[3], f[4], f[5], &vertices, &indices);
@@ -223,7 +223,7 @@ int ObjLoader::loadBinaryModel(std::list<TexturedModel*>* models, std::string fi
 }
 
 //Each TexturedModel contained within 'models' must be deleted later.
-int ObjLoader::loadVclModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName)
+int ModelLoader::loadVclModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName)
 {
     if (models->size() > 0)
     {
@@ -240,7 +240,7 @@ int ObjLoader::loadVclModel(std::list<TexturedModel*>* models, std::string fileP
     }
 
     char fileType[4];
-    ObjLoader::read(fileType, 4, file);
+    ModelLoader::read(fileType, 4, file);
     if (fileType[0] != 'v' || 
         fileType[1] != 'c' ||
         fileType[2] != 'l' ||
@@ -260,11 +260,11 @@ int ObjLoader::loadVclModel(std::list<TexturedModel*>* models, std::string fileP
     std::vector<ModelTexture> modelTextures;
 
     int mtllibLength;
-    ObjLoader::read(&mtllibLength, 4, file);
+    ModelLoader::read(&mtllibLength, 4, file);
     for (int i = 0; i < mtllibLength; i++)
     {
         char nextChar;
-        ObjLoader::read(&nextChar, 1, file);
+        ModelLoader::read(&nextChar, 1, file);
         mtlname = mtlname + nextChar;
     }
 
@@ -272,18 +272,18 @@ int ObjLoader::loadVclModel(std::list<TexturedModel*>* models, std::string fileP
     parseMtl(filePath, mtlname, &mtlMap);
 
     int numVertices;
-    ObjLoader::read(&numVertices, 4, file);
+    ModelLoader::read(&numVertices, 4, file);
     vertices.reserve(numVertices*2);
     for (int i = 0; i < numVertices; i++)
     {
         float t[3];
-        ObjLoader::read(t, 12, file);
+        ModelLoader::read(t, 12, file);
 
         Vector3f vertex(t[0], t[1], t[2]);
         Vertex* newVertex = new Vertex((int)vertices.size(), &vertex); INCR_NEW("Vertex");
 
         unsigned char c[3];
-        ObjLoader::read(c, 3, file);
+        ModelLoader::read(c, 3, file);
         float red   = ((float)c[0])/255.0f;
         float green = ((float)c[1])/255.0f;
         float blue  = ((float)c[2])/255.0f;
@@ -295,12 +295,12 @@ int ObjLoader::loadVclModel(std::list<TexturedModel*>* models, std::string fileP
     //numAdditionalVertices = 0;
 
     int numTexCoords;
-    ObjLoader::read(&numTexCoords, 4, file);
+    ModelLoader::read(&numTexCoords, 4, file);
     textures.reserve(numTexCoords);
     for (int i = 0; i < numTexCoords; i++)
     {
         float t[2];
-        ObjLoader::read(t, 8, file);
+        ModelLoader::read(t, 8, file);
 
         Vector2f texCoord(t[0], t[1]);
         textures.push_back(texCoord);
@@ -315,18 +315,18 @@ int ObjLoader::loadVclModel(std::list<TexturedModel*>* models, std::string fileP
     normals.push_back(normal);
 
     int numMaterials;
-    ObjLoader::read(&numMaterials, 4, file);
+    ModelLoader::read(&numMaterials, 4, file);
     rawModelsList.reserve(numMaterials);
     modelTextures.reserve(numMaterials);
     for (int m = 0; m < numMaterials; m++)
     {
         int matnameLength;
-        ObjLoader::read(&matnameLength, 4, file);
+        ModelLoader::read(&matnameLength, 4, file);
         std::string matname = "";
         for (int c = 0; c < matnameLength; c++)
         {
             char nextChar;
-            ObjLoader::read(&nextChar, 1, file);
+            ModelLoader::read(&nextChar, 1, file);
             matname = matname + nextChar;
         }
 
@@ -334,7 +334,7 @@ int ObjLoader::loadVclModel(std::list<TexturedModel*>* models, std::string fileP
 
         std::vector<int> indices;
         int numFaces;
-        ObjLoader::read(&numFaces, 4, file);
+        ModelLoader::read(&numFaces, 4, file);
         indices.reserve(numFaces*9);
         for (int i = 0; i < numFaces; i++)
         {
@@ -349,7 +349,7 @@ int ObjLoader::loadVclModel(std::list<TexturedModel*>* models, std::string fileP
 
             int f[6];
 
-            ObjLoader::read(&f[0], 24, file);
+            ModelLoader::read(&f[0], 24, file);
 
             processVertexBinary(f[0], f[1], 1, &vertices, &indices);
             processVertexBinary(f[2], f[3], 1, &vertices, &indices);
@@ -390,7 +390,7 @@ int ObjLoader::loadVclModel(std::list<TexturedModel*>* models, std::string fileP
     return 0;
 }
 
-int ObjLoader::loadObjModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName)
+int ModelLoader::loadObjModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName)
 {
     if (models->size() > 0)
     {
@@ -579,7 +579,7 @@ int ObjLoader::loadObjModel(std::list<TexturedModel*>* models, std::string fileP
     return 0;
 }
 
-void ObjLoader::parseMtl(std::string filePath, std::string fileName, std::unordered_map<std::string, ModelTexture>* outMtlMap)
+void ModelLoader::parseMtl(std::string filePath, std::string fileName, std::unordered_map<std::string, ModelTexture>* outMtlMap)
 {
     //map that we fill in, from the mtl file
     if (!outMtlMap->empty())
@@ -776,7 +776,7 @@ void ObjLoader::parseMtl(std::string filePath, std::string fileName, std::unorde
 
 }
 
-int ObjLoader::loadObjModelWithMTL(std::list<TexturedModel*>* models, std::string filePath, std::string fileNameOBJ, std::string fileNameMTL)
+int ModelLoader::loadObjModelWithMTL(std::list<TexturedModel*>* models, std::string filePath, std::string fileNameOBJ, std::string fileNameMTL)
 {
     if (models->size() > 0)
     {
@@ -950,7 +950,7 @@ int ObjLoader::loadObjModelWithMTL(std::list<TexturedModel*>* models, std::strin
     return 0;
 }
 
-int ObjLoader::loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::string filePath, std::string fileNameBin, std::string fileNameMTL)
+int ModelLoader::loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::string filePath, std::string fileNameBin, std::string fileNameMTL)
 {
     if (models->size() > 0)
     {
@@ -967,7 +967,7 @@ int ObjLoader::loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::st
     }
 
     char fileType[4];
-    ObjLoader::read(fileType, 4, file);
+    ModelLoader::read(fileType, 4, file);
     if (fileType[0] != 'o' || 
         fileType[1] != 'b' ||
         fileType[2] != 'j' ||
@@ -987,11 +987,11 @@ int ObjLoader::loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::st
     std::vector<ModelTexture> modelTextures;
 
     int mtllibLength;
-    ObjLoader::read(&mtllibLength, 4, file);
+    ModelLoader::read(&mtllibLength, 4, file);
     for (int i = 0; i < mtllibLength; i++)
     {
         char nextChar;
-        ObjLoader::read(&nextChar, 1, file);
+        ModelLoader::read(&nextChar, 1, file);
         mtlname = mtlname + nextChar;
     }
 
@@ -999,12 +999,12 @@ int ObjLoader::loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::st
     parseMtl(filePath, fileNameMTL, &mtlMap);
 
     int numVertices;
-    ObjLoader::read(&numVertices, 4, file);
+    ModelLoader::read(&numVertices, 4, file);
     vertices.reserve(numVertices);
     for (int i = 0; i < numVertices; i++)
     {
         float t[3];
-        ObjLoader::read(t, 12, file);
+        ModelLoader::read(t, 12, file);
 
         Vector3f vertex(t[0], t[1], t[2]);
         Vertex* newVertex = new Vertex((int)vertices.size(), &vertex); INCR_NEW("Vertex");
@@ -1012,24 +1012,24 @@ int ObjLoader::loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::st
     }
 
     int numTexCoords;
-    ObjLoader::read(&numTexCoords, 4, file);
+    ModelLoader::read(&numTexCoords, 4, file);
     textures.reserve(numTexCoords);
     for (int i = 0; i < numTexCoords; i++)
     {
         float t[2];
-        ObjLoader::read(t, 8, file);
+        ModelLoader::read(t, 8, file);
 
         Vector2f texCoord(t[0], t[1]);
         textures.push_back(texCoord);
     }
 
     int numNormals;
-    ObjLoader::read(&numNormals, 4, file);
+    ModelLoader::read(&numNormals, 4, file);
     normals.reserve(numNormals);
     for (int i = 0; i < numNormals; i++)
     {
         float t[3];
-        ObjLoader::read(t, 12, file);
+        ModelLoader::read(t, 12, file);
 
         Vector3f normal(t[0], t[1], t[2]);
         normals.push_back(normal);
@@ -1043,17 +1043,17 @@ int ObjLoader::loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::st
     //fread(&bytesPerIndVN, sizeof(int), 1, file);
 
     int numMaterials;
-    ObjLoader::read(&numMaterials, 4, file);
+    ModelLoader::read(&numMaterials, 4, file);
     rawModelsList.reserve(numMaterials);
     for (int m = 0; m < numMaterials; m++)
     {
         int matnameLength;
-        ObjLoader::read(&matnameLength, 4, file);
+        ModelLoader::read(&matnameLength, 4, file);
         std::string matname = "";
         for (int c = 0; c < matnameLength; c++)
         {
             char nextChar;
-            ObjLoader::read(&nextChar, 1, file);
+            ModelLoader::read(&nextChar, 1, file);
             matname = matname + nextChar;
         }
 
@@ -1061,7 +1061,7 @@ int ObjLoader::loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::st
 
         std::vector<int> indices;
         int numFaces;
-        ObjLoader::read(&numFaces, 4, file);
+        ModelLoader::read(&numFaces, 4, file);
         indices.reserve(numFaces*9);
         for (int i = 0; i < numFaces; i++)
         {
@@ -1079,7 +1079,7 @@ int ObjLoader::loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::st
 
             int f[9];
 
-            ObjLoader::read(&f[0], 36, file);
+            ModelLoader::read(&f[0], 36, file);
 
             processVertexBinary(f[0], f[1], f[2], &vertices, &indices);
             processVertexBinary(f[3], f[4], f[5], &vertices, &indices);
@@ -1118,7 +1118,7 @@ int ObjLoader::loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::st
     return 0;
 }
 
-void ObjLoader::processVertex(char** vertex,
+void ModelLoader::processVertex(char** vertex,
     std::vector<Vertex*>* vertices,
     std::vector<int>* indices)
 {
@@ -1139,7 +1139,7 @@ void ObjLoader::processVertex(char** vertex,
     }
 }
 
-void ObjLoader::processVertexBinary(int vIndex, int tIndex, int nIndex,
+void ModelLoader::processVertexBinary(int vIndex, int tIndex, int nIndex,
     std::vector<Vertex*>* vertices,
     std::vector<int>* indices)
 {
@@ -1160,7 +1160,7 @@ void ObjLoader::processVertexBinary(int vIndex, int tIndex, int nIndex,
     }
 }
 
-void ObjLoader::dealWithAlreadyProcessedVertex(
+void ModelLoader::dealWithAlreadyProcessedVertex(
     Vertex* previousVertex,
     int newTextureIndex,
     int newNormalIndex,
@@ -1193,7 +1193,7 @@ void ObjLoader::dealWithAlreadyProcessedVertex(
 }
 
 
-void ObjLoader::convertDataToArrays(
+void ModelLoader::convertDataToArrays(
     std::vector<Vertex*>* vertices, 
     std::vector<Vector2f>* textures,
     std::vector<Vector3f>* normals, 
@@ -1222,7 +1222,7 @@ void ObjLoader::convertDataToArrays(
     }
 }
 
-void ObjLoader::removeUnusedVertices(std::vector<Vertex*>* vertices)
+void ModelLoader::removeUnusedVertices(std::vector<Vertex*>* vertices)
 {
     for (auto vertex : (*vertices))
     {
@@ -1234,7 +1234,7 @@ void ObjLoader::removeUnusedVertices(std::vector<Vertex*>* vertices)
     }
 }
 
-CollisionModel* ObjLoader::loadCollisionModel(std::string filePath, std::string fileName)
+CollisionModel* ModelLoader::loadCollisionModel(std::string filePath, std::string fileName)
 {
     CollisionModel* collisionModel = new CollisionModel; INCR_NEW("CollisionModel");
 
@@ -1399,33 +1399,33 @@ CollisionModel* ObjLoader::loadCollisionModel(std::string filePath, std::string 
     return collisionModel;
 }
 
-void ObjLoader::workOnQuadTreeNode(FILE* file, QuadTreeNode* node)
+void ModelLoader::workOnQuadTreeNode(FILE* file, QuadTreeNode* node)
 {
     //read in header for this node
-    ObjLoader::read(&node->depth,          4, file);
-    ObjLoader::read(&node->xMid,           4, file);
-    ObjLoader::read(&node->zMid,           4, file);
-    ObjLoader::read(&node->xMinHorizontal, 4, file);
-    ObjLoader::read(&node->xMaxHorizontal, 4, file);
-    ObjLoader::read(&node->yMinHorizontal, 4, file);
-    ObjLoader::read(&node->yMaxHorizontal, 4, file);
-    ObjLoader::read(&node->zMinHorizontal, 4, file);
-    ObjLoader::read(&node->zMaxHorizontal, 4, file);
+    ModelLoader::read(&node->depth,          4, file);
+    ModelLoader::read(&node->xMid,           4, file);
+    ModelLoader::read(&node->zMid,           4, file);
+    ModelLoader::read(&node->xMinHorizontal, 4, file);
+    ModelLoader::read(&node->xMaxHorizontal, 4, file);
+    ModelLoader::read(&node->yMinHorizontal, 4, file);
+    ModelLoader::read(&node->yMaxHorizontal, 4, file);
+    ModelLoader::read(&node->zMinHorizontal, 4, file);
+    ModelLoader::read(&node->zMaxHorizontal, 4, file);
     int numTriangles;
-    ObjLoader::read(&numTriangles,         4, file);
+    ModelLoader::read(&numTriangles,         4, file);
     node->trisHorizontal.reserve(numTriangles+1); //not sure if i need to +1 but might as well
 
     //read in all the triangles
     for (int i = 0; i < numTriangles; i++)
     {
         char triBuf[92];
-        ObjLoader::read(triBuf, 92, file);
+        ModelLoader::read(triBuf, 92, file);
         Triangle3D* newTri = new Triangle3D(triBuf); INCR_NEW("Triangle3D");
         node->trisHorizontal.push_back(newTri);
     }
 
     char children[4];
-    ObjLoader::read(children, 4, file);
+    ModelLoader::read(children, 4, file);
 
     if (children[0] != 0) //top left
     {
@@ -1456,7 +1456,7 @@ void ObjLoader::workOnQuadTreeNode(FILE* file, QuadTreeNode* node)
     }
 }
 
-inline void ObjLoader::read(void* buf, int numBytesToRead, FILE* file)
+inline void ModelLoader::read(void* buf, int numBytesToRead, FILE* file)
 {
     int numRead = (int)fread(buf, sizeof(char), numBytesToRead, file);
     if (numRead != numBytesToRead)
@@ -1465,7 +1465,7 @@ inline void ObjLoader::read(void* buf, int numBytesToRead, FILE* file)
     }
 }
 
-CollisionModel* ObjLoader::loadBinaryQuadTree(std::string filePath, std::string fileName)
+CollisionModel* ModelLoader::loadBinaryQuadTree(std::string filePath, std::string fileName)
 {
     FILE* file = nullptr;
     int err = fopen_s(&file, (Global::pathToEXE + "res/" + filePath+fileName+".qtree").c_str(), "rb");
@@ -1478,7 +1478,7 @@ CollisionModel* ObjLoader::loadBinaryQuadTree(std::string filePath, std::string 
     CollisionModel* collisionModel = new CollisionModel; INCR_NEW("CollisionModel");
 
     char fileType[4];
-    ObjLoader::read(fileType, 4, file);
+    ModelLoader::read(fileType, 4, file);
     if (fileType[0] != 'q' ||
         fileType[1] != 't' ||
         fileType[2] != 'r' ||
@@ -1489,17 +1489,17 @@ CollisionModel* ObjLoader::loadBinaryQuadTree(std::string filePath, std::string 
     }
 
     //collision model header
-    ObjLoader::read(&collisionModel->treeMaxDepth,   4, file);
-    ObjLoader::read(&collisionModel->leafNodeWidth,  4, file);
-    ObjLoader::read(&collisionModel->leafNodeHeight, 4, file);
-    ObjLoader::read(&collisionModel->maxX,           4, file);
-    ObjLoader::read(&collisionModel->minX,           4, file);
-    ObjLoader::read(&collisionModel->maxY,           4, file);
-    ObjLoader::read(&collisionModel->minY,           4, file);
-    ObjLoader::read(&collisionModel->maxZ,           4, file);
-    ObjLoader::read(&collisionModel->minZ,           4, file);
+    ModelLoader::read(&collisionModel->treeMaxDepth,   4, file);
+    ModelLoader::read(&collisionModel->leafNodeWidth,  4, file);
+    ModelLoader::read(&collisionModel->leafNodeHeight, 4, file);
+    ModelLoader::read(&collisionModel->maxX,           4, file);
+    ModelLoader::read(&collisionModel->minX,           4, file);
+    ModelLoader::read(&collisionModel->maxY,           4, file);
+    ModelLoader::read(&collisionModel->minY,           4, file);
+    ModelLoader::read(&collisionModel->maxZ,           4, file);
+    ModelLoader::read(&collisionModel->minZ,           4, file);
     int hasRootNode;
-    ObjLoader::read(&hasRootNode,                    4, file);
+    ModelLoader::read(&hasRootNode,                    4, file);
 
     //read rest of file recursively in helper function
     if (hasRootNode)
@@ -1514,7 +1514,7 @@ CollisionModel* ObjLoader::loadBinaryQuadTree(std::string filePath, std::string 
     return collisionModel;
 }
 
-CollisionModel* ObjLoader::loadBinaryCollisionModel(std::string filePath, std::string fileName)
+CollisionModel* ModelLoader::loadBinaryCollisionModel(std::string filePath, std::string fileName)
 {
     std::list<FakeTexture> fakeTextures;
     std::vector<Vector3f> vertices;
@@ -1534,7 +1534,7 @@ CollisionModel* ObjLoader::loadBinaryCollisionModel(std::string filePath, std::s
     CollisionModel* collisionModel = new CollisionModel; INCR_NEW("CollisionModel");
 
     char fileType[4];
-    ObjLoader::read(fileType, 4, file);
+    ModelLoader::read(fileType, 4, file);
     if (fileType[0] != 'c' || 
         fileType[1] != 'o' ||
         fileType[2] != 'l' ||
@@ -1546,11 +1546,11 @@ CollisionModel* ObjLoader::loadBinaryCollisionModel(std::string filePath, std::s
 
     std::string mtlname = "";
     int mtllibLength;
-    ObjLoader::read(&mtllibLength, 4, file);
+    ModelLoader::read(&mtllibLength, 4, file);
     for (int i = 0; i < mtllibLength; i++)
     {
         char nextChar;
-        ObjLoader::read(&nextChar, 1, file);
+        ModelLoader::read(&nextChar, 1, file);
         mtlname = mtlname + nextChar;
     }
 
@@ -1632,12 +1632,12 @@ CollisionModel* ObjLoader::loadBinaryCollisionModel(std::string filePath, std::s
 
 
     int numVertices;
-    ObjLoader::read(&numVertices, 4, file);
+    ModelLoader::read(&numVertices, 4, file);
     vertices.reserve(numVertices);
     for (int i = 0; i < numVertices; i++)
     {
         float t[3];
-        ObjLoader::read(t, 12, file);
+        ModelLoader::read(t, 12, file);
 
         Vector3f vertex(t[0], t[1], t[2]);
         vertices.push_back(vertex);
@@ -1647,16 +1647,16 @@ CollisionModel* ObjLoader::loadBinaryCollisionModel(std::string filePath, std::s
     //fread(&bytesPerIndV, sizeof(int), 1, file);
 
     int numMaterials;
-    ObjLoader::read(&numMaterials, 4, file);
+    ModelLoader::read(&numMaterials, 4, file);
     for (int m = 0; m < numMaterials; m++)
     {
         int matnameLength;
-        ObjLoader::read(&matnameLength, 4, file);
+        ModelLoader::read(&matnameLength, 4, file);
         std::string matname = "";
         for (int c = 0; c < matnameLength; c++)
         {
             char nextChar;
-            ObjLoader::read(&nextChar, 1, file);
+            ModelLoader::read(&nextChar, 1, file);
             matname = matname + nextChar;
         }
 
@@ -1676,7 +1676,7 @@ CollisionModel* ObjLoader::loadBinaryCollisionModel(std::string filePath, std::s
 
         std::vector<int> indices;
         int numFaces;
-        ObjLoader::read(&numFaces, 4, file);
+        ModelLoader::read(&numFaces, 4, file);
         indices.reserve(numFaces*3);
         for (int i = 0; i < numFaces; i++)
         {
@@ -1688,7 +1688,7 @@ CollisionModel* ObjLoader::loadBinaryCollisionModel(std::string filePath, std::s
 
             int f[3];
 
-            ObjLoader::read(&f[0], 12, file);
+            ModelLoader::read(&f[0], 12, file);
 
             Triangle3D* tri = new Triangle3D(&vertices[f[0]-1], &vertices[f[1]-1], &vertices[f[2]-1], currType, currSound, currParticle); INCR_NEW("Triangle3D");
 
@@ -1702,7 +1702,7 @@ CollisionModel* ObjLoader::loadBinaryCollisionModel(std::string filePath, std::s
     return collisionModel;
 }
 
-void ObjLoader::deleteUnusedMtl(std::unordered_map<std::string, ModelTexture>* mtlMap, std::vector<ModelTexture>* usedMtls)
+void ModelLoader::deleteUnusedMtl(std::unordered_map<std::string, ModelTexture>* mtlMap, std::vector<ModelTexture>* usedMtls)
 {
     //for some extremely bizarre reason, I cannot make a set or a map on the stack in this specific function.
     // "trying to use deleted function" or something...

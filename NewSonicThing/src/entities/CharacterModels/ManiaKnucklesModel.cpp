@@ -4,7 +4,7 @@
 #include "../../models/models.h"
 #include "../../toolbox/vector.h"
 #include "maniaknucklesmodel.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../../engineTester/main.h"
 #include "../../entities/playersonic.h"
 #include "../../toolbox/maths.h"
@@ -465,55 +465,55 @@ void ManiaKnucklesModel::loadStaticModels()
     std::fprintf(stdout, "Loading mania knuckles static models...\n");
     #endif
 
-    ObjLoader::ObjLoader::loadModel(&ManiaKnucklesModel::modelBody,         "res/Models/Characters/ManiaKnuckles/", "Body");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelHead,         "res/Models/Characters/ManiaKnuckles/", "Head");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelLeftHumerus,  "res/Models/Characters/ManiaKnuckles/", "Thigh");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelLeftForearm,  "res/Models/Characters/ManiaKnuckles/", "Forearm");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelLeftHand,     "res/Models/Characters/ManiaKnuckles/", "HandLeft");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelLeftThigh,    "res/Models/Characters/ManiaKnuckles/", "Thigh");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelLeftShin,     "res/Models/Characters/ManiaKnuckles/", "Shin");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelLeftFoot,     "res/Models/Characters/ManiaKnuckles/", "FootLeft");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelRightHumerus, "res/Models/Characters/ManiaKnuckles/", "Thigh");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelRightForearm, "res/Models/Characters/ManiaKnuckles/", "Forearm");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelRightHand,    "res/Models/Characters/ManiaKnuckles/", "HandRight");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelRightThigh,   "res/Models/Characters/ManiaKnuckles/", "Thigh");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelRightShin,    "res/Models/Characters/ManiaKnuckles/", "Shin");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelRightFoot,    "res/Models/Characters/ManiaKnuckles/", "FootRight");
+    ModelLoader::ModelLoader::loadModel(&ManiaKnucklesModel::modelBody,         "res/Models/Characters/ManiaKnuckles/", "Body");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelHead,         "res/Models/Characters/ManiaKnuckles/", "Head");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelLeftHumerus,  "res/Models/Characters/ManiaKnuckles/", "Thigh");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelLeftForearm,  "res/Models/Characters/ManiaKnuckles/", "Forearm");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelLeftHand,     "res/Models/Characters/ManiaKnuckles/", "HandLeft");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelLeftThigh,    "res/Models/Characters/ManiaKnuckles/", "Thigh");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelLeftShin,     "res/Models/Characters/ManiaKnuckles/", "Shin");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelLeftFoot,     "res/Models/Characters/ManiaKnuckles/", "FootLeft");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelRightHumerus, "res/Models/Characters/ManiaKnuckles/", "Thigh");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelRightForearm, "res/Models/Characters/ManiaKnuckles/", "Forearm");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelRightHand,    "res/Models/Characters/ManiaKnuckles/", "HandRight");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelRightThigh,   "res/Models/Characters/ManiaKnuckles/", "Thigh");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelRightShin,    "res/Models/Characters/ManiaKnuckles/", "Shin");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelRightFoot,    "res/Models/Characters/ManiaKnuckles/", "FootRight");
 
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelDash0    , "res/Models/Characters/ManiaKnuckles/", "KnuxDash0");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelDash1    , "res/Models/Characters/ManiaKnuckles/", "KnuxDash1");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelDash2    , "res/Models/Characters/ManiaKnuckles/", "KnuxDash2");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelDash3    , "res/Models/Characters/ManiaKnuckles/", "KnuxDash3");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelDash4    , "res/Models/Characters/ManiaKnuckles/", "KnuxDash4");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelDash5    , "res/Models/Characters/ManiaKnuckles/", "KnuxDash5");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelDash6    , "res/Models/Characters/ManiaKnuckles/", "KnuxDash6");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelDash7    , "res/Models/Characters/ManiaKnuckles/", "KnuxDash7");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelDash8    , "res/Models/Characters/ManiaKnuckles/", "KnuxDash8");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelDash9    , "res/Models/Characters/ManiaKnuckles/", "KnuxDash9");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelDash10   , "res/Models/Characters/ManiaKnuckles/", "KnuxDash10");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelDash11   , "res/Models/Characters/ManiaKnuckles/", "KnuxDash11");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelJump     , "res/Models/Characters/ManiaKnuckles/", "KnuxJump");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelJog0     , "res/Models/Characters/ManiaKnuckles/", "KnuxJog0");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelJog1     , "res/Models/Characters/ManiaKnuckles/", "KnuxJog1");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelJog2     , "res/Models/Characters/ManiaKnuckles/", "KnuxJog2");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelJog3     , "res/Models/Characters/ManiaKnuckles/", "KnuxJog3");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelJog4     , "res/Models/Characters/ManiaKnuckles/", "KnuxJog4");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelJog5     , "res/Models/Characters/ManiaKnuckles/", "KnuxJog5");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelJog6     , "res/Models/Characters/ManiaKnuckles/", "KnuxJog6");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelJog7     , "res/Models/Characters/ManiaKnuckles/", "KnuxJog7");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelJog8     , "res/Models/Characters/ManiaKnuckles/", "KnuxJog8");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelJog9     , "res/Models/Characters/ManiaKnuckles/", "KnuxJog9");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelJog10    , "res/Models/Characters/ManiaKnuckles/", "KnuxJog10");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelJog11    , "res/Models/Characters/ManiaKnuckles/", "KnuxJog11");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelJog12    , "res/Models/Characters/ManiaKnuckles/", "KnuxJog12");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelJog13    , "res/Models/Characters/ManiaKnuckles/", "KnuxJog13");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelJog14    , "res/Models/Characters/ManiaKnuckles/", "KnuxJog14");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelJog15    , "res/Models/Characters/ManiaKnuckles/", "KnuxJog15");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelJog16    , "res/Models/Characters/ManiaKnuckles/", "KnuxJog16");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelJog17    , "res/Models/Characters/ManiaKnuckles/", "KnuxJog17");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelGrind    , "res/Models/Characters/ManiaSonic/", "Grind");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelStomp    , "res/Models/Characters/ManiaSonic/", "Stomp");
-    ObjLoader::loadModel(&ManiaKnucklesModel::modelGrab     , "res/Models/Characters/ManiaKnuckles/", "Grab");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelDash0    , "res/Models/Characters/ManiaKnuckles/", "KnuxDash0");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelDash1    , "res/Models/Characters/ManiaKnuckles/", "KnuxDash1");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelDash2    , "res/Models/Characters/ManiaKnuckles/", "KnuxDash2");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelDash3    , "res/Models/Characters/ManiaKnuckles/", "KnuxDash3");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelDash4    , "res/Models/Characters/ManiaKnuckles/", "KnuxDash4");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelDash5    , "res/Models/Characters/ManiaKnuckles/", "KnuxDash5");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelDash6    , "res/Models/Characters/ManiaKnuckles/", "KnuxDash6");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelDash7    , "res/Models/Characters/ManiaKnuckles/", "KnuxDash7");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelDash8    , "res/Models/Characters/ManiaKnuckles/", "KnuxDash8");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelDash9    , "res/Models/Characters/ManiaKnuckles/", "KnuxDash9");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelDash10   , "res/Models/Characters/ManiaKnuckles/", "KnuxDash10");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelDash11   , "res/Models/Characters/ManiaKnuckles/", "KnuxDash11");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelJump     , "res/Models/Characters/ManiaKnuckles/", "KnuxJump");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelJog0     , "res/Models/Characters/ManiaKnuckles/", "KnuxJog0");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelJog1     , "res/Models/Characters/ManiaKnuckles/", "KnuxJog1");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelJog2     , "res/Models/Characters/ManiaKnuckles/", "KnuxJog2");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelJog3     , "res/Models/Characters/ManiaKnuckles/", "KnuxJog3");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelJog4     , "res/Models/Characters/ManiaKnuckles/", "KnuxJog4");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelJog5     , "res/Models/Characters/ManiaKnuckles/", "KnuxJog5");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelJog6     , "res/Models/Characters/ManiaKnuckles/", "KnuxJog6");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelJog7     , "res/Models/Characters/ManiaKnuckles/", "KnuxJog7");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelJog8     , "res/Models/Characters/ManiaKnuckles/", "KnuxJog8");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelJog9     , "res/Models/Characters/ManiaKnuckles/", "KnuxJog9");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelJog10    , "res/Models/Characters/ManiaKnuckles/", "KnuxJog10");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelJog11    , "res/Models/Characters/ManiaKnuckles/", "KnuxJog11");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelJog12    , "res/Models/Characters/ManiaKnuckles/", "KnuxJog12");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelJog13    , "res/Models/Characters/ManiaKnuckles/", "KnuxJog13");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelJog14    , "res/Models/Characters/ManiaKnuckles/", "KnuxJog14");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelJog15    , "res/Models/Characters/ManiaKnuckles/", "KnuxJog15");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelJog16    , "res/Models/Characters/ManiaKnuckles/", "KnuxJog16");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelJog17    , "res/Models/Characters/ManiaKnuckles/", "KnuxJog17");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelGrind    , "res/Models/Characters/ManiaSonic/", "Grind");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelStomp    , "res/Models/Characters/ManiaSonic/", "Stomp");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelGrab     , "res/Models/Characters/ManiaKnuckles/", "Grab");
 }
 
 void ManiaKnucklesModel::setLimbsVisibility(bool newVisible)

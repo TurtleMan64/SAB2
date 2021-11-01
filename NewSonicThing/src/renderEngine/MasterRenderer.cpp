@@ -7,7 +7,7 @@
 #include "entityrenderer.h"
 #include "../entities/entity.h"
 #include "../models/models.h"
-#include "loader.h"
+#include "../loading/loader.h"
 #include "display.h"
 #include "../toolbox/maths.h"
 #include "../toolbox/matrix.h"

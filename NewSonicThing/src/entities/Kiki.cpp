@@ -6,7 +6,7 @@
 #include "kiki.h"
 #include "dummy.h"
 #include "bomb.h"
-#include "../objLoader/objLoader.h"
+#include "../loading/modelloader.h"
 #include "../engineTester/main.h"
 #include "../entities/controllableplayer.h"
 #include "../toolbox/maths.h"
@@ -204,8 +204,8 @@ void Kiki::loadStaticModels()
     std::fprintf(stdout, "Loading Kiki static models...\n");
     #endif
 
-    ObjLoader::loadModel(&Kiki::models,    "res/Models/Objects/Kiki/", "Kiki");
-    ObjLoader::loadModel(&Kiki::modelsArm, "res/Models/Objects/Kiki/", "Arm");
+    ModelLoader::loadModel(&Kiki::models,    "res/Models/Objects/Kiki/", "Kiki");
+    ModelLoader::loadModel(&Kiki::modelsArm, "res/Models/Objects/Kiki/", "Arm");
 }
 
 void Kiki::deleteStaticModels()

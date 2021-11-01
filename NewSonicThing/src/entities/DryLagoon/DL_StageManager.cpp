@@ -5,7 +5,7 @@
 #include "../../engineTester/main.h"
 #include "../dummy.h"
 #include "../controllableplayer.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../camera.h"
 
 std::list<TexturedModel*> DL_StageManager::modelsSkydome;
@@ -57,7 +57,7 @@ void DL_StageManager::loadStaticModels()
     std::fprintf(stdout, "Loading DL_StageManager static models...\n");
     #endif
 
-    ObjLoader::loadModel(&DL_StageManager::modelsSkydome,  "res/Models/Levels/DryLagoon/", "Skydrum");
+    ModelLoader::loadModel(&DL_StageManager::modelsSkydome,  "res/Models/Levels/DryLagoon/", "Skydrum");
 }
 
 void DL_StageManager::deleteStaticModels()

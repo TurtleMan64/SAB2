@@ -3,7 +3,7 @@
 #include "../camera.h"
 #include "../../engineTester/main.h"
 #include "../../models/models.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../../toolbox/maths.h"
 #include "../controllableplayer.h"
 
@@ -111,7 +111,7 @@ void MH_Missle::loadStaticModels()
     std::fprintf(stdout, "Loading MH_Missle static models...\n");
     #endif
 
-    ObjLoader::loadModel(&MH_Missle::models, "res/Models/Levels/MetalHarbor/Objects/", "Missle");
+    ModelLoader::loadModel(&MH_Missle::models, "res/Models/Levels/MetalHarbor/Objects/", "Missle");
 }
 
 void MH_Missle::deleteStaticModels()

@@ -4,7 +4,7 @@
 #include "../../models/models.h"
 #include "../../toolbox/vector.h"
 #include "ecseagull.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../../engineTester/main.h"
 #include "../../toolbox/maths.h"
 #include "../camera.h"
@@ -114,7 +114,7 @@ void EC_Seagull::loadStaticModels()
     std::fprintf(stdout, "Loading EC_Seagull static models...\n");
     #endif
 
-    ObjLoader::loadModel(&EC_Seagull::models, "res/Models/Levels/EmeraldCoast/Seagull/", "Seagull");
+    ModelLoader::loadModel(&EC_Seagull::models, "res/Models/Levels/EmeraldCoast/Seagull/", "Seagull");
 }
 
 void EC_Seagull::deleteStaticModels()

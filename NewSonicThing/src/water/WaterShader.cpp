@@ -11,7 +11,7 @@
 #include "../entities/camera.h"
 #include "../toolbox/maths.h"
 #include "../entities/light.h"
-#include "../renderEngine/loader.h"
+#include "../loading/loader.h"
 #include "watershader.h"
 
 WaterShader::WaterShader()

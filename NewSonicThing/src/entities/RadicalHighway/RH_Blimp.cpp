@@ -2,7 +2,7 @@
 #include "../entity.h"
 #include "../../engineTester/main.h"
 #include "../../models/models.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../dummy.h"
 #include "../../toolbox/maths.h"
 
@@ -77,8 +77,8 @@ void RH_Blimp::loadStaticModels()
     std::fprintf(stdout, "Loading RH_Blimp static models...\n");
     #endif
 
-    ObjLoader::loadModel(&RH_Blimp::modelsBlimp,     "res/Models/Levels/RadicalHighway/Objects/", "Blimp");
-    ObjLoader::loadModel(&RH_Blimp::modelsSpotlight, "res/Models/Levels/RadicalHighway/Objects/", "Spotlight");
+    ModelLoader::loadModel(&RH_Blimp::modelsBlimp,     "res/Models/Levels/RadicalHighway/Objects/", "Blimp");
+    ModelLoader::loadModel(&RH_Blimp::modelsSpotlight, "res/Models/Levels/RadicalHighway/Objects/", "Spotlight");
 }
 
 void RH_Blimp::deleteStaticModels()

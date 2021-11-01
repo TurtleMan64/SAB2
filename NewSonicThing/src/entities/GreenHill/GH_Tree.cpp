@@ -4,7 +4,7 @@
 #include "../../models/models.h"
 #include "../../toolbox/vector.h"
 #include "ghtree.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../../engineTester/main.h"
 
 #include <list>
@@ -51,7 +51,7 @@ void GH_Tree::loadStaticModels()
     std::fprintf(stdout, "Loading GH_Tree static models...\n");
     #endif
 
-    ObjLoader::loadModel(&GH_Tree::models, "res/Models/Levels/GreenHillZone/Objects/", "GreenHillTree");
+    ModelLoader::loadModel(&GH_Tree::models, "res/Models/Levels/GreenHillZone/Objects/", "GreenHillTree");
 }
 
 void GH_Tree::deleteStaticModels()

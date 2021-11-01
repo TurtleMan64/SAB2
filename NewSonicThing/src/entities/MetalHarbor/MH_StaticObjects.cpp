@@ -3,7 +3,7 @@
 #include "../camera.h"
 #include "../../engineTester/main.h"
 #include "../../models/models.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../../toolbox/maths.h"
 #include "../../collision/collisionmodel.h"
 #include "../../collision/collisionchecker.h"
@@ -57,15 +57,15 @@ void MH_StaticObjects::loadStaticModels()
     std::fprintf(stdout, "Loading MH_StaticObjects static models...\n");
     #endif
 
-    ObjLoader::loadModel(&MH_StaticObjects::models, "res/Models/Objects/MetalHarbor/StaticObjects/", "StaticObjects");
-    ObjLoader::loadModel(&MH_StaticObjects::modelsVertexColours, "res/Models/Objects/MetalHarbor/StaticObjects/", "StaticObjectsVertexColours");
-    ObjLoader::loadModel(&MH_StaticObjects::modelsTransparent, "res/Models/Objects/MetalHarbor/StaticObjects/", "StaticObjectsTransparent");
+    ModelLoader::loadModel(&MH_StaticObjects::models, "res/Models/Objects/MetalHarbor/StaticObjects/", "StaticObjects");
+    ModelLoader::loadModel(&MH_StaticObjects::modelsVertexColours, "res/Models/Objects/MetalHarbor/StaticObjects/", "StaticObjectsVertexColours");
+    ModelLoader::loadModel(&MH_StaticObjects::modelsTransparent, "res/Models/Objects/MetalHarbor/StaticObjects/", "StaticObjectsTransparent");
 
     setModelsRenderOrder(&MH_StaticObjects::modelsTransparent, 1);
 
     if (MH_StaticObjects::cmOriginal == nullptr)
     {
-        MH_StaticObjects::cmOriginal = ObjLoader::loadCollisionModel("Models/Objects/MetalHarbor/StaticObjects/", "StaticObjectsCollision");
+        MH_StaticObjects::cmOriginal = ModelLoader::loadCollisionModel("Models/Objects/MetalHarbor/StaticObjects/", "StaticObjectsCollision");
     }
 }
 

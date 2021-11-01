@@ -5,7 +5,7 @@
 #include "../toolbox/vector.h"
 #include "npc.h"
 #include "dummy.h"
-#include "../objLoader/objLoader.h"
+#include "../loading/modelloader.h"
 #include "../engineTester/main.h"
 #include "../toolbox/maths.h"
 #include "../toolbox/split.h"
@@ -183,8 +183,8 @@ void NPC::loadStaticModels()
     std::fprintf(stdout, "Loading NPC static models...\n");
     #endif
 
-    ObjLoader::loadModel(&NPC::models,        "res/Models/Objects/NPC/", "NPC");
-    ObjLoader::loadModel(&NPC::modelsGlasses, "res/Models/Objects/NPC/", "Glasses");
+    ModelLoader::loadModel(&NPC::models,        "res/Models/Objects/NPC/", "NPC");
+    ModelLoader::loadModel(&NPC::modelsGlasses, "res/Models/Objects/NPC/", "Glasses");
 
     setModelsRenderOrder(&NPC::modelsGlasses, 1);
 }

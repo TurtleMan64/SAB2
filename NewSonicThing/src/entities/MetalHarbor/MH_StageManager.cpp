@@ -4,7 +4,7 @@
 #include "mhstagemanager.h"
 #include "../../engineTester/main.h"
 #include "../controllableplayer.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../../audio/audioplayer.h"
 #include "../camera.h"
 
@@ -81,7 +81,7 @@ void MH_StageManager::loadStaticModels()
     std::fprintf(stdout, "Loading MH_StageManager static models...\n");
     #endif
 
-    ObjLoader::loadModel(&MH_StageManager::modelsSkydome,  "res/Models/Levels/MetalHarbor/Sky/", "SkySpheroid");
+    ModelLoader::loadModel(&MH_StageManager::modelsSkydome,  "res/Models/Levels/MetalHarbor/Sky/", "SkySpheroid");
 }
 
 void MH_StageManager::deleteStaticModels()

@@ -4,7 +4,7 @@
 #include "../../models/models.h"
 #include "../../toolbox/vector.h"
 #include "ghgrass.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../../engineTester/main.h"
 
 #include <list>
@@ -51,7 +51,7 @@ void GH_Grass::loadStaticModels()
     std::fprintf(stdout, "Loading GH_Grass static models...\n");
     #endif
 
-    ObjLoader::loadModel(&GH_Grass::models, "res/Models/Levels/GreenHillZone/Objects/", "GreenHillGrass");
+    ModelLoader::loadModel(&GH_Grass::models, "res/Models/Levels/GreenHillZone/Objects/", "GreenHillGrass");
 }
 
 void GH_Grass::deleteStaticModels()

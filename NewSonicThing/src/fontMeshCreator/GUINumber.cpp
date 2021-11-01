@@ -1,6 +1,6 @@
 #include "guinumber.h"
 #include "../engineTester/main.h"
-#include "../renderEngine/loader.h"
+#include "../loading/loader.h"
 #include "../fontRendering/textmaster.h"
 #include "textmeshdata.h"
 #include "fonttype.h"

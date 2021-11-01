@@ -4,7 +4,7 @@
 #include "../../models/models.h"
 #include "../../toolbox/vector.h"
 #include "dldigteleport.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../../engineTester/main.h"
 #include "../../entities/controllableplayer.h"
 #include "../../toolbox/maths.h"
@@ -102,11 +102,11 @@ void DL_DigTeleport::loadStaticModels()
     std::fprintf(stdout, "Loading DL_DigTeleport static models...\n");
     #endif
 
-    ObjLoader::loadModel(&DL_DigTeleport::models, "res/Models/Levels/DryLagoon/Objects/", "DigTeleport");
+    ModelLoader::loadModel(&DL_DigTeleport::models, "res/Models/Levels/DryLagoon/Objects/", "DigTeleport");
 
     if (DL_DigTeleport::cmOriginal == nullptr)
     {
-        DL_DigTeleport::cmOriginal = ObjLoader::loadCollisionModel("Models/Levels/DryLagoon/Objects/", "DigTeleport");
+        DL_DigTeleport::cmOriginal = ModelLoader::loadCollisionModel("Models/Levels/DryLagoon/Objects/", "DigTeleport");
     }
 }
 

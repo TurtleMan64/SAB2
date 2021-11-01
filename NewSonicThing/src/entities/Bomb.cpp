@@ -4,7 +4,7 @@
 #include "../models/models.h"
 #include "../toolbox/vector.h"
 #include "bomb.h"
-#include "../objLoader/objLoader.h"
+#include "../loading/modelloader.h"
 #include "../engineTester/main.h"
 #include "../entities/camera.h"
 #include "../entities/playersonic.h"
@@ -205,7 +205,7 @@ void Bomb::loadStaticModels()
     std::fprintf(stdout, "Loading Bomb static models...\n");
     #endif
 
-    ObjLoader::loadModel(&Bomb::models,    "res/Models/Objects/Bomb/", "Bomb2");
+    ModelLoader::loadModel(&Bomb::models,    "res/Models/Objects/Bomb/", "Bomb2");
 }
 
 void Bomb::deleteStaticModels()

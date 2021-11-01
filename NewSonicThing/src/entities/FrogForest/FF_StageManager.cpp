@@ -4,7 +4,7 @@
 #include "ffstagemanager.h"
 #include "../../engineTester/main.h"
 #include "../controllableplayer.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 
 std::list<TexturedModel*> FF_StageManager::modelsSkydome;
 
@@ -38,7 +38,7 @@ void FF_StageManager::loadStaticModels()
     std::fprintf(stdout, "Loading FF_StageManager static models...\n");
     #endif
 
-    ObjLoader::loadModel(&FF_StageManager::modelsSkydome, "res/Models/Levels/FrogForest/", "Skybox");
+    ModelLoader::loadModel(&FF_StageManager::modelsSkydome, "res/Models/Levels/FrogForest/", "Skybox");
 }
 
 void FF_StageManager::deleteStaticModels()

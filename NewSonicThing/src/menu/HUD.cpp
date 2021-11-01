@@ -11,7 +11,7 @@
 #include "../fontMeshCreator/fonttype.h"
 #include "../renderEngine/display.h"
 #include "../entities/controllableplayer.h"
-#include "../renderEngine/loader.h"
+#include "../loading/loader.h"
 #include "timer.h"
 
 float HUD::bonusTimer = 0.0f;

@@ -3,7 +3,7 @@
 #include "../camera.h"
 #include "../../engineTester/main.h"
 #include "../../models/models.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../../toolbox/maths.h"
 #include "../controllableplayer.h"
 #include "../../collision/collisionmodel.h"
@@ -202,21 +202,21 @@ void MH_CratePlatform::loadStaticModels()
     std::fprintf(stdout, "Loading MH_CratePlatform static models...\n");
     #endif
 
-    ObjLoader::loadModel(&MH_CratePlatform::modelsCratePlatformLong, "res/Models/Objects/MetalHarbor/CratePlatform/", "CratePlatformLong");
-    ObjLoader::loadModel(&MH_CratePlatform::modelsCratePlatformCrate, "res/Models/Objects/MetalHarbor/CratePlatform/", "CratePlatformCrate");
-    ObjLoader::loadModel(&MH_CratePlatform::modelsCratePlatformNoCrate, "res/Models/Objects/MetalHarbor/CratePlatform/", "CratePlatformCrateless");
+    ModelLoader::loadModel(&MH_CratePlatform::modelsCratePlatformLong, "res/Models/Objects/MetalHarbor/CratePlatform/", "CratePlatformLong");
+    ModelLoader::loadModel(&MH_CratePlatform::modelsCratePlatformCrate, "res/Models/Objects/MetalHarbor/CratePlatform/", "CratePlatformCrate");
+    ModelLoader::loadModel(&MH_CratePlatform::modelsCratePlatformNoCrate, "res/Models/Objects/MetalHarbor/CratePlatform/", "CratePlatformCrateless");
 
     if (MH_CratePlatform::cmCratePlatformLong == nullptr)
     {
-        MH_CratePlatform::cmCratePlatformLong = ObjLoader::loadCollisionModel("Models/Objects/MetalHarbor/CratePlatform/", "CratePlatformLongCollision");
+        MH_CratePlatform::cmCratePlatformLong = ModelLoader::loadCollisionModel("Models/Objects/MetalHarbor/CratePlatform/", "CratePlatformLongCollision");
     }
     if (MH_CratePlatform::cmCratePlatformCrate == nullptr)
     {
-        MH_CratePlatform::cmCratePlatformCrate = ObjLoader::loadCollisionModel("Models/Objects/MetalHarbor/CratePlatform/", "CratePlatformCrateCollision");
+        MH_CratePlatform::cmCratePlatformCrate = ModelLoader::loadCollisionModel("Models/Objects/MetalHarbor/CratePlatform/", "CratePlatformCrateCollision");
     }
     if (MH_CratePlatform::cmCratePlatformNoCrate == nullptr)
     {
-        MH_CratePlatform::cmCratePlatformNoCrate = ObjLoader::loadCollisionModel("Models/Objects/MetalHarbor/CratePlatform/", "CratePlatformCratelessCollision");
+        MH_CratePlatform::cmCratePlatformNoCrate = ModelLoader::loadCollisionModel("Models/Objects/MetalHarbor/CratePlatform/", "CratePlatformCratelessCollision");
     }
 }
 

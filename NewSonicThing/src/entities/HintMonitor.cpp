@@ -3,7 +3,7 @@
 #include "entity.h"
 #include "../models/models.h"
 #include "../toolbox/vector.h"
-#include "../objLoader/objLoader.h"
+#include "../loading/modelloader.h"
 #include "../engineTester/main.h"
 #include "../entities/camera.h"
 #include "../entities/controllableplayer.h"
@@ -159,7 +159,7 @@ void HintMonitor::loadStaticModels()
     std::fprintf(stdout, "Loading HintMonitor static models...\n");
     #endif
 
-    ObjLoader::loadModel(&HintMonitor::models, "res/Models/Objects/Monitor/", "Monitor");
+    ModelLoader::loadModel(&HintMonitor::models, "res/Models/Objects/Monitor/", "Monitor");
 }
 
 void HintMonitor::deleteStaticModels()

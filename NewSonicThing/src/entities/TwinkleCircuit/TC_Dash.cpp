@@ -5,7 +5,7 @@
 #include "../entity.h"
 #include "../../models/models.h"
 #include "../../toolbox/vector.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../../engineTester/main.h"
 #include "../../toolbox/maths.h"
 #include "../controllableplayer.h"
@@ -89,7 +89,7 @@ void TC_Dash::loadStaticModels()
     std::fprintf(stdout, "Loading TC_Dash static models...\n");
     #endif
 
-    ObjLoader::loadModel(&TC_Dash::models, "res/Models/Levels/TwinkleCircuit/Objects/Dash/", "Dash");
+    ModelLoader::loadModel(&TC_Dash::models, "res/Models/Levels/TwinkleCircuit/Objects/Dash/", "Dash");
 }
 
 void TC_Dash::deleteStaticModels()

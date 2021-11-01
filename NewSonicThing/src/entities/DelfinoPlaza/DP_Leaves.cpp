@@ -4,7 +4,7 @@
 #include "../../models/models.h"
 #include "../../toolbox/vector.h"
 #include "dpleaves.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../../engineTester/main.h"
 #include "../../collision/collisionmodel.h"
 #include "../../collision/collisionchecker.h"
@@ -61,11 +61,11 @@ void DP_Leaves::loadStaticModels()
     std::fprintf(stdout, "Loading DP_Leaves static models...\n");
     #endif
 
-    ObjLoader::loadModel(&DP_Leaves::models, "res/Models/Levels/DelfinoPlaza/PalmLeaves/", "PalmLeaves");
+    ModelLoader::loadModel(&DP_Leaves::models, "res/Models/Levels/DelfinoPlaza/PalmLeaves/", "PalmLeaves");
 
     if (DP_Leaves::cmOriginal == nullptr)
     {
-        DP_Leaves::cmOriginal = ObjLoader::loadCollisionModel("Models/Levels/DelfinoPlaza/PalmLeaves/", "PalmLeaves");
+        DP_Leaves::cmOriginal = ModelLoader::loadCollisionModel("Models/Levels/DelfinoPlaza/PalmLeaves/", "PalmLeaves");
     }
 }
 

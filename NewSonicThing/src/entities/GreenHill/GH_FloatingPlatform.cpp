@@ -4,7 +4,7 @@
 #include "../../models/models.h"
 #include "../../toolbox/vector.h"
 #include "ghfloatingplatform.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../../engineTester/main.h"
 #include "../../collision/collisionmodel.h"
 #include "../../collision/collisionchecker.h"
@@ -61,11 +61,11 @@ void GH_FloatingPlatform::loadStaticModels()
     std::fprintf(stdout, "Loading GH_FloatingPlatform static models...\n");
     #endif
 
-    ObjLoader::loadModel(&GH_FloatingPlatform::models, "res/Models/Levels/GreenHillZone/Objects/", "GreenHillFallingPlatform");
+    ModelLoader::loadModel(&GH_FloatingPlatform::models, "res/Models/Levels/GreenHillZone/Objects/", "GreenHillFallingPlatform");
 
     if (GH_FloatingPlatform::cmOriginal == nullptr)
     {
-        GH_FloatingPlatform::cmOriginal = ObjLoader::loadCollisionModel("Models/Levels/GreenHillZone/Objects/", "GreenHillFallingPlatform");
+        GH_FloatingPlatform::cmOriginal = ModelLoader::loadCollisionModel("Models/Levels/GreenHillZone/Objects/", "GreenHillFallingPlatform");
     }
 }
 

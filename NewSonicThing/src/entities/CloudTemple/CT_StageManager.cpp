@@ -4,7 +4,7 @@
 #include "ctstagemanager.h"
 #include "../../engineTester/main.h"
 #include "../controllableplayer.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../camera.h"
 
 std::list<TexturedModel*> CT_StageManager::modelsSkydome;
@@ -38,7 +38,7 @@ void CT_StageManager::loadStaticModels()
     std::fprintf(stdout, "Loading CT_StageManager static models...\n");
     #endif
 
-    ObjLoader::loadModel(&CT_StageManager::modelsSkydome,  "res/Models/Levels/CloudTemple/Sky/", "Sky");
+    ModelLoader::loadModel(&CT_StageManager::modelsSkydome,  "res/Models/Levels/CloudTemple/Sky/", "Sky");
 }
 
 void CT_StageManager::deleteStaticModels()

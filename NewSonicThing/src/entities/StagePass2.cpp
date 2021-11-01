@@ -1,6 +1,6 @@
 #include <glad/glad.h>
 
-#include "../objLoader/objLoader.h"
+#include "../loading/modelloader.h"
 #include "entity.h"
 #include "../models/models.h"
 #include "stagepass2.h"
@@ -32,7 +32,7 @@ StagePass2::StagePass2(const char* objFolder, const char* objFilename)
         std::fprintf(stdout, "Loading StagePass2 static models...\n");
         #endif
 
-        ObjLoader::loadModel(&StagePass2::models, objFolder, objFilename);
+        ModelLoader::loadModel(&StagePass2::models, objFolder, objFilename);
 
         setModelsRenderOrder(&StagePass2::models, 1);
     }

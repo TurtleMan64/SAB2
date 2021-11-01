@@ -4,7 +4,7 @@
 #include "drstagemanager.h"
 #include "../../engineTester/main.h"
 #include "../controllableplayer.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../camera.h"
 
 std::list<TexturedModel*> DR_StageManager::modelsSkydome;
@@ -54,7 +54,7 @@ void DR_StageManager::loadStaticModels()
     std::fprintf(stdout, "Loading DR_StageManager static models...\n");
     #endif
 
-    ObjLoader::loadModel(&DR_StageManager::modelsSkydome,  "res/Models/Levels/DragonRoad/Sky/", "Sky");
+    ModelLoader::loadModel(&DR_StageManager::modelsSkydome,  "res/Models/Levels/DragonRoad/Sky/", "Sky");
 }
 
 void DR_StageManager::deleteStaticModels()

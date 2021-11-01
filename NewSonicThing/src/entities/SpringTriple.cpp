@@ -4,7 +4,7 @@
 #include "../models/models.h"
 #include "../toolbox/vector.h"
 #include "springtriple.h"
-#include "../objLoader/objLoader.h"
+#include "../loading/modelloader.h"
 #include "../engineTester/main.h"
 #include "../entities/controllableplayer.h"
 #include "../toolbox/maths.h"
@@ -100,7 +100,7 @@ void SpringTriple::loadStaticModels()
     std::fprintf(stdout, "Loading triple spring static models...\n");
     #endif
 
-    ObjLoader::loadModel(&SpringTriple::models, "res/Models/Objects/Spring/", "TripleSpring");
+    ModelLoader::loadModel(&SpringTriple::models, "res/Models/Objects/Spring/", "TripleSpring");
 }
 
 void SpringTriple::deleteStaticModels()

@@ -4,7 +4,7 @@
 #include "../models/models.h"
 #include "../toolbox/vector.h"
 #include "springyellow.h"
-#include "../objLoader/objLoader.h"
+#include "../loading/modelloader.h"
 #include "../engineTester/main.h"
 #include "../entities/controllableplayer.h"
 #include "../toolbox/maths.h"
@@ -89,7 +89,7 @@ void SpringYellow::loadStaticModels()
     std::fprintf(stdout, "Loading SpringYellow static models...\n");
     #endif
 
-    ObjLoader::loadModel(&SpringYellow::models, "res/Models/Objects/Spring/", "SpringYellow");
+    ModelLoader::loadModel(&SpringYellow::models, "res/Models/Objects/Spring/", "SpringYellow");
 }
 
 void SpringYellow::deleteStaticModels()

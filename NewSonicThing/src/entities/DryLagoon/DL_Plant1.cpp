@@ -2,7 +2,7 @@
 #include "../entity.h"
 #include "../../engineTester/main.h"
 #include "../../models/models.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 
 std::list<TexturedModel*> DL_Plant1::models;
 
@@ -45,7 +45,7 @@ void DL_Plant1::loadStaticModels()
     std::fprintf(stdout, "Loading DL_Plant1 static models...\n");
     #endif
 
-    ObjLoader::loadModel(&DL_Plant1::models, "res/Models/Levels/DryLagoon/Objects/", "Leaf");
+    ModelLoader::loadModel(&DL_Plant1::models, "res/Models/Levels/DryLagoon/Objects/", "Leaf");
 }
 
 void DL_Plant1::deleteStaticModels()

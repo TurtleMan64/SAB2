@@ -4,7 +4,7 @@
 #include "../../models/models.h"
 #include "../../toolbox/vector.h"
 #include "ghflower.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../../engineTester/main.h"
 #include "../dummy.h"
 
@@ -84,8 +84,8 @@ void GH_Flower::loadStaticModels()
     std::fprintf(stdout, "Loading GH_Flower static models...\n");
     #endif
 
-    ObjLoader::loadModel(&GH_Flower::modelsBase, "res/Models/Levels/GreenHillZone/Objects/", "GreenHillPFlowerBase");
-    ObjLoader::loadModel(&GH_Flower::modelsTop,  "res/Models/Levels/GreenHillZone/Objects/", "GreenHillPFlowerTop");
+    ModelLoader::loadModel(&GH_Flower::modelsBase, "res/Models/Levels/GreenHillZone/Objects/", "GreenHillPFlowerBase");
+    ModelLoader::loadModel(&GH_Flower::modelsTop,  "res/Models/Levels/GreenHillZone/Objects/", "GreenHillPFlowerTop");
 }
 
 void GH_Flower::deleteStaticModels()

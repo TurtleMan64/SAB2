@@ -18,7 +18,7 @@
 #include "../entities/stagetransparent.h"
 #include "../collision/collisionchecker.h"
 #include "../collision/collisionmodel.h"
-#include "../objLoader/objLoader.h"
+#include "../loading/modelloader.h"
 #include "../audio/audioplayer.h"
 #include "../entities/skysphere.h"
 #include "../guis/guimanager.h"
@@ -26,8 +26,8 @@
 #include "../menu/missionmenu.h"
 #include "../toolbox/getline.h"
 #include "../toolbox/maths.h"
-#include "split.h"
-#include "input.h"
+#include "../toolbox/split.h"
+#include "../toolbox/input.h"
 #include "../entities/controllableplayer.h"
 #include "../entities/dashpad.h"
 #include "../entities/camera.h"
@@ -417,7 +417,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
             if (colModel == nullptr)
             {
                 //if there is none, load the .bincol and generate a quad tree from scratch
-                colModel = ObjLoader::loadBinaryCollisionModel("Models/" + colFLoc + "/", lineSplit[0]);
+                colModel = ModelLoader::loadBinaryCollisionModel("Models/" + colFLoc + "/", lineSplit[0]);
                 colModel->generateQuadTree(std::stoi(lineSplit[1]));
             }
             //printf("Done loading collision.\n");

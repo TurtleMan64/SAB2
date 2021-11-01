@@ -4,7 +4,7 @@
 #include <unordered_set>
 
 #include "modeltexture.h"
-#include "../renderEngine/loader.h"
+#include "../loading/loader.h"
 #include "../toolbox/maths.h"
 
 std::unordered_set<ModelTexture*> ModelTexture::animatedTextureReferences;

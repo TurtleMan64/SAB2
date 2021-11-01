@@ -5,7 +5,7 @@
 #include "../toolbox/vector.h"
 #include "ringmoving.h"
 #include "ring.h"
-#include "../objLoader/objLoader.h"
+#include "../loading/modelloader.h"
 #include "../engineTester/main.h"
 #include "../entities/camera.h"
 #include "../entities/playersonic.h"

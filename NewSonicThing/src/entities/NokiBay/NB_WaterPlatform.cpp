@@ -4,7 +4,7 @@
 #include "../../models/models.h"
 #include "../../toolbox/vector.h"
 #include "nbwaterplatform.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../../engineTester/main.h"
 #include "../../collision/collisionmodel.h"
 #include "../../collision/collisionchecker.h"
@@ -61,11 +61,11 @@ void NB_WaterPlatform::loadStaticModels()
     std::fprintf(stdout, "Loading NB_WaterPlatform static models...\n");
     #endif
 
-    ObjLoader::loadModel(&NB_WaterPlatform::models, "res/Models/Levels/NokiBay/WaterPlatforms/", "WaterPlatform");
+    ModelLoader::loadModel(&NB_WaterPlatform::models, "res/Models/Levels/NokiBay/WaterPlatforms/", "WaterPlatform");
 
     if (NB_WaterPlatform::cmOriginal == nullptr)
     {
-        NB_WaterPlatform::cmOriginal = ObjLoader::loadCollisionModel("Models/Levels/NokiBay/WaterPlatforms/", "WaterPlatformCollision");
+        NB_WaterPlatform::cmOriginal = ModelLoader::loadCollisionModel("Models/Levels/NokiBay/WaterPlatforms/", "WaterPlatformCollision");
     }
 }
 

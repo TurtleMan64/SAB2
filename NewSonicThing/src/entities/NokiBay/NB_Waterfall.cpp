@@ -4,7 +4,7 @@
 #include "../../models/models.h"
 #include "../../toolbox/vector.h"
 #include "nbwaterfall.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../../engineTester/main.h"
 
 #include <list>
@@ -49,7 +49,7 @@ void NB_Waterfall::loadStaticModels()
     std::fprintf(stdout, "Loading NB_Waterfall static models...\n");
     #endif
 
-    ObjLoader::loadModel(&NB_Waterfall::models, "res/Models/Levels/NokiBay/Waterfall/", "Waterfall");
+    ModelLoader::loadModel(&NB_Waterfall::models, "res/Models/Levels/NokiBay/Waterfall/", "Waterfall");
 
     //for (auto element : NB_Waterfall::models)
     //{

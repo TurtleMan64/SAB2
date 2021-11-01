@@ -3,7 +3,7 @@
 #include "../camera.h"
 #include "../../engineTester/main.h"
 #include "../../models/models.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../../toolbox/maths.h"
 #include "../../collision/collisionmodel.h"
 #include "../../collision/collisionchecker.h"
@@ -95,11 +95,11 @@ void DL_Pot::loadStaticModels()
     std::fprintf(stdout, "Loading DL_Pot static models...\n");
     #endif
 
-    ObjLoader::loadModel(&DL_Pot::models, "res/Models/Levels/DryLagoon/Objects/", "Pot");
+    ModelLoader::loadModel(&DL_Pot::models, "res/Models/Levels/DryLagoon/Objects/", "Pot");
 
     if (DL_Pot::cmOriginal == nullptr)
     {
-        DL_Pot::cmOriginal = ObjLoader::loadCollisionModel("Models/Levels/DryLagoon/Objects/", "PotCollision");
+        DL_Pot::cmOriginal = ModelLoader::loadCollisionModel("Models/Levels/DryLagoon/Objects/", "PotCollision");
     }
 }
 

@@ -4,7 +4,7 @@
 #include "../../models/models.h"
 #include "../../toolbox/vector.h"
 #include "nbwaterplatformbounce.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../../engineTester/main.h"
 #include "../controllableplayer.h"
 #include "../../collision/collisionmodel.h"
@@ -62,11 +62,11 @@ void NB_WaterPlatformBounce::loadStaticModels()
     std::fprintf(stdout, "Loading NB_WaterPlatformBounce static models...\n");
     #endif
 
-    ObjLoader::loadModel(&NB_WaterPlatformBounce::models, "res/Models/Levels/NokiBay/WaterPlatforms/", "WaterPlatformBounce");
+    ModelLoader::loadModel(&NB_WaterPlatformBounce::models, "res/Models/Levels/NokiBay/WaterPlatforms/", "WaterPlatformBounce");
 
     if (NB_WaterPlatformBounce::cmOriginal == nullptr)
     {
-        NB_WaterPlatformBounce::cmOriginal = ObjLoader::loadCollisionModel("Models/Levels/NokiBay/WaterPlatforms/", "WaterPlatformBounceCollision");
+        NB_WaterPlatformBounce::cmOriginal = ModelLoader::loadCollisionModel("Models/Levels/NokiBay/WaterPlatforms/", "WaterPlatformBounceCollision");
     }
 }
 

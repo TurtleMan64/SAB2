@@ -4,7 +4,7 @@
 #include "../models/models.h"
 #include "../toolbox/vector.h"
 #include "spring.h"
-#include "../objLoader/objLoader.h"
+#include "../loading/modelloader.h"
 #include "../engineTester/main.h"
 #include "../entities/controllableplayer.h"
 #include "../toolbox/maths.h"
@@ -85,7 +85,7 @@ void Spring::loadStaticModels()
     std::fprintf(stdout, "Loading spring static models...\n");
     #endif
 
-    ObjLoader::loadModel(&Spring::models, "res/Models/Objects/Spring/", "Spring");
+    ModelLoader::loadModel(&Spring::models, "res/Models/Objects/Spring/", "Spring");
 }
 
 void Spring::deleteStaticModels()

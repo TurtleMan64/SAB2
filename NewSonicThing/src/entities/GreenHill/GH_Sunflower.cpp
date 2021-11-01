@@ -4,7 +4,7 @@
 #include "../../models/models.h"
 #include "../../toolbox/vector.h"
 #include "ghsunflower.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../../engineTester/main.h"
 #include "../dummy.h"
 
@@ -82,9 +82,9 @@ void GH_Sunflower::loadStaticModels()
     std::fprintf(stdout, "Loading GH_Sunflower static models...\n");
     #endif
 
-    ObjLoader::loadModel(&GH_Sunflower::modelsBase, "res/Models/Levels/GreenHillZone/Objects/", "GreenHillSunflowerBase");
-    ObjLoader::loadModel(&GH_Sunflower::modelsTop,  "res/Models/Levels/GreenHillZone/Objects/", "GreenHillSunflowerTop");
-    ObjLoader::loadModel(&GH_Sunflower::modelsTop2, "res/Models/Levels/GreenHillZone/Objects/", "GreenHillSunflowerTop2");
+    ModelLoader::loadModel(&GH_Sunflower::modelsBase, "res/Models/Levels/GreenHillZone/Objects/", "GreenHillSunflowerBase");
+    ModelLoader::loadModel(&GH_Sunflower::modelsTop,  "res/Models/Levels/GreenHillZone/Objects/", "GreenHillSunflowerTop");
+    ModelLoader::loadModel(&GH_Sunflower::modelsTop2, "res/Models/Levels/GreenHillZone/Objects/", "GreenHillSunflowerTop2");
 }
 
 void GH_Sunflower::deleteStaticModels()

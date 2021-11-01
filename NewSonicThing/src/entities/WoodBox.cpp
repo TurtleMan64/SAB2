@@ -3,7 +3,7 @@
 #include "camera.h"
 #include "../engineTester/main.h"
 #include "../models/models.h"
-#include "../objLoader/objLoader.h"
+#include "../loading/modelloader.h"
 #include "../toolbox/maths.h"
 #include "../collision/collisionmodel.h"
 #include "../collision/collisionchecker.h"
@@ -95,11 +95,11 @@ void WoodBox::loadStaticModels()
     std::fprintf(stdout, "Loading WoodBox static models...\n");
     #endif
 
-    ObjLoader::loadModel(&WoodBox::models, "res/Models/Objects/WoodBox/", "WoodBox");
+    ModelLoader::loadModel(&WoodBox::models, "res/Models/Objects/WoodBox/", "WoodBox");
 
     if (WoodBox::cmOriginal == nullptr)
     {
-        WoodBox::cmOriginal = ObjLoader::loadCollisionModel("Models/Objects/WoodBox/", "WoodBox");
+        WoodBox::cmOriginal = ModelLoader::loadCollisionModel("Models/Objects/WoodBox/", "WoodBox");
     }
 }
 

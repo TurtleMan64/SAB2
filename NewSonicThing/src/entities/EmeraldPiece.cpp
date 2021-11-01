@@ -4,7 +4,7 @@
 #include "../models/models.h"
 #include "../toolbox/vector.h"
 #include "emeraldpiece.h"
-#include "../objLoader/objLoader.h"
+#include "../loading/modelloader.h"
 #include "../engineTester/main.h"
 #include "../entities/camera.h"
 #include "../entities/controllableplayer.h"
@@ -298,7 +298,7 @@ void EmeraldPiece::loadStaticModels()
     std::fprintf(stdout, "Loading EmeraldPiece static models...\n");
     #endif
 
-    ObjLoader::loadModel(&EmeraldPiece::models, "res/Models/Objects/Emerald/", "Emerald");
+    ModelLoader::loadModel(&EmeraldPiece::models, "res/Models/Objects/Emerald/", "Emerald");
 }
 
 void EmeraldPiece::deleteStaticModels()

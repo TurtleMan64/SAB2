@@ -4,7 +4,7 @@
 #include "../models/models.h"
 #include "../toolbox/vector.h"
 #include "goalring.h"
-#include "../objLoader/objLoader.h"
+#include "../loading/modelloader.h"
 #include "../engineTester/main.h"
 #include "../entities/controllableplayer.h"
 #include "../toolbox/maths.h"
@@ -147,8 +147,8 @@ void GoalRing::loadStaticModels()
     std::fprintf(stdout, "Loading GoalRing static models...\n");
     #endif
 
-    ObjLoader::loadModel(&GoalRing::modelsRing, "res/Models/Objects/GoalRing/", "Pass1");
-    ObjLoader::loadModel(&GoalRing::modelsText, "res/Models/Objects/GoalRing/", "Pass2");
+    ModelLoader::loadModel(&GoalRing::modelsRing, "res/Models/Objects/GoalRing/", "Pass1");
+    ModelLoader::loadModel(&GoalRing::modelsText, "res/Models/Objects/GoalRing/", "Pass2");
 
     setModelsRenderOrder(&GoalRing::modelsText, 1);
 }

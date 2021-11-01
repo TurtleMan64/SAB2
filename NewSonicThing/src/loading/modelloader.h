@@ -14,7 +14,7 @@ class QuadTreeNode;
 #include "../textures/modeltexture.h"
 #include "../toolbox/vector.h"
 
-class ObjLoader
+class ModelLoader
 {
 private:
     static void parseMtl(std::string filePath, std::string fileName, std::unordered_map<std::string, ModelTexture>* outMtlMap);

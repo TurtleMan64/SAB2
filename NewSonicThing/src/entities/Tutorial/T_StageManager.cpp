@@ -5,7 +5,7 @@
 #include "../../engineTester/main.h"
 #include "../dummy.h"
 #include "../controllableplayer.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../../toolbox/maths.h"
 
 std::list<TexturedModel*> T_StageManager::modelsSkyPass1;
@@ -59,9 +59,9 @@ void T_StageManager::loadStaticModels()
     std::fprintf(stdout, "Loading T_StageManager static models...\n");
     #endif
 
-    ObjLoader::loadModel(&T_StageManager::modelsSkyPass1,       "res/Models/Levels/DelfinoPlaza/Sky/", "Blue");
-    ObjLoader::loadModel(&T_StageManager::modelsSkyPass2,       "res/Models/Levels/DelfinoPlaza/Sky/", "Pass2");
-    ObjLoader::loadModel(&T_StageManager::modelsSkyTransparent, "res/Models/Levels/DelfinoPlaza/Sky/", "Trans");
+    ModelLoader::loadModel(&T_StageManager::modelsSkyPass1,       "res/Models/Levels/DelfinoPlaza/Sky/", "Blue");
+    ModelLoader::loadModel(&T_StageManager::modelsSkyPass2,       "res/Models/Levels/DelfinoPlaza/Sky/", "Pass2");
+    ModelLoader::loadModel(&T_StageManager::modelsSkyTransparent, "res/Models/Levels/DelfinoPlaza/Sky/", "Trans");
 
     setModelsRenderOrder(&T_StageManager::modelsSkyPass2,       1);
     setModelsRenderOrder(&T_StageManager::modelsSkyTransparent, 3);

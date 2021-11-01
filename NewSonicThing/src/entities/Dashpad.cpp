@@ -4,7 +4,7 @@
 #include "../models/models.h"
 #include "../toolbox/vector.h"
 #include "dashpad.h"
-#include "../objLoader/objLoader.h"
+#include "../loading/modelloader.h"
 #include "../engineTester/main.h"
 #include "../entities/controllableplayer.h"
 #include "../toolbox/maths.h"
@@ -119,7 +119,7 @@ void Dashpad::loadStaticModels()
     std::fprintf(stdout, "Loading Dashpad static models...\n");
     #endif
 
-    ObjLoader::loadModel(&Dashpad::models,  "res/Models/Objects/Dashpad/", "Dashpad");
+    ModelLoader::loadModel(&Dashpad::models,  "res/Models/Objects/Dashpad/", "Dashpad");
 }
 
 void Dashpad::deleteStaticModels()

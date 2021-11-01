@@ -3,7 +3,7 @@
 #include "camera.h"
 #include "../engineTester/main.h"
 #include "../models/models.h"
-#include "../objLoader/objLoader.h"
+#include "../loading/modelloader.h"
 #include "../toolbox/maths.h"
 #include "../collision/collisionmodel.h"
 #include "../collision/collisionchecker.h"
@@ -159,13 +159,13 @@ void Pulley::loadStaticModels()
     std::fprintf(stdout, "Loading Pulley static models...\n");
     #endif
 
-    ObjLoader::loadModel(&Pulley::modelsHandle, "res/Models/Objects/Pulley/", "PulleyHandle");
-    ObjLoader::loadModel(&Pulley::modelsRope,   "res/Models/Objects/Pulley/", "PulleyRope");
-    ObjLoader::loadModel(&Pulley::modelsTop,    "res/Models/Objects/Pulley/", "PulleyTop");
+    ModelLoader::loadModel(&Pulley::modelsHandle, "res/Models/Objects/Pulley/", "PulleyHandle");
+    ModelLoader::loadModel(&Pulley::modelsRope,   "res/Models/Objects/Pulley/", "PulleyRope");
+    ModelLoader::loadModel(&Pulley::modelsTop,    "res/Models/Objects/Pulley/", "PulleyTop");
 
     if (Pulley::cmTop == nullptr)
     {
-        Pulley::cmTop = ObjLoader::loadCollisionModel("Models/Objects/Pulley/", "PulleyTopCollision");
+        Pulley::cmTop = ModelLoader::loadCollisionModel("Models/Objects/Pulley/", "PulleyTopCollision");
     }
 }
 

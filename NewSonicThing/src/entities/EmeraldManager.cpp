@@ -13,7 +13,7 @@
 #include "../guis/guitextureresources.h"
 #include "../guis/guitexture.h"
 #include "../menu/timer.h"
-#include "../renderEngine/loader.h"
+#include "../loading/loader.h"
 #include "../renderEngine/display.h"
 
 #include <vector>

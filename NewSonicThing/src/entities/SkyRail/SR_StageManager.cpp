@@ -5,7 +5,7 @@
 #include "../../engineTester/main.h"
 #include "../dummy.h"
 #include "../controllableplayer.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../../toolbox/maths.h"
 
 std::list<TexturedModel*> SR_StageManager::modelsSkyPass1;
@@ -61,10 +61,10 @@ void SR_StageManager::loadStaticModels()
     std::fprintf(stdout, "Loading SR_StageManager static models...\n");
     #endif
 
-    ObjLoader::loadModel(&SR_StageManager::modelsSkyPass1,       "res/Models/Levels/SkyRail/Sky/", "Pass1");
-    ObjLoader::loadModel(&SR_StageManager::modelsSkyPass2,       "res/Models/Levels/SkyRail/Sky/", "Pass2New");
-    ObjLoader::loadModel(&SR_StageManager::modelsSkyPass3,       "res/Models/Levels/SkyRail/Sky/", "Pass3");
-    ObjLoader::loadModel(&SR_StageManager::modelsSkyTransparent, "res/Models/Levels/SkyRail/Sky/", "Transparent");
+    ModelLoader::loadModel(&SR_StageManager::modelsSkyPass1,       "res/Models/Levels/SkyRail/Sky/", "Pass1");
+    ModelLoader::loadModel(&SR_StageManager::modelsSkyPass2,       "res/Models/Levels/SkyRail/Sky/", "Pass2New");
+    ModelLoader::loadModel(&SR_StageManager::modelsSkyPass3,       "res/Models/Levels/SkyRail/Sky/", "Pass3");
+    ModelLoader::loadModel(&SR_StageManager::modelsSkyTransparent, "res/Models/Levels/SkyRail/Sky/", "Transparent");
 
     setModelsRenderOrder(&SR_StageManager::modelsSkyPass2,       1);
     setModelsRenderOrder(&SR_StageManager::modelsSkyPass3,       2);

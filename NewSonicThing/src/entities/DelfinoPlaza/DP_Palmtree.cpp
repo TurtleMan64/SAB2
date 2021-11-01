@@ -4,7 +4,7 @@
 #include "../../models/models.h"
 #include "../../toolbox/vector.h"
 #include "dppalmtree.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../../engineTester/main.h"
 #include "../../collision/collisionmodel.h"
 #include "../../collision/collisionchecker.h"
@@ -61,11 +61,11 @@ void DP_Palmtree::loadStaticModels()
     std::fprintf(stdout, "Loading DP_Palmtree static models...\n");
     #endif
 
-    ObjLoader::loadModel(&DP_Palmtree::models, "res/Models/Levels/DelfinoPlaza/Palm/", "Palm");
+    ModelLoader::loadModel(&DP_Palmtree::models, "res/Models/Levels/DelfinoPlaza/Palm/", "Palm");
 
     if (DP_Palmtree::cmOriginal == nullptr)
     {
-        DP_Palmtree::cmOriginal = ObjLoader::loadCollisionModel("Models/Levels/DelfinoPlaza/Palm/", "Collision");
+        DP_Palmtree::cmOriginal = ModelLoader::loadCollisionModel("Models/Levels/DelfinoPlaza/Palm/", "Collision");
     }
 }
 

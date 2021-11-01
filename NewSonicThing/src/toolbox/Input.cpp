@@ -38,61 +38,58 @@ SDL_GameController* Input::controller = nullptr;
 
 InputStruct Input::inputs{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
-//vars for use by us
-double mousePreviousX = 0;
-double mousePreviousY = 0;
+double Input::mousePreviousX = 0.0;
+double Input::mousePreviousY = 0.0;
 
-//settings
+// Settings
 
-bool freeMouse = true;
+bool Input::freeMouse = true;
 
-float mouseSensitivityX = 0.25f;
-float mouseSensitivityY = 0.25f;
+float Input::mouseSensitivityX = 0.25f;
+float Input::mouseSensitivityY = 0.25f;
 
-float stickSensitivityX = 2.5f;
-float stickSensitivityY = 2.5f;
+float Input::stickSensitivityX = 2.5f;
+float Input::stickSensitivityY = 2.5f;
 
-float triggerSensitivity = 2;
+float Input::triggerSensitivity = 2.0f;
 
-int CONTROLLER_ID = 0; //-1 = no controller. otherwise, controller id
+int Input::CONTROLLER_ID = 0;
 
-int BUTTON_IDX_A      =  0;
-int BUTTON_IDX_X      =  1;
-int BUTTON_IDX_B      =  2;
-int BUTTON_IDX_Y      =  3;
-int BUTTON_IDX_LB     =  9;
-int BUTTON_IDX_RB     = 10;
-int BUTTON_IDX_SELECT =  4;
-int BUTTON_IDX_START  =  6;
-int BUTTON_IDX_DPADU  = 11;
-int BUTTON_IDX_DPADD  = 12;
+int Input::BUTTON_IDX_A      =  0;
+int Input::BUTTON_IDX_X      =  1;
+int Input::BUTTON_IDX_B      =  2;
+int Input::BUTTON_IDX_Y      =  3;
+int Input::BUTTON_IDX_LB     =  9;
+int Input::BUTTON_IDX_RB     = 10;
+int Input::BUTTON_IDX_SELECT =  4;
+int Input::BUTTON_IDX_START  =  6;
+int Input::BUTTON_IDX_DPADU  = 11;
+int Input::BUTTON_IDX_DPADD  = 12;
 
-int   STICK_LX       = 0;
-float STICK_LX_SCALE = 1;
-int   STICK_LY       = 1;
-float STICK_LY_SCALE = 1;
-int   STICK_RX       = 2;
-float STICK_RX_SCALE = 1;
-int   STICK_RY       = 3;
-float STICK_RY_SCALE = 1;
+int   Input::STICK_LX       = 0;
+float Input::STICK_LX_SCALE = 1.05f;
+int   Input::STICK_LY       = 1;
+float Input::STICK_LY_SCALE = 1.05f;
+int   Input::STICK_RX       = 2;
+float Input::STICK_RX_SCALE = 1.05f;
+int   Input::STICK_RY       = 3;
+float Input::STICK_RY_SCALE = 1.05f;
 
-float STICK_LXDEADZONE = 0.1f;
-float STICK_LYDEADZONE = 0.1f;
-float STICK_RXDEADZONE = 0.1f;
-float STICK_RYDEADZONE = 0.1f;
+float Input::STICK_LXDEADZONE = 0.1f;
+float Input::STICK_LYDEADZONE = 0.1f;
+float Input::STICK_RXDEADZONE = 0.1f;
+float Input::STICK_RYDEADZONE = 0.1f;
 
-int   TRIGGER_L  =  4;
-float LT_NEUTRAL = -1;
-float LT_MAX     =  1;
-float LT_RANGE   =  2;
-int   TRIGGER_R  =  5;
-float RT_NEUTRAL = -1;
-float RT_MAX     =  1;
-float RT_RANGE   =  2;
+int   Input::TRIGGER_L  =  4;
+float Input::LT_NEUTRAL = -1.0f;
+float Input::LT_MAX     =  1.0f;
+float Input::LT_RANGE   =  2.0f;
+int   Input::TRIGGER_R  =  5;
+float Input::RT_NEUTRAL = -1.0f;
+float Input::RT_MAX     =  1.0f;
+float Input::RT_RANGE   =  2.0f;
 
-float TRIGGER_DEADZONE = 0.3f;
-
-
+float Input::TRIGGER_DEADZONE = 0.3f;
 
 void Input::pollInputs()
 {

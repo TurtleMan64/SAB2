@@ -10,7 +10,7 @@
 #include "../../models/models.h"
 #include "../../toolbox/vector.h"
 #include "../../renderEngine/masterrenderer.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../../engineTester/main.h"
 #include "../../entities/camera.h"
 #include "../../collision/collisionchecker.h"
@@ -1692,8 +1692,8 @@ void TC_Kart::loadVehicleInfo()
     std::fprintf(stdout, "Loading TC_Kart static models...\n");
     #endif
 
-    ObjLoader::loadModel(&TC_Kart::models, "res/Models/Levels/TwinkleCircuit/Objects/Kart/", "Kart");
-    ObjLoader::loadModel(&TC_Kart::modelsEngine, "res/Models/Levels/TwinkleCircuit/Objects/Kart/", "EngineFan");
+    ModelLoader::loadModel(&TC_Kart::models, "res/Models/Levels/TwinkleCircuit/Objects/Kart/", "Kart");
+    ModelLoader::loadModel(&TC_Kart::modelsEngine, "res/Models/Levels/TwinkleCircuit/Objects/Kart/", "EngineFan");
 }
 
 void TC_Kart::deleteStaticModels()

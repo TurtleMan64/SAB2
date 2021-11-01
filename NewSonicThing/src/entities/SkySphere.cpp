@@ -5,7 +5,7 @@
 #include "../models/models.h"
 #include "../toolbox/vector.h"
 #include "skysphere.h"
-#include "../objLoader/objLoader.h"
+#include "../loading/modelloader.h"
 #include "../engineTester/main.h"
 #include "../renderEngine/skymanager.h"
 
@@ -72,9 +72,9 @@ void SkySphere::loadModels(char* folder, char* objname, char* mtlname)
     std::string mtlfilename = mtlname;
     mtlfilename = mtlfilename + ".mtl";
 
-    if (ObjLoader::loadBinaryModelWithMTL(&SkySphere::models, path.c_str(), objfilename.c_str(), mtlfilename.c_str()) != 0)
+    if (ModelLoader::loadBinaryModelWithMTL(&SkySphere::models, path.c_str(), objfilename.c_str(), mtlfilename.c_str()) != 0)
     {
-        ObjLoader::loadObjModelWithMTL(&SkySphere::models, path.c_str(), objfilename.c_str(), mtlfilename.c_str());
+        ModelLoader::loadObjModelWithMTL(&SkySphere::models, path.c_str(), objfilename.c_str(), mtlfilename.c_str());
     }
 }
 

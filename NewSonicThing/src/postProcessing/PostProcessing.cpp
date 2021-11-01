@@ -7,7 +7,7 @@
 #include "../gaussianBlur/horizontalblur.h"
 #include "../gaussianBlur/verticalblur.h"
 #include "../bloom/combinefilter.h"
-#include "../renderEngine/loader.h"
+#include "../loading/loader.h"
 #include "../renderEngine/display.h"
 
 std::vector<float> PostProcessing::POSITIONS;

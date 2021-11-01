@@ -3,7 +3,7 @@
 #include "../camera.h"
 #include "../../engineTester/main.h"
 #include "../../models/models.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../../toolbox/maths.h"
 #include "../controllableplayer.h"
 
@@ -132,7 +132,7 @@ void GF_Vine::loadStaticModels()
     std::fprintf(stdout, "Loading GF_Vine static models...\n");
     #endif
 
-    ObjLoader::loadModel(&GF_Vine::models, "res/Models/Levels/GreenForest/Objects/", "Vine");
+    ModelLoader::loadModel(&GF_Vine::models, "res/Models/Levels/GreenForest/Objects/", "Vine");
 }
 
 void GF_Vine::deleteStaticModels()

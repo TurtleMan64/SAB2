@@ -5,7 +5,7 @@
 #include "../../engineTester/main.h"
 #include "../dummy.h"
 #include "../controllableplayer.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../../toolbox/maths.h"
 #include "../../particles/particlemaster.h"
 #include "../../particles/particleresources.h"
@@ -93,9 +93,9 @@ void DP_StageManager::loadStaticModels()
     std::fprintf(stdout, "Loading DP_StageManager static models...\n");
     #endif
 
-    ObjLoader::loadModel(&DP_StageManager::modelsSkyPass1,       "res/Models/Levels/DelfinoPlaza/Sky/", "Blue");
-    ObjLoader::loadModel(&DP_StageManager::modelsSkyPass2,       "res/Models/Levels/DelfinoPlaza/Sky/", "Pass2");
-    ObjLoader::loadModel(&DP_StageManager::modelsSkyTransparent, "res/Models/Levels/DelfinoPlaza/Sky/", "Trans");
+    ModelLoader::loadModel(&DP_StageManager::modelsSkyPass1,       "res/Models/Levels/DelfinoPlaza/Sky/", "Blue");
+    ModelLoader::loadModel(&DP_StageManager::modelsSkyPass2,       "res/Models/Levels/DelfinoPlaza/Sky/", "Pass2");
+    ModelLoader::loadModel(&DP_StageManager::modelsSkyTransparent, "res/Models/Levels/DelfinoPlaza/Sky/", "Trans");
 
     setModelsRenderOrder(&DP_StageManager::modelsSkyPass2,       1);
     setModelsRenderOrder(&DP_StageManager::modelsSkyTransparent, 3);

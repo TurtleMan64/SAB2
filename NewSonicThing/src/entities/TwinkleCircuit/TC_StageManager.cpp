@@ -4,7 +4,7 @@
 #include "tcstagemanager.h"
 #include "../../engineTester/main.h"
 #include "../controllableplayer.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../camera.h"
 
 std::list<TexturedModel*> TC_StageManager::modelsSkydome;
@@ -36,7 +36,7 @@ void TC_StageManager::loadStaticModels()
     std::fprintf(stdout, "Loading TC_StageManager static models...\n");
     #endif
 
-    ObjLoader::loadModel(&TC_StageManager::modelsSkydome,  "res/Models/Levels/TwinkleCircuit/Sky/", "Sky");
+    ModelLoader::loadModel(&TC_StageManager::modelsSkydome,  "res/Models/Levels/TwinkleCircuit/Sky/", "Sky");
 }
 
 void TC_StageManager::deleteStaticModels()

@@ -11,7 +11,7 @@
 #include "../fontMeshCreator/guitext.h"
 #include "../fontMeshCreator/fonttype.h"
 #include "../toolbox/input.h"
-#include "../toolbox/levelloader.h"
+#include "../loading/levelloader.h"
 #include "../fontMeshCreator/guitext.h"
 #include "../audio/audioplayer.h"
 #include "../audio/source.h"

@@ -4,7 +4,7 @@
 #include "../../models/models.h"
 #include "../../toolbox/vector.h"
 #include "maniatailsmodel.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../../engineTester/main.h"
 #include "../../entities/playersonic.h"
 #include "../../toolbox/maths.h"
@@ -470,67 +470,67 @@ void ManiaTailsModel::loadStaticModels()
     std::fprintf(stdout, "Loading mania tails static models...\n");
     #endif
 
-    ObjLoader::loadModel(&ManiaTailsModel::modelBody,         "res/Models/Characters/ManiaTails/", "Body");
-    ObjLoader::loadModel(&ManiaTailsModel::modelHead,         "res/Models/Characters/ManiaTails/", "Head");
-    ObjLoader::loadModel(&ManiaTailsModel::modelLeftHumerus,  "res/Models/Characters/ManiaTails/", "Humerus");
-    ObjLoader::loadModel(&ManiaTailsModel::modelLeftForearm,  "res/Models/Characters/ManiaTails/", "Forearm");
-    ObjLoader::loadModel(&ManiaTailsModel::modelLeftHand,     "res/Models/Characters/ManiaTails/", "HandLeft");
-    ObjLoader::loadModel(&ManiaTailsModel::modelLeftThigh,    "res/Models/Characters/ManiaTails/", "Humerus");
-    ObjLoader::loadModel(&ManiaTailsModel::modelLeftShin,     "res/Models/Characters/ManiaTails/", "Forearm");
-    ObjLoader::loadModel(&ManiaTailsModel::modelLeftFoot,     "res/Models/Characters/ManiaTails/", "ShoeLeft");
-    ObjLoader::loadModel(&ManiaTailsModel::modelRightHumerus, "res/Models/Characters/ManiaTails/", "Humerus");
-    ObjLoader::loadModel(&ManiaTailsModel::modelRightForearm, "res/Models/Characters/ManiaTails/", "Forearm");
-    ObjLoader::loadModel(&ManiaTailsModel::modelRightHand,    "res/Models/Characters/ManiaTails/", "HandRight");
-    ObjLoader::loadModel(&ManiaTailsModel::modelRightThigh,   "res/Models/Characters/ManiaTails/", "Humerus");
-    ObjLoader::loadModel(&ManiaTailsModel::modelRightShin,    "res/Models/Characters/ManiaTails/", "Forearm");
-    ObjLoader::loadModel(&ManiaTailsModel::modelRightFoot,    "res/Models/Characters/ManiaTails/", "ShoeRight");
+    ModelLoader::loadModel(&ManiaTailsModel::modelBody,         "res/Models/Characters/ManiaTails/", "Body");
+    ModelLoader::loadModel(&ManiaTailsModel::modelHead,         "res/Models/Characters/ManiaTails/", "Head");
+    ModelLoader::loadModel(&ManiaTailsModel::modelLeftHumerus,  "res/Models/Characters/ManiaTails/", "Humerus");
+    ModelLoader::loadModel(&ManiaTailsModel::modelLeftForearm,  "res/Models/Characters/ManiaTails/", "Forearm");
+    ModelLoader::loadModel(&ManiaTailsModel::modelLeftHand,     "res/Models/Characters/ManiaTails/", "HandLeft");
+    ModelLoader::loadModel(&ManiaTailsModel::modelLeftThigh,    "res/Models/Characters/ManiaTails/", "Humerus");
+    ModelLoader::loadModel(&ManiaTailsModel::modelLeftShin,     "res/Models/Characters/ManiaTails/", "Forearm");
+    ModelLoader::loadModel(&ManiaTailsModel::modelLeftFoot,     "res/Models/Characters/ManiaTails/", "ShoeLeft");
+    ModelLoader::loadModel(&ManiaTailsModel::modelRightHumerus, "res/Models/Characters/ManiaTails/", "Humerus");
+    ModelLoader::loadModel(&ManiaTailsModel::modelRightForearm, "res/Models/Characters/ManiaTails/", "Forearm");
+    ModelLoader::loadModel(&ManiaTailsModel::modelRightHand,    "res/Models/Characters/ManiaTails/", "HandRight");
+    ModelLoader::loadModel(&ManiaTailsModel::modelRightThigh,   "res/Models/Characters/ManiaTails/", "Humerus");
+    ModelLoader::loadModel(&ManiaTailsModel::modelRightShin,    "res/Models/Characters/ManiaTails/", "Forearm");
+    ModelLoader::loadModel(&ManiaTailsModel::modelRightFoot,    "res/Models/Characters/ManiaTails/", "ShoeRight");
 
-    ObjLoader::loadModel(&ManiaTailsModel::modelDash0       , "res/Models/Characters/ManiaTails/", "Dash0");
-    ObjLoader::loadModel(&ManiaTailsModel::modelDash1       , "res/Models/Characters/ManiaTails/", "Dash1");
-    ObjLoader::loadModel(&ManiaTailsModel::modelDash2       , "res/Models/Characters/ManiaTails/", "Dash2");
-    ObjLoader::loadModel(&ManiaTailsModel::modelDash3       , "res/Models/Characters/ManiaTails/", "Dash3");
-    ObjLoader::loadModel(&ManiaTailsModel::modelDash4       , "res/Models/Characters/ManiaTails/", "Dash4");
-    ObjLoader::loadModel(&ManiaTailsModel::modelDash5       , "res/Models/Characters/ManiaTails/", "Dash5");
-    ObjLoader::loadModel(&ManiaTailsModel::modelDash6       , "res/Models/Characters/ManiaTails/", "Dash6");
-    ObjLoader::loadModel(&ManiaTailsModel::modelDash7       , "res/Models/Characters/ManiaTails/", "Dash7");
-    ObjLoader::loadModel(&ManiaTailsModel::modelDash8       , "res/Models/Characters/ManiaTails/", "Dash8");
-    ObjLoader::loadModel(&ManiaTailsModel::modelDash9       , "res/Models/Characters/ManiaTails/", "Dash9");
-    ObjLoader::loadModel(&ManiaTailsModel::modelDash10      , "res/Models/Characters/ManiaTails/", "Dash10");
-    ObjLoader::loadModel(&ManiaTailsModel::modelDash11      , "res/Models/Characters/ManiaTails/", "Dash11");
-    ObjLoader::loadModel(&ManiaTailsModel::modelDash12      , "res/Models/Characters/ManiaTails/", "Dash12");
-    ObjLoader::loadModel(&ManiaTailsModel::modelDash13      , "res/Models/Characters/ManiaTails/", "Dash13");
-    ObjLoader::loadModel(&ManiaTailsModel::modelDash14      , "res/Models/Characters/ManiaTails/", "Dash14");
-    ObjLoader::loadModel(&ManiaTailsModel::modelDash15      , "res/Models/Characters/ManiaTails/", "Dash15");
-    ObjLoader::loadModel(&ManiaTailsModel::modelDash16      , "res/Models/Characters/ManiaTails/", "Dash16");
-    ObjLoader::loadModel(&ManiaTailsModel::modelDash17      , "res/Models/Characters/ManiaTails/", "Dash17");
-    ObjLoader::loadModel(&ManiaTailsModel::modelJump        , "res/Models/Characters/ManiaTails/", "Jump");
-    ObjLoader::loadModel(&ManiaTailsModel::modelJog0        , "res/Models/Characters/ManiaTails/", "Jog0");
-    ObjLoader::loadModel(&ManiaTailsModel::modelJog1        , "res/Models/Characters/ManiaTails/", "Jog1");
-    ObjLoader::loadModel(&ManiaTailsModel::modelJog2        , "res/Models/Characters/ManiaTails/", "Jog2");
-    ObjLoader::loadModel(&ManiaTailsModel::modelJog3        , "res/Models/Characters/ManiaTails/", "Jog3");
-    ObjLoader::loadModel(&ManiaTailsModel::modelJog4        , "res/Models/Characters/ManiaTails/", "Jog4");
-    ObjLoader::loadModel(&ManiaTailsModel::modelJog5        , "res/Models/Characters/ManiaTails/", "Jog5");
-    ObjLoader::loadModel(&ManiaTailsModel::modelJog6        , "res/Models/Characters/ManiaTails/", "Jog6");
-    ObjLoader::loadModel(&ManiaTailsModel::modelJog7        , "res/Models/Characters/ManiaTails/", "Jog7");
-    ObjLoader::loadModel(&ManiaTailsModel::modelJog8        , "res/Models/Characters/ManiaTails/", "Jog8");
-    ObjLoader::loadModel(&ManiaTailsModel::modelJog9        , "res/Models/Characters/ManiaTails/", "Jog9");
-    ObjLoader::loadModel(&ManiaTailsModel::modelJog10       , "res/Models/Characters/ManiaTails/", "Jog10");
-    ObjLoader::loadModel(&ManiaTailsModel::modelJog11       , "res/Models/Characters/ManiaTails/", "Jog11");
-    ObjLoader::loadModel(&ManiaTailsModel::modelJog12       , "res/Models/Characters/ManiaTails/", "Jog12");
-    ObjLoader::loadModel(&ManiaTailsModel::modelJog13       , "res/Models/Characters/ManiaTails/", "Jog13");
-    ObjLoader::loadModel(&ManiaTailsModel::modelJog14       , "res/Models/Characters/ManiaTails/", "Jog14");
-    ObjLoader::loadModel(&ManiaTailsModel::modelJog15       , "res/Models/Characters/ManiaTails/", "Jog15");
-    ObjLoader::loadModel(&ManiaTailsModel::modelJog16       , "res/Models/Characters/ManiaTails/", "Jog16");
-    ObjLoader::loadModel(&ManiaTailsModel::modelJog17       , "res/Models/Characters/ManiaTails/", "Jog17");
-    ObjLoader::loadModel(&ManiaTailsModel::modelGrind       , "res/Models/Characters/ManiaTails/", "Grind");
-    ObjLoader::loadModel(&ManiaTailsModel::modelSkid        , "res/Models/Characters/ManiaTails/", "Skid");
-    ObjLoader::loadModel(&ManiaTailsModel::modelLightdash   , "res/Models/Characters/ManiaTails/", "Lightdash");
-    ObjLoader::loadModel(&ManiaTailsModel::modelFreefall    , "res/Models/Characters/ManiaTails/", "Freefall");
-    ObjLoader::loadModel(&ManiaTailsModel::modelStomp       , "res/Models/Characters/ManiaTails/", "Freefall");
-    ObjLoader::loadModel(&ManiaTailsModel::modelGrab        , "res/Models/Characters/ManiaTails/", "Grab");
-    ObjLoader::loadModel(&ManiaTailsModel::modelFlyBody     , "res/Models/Characters/ManiaTails/", "FlyBody");
-    ObjLoader::loadModel(&ManiaTailsModel::modelFlyBodyTired, "res/Models/Characters/ManiaTails/", "FlyBodyTired");
-    ObjLoader::loadModel(&ManiaTailsModel::modelFlyTails    , "res/Models/Characters/ManiaTails/", "FlyTails");
+    ModelLoader::loadModel(&ManiaTailsModel::modelDash0       , "res/Models/Characters/ManiaTails/", "Dash0");
+    ModelLoader::loadModel(&ManiaTailsModel::modelDash1       , "res/Models/Characters/ManiaTails/", "Dash1");
+    ModelLoader::loadModel(&ManiaTailsModel::modelDash2       , "res/Models/Characters/ManiaTails/", "Dash2");
+    ModelLoader::loadModel(&ManiaTailsModel::modelDash3       , "res/Models/Characters/ManiaTails/", "Dash3");
+    ModelLoader::loadModel(&ManiaTailsModel::modelDash4       , "res/Models/Characters/ManiaTails/", "Dash4");
+    ModelLoader::loadModel(&ManiaTailsModel::modelDash5       , "res/Models/Characters/ManiaTails/", "Dash5");
+    ModelLoader::loadModel(&ManiaTailsModel::modelDash6       , "res/Models/Characters/ManiaTails/", "Dash6");
+    ModelLoader::loadModel(&ManiaTailsModel::modelDash7       , "res/Models/Characters/ManiaTails/", "Dash7");
+    ModelLoader::loadModel(&ManiaTailsModel::modelDash8       , "res/Models/Characters/ManiaTails/", "Dash8");
+    ModelLoader::loadModel(&ManiaTailsModel::modelDash9       , "res/Models/Characters/ManiaTails/", "Dash9");
+    ModelLoader::loadModel(&ManiaTailsModel::modelDash10      , "res/Models/Characters/ManiaTails/", "Dash10");
+    ModelLoader::loadModel(&ManiaTailsModel::modelDash11      , "res/Models/Characters/ManiaTails/", "Dash11");
+    ModelLoader::loadModel(&ManiaTailsModel::modelDash12      , "res/Models/Characters/ManiaTails/", "Dash12");
+    ModelLoader::loadModel(&ManiaTailsModel::modelDash13      , "res/Models/Characters/ManiaTails/", "Dash13");
+    ModelLoader::loadModel(&ManiaTailsModel::modelDash14      , "res/Models/Characters/ManiaTails/", "Dash14");
+    ModelLoader::loadModel(&ManiaTailsModel::modelDash15      , "res/Models/Characters/ManiaTails/", "Dash15");
+    ModelLoader::loadModel(&ManiaTailsModel::modelDash16      , "res/Models/Characters/ManiaTails/", "Dash16");
+    ModelLoader::loadModel(&ManiaTailsModel::modelDash17      , "res/Models/Characters/ManiaTails/", "Dash17");
+    ModelLoader::loadModel(&ManiaTailsModel::modelJump        , "res/Models/Characters/ManiaTails/", "Jump");
+    ModelLoader::loadModel(&ManiaTailsModel::modelJog0        , "res/Models/Characters/ManiaTails/", "Jog0");
+    ModelLoader::loadModel(&ManiaTailsModel::modelJog1        , "res/Models/Characters/ManiaTails/", "Jog1");
+    ModelLoader::loadModel(&ManiaTailsModel::modelJog2        , "res/Models/Characters/ManiaTails/", "Jog2");
+    ModelLoader::loadModel(&ManiaTailsModel::modelJog3        , "res/Models/Characters/ManiaTails/", "Jog3");
+    ModelLoader::loadModel(&ManiaTailsModel::modelJog4        , "res/Models/Characters/ManiaTails/", "Jog4");
+    ModelLoader::loadModel(&ManiaTailsModel::modelJog5        , "res/Models/Characters/ManiaTails/", "Jog5");
+    ModelLoader::loadModel(&ManiaTailsModel::modelJog6        , "res/Models/Characters/ManiaTails/", "Jog6");
+    ModelLoader::loadModel(&ManiaTailsModel::modelJog7        , "res/Models/Characters/ManiaTails/", "Jog7");
+    ModelLoader::loadModel(&ManiaTailsModel::modelJog8        , "res/Models/Characters/ManiaTails/", "Jog8");
+    ModelLoader::loadModel(&ManiaTailsModel::modelJog9        , "res/Models/Characters/ManiaTails/", "Jog9");
+    ModelLoader::loadModel(&ManiaTailsModel::modelJog10       , "res/Models/Characters/ManiaTails/", "Jog10");
+    ModelLoader::loadModel(&ManiaTailsModel::modelJog11       , "res/Models/Characters/ManiaTails/", "Jog11");
+    ModelLoader::loadModel(&ManiaTailsModel::modelJog12       , "res/Models/Characters/ManiaTails/", "Jog12");
+    ModelLoader::loadModel(&ManiaTailsModel::modelJog13       , "res/Models/Characters/ManiaTails/", "Jog13");
+    ModelLoader::loadModel(&ManiaTailsModel::modelJog14       , "res/Models/Characters/ManiaTails/", "Jog14");
+    ModelLoader::loadModel(&ManiaTailsModel::modelJog15       , "res/Models/Characters/ManiaTails/", "Jog15");
+    ModelLoader::loadModel(&ManiaTailsModel::modelJog16       , "res/Models/Characters/ManiaTails/", "Jog16");
+    ModelLoader::loadModel(&ManiaTailsModel::modelJog17       , "res/Models/Characters/ManiaTails/", "Jog17");
+    ModelLoader::loadModel(&ManiaTailsModel::modelGrind       , "res/Models/Characters/ManiaTails/", "Grind");
+    ModelLoader::loadModel(&ManiaTailsModel::modelSkid        , "res/Models/Characters/ManiaTails/", "Skid");
+    ModelLoader::loadModel(&ManiaTailsModel::modelLightdash   , "res/Models/Characters/ManiaTails/", "Lightdash");
+    ModelLoader::loadModel(&ManiaTailsModel::modelFreefall    , "res/Models/Characters/ManiaTails/", "Freefall");
+    ModelLoader::loadModel(&ManiaTailsModel::modelStomp       , "res/Models/Characters/ManiaTails/", "Freefall");
+    ModelLoader::loadModel(&ManiaTailsModel::modelGrab        , "res/Models/Characters/ManiaTails/", "Grab");
+    ModelLoader::loadModel(&ManiaTailsModel::modelFlyBody     , "res/Models/Characters/ManiaTails/", "FlyBody");
+    ModelLoader::loadModel(&ManiaTailsModel::modelFlyBodyTired, "res/Models/Characters/ManiaTails/", "FlyBodyTired");
+    ModelLoader::loadModel(&ManiaTailsModel::modelFlyTails    , "res/Models/Characters/ManiaTails/", "FlyTails");
 }
 
 void ManiaTailsModel::setLimbsVisibility(bool newVisible)

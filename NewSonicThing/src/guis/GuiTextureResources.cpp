@@ -1,6 +1,6 @@
 #include "guitextureresources.h"
 #include "guitexture.h"
-#include "../renderEngine/loader.h"
+#include "../loading/loader.h"
 #include "../renderEngine/display.h"
 #include "../engineTester/main.h"
 

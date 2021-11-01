@@ -5,7 +5,7 @@
 #include "../models/models.h"
 #include "../toolbox/vector.h"
 #include "lowqualitywater.h"
-#include "../objLoader/objLoader.h"
+#include "../loading/modelloader.h"
 #include "../engineTester/main.h"
 
 #include <list>
@@ -51,7 +51,7 @@ void LowQualityWater::loadStaticModels()
     std::fprintf(stdout, "Loading LowQualityWater static models...\n");
     #endif
 
-    ObjLoader::loadModel(&LowQualityWater::models, "res/Models/Objects/Water/", "LowQualityWater");
+    ModelLoader::loadModel(&LowQualityWater::models, "res/Models/Objects/Water/", "LowQualityWater");
 }
 
 void LowQualityWater::deleteStaticModels()

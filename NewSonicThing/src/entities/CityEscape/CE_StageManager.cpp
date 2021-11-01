@@ -4,7 +4,7 @@
 #include "cestagemanager.h"
 #include "../../engineTester/main.h"
 #include "../controllableplayer.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../camera.h"
 #include "../../audio/audioplayer.h"
 
@@ -50,7 +50,7 @@ void CE_StageManager::loadStaticModels()
     std::fprintf(stdout, "Loading CE_StageManager static models...\n");
     #endif
 
-    ObjLoader::loadModel(&CE_StageManager::modelsSkydome,  "res/Models/Levels/CityEscape/Sky/", "Sky");
+    ModelLoader::loadModel(&CE_StageManager::modelsSkydome,  "res/Models/Levels/CityEscape/Sky/", "Sky");
 }
 
 void CE_StageManager::deleteStaticModels()

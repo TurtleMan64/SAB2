@@ -4,7 +4,7 @@
 #include "../../models/models.h"
 #include "../../toolbox/vector.h"
 #include "maniasonicmodel.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../../engineTester/main.h"
 #include "../../entities/playersonic.h"
 #include "../../toolbox/maths.h"
@@ -418,59 +418,59 @@ void ManiaSonicModel::loadStaticModels()
     std::fprintf(stdout, "Loading mania sonic static models...\n");
     #endif
 
-    ObjLoader::loadModel(&ManiaSonicModel::modelBody,         "res/Models/Characters/ManiaSonic/", "Body");
-    ObjLoader::loadModel(&ManiaSonicModel::modelHead,         "res/Models/Characters/ManiaSonic/", "Head");
-    ObjLoader::loadModel(&ManiaSonicModel::modelLeftHumerus,  "res/Models/Characters/ManiaSonic/", "Humerus");
-    ObjLoader::loadModel(&ManiaSonicModel::modelLeftForearm,  "res/Models/Characters/ManiaSonic/", "Forearm");
-    ObjLoader::loadModel(&ManiaSonicModel::modelLeftHand,     "res/Models/Characters/ManiaSonic/", "HandLeft");
-    ObjLoader::loadModel(&ManiaSonicModel::modelLeftThigh,    "res/Models/Characters/ManiaSonic/", "Thigh");
-    ObjLoader::loadModel(&ManiaSonicModel::modelLeftShin,     "res/Models/Characters/ManiaSonic/", "Shin");
-    ObjLoader::loadModel(&ManiaSonicModel::modelLeftFoot,     "res/Models/Characters/ManiaSonic/", "ShoeLeft");
-    ObjLoader::loadModel(&ManiaSonicModel::modelRightHumerus, "res/Models/Characters/ManiaSonic/", "Humerus");
-    ObjLoader::loadModel(&ManiaSonicModel::modelRightForearm, "res/Models/Characters/ManiaSonic/", "Forearm");
-    ObjLoader::loadModel(&ManiaSonicModel::modelRightHand,    "res/Models/Characters/ManiaSonic/", "HandRight");
-    ObjLoader::loadModel(&ManiaSonicModel::modelRightThigh,   "res/Models/Characters/ManiaSonic/", "Thigh");
-    ObjLoader::loadModel(&ManiaSonicModel::modelRightShin,    "res/Models/Characters/ManiaSonic/", "Shin");
-    ObjLoader::loadModel(&ManiaSonicModel::modelRightFoot,    "res/Models/Characters/ManiaSonic/", "ShoeRight");
+    ModelLoader::loadModel(&ManiaSonicModel::modelBody,         "res/Models/Characters/ManiaSonic/", "Body");
+    ModelLoader::loadModel(&ManiaSonicModel::modelHead,         "res/Models/Characters/ManiaSonic/", "Head");
+    ModelLoader::loadModel(&ManiaSonicModel::modelLeftHumerus,  "res/Models/Characters/ManiaSonic/", "Humerus");
+    ModelLoader::loadModel(&ManiaSonicModel::modelLeftForearm,  "res/Models/Characters/ManiaSonic/", "Forearm");
+    ModelLoader::loadModel(&ManiaSonicModel::modelLeftHand,     "res/Models/Characters/ManiaSonic/", "HandLeft");
+    ModelLoader::loadModel(&ManiaSonicModel::modelLeftThigh,    "res/Models/Characters/ManiaSonic/", "Thigh");
+    ModelLoader::loadModel(&ManiaSonicModel::modelLeftShin,     "res/Models/Characters/ManiaSonic/", "Shin");
+    ModelLoader::loadModel(&ManiaSonicModel::modelLeftFoot,     "res/Models/Characters/ManiaSonic/", "ShoeLeft");
+    ModelLoader::loadModel(&ManiaSonicModel::modelRightHumerus, "res/Models/Characters/ManiaSonic/", "Humerus");
+    ModelLoader::loadModel(&ManiaSonicModel::modelRightForearm, "res/Models/Characters/ManiaSonic/", "Forearm");
+    ModelLoader::loadModel(&ManiaSonicModel::modelRightHand,    "res/Models/Characters/ManiaSonic/", "HandRight");
+    ModelLoader::loadModel(&ManiaSonicModel::modelRightThigh,   "res/Models/Characters/ManiaSonic/", "Thigh");
+    ModelLoader::loadModel(&ManiaSonicModel::modelRightShin,    "res/Models/Characters/ManiaSonic/", "Shin");
+    ModelLoader::loadModel(&ManiaSonicModel::modelRightFoot,    "res/Models/Characters/ManiaSonic/", "ShoeRight");
 
-    ObjLoader::loadModel(&ManiaSonicModel::modelDash0    , "res/Models/Characters/ManiaSonic/", "Dash0");
-    ObjLoader::loadModel(&ManiaSonicModel::modelDash1    , "res/Models/Characters/ManiaSonic/", "Dash1");
-    ObjLoader::loadModel(&ManiaSonicModel::modelDash2    , "res/Models/Characters/ManiaSonic/", "Dash2");
-    ObjLoader::loadModel(&ManiaSonicModel::modelDash3    , "res/Models/Characters/ManiaSonic/", "Dash3");
-    ObjLoader::loadModel(&ManiaSonicModel::modelDash4    , "res/Models/Characters/ManiaSonic/", "Dash4");
-    ObjLoader::loadModel(&ManiaSonicModel::modelDash5    , "res/Models/Characters/ManiaSonic/", "Dash5");
-    ObjLoader::loadModel(&ManiaSonicModel::modelDash6    , "res/Models/Characters/ManiaSonic/", "Dash6");
-    ObjLoader::loadModel(&ManiaSonicModel::modelDash7    , "res/Models/Characters/ManiaSonic/", "Dash7");
-    ObjLoader::loadModel(&ManiaSonicModel::modelDash8    , "res/Models/Characters/ManiaSonic/", "Dash8");
-    ObjLoader::loadModel(&ManiaSonicModel::modelDash9    , "res/Models/Characters/ManiaSonic/", "Dash9");
-    ObjLoader::loadModel(&ManiaSonicModel::modelDash10   , "res/Models/Characters/ManiaSonic/", "Dash10");
-    ObjLoader::loadModel(&ManiaSonicModel::modelDash11   , "res/Models/Characters/ManiaSonic/", "Dash11");
-    ObjLoader::loadModel(&ManiaSonicModel::modelJump     , "res/Models/Characters/ManiaSonic/", "Jump");
-    ObjLoader::loadModel(&ManiaSonicModel::modelJog0     , "res/Models/Characters/ManiaSonic/", "Jog0");
-    ObjLoader::loadModel(&ManiaSonicModel::modelJog1     , "res/Models/Characters/ManiaSonic/", "Jog1");
-    ObjLoader::loadModel(&ManiaSonicModel::modelJog2     , "res/Models/Characters/ManiaSonic/", "Jog2");
-    ObjLoader::loadModel(&ManiaSonicModel::modelJog3     , "res/Models/Characters/ManiaSonic/", "Jog3");
-    ObjLoader::loadModel(&ManiaSonicModel::modelJog4     , "res/Models/Characters/ManiaSonic/", "Jog4");
-    ObjLoader::loadModel(&ManiaSonicModel::modelJog5     , "res/Models/Characters/ManiaSonic/", "Jog5");
-    ObjLoader::loadModel(&ManiaSonicModel::modelJog6     , "res/Models/Characters/ManiaSonic/", "Jog6");
-    ObjLoader::loadModel(&ManiaSonicModel::modelJog7     , "res/Models/Characters/ManiaSonic/", "Jog7");
-    ObjLoader::loadModel(&ManiaSonicModel::modelJog8     , "res/Models/Characters/ManiaSonic/", "Jog8");
-    ObjLoader::loadModel(&ManiaSonicModel::modelJog9     , "res/Models/Characters/ManiaSonic/", "Jog9");
-    ObjLoader::loadModel(&ManiaSonicModel::modelJog10    , "res/Models/Characters/ManiaSonic/", "Jog10");
-    ObjLoader::loadModel(&ManiaSonicModel::modelJog11    , "res/Models/Characters/ManiaSonic/", "Jog11");
-    ObjLoader::loadModel(&ManiaSonicModel::modelJog12    , "res/Models/Characters/ManiaSonic/", "Jog12");
-    ObjLoader::loadModel(&ManiaSonicModel::modelJog13    , "res/Models/Characters/ManiaSonic/", "Jog13");
-    ObjLoader::loadModel(&ManiaSonicModel::modelJog14    , "res/Models/Characters/ManiaSonic/", "Jog14");
-    ObjLoader::loadModel(&ManiaSonicModel::modelJog15    , "res/Models/Characters/ManiaSonic/", "Jog15");
-    ObjLoader::loadModel(&ManiaSonicModel::modelJog16    , "res/Models/Characters/ManiaSonic/", "Jog16");
-    ObjLoader::loadModel(&ManiaSonicModel::modelJog17    , "res/Models/Characters/ManiaSonic/", "Jog17");
-    ObjLoader::loadModel(&ManiaSonicModel::modelGrind    , "res/Models/Characters/ManiaSonic/", "Grind");
-    ObjLoader::loadModel(&ManiaSonicModel::modelSkid     , "res/Models/Characters/ManiaSonic/", "Skid");
-    ObjLoader::loadModel(&ManiaSonicModel::modelLightdash, "res/Models/Characters/ManiaSonic/", "Lightdash");
-    ObjLoader::loadModel(&ManiaSonicModel::modelFreefall , "res/Models/Characters/ManiaSonic/", "Freefall");
-    ObjLoader::loadModel(&ManiaSonicModel::modelStomp    , "res/Models/Characters/ManiaSonic/", "Stomp");
-    ObjLoader::loadModel(&ManiaSonicModel::modelGrab     , "res/Models/Characters/ManiaSonic/", "Grab");
-    ObjLoader::loadModel(&ManiaSonicModel::modelDrive    , "res/Models/Characters/ManiaSonic/", "Drive");
+    ModelLoader::loadModel(&ManiaSonicModel::modelDash0    , "res/Models/Characters/ManiaSonic/", "Dash0");
+    ModelLoader::loadModel(&ManiaSonicModel::modelDash1    , "res/Models/Characters/ManiaSonic/", "Dash1");
+    ModelLoader::loadModel(&ManiaSonicModel::modelDash2    , "res/Models/Characters/ManiaSonic/", "Dash2");
+    ModelLoader::loadModel(&ManiaSonicModel::modelDash3    , "res/Models/Characters/ManiaSonic/", "Dash3");
+    ModelLoader::loadModel(&ManiaSonicModel::modelDash4    , "res/Models/Characters/ManiaSonic/", "Dash4");
+    ModelLoader::loadModel(&ManiaSonicModel::modelDash5    , "res/Models/Characters/ManiaSonic/", "Dash5");
+    ModelLoader::loadModel(&ManiaSonicModel::modelDash6    , "res/Models/Characters/ManiaSonic/", "Dash6");
+    ModelLoader::loadModel(&ManiaSonicModel::modelDash7    , "res/Models/Characters/ManiaSonic/", "Dash7");
+    ModelLoader::loadModel(&ManiaSonicModel::modelDash8    , "res/Models/Characters/ManiaSonic/", "Dash8");
+    ModelLoader::loadModel(&ManiaSonicModel::modelDash9    , "res/Models/Characters/ManiaSonic/", "Dash9");
+    ModelLoader::loadModel(&ManiaSonicModel::modelDash10   , "res/Models/Characters/ManiaSonic/", "Dash10");
+    ModelLoader::loadModel(&ManiaSonicModel::modelDash11   , "res/Models/Characters/ManiaSonic/", "Dash11");
+    ModelLoader::loadModel(&ManiaSonicModel::modelJump     , "res/Models/Characters/ManiaSonic/", "Jump");
+    ModelLoader::loadModel(&ManiaSonicModel::modelJog0     , "res/Models/Characters/ManiaSonic/", "Jog0");
+    ModelLoader::loadModel(&ManiaSonicModel::modelJog1     , "res/Models/Characters/ManiaSonic/", "Jog1");
+    ModelLoader::loadModel(&ManiaSonicModel::modelJog2     , "res/Models/Characters/ManiaSonic/", "Jog2");
+    ModelLoader::loadModel(&ManiaSonicModel::modelJog3     , "res/Models/Characters/ManiaSonic/", "Jog3");
+    ModelLoader::loadModel(&ManiaSonicModel::modelJog4     , "res/Models/Characters/ManiaSonic/", "Jog4");
+    ModelLoader::loadModel(&ManiaSonicModel::modelJog5     , "res/Models/Characters/ManiaSonic/", "Jog5");
+    ModelLoader::loadModel(&ManiaSonicModel::modelJog6     , "res/Models/Characters/ManiaSonic/", "Jog6");
+    ModelLoader::loadModel(&ManiaSonicModel::modelJog7     , "res/Models/Characters/ManiaSonic/", "Jog7");
+    ModelLoader::loadModel(&ManiaSonicModel::modelJog8     , "res/Models/Characters/ManiaSonic/", "Jog8");
+    ModelLoader::loadModel(&ManiaSonicModel::modelJog9     , "res/Models/Characters/ManiaSonic/", "Jog9");
+    ModelLoader::loadModel(&ManiaSonicModel::modelJog10    , "res/Models/Characters/ManiaSonic/", "Jog10");
+    ModelLoader::loadModel(&ManiaSonicModel::modelJog11    , "res/Models/Characters/ManiaSonic/", "Jog11");
+    ModelLoader::loadModel(&ManiaSonicModel::modelJog12    , "res/Models/Characters/ManiaSonic/", "Jog12");
+    ModelLoader::loadModel(&ManiaSonicModel::modelJog13    , "res/Models/Characters/ManiaSonic/", "Jog13");
+    ModelLoader::loadModel(&ManiaSonicModel::modelJog14    , "res/Models/Characters/ManiaSonic/", "Jog14");
+    ModelLoader::loadModel(&ManiaSonicModel::modelJog15    , "res/Models/Characters/ManiaSonic/", "Jog15");
+    ModelLoader::loadModel(&ManiaSonicModel::modelJog16    , "res/Models/Characters/ManiaSonic/", "Jog16");
+    ModelLoader::loadModel(&ManiaSonicModel::modelJog17    , "res/Models/Characters/ManiaSonic/", "Jog17");
+    ModelLoader::loadModel(&ManiaSonicModel::modelGrind    , "res/Models/Characters/ManiaSonic/", "Grind");
+    ModelLoader::loadModel(&ManiaSonicModel::modelSkid     , "res/Models/Characters/ManiaSonic/", "Skid");
+    ModelLoader::loadModel(&ManiaSonicModel::modelLightdash, "res/Models/Characters/ManiaSonic/", "Lightdash");
+    ModelLoader::loadModel(&ManiaSonicModel::modelFreefall , "res/Models/Characters/ManiaSonic/", "Freefall");
+    ModelLoader::loadModel(&ManiaSonicModel::modelStomp    , "res/Models/Characters/ManiaSonic/", "Stomp");
+    ModelLoader::loadModel(&ManiaSonicModel::modelGrab     , "res/Models/Characters/ManiaSonic/", "Grab");
+    ModelLoader::loadModel(&ManiaSonicModel::modelDrive    , "res/Models/Characters/ManiaSonic/", "Drive");
 }
 
 void ManiaSonicModel::setLimbsVisibility(bool newVisible)

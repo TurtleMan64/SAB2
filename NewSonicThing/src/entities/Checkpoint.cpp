@@ -4,7 +4,7 @@
 #include "../models/models.h"
 #include "../toolbox/vector.h"
 #include "checkpoint.h"
-#include "../objLoader/objLoader.h"
+#include "../loading/modelloader.h"
 #include "../engineTester/main.h"
 #include "../entities/controllableplayer.h"
 #include "../toolbox/maths.h"
@@ -181,8 +181,8 @@ void Checkpoint::loadStaticModels()
     std::fprintf(stdout, "Loading Checkpoint static models...\n");
     #endif
 
-    ObjLoader::loadModel(&Checkpoint::modelsBase, "res/Models/Objects/Checkpoint/", "Base");
-    ObjLoader::loadModel(&Checkpoint::modelsBall, "res/Models/Objects/Checkpoint/", "Ball");
+    ModelLoader::loadModel(&Checkpoint::modelsBase, "res/Models/Objects/Checkpoint/", "Base");
+    ModelLoader::loadModel(&Checkpoint::modelsBall, "res/Models/Objects/Checkpoint/", "Ball");
 }
 
 void Checkpoint::deleteStaticModels()

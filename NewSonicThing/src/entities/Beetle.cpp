@@ -4,7 +4,7 @@
 #include "../models/models.h"
 #include "../toolbox/vector.h"
 #include "beetle.h"
-#include "../objLoader/objLoader.h"
+#include "../loading/modelloader.h"
 #include "../engineTester/main.h"
 #include "../entities/controllableplayer.h"
 #include "../toolbox/maths.h"
@@ -169,8 +169,8 @@ void Beetle::loadStaticModels()
     std::fprintf(stdout, "Loading Beetle static models...\n");
     #endif
 
-    ObjLoader::loadModel(&Beetle::modelsBody,   "res/Models/Objects/Beetle/", "Beetle");
-    ObjLoader::loadModel(&Beetle::modelsBlades, "res/Models/Objects/Beetle/", "Blades");
+    ModelLoader::loadModel(&Beetle::modelsBody,   "res/Models/Objects/Beetle/", "Beetle");
+    ModelLoader::loadModel(&Beetle::modelsBlades, "res/Models/Objects/Beetle/", "Blades");
 }
 
 void Beetle::deleteStaticModels()

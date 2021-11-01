@@ -4,7 +4,7 @@
 #include "../models/models.h"
 #include "../toolbox/vector.h"
 #include "rhinospike.h"
-#include "../objLoader/objLoader.h"
+#include "../loading/modelloader.h"
 #include "../engineTester/main.h"
 #include "../entities/controllableplayer.h"
 #include "../toolbox/maths.h"
@@ -391,7 +391,7 @@ void RhinoSpike::loadStaticModels()
     std::fprintf(stdout, "Loading RhinoSpike static models...\n");
     #endif
 
-    ObjLoader::loadModel(&RhinoSpike::models, "res/Models/Objects/RhinoSpike/", "RhinoSpike");
+    ModelLoader::loadModel(&RhinoSpike::models, "res/Models/Objects/RhinoSpike/", "RhinoSpike");
 }
 
 void RhinoSpike::deleteStaticModels()

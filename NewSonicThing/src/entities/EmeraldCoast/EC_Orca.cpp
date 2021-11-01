@@ -4,7 +4,7 @@
 #include "../../models/models.h"
 #include "../../toolbox/vector.h"
 #include "ecorca.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../../engineTester/main.h"
 #include "../../entities/playersonic.h"
 #include "../../toolbox/maths.h"
@@ -202,7 +202,7 @@ void EC_Orca::loadStaticModels()
     std::fprintf(stdout, "Loading EC_Orca static models...\n");
     #endif
 
-    ObjLoader::loadModel(&EC_Orca::models, "res/Models/Levels/EmeraldCoast/Orca/", "Orca");
+    ModelLoader::loadModel(&EC_Orca::models, "res/Models/Levels/EmeraldCoast/Orca/", "Orca");
 }
 
 void EC_Orca::deleteStaticModels()

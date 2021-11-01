@@ -4,7 +4,7 @@
 #include "../models/models.h"
 #include "../toolbox/vector.h"
 #include "help.h"
-#include "../objLoader/objLoader.h"
+#include "../loading/modelloader.h"
 #include "../engineTester/main.h"
 #include "../toolbox/maths.h"
 #include "../toolbox/split.h"
@@ -136,7 +136,7 @@ void Help::loadStaticModels()
     std::fprintf(stdout, "Loading Help static models...\n");
     #endif
 
-    ObjLoader::loadModel(&Help::models, "res/Models/Objects/Help/", "Help");
+    ModelLoader::loadModel(&Help::models, "res/Models/Objects/Help/", "Help");
 }
 
 void Help::deleteStaticModels()

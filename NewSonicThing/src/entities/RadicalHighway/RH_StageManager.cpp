@@ -4,7 +4,7 @@
 #include "rhstagemanager.h"
 #include "../../engineTester/main.h"
 #include "../controllableplayer.h"
-#include "../../objLoader/objLoader.h"
+#include "../../loading/modelloader.h"
 #include "../camera.h"
 
 std::list<TexturedModel*> RH_StageManager::modelsSkydome;
@@ -37,7 +37,7 @@ void RH_StageManager::loadStaticModels()
     std::fprintf(stdout, "Loading RH_StageManager static models...\n");
     #endif
 
-    ObjLoader::loadModel(&RH_StageManager::modelsSkydome,  "res/Models/Levels/RadicalHighway/Sky/", "Sky");
+    ModelLoader::loadModel(&RH_StageManager::modelsSkydome,  "res/Models/Levels/RadicalHighway/Sky/", "Sky");
 }
 
 void RH_StageManager::deleteStaticModels()

@@ -4,7 +4,7 @@
 #include "../models/models.h"
 #include "../toolbox/vector.h"
 #include "ring.h"
-#include "../objLoader/objLoader.h"
+#include "../loading/modelloader.h"
 #include "../engineTester/main.h"
 #include "../entities/camera.h"
 #include "../entities/playersonic.h"
@@ -146,7 +146,7 @@ void Ring::loadStaticModels()
     std::fprintf(stdout, "Loading ring static models...\n");
     #endif
 
-    ObjLoader::loadModel(&Ring::models, "res/Models/Objects/Ring/", "Ring");
+    ModelLoader::loadModel(&Ring::models, "res/Models/Objects/Ring/", "Ring");
 }
 
 void Ring::deleteStaticModels()

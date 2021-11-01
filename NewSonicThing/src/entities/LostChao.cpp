@@ -4,7 +4,7 @@
 #include "../models/models.h"
 #include "../toolbox/vector.h"
 #include "lostchao.h"
-#include "../objLoader/objLoader.h"
+#include "../loading/modelloader.h"
 #include "../engineTester/main.h"
 #include "../entities/controllableplayer.h"
 #include "../toolbox/maths.h"
@@ -115,7 +115,7 @@ void LostChao::loadStaticModels()
     std::fprintf(stdout, "Loading LostChao static models...\n");
     #endif
 
-    ObjLoader::loadModel(&LostChao::models, "res/Models/Objects/Chao/", "Chao");
+    ModelLoader::loadModel(&LostChao::models, "res/Models/Objects/Chao/", "Chao");
 }
 
 void LostChao::deleteStaticModels()
