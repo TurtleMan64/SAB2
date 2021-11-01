@@ -9,7 +9,7 @@
 #include "../guis/guitextureresources.h"
 #include "../guis/guitexture.h"
 #include "../fontMeshCreator/fonttype.h"
-#include "../renderEngine/renderEngine.h"
+#include "../renderEngine/display.h"
 #include "../entities/controllableplayer.h"
 #include "../renderEngine/loader.h"
 #include "timer.h"
@@ -20,10 +20,7 @@ GLuint HUD::pointBonusIds[10] = {0};
 
 HUD::HUD()
 {
-    extern unsigned int SCR_WIDTH;
-    extern unsigned int SCR_HEIGHT;
-
-    this->aspectRatio = (float)SCR_WIDTH / (float)SCR_HEIGHT;
+    this->aspectRatio = Display::ASPECT_RATIO;
     //this->safeAreaY = 0.015f;
     //this->safeAreaX = safeAreaY;// / this->aspectRatio;
 

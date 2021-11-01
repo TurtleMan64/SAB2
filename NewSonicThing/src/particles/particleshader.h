@@ -23,8 +23,6 @@ private:
     int location_opacity;
     int location_glow;
 
-    float matrixBuffer[16];
-
 public:
     ParticleShader();
 

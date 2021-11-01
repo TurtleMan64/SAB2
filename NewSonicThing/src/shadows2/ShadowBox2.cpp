@@ -3,9 +3,9 @@
 #include "../toolbox/vector.h"
 #include "../toolbox/matrix.h"
 #include "../entities/camera.h"
-#include "../renderEngine/renderEngine.h"
+#include "../renderEngine/display.h"
+#include "../renderEngine/masterrenderer.h"
 
-#include <GLFW/glfw3.h>
 #include <vector>
 
 ShadowBox2::ShadowBox2(Matrix4f* lightViewMatrix, Camera* camera)
@@ -27,10 +27,8 @@ void ShadowBox2::update()
     Vector3f toFar(&forwardVector);
     toFar.scale(SHADOW_DISTANCE);
 
-    float NEAR_PLANE = Master_getNearPlane();
-
     Vector3f toNear(&forwardVector);
-    toNear.scale(NEAR_PLANE);
+    toNear.scale(MasterRenderer::NEAR_PLANE);
 
     Vector3f centerNear = toNear + cam->eye;
     Vector3f centerFar  = toFar  + cam->eye;
@@ -170,24 +168,17 @@ Matrix4f ShadowBox2::calculateCameraRotationMatrix()
 
 void ShadowBox2::calculateWidthsAndHeights()
 {
-    float NEAR_PLANE = Master_getNearPlane();
-    float VFOV = Master_getVFOV();
+    float VFOV = MasterRenderer::getVFOV();
 
     float aRatio = getAspectRatio();
 
     farWidth = SHADOW_DISTANCE * tanf(Maths::toRadians(VFOV));
-    nearWidth = NEAR_PLANE * tanf(Maths::toRadians(VFOV));
+    nearWidth = MasterRenderer::NEAR_PLANE * tanf(Maths::toRadians(VFOV));
     farHeight = farWidth / aRatio;
     nearHeight = nearWidth / aRatio;
 }
 
 float ShadowBox2::getAspectRatio()
 {
-    int displayWidth;
-    int displayHeight;
-    glfwGetWindowSize(getWindow(), &displayWidth, &displayHeight);
-
-    float aspectRatio = (float)displayWidth / (float)displayHeight;
-
-    return aspectRatio;
+    return Display::ASPECT_RATIO;
 }

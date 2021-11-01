@@ -4,7 +4,6 @@
 #include "../models/models.h"
 #include "../toolbox/vector.h"
 #include "ring.h"
-#include "../renderEngine/renderEngine.h"
 #include "../objLoader/objLoader.h"
 #include "../engineTester/main.h"
 #include "../entities/camera.h"
@@ -21,7 +20,6 @@
 
 #include <list>
 #include <iostream>
-#include <algorithm>
 
 std::list<TexturedModel*> Ring::models;
 

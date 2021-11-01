@@ -4,7 +4,6 @@
 #include "../models/models.h"
 #include "../toolbox/vector.h"
 #include "dashpad.h"
-#include "../renderEngine/renderEngine.h"
 #include "../objLoader/objLoader.h"
 #include "../engineTester/main.h"
 #include "../entities/controllableplayer.h"
@@ -18,7 +17,6 @@
 
 #include <list>
 #include <iostream>
-#include <algorithm>
 #include <cmath>
 
 std::list<TexturedModel*> Dashpad::models;

@@ -9,7 +9,7 @@
 #include "../entity.h"
 #include "../../models/models.h"
 #include "../../toolbox/vector.h"
-#include "../../renderEngine/renderEngine.h"
+#include "../../renderEngine/masterrenderer.h"
 #include "../../objLoader/objLoader.h"
 #include "../../engineTester/main.h"
 #include "../../entities/camera.h"
@@ -1124,11 +1124,9 @@ void TC_Kart::step()
     camAngleAdditionalLookdown = 0;
 
     //Animating the camera
-    extern float VFOV_ADDITION;
-
     float speedScale = 1+(vel.length()*camRadiusAdjust);
-    VFOV_ADDITION = vel.length()*0.015f;
-    Master_makeProjectionMatrix();
+    MasterRenderer::VFOV_ADDITION = vel.length()*0.015f;
+    MasterRenderer::makeProjectionMatrix();
 
     Vector3f camOffset(&camDirSmooth);
     camOffset.normalize();

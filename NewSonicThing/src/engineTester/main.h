@@ -254,8 +254,6 @@ public:
 
     static void recalculateEntityChunks(float minX, float maxX, float minZ, float maxZ, float chunkSize);
 
-    static float calcAspectRatio();
-
     static void createTitleCard();
 
     static void clearTitleCard();

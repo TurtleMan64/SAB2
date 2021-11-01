@@ -6,7 +6,6 @@
 #include "../models/models.h"
 #include "../toolbox/vector.h"
 #include "stage.h"
-#include "../renderEngine/renderEngine.h"
 #include "../objLoader/objLoader.h"
 #include "dummy.h"
 #include "controllableplayer.h"

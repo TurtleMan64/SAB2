@@ -8,6 +8,7 @@
 #include "../gaussianBlur/verticalblur.h"
 #include "../bloom/combinefilter.h"
 #include "../renderEngine/loader.h"
+#include "../renderEngine/display.h"
 
 std::vector<float> PostProcessing::POSITIONS;
 RawModel        PostProcessing::quadModel;
@@ -16,9 +17,6 @@ VerticalBlur*   PostProcessing::vBlur  = nullptr;
 HorizontalBlur* PostProcessing::hBlur2 = nullptr;
 VerticalBlur*   PostProcessing::vBlur2 = nullptr;
 CombineFilter*  PostProcessing::combineFilter = nullptr;
-
-extern unsigned int SCR_WIDTH;
-extern unsigned int SCR_HEIGHT;
 
 void PostProcessing::init()
 {
@@ -33,10 +31,10 @@ void PostProcessing::init()
     
     PostProcessing::quadModel = Loader::loadToVAO(&PostProcessing::POSITIONS, 2);
     
-    PostProcessing::hBlur  = new HorizontalBlur(SCR_WIDTH/16, SCR_HEIGHT/16); INCR_NEW("HorizontalBlur");
-    PostProcessing::vBlur  = new VerticalBlur  (SCR_WIDTH/16, SCR_HEIGHT/16); INCR_NEW("VerticalBlur");
-    PostProcessing::hBlur2 = new HorizontalBlur(SCR_WIDTH/6,  SCR_HEIGHT/6);  INCR_NEW("HorizontalBlur");
-    PostProcessing::vBlur2 = new VerticalBlur  (SCR_WIDTH/6,  SCR_HEIGHT/6);  INCR_NEW("VerticalBlur");
+    PostProcessing::hBlur  = new HorizontalBlur(Display::WINDOW_WIDTH/16, Display::WINDOW_HEIGHT/16); INCR_NEW("HorizontalBlur");
+    PostProcessing::vBlur  = new VerticalBlur  (Display::WINDOW_WIDTH/16, Display::WINDOW_HEIGHT/16); INCR_NEW("VerticalBlur");
+    PostProcessing::hBlur2 = new HorizontalBlur(Display::WINDOW_WIDTH/6,  Display::WINDOW_HEIGHT/6);  INCR_NEW("HorizontalBlur");
+    PostProcessing::vBlur2 = new VerticalBlur  (Display::WINDOW_WIDTH/6,  Display::WINDOW_HEIGHT/6);  INCR_NEW("VerticalBlur");
     PostProcessing::combineFilter = new CombineFilter; INCR_NEW("CombineFilter");
 }
 

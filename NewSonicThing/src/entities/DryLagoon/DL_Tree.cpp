@@ -2,7 +2,6 @@
 #include "../entity.h"
 #include "../../engineTester/main.h"
 #include "../../models/models.h"
-#include "../../renderEngine/renderEngine.h"
 #include "../../objLoader/objLoader.h"
 
 std::list<TexturedModel*> DL_Tree::models;

@@ -4,14 +4,12 @@
 #include "../../models/models.h"
 #include "../../toolbox/vector.h"
 #include "nbwaterplatformbounce.h"
-#include "../../renderEngine/renderEngine.h"
 #include "../../objLoader/objLoader.h"
 #include "../../engineTester/main.h"
 #include "../controllableplayer.h"
 #include "../../collision/collisionmodel.h"
 #include "../../collision/collisionchecker.h"
 #include "../../audio/audioplayer.h"
-
 #include <list>
 #include <iostream>
 

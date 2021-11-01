@@ -3,14 +3,11 @@
 #include "../camera.h"
 #include "../../engineTester/main.h"
 #include "../../models/models.h"
-#include "../../renderEngine/renderEngine.h"
 #include "../../objLoader/objLoader.h"
 #include "../../toolbox/maths.h"
 #include "../../collision/collisionmodel.h"
 #include "../../collision/collisionchecker.h"
 #include "../dummy.h"
-
-#include <algorithm>
 
 std::list<TexturedModel*> MH_StaticObjects::models;
 std::list<TexturedModel*> MH_StaticObjects::modelsVertexColours;

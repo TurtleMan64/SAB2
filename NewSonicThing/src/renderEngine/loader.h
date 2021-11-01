@@ -17,8 +17,8 @@ class Loader
 private:
     struct TextureEntry
     {
-        GLuint id;
-        int count;
+        GLuint id = GL_NONE;
+        int count = 0;
     };
 
     static int anisotropicFilterIsSupported;
@@ -37,11 +37,11 @@ private:
 
     static GLuint createVAO();
 
-    static GLuint storeDataInAttributeList(int, int, std::vector<float>*);
+    static GLuint storeDataInAttributeList(int attributeNumber, int coordinateSize, std::vector<float>* data);
 
     static void unbindVAO();
 
-    static GLuint bindIndiciesBuffer(std::vector<int>*);
+    static GLuint bindIndiciesBuffer(std::vector<int>* indicies);
 
 public:
     static void init();

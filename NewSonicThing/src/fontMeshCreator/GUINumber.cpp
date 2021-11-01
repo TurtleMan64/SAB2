@@ -6,16 +6,14 @@
 #include "fonttype.h"
 #include "../menu/pausescreen.h"
 #include "../toolbox/maths.h"
+#include "../renderEngine/display.h"
 
 GLuint GUINumber::numberMeshIds[10];
 GLuint GUINumber::numberMeshVertexCounts[10];
 
 void GUINumber::createNumber(int i, float x, float y, float w, float h)
 {
-    extern unsigned int SCR_WIDTH;
-    extern unsigned int SCR_HEIGHT;
-
-    float ratioScreen = ((float)SCR_HEIGHT)/SCR_WIDTH;
+    float ratioScreen = 1.0f/Display::ASPECT_RATIO;
     float ratioText   = w/h;
 
     std::vector<float> positions;
@@ -135,9 +133,7 @@ void GUINumber::refresh()
     int currentNumber = displayNumber;
     //size = currentNumber/1000.0f;
 
-    extern unsigned int SCR_WIDTH;
-    extern unsigned int SCR_HEIGHT;
-    float ratioScreen = ((float)SCR_HEIGHT)/SCR_WIDTH;
+    float ratioScreen = 1.0f/Display::ASPECT_RATIO;
     float distanceBetweenCharacters = size*ratioScreen;
 
     switch (alignment)

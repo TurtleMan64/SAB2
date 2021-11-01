@@ -10,7 +10,6 @@
 #include "objLoader.h"
 #include "../models/models.h"
 #include "../textures/modeltexture.h"
-#include "../renderEngine/renderEngine.h"
 #include "../renderEngine/loader.h"
 #include "../toolbox/vector.h"
 #include "vertex.h"

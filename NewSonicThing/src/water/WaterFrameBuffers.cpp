@@ -1,11 +1,8 @@
 #include <glad/glad.h>
 #include "waterframebuffers.h"
 #include "../engineTester/main.h"
-
-extern GLuint currentBoundFramebuffer;
-
-extern unsigned int SCR_WIDTH;
-extern unsigned int SCR_HEIGHT;
+#include "../renderEngine/display.h"
+#include "../renderEngine/masterrenderer.h"
 
 WaterFrameBuffers::WaterFrameBuffers()
 {
@@ -22,8 +19,8 @@ void WaterFrameBuffers::initialiseReflectionFrameBuffer()
 
     //Curently a bug if the water texture sizes are different than window size. Bug makes refracted and reflected 
     // particles to be displaced.
-    reflectionTexture = createTextureAttachment(SCR_WIDTH, SCR_HEIGHT);
-    reflectionDepthBuffer = createDepthBufferAttachment(SCR_WIDTH, SCR_HEIGHT);
+    reflectionTexture = createTextureAttachment(Display::WINDOW_WIDTH, Display::WINDOW_HEIGHT);
+    reflectionDepthBuffer = createDepthBufferAttachment(Display::WINDOW_WIDTH, Display::WINDOW_HEIGHT);
 
     unbindCurrentFrameBuffer();
 }
@@ -36,8 +33,8 @@ void WaterFrameBuffers::initialiseRefractionFrameBuffer()
     //refractionTexture      = createTextureAttachment(Global::HQWaterRefractionWidth, Global::HQWaterRefractionHeight);
     //refractionDepthTexture = createDepthTextureAttachment(Global::HQWaterRefractionWidth, Global::HQWaterRefractionHeight);
 
-    refractionTexture = createTextureAttachment(SCR_WIDTH, SCR_HEIGHT);
-    refractionDepthTexture = createDepthTextureAttachment(SCR_WIDTH, SCR_HEIGHT);
+    refractionTexture = createTextureAttachment(Display::WINDOW_WIDTH, Display::WINDOW_HEIGHT);
+    refractionDepthTexture = createDepthTextureAttachment(Display::WINDOW_WIDTH, Display::WINDOW_HEIGHT);
 
     unbindCurrentFrameBuffer();
 }
@@ -46,7 +43,7 @@ void WaterFrameBuffers::bindFrameBuffer(GLuint frameBuffer, int width, int heigh
 {
     glBindTexture(GL_TEXTURE_2D, 0);//To make sure the texture isn't bound
     glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
-    currentBoundFramebuffer = frameBuffer;
+    MasterRenderer::currentBoundFramebuffer = frameBuffer;
     glViewport(0, 0, width, height);
 }
 
@@ -56,7 +53,7 @@ GLuint WaterFrameBuffers::createFrameBuffer()
     glGenFramebuffers(1, &frameBufferId);
     //generate name for frame buffer
     glBindFramebuffer(GL_FRAMEBUFFER, frameBufferId);
-    currentBoundFramebuffer = frameBufferId;
+    MasterRenderer::currentBoundFramebuffer = frameBufferId;
     //create the framebuffer
     glDrawBuffer(GL_COLOR_ATTACHMENT0);
     //indicate that we will always render to color attachment 0
@@ -112,7 +109,7 @@ void WaterFrameBuffers::bindReflectionFrameBuffer()
     //Bug "fix" (refer above)
     //bindFrameBuffer(reflectionFrameBuffer, Global::HQWaterReflectionWidth, Global::HQWaterReflectionHeight);
 
-    bindFrameBuffer(reflectionFrameBuffer, SCR_WIDTH, SCR_HEIGHT);
+    bindFrameBuffer(reflectionFrameBuffer, Display::WINDOW_WIDTH, Display::WINDOW_HEIGHT);
 }
 
 void WaterFrameBuffers::bindRefractionFrameBuffer()
@@ -120,14 +117,14 @@ void WaterFrameBuffers::bindRefractionFrameBuffer()
     //Bug "fix" (refer above)
     //bindFrameBuffer(refractionFrameBuffer, Global::HQWaterRefractionWidth, Global::HQWaterRefractionHeight);
 
-    bindFrameBuffer(refractionFrameBuffer, SCR_WIDTH, SCR_HEIGHT);
+    bindFrameBuffer(refractionFrameBuffer, Display::WINDOW_WIDTH, Display::WINDOW_HEIGHT);
 }
 
 void WaterFrameBuffers::unbindCurrentFrameBuffer()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    currentBoundFramebuffer = 0;
-    glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+    MasterRenderer::currentBoundFramebuffer = 0;
+    glViewport(0, 0, Display::WINDOW_WIDTH, Display::WINDOW_HEIGHT);
 }
 
 GLuint WaterFrameBuffers::getReflectionTexture()

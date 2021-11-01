@@ -8,6 +8,7 @@
 #include "../fontMeshCreator/guitext.h"
 #include "../fontMeshCreator/fonttype.h"
 #include "../renderEngine/loader.h"
+#include "../renderEngine/display.h"
 #include "../toolbox/input.h"
 #include "../toolbox/levelloader.h"
 #include "../fontMeshCreator/guitext.h"
@@ -51,9 +52,7 @@ void MissionMenu::loadResources()
     textureParallelogramHalf2         = Loader::loadTexture("res/Images/MainMenu/ParallelogramHalf2.png");
     textureParallelogramHalf2Backdrop = Loader::loadTexture("res/Images/MainMenu/ParallelogramHalf2Backdrop.png");
 
-    extern unsigned int SCR_WIDTH;
-    extern unsigned int SCR_HEIGHT;
-    float aspectRatio = (float)SCR_WIDTH / SCR_HEIGHT;
+    float aspectRatio = Display::ASPECT_RATIO;
     levelButtons.clear();
 
     std::vector<int>* levelIdsToUse = &Global::gameLevelIdsKnuckles;
@@ -276,9 +275,7 @@ void MissionMenu::draw(bool updateMissionText)
             }
         }
 
-        extern unsigned int SCR_WIDTH;
-        extern unsigned int SCR_HEIGHT;
-        float aspectRatio = (float)SCR_WIDTH / SCR_HEIGHT;
+        float aspectRatio = Display::ASPECT_RATIO;
         const float rankWidth = 0.07f/aspectRatio;
         missionSelect->setX(0.69f - rankWidth*1.5f + (Global::gameMissionNumber*rankWidth));
         GuiManager::addGuiToRender(missionSelect);

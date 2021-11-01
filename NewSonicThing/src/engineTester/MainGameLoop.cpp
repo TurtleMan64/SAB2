@@ -27,11 +27,12 @@
 #endif
 
 #include "main.h"
-#include "../renderEngine/renderEngine.h"
+#include "../renderEngine/masterrenderer.h"
+#include "../renderEngine/display.h"
 #include "../renderEngine/loader.h"
 #include "../toolbox/input.h"
 #include "../models/models.h"
-#include "../shaders/shaderprogram.h"
+#include "../shaders/entityshader.h"
 #include "../textures/modeltexture.h"
 #include "../entities/entity.h"
 #include "../toolbox/vector.h"
@@ -154,9 +155,6 @@ int Global::shadowsFarQuality = 0;
 //extern bool INPUT_PREVIOUS_ACTION;
 //extern bool INPUT_PREVIOUS_ACTION2;
 
-extern unsigned int SCR_WIDTH;
-extern unsigned int SCR_HEIGHT;
-
 int Global::countNew = 0;
 int Global::countDelete = 0;
 int Global::gameState = 0;
@@ -271,7 +269,7 @@ int main(int argc, char** argv)
 
     srand(0);
 
-    createDisplay();
+    Display::createDisplay();
 
     Global::characterNames[Global::PlayableCharacter::Sonic] = "Sonic";
     Global::characterNames[Global::PlayableCharacter::Tails] = "Tails";
@@ -355,7 +353,7 @@ int main(int argc, char** argv)
     Camera cam;
     Global::gameCamera = &cam;
 
-    Master_init();
+    MasterRenderer::init();
 
     LevelLoader::loadLevelData();
 
@@ -409,7 +407,7 @@ int main(int argc, char** argv)
     {
         Global::gameWaterFBOs     = new WaterFrameBuffers; INCR_NEW("WaterFrameBuffers");
         WaterShader* waterShader  = new WaterShader; INCR_NEW("WaterShader");
-        Global::gameWaterRenderer = new WaterRenderer(waterShader, Master_getProjectionMatrix(), Global::gameWaterFBOs, Master_getShadowRenderer()); INCR_NEW("WaterRenderer");
+        Global::gameWaterRenderer = new WaterRenderer(waterShader, MasterRenderer::projectionMatrix, Global::gameWaterFBOs, MasterRenderer::getShadowRenderer()); INCR_NEW("WaterRenderer");
         for (int r = -1; r <= 2; r++)
         {
             for (int c = -1; c <= 2; c++)
@@ -421,13 +419,13 @@ int main(int argc, char** argv)
 
     if (Global::renderBloom)
     {
-        Global::gameMultisampleFbo = new Fbo(SCR_WIDTH, SCR_HEIGHT); INCR_NEW("Fbo");
-        Global::gameOutputFbo      = new Fbo(SCR_WIDTH, SCR_HEIGHT, Fbo::DEPTH_TEXTURE); INCR_NEW("Fbo");
-        Global::gameOutputFbo2     = new Fbo(SCR_WIDTH, SCR_HEIGHT, Fbo::DEPTH_TEXTURE); INCR_NEW("Fbo");
+        Global::gameMultisampleFbo = new Fbo(Display::WINDOW_WIDTH, Display::WINDOW_HEIGHT); INCR_NEW("Fbo");
+        Global::gameOutputFbo      = new Fbo(Display::WINDOW_WIDTH, Display::WINDOW_HEIGHT, Fbo::DEPTH_TEXTURE); INCR_NEW("Fbo");
+        Global::gameOutputFbo2     = new Fbo(Display::WINDOW_WIDTH, Display::WINDOW_HEIGHT, Fbo::DEPTH_TEXTURE); INCR_NEW("Fbo");
         PostProcessing::init();
     }
 
-    ParticleMaster::init(Master_getProjectionMatrix());
+    ParticleMaster::init(MasterRenderer::projectionMatrix);
 
     long long secSinceEpoch = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 
@@ -445,7 +443,7 @@ int main(int argc, char** argv)
 
     std::list<std::unordered_set<Entity*>*> entityChunkedList;
 
-    while (Global::gameState != STATE_EXITING && displayWantsToClose() == 0)
+    while (Global::gameState != STATE_EXITING && Display::displayWantsToClose() == 0)
     {
         ANALYSIS_START("Frame Time");
 
@@ -743,7 +741,7 @@ int main(int argc, char** argv)
         //prepare entities to render
         for (Entity* e : gameEntities)
         {
-            Master_processEntity(e);
+            MasterRenderer::processEntity(e);
         }
         if (gameChunkedEntities.size() > 0)
         {
@@ -751,18 +749,18 @@ int main(int argc, char** argv)
             {
                 for (Entity* e : (*entitySet))
                 {
-                    Master_processEntity(e);
+                    MasterRenderer::processEntity(e);
                 }
             }
         }
 
         if (Global::gameStageManager != nullptr)
         {
-            Master_processEntity(Global::gameStageManager);
+            MasterRenderer::processEntity(Global::gameStageManager);
         }
-        Master_processEntity(&stage);
+        MasterRenderer::processEntity(&stage);
         //Master_renderShadowMaps(&lightSun);
-        Master_processEntity(&skySphere);
+        MasterRenderer::processEntity(&skySphere);
 
         float waterBlendAmount = 0.0f;
         if (cam.inWater || (cam.eye.y < Global::waterHeight && Global::stageUsesWater))
@@ -783,7 +781,7 @@ int main(int argc, char** argv)
             cam.mirrorForWater();
             if (aboveWater)
             {
-                Master_render(&cam, 0, 1, 0, offsetWater - Global::waterHeight, waterBlendAmount);
+                MasterRenderer::render(&cam, 0, 1, 0, offsetWater - Global::waterHeight, waterBlendAmount);
                 if (Global::renderParticles)
                 {
                     ParticleMaster::renderParticles(&cam, SkyManager::getOverallBrightness(), 1);
@@ -791,7 +789,7 @@ int main(int argc, char** argv)
             }
             else
             {
-                Master_render(&cam, 0, -1, 0, offsetWater + Global::waterHeight, waterBlendAmount);
+                MasterRenderer::render(&cam, 0, -1, 0, offsetWater + Global::waterHeight, waterBlendAmount);
                 if (Global::renderParticles)
                 {
                     ParticleMaster::renderParticles(&cam, SkyManager::getOverallBrightness(), -1);
@@ -804,7 +802,7 @@ int main(int argc, char** argv)
             Global::gameWaterFBOs->bindRefractionFrameBuffer();
             if (aboveWater)
             {
-                Master_render(&cam, 0, -1, 0, offsetWater + Global::waterHeight, waterBlendAmount);
+                MasterRenderer::render(&cam, 0, -1, 0, offsetWater + Global::waterHeight, waterBlendAmount);
                 if (Global::renderParticles)
                 {
                     ParticleMaster::renderParticles(&cam, SkyManager::getOverallBrightness(), -1);
@@ -812,7 +810,7 @@ int main(int argc, char** argv)
             }
             else
             {
-                Master_render(&cam, 0, 1, 0, offsetWater - Global::waterHeight, waterBlendAmount);
+                MasterRenderer::render(&cam, 0, 1, 0, offsetWater - Global::waterHeight, waterBlendAmount);
                 if (Global::renderParticles)
                 {
                     ParticleMaster::renderParticles(&cam, SkyManager::getOverallBrightness(), 1);
@@ -831,7 +829,7 @@ int main(int argc, char** argv)
         {
             Global::gameMultisampleFbo->bindFrameBuffer();
         }
-        Master_render(&cam, 0, 0, 0, 0, waterBlendAmount);
+        MasterRenderer::render(&cam, 0, 0, 0, 0, waterBlendAmount);
         glDisable(GL_CLIP_DISTANCE1);
 
         if (Global::useHighQualityWater && Global::stageUsesWater)
@@ -849,7 +847,7 @@ int main(int argc, char** argv)
             PostProcessing::doPostProcessing(Global::gameOutputFbo->getColourTexture(), Global::gameOutputFbo2->getColourTexture());
         }
 
-        Master_clearAllEntities();
+        MasterRenderer::clearAllEntities();
 
         if (rankDisplay != nullptr)
         {
@@ -862,7 +860,7 @@ int main(int argc, char** argv)
         GuiManager::clearGuisToRender();
         TextMaster::render();
 
-        updateDisplay();
+        Display::updateDisplay();
 
         AudioPlayer::refreshBGM();
 
@@ -1037,13 +1035,13 @@ int main(int argc, char** argv)
     listenThread.detach();
     #endif
 
-    Master_cleanUp();
+    MasterRenderer::cleanUp();
     Loader::cleanUp();
     TextMaster::cleanUp();
     AudioMaster::cleanUp();
     GuiRenderer::cleanUp();
     Input::cleanUp();
-    closeDisplay();
+    Display::closeDisplay();
 
     return 0;
 }
@@ -1355,13 +1353,11 @@ void Global::saveConfigData()
         if (Global::renderBloom) { file << "Render_Bloom on\n\n"; }
         else                     { file << "Render_Bloom off\n\n"; }
 
-        extern unsigned int AA_SAMPLES;
         file << "#Number of multisamples to use for anti-aliasing\n";
-        file << "Anti-Aliasing_Samples " << AA_SAMPLES << "\n\n";
+        file << "Anti-Aliasing_Samples " << Display::AA_SAMPLES << "\n\n";
 
-        extern float VFOV_BASE;
         file << "#Vertical Field of View\n";
-        file << "FOV " << VFOV_BASE << "\n\n";
+        file << "FOV " << MasterRenderer::VFOV_BASE << "\n\n";
 
         file << "#Unlock_Framerate\n";
         if (Global::framerateUnlock) { file << "Unlock_Framerate on\n\n"; }
@@ -1810,13 +1806,6 @@ void Global::deleteAllChunkedEntities()
         set.clear();
     }
     gameChunkedEntities.clear();
-}
-
-float Global::calcAspectRatio()
-{
-    extern unsigned int SCR_WIDTH;
-    extern unsigned int SCR_HEIGHT;
-    return ((float)SCR_WIDTH)/SCR_HEIGHT;
 }
 
 void Global::createTitleCard()

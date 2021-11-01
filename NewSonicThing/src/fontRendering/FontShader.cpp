@@ -106,8 +106,9 @@ void FontShader::loadBoolean(int location, float value)
 
 void FontShader::loadMatrix(int location, Matrix4f* matrix)
 {
-    matrix->store(matrixBuffer);
-    glUniformMatrix4fv(location, 1, GL_FALSE, matrixBuffer);
+    float buf[16];
+    matrix->store(buf);
+    glUniformMatrix4fv(location, 1, GL_FALSE, buf);
 }
 
 GLuint FontShader::loadShader(const char* fileName, int type)

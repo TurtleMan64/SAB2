@@ -1,8 +1,6 @@
 #ifndef PARTICLERESOURCES_H
 #define PARTICLERESOURCES_H
 
-#include "../renderEngine/renderEngine.h"
-
 #include <vector>
 
 class ParticleTexture;

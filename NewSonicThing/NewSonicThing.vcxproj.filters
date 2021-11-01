@@ -324,23 +324,14 @@
     <ClCompile Include="src\postProcessing\PostProcessing.cpp">
       <Filter>Source Files\postProcessing</Filter>
     </ClCompile>
-    <ClCompile Include="src\renderEngine\DisplayManager.cpp">
-      <Filter>Source Files\renderEngine</Filter>
-    </ClCompile>
     <ClCompile Include="src\renderEngine\Loader.cpp">
       <Filter>Source Files\renderEngine</Filter>
     </ClCompile>
     <ClCompile Include="src\renderEngine\MasterRenderer.cpp">
       <Filter>Source Files\renderEngine</Filter>
     </ClCompile>
-    <ClCompile Include="src\renderEngine\Renderer.cpp">
-      <Filter>Source Files\renderEngine</Filter>
-    </ClCompile>
     <ClCompile Include="src\renderEngine\SkyManager.cpp">
       <Filter>Source Files\renderEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shaders\ShaderProgram.cpp">
-      <Filter>Source Files\shaders</Filter>
     </ClCompile>
     <ClCompile Include="src\shadows\ShadowBox.cpp">
       <Filter>Source Files\shadows</Filter>
@@ -735,6 +726,15 @@
     <ClCompile Include="src\entities\LowQualityWater.cpp">
       <Filter>Source Files\entities</Filter>
     </ClCompile>
+    <ClCompile Include="src\renderEngine\EntityRenderer.cpp">
+      <Filter>Source Files\renderEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shaders\EntityShader.cpp">
+      <Filter>Source Files\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderEngine\Display.cpp">
+      <Filter>Source Files\renderEngine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.h">
@@ -920,14 +920,8 @@
     <ClInclude Include="src\postProcessing\postprocessing.h">
       <Filter>Source Files\postProcessing</Filter>
     </ClInclude>
-    <ClInclude Include="src\renderEngine\renderEngine.h">
-      <Filter>Source Files\renderEngine</Filter>
-    </ClInclude>
     <ClInclude Include="src\renderEngine\skymanager.h">
       <Filter>Source Files\renderEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shaders\shaderprogram.h">
-      <Filter>Source Files\shaders</Filter>
     </ClInclude>
     <ClInclude Include="src\shadows\shadowbox.h">
       <Filter>Source Files\shadows</Filter>
@@ -1329,6 +1323,15 @@
       <Filter>Source Files\renderEngine</Filter>
     </ClInclude>
     <ClInclude Include="src\renderEngine\display.h">
+      <Filter>Source Files\renderEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderEngine\entityrenderer.h">
+      <Filter>Source Files\renderEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shaders\entityshader.h">
+      <Filter>Source Files\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderEngine\masterrenderer.h">
       <Filter>Source Files\renderEngine</Filter>
     </ClInclude>
   </ItemGroup>

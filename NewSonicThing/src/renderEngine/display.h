@@ -1,12 +1,29 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
-#include <GLFW/glfw3.h>
+//#include <GLFW/glfw3.h>
+struct GLFWwindow;
 
 class Display
 {
+private:
+    static void loadDisplaySettings();
+    static void loadGraphicsSettings();
+    static void framebufferSizeCallback(GLFWwindow* window, int width, int height);
+    static void windowCloseCallback(GLFWwindow* window);
+
 public:
     static GLFWwindow* window;
+
+    static int WINDOW_WIDTH;
+    static int WINDOW_HEIGHT;
+    static float ASPECT_RATIO;
+
+    static int F_WIDTH;
+    static int F_HEIGHT;
+    static int F_HZ;
+
+    static int AA_SAMPLES;
 
     static int createDisplay();
 

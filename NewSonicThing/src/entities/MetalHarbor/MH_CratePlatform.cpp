@@ -3,7 +3,6 @@
 #include "../camera.h"
 #include "../../engineTester/main.h"
 #include "../../models/models.h"
-#include "../../renderEngine/renderEngine.h"
 #include "../../objLoader/objLoader.h"
 #include "../../toolbox/maths.h"
 #include "../controllableplayer.h"
@@ -11,8 +10,6 @@
 #include "../../collision/collisionchecker.h"
 #include "../../audio/audioplayer.h"
 #include "../../audio/source.h"
-
-#include <algorithm>
 
 extern float dt;
 

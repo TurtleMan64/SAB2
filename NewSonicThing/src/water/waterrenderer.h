@@ -11,8 +11,6 @@ class Camera;
 class Light;
 class ShadowMapMasterRenderer;
 
-
-#include "../renderEngine/renderEngine.h"
 #include <list>
 #include <vector>
 #include <glad/glad.h>
@@ -20,15 +18,15 @@ class ShadowMapMasterRenderer;
 class WaterRenderer
 {
 private:
-    float moveFactor;
-    GLuint dudvTexture;
-    GLuint normalMap;
+    float moveFactor = 1.0f;
+    GLuint dudvTexture = GL_NONE;
+    GLuint normalMap = GL_NONE;
 
-    RawModel* quad;
-    WaterShader* shader;
-    WaterFrameBuffers* fbos;
+    RawModel* quad = nullptr;
+    WaterShader* shader = nullptr;
+    WaterFrameBuffers* fbos = nullptr;
 
-    ShadowMapMasterRenderer* shadowMapRenderer;
+    ShadowMapMasterRenderer* shadowMapRenderer = nullptr;
 
     void prepareRender(Camera* camera, Light* sun);
 

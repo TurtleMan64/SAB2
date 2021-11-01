@@ -5,6 +5,7 @@
 #include "../fontMeshCreator/fonttype.h"
 #include "../guis/guimanager.h"
 #include "../guis/guitexture.h"
+#include "../renderEngine/display.h"
 
 /*
    Basic button with normal/highlight texture and text
@@ -28,9 +29,7 @@ Button::Button(std::string label, FontType* font, GLuint texture, GLuint highlig
 
 Button::Button(std::string label, FontType* font, GLuint textureId, GLuint highlight, float posX, float posY, float scaleX, float scaleY, bool visible, bool leftAnchored)
 {
-    extern unsigned int SCR_WIDTH;
-    extern unsigned int SCR_HEIGHT;
-    float aspectRatio = (float)SCR_WIDTH / SCR_HEIGHT;
+    float aspectRatio = Display::ASPECT_RATIO;
     anchorOffset = 0.02f*aspectRatio;
 
     if (!leftAnchored)

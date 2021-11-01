@@ -22,6 +22,8 @@
 #include "button.h"
 #include "mainmenu.h"
 #include "../toolbox/maths.h"
+#include "../renderEngine/display.h"
+#include "../renderEngine/masterrenderer.h"
 
 ConfigMenu::ConfigMenu()
 {
@@ -48,9 +50,7 @@ void ConfigMenu::loadResources()
     textureParallelogramHalf2         = Loader::loadTexture("res/Images/MainMenu/ParallelogramHalf2.png");
     textureParallelogramHalf2Backdrop = Loader::loadTexture("res/Images/MainMenu/ParallelogramHalf2Backdrop.png");
 
-    extern unsigned int SCR_WIDTH;
-    extern unsigned int SCR_HEIGHT;
-    float aspectRatio = (float)SCR_WIDTH / SCR_HEIGHT;
+    float aspectRatio = Display::ASPECT_RATIO;
 
     buttonsNames.clear();
 
@@ -67,13 +67,12 @@ void ConfigMenu::loadResources()
     buttonsNames.push_back(new Button("Controller",       Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(7)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
 
     buttonsValues.clear();
-    extern float VFOV_BASE;
     //buttonsValues.push_back(new Button(std::to_string(SCR_WIDTH),                         Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(0)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
     //buttonsValues.push_back(new Button(std::to_string(SCR_HEIGHT),                        Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(1)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
     //buttonsValues.push_back(new Button(boolToString(Global::useFullscreen),               Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(0)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
     buttonsValues.push_back(new Button(boolToString(!Global::framerateUnlock),            Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(0)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
     buttonsValues.push_back(new Button(std::to_string((int)Global::fpsLimit),             Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(1)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
-    buttonsValues.push_back(new Button(floatToString(VFOV_BASE),                          Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(2)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    buttonsValues.push_back(new Button(floatToString(MasterRenderer::VFOV_BASE),          Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(2)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
     buttonsValues.push_back(new Button(floatToString(100*AudioPlayer::soundLevelSFX)+"%", Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(3)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
     buttonsValues.push_back(new Button(floatToString(100*AudioPlayer::soundLevelBGM)+"%", Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(4)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
     buttonsValues.push_back(new Button(boolToString(Global::renderParticles),             Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(5)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
@@ -391,9 +390,9 @@ Menu* ConfigMenu::step()
                 break;
 
             case 2:
-                VFOV_BASE = VFOV_BASE - 1.0f;
-                buttonsValues[2]->generateText(floatToString(VFOV_BASE));
-                Master_makeProjectionMatrix();
+                MasterRenderer::VFOV_BASE = MasterRenderer::VFOV_BASE - 1.0f;
+                buttonsValues[2]->generateText(floatToString(MasterRenderer::VFOV_BASE));
+                MasterRenderer::makeProjectionMatrix();
                 break;
 
             case 3:
@@ -485,9 +484,9 @@ Menu* ConfigMenu::step()
                 break;
 
             case 2:
-                VFOV_BASE = VFOV_BASE + 1.0f;
-                buttonsValues[2]->generateText(floatToString(VFOV_BASE));
-                Master_makeProjectionMatrix();
+                MasterRenderer::VFOV_BASE = MasterRenderer::VFOV_BASE + 1.0f;
+                buttonsValues[2]->generateText(floatToString(MasterRenderer::VFOV_BASE));
+                MasterRenderer::makeProjectionMatrix();
                 break;
 
             case 3:

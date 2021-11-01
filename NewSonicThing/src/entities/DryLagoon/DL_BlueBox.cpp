@@ -3,7 +3,6 @@
 #include "../camera.h"
 #include "../../engineTester/main.h"
 #include "../../models/models.h"
-#include "../../renderEngine/renderEngine.h"
 #include "../../objLoader/objLoader.h"
 #include "../../toolbox/maths.h"
 #include "../../collision/collisionmodel.h"

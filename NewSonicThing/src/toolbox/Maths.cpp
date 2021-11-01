@@ -7,6 +7,7 @@
 #include "../entities/camera.h"
 #include "maths.h"
 #include "../engineTester/main.h"
+#include "../renderEngine/masterrenderer.h"
 
 std::mt19937* Maths::generatorUniform = new std::mt19937(0);
 std::uniform_real_distribution<float>* Maths::distributionUniform = new std::uniform_real_distribution<float>(0.0f, 1.0f);
@@ -741,10 +742,8 @@ Vector2f Maths::calcScreenCoordsOfWorldPoint(Vector3f* worldPoint)
     Matrix4f modelViewMatrix = Matrix4f(modelMatrix);
     viewMatrix.multiply(&modelViewMatrix, &modelViewMatrix);
 
-    extern Matrix4f* projectionMatrix;
-
     Matrix4f result;
-    projectionMatrix->multiply(&modelViewMatrix, &result);
+    MasterRenderer::projectionMatrix->multiply(&modelViewMatrix, &result);
     Vector4f vec4(0, 0, 0, 1);
     Vector4f gl_Position = result.transform(&vec4);
     float scl = gl_Position.w;

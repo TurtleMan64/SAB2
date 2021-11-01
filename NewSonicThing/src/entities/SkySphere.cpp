@@ -5,7 +5,6 @@
 #include "../models/models.h"
 #include "../toolbox/vector.h"
 #include "skysphere.h"
-#include "../renderEngine/renderEngine.h"
 #include "../objLoader/objLoader.h"
 #include "../engineTester/main.h"
 #include "../renderEngine/skymanager.h"

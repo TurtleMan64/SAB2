@@ -4,7 +4,6 @@
 #include "../../models/models.h"
 #include "../../toolbox/vector.h"
 #include "dlturtle.h"
-#include "../../renderEngine/renderEngine.h"
 #include "../../objLoader/objLoader.h"
 #include "../../engineTester/main.h"
 #include "../../toolbox/maths.h"
@@ -19,7 +18,6 @@
 
 #include <list>
 #include <iostream>
-#include <algorithm>
 
 std::list<TexturedModel*> DL_Turtle::models;
 CollisionModel* DL_Turtle::cmOriginal;

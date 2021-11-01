@@ -6,7 +6,6 @@
 #include "kiki.h"
 #include "dummy.h"
 #include "bomb.h"
-#include "../renderEngine/renderEngine.h"
 #include "../objLoader/objLoader.h"
 #include "../engineTester/main.h"
 #include "../entities/controllableplayer.h"

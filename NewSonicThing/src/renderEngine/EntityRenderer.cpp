@@ -1,9 +1,9 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include "renderEngine.h"
+#include "entityrenderer.h"
 #include "../entities/entity.h"
-#include "../shaders/shaderprogram.h"
+#include "../shaders/entityshader.h"
 #include "../toolbox/matrix.h"
 #include "../toolbox/vector.h"
 #include "../toolbox/maths.h"
@@ -15,7 +15,7 @@
 #include <unordered_map>
 #include <list>
 
-EntityRenderer::EntityRenderer(ShaderProgram* shader, Matrix4f* projectionMatrix)
+EntityRenderer::EntityRenderer(EntityShader* shader, Matrix4f* projectionMatrix)
 {
     shader->start();
     shader->loadProjectionMatrix(projectionMatrix);

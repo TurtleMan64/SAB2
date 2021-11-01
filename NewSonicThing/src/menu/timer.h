@@ -9,15 +9,15 @@ class Timer
 {
 private:
     // Parts of the timer
-    GUIText* colon;
-    GUIText* dot;
-    GUINumber* minutes;
-    GUINumber* seconds;
-    GUINumber* centiseconds;
+    GUIText* colon = nullptr;
+    GUIText* dot = nullptr;
+    GUINumber* minutes = nullptr;
+    GUINumber* seconds = nullptr;
+    GUINumber* centiseconds = nullptr;
 
 public:
-    float totalTime;
-    bool frozen;
+    float totalTime = 0.0f;
+    bool frozen = false;
 
     Timer(FontType* font, float posX, float posY, float scale, int alignment, bool visible);
     ~Timer();

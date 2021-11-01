@@ -125,6 +125,7 @@ void ParticleShader::loadBoolean(int location, float value)
 
 void ParticleShader::loadMatrix(int location, Matrix4f* matrix)
 {
-    matrix->store(matrixBuffer);
-    glUniformMatrix4fv(location, 1, GL_FALSE, matrixBuffer);
+    float buf[16];
+    matrix->store(buf);
+    glUniformMatrix4fv(location, 1, GL_FALSE, buf);
 }

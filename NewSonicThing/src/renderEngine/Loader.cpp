@@ -15,6 +15,7 @@
 
 #include "../models/models.h"
 #include "../toolbox/getline.h"
+#include "../renderEngine/display.h"
 
 int Loader::anisotropicFilterIsSupported = 0;
 float Loader::anisotropyLevel = 0.0f;
@@ -383,8 +384,6 @@ GLuint Loader::loadShader(const char* file, int shaderType)
     }
 
     //Go through and replace WINDOW_SIZE
-    extern unsigned int SCR_WIDTH;
-    extern unsigned int SCR_HEIGHT;
     for (int i = 0; i < (int)filetext.size(); i++)
     {
         if (filetext[i+ 0] == 'W' &&
@@ -403,7 +402,7 @@ GLuint Loader::loadShader(const char* file, int shaderType)
             if (filetext[i+12] == 'x')
             {
                 memset(&filetext[i], ' ', 13); //replace WINDOW_SIZE.x with all spaces
-                std::string windowSizeX = std::to_string(SCR_WIDTH);
+                std::string windowSizeX = std::to_string(Display::WINDOW_WIDTH);
                 for (int c = 0; c < (int)windowSizeX.size(); c++) //fill in with width of screen
                 {
                     filetext[i+c] = windowSizeX[c];
@@ -412,7 +411,7 @@ GLuint Loader::loadShader(const char* file, int shaderType)
             else if (filetext[i+12] == 'y')
             {
                 memset(&filetext[i], ' ', 13); //replace WINDOW_SIZE.y with all spaces
-                std::string windowSizeY = std::to_string(SCR_HEIGHT);
+                std::string windowSizeY = std::to_string(Display::WINDOW_HEIGHT);
                 for (int c = 0; c < (int)windowSizeY.size(); c++) //fill in with width of screen
                 {
                     filetext[i+c] = windowSizeY[c];

@@ -2,7 +2,6 @@
 #include <GLFW/glfw3.h>
 
 #include "guimanager.h"
-#include "../renderEngine/renderEngine.h"
 #include "../engineTester/main.h"
 #include "../fontMeshCreator/guitext.h"
 #include "../fontMeshCreator/guinumber.h"

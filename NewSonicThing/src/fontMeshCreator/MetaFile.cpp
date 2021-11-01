@@ -8,13 +8,11 @@
 #include <cstring>
 
 #include "../engineTester/main.h"
-
-extern unsigned int SCR_WIDTH;
-extern unsigned int SCR_HEIGHT;
+#include "../renderEngine/display.h"
 
 MetaFile::MetaFile(std::string filename)
 {
-    this->aspectRatio = (float)SCR_WIDTH / (float)SCR_HEIGHT;
+    aspectRatio = Display::ASPECT_RATIO;
     openFile(filename);
     loadPaddingData();
     loadLineSizes();

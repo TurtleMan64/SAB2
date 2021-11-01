@@ -8,38 +8,29 @@
 #include <string>
 #include <cstring>
 
-#include "renderEngine.h"
+#include "display.h"
+#include "masterrenderer.h"
 #include "../toolbox/input.h"
 #include "../engineTester/main.h"
 #include "../toolbox/split.h"
 #include "../toolbox/getline.h"
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void window_close_callback(GLFWwindow* window);
+GLFWwindow* Display::window = nullptr;
 
 // default settings
-unsigned int SCR_WIDTH = 1280;
-unsigned int SCR_HEIGHT = 720;
+int Display::WINDOW_WIDTH = 1280;
+int Display::WINDOW_HEIGHT = 720;
+float Display::ASPECT_RATIO = 1.7777777777f;
 
-unsigned int F_WIDTH = 1280;
-unsigned int F_HEIGHT = 720;
-unsigned int F_BITSRED = 8;
-unsigned int F_BITSGREEN = 8;
-unsigned int F_BITSBLUE = 8;
-unsigned int F_HZ = 60;
+int Display::F_WIDTH = 1280;
+int Display::F_HEIGHT = 720;
+int Display::F_HZ = 60;
 
-unsigned int AA_SAMPLES = 4;
-
-extern float VFOV_BASE;
+int Display::AA_SAMPLES = 4;
 
 extern float input_zoom_buffer;
 
-GLFWwindow* window = nullptr;
-
-void loadDisplaySettings();
-void loadGraphicsSettings();
-
-int createDisplay()
+int Display::createDisplay()
 {
     // glfw: initialize and configure
     // ------------------------------
@@ -58,26 +49,26 @@ int createDisplay()
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    loadDisplaySettings();
-    loadGraphicsSettings();
+    Display::loadDisplaySettings();
+    Display::loadGraphicsSettings();
 
     GLFWmonitor* monitor = nullptr;
 
-    glfwWindowHint(GLFW_SAMPLES, AA_SAMPLES);
+    glfwWindowHint(GLFW_SAMPLES, Display::AA_SAMPLES);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
     if (Global::useFullscreen)
     {
         monitor = glfwGetPrimaryMonitor();
 
-        SCR_WIDTH  = F_WIDTH;
-        SCR_HEIGHT = F_HEIGHT;
+        Display::WINDOW_WIDTH  = Display::F_WIDTH;
+        Display::WINDOW_HEIGHT = Display::F_HEIGHT;
 
-        glfwWindowHint(GLFW_REFRESH_RATE, F_HZ);
+        glfwWindowHint(GLFW_REFRESH_RATE, Display::F_HZ);
     }
 
-    unsigned int screenWidth  = SCR_WIDTH;
-    unsigned int screenHeight = SCR_HEIGHT;
+    int screenWidth  = Display::WINDOW_WIDTH;
+    int screenHeight = Display::WINDOW_HEIGHT;
 
 
     //int count;
@@ -90,17 +81,17 @@ int createDisplay()
 
     // glfw window creation
     // --------------------
-    window = glfwCreateWindow(screenWidth, screenHeight, "Sonic Adventure Blast 2", monitor, nullptr);
-    if (window == nullptr)
+    Display::window = glfwCreateWindow(screenWidth, screenHeight, "Sonic Adventure Blast 2", monitor, nullptr);
+    if (Display::window == nullptr)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
         return -1;
     }
 
-    glfwMakeContextCurrent(window);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    glfwSetWindowCloseCallback(window, window_close_callback);
+    glfwMakeContextCurrent(Display::window);
+    glfwSetFramebufferSizeCallback(Display::window, Display::framebufferSizeCallback);
+    glfwSetWindowCloseCallback(Display::window, Display::windowCloseCallback);
 
     GLFWimage icons[5];
     icons[0].pixels = SOIL_load_image((Global::pathToEXE+"res/Images/Icon16.png").c_str(), &icons[0].width, &icons[0].height, 0, SOIL_LOAD_RGBA);
@@ -108,7 +99,7 @@ int createDisplay()
     icons[2].pixels = SOIL_load_image((Global::pathToEXE+"res/Images/Icon32.png").c_str(), &icons[2].width, &icons[2].height, 0, SOIL_LOAD_RGBA);
     icons[3].pixels = SOIL_load_image((Global::pathToEXE+"res/Images/Icon48.png").c_str(), &icons[3].width, &icons[3].height, 0, SOIL_LOAD_RGBA);
     icons[4].pixels = SOIL_load_image((Global::pathToEXE+"res/Images/Icon64.png").c_str(), &icons[4].width, &icons[4].height, 0, SOIL_LOAD_RGBA);
-    glfwSetWindowIcon(window, 5, icons);
+    glfwSetWindowIcon(Display::window, 5, icons);
     SOIL_free_image_data(icons[0].pixels);
     SOIL_free_image_data(icons[1].pixels);
     SOIL_free_image_data(icons[2].pixels);
@@ -140,13 +131,13 @@ int createDisplay()
         int monitorWidth = mode->width;
         int monitorHeight = mode->height;
 
-        if ((int)SCR_WIDTH  <= monitorWidth && 
-            (int)SCR_HEIGHT <= monitorHeight)
+        if (Display::WINDOW_WIDTH  <= monitorWidth && 
+            Display::WINDOW_HEIGHT <= monitorHeight)
         {
-            int xpos = monitorWidth/2  - ((int)SCR_WIDTH)/2;
-            int ypos = monitorHeight/2 - ((int)SCR_HEIGHT)/2;
+            int xpos = monitorWidth/2  - (Display::WINDOW_WIDTH)/2;
+            int ypos = monitorHeight/2 - (Display::WINDOW_HEIGHT)/2;
 
-            glfwSetWindowPos(window, xpos, ypos);
+            glfwSetWindowPos(Display::window, xpos, ypos);
         }
     }
 
@@ -167,53 +158,50 @@ int createDisplay()
 
     //Master_makeProjectionMatrix();
 
+    Display::ASPECT_RATIO = ((float)Display::WINDOW_WIDTH)/Display::WINDOW_HEIGHT;
+
     return 0;
 }
 
-void updateDisplay()
+void Display::updateDisplay()
 {
     ANALYSIS_START("Glfw Swap Buffers");
-    glfwSwapBuffers(window);
+    glfwSwapBuffers(Display::window);
     ANALYSIS_DONE("Glfw Swap Buffers");
 }
 
-void closeDisplay()
+void Display::closeDisplay()
 {
-    glfwDestroyWindow(window);
+    glfwDestroyWindow(Display::window);
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
     glfwTerminate();
 }
 
-int displayWantsToClose()
+int Display::displayWantsToClose()
 {
-    return glfwWindowShouldClose(window);
-}
-
-GLFWwindow* getWindow()
-{
-    return window;
+    return glfwWindowShouldClose(Display::window);
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
 // ---------------------------------------------------------------------------------------------
-void framebuffer_size_callback(GLFWwindow* /*windowHandle*/, int width, int height)
+void Display::framebufferSizeCallback(GLFWwindow* /*windowHandle*/, int width, int height)
 {
     // make sure the viewport matches the new window dimensions; note that width and 
     // height will be significantly larger than specified on retina displays.
     glViewport(0, 0, width, height);
-    SCR_WIDTH = width;
-    SCR_HEIGHT = height;
+    Display::WINDOW_WIDTH = width;
+    Display::WINDOW_HEIGHT = height;
     //Global::displaySizeChanged = 2; too hard, memory leaks
-    Master_makeProjectionMatrix();
+    MasterRenderer::makeProjectionMatrix();
 }
 
-void window_close_callback(GLFWwindow* /*windowHandle*/)
+void Display::windowCloseCallback(GLFWwindow* /*windowHandle*/)
 {
     Global::gameState = STATE_EXITING;
 }
 
-void loadDisplaySettings()
+void Display::loadDisplaySettings()
 {
     std::ifstream file(Global::pathToEXE + "Settings/DisplaySettings.ini");
     if (!file.is_open())
@@ -239,11 +227,11 @@ void loadDisplaySettings()
             {
                 if (strcmp(lineSplit[0], "Width") == 0)
                 {
-                    SCR_WIDTH = std::stoi(lineSplit[1], nullptr, 10);
+                    Display::WINDOW_WIDTH = std::stoi(lineSplit[1], nullptr, 10);
                 }
                 else if (strcmp(lineSplit[0], "Height") == 0)
                 {
-                    SCR_HEIGHT = std::stoi(lineSplit[1], nullptr, 10);
+                    Display::WINDOW_HEIGHT = std::stoi(lineSplit[1], nullptr, 10);
                 }
                 else if (strcmp(lineSplit[0], "Fullscreen") == 0)
                 {
@@ -251,27 +239,15 @@ void loadDisplaySettings()
                 }
                 else if (strcmp(lineSplit[0], "F_Width") == 0)
                 {
-                    F_WIDTH = std::stoi(lineSplit[1], nullptr, 10);
+                    Display::F_WIDTH = std::stoi(lineSplit[1], nullptr, 10);
                 }
                 else if (strcmp(lineSplit[0], "F_Height") == 0)
                 {
-                    F_HEIGHT = std::stoi(lineSplit[1], nullptr, 10);
-                }
-                else if (strcmp(lineSplit[0], "F_Bits_Red") == 0)
-                {
-                    F_BITSRED = std::stoi(lineSplit[1], nullptr, 10);
-                }
-                else if (strcmp(lineSplit[0], "F_Bits_Green") == 0)
-                {
-                    F_BITSGREEN = std::stoi(lineSplit[1], nullptr, 10);
-                }
-                else if (strcmp(lineSplit[0], "F_Bits_Blue") == 0)
-                {
-                    F_BITSBLUE = std::stoi(lineSplit[1], nullptr, 10);
+                    Display::F_HEIGHT = std::stoi(lineSplit[1], nullptr, 10);
                 }
                 else if (strcmp(lineSplit[0], "F_RefreshRate") == 0)
                 {
-                    F_HZ = std::stoi(lineSplit[1], nullptr, 10);
+                    Display::F_HZ = std::stoi(lineSplit[1], nullptr, 10);
                 }
             }
             free(lineSplit);
@@ -280,7 +256,7 @@ void loadDisplaySettings()
     }
 }
 
-void loadGraphicsSettings()
+void Display::loadGraphicsSettings()
 {
     std::ifstream file(Global::pathToEXE + "Settings/GraphicsSettings.ini");
     if (!file.is_open())
@@ -333,7 +309,7 @@ void loadGraphicsSettings()
                 }
                 else if (strcmp(lineSplit[0], "FOV") == 0)
                 {
-                    VFOV_BASE = std::stof(lineSplit[1], nullptr);
+                    MasterRenderer::VFOV_BASE = std::stof(lineSplit[1], nullptr);
                 }
                 else if (strcmp(lineSplit[0], "Unlock_Framerate") == 0)
                 {
@@ -364,7 +340,7 @@ void loadGraphicsSettings()
                 }
                 else if (strcmp(lineSplit[0], "Anti-Aliasing_Samples") == 0)
                 {
-                    AA_SAMPLES = std::stoi(lineSplit[1], nullptr, 10);
+                    Display::AA_SAMPLES = std::stoi(lineSplit[1], nullptr, 10);
                 }
                 else if (strcmp(lineSplit[0], "Render_Particles") == 0)
                 {

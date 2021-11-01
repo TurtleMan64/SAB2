@@ -5,7 +5,6 @@
 #include "../toolbox/vector.h"
 #include "ringmoving.h"
 #include "ring.h"
-#include "../renderEngine/renderEngine.h"
 #include "../objLoader/objLoader.h"
 #include "../engineTester/main.h"
 #include "../entities/camera.h"
@@ -21,7 +20,6 @@
 
 #include <list>
 #include <iostream>
-#include <algorithm>
 
 RingMoving::RingMoving()
 {

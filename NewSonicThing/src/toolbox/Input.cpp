@@ -25,15 +25,14 @@
 #include "../toolbox/getline.h"
 #include <random>
 #include <chrono>
-#include "../renderEngine/renderEngine.h"
+
+#include "../renderEngine/display.h"
 
 #ifdef DEV_MODE
 #include <iostream>
 #include <fstream>
 #include "../collision/collisionchecker.h"
 #endif
-
-extern GLFWwindow* window;
 
 SDL_GameController* Input::controller = nullptr;
 
@@ -273,7 +272,7 @@ void Input::pollInputs()
     }
 
     double xpos, ypos;
-    glfwGetCursorPos(window, &xpos, &ypos);
+    glfwGetCursorPos(Display::window, &xpos, &ypos);
 
     if (freeMouse == false)
     {
@@ -289,80 +288,80 @@ void Input::pollInputs()
     mousePreviousX = xpos;
     mousePreviousY = ypos;
 
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+    if (glfwGetKey(Display::window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
     {
-        glfwSetWindowShouldClose(window, true);
+        glfwSetWindowShouldClose(Display::window, true);
     }
 
-    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+    if (glfwGetKey(Display::window, GLFW_KEY_SPACE) == GLFW_PRESS)
     {
         Input::inputs.INPUT_ACTION1 = true;
     }
-    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+    if (glfwGetKey(Display::window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
     {
         Input::inputs.INPUT_ACTION2 = true;
     }
-    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+    if (glfwGetKey(Display::window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
     {
         Input::inputs.INPUT_ACTION3 = true;
     }
-    if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
+    if (glfwGetKey(Display::window, GLFW_KEY_F) == GLFW_PRESS)
     {
         Input::inputs.INPUT_ACTION4 = true;
     }
-    if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS)
+    if (glfwGetKey(Display::window, GLFW_KEY_ENTER) == GLFW_PRESS)
     {
         Input::inputs.INPUT_START = true;
     }
-    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+    if (glfwGetKey(Display::window, GLFW_KEY_Q) == GLFW_PRESS)
     {
         Input::inputs.INPUT_LB = true;
     }
-    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+    if (glfwGetKey(Display::window, GLFW_KEY_E) == GLFW_PRESS)
     {
         Input::inputs.INPUT_RB = true;
     }
-    if (glfwGetKey(window, GLFW_KEY_TAB) == GLFW_PRESS)
+    if (glfwGetKey(Display::window, GLFW_KEY_TAB) == GLFW_PRESS)
     {
         Input::inputs.INPUT_TAB = true;
     }
 
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+    if (glfwGetKey(Display::window, GLFW_KEY_W) == GLFW_PRESS)
     {
         Input::inputs.INPUT_Y = -1;
     }
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+    if (glfwGetKey(Display::window, GLFW_KEY_S) == GLFW_PRESS)
     {
         Input::inputs.INPUT_Y = 1;
     }
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+    if (glfwGetKey(Display::window, GLFW_KEY_A) == GLFW_PRESS)
     {
         Input::inputs.INPUT_X = -1;
     }
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+    if (glfwGetKey(Display::window, GLFW_KEY_D) == GLFW_PRESS)
     {
         Input::inputs.INPUT_X = 1;
     }
 
     #ifdef DEV_MODE
-    if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS)
+    if (glfwGetKey(Display::window, GLFW_KEY_H) == GLFW_PRESS)
     {
         //CollisionChecker::debug = true;
     }
     #endif
 
 
-    if (glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS)
+    if (glfwGetKey(Display::window, GLFW_KEY_0) == GLFW_PRESS)
     {
         SkyManager::increaseTimeOfDay(0.5f);
     }
-    if (glfwGetKey(window, GLFW_KEY_9) == GLFW_PRESS)
+    if (glfwGetKey(Display::window, GLFW_KEY_9) == GLFW_PRESS)
     {
         SkyManager::increaseTimeOfDay(-0.5f);
     }
 
     #ifdef DEV_MODE
-    if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS)
+    if (glfwGetKey(Display::window, GLFW_KEY_J) == GLFW_PRESS)
     {
         if (Global::gameMainPlayer != nullptr)
         {
@@ -436,12 +435,12 @@ void Input::pollInputs()
         if (freeMouse)
         {
             freeMouse = false;
-            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+            glfwSetInputMode(Display::window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         }
         else
         {
             freeMouse = true;
-            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+            glfwSetInputMode(Display::window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
         }
     }
 

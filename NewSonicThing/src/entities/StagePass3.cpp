@@ -4,7 +4,6 @@
 #include "entity.h"
 #include "../models/models.h"
 #include "stagepass3.h"
-#include "../renderEngine/renderEngine.h"
 #include "../engineTester/main.h"
 
 #include <list>

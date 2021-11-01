@@ -20,8 +20,6 @@ private:
     int location_translation;
     int location_scale;
 
-    float matrixBuffer[16];
-
 public:
     FontShader(const char*, const char*);
 

@@ -36,8 +36,6 @@ private:
     int location_murkiness;
     int location_waterColor;
 
-    float matrixBuffer[16];
-
 public:
     WaterShader();
 

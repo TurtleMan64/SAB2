@@ -1,10 +1,9 @@
 #include "timer.h"
-#include "../renderEngine/renderEngine.h"
+#include "../engineTester/main.h"
+#include "../renderEngine/display.h"
 #include "../fontMeshCreator/fonttype.h"
 #include "../fontMeshCreator/guinumber.h"
 #include "../fontMeshCreator/guitext.h"
-#include "../engineTester/main.h"
-#include <iostream>
 
 /* Timer initialized to 0.
  * font: font for the timer
@@ -15,10 +14,7 @@
 
 Timer::Timer(FontType* font, float posX, float posY, float height, int alignment, bool visible)
 {
-    extern unsigned int SCR_WIDTH;
-    extern unsigned int SCR_HEIGHT;
-
-    float aspectRatio = (float)SCR_WIDTH / (float)SCR_HEIGHT;
+    float aspectRatio = Display::ASPECT_RATIO;
 
     float width = height/aspectRatio; //width of a single text character
 
@@ -32,27 +28,26 @@ Timer::Timer(FontType* font, float posX, float posY, float height, int alignment
     this->frozen = false;
 }
 
-
 Timer::~Timer()
 {
     if (Global::mainHudTimer == this)
     {
         Global::mainHudTimer = nullptr;
     }
-    this->colon->deleteMe(); delete this->colon; INCR_DEL("GUIText");
-    this->dot->deleteMe(); delete this->dot; INCR_DEL("GUIText");
-    this->minutes->deleteMe(); delete this->minutes; INCR_DEL("GUINumber");
-    this->seconds->deleteMe(); delete this->seconds; INCR_DEL("GUINumber");
-    this->centiseconds->deleteMe(); delete this->centiseconds; INCR_DEL("GUINumber");
+    colon       ->deleteMe(); delete this->colon;        INCR_DEL("GUIText");
+    dot         ->deleteMe(); delete this->dot;          INCR_DEL("GUIText");
+    minutes     ->deleteMe(); delete this->minutes;      INCR_DEL("GUINumber");
+    seconds     ->deleteMe(); delete this->seconds;      INCR_DEL("GUINumber");
+    centiseconds->deleteMe(); delete this->centiseconds; INCR_DEL("GUINumber");
 }
 
 void Timer::setVisible(bool newVisible)
 {
-    this->minutes->visible = newVisible;
-    this->colon->visible = newVisible;
-    this->seconds->visible = newVisible;
-    this->dot->visible = newVisible;
-    this->centiseconds->visible = newVisible;
+    minutes     ->visible = newVisible;
+    colon       ->visible = newVisible;
+    seconds     ->visible = newVisible;
+    dot         ->visible = newVisible;
+    centiseconds->visible = newVisible;
 }
 
 void Timer::increment()
@@ -73,26 +68,26 @@ void Timer::refresh()
     float toCentiseconds = totalTime * 100.0f;
     int centisecondDisplay = (int)toCentiseconds % 100;
 
-    this->minutes->displayNumber = minuteDisplay;
-    this->seconds->displayNumber = secondDisplay;
-    this->centiseconds->displayNumber = centisecondDisplay;
+    minutes->displayNumber = minuteDisplay;
+    seconds->displayNumber = secondDisplay;
+    centiseconds->displayNumber = centisecondDisplay;
 
-    this->minutes->refresh();
-    this->seconds->refresh();
-    this->centiseconds->refresh();
+    minutes->refresh();
+    seconds->refresh();
+    centiseconds->refresh();
 }
 
 float Timer::getTime()
 {
-    return this->totalTime;
+    return totalTime;
 }
 
 void Timer::setTime(float newTime)
 {
-    this->totalTime = newTime;
+    totalTime = newTime;
 }
 
 void Timer::freeze(bool freezeStatus)
 {
-    this->frozen = freezeStatus;
+    frozen = freezeStatus;
 }

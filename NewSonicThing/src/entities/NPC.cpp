@@ -5,7 +5,6 @@
 #include "../toolbox/vector.h"
 #include "npc.h"
 #include "dummy.h"
-#include "../renderEngine/renderEngine.h"
 #include "../objLoader/objLoader.h"
 #include "../engineTester/main.h"
 #include "../toolbox/maths.h"

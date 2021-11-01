@@ -14,6 +14,7 @@
 #include "../guis/guitexture.h"
 #include "../menu/timer.h"
 #include "../renderEngine/loader.h"
+#include "../renderEngine/display.h"
 
 #include <vector>
 #include <list>
@@ -91,13 +92,7 @@ EmeraldManager::EmeraldManager()
     EmeraldManager::radarRedId    = Loader::loadTexture("res/Images/TreasureHunting/RadarRed.png");
     EmeraldManager::nearPieceId   = Loader::loadTexture("res/Images/TreasureHunting/NearPiece.png");
 
-    extern unsigned int SCR_WIDTH;
-    extern unsigned int SCR_HEIGHT;
-
-    //float px = 1.0f/(SCR_WIdTH);  //1 pixel in x dimension
-    //float py = 1.0f/(SCR_HEIGHT); //1 pixel in y dimension
-
-    float r = ((float)SCR_WIDTH)/SCR_HEIGHT; //screen ratio
+    float r = Display::ASPECT_RATIO; //screen ratio
     float s = 0.05f; //size of radar tiles
 
     //Create Radar gui textures

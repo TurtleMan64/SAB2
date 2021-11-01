@@ -6,7 +6,6 @@ class Vector3f;
 #include <math.h>
 #include "vector.h"
 
-
 class Matrix4f
 {
 public:

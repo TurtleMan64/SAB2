@@ -4,7 +4,7 @@
 #include "playertails.h"
 #include "../models/models.h"
 #include "../toolbox/vector.h"
-#include "../renderEngine/renderEngine.h"
+#include "../renderEngine/display.h"
 #include "../renderEngine/loader.h"
 #include "../objLoader/objLoader.h"
 #include "../engineTester/main.h"
@@ -69,9 +69,7 @@ PlayerTails::PlayerTails(float x, float y, float z)
 
     if (homingAttackReticle == nullptr)
     {
-        extern unsigned int SCR_WIDTH;
-        extern unsigned int SCR_HEIGHT;
-        float aspectRatio = (float)SCR_WIDTH / (float)SCR_HEIGHT;
+        float aspectRatio = Display::ASPECT_RATIO;
 
         homingAttackReticle = new GuiTexture(Loader::loadTexture("res/Images/HomingReticleSmooth.png"), 0.5f, 0.5f, 0.1f/aspectRatio, 0.1f, 0); INCR_NEW("GuiTexture")
         homingAttackReticle->setVisible(true);

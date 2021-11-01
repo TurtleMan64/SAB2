@@ -10,7 +10,6 @@
 
 #include "../fontMeshCreator/guitext.h"
 #include "../fontMeshCreator/fonttype.h"
-#include "../renderEngine/renderEngine.h"
 #include "../toolbox/input.h"
 #include "../toolbox/levelloader.h"
 #include "../fontMeshCreator/guitext.h"
@@ -43,10 +42,6 @@ void ResultsScreen::loadResources()
     {
         std::fprintf(stdout, "Warning: ResultsScreen loading resources when they are already loaded.\n");
     }
-
-    //extern unsigned int SCR_WIdTH;
-    //extern unsigned int SCR_HEIGHT;
-    //float aspectRatio = (float)SCR_WIdTH / SCR_HEIGHT;
 
     textArcadeModeClear = new GUIText("Congrats bro", 0.2f, Global::fontVipnagorgialla, 0.5f, 0.5f, 4, false); INCR_NEW("GUIText")
 

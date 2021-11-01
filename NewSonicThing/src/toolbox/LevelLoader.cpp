@@ -123,6 +123,7 @@
 #include "../entities/EmeraldCoast/ecseagull.h"
 #include "../entities/EmeraldCoast/ecdolphin.h"
 #include "../entities/lowqualitywater.h"
+#include "../renderEngine/masterrenderer.h"
 
 int LevelLoader::numLevels = 0;
 
@@ -190,6 +191,8 @@ void LevelLoader::loadTitle()
     Global::gameCamera->up.set(0, 1, 0);
 
     Global::gameLightSun->direction.set(0, -1, 0);
+
+    MasterRenderer::VFOV_ADDITION = 0;
 
     //use vsync on the title screen
     glfwSwapInterval(1); 
@@ -953,8 +956,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
     timeOld = 0.0;
     //previousTime = 0.0;
 
-    extern float VFOV_ADDITION;
-    VFOV_ADDITION = 0;
+    MasterRenderer::VFOV_ADDITION = 0;
 
     //unlock framerate during gameplay
     if (Global::framerateUnlock)

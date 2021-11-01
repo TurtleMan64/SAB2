@@ -10,8 +10,6 @@ class ParticleTexture;
 class Camera;
 class GF_Particle;
 
-
-#include "../renderEngine/renderEngine.h"
 #include <list>
 #include <vector>
 #include <unordered_map>
@@ -20,8 +18,8 @@ class GF_Particle;
 class ParticleRenderer
 {
 private:
-    RawModel* quad;
-    ParticleShader* shader;
+    RawModel* quad = nullptr;
+    ParticleShader* shader = nullptr;
 
     const int MAX_INSTANCES = 10000;
     const int INSTANCED_DATA_LENGTH = 21;
@@ -29,7 +27,7 @@ private:
     std::vector<float> vboDataBuffer;
     int vboBufferIdx = 0;
 
-    GLuint vbo;
+    GLuint vbo = GL_NONE;
 
     void prepare();
 

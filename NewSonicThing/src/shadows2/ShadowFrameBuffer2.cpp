@@ -1,6 +1,6 @@
 #include <glad/glad.h>
 #include "shadowframebuffer2.h"
-#include "../renderEngine/renderEngine.h"
+#include "../renderEngine/display.h"
 
 ShadowFrameBuffer2::ShadowFrameBuffer2(int width, int height)
 {
@@ -20,13 +20,10 @@ void ShadowFrameBuffer2::bindFrameBuffer()
     bindFrameBuffer(fbo, WIDTH, HEIGHT);
 }
 
-extern unsigned int SCR_WIDTH;
-extern unsigned int SCR_HEIGHT;
-
 void ShadowFrameBuffer2::unbindFrameBuffer()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+    glViewport(0, 0, Display::WINDOW_WIDTH, Display::WINDOW_HEIGHT);
 }
 
 GLuint ShadowFrameBuffer2::getShadowMap()

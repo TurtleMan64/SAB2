@@ -1,6 +1,7 @@
 #include "guitextureresources.h"
 #include "guitexture.h"
 #include "../renderEngine/loader.h"
+#include "../renderEngine/display.h"
 #include "../engineTester/main.h"
 
 GuiTexture* GuiTextureResources::textureRing        = nullptr;
@@ -16,11 +17,8 @@ GuiTexture* GuiTextureResources::textureRankE       = nullptr;
 
 void GuiTextureResources::loadGuiTextures()
 {
-    extern unsigned int SCR_WIDTH;
-    extern unsigned int SCR_HEIGHT;
-
-    float px = 1.0f/(SCR_WIDTH);  //1 pixel in x dimension
-    float py = 1.0f/(SCR_HEIGHT); //1 pixel in y dimension
+    float px = 1.0f/(Display::WINDOW_WIDTH);  //1 pixel in x dimension
+    float py = 1.0f/(Display::WINDOW_HEIGHT); //1 pixel in y dimension
 
     const float w = 0.02f;   //width of a single text character
     const float o = 0.0008f; //horizontal offset to adjust for centered vs non centered

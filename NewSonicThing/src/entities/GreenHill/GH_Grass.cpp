@@ -4,7 +4,6 @@
 #include "../../models/models.h"
 #include "../../toolbox/vector.h"
 #include "ghgrass.h"
-#include "../../renderEngine/renderEngine.h"
 #include "../../objLoader/objLoader.h"
 #include "../../engineTester/main.h"
 

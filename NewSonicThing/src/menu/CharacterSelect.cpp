@@ -23,6 +23,7 @@
 #include "mainmenu.h"
 #include "missionmenu.h"
 #include "../toolbox/maths.h"
+#include "../renderEngine/display.h"
 
 CharacterSelect::CharacterSelect()
 {
@@ -51,7 +52,7 @@ void CharacterSelect::loadResources()
     textureTails                 = Loader::loadTextureNoInterpolation("res/Images/MainMenu/Characters/Tails.png");
     textureKnuckles              = Loader::loadTextureNoInterpolation("res/Images/MainMenu/Characters/Knuckles.png");
 
-    float aspectRatio = Global::calcAspectRatio();
+    float aspectRatio = Display::ASPECT_RATIO;
 
     buttonsCharacterNames.clear();
     buttonsCharacterNames.push_back(new Button("Sonic",    Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (separation*(0)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");

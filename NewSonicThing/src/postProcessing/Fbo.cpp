@@ -1,12 +1,8 @@
 #include <glad/glad.h>
 
 #include "fbo.h"
-
-extern GLuint currentBoundFramebuffer;
-
-extern unsigned int SCR_WIDTH;
-extern unsigned int SCR_HEIGHT;
-extern unsigned int AA_SAMPLES;
+#include "../renderEngine/display.h"
+#include "../renderEngine/masterrenderer.h"
 
 int Fbo::NONE = 0;
 int Fbo::DEPTH_TEXTURE = 1;
@@ -51,15 +47,15 @@ void Fbo::resize(int newWidth, int newHeight)
 void Fbo::bindFrameBuffer()
 {
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, frameBuffer);
-    currentBoundFramebuffer = frameBuffer;
+    MasterRenderer::currentBoundFramebuffer = frameBuffer;
     glViewport(0, 0, width, height);
 }
 
 void Fbo::unbindFrameBuffer()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    currentBoundFramebuffer = 0;
-    glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+    MasterRenderer::currentBoundFramebuffer = 0;
+    glViewport(0, 0, Display::WINDOW_WIDTH, Display::WINDOW_HEIGHT);
 }
 
 GLuint Fbo::getColourTexture()
@@ -70,11 +66,10 @@ GLuint Fbo::getColourTexture()
 void Fbo::resolveToFbo(int readBuffer, Fbo* outputFbo)
 {
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, outputFbo->frameBuffer);
-    currentBoundFramebuffer = outputFbo->frameBuffer;
+    MasterRenderer::currentBoundFramebuffer = outputFbo->frameBuffer;
     glBindFramebuffer(GL_READ_FRAMEBUFFER, this->frameBuffer);
     glReadBuffer(readBuffer);
-    glBlitFramebuffer(0, 0, width, height, 0, 0, outputFbo->width, outputFbo->height, 
-            GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT, GL_NEAREST);
+    glBlitFramebuffer(0, 0, width, height, 0, 0, outputFbo->width, outputFbo->height, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT, GL_NEAREST);
     this->unbindFrameBuffer();
 }
 
@@ -106,7 +101,7 @@ void Fbo::createFrameBuffer()
 {
     glGenFramebuffers(1, &frameBuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
-    currentBoundFramebuffer = frameBuffer;
+    MasterRenderer::currentBoundFramebuffer = frameBuffer;
     determineDrawBuffers();
 }
 
@@ -140,8 +135,7 @@ void Fbo::createDepthTextureAttachment()
 {
     glGenTextures(1, &depthTexture);
     glBindTexture(GL_TEXTURE_2D, depthTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, width, height, 0, GL_DEPTH_COMPONENT,  //depth bits
-            GL_FLOAT, nullptr);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr); //depth bits
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthTexture, 0);
@@ -151,7 +145,7 @@ GLuint Fbo::createMultisampleColourAttatchment(int attachment)
 {
     glGenRenderbuffers(1, &colourBuffer);
     glBindRenderbuffer(GL_RENDERBUFFER, colourBuffer);
-    glRenderbufferStorageMultisample(GL_RENDERBUFFER, AA_SAMPLES, GL_RGBA8, width, height);
+    glRenderbufferStorageMultisample(GL_RENDERBUFFER, Display::AA_SAMPLES, GL_RGBA8, width, height);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, attachment, GL_RENDERBUFFER, colourBuffer);
     return colourBuffer;
 }
@@ -167,7 +161,7 @@ void Fbo::createDepthBufferAttachment()
     }
     else
     {
-        glRenderbufferStorageMultisample(GL_RENDERBUFFER, AA_SAMPLES, GL_DEPTH_COMPONENT24, width, height);  //depth bits
+        glRenderbufferStorageMultisample(GL_RENDERBUFFER, Display::AA_SAMPLES, GL_DEPTH_COMPONENT24, width, height);  //depth bits
     }
     
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);

@@ -12,11 +12,9 @@
 #include "../entities/light.h"
 #include "../renderEngine/loader.h"
 #include "../engineTester/main.h"
-#include "shaderprogram.h"
+#include "entityshader.h"
 
-float matrixBuffer[16];
-
-ShaderProgram::ShaderProgram(const char* vertexFile, const char* fragmentFile)
+EntityShader::EntityShader(const char* vertexFile, const char* fragmentFile)
 {
     vertexShaderId = Loader::loadShader(vertexFile, GL_VERTEX_SHADER);
     fragmentShaderId = Loader::loadShader(fragmentFile, GL_FRAGMENT_SHADER);
@@ -29,17 +27,17 @@ ShaderProgram::ShaderProgram(const char* vertexFile, const char* fragmentFile)
     getAllUniformLocations();
 }
 
-void ShaderProgram::start()
+void EntityShader::start()
 {
     glUseProgram(programId);
 }
 
-void ShaderProgram::stop()
+void EntityShader::stop()
 {
     glUseProgram(0);
 }
 
-void ShaderProgram::cleanUp()
+void EntityShader::cleanUp()
 {
     stop();
     glDetachShader(programId, vertexShaderId);
@@ -49,94 +47,94 @@ void ShaderProgram::cleanUp()
     glDeleteProgram(programId);
 }
 
-void ShaderProgram::loadTransformationMatrix(Matrix4f* matrix)
+void EntityShader::loadTransformationMatrix(Matrix4f* matrix)
 {
     loadMatrix(location_transformationMatrix, matrix);
 }
 
-void ShaderProgram::loadProjectionMatrix(Matrix4f* projection)
+void EntityShader::loadProjectionMatrix(Matrix4f* projection)
 {
     loadMatrix(location_projectionMatrix, projection);
 }
 
-void ShaderProgram::loadViewMatrix(Camera* cam)
+void EntityShader::loadViewMatrix(Camera* cam)
 {
     Matrix4f viewMatrix;
     Maths::createViewMatrix(&viewMatrix, cam);
     loadMatrix(location_viewMatrix, &viewMatrix);
 }
 
-void ShaderProgram::loadSun(Light* light)
+void EntityShader::loadSun(Light* light)
 {
     Vector3f dirInv = light->direction.scaleCopy(-1);
     loadVector(location_sunDirInv, &dirInv);
     loadVector(location_sunColor, &light->color);
 }
 
-void ShaderProgram::loadShineVariables(float damper, float reflectivity)
+void EntityShader::loadShineVariables(float damper, float reflectivity)
 {
     loadFloat(location_shineDamper, damper);
     loadFloat(location_reflectivity, reflectivity);
 }
 
-void ShaderProgram::loadFakeLighting(int fakeLighting)
+void EntityShader::loadFakeLighting(int fakeLighting)
 {
     loadFloat(location_useFakeLighting, (float)fakeLighting);
 }
 
-void ShaderProgram::loadTransparency(int transparency)
+void EntityShader::loadTransparency(int transparency)
 {
     loadInt(location_hasTransparency, transparency);
 }
 
-void ShaderProgram::loadGlowAmount(float glowAmount)
+void EntityShader::loadGlowAmount(float glowAmount)
 {
     loadFloat(location_glowAmount, glowAmount);
 }
 
-void ShaderProgram::loadBaseColour(Vector3f* baseColour)
+void EntityShader::loadBaseColour(Vector3f* baseColour)
 {
     loadVector(location_baseColour, baseColour);
 }
 
-void ShaderProgram::loadBaseAlpha(float baseAlpha)
+void EntityShader::loadBaseAlpha(float baseAlpha)
 {
     loadFloat(location_baseAlpha, baseAlpha);
 }
 
-void ShaderProgram::loadTextureOffsets(float offX, float offY)
+void EntityShader::loadTextureOffsets(float offX, float offY)
 {
     loadFloat(location_texOffX, offX);
     loadFloat(location_texOffY, offY);
 }
 
-void ShaderProgram::loadSkyColour(float r, float g, float b)
+void EntityShader::loadSkyColour(float r, float g, float b)
 {
     Vector3f newColour(r, g, b);
     loadVector(location_skyColour, &newColour);
 }
 
-void ShaderProgram::loadFogDensity(float density)
+void EntityShader::loadFogDensity(float density)
 {
     loadFloat(location_fogDensity, density);
 }
 
-void ShaderProgram::loadFogGradient(float gradient)
+void EntityShader::loadFogGradient(float gradient)
 {
     loadFloat(location_fogGradient, gradient);
 }
 
-void ShaderProgram::loadFogBottomPosition(float position)
+void EntityShader::loadFogBottomPosition(float position)
 {
     loadFloat(location_fogBottomPosition, position);
 }
 
-void ShaderProgram::loadFogBottomThickness(float thickness)
+void EntityShader::loadFogBottomThickness(float thickness)
 {
     loadFloat(location_fogBottomThickness, 1/thickness);
 }
 
-void ShaderProgram::bindAttributes()
+void EntityShader::bindAttributes()
 {
     if (Global::renderBloom)
     {
@@ -150,17 +148,17 @@ void ShaderProgram::bindAttributes()
     bindAttribute(3, "vertexColor");
 }
 
-void ShaderProgram::bindAttribute(int attribute, const char* variableName)
+void EntityShader::bindAttribute(int attribute, const char* variableName)
 {
     glBindAttribLocation(programId, attribute, variableName);
 }
 
-void ShaderProgram::bindFragOutput(int attatchment, const char* variableName)
+void EntityShader::bindFragOutput(int attatchment, const char* variableName)
 {
     glBindFragDataLocation(programId, attatchment, variableName);
 }
 
-void ShaderProgram::getAllUniformLocations()
+void EntityShader::getAllUniformLocations()
 {
     location_transformationMatrix   = getUniformLocation("transformationMatrix");
     location_projectionMatrix       = getUniformLocation("projectionMatrix");
@@ -199,48 +197,49 @@ void ShaderProgram::getAllUniformLocations()
     location_isRenderingDepth       = getUniformLocation("isRenderingDepth");
 }
 
-int ShaderProgram::getUniformLocation(const char* uniformName)
+int EntityShader::getUniformLocation(const char* uniformName)
 {
     return glGetUniformLocation(programId, uniformName);
 }
 
-void ShaderProgram::loadFloat(int location, float value)
+void EntityShader::loadFloat(int location, float value)
 {
     glUniform1f(location, value);
 }
 
-void ShaderProgram::loadInt(int location, int value)
+void EntityShader::loadInt(int location, int value)
 {
     glUniform1i(location, value);
 }
 
-void ShaderProgram::loadVector(int location, Vector3f* vect)
+void EntityShader::loadVector(int location, Vector3f* vect)
 {
     glUniform3f(location, vect->x, vect->y, vect->z);
 }
 
-void ShaderProgram::loadBoolean(int location, bool value)
+void EntityShader::loadBoolean(int location, bool value)
 {
     glUniform1i(location, (int)(value));
 }
 
-void ShaderProgram::loadMatrix(int location, Matrix4f* matrix)
+void EntityShader::loadMatrix(int location, Matrix4f* matrix)
 {
-    matrix->store(matrixBuffer);
-    glUniformMatrix4fv(location, 1, GL_FALSE, matrixBuffer);
+    float buf[16];
+    matrix->store(buf);
+    glUniformMatrix4fv(location, 1, GL_FALSE, buf);
 }
 
-void ShaderProgram::loadClipPlane(float clipX, float clipY, float clipZ, float clipW)
+void EntityShader::loadClipPlane(float clipX, float clipY, float clipZ, float clipW)
 {
     glUniform4f(location_clipPlane, clipX, clipY, clipZ, clipW);
 }
 
-void ShaderProgram::loadClipPlaneBehind(float clipX, float clipY, float clipZ, float clipW)
+void EntityShader::loadClipPlaneBehind(float clipX, float clipY, float clipZ, float clipW)
 {
     glUniform4f(location_clipPlaneBehind, clipX, clipY, clipZ, clipW);
 }
 
-void ShaderProgram::connectTextureUnits()
+void EntityShader::connectTextureUnits()
 {
     if (Global::renderShadowsFar || Global::renderShadowsClose)
     {
@@ -260,42 +259,42 @@ void ShaderProgram::connectTextureUnits()
     loadInt(location_depthBufferTransparent, 8);
 }
 
-void ShaderProgram::loadToShadowSpaceMatrixFar(Matrix4f* matrix)
+void EntityShader::loadToShadowSpaceMatrixFar(Matrix4f* matrix)
 {
     loadMatrix(location_toShadowMapSpaceFar, matrix);
 }
 
-void ShaderProgram::loadToShadowSpaceMatrixClose(Matrix4f* matrix)
+void EntityShader::loadToShadowSpaceMatrixClose(Matrix4f* matrix)
 {
     loadMatrix(location_toShadowMapSpaceClose, matrix);
 }
 
-void ShaderProgram::loadMixFactor(float factor)
+void EntityShader::loadMixFactor(float factor)
 {
     loadFloat(location_mixFactor, factor);
 }
 
-void ShaderProgram::loadFogScale(float scale)
+void EntityShader::loadFogScale(float scale)
 {
     loadFloat(location_fogScale, scale);
 }
 
-void ShaderProgram::loadIsRenderingTransparent(bool value)
+void EntityShader::loadIsRenderingTransparent(bool value)
 {
     loadInt(location_isRenderingTransparent, (int)value);
 }
 
-void ShaderProgram::loadIsRenderingDepth(bool value)
+void EntityShader::loadIsRenderingDepth(bool value)
 {
     loadInt(location_isRenderingDepth, (int)value);
 }
 
-void ShaderProgram::loadWaterColor(Vector3f* color)
+void EntityShader::loadWaterColor(Vector3f* color)
 {
     loadVector(location_waterColor, color);
 }
 
-void ShaderProgram::loadWaterBlendAmount(float amount)
+void EntityShader::loadWaterBlendAmount(float amount)
 {
     loadFloat(location_waterBlendAmount, amount);
 }

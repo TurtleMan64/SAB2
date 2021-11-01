@@ -7,6 +7,7 @@
 #include "../fontMeshCreator/guitext.h"
 #include "../fontMeshCreator/fonttype.h"
 #include "../renderEngine/loader.h"
+#include "../renderEngine/display.h"
 #include "../toolbox/input.h"
 #include "../toolbox/levelloader.h"
 #include "button.h"
@@ -27,10 +28,7 @@
 
 MainMenu::MainMenu()
 {
-    extern unsigned int SCR_WIDTH;
-    extern unsigned int SCR_HEIGHT;
-
-    aspectRatio = (float) SCR_WIDTH / SCR_HEIGHT;
+    aspectRatio = Display::ASPECT_RATIO;
     buttonCount = 0;
     menuSelectionId = 0;
     textureParallelogram = GL_NONE;
