@@ -1,8 +1,8 @@
 #include <glad/glad.h>
 
-#include "../toolbox/vector.h"
-#include "vertex.h"
-#include "../toolbox/maths.h"
+#include "../toolbox/vector.hpp"
+#include "vertex.hpp"
+#include "../toolbox/maths.hpp"
 
 #include <iostream>
 

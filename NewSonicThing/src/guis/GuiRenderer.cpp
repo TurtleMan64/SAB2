@@ -1,13 +1,13 @@
-#include "guirenderer.h"
-#include "guishader.h"
-#include "guitexture.h"
+#include "guirenderer.hpp"
+#include "guishader.hpp"
+#include "guitexture.hpp"
 
 #include <glad/glad.h>
-#include "../engineTester/main.h"
-#include "../loading/loader.h"
-#include "../models/models.h"
-#include "../toolbox/maths.h"
-#include "../toolbox/matrix.h"
+#include "../engineTester/main.hpp"
+#include "../loading/loader.hpp"
+#include "../models/models.hpp"
+#include "../toolbox/maths.hpp"
+#include "../toolbox/matrix.hpp"
 
 #include <vector>
 

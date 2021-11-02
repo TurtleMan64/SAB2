@@ -1,9 +1,9 @@
 #include <glad/glad.h>
 
-#include "verticalblur.h"
-#include "verticalblurshader.h"
-#include "../postProcessing/imagerenderer.h"
-#include "../engineTester/main.h"
+#include "verticalblur.hpp"
+#include "verticalblurshader.hpp"
+#include "../postProcessing/imagerenderer.hpp"
+#include "../engineTester/main.hpp"
 
 VerticalBlur::VerticalBlur(int targetFboWidth, int targetFboHeight)
 {

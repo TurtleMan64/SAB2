@@ -1,10 +1,10 @@
-#include "shadowbox.h"
-#include "../toolbox/maths.h"
-#include "../toolbox/vector.h"
-#include "../toolbox/matrix.h"
-#include "../entities/camera.h"
-#include "../renderEngine/display.h"
-#include "../renderEngine/masterrenderer.h"
+#include "shadowbox.hpp"
+#include "../toolbox/maths.hpp"
+#include "../toolbox/vector.hpp"
+#include "../toolbox/matrix.hpp"
+#include "../entities/camera.hpp"
+#include "../renderEngine/display.hpp"
+#include "../renderEngine/masterrenderer.hpp"
 
 #include <vector>
 

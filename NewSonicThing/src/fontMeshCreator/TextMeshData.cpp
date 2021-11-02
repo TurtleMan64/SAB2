@@ -1,6 +1,6 @@
 #include <vector>
 
-#include "textmeshdata.h"
+#include "textmeshdata.hpp"
 
 TextMeshData::TextMeshData(std::vector<float>* vertexPositions, std::vector<float>* textureCoords)
 {

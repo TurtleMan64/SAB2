@@ -1,11 +1,11 @@
-#include "gfparticle.h"
-#include "../../particles/particletexture.h"
-#include "../camera.h"
-#include "../../toolbox/vector.h"
-#include "../../particles/particlemaster.h"
-#include "../../particles/particleresources.h"
-#include "../../engineTester/main.h"
-#include "../../toolbox/maths.h"
+#include "gfparticle.hpp"
+#include "../../particles/particletexture.hpp"
+#include "../camera.hpp"
+#include "../../toolbox/vector.hpp"
+#include "../../particles/particlemaster.hpp"
+#include "../../particles/particleresources.hpp"
+#include "../../engineTester/main.hpp"
+#include "../../toolbox/maths.hpp"
 
 extern float dt;
 

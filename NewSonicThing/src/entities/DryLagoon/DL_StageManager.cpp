@@ -1,12 +1,12 @@
 #include <glad/glad.h>
 
-#include "../entity.h"
-#include "dlstagemanager.h"
-#include "../../engineTester/main.h"
-#include "../dummy.h"
-#include "../controllableplayer.h"
-#include "../../loading/modelloader.h"
-#include "../camera.h"
+#include "../entity.hpp"
+#include "dlstagemanager.hpp"
+#include "../../engineTester/main.hpp"
+#include "../dummy.hpp"
+#include "../controllableplayer.hpp"
+#include "../../loading/modelloader.hpp"
+#include "../camera.hpp"
 
 std::list<TexturedModel*> DL_StageManager::modelsSkydome;
 

@@ -1,19 +1,19 @@
 #include <glad/glad.h>
 
-#include "entity.h"
-#include "../models/models.h"
-#include "../toolbox/vector.h"
-#include "raceghost.h"
-#include "../loading/modelloader.h"
-#include "../engineTester/main.h"
-#include "../toolbox/getline.h"
-#include "../toolbox/split.h"
-#include "CharacterModels/maniaknucklesmodel.h"
-#include "CharacterModels/maniasonicmodel.h"
-#include "CharacterModels/maniatailsmodel.h"
-#include "CharacterModels/maniamightymodel.h"
-#include "../menu/timer.h"
-#include "../toolbox/maths.h"
+#include "entity.hpp"
+#include "../models/models.hpp"
+#include "../toolbox/vector.hpp"
+#include "raceghost.hpp"
+#include "../loading/modelloader.hpp"
+#include "../engineTester/main.hpp"
+#include "../toolbox/getline.hpp"
+#include "../toolbox/split.hpp"
+#include "CharacterModels/maniaknucklesmodel.hpp"
+#include "CharacterModels/maniasonicmodel.hpp"
+#include "CharacterModels/maniatailsmodel.hpp"
+#include "CharacterModels/maniamightymodel.hpp"
+#include "../menu/timer.hpp"
+#include "../toolbox/maths.hpp"
 
 #include <list>
 #include <cstring>

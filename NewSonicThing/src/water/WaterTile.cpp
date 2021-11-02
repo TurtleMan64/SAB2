@@ -1,4 +1,4 @@
-#include "watertile.h"
+#include "watertile.hpp"
 
 const float WaterTile::TILE_SIZE = 1500;
 

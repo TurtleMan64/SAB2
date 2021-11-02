@@ -2,13 +2,13 @@
 #include <vector>
 #include <string>
 
-#include "../../engineTester/main.h"
-#include "../entity.h"
-#include "playermodel.h"
-#include "../../toolbox/vector.h"
-#include "../../particles/particletexture.h"
-#include "../../menu/timer.h"
-#include "../raceghost.h"
+#include "../../engineTester/main.hpp"
+#include "../entity.hpp"
+#include "playermodel.hpp"
+#include "../../toolbox/vector.hpp"
+#include "../../particles/particletexture.hpp"
+#include "../../menu/timer.hpp"
+#include "../raceghost.hpp"
 
 void PlayerModel::animate(int, float) {}
 

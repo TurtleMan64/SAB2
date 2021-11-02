@@ -1,7 +1,7 @@
 #include <stdlib.h> 
 #include <math.h>
 
-#include "format.h"
+#include "format.hpp"
 
 std::string Format::floatToPretty(float value, int numDecimals)
 {

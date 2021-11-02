@@ -5,14 +5,14 @@
 #include <string>
 #include <math.h>
 
-#include "../toolbox/vector.h"
-#include "../toolbox/matrix.h"
-#include "../entities/camera.h"
-#include "../toolbox/maths.h"
-#include "../entities/light.h"
-#include "../loading/loader.h"
-#include "../engineTester/main.h"
-#include "entityshader.h"
+#include "../toolbox/vector.hpp"
+#include "../toolbox/matrix.hpp"
+#include "../entities/camera.hpp"
+#include "../toolbox/maths.hpp"
+#include "../entities/light.hpp"
+#include "../loading/loader.hpp"
+#include "../engineTester/main.hpp"
+#include "entityshader.hpp"
 
 EntityShader::EntityShader(const char* vertexFile, const char* fragmentFile)
 {

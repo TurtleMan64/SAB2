@@ -1,19 +1,19 @@
 #include <glad/glad.h>
 
-#include "entity.h"
-#include "../models/models.h"
-#include "../toolbox/vector.h"
-#include "dashpad.h"
-#include "../loading/modelloader.h"
-#include "../engineTester/main.h"
-#include "../entities/controllableplayer.h"
-#include "../toolbox/maths.h"
-#include "dummy.h"
-#include "../entities/camera.h"
-#include "../audio/audioplayer.h"
-#include "../particles/particleresources.h"
-#include "../particles/particle.h"
-#include "../collision/collisionchecker.h"
+#include "entity.hpp"
+#include "../models/models.hpp"
+#include "../toolbox/vector.hpp"
+#include "dashpad.hpp"
+#include "../loading/modelloader.hpp"
+#include "../engineTester/main.hpp"
+#include "../entities/controllableplayer.hpp"
+#include "../toolbox/maths.hpp"
+#include "dummy.hpp"
+#include "../entities/camera.hpp"
+#include "../audio/audioplayer.hpp"
+#include "../particles/particleresources.hpp"
+#include "../particles/particle.hpp"
+#include "../collision/collisionchecker.hpp"
 
 #include <list>
 #include <iostream>

@@ -1,15 +1,15 @@
 #include <glad/glad.h>
 
-#include "entity.h"
-#include "../toolbox/vector.h"
-#include "shieldgreen.h"
-#include "../engineTester/main.h"
-#include "../entities/camera.h"
-#include "../entities/controllableplayer.h"
-#include "../toolbox/maths.h"
-#include "../particles/particle.h"
-#include "../particles/particleresources.h"
-#include "../particles/particlemaster.h"
+#include "entity.hpp"
+#include "../toolbox/vector.hpp"
+#include "shieldgreen.hpp"
+#include "../engineTester/main.hpp"
+#include "../entities/camera.hpp"
+#include "../entities/controllableplayer.hpp"
+#include "../toolbox/maths.hpp"
+#include "../particles/particle.hpp"
+#include "../particles/particleresources.hpp"
+#include "../particles/particlemaster.hpp"
 
 #include <list>
 

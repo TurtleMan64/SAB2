@@ -1,6 +1,6 @@
 #include <istream>
 #include <string>
-#include "getline.h"
+#include "getline.hpp"
 
 std::istream& getlineSafe(std::istream& is, std::string& t)
 {

@@ -1,6 +1,6 @@
 #include <list>
 
-#include "line.h"
+#include "line.hpp"
 
 
 Line::Line(float spaceWidth, float fontSize, float maxLength)

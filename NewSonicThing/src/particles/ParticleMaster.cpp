@@ -1,13 +1,13 @@
-#include "particlemaster.h"
-#include "particle.h"
-#include "particlerenderer.h"
-#include "particleshader.h"
-#include "particletexture.h"
-#include "../toolbox/matrix.h"
-#include "../entities/camera.h"
-#include "insertionsort.h"
-#include "../engineTester/main.h"
-#include "../entities/GreenForest/gfparticle.h"
+#include "particlemaster.hpp"
+#include "particle.hpp"
+#include "particlerenderer.hpp"
+#include "particleshader.hpp"
+#include "particletexture.hpp"
+#include "../toolbox/matrix.hpp"
+#include "../entities/camera.hpp"
+#include "insertionsort.hpp"
+#include "../engineTester/main.hpp"
+#include "../entities/GreenForest/gfparticle.hpp"
 
 #include <unordered_map>
 #include <list>

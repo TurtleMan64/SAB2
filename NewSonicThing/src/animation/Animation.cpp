@@ -1,5 +1,5 @@
-#include "animation.h"
-#include "keyframe.h"
+#include "animation.hpp"
+#include "keyframe.hpp"
 
 
 Animation::Animation()

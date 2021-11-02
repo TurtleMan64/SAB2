@@ -2,12 +2,12 @@
 #include <random>
 #include <chrono>
 
-#include "matrix.h"
-#include "vector.h"
-#include "../entities/camera.h"
-#include "maths.h"
-#include "../engineTester/main.h"
-#include "../renderEngine/masterrenderer.h"
+#include "matrix.hpp"
+#include "vector.hpp"
+#include "../entities/camera.hpp"
+#include "maths.hpp"
+#include "../engineTester/main.hpp"
+#include "../renderEngine/masterrenderer.hpp"
 
 std::mt19937* Maths::generatorUniform = new std::mt19937(0);
 std::uniform_real_distribution<float>* Maths::distributionUniform = new std::uniform_real_distribution<float>(0.0f, 1.0f);

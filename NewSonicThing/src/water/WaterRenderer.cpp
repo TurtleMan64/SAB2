@@ -1,16 +1,16 @@
-#include "waterrenderer.h"
-#include "../loading/loader.h"
-#include "watershader.h"
-#include "waterframebuffers.h"
-#include "watertile.h"
+#include "waterrenderer.hpp"
+#include "../loading/loader.hpp"
+#include "watershader.hpp"
+#include "waterframebuffers.hpp"
+#include "watertile.hpp"
 #include <list>
 #include <vector>
-#include "../engineTester/main.h"
-#include "../toolbox/maths.h"
-#include "../toolbox/vector.h"
-#include "../toolbox/matrix.h"
-#include "../shadows/shadowmapmasterrenderer.h"
-#include "../entities/camera.h"
+#include "../engineTester/main.hpp"
+#include "../toolbox/maths.hpp"
+#include "../toolbox/vector.hpp"
+#include "../toolbox/matrix.hpp"
+#include "../shadows/shadowmapmasterrenderer.hpp"
+#include "../entities/camera.hpp"
 
 const float WaterRenderer::WAVE_SPEED = 0.0002f;
 

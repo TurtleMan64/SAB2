@@ -1,5 +1,5 @@
-#include "insertionsort.h"
-#include "particle.h"
+#include "insertionsort.hpp"
+#include "particle.hpp"
 
 #include <list>
 

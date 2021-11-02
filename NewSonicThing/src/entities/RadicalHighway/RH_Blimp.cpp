@@ -1,10 +1,10 @@
-#include "rhblimp.h"
-#include "../entity.h"
-#include "../../engineTester/main.h"
-#include "../../models/models.h"
-#include "../../loading/modelloader.h"
-#include "../dummy.h"
-#include "../../toolbox/maths.h"
+#include "rhblimp.hpp"
+#include "../entity.hpp"
+#include "../../engineTester/main.hpp"
+#include "../../models/models.hpp"
+#include "../../loading/modelloader.hpp"
+#include "../dummy.hpp"
+#include "../../toolbox/maths.hpp"
 
 std::list<TexturedModel*> RH_Blimp::modelsBlimp;
 std::list<TexturedModel*> RH_Blimp::modelsSpotlight;

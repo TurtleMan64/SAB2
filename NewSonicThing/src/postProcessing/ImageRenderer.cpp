@@ -1,8 +1,8 @@
 #include <glad/glad.h>
 
-#include "imagerenderer.h"
-#include "fbo.h"
-#include "../engineTester/main.h"
+#include "imagerenderer.hpp"
+#include "fbo.hpp"
+#include "../engineTester/main.hpp"
 
 ImageRenderer::ImageRenderer(int width, int height)
 {

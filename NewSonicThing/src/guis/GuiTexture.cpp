@@ -1,7 +1,7 @@
-#include "guitexture.h"
+#include "guitexture.hpp"
 
 #include <glad/glad.h>
-#include "../toolbox/vector.h"
+#include "../toolbox/vector.hpp"
 
 GuiTexture::GuiTexture()
 {

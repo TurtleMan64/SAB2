@@ -1,16 +1,16 @@
 #include <glad/glad.h>
 
-#include "../entity.h"
-#include "../../models/models.h"
-#include "../../toolbox/vector.h"
-#include "rhramp.h"
-#include "../../loading/modelloader.h"
-#include "../../engineTester/main.h"
-#include "../../entities/playersonic.h"
-#include "../../toolbox/maths.h"
-#include "../camera.h"
-#include "../../collision/collisionmodel.h"
-#include "../../collision/collisionchecker.h"
+#include "../entity.hpp"
+#include "../../models/models.hpp"
+#include "../../toolbox/vector.hpp"
+#include "rhramp.hpp"
+#include "../../loading/modelloader.hpp"
+#include "../../engineTester/main.hpp"
+#include "../../entities/playersonic.hpp"
+#include "../../toolbox/maths.hpp"
+#include "../camera.hpp"
+#include "../../collision/collisionmodel.hpp"
+#include "../../collision/collisionchecker.hpp"
 
 #include <list>
 #include <iostream>

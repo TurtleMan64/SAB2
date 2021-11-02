@@ -1,8 +1,8 @@
 #include <glad/glad.h>
 
-#include "fbo.h"
-#include "../renderEngine/display.h"
-#include "../renderEngine/masterrenderer.h"
+#include "fbo.hpp"
+#include "../renderEngine/display.hpp"
+#include "../renderEngine/masterrenderer.hpp"
 
 int Fbo::NONE = 0;
 int Fbo::DEPTH_TEXTURE = 1;

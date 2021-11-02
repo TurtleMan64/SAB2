@@ -1,11 +1,11 @@
 #include <glad/glad.h>
 
-#include "entity.h"
-#include "../toolbox/vector.h"
-#include "waterzone.h"
-#include "../engineTester/main.h"
-#include "../entities/controllableplayer.h"
-#include "../entities/camera.h"
+#include "entity.hpp"
+#include "../toolbox/vector.hpp"
+#include "waterzone.hpp"
+#include "../engineTester/main.hpp"
+#include "../entities/controllableplayer.hpp"
+#include "../entities/camera.hpp"
 
 #include <list>
 

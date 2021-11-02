@@ -5,11 +5,11 @@
 #include <string>
 #include <math.h>
 
-#include "guishader.h"
-#include "../toolbox/vector.h"
-#include "../toolbox/matrix.h"
-#include "../toolbox/maths.h"
-#include "../loading/loader.h"
+#include "guishader.hpp"
+#include "../toolbox/vector.hpp"
+#include "../toolbox/matrix.hpp"
+#include "../toolbox/maths.hpp"
+#include "../loading/loader.hpp"
 
 GuiShader::GuiShader(const char* vertexFile, const char* fragmentFile)
 {

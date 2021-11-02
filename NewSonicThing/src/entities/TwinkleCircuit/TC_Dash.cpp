@@ -1,15 +1,15 @@
 #include <list>
 
-#include "tcdash.h"
+#include "tcdash.hpp"
 
-#include "../entity.h"
-#include "../../models/models.h"
-#include "../../toolbox/vector.h"
-#include "../../loading/modelloader.h"
-#include "../../engineTester/main.h"
-#include "../../toolbox/maths.h"
-#include "../controllableplayer.h"
-#include "tckart.h"
+#include "../entity.hpp"
+#include "../../models/models.hpp"
+#include "../../toolbox/vector.hpp"
+#include "../../loading/modelloader.hpp"
+#include "../../engineTester/main.hpp"
+#include "../../toolbox/maths.hpp"
+#include "../controllableplayer.hpp"
+#include "tckart.hpp"
 
 std::list<TexturedModel*> TC_Dash::models;
 

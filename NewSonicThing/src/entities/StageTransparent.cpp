@@ -1,10 +1,10 @@
 #include <glad/glad.h>
 
-#include "../loading/modelloader.h"
-#include "entity.h"
-#include "../models/models.h"
-#include "stagetransparent.h"
-#include "../engineTester/main.h"
+#include "../loading/modelloader.hpp"
+#include "entity.hpp"
+#include "../models/models.hpp"
+#include "stagetransparent.hpp"
+#include "../engineTester/main.hpp"
 
 #include <list>
 

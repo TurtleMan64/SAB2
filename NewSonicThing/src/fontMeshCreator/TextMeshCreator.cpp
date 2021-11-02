@@ -1,9 +1,9 @@
-#include "textmeshcreator.h"
-#include "metafile.h"
-#include "textmeshdata.h"
-#include "guitext.h"
+#include "textmeshcreator.hpp"
+#include "metafile.hpp"
+#include "textmeshdata.hpp"
+#include "guitext.hpp"
 
-#include "../engineTester/main.h"
+#include "../engineTester/main.hpp"
 
 
 float TextMeshCreator::LINE_HEIGHT = 1.0f;

@@ -1,7 +1,7 @@
 #include <list>
 
-#include "word.h"
-#include "character.h"
+#include "word.hpp"
+#include "character.hpp"
 
 
 Word::Word(float fontSize)

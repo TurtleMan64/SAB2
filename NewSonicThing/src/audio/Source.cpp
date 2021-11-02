@@ -1,8 +1,8 @@
 #include <AL/al.h>
 #include <AL/efx.h>
 
-#include "source.h"
-#include "../engineTester/main.h"
+#include "source.hpp"
+#include "../engineTester/main.hpp"
 
 ALuint Source::filterLowpass = AL_NONE;
 

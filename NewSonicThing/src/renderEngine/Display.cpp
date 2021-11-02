@@ -8,12 +8,12 @@
 #include <string>
 #include <cstring>
 
-#include "display.h"
-#include "masterrenderer.h"
-#include "../toolbox/input.h"
-#include "../engineTester/main.h"
-#include "../toolbox/split.h"
-#include "../toolbox/getline.h"
+#include "display.hpp"
+#include "masterrenderer.hpp"
+#include "../toolbox/input.hpp"
+#include "../engineTester/main.hpp"
+#include "../toolbox/split.hpp"
+#include "../toolbox/getline.hpp"
 
 GLFWwindow* Display::window = nullptr;
 

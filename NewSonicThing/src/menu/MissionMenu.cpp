@@ -1,26 +1,26 @@
-#include "missionmenu.h"
-#include "../engineTester/main.h"
+#include "missionmenu.hpp"
+#include "../engineTester/main.hpp"
 
 #include <cmath>
 #include <iostream>
 #include <algorithm>
 
-#include "../fontMeshCreator/guitext.h"
-#include "../fontMeshCreator/fonttype.h"
-#include "../loading/loader.h"
-#include "../renderEngine/display.h"
-#include "../toolbox/input.h"
-#include "../loading/levelloader.h"
-#include "../fontMeshCreator/guitext.h"
-#include "../audio/audioplayer.h"
-#include "../audio/source.h"
-#include "../entities/camera.h"
-#include "../guis/guitextureresources.h"
-#include "../guis/guimanager.h"
-#include "../guis/guitexture.h"
-#include "button.h"
-#include "mainmenu.h"
-#include "../toolbox/maths.h"
+#include "../fontMeshCreator/guitext.hpp"
+#include "../fontMeshCreator/fonttype.hpp"
+#include "../loading/loader.hpp"
+#include "../renderEngine/display.hpp"
+#include "../toolbox/input.hpp"
+#include "../loading/levelloader.hpp"
+#include "../fontMeshCreator/guitext.hpp"
+#include "../audio/audioplayer.hpp"
+#include "../audio/source.hpp"
+#include "../entities/camera.hpp"
+#include "../guis/guitextureresources.hpp"
+#include "../guis/guimanager.hpp"
+#include "../guis/guitexture.hpp"
+#include "button.hpp"
+#include "mainmenu.hpp"
+#include "../toolbox/maths.hpp"
 
 MissionMenu::MissionMenu()
 {

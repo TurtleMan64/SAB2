@@ -1,7 +1,7 @@
 #include <list>
 
-#include "../toolbox/vector.h"
-#include "dummy.h"
+#include "../toolbox/vector.hpp"
+#include "dummy.hpp"
 
 Dummy::Dummy(std::list<TexturedModel*>* models)
 {

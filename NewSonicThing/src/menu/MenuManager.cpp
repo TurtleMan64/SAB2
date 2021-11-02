@@ -1,13 +1,13 @@
-#include "menumanager.h"
-#include "menu.h"
+#include "menumanager.hpp"
+#include "menu.hpp"
 #include <stack>
 #include <iostream>
-#include "../toolbox/input.h"
-#include "hud.h"
-#include "mainmenu.h"
-#include "../guis/guimanager.h"
-#include "../engineTester/main.h"
-#include "resultsscreen.h"
+#include "../toolbox/input.hpp"
+#include "hud.hpp"
+#include "mainmenu.hpp"
+#include "../guis/guimanager.hpp"
+#include "../engineTester/main.hpp"
+#include "resultsscreen.hpp"
 
 bool MenuManager::arcadeModeIsDone = false;
 bool MenuManager::playerFailedArcadeMode = false;

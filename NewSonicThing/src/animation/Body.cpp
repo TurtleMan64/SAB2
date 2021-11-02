@@ -1,8 +1,8 @@
 #include <cmath>
 
-#include "body.h"
-#include "keyframe.h"
-#include "../toolbox/maths.h"
+#include "body.hpp"
+#include "keyframe.hpp"
+#include "../toolbox/maths.hpp"
 
 
 

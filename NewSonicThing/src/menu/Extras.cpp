@@ -1,9 +1,9 @@
-#include "extras.h"
-#include "mainmenu.h"
-#include "../engineTester/main.h"
-#include "../fontMeshCreator/fonttype.h"
-#include "../fontMeshCreator/guitext.h"
-#include "../toolbox/input.h"
+#include "extras.hpp"
+#include "mainmenu.hpp"
+#include "../engineTester/main.hpp"
+#include "../fontMeshCreator/fonttype.hpp"
+#include "../fontMeshCreator/guitext.hpp"
+#include "../toolbox/input.hpp"
 
 
 Extras::Extras()

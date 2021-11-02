@@ -1,8 +1,8 @@
 #include <list>
 
-#include "quadtreenode.h"
-#include "../engineTester/main.h"
-#include "triangle3d.h"
+#include "quadtreenode.hpp"
+#include "../engineTester/main.hpp"
+#include "triangle3d.hpp"
 
 QuadTreeNode::QuadTreeNode()
 {

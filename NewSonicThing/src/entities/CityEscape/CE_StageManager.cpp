@@ -1,12 +1,12 @@
 #include <glad/glad.h>
 
-#include "../entity.h"
-#include "cestagemanager.h"
-#include "../../engineTester/main.h"
-#include "../controllableplayer.h"
-#include "../../loading/modelloader.h"
-#include "../camera.h"
-#include "../../audio/audioplayer.h"
+#include "../entity.hpp"
+#include "cestagemanager.hpp"
+#include "../../engineTester/main.hpp"
+#include "../controllableplayer.hpp"
+#include "../../loading/modelloader.hpp"
+#include "../camera.hpp"
+#include "../../audio/audioplayer.hpp"
 
 std::list<TexturedModel*> CE_StageManager::modelsSkydome;
 

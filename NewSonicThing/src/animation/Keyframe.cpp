@@ -1,4 +1,4 @@
-#include "keyframe.h"
+#include "keyframe.hpp"
 
 Keyframe::Keyframe(float time, float x, float y, float z,
     float xRot, float yRot, float zRot, float sRot, float scale)

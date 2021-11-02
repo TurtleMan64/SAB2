@@ -1,25 +1,25 @@
-#include "pausescreen.h"
-#include "../engineTester/main.h"
+#include "pausescreen.hpp"
+#include "../engineTester/main.hpp"
 
 #include <cmath>
 #include <algorithm>
 
-#include "../fontMeshCreator/guitext.h"
-#include "../fontMeshCreator/fonttype.h"
-#include "../toolbox/input.h"
-#include "../loading/levelloader.h"
-#include "../fontMeshCreator/guitext.h"
-#include "../audio/audioplayer.h"
-#include "../audio/source.h"
-#include "../particles/particle.h"
-#include "../particles/particleresources.h"
-#include "../particles/particletexture.h"
-#include "../entities/camera.h"
-#include "../particles/particlemaster.h"
-#include "../guis/guitextureresources.h"
-#include "../guis/guimanager.h"
-#include "hud.h"
-#include "timer.h"
+#include "../fontMeshCreator/guitext.hpp"
+#include "../fontMeshCreator/fonttype.hpp"
+#include "../toolbox/input.hpp"
+#include "../loading/levelloader.hpp"
+#include "../fontMeshCreator/guitext.hpp"
+#include "../audio/audioplayer.hpp"
+#include "../audio/source.hpp"
+#include "../particles/particle.hpp"
+#include "../particles/particleresources.hpp"
+#include "../particles/particletexture.hpp"
+#include "../entities/camera.hpp"
+#include "../particles/particlemaster.hpp"
+#include "../guis/guitextureresources.hpp"
+#include "../guis/guimanager.hpp"
+#include "hud.hpp"
+#include "timer.hpp"
 
 PauseScreen::PauseScreen()
 {

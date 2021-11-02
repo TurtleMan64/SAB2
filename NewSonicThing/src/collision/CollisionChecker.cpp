@@ -3,13 +3,13 @@
 #include <list>
 #include <unordered_set>
 
-#include "collisionchecker.h"
-#include "collisionmodel.h"
-#include "triangle3d.h"
-#include "quadtreenode.h"
-#include "../engineTester/main.h"
-#include "../toolbox/maths.h"
-#include "../toolbox/vector.h"
+#include "collisionchecker.hpp"
+#include "collisionmodel.hpp"
+#include "triangle3d.hpp"
+#include "quadtreenode.hpp"
+#include "../engineTester/main.hpp"
+#include "../toolbox/maths.hpp"
+#include "../toolbox/vector.hpp"
 
 Vector3f CollisionChecker::collidePosition(0, 0, 0);
 Triangle3D* CollisionChecker::collideTriangle = nullptr;

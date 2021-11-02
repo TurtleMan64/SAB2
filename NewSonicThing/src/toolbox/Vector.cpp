@@ -1,7 +1,7 @@
 #include <math.h>
 #include <cstdio>
 
-#include "vector.h"
+#include "vector.hpp"
 
 float Vector3f::getX() { return x; }
 float Vector3f::getY() { return y; }

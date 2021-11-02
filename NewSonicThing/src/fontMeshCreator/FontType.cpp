@@ -1,12 +1,12 @@
 #include <list>
 
-#include "fonttype.h"
-#include "textmeshcreator.h"
-#include "textmeshdata.h"
+#include "fonttype.hpp"
+#include "textmeshcreator.hpp"
+#include "textmeshdata.hpp"
 
-#include "../loading/loader.h"
+#include "../loading/loader.hpp"
 
-#include "../engineTester/main.h"
+#include "../engineTester/main.hpp"
 
 FontType::FontType(int textureAtlas, std::string fontFilename)
 {

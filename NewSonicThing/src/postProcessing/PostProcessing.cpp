@@ -1,14 +1,14 @@
 #include <glad/glad.h>
 #include <vector>
 
-#include "../engineTester/main.h"
-#include "postprocessing.h"
-#include "../models/models.h"
-#include "../gaussianBlur/horizontalblur.h"
-#include "../gaussianBlur/verticalblur.h"
-#include "../bloom/combinefilter.h"
-#include "../loading/loader.h"
-#include "../renderEngine/display.h"
+#include "../engineTester/main.hpp"
+#include "postprocessing.hpp"
+#include "../models/models.hpp"
+#include "../gaussianBlur/horizontalblur.hpp"
+#include "../gaussianBlur/verticalblur.hpp"
+#include "../bloom/combinefilter.hpp"
+#include "../loading/loader.hpp"
+#include "../renderEngine/display.hpp"
 
 std::vector<float> PostProcessing::POSITIONS;
 RawModel        PostProcessing::quadModel;

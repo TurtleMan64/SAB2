@@ -1,12 +1,12 @@
 #include <glad/glad.h>
 
-#include "../entity.h"
-#include "mhstagemanager.h"
-#include "../../engineTester/main.h"
-#include "../controllableplayer.h"
-#include "../../loading/modelloader.h"
-#include "../../audio/audioplayer.h"
-#include "../camera.h"
+#include "../entity.hpp"
+#include "mhstagemanager.hpp"
+#include "../../engineTester/main.hpp"
+#include "../controllableplayer.hpp"
+#include "../../loading/modelloader.hpp"
+#include "../../audio/audioplayer.hpp"
+#include "../camera.hpp"
 
 std::list<TexturedModel*> MH_StageManager::modelsSkydome;
 

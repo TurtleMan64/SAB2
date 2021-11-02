@@ -1,12 +1,12 @@
 #include <glad/glad.h>
 
-#include "../entity.h"
-#include "tstagemanager.h"
-#include "../../engineTester/main.h"
-#include "../dummy.h"
-#include "../controllableplayer.h"
-#include "../../loading/modelloader.h"
-#include "../../toolbox/maths.h"
+#include "../entity.hpp"
+#include "tstagemanager.hpp"
+#include "../../engineTester/main.hpp"
+#include "../dummy.hpp"
+#include "../controllableplayer.hpp"
+#include "../../loading/modelloader.hpp"
+#include "../../toolbox/maths.hpp"
 
 std::list<TexturedModel*> T_StageManager::modelsSkyPass1;
 std::list<TexturedModel*> T_StageManager::modelsSkyPass2;

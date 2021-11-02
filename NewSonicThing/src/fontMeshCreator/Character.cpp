@@ -1,4 +1,4 @@
-#include "character.h"
+#include "character.hpp"
 
 Character::Character(int id, float xTextureCoord, float yTextureCoord, float xTexSize, float yTexSize,
     float xOffset, float yOffset, float sizeX, float sizeY, float xAdvance)

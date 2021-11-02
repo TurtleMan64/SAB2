@@ -2,16 +2,16 @@
 #include <fstream>
 #include <cstring>
 
-#include "rail.h"
-#include "controllableplayer.h"
-#include "../toolbox/maths.h"
-#include "../toolbox/vector.h"
-#include "../engineTester/main.h"
-#include "../toolbox/input.h"
-#include "../toolbox/getline.h"
-#include "../toolbox/split.h"
+#include "rail.hpp"
+#include "controllableplayer.hpp"
+#include "../toolbox/maths.hpp"
+#include "../toolbox/vector.hpp"
+#include "../engineTester/main.hpp"
+#include "../toolbox/input.hpp"
+#include "../toolbox/getline.hpp"
+#include "../toolbox/split.hpp"
 
-#include "ring.h"
+#include "ring.hpp"
 
 RailSegment::RailSegment(Vector3f* begin, Vector3f* end, Vector3f* beginNormal, Vector3f* endNormal, std::vector<RailSegment>* rails, int index)
 {

@@ -2,12 +2,12 @@
 #include <unordered_map>
 #include <list>
 
-#include "shadowshader2.h"
-#include "shadowmapentityrenderer2.h"
-#include "../toolbox/matrix.h"
-#include "../entities/entity.h"
-#include "../models/models.h"
-#include "../toolbox/maths.h"
+#include "shadowshader2.hpp"
+#include "shadowmapentityrenderer2.hpp"
+#include "../toolbox/matrix.hpp"
+#include "../entities/entity.hpp"
+#include "../models/models.hpp"
+#include "../toolbox/maths.hpp"
 
 ShadowMapEntityRenderer2::ShadowMapEntityRenderer2(ShadowShader2* shader, Matrix4f* projectionViewMatrix)
 {

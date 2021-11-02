@@ -1,4 +1,4 @@
-#include "particletexture.h"
+#include "particletexture.hpp"
 #include <glad/glad.h>
 
 ParticleTexture::ParticleTexture(GLuint textureId, int numberOfRows, float opacity, float glow)

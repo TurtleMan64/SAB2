@@ -1,13 +1,13 @@
-#include "pcstaticobjects.h"
-#include "../entity.h"
-#include "../camera.h"
-#include "../../engineTester/main.h"
-#include "../../models/models.h"
-#include "../../loading/modelloader.h"
-#include "../../toolbox/maths.h"
-#include "../../collision/collisionmodel.h"
-#include "../../collision/collisionchecker.h"
-#include "../../animation/body.h"
+#include "pcstaticobjects.hpp"
+#include "../entity.hpp"
+#include "../camera.hpp"
+#include "../../engineTester/main.hpp"
+#include "../../models/models.hpp"
+#include "../../loading/modelloader.hpp"
+#include "../../toolbox/maths.hpp"
+#include "../../collision/collisionmodel.hpp"
+#include "../../collision/collisionchecker.hpp"
+#include "../../animation/body.hpp"
 
 std::list<TexturedModel*> PC_StaticObjects::models;
 std::list<TexturedModel*> PC_StaticObjects::modelsVertexColours;

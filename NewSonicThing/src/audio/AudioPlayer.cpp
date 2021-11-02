@@ -3,13 +3,13 @@
 #include <cstring>
 #include <fstream>
 
-#include "audioplayer.h"
-#include "audiomaster.h"
-#include "source.h"
-#include "../engineTester/main.h"
-#include "../toolbox/vector.h"
-#include "../toolbox/split.h"
-#include "../toolbox/getline.h"
+#include "audioplayer.hpp"
+#include "audiomaster.hpp"
+#include "source.hpp"
+#include "../engineTester/main.hpp"
+#include "../toolbox/vector.hpp"
+#include "../toolbox/split.hpp"
+#include "../toolbox/getline.hpp"
 
 float AudioPlayer::soundLevelSFX = 0.05f;
 float AudioPlayer::soundLevelBGM = 0.05f;

@@ -1,7 +1,7 @@
 #include <glad/glad.h>
 
-#include "../toolbox/vector.h"
-#include "light.h"
+#include "../toolbox/vector.hpp"
+#include "light.hpp"
 
 Light::Light()
 {

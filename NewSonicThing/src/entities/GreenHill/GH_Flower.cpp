@@ -1,12 +1,12 @@
 #include <glad/glad.h>
 
-#include "../entity.h"
-#include "../../models/models.h"
-#include "../../toolbox/vector.h"
-#include "ghflower.h"
-#include "../../loading/modelloader.h"
-#include "../../engineTester/main.h"
-#include "../dummy.h"
+#include "../entity.hpp"
+#include "../../models/models.hpp"
+#include "../../toolbox/vector.hpp"
+#include "ghflower.hpp"
+#include "../../loading/modelloader.hpp"
+#include "../../engineTester/main.hpp"
+#include "../dummy.hpp"
 
 #include <list>
 #include <iostream>

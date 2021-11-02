@@ -1,8 +1,8 @@
 #include <glad/glad.h>
-#include "waterframebuffers.h"
-#include "../engineTester/main.h"
-#include "../renderEngine/display.h"
-#include "../renderEngine/masterrenderer.h"
+#include "waterframebuffers.hpp"
+#include "../engineTester/main.hpp"
+#include "../renderEngine/display.hpp"
+#include "../renderEngine/masterrenderer.hpp"
 
 WaterFrameBuffers::WaterFrameBuffers()
 {

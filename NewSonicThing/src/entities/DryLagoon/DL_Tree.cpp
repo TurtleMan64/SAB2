@@ -1,8 +1,8 @@
-#include "dltree.h"
-#include "../entity.h"
-#include "../../engineTester/main.h"
-#include "../../models/models.h"
-#include "../../loading/modelloader.h"
+#include "dltree.hpp"
+#include "../entity.hpp"
+#include "../../engineTester/main.hpp"
+#include "../../models/models.hpp"
+#include "../../loading/modelloader.hpp"
 
 std::list<TexturedModel*> DL_Tree::models;
 

@@ -1,10 +1,10 @@
 #include <glad/glad.h>
 
-#include "../entity.h"
-#include "ffstagemanager.h"
-#include "../../engineTester/main.h"
-#include "../controllableplayer.h"
-#include "../../loading/modelloader.h"
+#include "../entity.hpp"
+#include "ffstagemanager.hpp"
+#include "../../engineTester/main.hpp"
+#include "../controllableplayer.hpp"
+#include "../../loading/modelloader.hpp"
 
 std::list<TexturedModel*> FF_StageManager::modelsSkydome;
 

@@ -2,18 +2,18 @@
 #include <unordered_map>
 #include <glad/glad.h>
 
-#include "../loading/loader.h"
-#include "../toolbox/matrix.h"
-#include "../models/models.h"
-#include "particleshader.h"
-#include "../toolbox/vector.h"
-#include "particle.h"
-#include "particletexture.h"
-#include "particlerenderer.h"
-#include "../toolbox/maths.h"
-#include "../entities/camera.h"
-#include "../engineTester/main.h"
-#include "../entities/GreenForest/gfparticle.h"
+#include "../loading/loader.hpp"
+#include "../toolbox/matrix.hpp"
+#include "../models/models.hpp"
+#include "particleshader.hpp"
+#include "../toolbox/vector.hpp"
+#include "particle.hpp"
+#include "particletexture.hpp"
+#include "particlerenderer.hpp"
+#include "../toolbox/maths.hpp"
+#include "../entities/camera.hpp"
+#include "../engineTester/main.hpp"
+#include "../entities/GreenForest/gfparticle.hpp"
 
 
 ParticleRenderer::ParticleRenderer(Matrix4f* projectionMatrix)

@@ -1,8 +1,8 @@
-#include "guitextureresources.h"
-#include "guitexture.h"
-#include "../loading/loader.h"
-#include "../renderEngine/display.h"
-#include "../engineTester/main.h"
+#include "guitextureresources.hpp"
+#include "guitexture.hpp"
+#include "../loading/loader.hpp"
+#include "../renderEngine/display.hpp"
+#include "../engineTester/main.hpp"
 
 GuiTexture* GuiTextureResources::textureRing        = nullptr;
 GuiTexture* GuiTextureResources::textureLifeIcon    = nullptr;

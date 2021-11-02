@@ -1,6 +1,6 @@
 #include <glad/glad.h>
-#include "shadowframebuffer2.h"
-#include "../renderEngine/display.h"
+#include "shadowframebuffer2.hpp"
+#include "../renderEngine/display.hpp"
 
 ShadowFrameBuffer2::ShadowFrameBuffer2(int width, int height)
 {

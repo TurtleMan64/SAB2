@@ -2,8 +2,8 @@
 
 #include <list>
 
-#include "models.h"
-#include "../loading/loader.h"
+#include "models.hpp"
+#include "../loading/loader.hpp"
 
 RawModel::RawModel()
 {

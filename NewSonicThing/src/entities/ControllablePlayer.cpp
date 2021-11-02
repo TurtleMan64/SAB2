@@ -1,7 +1,7 @@
-#include "controllableplayer.h"
-#include "../toolbox/vector.h"
-#include "shieldgreen.h"
-#include "shieldmagnet.h"
+#include "controllableplayer.hpp"
+#include "../toolbox/vector.hpp"
+#include "shieldgreen.hpp"
+#include "shieldmagnet.hpp"
 
 void          ControllablePlayer::goUp()                                   {}
 void          ControllablePlayer::jump()                                   {}

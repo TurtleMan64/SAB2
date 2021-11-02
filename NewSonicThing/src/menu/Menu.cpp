@@ -1,5 +1,5 @@
-#include "menu.h"
-#include "../engineTester/main.h"
+#include "menu.hpp"
+#include "../engineTester/main.hpp"
 
 Menu* PopMenu::retVal = nullptr;
 Menu* ClearStack::retVal = nullptr;

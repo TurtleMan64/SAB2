@@ -1,14 +1,14 @@
 #include <glad/glad.h>
 
-#include "../entity.h"
-#include "dpstagemanager.h"
-#include "../../engineTester/main.h"
-#include "../dummy.h"
-#include "../controllableplayer.h"
-#include "../../loading/modelloader.h"
-#include "../../toolbox/maths.h"
-#include "../../particles/particlemaster.h"
-#include "../../particles/particleresources.h"
+#include "../entity.hpp"
+#include "dpstagemanager.hpp"
+#include "../../engineTester/main.hpp"
+#include "../dummy.hpp"
+#include "../controllableplayer.hpp"
+#include "../../loading/modelloader.hpp"
+#include "../../toolbox/maths.hpp"
+#include "../../particles/particlemaster.hpp"
+#include "../../particles/particleresources.hpp"
 
 std::list<TexturedModel*> DP_StageManager::modelsSkyPass1;
 std::list<TexturedModel*> DP_StageManager::modelsSkyPass2;

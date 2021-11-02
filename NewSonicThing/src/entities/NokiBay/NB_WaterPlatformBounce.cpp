@@ -1,15 +1,15 @@
 #include <glad/glad.h>
 
-#include "../entity.h"
-#include "../../models/models.h"
-#include "../../toolbox/vector.h"
-#include "nbwaterplatformbounce.h"
-#include "../../loading/modelloader.h"
-#include "../../engineTester/main.h"
-#include "../controllableplayer.h"
-#include "../../collision/collisionmodel.h"
-#include "../../collision/collisionchecker.h"
-#include "../../audio/audioplayer.h"
+#include "../entity.hpp"
+#include "../../models/models.hpp"
+#include "../../toolbox/vector.hpp"
+#include "nbwaterplatformbounce.hpp"
+#include "../../loading/modelloader.hpp"
+#include "../../engineTester/main.hpp"
+#include "../controllableplayer.hpp"
+#include "../../collision/collisionmodel.hpp"
+#include "../../collision/collisionchecker.hpp"
+#include "../../audio/audioplayer.hpp"
 #include <list>
 #include <iostream>
 

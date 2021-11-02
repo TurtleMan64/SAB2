@@ -20,12 +20,12 @@
 
 #include <vorbis/vorbisfile.h>
 
-#include "audiomaster.h"
-#include "../toolbox/vector.h"
-#include "source.h"
-#include "audioplayer.h"
-#include "../toolbox/maths.h"
-#include "../engineTester/main.h"
+#include "audiomaster.hpp"
+#include "../toolbox/vector.hpp"
+#include "source.hpp"
+#include "audioplayer.hpp"
+#include "../toolbox/maths.hpp"
+#include "../engineTester/main.hpp"
 
 ALCdevice*  AudioMaster::device = nullptr;
 ALCcontext* AudioMaster::context = nullptr;

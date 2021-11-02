@@ -1,9 +1,9 @@
 #include <glad/glad.h>
 
-#include "horizontalblur.h"
-#include "horizontalblurshader.h"
-#include "../postProcessing/imagerenderer.h"
-#include "../engineTester/main.h"
+#include "horizontalblur.hpp"
+#include "horizontalblurshader.hpp"
+#include "../postProcessing/imagerenderer.hpp"
+#include "../engineTester/main.hpp"
 
 HorizontalBlur::HorizontalBlur(int targetFboWidth, int targetFboHeight)
 {

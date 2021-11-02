@@ -1,6 +1,6 @@
-#include "point.h"
-#include "../toolbox/vector.h"
-#include "../engineTester/main.h"
+#include "point.hpp"
+#include "../toolbox/vector.hpp"
+#include "../engineTester/main.hpp"
 
 Point::Point()
 {

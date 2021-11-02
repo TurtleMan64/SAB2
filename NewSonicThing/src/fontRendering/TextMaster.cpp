@@ -1,14 +1,14 @@
 #include <list>
 #include <unordered_map>
 
-#include "textmaster.h"
-#include "../loading/loader.h"
-#include "../fontMeshCreator/textmeshdata.h"
-#include "../fontMeshCreator/fonttype.h"
-#include "../fontMeshCreator/guitext.h"
-#include "../fontMeshCreator/guinumber.h"
-#include "fontrenderer.h"
-#include "../engineTester/main.h"
+#include "textmaster.hpp"
+#include "../loading/loader.hpp"
+#include "../fontMeshCreator/textmeshdata.hpp"
+#include "../fontMeshCreator/fonttype.hpp"
+#include "../fontMeshCreator/guitext.hpp"
+#include "../fontMeshCreator/guinumber.hpp"
+#include "fontrenderer.hpp"
+#include "../engineTester/main.hpp"
 
 std::unordered_map<FontType*, std::list<GUIText*>> TextMaster::texts;
 std::unordered_map<FontType*, std::list<GUINumber*>> TextMaster::numbers;

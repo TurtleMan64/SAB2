@@ -1,6 +1,6 @@
 #include <stdlib.h> 
 
-#include "split.h"
+#include "split.hpp"
 
 char** split(char* line, char delim, int* length)
 {

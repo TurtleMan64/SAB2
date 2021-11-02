@@ -1,11 +1,11 @@
 #include <glad/glad.h>
 
-#include "../entity.h"
-#include "ghstagemanager.h"
-#include "../../engineTester/main.h"
-#include "../controllableplayer.h"
-#include "../dummy.h"
-#include "../../loading/modelloader.h"
+#include "../entity.hpp"
+#include "ghstagemanager.hpp"
+#include "../../engineTester/main.hpp"
+#include "../controllableplayer.hpp"
+#include "../dummy.hpp"
+#include "../../loading/modelloader.hpp"
 
 std::list<TexturedModel*> GH_StageManager::modelsSkyCylinder;
 std::list<TexturedModel*> GH_StageManager::modelsSkyClouds;

@@ -1,13 +1,13 @@
 #include <glad/glad.h>
 #include <string>
 
-#include "entity.h"
-#include "../models/models.h"
-#include "../toolbox/vector.h"
-#include "skysphere.h"
-#include "../loading/modelloader.h"
-#include "../engineTester/main.h"
-#include "../renderEngine/skymanager.h"
+#include "entity.hpp"
+#include "../models/models.hpp"
+#include "../toolbox/vector.hpp"
+#include "skysphere.hpp"
+#include "../loading/modelloader.hpp"
+#include "../engineTester/main.hpp"
+#include "../renderEngine/skymanager.hpp"
 
 #include <list>
 #include <iostream>

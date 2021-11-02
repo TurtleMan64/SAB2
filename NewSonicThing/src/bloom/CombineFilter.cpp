@@ -1,9 +1,9 @@
 #include <glad/glad.h>
 
-#include "../engineTester/main.h"
-#include "combinefilter.h"
-#include "combineshader.h"
-#include "../postProcessing/imagerenderer.h"
+#include "../engineTester/main.hpp"
+#include "combinefilter.hpp"
+#include "combineshader.hpp"
+#include "../postProcessing/imagerenderer.hpp"
 
 CombineFilter::CombineFilter()
 {

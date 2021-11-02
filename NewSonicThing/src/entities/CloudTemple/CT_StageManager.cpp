@@ -1,11 +1,11 @@
 #include <glad/glad.h>
 
-#include "../entity.h"
-#include "ctstagemanager.h"
-#include "../../engineTester/main.h"
-#include "../controllableplayer.h"
-#include "../../loading/modelloader.h"
-#include "../camera.h"
+#include "../entity.hpp"
+#include "ctstagemanager.hpp"
+#include "../../engineTester/main.hpp"
+#include "../controllableplayer.hpp"
+#include "../../loading/modelloader.hpp"
+#include "../camera.hpp"
 
 std::list<TexturedModel*> CT_StageManager::modelsSkydome;
 

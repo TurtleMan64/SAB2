@@ -1,17 +1,17 @@
 #include <glad/glad.h>
 
-#include "entity.h"
-#include "../models/models.h"
-#include "../toolbox/vector.h"
-#include "bullet.h"
-#include "../loading/modelloader.h"
-#include "../engineTester/main.h"
-#include "../entities/controllableplayer.h"
-#include "../toolbox/maths.h"
-#include "../collision/collisionchecker.h"
-#include "../particles/particlemaster.h"
-#include "../particles/particleresources.h"
-#include "../collision/triangle3d.h"
+#include "entity.hpp"
+#include "../models/models.hpp"
+#include "../toolbox/vector.hpp"
+#include "bullet.hpp"
+#include "../loading/modelloader.hpp"
+#include "../engineTester/main.hpp"
+#include "../entities/controllableplayer.hpp"
+#include "../toolbox/maths.hpp"
+#include "../collision/collisionchecker.hpp"
+#include "../particles/particlemaster.hpp"
+#include "../particles/particleresources.hpp"
+#include "../collision/triangle3d.hpp"
 
 #include <list>
 #include <iostream>

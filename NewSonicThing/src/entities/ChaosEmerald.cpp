@@ -1,17 +1,17 @@
 #include <glad/glad.h>
 
-#include "entity.h"
-#include "../models/models.h"
-#include "../toolbox/vector.h"
-#include "chaosemerald.h"
-#include "../loading/modelloader.h"
-#include "../engineTester/main.h"
-#include "../toolbox/maths.h"
-#include "../toolbox/split.h"
-#include "camera.h"
-#include "controllableplayer.h"
-#include "../guis/guimanager.h"
-#include "../audio/audioplayer.h"
+#include "entity.hpp"
+#include "../models/models.hpp"
+#include "../toolbox/vector.hpp"
+#include "chaosemerald.hpp"
+#include "../loading/modelloader.hpp"
+#include "../engineTester/main.hpp"
+#include "../toolbox/maths.hpp"
+#include "../toolbox/split.hpp"
+#include "camera.hpp"
+#include "controllableplayer.hpp"
+#include "../guis/guimanager.hpp"
+#include "../audio/audioplayer.hpp"
 
 #include <list>
 #include <iostream>

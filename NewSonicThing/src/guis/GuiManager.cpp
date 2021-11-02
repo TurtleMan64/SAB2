@@ -1,14 +1,14 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include "guimanager.h"
-#include "../engineTester/main.h"
-#include "../fontMeshCreator/guitext.h"
-#include "../fontMeshCreator/guinumber.h"
-#include "../fontMeshCreator/fonttype.h"
-#include "../menu/pausescreen.h"
-#include "guirenderer.h"
-#include "../toolbox/input.h"
+#include "guimanager.hpp"
+#include "../engineTester/main.hpp"
+#include "../fontMeshCreator/guitext.hpp"
+#include "../fontMeshCreator/guinumber.hpp"
+#include "../fontMeshCreator/fonttype.hpp"
+#include "../menu/pausescreen.hpp"
+#include "guirenderer.hpp"
+#include "../toolbox/input.hpp"
 
 #include <cmath>
 #include <string>

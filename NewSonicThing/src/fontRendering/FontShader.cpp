@@ -5,12 +5,12 @@
 #include <string>
 #include <math.h>
 
-#include "../toolbox/vector.h"
-#include "../toolbox/matrix.h"
-#include "../toolbox/maths.h"
-#include "fontshader.h"
-#include "../engineTester/main.h"
-#include "../toolbox/getline.h"
+#include "../toolbox/vector.hpp"
+#include "../toolbox/matrix.hpp"
+#include "../toolbox/maths.hpp"
+#include "fontshader.hpp"
+#include "../engineTester/main.hpp"
+#include "../toolbox/getline.hpp"
 
 FontShader::FontShader(const char* vertexFile, const char* fragmentFile)
 {

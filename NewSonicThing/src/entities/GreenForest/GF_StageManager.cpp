@@ -1,17 +1,17 @@
 #include <glad/glad.h>
 
-#include "../entity.h"
-#include "gfstagemanager.h"
-#include "../../engineTester/main.h"
-#include "../dummy.h"
-#include "../controllableplayer.h"
-#include "../../loading/modelloader.h"
-#include "../camera.h"
-#include "../../toolbox/maths.h"
-#include "../../particles/particle.h"
-#include "../../particles/particleresources.h"
-#include "../../particles/particlemaster.h"
-#include "gfparticle.h"
+#include "../entity.hpp"
+#include "gfstagemanager.hpp"
+#include "../../engineTester/main.hpp"
+#include "../dummy.hpp"
+#include "../controllableplayer.hpp"
+#include "../../loading/modelloader.hpp"
+#include "../camera.hpp"
+#include "../../toolbox/maths.hpp"
+#include "../../particles/particle.hpp"
+#include "../../particles/particleresources.hpp"
+#include "../../particles/particlemaster.hpp"
+#include "gfparticle.hpp"
 
 std::list<TexturedModel*> GF_StageManager::modelsSkydome;
 

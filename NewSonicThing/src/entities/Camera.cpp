@@ -1,13 +1,13 @@
 #include <glad/glad.h>
 
-#include "../models/models.h"
-#include "../toolbox/vector.h"
-#include "camera.h"
-#include "../toolbox/input.h"
-#include "../toolbox/maths.h"
-#include "../particles/particleresources.h"
-#include "../particles/particle.h"
-#include "../engineTester/main.h"
+#include "../models/models.hpp"
+#include "../toolbox/vector.hpp"
+#include "camera.hpp"
+#include "../toolbox/input.hpp"
+#include "../toolbox/maths.hpp"
+#include "../particles/particleresources.hpp"
+#include "../particles/particle.hpp"
+#include "../engineTester/main.hpp"
 
 #include <cmath>
 

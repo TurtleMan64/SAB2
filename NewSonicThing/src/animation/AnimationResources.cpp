@@ -1,7 +1,7 @@
-#include "animationresources.h"
-#include "animation.h"
-#include "body.h"
-#include "limb.h"
+#include "animationresources.hpp"
+#include "animation.hpp"
+#include "body.hpp"
+#include "limb.hpp"
 
 std::vector<Animation> AnimationResources::animsHumanBody;
 std::vector<Animation> AnimationResources::animsHumanHead;

@@ -1,5 +1,5 @@
-#include "combineshader.h"
-#include "../loading/loader.h"
+#include "combineshader.hpp"
+#include "../loading/loader.hpp"
 
 #include <glad/glad.h>
 

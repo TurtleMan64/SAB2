@@ -1,14 +1,14 @@
-#include "metafile.h"
-#include "../toolbox/split.h"
-#include "../toolbox/getline.h"
-#include "textmeshcreator.h"
+#include "metafile.hpp"
+#include "../toolbox/split.hpp"
+#include "../toolbox/getline.hpp"
+#include "textmeshcreator.hpp"
 
 #include <iostream>
 #include <string>
 #include <cstring>
 
-#include "../engineTester/main.h"
-#include "../renderEngine/display.h"
+#include "../engineTester/main.hpp"
+#include "../renderEngine/display.hpp"
 
 MetaFile::MetaFile(std::string filename)
 {

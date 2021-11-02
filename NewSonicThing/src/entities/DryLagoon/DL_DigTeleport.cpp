@@ -1,19 +1,19 @@
 #include <glad/glad.h>
 
-#include "../entity.h"
-#include "../../models/models.h"
-#include "../../toolbox/vector.h"
-#include "dldigteleport.h"
-#include "../../loading/modelloader.h"
-#include "../../engineTester/main.h"
-#include "../../entities/controllableplayer.h"
-#include "../../toolbox/maths.h"
-#include "../camera.h"
-#include "../../collision/collisionmodel.h"
-#include "../../collision/collisionchecker.h"
-#include "../../particles/particle.h"
-#include "../../particles/particleresources.h"
-#include "../../particles/particlemaster.h"
+#include "../entity.hpp"
+#include "../../models/models.hpp"
+#include "../../toolbox/vector.hpp"
+#include "dldigteleport.hpp"
+#include "../../loading/modelloader.hpp"
+#include "../../engineTester/main.hpp"
+#include "../../entities/controllableplayer.hpp"
+#include "../../toolbox/maths.hpp"
+#include "../camera.hpp"
+#include "../../collision/collisionmodel.hpp"
+#include "../../collision/collisionchecker.hpp"
+#include "../../particles/particle.hpp"
+#include "../../particles/particleresources.hpp"
+#include "../../particles/particlemaster.hpp"
 
 #include <list>
 

@@ -1,7 +1,7 @@
 #include <math.h>
 
-#include "matrix.h"
-#include "vector.h"
+#include "matrix.hpp"
+#include "vector.hpp"
 
 Matrix4f::Matrix4f()
 {

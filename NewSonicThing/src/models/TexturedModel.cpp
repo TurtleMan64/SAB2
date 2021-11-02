@@ -2,8 +2,8 @@
 
 #include <list>
 
-#include "models.h"
-#include "../textures/modeltexture.h"
+#include "models.hpp"
+#include "../textures/modeltexture.hpp"
 
 TexturedModel::TexturedModel()
 {

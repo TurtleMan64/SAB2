@@ -1,11 +1,11 @@
-#include "mhmissle.h"
-#include "../entity.h"
-#include "../camera.h"
-#include "../../engineTester/main.h"
-#include "../../models/models.h"
-#include "../../loading/modelloader.h"
-#include "../../toolbox/maths.h"
-#include "../controllableplayer.h"
+#include "mhmissle.hpp"
+#include "../entity.hpp"
+#include "../camera.hpp"
+#include "../../engineTester/main.hpp"
+#include "../../models/models.hpp"
+#include "../../loading/modelloader.hpp"
+#include "../../toolbox/maths.hpp"
+#include "../controllableplayer.hpp"
 
 extern float dt;
 

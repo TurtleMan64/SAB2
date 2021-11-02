@@ -1,9 +1,9 @@
-#include "timer.h"
-#include "../engineTester/main.h"
-#include "../renderEngine/display.h"
-#include "../fontMeshCreator/fonttype.h"
-#include "../fontMeshCreator/guinumber.h"
-#include "../fontMeshCreator/guitext.h"
+#include "timer.hpp"
+#include "../engineTester/main.hpp"
+#include "../renderEngine/display.hpp"
+#include "../fontMeshCreator/fonttype.hpp"
+#include "../fontMeshCreator/guinumber.hpp"
+#include "../fontMeshCreator/guitext.hpp"
 
 /* Timer initialized to 0.
  * font: font for the timer

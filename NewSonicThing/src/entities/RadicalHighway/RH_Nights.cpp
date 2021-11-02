@@ -1,8 +1,8 @@
-#include "rhnights.h"
-#include "../entity.h"
-#include "../../engineTester/main.h"
-#include "../../models/models.h"
-#include "../../loading/modelloader.h"
+#include "rhnights.hpp"
+#include "../entity.hpp"
+#include "../../engineTester/main.hpp"
+#include "../../models/models.hpp"
+#include "../../loading/modelloader.hpp"
 
 std::list<TexturedModel*> RH_Nights::models;
 

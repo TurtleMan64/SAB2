@@ -1,7 +1,7 @@
-#include "guitext.h"
-#include "../loading/loader.h"
-#include "../fontRendering/textmaster.h"
-#include "fonttype.h"
+#include "guitext.hpp"
+#include "../loading/loader.hpp"
+#include "../fontRendering/textmaster.hpp"
+#include "fonttype.hpp"
 
 GUIText::GUIText(std::string text, float fontSize, FontType* font, float x, float y, float maxLineLength,
     bool centered, bool rightAligned, bool visible)

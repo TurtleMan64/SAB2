@@ -1,9 +1,9 @@
 #include <cmath>
-#include "../toolbox/maths.h"
-#include "skymanager.h"
-#include "../entities/entity.h"
-#include "../engineTester/main.h"
-#include "../entities/light.h"
+#include "../toolbox/maths.hpp"
+#include "skymanager.hpp"
+#include "../entities/entity.hpp"
+#include "../engineTester/main.hpp"
+#include "../entities/light.hpp"
 
 
 float SkyManager::sunAngle;

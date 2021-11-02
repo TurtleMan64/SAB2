@@ -4,7 +4,7 @@
 #include <GLFW/glfw3.h>
 #include <SDL2/SDL.h>
 #else
-#include "/usr/include/GLFW/glfw3.h"
+#include "/usr/include/GLFW/glfw3.hpp"
 #endif
 
 #include <iostream>
@@ -14,24 +14,24 @@
 #include <cstring>
 #include <algorithm>
 
-#include "input.h"
-#include "../renderEngine/skymanager.h"
-#include "../engineTester/main.h"
-#include "../entities/camera.h"
-#include "../entities/controllableplayer.h"
-#include "../entities/TwinkleCircuit/tckart.h"
-#include "maths.h"
-#include "../toolbox/split.h"
-#include "../toolbox/getline.h"
+#include "input.hpp"
+#include "../renderEngine/skymanager.hpp"
+#include "../engineTester/main.hpp"
+#include "../entities/camera.hpp"
+#include "../entities/controllableplayer.hpp"
+#include "../entities/TwinkleCircuit/tckart.hpp"
+#include "maths.hpp"
+#include "../toolbox/split.hpp"
+#include "../toolbox/getline.hpp"
 #include <random>
 #include <chrono>
 
-#include "../renderEngine/display.h"
+#include "../renderEngine/display.hpp"
 
 #ifdef DEV_MODE
 #include <iostream>
 #include <fstream>
-#include "../collision/collisionchecker.h"
+#include "../collision/collisionchecker.hpp"
 #endif
 
 SDL_GameController* Input::controller = nullptr;

@@ -1,6 +1,6 @@
-#include "collideableobject.h"
+#include "collideableobject.hpp"
 
-#include "../collision/collisionmodel.h"
+#include "../collision/collisionmodel.hpp"
 
 
 CollideableObject::CollideableObject()

@@ -1,15 +1,15 @@
 #include <glad/glad.h>
 #include <string>
 
-#include "../engineTester/main.h"
-#include "entity.h"
-#include "../models/models.h"
-#include "../toolbox/vector.h"
-#include "stage.h"
-#include "../loading/modelloader.h"
-#include "dummy.h"
-#include "controllableplayer.h"
-#include "camera.h"
+#include "../engineTester/main.hpp"
+#include "entity.hpp"
+#include "../models/models.hpp"
+#include "../toolbox/vector.hpp"
+#include "stage.hpp"
+#include "../loading/modelloader.hpp"
+#include "dummy.hpp"
+#include "controllableplayer.hpp"
+#include "camera.hpp"
 
 #include <list>
 #include <vector>

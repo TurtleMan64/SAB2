@@ -7,19 +7,19 @@
 #include <unordered_map>
 #include <list>
 
-#include "modelloader.h"
-#include "../models/models.h"
-#include "../textures/modeltexture.h"
-#include "../loading/loader.h"
-#include "../toolbox/vector.h"
-#include "vertex.h"
-#include "../engineTester/main.h"
-#include "../toolbox/split.h"
-#include "../toolbox/getline.h"
-#include "../collision/collisionmodel.h"
-#include "../collision/triangle3d.h"
-#include "../collision/quadtreenode.h"
-#include "../toolbox/maths.h"
+#include "modelloader.hpp"
+#include "../models/models.hpp"
+#include "../textures/modeltexture.hpp"
+#include "../loading/loader.hpp"
+#include "../toolbox/vector.hpp"
+#include "vertex.hpp"
+#include "../engineTester/main.hpp"
+#include "../toolbox/split.hpp"
+#include "../toolbox/getline.hpp"
+#include "../collision/collisionmodel.hpp"
+#include "../collision/triangle3d.hpp"
+#include "../collision/quadtreenode.hpp"
+#include "../toolbox/maths.hpp"
 
 ModelLoader::FakeTexture::FakeTexture()
 {

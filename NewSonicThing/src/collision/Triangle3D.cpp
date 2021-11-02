@@ -1,6 +1,6 @@
 #include <math.h>
-#include "triangle3d.h"
-#include "../toolbox/vector.h"
+#include "triangle3d.hpp"
+#include "../toolbox/vector.hpp"
 
 //Loads in all data from 91 bytes
 Triangle3D::Triangle3D(char* buf)

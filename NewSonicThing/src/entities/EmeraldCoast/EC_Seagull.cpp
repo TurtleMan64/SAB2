@@ -1,14 +1,14 @@
 #include <glad/glad.h>
 
-#include "../entity.h"
-#include "../../models/models.h"
-#include "../../toolbox/vector.h"
-#include "ecseagull.h"
-#include "../../loading/modelloader.h"
-#include "../../engineTester/main.h"
-#include "../../toolbox/maths.h"
-#include "../camera.h"
-#include "../../audio/audioplayer.h"
+#include "../entity.hpp"
+#include "../../models/models.hpp"
+#include "../../toolbox/vector.hpp"
+#include "ecseagull.hpp"
+#include "../../loading/modelloader.hpp"
+#include "../../engineTester/main.hpp"
+#include "../../toolbox/maths.hpp"
+#include "../camera.hpp"
+#include "../../audio/audioplayer.hpp"
 
 #include <list>
 #include <iostream>

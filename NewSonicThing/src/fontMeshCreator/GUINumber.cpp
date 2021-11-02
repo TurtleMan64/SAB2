@@ -1,12 +1,12 @@
-#include "guinumber.h"
-#include "../engineTester/main.h"
-#include "../loading/loader.h"
-#include "../fontRendering/textmaster.h"
-#include "textmeshdata.h"
-#include "fonttype.h"
-#include "../menu/pausescreen.h"
-#include "../toolbox/maths.h"
-#include "../renderEngine/display.h"
+#include "guinumber.hpp"
+#include "../engineTester/main.hpp"
+#include "../loading/loader.hpp"
+#include "../fontRendering/textmaster.hpp"
+#include "textmeshdata.hpp"
+#include "fonttype.hpp"
+#include "../menu/pausescreen.hpp"
+#include "../toolbox/maths.hpp"
+#include "../renderEngine/display.hpp"
 
 GLuint GUINumber::numberMeshIds[10];
 GLuint GUINumber::numberMeshVertexCounts[10];

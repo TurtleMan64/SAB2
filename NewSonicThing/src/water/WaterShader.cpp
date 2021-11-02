@@ -5,14 +5,14 @@
 #include <string>
 #include <math.h>
 
-#include "../engineTester/main.h"
-#include "../toolbox/vector.h"
-#include "../toolbox/matrix.h"
-#include "../entities/camera.h"
-#include "../toolbox/maths.h"
-#include "../entities/light.h"
-#include "../loading/loader.h"
-#include "watershader.h"
+#include "../engineTester/main.hpp"
+#include "../toolbox/vector.hpp"
+#include "../toolbox/matrix.hpp"
+#include "../entities/camera.hpp"
+#include "../toolbox/maths.hpp"
+#include "../entities/light.hpp"
+#include "../loading/loader.hpp"
+#include "watershader.hpp"
 
 WaterShader::WaterShader()
 {

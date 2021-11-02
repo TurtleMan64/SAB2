@@ -1,15 +1,15 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include "entityrenderer.h"
-#include "../entities/entity.h"
-#include "../shaders/entityshader.h"
-#include "../toolbox/matrix.h"
-#include "../toolbox/vector.h"
-#include "../toolbox/maths.h"
-#include "../models/models.h"
-#include "../engineTester/main.h"
-#include "skymanager.h"
+#include "entityrenderer.hpp"
+#include "../entities/entity.hpp"
+#include "../shaders/entityshader.hpp"
+#include "../toolbox/matrix.hpp"
+#include "../toolbox/vector.hpp"
+#include "../toolbox/maths.hpp"
+#include "../models/models.hpp"
+#include "../engineTester/main.hpp"
+#include "skymanager.hpp"
 
 #include <iostream>
 #include <unordered_map>

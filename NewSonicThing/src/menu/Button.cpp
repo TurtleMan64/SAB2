@@ -1,11 +1,11 @@
 #include <string>
-#include "button.h"
-#include "../engineTester/main.h"
-#include "../fontMeshCreator/guitext.h"
-#include "../fontMeshCreator/fonttype.h"
-#include "../guis/guimanager.h"
-#include "../guis/guitexture.h"
-#include "../renderEngine/display.h"
+#include "button.hpp"
+#include "../engineTester/main.hpp"
+#include "../fontMeshCreator/guitext.hpp"
+#include "../fontMeshCreator/fonttype.hpp"
+#include "../guis/guimanager.hpp"
+#include "../guis/guitexture.hpp"
+#include "../renderEngine/display.hpp"
 
 /*
    Basic button with normal/highlight texture and text

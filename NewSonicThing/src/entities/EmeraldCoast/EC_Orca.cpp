@@ -1,18 +1,18 @@
 #include <glad/glad.h>
 
-#include "../entity.h"
-#include "../../models/models.h"
-#include "../../toolbox/vector.h"
-#include "ecorca.h"
-#include "../../loading/modelloader.h"
-#include "../../engineTester/main.h"
-#include "../../entities/playersonic.h"
-#include "../../toolbox/maths.h"
-#include "../camera.h"
-#include "../../audio/audioplayer.h"
-#include "../../particles/particle.h"
-#include "../../particles/particlemaster.h"
-#include "../../particles/particleresources.h"
+#include "../entity.hpp"
+#include "../../models/models.hpp"
+#include "../../toolbox/vector.hpp"
+#include "ecorca.hpp"
+#include "../../loading/modelloader.hpp"
+#include "../../engineTester/main.hpp"
+#include "../../entities/playersonic.hpp"
+#include "../../toolbox/maths.hpp"
+#include "../camera.hpp"
+#include "../../audio/audioplayer.hpp"
+#include "../../particles/particle.hpp"
+#include "../../particles/particlemaster.hpp"
+#include "../../particles/particleresources.hpp"
 
 #include <list>
 #include <iostream>

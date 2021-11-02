@@ -10,12 +10,12 @@
 #include <cmath>
 #include <cstring>
 
-#include "loader.h"
-#include "../engineTester/main.h"
+#include "loader.hpp"
+#include "../engineTester/main.hpp"
 
-#include "../models/models.h"
-#include "../toolbox/getline.h"
-#include "../renderEngine/display.h"
+#include "../models/models.hpp"
+#include "../toolbox/getline.hpp"
+#include "../renderEngine/display.hpp"
 
 int Loader::anisotropicFilterIsSupported = 0;
 float Loader::anisotropyLevel = 0.0f;

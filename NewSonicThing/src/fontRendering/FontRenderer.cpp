@@ -1,11 +1,11 @@
 #include <glad/glad.h>
 #include <list>
-#include "fontrenderer.h"
-#include "../fontMeshCreator/fonttype.h"
-#include "../fontMeshCreator/guitext.h"
-#include "../fontMeshCreator/guinumber.h"
-#include "fontshader.h"
-#include "../engineTester/main.h"
+#include "fontrenderer.hpp"
+#include "../fontMeshCreator/fonttype.hpp"
+#include "../fontMeshCreator/guitext.hpp"
+#include "../fontMeshCreator/guinumber.hpp"
+#include "fontshader.hpp"
+#include "../engineTester/main.hpp"
 
 FontRenderer::FontRenderer()
 {

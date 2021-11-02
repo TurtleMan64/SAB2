@@ -1,7 +1,7 @@
-#include "particleresources.h"
-#include "particletexture.h"
-#include "../loading/loader.h"
-#include "../engineTester/main.h"
+#include "particleresources.hpp"
+#include "particletexture.hpp"
+#include "../loading/loader.hpp"
+#include "../engineTester/main.hpp"
 
 ParticleTexture* ParticleResources::textureDust              = nullptr;
 ParticleTexture* ParticleResources::textureDirt              = nullptr;

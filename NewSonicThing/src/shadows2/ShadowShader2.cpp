@@ -1,12 +1,12 @@
 #include <glad/glad.h>
 
-#include "shadowshader2.h"
-#include "../toolbox/vector.h"
-#include "../toolbox/matrix.h"
-#include "../entities/camera.h"
-#include "../toolbox/maths.h"
-#include "../entities/light.h"
-#include "../loading/loader.h"
+#include "shadowshader2.hpp"
+#include "../toolbox/vector.hpp"
+#include "../toolbox/matrix.hpp"
+#include "../entities/camera.hpp"
+#include "../toolbox/maths.hpp"
+#include "../entities/light.hpp"
+#include "../loading/loader.hpp"
 
 ShadowShader2::ShadowShader2(const char* vertexFile, const char* fragmentFile)
 {

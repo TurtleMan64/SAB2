@@ -1,10 +1,10 @@
-#include "particle.h"
-#include "particletexture.h"
-#include "../entities/camera.h"
-#include "../toolbox/vector.h"
-#include "particlemaster.h"
-#include "particleresources.h"
-#include "../engineTester/main.h"
+#include "particle.hpp"
+#include "particletexture.hpp"
+#include "../entities/camera.hpp"
+#include "../toolbox/vector.hpp"
+#include "particlemaster.hpp"
+#include "particleresources.hpp"
+#include "../engineTester/main.hpp"
 
 extern float dt;
 

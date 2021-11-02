@@ -1,5 +1,5 @@
-#include "verticalblurshader.h"
-#include "../loading/loader.h"
+#include "verticalblurshader.hpp"
+#include "../loading/loader.hpp"
 
 #include <glad/glad.h>
 

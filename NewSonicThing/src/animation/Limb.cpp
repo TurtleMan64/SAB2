@@ -1,9 +1,9 @@
 #include <cmath>
 
-#include "body.h"
-#include "keyframe.h"
-#include "../toolbox/maths.h"
-#include "limb.h"
+#include "body.hpp"
+#include "keyframe.hpp"
+#include "../toolbox/maths.hpp"
+#include "limb.hpp"
 
 
 

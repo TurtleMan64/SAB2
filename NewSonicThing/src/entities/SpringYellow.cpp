@@ -1,14 +1,14 @@
 #include <glad/glad.h>
 
-#include "entity.h"
-#include "../models/models.h"
-#include "../toolbox/vector.h"
-#include "springyellow.h"
-#include "../loading/modelloader.h"
-#include "../engineTester/main.h"
-#include "../entities/controllableplayer.h"
-#include "../toolbox/maths.h"
-#include "../audio/audioplayer.h"
+#include "entity.hpp"
+#include "../models/models.hpp"
+#include "../toolbox/vector.hpp"
+#include "springyellow.hpp"
+#include "../loading/modelloader.hpp"
+#include "../engineTester/main.hpp"
+#include "../entities/controllableplayer.hpp"
+#include "../toolbox/maths.hpp"
+#include "../audio/audioplayer.hpp"
 
 #include <list>
 #include <vector>

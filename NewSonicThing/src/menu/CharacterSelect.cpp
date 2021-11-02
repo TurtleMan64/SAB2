@@ -1,29 +1,29 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "characterselect.h"
-#include "../engineTester/main.h"
+#include "characterselect.hpp"
+#include "../engineTester/main.hpp"
 
 #include <cmath>
 #include <iostream>
 #include <vector>
 
-#include "../fontMeshCreator/guitext.h"
-#include "../fontMeshCreator/fonttype.h"
-#include "../loading/loader.h"
-#include "../toolbox/input.h"
-#include "../loading/levelloader.h"
-#include "../fontMeshCreator/guitext.h"
-#include "../audio/audioplayer.h"
-#include "../audio/source.h"
-#include "../entities/camera.h"
-#include "../guis/guitextureresources.h"
-#include "../guis/guimanager.h"
-#include "../guis/guitexture.h"
-#include "button.h"
-#include "mainmenu.h"
-#include "missionmenu.h"
-#include "../toolbox/maths.h"
-#include "../renderEngine/display.h"
+#include "../fontMeshCreator/guitext.hpp"
+#include "../fontMeshCreator/fonttype.hpp"
+#include "../loading/loader.hpp"
+#include "../toolbox/input.hpp"
+#include "../loading/levelloader.hpp"
+#include "../fontMeshCreator/guitext.hpp"
+#include "../audio/audioplayer.hpp"
+#include "../audio/source.hpp"
+#include "../entities/camera.hpp"
+#include "../guis/guitextureresources.hpp"
+#include "../guis/guimanager.hpp"
+#include "../guis/guitexture.hpp"
+#include "button.hpp"
+#include "mainmenu.hpp"
+#include "missionmenu.hpp"
+#include "../toolbox/maths.hpp"
+#include "../renderEngine/display.hpp"
 
 CharacterSelect::CharacterSelect()
 {
