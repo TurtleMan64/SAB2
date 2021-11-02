@@ -298,7 +298,6 @@
     <ClCompile Include="src\loading\LevelLoader.cpp" />
     <ClCompile Include="src\loading\Loader.cpp" />
     <ClCompile Include="src\loading\ModelLoader.cpp" />
-    <ClCompile Include="src\loading\Vertex.cpp" />
     <ClCompile Include="src\menu\Button.cpp" />
     <ClCompile Include="src\menu\CharacterSelect.cpp" />
     <ClCompile Include="src\menu\ConfigMenu.cpp" />
@@ -499,7 +498,6 @@
     <ClInclude Include="src\loading\levelloader.hpp" />
     <ClInclude Include="src\loading\loader.hpp" />
     <ClInclude Include="src\loading\modelloader.hpp" />
-    <ClInclude Include="src\loading\vertex.hpp" />
     <ClInclude Include="src\menu\button.hpp" />
     <ClInclude Include="src\menu\characterselect.hpp" />
     <ClInclude Include="src\menu\configmenu.hpp" />
