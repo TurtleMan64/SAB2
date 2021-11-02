@@ -227,7 +227,6 @@ GLuint Loader::loadTextureNoInterpolation(const char* fileName)
 
     glBindTexture(GL_TEXTURE_2D, 0);
     
-
     return textureId;
 }
 

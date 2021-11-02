@@ -726,9 +726,6 @@
     <ClCompile Include="src\loading\Loader.cpp">
       <Filter>Source Files\loading</Filter>
     </ClCompile>
-    <ClCompile Include="src\loading\FakeTexture.cpp">
-      <Filter>Source Files\loading</Filter>
-    </ClCompile>
     <ClCompile Include="src\loading\Vertex.cpp">
       <Filter>Source Files\loading</Filter>
     </ClCompile>
@@ -1323,9 +1320,6 @@
       <Filter>Source Files\loading</Filter>
     </ClInclude>
     <ClInclude Include="src\loading\loader.h">
-      <Filter>Source Files\loading</Filter>
-    </ClInclude>
-    <ClInclude Include="src\loading\fakeTexture.h">
       <Filter>Source Files\loading</Filter>
     </ClInclude>
     <ClInclude Include="src\loading\vertex.h">

@@ -17,6 +17,17 @@ class QuadTreeNode;
 class ModelLoader
 {
 private:
+    class FakeTexture
+    {
+    public:
+        std::string name;
+        char type = 0;
+        char sound = 0;
+        char particle = 0;
+
+        FakeTexture();
+    };
+
     static void parseMtl(std::string filePath, std::string fileName, std::unordered_map<std::string, ModelTexture>* outMtlMap);
 
     static void deleteUnusedMtl(std::unordered_map<std::string, ModelTexture>* mtlMap, std::vector<ModelTexture>* usedMtls);

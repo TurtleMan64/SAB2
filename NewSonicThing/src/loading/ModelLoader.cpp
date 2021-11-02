@@ -18,9 +18,16 @@
 #include "../toolbox/getline.h"
 #include "../collision/collisionmodel.h"
 #include "../collision/triangle3d.h"
-#include "fakeTexture.h"
 #include "../collision/quadtreenode.h"
 #include "../toolbox/maths.h"
+
+ModelLoader::FakeTexture::FakeTexture()
+{
+    name = "";
+    type = 0;
+    sound = -1;
+    particle = 0;
+}
 
 int ModelLoader::loadModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName)
 {
@@ -243,12 +250,13 @@ int ModelLoader::loadVclModel(std::list<TexturedModel*>* models, std::string fil
     ModelLoader::read(fileType, 4, file);
     if (fileType[0] != 'v' || 
         fileType[1] != 'c' ||
-        fileType[2] != 'l' ||
-        fileType[3] != 0)
+        fileType[2] != 'l')
     {
         std::fprintf(stdout, "Error: File '%s' is not a valid .binvcl file\n", (filePath+fileName).c_str());
         return -2;
     }
+
+    int vclVersion = (int)fileType[3];
 
     std::string line;
 
@@ -273,7 +281,7 @@ int ModelLoader::loadVclModel(std::list<TexturedModel*>* models, std::string fil
 
     int numVertices;
     ModelLoader::read(&numVertices, 4, file);
-    vertices.reserve(numVertices*2);
+    vertices.reserve(numVertices*2 + 1);
     for (int i = 0; i < numVertices; i++)
     {
         float t[3];
@@ -287,7 +295,15 @@ int ModelLoader::loadVclModel(std::list<TexturedModel*>* models, std::string fil
         float red   = ((float)c[0])/255.0f;
         float green = ((float)c[1])/255.0f;
         float blue  = ((float)c[2])/255.0f;
-        newVertex->color.set(red, green, blue, 1.0f); //no vertex alpha in VCOL file...
+        float alpha = 1.0f;
+        if (c[0] == 153 && c[1] == 102) //special case, use b as alpha
+        {
+            alpha = blue;
+            red   = 1.0f;
+            green = 1.0f;
+            blue  = 1.0f;
+        }
+        newVertex->color.set(red, green, blue, alpha); //no vertex alpha in VCOL file...
         vertices.push_back(newVertex);
     }
 
@@ -296,7 +312,7 @@ int ModelLoader::loadVclModel(std::list<TexturedModel*>* models, std::string fil
 
     int numTexCoords;
     ModelLoader::read(&numTexCoords, 4, file);
-    textures.reserve(numTexCoords);
+    textures.reserve(numTexCoords + 1);
     for (int i = 0; i < numTexCoords; i++)
     {
         float t[2];
@@ -311,13 +327,31 @@ int ModelLoader::loadVclModel(std::list<TexturedModel*>* models, std::string fil
     //int bytesPerIndVT;
     //fread(&bytesPerIndVT, sizeof(int), 1, file);
 
-    Vector3f normal(0, 1, 0); //hard coded normal of up
-    normals.push_back(normal);
+    if (vclVersion == 0)
+    {
+        Vector3f normal(0, 1, 0); //hard coded normal of up
+        normals.push_back(normal);
+    }
+    else
+    {
+        int numNormals;
+        ModelLoader::read(&numNormals, 4, file);
+        normals.reserve(numNormals + 1);
+        for (int i = 0; i < numNormals; i++)
+        {
+            char vn[3];
+            ModelLoader::read(vn, 3, file);
+
+            Vector3f norm(vn[0], vn[1], vn[2]);
+            norm.normalize();
+            normals.push_back(norm);
+        }
+    }
 
     int numMaterials;
     ModelLoader::read(&numMaterials, 4, file);
     rawModelsList.reserve(numMaterials);
-    modelTextures.reserve(numMaterials);
+    modelTextures.reserve(numMaterials + 1);
     for (int m = 0; m < numMaterials; m++)
     {
         int matnameLength;
@@ -335,7 +369,7 @@ int ModelLoader::loadVclModel(std::list<TexturedModel*>* models, std::string fil
         std::vector<int> indices;
         int numFaces;
         ModelLoader::read(&numFaces, 4, file);
-        indices.reserve(numFaces*9);
+        indices.reserve(numFaces*9 + 1);
         for (int i = 0; i < numFaces; i++)
         {
             //int f[6] = {0,0,0,0,0,0};
@@ -347,13 +381,26 @@ int ModelLoader::loadVclModel(std::list<TexturedModel*>* models, std::string fil
             //fread(&f[4], bytesPerIndV,  1, file);
             //fread(&f[5], bytesPerIndVT, 1, file);
 
-            int f[6];
+            if (vclVersion == 0)
+            {
+                int f[6];
 
-            ModelLoader::read(&f[0], 24, file);
+                ModelLoader::read(f, 24, file);
 
-            processVertexBinary(f[0], f[1], 1, &vertices, &indices);
-            processVertexBinary(f[2], f[3], 1, &vertices, &indices);
-            processVertexBinary(f[4], f[5], 1, &vertices, &indices);
+                processVertexBinary(f[0], f[1], 1, &vertices, &indices);
+                processVertexBinary(f[2], f[3], 1, &vertices, &indices);
+                processVertexBinary(f[4], f[5], 1, &vertices, &indices);
+            }
+            else
+            {
+                int f[9];
+
+                ModelLoader::read(f, 36, file);
+
+                processVertexBinary(f[0], f[1], f[2], &vertices, &indices);
+                processVertexBinary(f[3], f[4], f[5], &vertices, &indices);
+                processVertexBinary(f[6], f[7], f[8], &vertices, &indices);
+            }
         }
 
         //save the model we've been building so far...
@@ -1129,8 +1176,8 @@ void ModelLoader::processVertex(char** vertex,
     Vertex* currentVertex = (*vertices)[index]; //check bounds on this?
     if (currentVertex->isSet() == 0)
     {
-        currentVertex->setTextureIndex(textureIndex);
-        currentVertex->setNormalIndex(normalIndex);
+        currentVertex->textureIndex = textureIndex;
+        currentVertex->normalIndex = normalIndex;
         indices->push_back(index);
     }
     else
@@ -1150,8 +1197,8 @@ void ModelLoader::processVertexBinary(int vIndex, int tIndex, int nIndex,
     Vertex* currentVertex = (*vertices)[vIndex]; //check bounds on this?
     if (currentVertex->isSet() == 0)
     {
-        currentVertex->setTextureIndex(tIndex);
-        currentVertex->setNormalIndex(nIndex);
+        currentVertex->textureIndex = tIndex;
+        currentVertex->normalIndex = nIndex;
         indices->push_back(vIndex);
     }
     else
@@ -1169,29 +1216,28 @@ void ModelLoader::dealWithAlreadyProcessedVertex(
 {
     if (previousVertex->hasSameTextureAndNormal(newTextureIndex, newNormalIndex))
     {
-        indices->push_back(previousVertex->getIndex());
+        indices->push_back(previousVertex->index);
     }
     else
     {
-        Vertex* anotherVertex = previousVertex->getDuplicateVertex();
+        Vertex* anotherVertex = previousVertex->duplicateVertex;
         if (anotherVertex != nullptr)
         {
             dealWithAlreadyProcessedVertex(anotherVertex, newTextureIndex, newNormalIndex, indices, vertices);
         }
         else
         {
-            Vertex* duplicateVertex = new Vertex((int)vertices->size(), previousVertex->getPosition(), &previousVertex->color); INCR_NEW("Vertex");
+            Vertex* duplicateVertex = new Vertex((int)vertices->size(), &previousVertex->position, &previousVertex->color); INCR_NEW("Vertex");
             //numAdditionalVertices++;
-            duplicateVertex->setTextureIndex(newTextureIndex);
-            duplicateVertex->setNormalIndex(newNormalIndex);
+            duplicateVertex->textureIndex = newTextureIndex;
+            duplicateVertex->normalIndex = newNormalIndex;
 
-            previousVertex->setDuplicateVertex(duplicateVertex);
+            previousVertex->duplicateVertex = duplicateVertex;
             vertices->push_back(duplicateVertex);
-            indices->push_back(duplicateVertex->getIndex());
+            indices->push_back(duplicateVertex->index);
         }
     }
 }
-
 
 void ModelLoader::convertDataToArrays(
     std::vector<Vertex*>* vertices, 
@@ -1204,9 +1250,9 @@ void ModelLoader::convertDataToArrays(
 {
     for (auto currentVertex : (*vertices))
     {
-        Vector3f* position = currentVertex->getPosition();
-        Vector2f* textureCoord = &(*textures)[currentVertex->getTextureIndex()];
-        Vector3f* normalVector = &(*normals)[currentVertex->getNormalIndex()];
+        Vector3f* position = &currentVertex->position;
+        Vector2f* textureCoord = &(*textures)[currentVertex->textureIndex];
+        Vector3f* normalVector = &(*normals)[currentVertex->normalIndex];
         verticesArray->push_back(position->x);
         verticesArray->push_back(position->y);
         verticesArray->push_back(position->z);
@@ -1228,8 +1274,8 @@ void ModelLoader::removeUnusedVertices(std::vector<Vertex*>* vertices)
     {
         if (vertex->isSet() == 0)
         {
-            vertex->setTextureIndex(0);
-            vertex->setNormalIndex(0);
+            vertex->textureIndex = 0;
+            vertex->normalIndex = 0;
         }
     }
 }
@@ -1707,7 +1753,7 @@ void ModelLoader::deleteUnusedMtl(std::unordered_map<std::string, ModelTexture>*
     //for some extremely bizarre reason, I cannot make a set or a map on the stack in this specific function.
     // "trying to use deleted function" or something...
     //so we must do a slow O(n^2) operation here instead of linear...
-
+    //printf("mtlMapSize = %d, usedMtls size = %d\n", mtlMap->size(), usedMtls->size());
     //iterate through loaded mtls, check if they are used
     std::unordered_map<std::string, ModelTexture>::iterator it;
     for (it = mtlMap->begin(); it != mtlMap->end(); it++)

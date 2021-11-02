@@ -30,16 +30,6 @@ Vertex::Vertex(int index, Vector3f* position)
     this->duplicateVertex = nullptr;
 }
 
-int Vertex::getIndex()
-{
-    return index;
-}
-
-float Vertex::getLength()
-{
-    return length;
-}
-
 int Vertex::isSet()
 {
     if ((textureIndex != NO_INDEX) && (normalIndex != NO_INDEX))
@@ -56,39 +46,4 @@ int Vertex::hasSameTextureAndNormal(int textureIndexOther, int normalIndexOther)
         return 1;
     }
     return 0;
-}
-
-void Vertex::setTextureIndex(int newTextureIndex)
-{
-    textureIndex = newTextureIndex;
-}
-
-void Vertex::setNormalIndex(int newNormalIndex)
-{
-    normalIndex = newNormalIndex;
-}
-
-Vector3f* Vertex::getPosition()
-{
-    return &position;
-}
-
-int Vertex::getTextureIndex()
-{
-    return textureIndex;
-}
-
-int Vertex::getNormalIndex()
-{
-    return normalIndex;
-}
-
-Vertex* Vertex::getDuplicateVertex()
-{
-    return duplicateVertex;
-}
-
-void Vertex::setDuplicateVertex(Vertex* duplicateVertexNew)
-{
-    duplicateVertex = duplicateVertexNew;
 }

@@ -1,18 +1,12 @@
-# Blender MTL File: 'None'
 # Material Count: 1
 
 newmtl WaterStrip
 Ns 20
-Ka 1.000000 1.000000 1.000000
-Kd 0.640000 0.640000 0.640000
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
 Ni 0.00
-d 1.000000
 Tr 0
-renderOrder 5
 animSpeed 20
 mixLinear
+renderOrder 5
 numImages 14
 map_Kd Water0.png
 Water1.png
@@ -28,3 +22,4 @@ Water10.png
 Water11.png
 Water12.png
 Water13.png
+

@@ -12,9 +12,9 @@ public:
     Vector4f color;
     int textureIndex = NO_INDEX;
     int normalIndex = NO_INDEX;
-    Vertex* duplicateVertex;
-    int index;
-    float length;
+    Vertex* duplicateVertex = nullptr;
+    int index = 0;
+    float length = 0.0f;
 
 public:
 
