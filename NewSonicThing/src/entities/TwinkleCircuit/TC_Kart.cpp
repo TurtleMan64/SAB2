@@ -1263,7 +1263,7 @@ void TC_Kart::step()
         }
     }
 
-    baseColour.set(1, 1, 1);
+    baseColor.set(1, 1, 1);
 
     if (health >= 0.0f && health <= 0.3f)
     {
@@ -1278,7 +1278,7 @@ void TC_Kart::step()
             sourceDanger->setPosition(getX(), getY(), getZ());
 
             float t = sourceDanger->getSoundCompletion();
-            baseColour.set(0.5f+t/2, t, t);
+            baseColor.set(0.5f+t/2, t, t);
         }
     }
     else
@@ -1291,14 +1291,14 @@ void TC_Kart::step()
 
         if (health < 0.0f)
         {
-            baseColour.set(0.25f, 0.05f, 0.05f);
+            baseColor.set(0.25f, 0.05f, 0.05f);
         }
     }
 
     if (ringsUntilBoost <= 0)
     {
         float t = sinf(Global::gameClock*20.0f);
-        baseColour.set(1.0f, 1.0f, 2.0f + t);
+        baseColor.set(1.0f, 1.0f, 2.0f + t);
     }
 
     //if (onPlane && currentTriangle->isHeal())
@@ -1307,7 +1307,7 @@ void TC_Kart::step()
         {
     //        sourceHeal = AudioPlayer::play(1, &position, 1.0f, true);
         }
-    //    baseColour.set(1.9f, 1.5f, 1.7f);
+    //    baseColor.set(1.9f, 1.5f, 1.7f);
     }
     //else
     {

@@ -19,7 +19,7 @@ private:
     };
     int stateCurrent;
 
-    //The visual model that doesn't use vertex colours
+    //The visual model that doesn't use vertex colors
     static std::list<TexturedModel*> models;
     //The visual model for the front wheels
     static std::list<TexturedModel*> modelsWheelFront;

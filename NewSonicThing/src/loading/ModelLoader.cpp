@@ -10,7 +10,7 @@
 #include "modelloader.hpp"
 #include "../models/models.hpp"
 #include "../textures/modeltexture.hpp"
-#include "../loading/loader.hpp"
+#include "../loading/loadergl.hpp"
 #include "../toolbox/vector.hpp"
 #include "../engineTester/main.hpp"
 #include "../toolbox/split.hpp"
@@ -245,7 +245,7 @@ int ModelLoader::loadBinaryModel(std::list<TexturedModel*>* models, std::string 
         std::vector<float> normalsArray;
         std::vector<float> colorsArray;
         convertDataToArrays(&vertices, &textures, &normals, &verticesArray, &texturesArray, &normalsArray, &colorsArray);
-        rawModelsList.push_back(Loader::loadToVAO(&verticesArray, &texturesArray, &normalsArray, &colorsArray, &indices));
+        rawModelsList.push_back(LoaderGL::loadToVAO(&verticesArray, &texturesArray, &normalsArray, &colorsArray, &indices));
     }
 
     fclose(file);
@@ -446,12 +446,16 @@ int ModelLoader::loadVclModel(std::list<TexturedModel*>* models, std::string fil
         //save the model we've been building so far...
         removeUnusedVertices(&vertices);
 
+        //std::vector<Vertex*>  vertices;
+        //std::vector<Vector2f> textures;
+        //std::vector<Vector3f> normals;
+
         std::vector<float> verticesArray;
         std::vector<float> texturesArray;
         std::vector<float> normalsArray;
         std::vector<float> colorsArray;
         convertDataToArrays(&vertices, &textures, &normals, &verticesArray, &texturesArray, &normalsArray, &colorsArray);
-        rawModelsList.push_back(Loader::loadToVAO(&verticesArray, &texturesArray, &normalsArray, &colorsArray, &indices));
+        rawModelsList.push_back(LoaderGL::loadToVAO(&verticesArray, &texturesArray, &normalsArray, &colorsArray, &indices));
     }
 
     //printf("%d new vertices\n", numAdditionalVertices);
@@ -625,7 +629,7 @@ int ModelLoader::loadObjModel(std::list<TexturedModel*>* models, std::string fil
                     std::vector<float> colorsArray;
 
                     convertDataToArrays(&vertices, &textures, &normals, &verticesArray, &texturesArray, &normalsArray, &colorsArray);
-                    rawModelsList.push_back(Loader::loadToVAO(&verticesArray, &texturesArray, &normalsArray, &colorsArray, &indices));
+                    rawModelsList.push_back(LoaderGL::loadToVAO(&verticesArray, &texturesArray, &normalsArray, &colorsArray, &indices));
 
                     indices.clear();
                 }
@@ -645,7 +649,7 @@ int ModelLoader::loadObjModel(std::list<TexturedModel*>* models, std::string fil
     std::vector<float> normalsArray;
     std::vector<float> colorsArray;
     convertDataToArrays(&vertices, &textures, &normals, &verticesArray, &texturesArray, &normalsArray, &colorsArray);
-    rawModelsList.push_back(Loader::loadToVAO(&verticesArray, &texturesArray, &normalsArray, &colorsArray, &indices));
+    rawModelsList.push_back(LoaderGL::loadToVAO(&verticesArray, &texturesArray, &normalsArray, &colorsArray, &indices));
 
     //go through rawModelsList and modelTextures to construct and add to the given TexturedModel list
     for (unsigned int i = 0; i < rawModelsList.size(); i++)
@@ -738,7 +742,7 @@ void ModelLoader::parseMtl(std::string filePath, std::string fileName, std::unor
                 char* fname = (char*)imageFilenameString.c_str();
 
                 std::vector<GLuint> textureIds;
-                textureIds.push_back(Loader::loadTexture(fname)); //generate new texture
+                textureIds.push_back(LoaderGL::loadTexture(fname)); //generate new texture
 
                 currentNumImages--;
                 while (currentNumImages > 0)
@@ -760,7 +764,7 @@ void ModelLoader::parseMtl(std::string filePath, std::string fileName, std::unor
 
                     imageFilenameString = filePath+nextFilename;
                     fname = (char*)imageFilenameString.c_str();
-                    textureIds.push_back(Loader::loadTexture(fname)); //load the new texture
+                    textureIds.push_back(LoaderGL::loadTexture(fname)); //load the new texture
 
                     currentNumImages--;
                 }
@@ -1000,7 +1004,7 @@ int ModelLoader::loadObjModelWithMTL(std::list<TexturedModel*>* models, std::str
                     std::vector<float> normalsArray;
                     std::vector<float> colorsArray;
                     convertDataToArrays(&vertices, &textures, &normals, &verticesArray, &texturesArray, &normalsArray, &colorsArray);
-                    rawModelsList.push_back(Loader::loadToVAO(&verticesArray, &texturesArray, &normalsArray, &colorsArray, &indices));
+                    rawModelsList.push_back(LoaderGL::loadToVAO(&verticesArray, &texturesArray, &normalsArray, &colorsArray, &indices));
 
                     indices.clear();
                 }
@@ -1016,7 +1020,7 @@ int ModelLoader::loadObjModelWithMTL(std::list<TexturedModel*>* models, std::str
     std::vector<float> normalsArray;
     std::vector<float> colorsArray;
     convertDataToArrays(&vertices, &textures, &normals, &verticesArray, &texturesArray, &normalsArray, &colorsArray);
-    rawModelsList.push_back(Loader::loadToVAO(&verticesArray, &texturesArray, &normalsArray, &colorsArray, &indices)); //put a copy of the final model into rawModelsList
+    rawModelsList.push_back(LoaderGL::loadToVAO(&verticesArray, &texturesArray, &normalsArray, &colorsArray, &indices)); //put a copy of the final model into rawModelsList
 
     //go through rawModelsList and modelTextures to construct and add to the given TexturedModel list
     for (unsigned int i = 0; i < rawModelsList.size(); i++)
@@ -1181,7 +1185,7 @@ int ModelLoader::loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::
         std::vector<float> normalsArray;
         std::vector<float> colorsArray;
         convertDataToArrays(&vertices, &textures, &normals, &verticesArray, &texturesArray, &normalsArray, &colorsArray);
-        rawModelsList.push_back(Loader::loadToVAO(&verticesArray, &texturesArray, &normalsArray, &colorsArray, &indices));
+        rawModelsList.push_back(LoaderGL::loadToVAO(&verticesArray, &texturesArray, &normalsArray, &colorsArray, &indices));
     }
 
     fclose(file);

@@ -1,12 +1,12 @@
 #include "combineshader.hpp"
-#include "../loading/loader.hpp"
+#include "../loading/loadergl.hpp"
 
 #include <glad/glad.h>
 
 CombineShader::CombineShader(const char* vFile, const char* fFile)
 {
-    vertexShaderId = Loader::loadShader(vFile, GL_VERTEX_SHADER);
-    fragmentShaderId = Loader::loadShader(fFile, GL_FRAGMENT_SHADER);
+    vertexShaderId = LoaderGL::loadShader(vFile, GL_VERTEX_SHADER);
+    fragmentShaderId = LoaderGL::loadShader(fFile, GL_FRAGMENT_SHADER);
     programId = glCreateProgram();
     glAttachShader(programId, vertexShaderId);
     glAttachShader(programId, fragmentShaderId);
@@ -38,7 +38,7 @@ void CombineShader::cleanUp()
 
 void CombineShader::connectTextureUnits()
 {
-    loadInt(location_colourTexture, 0);
+    loadInt(location_colorTexture, 0);
     loadInt(location_highlightTexture, 1);
 }
 
@@ -54,7 +54,7 @@ void CombineShader::bindAttribute(int attribute, const char* variableName)
 
 void CombineShader::getAllUniformLocations()
 {
-    location_colourTexture = getUniformLocation("colourTexture");
+    location_colorTexture = getUniformLocation("colorTexture");
     location_highlightTexture = getUniformLocation("highlightTexture");
 }
 

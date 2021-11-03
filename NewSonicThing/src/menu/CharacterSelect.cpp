@@ -9,7 +9,7 @@
 
 #include "../fontMeshCreator/guitext.hpp"
 #include "../fontMeshCreator/fonttype.hpp"
-#include "../loading/loader.hpp"
+#include "../loading/loadergl.hpp"
 #include "../toolbox/input.hpp"
 #include "../loading/levelloader.hpp"
 #include "../fontMeshCreator/guitext.hpp"
@@ -46,11 +46,11 @@ void CharacterSelect::loadResources()
         std::fprintf(stdout, "Warning: CharacterSelect loading resources when they are already loaded.\n");
     }
 
-    textureParallelogram         = Loader::loadTexture("res/Images/MainMenu/Parallelogram.png");
-    textureParallelogramBackdrop = Loader::loadTexture("res/Images/MainMenu/ParallelogramBackdrop.png");
-    textureSonic                 = Loader::loadTextureNoInterpolation("res/Images/MainMenu/Characters/Sonic.png");
-    textureTails                 = Loader::loadTextureNoInterpolation("res/Images/MainMenu/Characters/Tails.png");
-    textureKnuckles              = Loader::loadTextureNoInterpolation("res/Images/MainMenu/Characters/Knuckles.png");
+    textureParallelogram         = LoaderGL::loadTexture("res/Images/MainMenu/Parallelogram.png");
+    textureParallelogramBackdrop = LoaderGL::loadTexture("res/Images/MainMenu/ParallelogramBackdrop.png");
+    textureSonic                 = LoaderGL::loadTextureNoInterpolation("res/Images/MainMenu/Characters/Sonic.png");
+    textureTails                 = LoaderGL::loadTextureNoInterpolation("res/Images/MainMenu/Characters/Tails.png");
+    textureKnuckles              = LoaderGL::loadTextureNoInterpolation("res/Images/MainMenu/Characters/Knuckles.png");
 
     float aspectRatio = Display::ASPECT_RATIO;
 
@@ -72,11 +72,11 @@ void CharacterSelect::unloadResources()
         std::fprintf(stdout, "Warning: CharacterSelect unloading resources when they are empty.\n");
     }
 
-    Loader::deleteTexture(textureParallelogram);
-    Loader::deleteTexture(textureParallelogramBackdrop);
-    Loader::deleteTexture(textureSonic);
-    Loader::deleteTexture(textureTails);
-    Loader::deleteTexture(textureKnuckles);
+    LoaderGL::deleteTexture(textureParallelogram);
+    LoaderGL::deleteTexture(textureParallelogramBackdrop);
+    LoaderGL::deleteTexture(textureSonic);
+    LoaderGL::deleteTexture(textureTails);
+    LoaderGL::deleteTexture(textureKnuckles);
     textureParallelogram         = GL_NONE;
     textureParallelogramBackdrop = GL_NONE;
     textureSonic                 = GL_NONE;

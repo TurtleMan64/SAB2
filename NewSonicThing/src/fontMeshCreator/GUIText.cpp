@@ -1,12 +1,12 @@
 #include "guitext.hpp"
-#include "../loading/loader.hpp"
+#include "../loading/loadergl.hpp"
 #include "../fontRendering/textmaster.hpp"
 #include "fonttype.hpp"
 
 GUIText::GUIText(std::string text, float fontSize, FontType* font, float x, float y, float maxLineLength,
     bool centered, bool rightAligned, bool visible)
 {
-    this->colour.set(1, 1, 1);
+    this->color.set(1, 1, 1);
     this->textString.assign(text);
     this->fontSize = fontSize;
     this->font = font;
@@ -29,7 +29,7 @@ GUIText::GUIText(std::string text, float fontSize, FontType* font, float x, floa
 
 GUIText::GUIText(std::string text, float fontSize, FontType* font, float x, float y, int alignment, bool visible)
 {
-    this->colour.set(1, 1, 1);
+    this->color.set(1, 1, 1);
     this->textString.assign(text);
     this->fontSize = fontSize;
     this->font = font;
@@ -45,9 +45,9 @@ void GUIText::deleteMe()
     TextMaster::removeText(this);
     for (int vboId : textMeshVbos)
     {
-        Loader::deleteVBO(vboId);
+        LoaderGL::deleteVBO(vboId);
     }
-    Loader::deleteVAO(textMeshVao);
+    LoaderGL::deleteVAO(textMeshVao);
 }
 
 FontType* GUIText::getFont()
@@ -55,14 +55,14 @@ FontType* GUIText::getFont()
     return font;
 }
 
-void GUIText::setColour(float r, float g, float b)
+void GUIText::setColor(float r, float g, float b)
 {
-    colour.set(r, g, b);
+    color.set(r, g, b);
 }
 
-Vector3f* GUIText::getColour()
+Vector3f* GUIText::getColor()
 {
-    return &colour;
+    return &color;
 }
 
 float GUIText::getMaxLineSizeConstraint()

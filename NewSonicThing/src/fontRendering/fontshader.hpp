@@ -16,7 +16,7 @@ private:
     GLuint vertexShaderId;
     GLuint fragmentShaderId;
 
-    int location_colour;
+    int location_color;
     int location_translation;
     int location_scale;
 
@@ -29,7 +29,7 @@ public:
 
     void cleanUp();
 
-    void loadColour(Vector3f* colour);
+    void loadColor(Vector3f* color);
 
     void loadTranslation(Vector2f* translation);
 

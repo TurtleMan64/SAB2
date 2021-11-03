@@ -4,7 +4,7 @@
 #include "textmeshcreator.hpp"
 #include "textmeshdata.hpp"
 
-#include "../loading/loader.hpp"
+#include "../loading/loadergl.hpp"
 
 #include "../engineTester/main.hpp"
 
@@ -21,7 +21,7 @@ int FontType::getTextureAtlas()
 
 void FontType::deleteMe()
 {
-    Loader::deleteTexture(textureAtlas);
+    LoaderGL::deleteTexture(textureAtlas);
     textureAtlas = -1;
 }
 

@@ -201,7 +201,7 @@ RaceGhost::RaceGhost(const char* filePath, int missionNumber)
                 break;
         }
 
-        myModel->baseColour.set(2, 2, 2);
+        myModel->baseColor.set(2, 2, 2);
         myModel->setRenderOrderOverride(3);
     }
     else

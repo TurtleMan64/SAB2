@@ -1,12 +1,12 @@
 #include "horizontalblurshader.hpp"
-#include "../loading/loader.hpp"
+#include "../loading/loadergl.hpp"
 
 #include <glad/glad.h>
 
 HorizontalBlurShader::HorizontalBlurShader(const char* vFile, const char* fFile)
 {
-    vertexShaderId = Loader::loadShader(vFile, GL_VERTEX_SHADER);
-    fragmentShaderId = Loader::loadShader(fFile, GL_FRAGMENT_SHADER);
+    vertexShaderId = LoaderGL::loadShader(vFile, GL_VERTEX_SHADER);
+    fragmentShaderId = LoaderGL::loadShader(fFile, GL_FRAGMENT_SHADER);
     programId = glCreateProgram();
     glAttachShader(programId, vertexShaderId);
     glAttachShader(programId, fragmentShaderId);

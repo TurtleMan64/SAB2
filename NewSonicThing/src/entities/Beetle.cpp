@@ -54,8 +54,8 @@ Beetle::Beetle(float x, float y, float z, std::list<Entity*>* entityListToAdd)
     updateBlades(&position);
     entityListToAdd->push_back(blades);
 
-    //baseColour.set(Maths::nextUniform()*5, Maths::nextUniform()*5, Maths::nextUniform()*5);
-    //blades->baseColour.set(&baseColour);
+    //baseColor.set(Maths::nextUniform()*5, Maths::nextUniform()*5, Maths::nextUniform()*5);
+    //blades->baseColor.set(&baseColor);
 }
 
 void Beetle::updateBlades(Vector3f* pos)

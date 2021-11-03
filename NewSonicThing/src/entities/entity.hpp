@@ -17,7 +17,7 @@ public:
     float rotX, rotY, rotZ, rotRoll;
     float scale;
     bool visible;
-    Vector3f baseColour;
+    Vector3f baseColor;
     float baseAlpha = 1.0f;
     Matrix4f transformationMatrix;
     //render order is normally set in each TexturedModel, but can be overrided by using this
@@ -55,8 +55,8 @@ public:
     void setPosition(Vector3f* newPosition);
     void setPosition(float newX, float newY, float newZ);
 
-    Vector3f* getBaseColour();
-    void setBaseColour(float red, float green, float blue);
+    Vector3f* getBaseColor();
+    void setBaseColor(float red, float green, float blue);
 
     float getRotX() const;
     void setRotX(float newRotX);

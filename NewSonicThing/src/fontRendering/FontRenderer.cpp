@@ -68,7 +68,7 @@ void FontRenderer::renderText(GUIText* text)
     glEnableVertexAttribArray(1);
     //shader->loadScale(text->getFontSize());
     shader->loadScale(1.0f);
-    shader->loadColour(text->getColour());
+    shader->loadColor(text->getColor());
     shader->loadTranslation(text->getPosition());
     glDrawArrays(GL_TRIANGLES, 0, text->getVertexCount());
     glDisableVertexAttribArray(0);
@@ -85,7 +85,7 @@ void FontRenderer::renderNumber(GUINumber* number)
         glBindVertexArray(number->meshIds[i]);
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
-        shader->loadColour(&number->colours[i]);
+        shader->loadColor(&number->colors[i]);
         shader->loadTranslation(&number->meshPositions[i]);
         glDrawArrays(GL_TRIANGLES, 0, number->meshVertexCounts[i]);
     }

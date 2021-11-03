@@ -66,8 +66,8 @@ Hunter::Hunter(float x, float y, float z, float dx, float dz, std::list<Entity*>
     gun->updateTransformationMatrix();
     entityListToAdd->push_back(gun);
 
-    //baseColour.set(Maths::nextUniform()*5, Maths::nextUniform()*5, Maths::nextUniform()*5);
-    //gun->baseColour.set(&baseColour);
+    //baseColor.set(Maths::nextUniform()*5, Maths::nextUniform()*5, Maths::nextUniform()*5);
+    //gun->baseColor.set(&baseColor);
 }
 
 void Hunter::updateGun()

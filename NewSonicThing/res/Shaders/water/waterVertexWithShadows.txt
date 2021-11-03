@@ -26,22 +26,20 @@ const float transitionDistance = 100.0;
 
 void main(void) 
 {
-	vec4 worldPosition = modelMatrix * vec4(position.x, 0.0, position.y, 1.0);
+    vec4 worldPosition = modelMatrix * vec4(position.x, 0.0, position.y, 1.0);
     gl_ClipDistance[1] = dot(worldPosition, clipPlaneBehind);
-	worldposition = worldPosition.xyz;
-	shadowCoords = toShadowMapSpace * worldPosition;
-	clipSpace = projectionMatrix * viewMatrix * worldPosition;
-	gl_Position = clipSpace;
-	textureCoords = vec2(position.x/2.0 + 0.5, position.y/2.0 + 0.5) * tiling;
-	toCameraVector = cameraPosition - worldPosition.xyz;
-	passCameraPosition = cameraPosition;
-	fromLightVector = worldPosition.xyz - lightPosition;
-	
-	
-	
-	vec4 positionRelativeToCam = viewMatrix * worldPosition;
-	float distance = length(positionRelativeToCam.xyz);
-	distance = distance - (shadowDistance - transitionDistance);
-	distance = distance / transitionDistance;
-	shadowCoords.w = clamp(1.0-distance, 0.0, 1.0);
+    worldposition = worldPosition.xyz;
+    shadowCoords = toShadowMapSpace * worldPosition;
+    clipSpace = projectionMatrix * viewMatrix * worldPosition;
+    gl_Position = clipSpace;
+    textureCoords = vec2(position.x/2.0 + 0.5, position.y/2.0 + 0.5) * tiling;
+    toCameraVector = cameraPosition - worldPosition.xyz;
+    passCameraPosition = cameraPosition;
+    fromLightVector = worldPosition.xyz - lightPosition;
+    
+    vec4 positionRelativeToCam = viewMatrix * worldPosition;
+    float distance = length(positionRelativeToCam.xyz);
+    distance = distance - (shadowDistance - transitionDistance);
+    distance = distance / transitionDistance;
+    shadowCoords.w = clamp(1.0-distance, 0.0, 1.0);
 }

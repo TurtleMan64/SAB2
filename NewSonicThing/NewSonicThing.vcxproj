@@ -296,7 +296,7 @@
     <ClCompile Include="src\guis\GuiTexture.cpp" />
     <ClCompile Include="src\guis\GuiTextureResources.cpp" />
     <ClCompile Include="src\loading\LevelLoader.cpp" />
-    <ClCompile Include="src\loading\Loader.cpp" />
+    <ClCompile Include="src\loading\LoaderGL.cpp" />
     <ClCompile Include="src\loading\ModelLoader.cpp" />
     <ClCompile Include="src\menu\Button.cpp" />
     <ClCompile Include="src\menu\CharacterSelect.cpp" />
@@ -496,7 +496,7 @@
     <ClInclude Include="src\guis\guitexture.hpp" />
     <ClInclude Include="src\guis\guitextureresources.hpp" />
     <ClInclude Include="src\loading\levelloader.hpp" />
-    <ClInclude Include="src\loading\loader.hpp" />
+    <ClInclude Include="src\loading\loadergl.hpp" />
     <ClInclude Include="src\loading\modelloader.hpp" />
     <ClInclude Include="src\menu\button.hpp" />
     <ClInclude Include="src\menu\characterselect.hpp" />

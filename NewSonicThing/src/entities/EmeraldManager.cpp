@@ -13,7 +13,7 @@
 #include "../guis/guitextureresources.hpp"
 #include "../guis/guitexture.hpp"
 #include "../menu/timer.hpp"
-#include "../loading/loader.hpp"
+#include "../loading/loadergl.hpp"
 #include "../renderEngine/display.hpp"
 
 #include <vector>
@@ -67,12 +67,12 @@ EmeraldManager::~EmeraldManager()
         EmeraldManager::nearPiece = nullptr;
     }
 
-    Loader::deleteTexture(EmeraldManager::radarGreyId);
-    Loader::deleteTexture(EmeraldManager::radarBlueId);
-    Loader::deleteTexture(EmeraldManager::radarGreenId);
-    Loader::deleteTexture(EmeraldManager::radarYellowId);
-    Loader::deleteTexture(EmeraldManager::radarRedId);
-    Loader::deleteTexture(EmeraldManager::nearPieceId);
+    LoaderGL::deleteTexture(EmeraldManager::radarGreyId);
+    LoaderGL::deleteTexture(EmeraldManager::radarBlueId);
+    LoaderGL::deleteTexture(EmeraldManager::radarGreenId);
+    LoaderGL::deleteTexture(EmeraldManager::radarYellowId);
+    LoaderGL::deleteTexture(EmeraldManager::radarRedId);
+    LoaderGL::deleteTexture(EmeraldManager::nearPieceId);
     
     EmeraldManager::radarGreyId   = 0;
     EmeraldManager::radarBlueId   = 0;
@@ -85,12 +85,12 @@ EmeraldManager::~EmeraldManager()
 EmeraldManager::EmeraldManager()
 {
     //Load images of radar
-    EmeraldManager::radarGreyId   = Loader::loadTexture("res/Images/TreasureHunting/RadarGrey.png");
-    EmeraldManager::radarBlueId   = Loader::loadTexture("res/Images/TreasureHunting/RadarBlue.png");
-    EmeraldManager::radarGreenId  = Loader::loadTexture("res/Images/TreasureHunting/RadarGreen.png");
-    EmeraldManager::radarYellowId = Loader::loadTexture("res/Images/TreasureHunting/RadarYellow.png");
-    EmeraldManager::radarRedId    = Loader::loadTexture("res/Images/TreasureHunting/RadarRed.png");
-    EmeraldManager::nearPieceId   = Loader::loadTexture("res/Images/TreasureHunting/NearPiece.png");
+    EmeraldManager::radarGreyId   = LoaderGL::loadTexture("res/Images/TreasureHunting/RadarGrey.png");
+    EmeraldManager::radarBlueId   = LoaderGL::loadTexture("res/Images/TreasureHunting/RadarBlue.png");
+    EmeraldManager::radarGreenId  = LoaderGL::loadTexture("res/Images/TreasureHunting/RadarGreen.png");
+    EmeraldManager::radarYellowId = LoaderGL::loadTexture("res/Images/TreasureHunting/RadarYellow.png");
+    EmeraldManager::radarRedId    = LoaderGL::loadTexture("res/Images/TreasureHunting/RadarRed.png");
+    EmeraldManager::nearPieceId   = LoaderGL::loadTexture("res/Images/TreasureHunting/NearPiece.png");
 
     float r = Display::ASPECT_RATIO; //screen ratio
     float s = 0.05f; //size of radar tiles

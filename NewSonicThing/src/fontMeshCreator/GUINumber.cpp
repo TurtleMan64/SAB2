@@ -1,6 +1,6 @@
 #include "guinumber.hpp"
 #include "../engineTester/main.hpp"
-#include "../loading/loader.hpp"
+#include "../loading/loadergl.hpp"
 #include "../fontRendering/textmaster.hpp"
 #include "textmeshdata.hpp"
 #include "fonttype.hpp"
@@ -48,7 +48,7 @@ void GUINumber::createNumber(int i, float x, float y, float w, float h)
     texCoords.push_back(x+w);  //bottom right
     texCoords.push_back(y+h);
 
-    std::vector<int> vertexObjects = Loader::loadToVAO(&positions, &texCoords);
+    std::vector<int> vertexObjects = LoaderGL::loadToVAO(&positions, &texCoords);
     GUINumber::numberMeshIds[i] = (GLuint)vertexObjects[0];
     GUINumber::numberMeshVertexCounts[i] = 6;
 }
@@ -74,7 +74,7 @@ void GUINumber::loadMeshData()
 //x and y are (0,0) being the top left of the screen, (1,1) being bottom right
 GUINumber::GUINumber(int number, float x, float y, float size, int alignment, bool visible, int totalDigits, bool darkenPaddedDigits)
 {
-    colours.push_back(Vector3f(1, 1, 1));
+    colors.push_back(Vector3f(1, 1, 1));
     this->position.set(x-0.5f, y-0.5f);
     this->visible = visible;
     this->alignment = alignment;
@@ -92,7 +92,7 @@ void GUINumber::refresh()
     meshIds.clear();
     meshVertexCounts.clear();
     meshPositions.clear();
-    colours.clear();
+    colors.clear();
 
     int numChars = Maths::numDigits(displayNumber);
 
@@ -100,11 +100,11 @@ void GUINumber::refresh()
     {
         for (int i = 0; i < numChars; i++)
         {
-            colours.push_back(Vector3f(1,1,1));
+            colors.push_back(Vector3f(1,1,1));
         }
         for (int i = numChars; i < totalDigits; i++)
         {
-            colours.push_back(Vector3f(0.5f, 0.5f, 0.5f));
+            colors.push_back(Vector3f(0.5f, 0.5f, 0.5f));
         }
     }
     else
@@ -113,14 +113,14 @@ void GUINumber::refresh()
         {
             for (int i = 0; i < totalDigits; i++)
             {
-                colours.push_back(Vector3f(1,1,1));
+                colors.push_back(Vector3f(1,1,1));
             }
         }
         else
         {
             for (int i = 0; i < numChars; i++)
             {
-                colours.push_back(Vector3f(1,1,1));
+                colors.push_back(Vector3f(1,1,1));
             }
         }
     }

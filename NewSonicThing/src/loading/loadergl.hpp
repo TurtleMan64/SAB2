@@ -1,5 +1,5 @@
-#ifndef LOADER_H
-#define LOADER_H
+#ifndef LOADERGL_H
+#define LOADERGL_H
 
 class TexturedModel;
 
@@ -12,7 +12,7 @@ class TexturedModel;
 #include "../models/models.hpp"
 
 //Loader
-class Loader
+class LoaderGL
 {
 private:
     struct TextureEntry
@@ -37,7 +37,7 @@ private:
 
     static GLuint createVAO();
 
-    static GLuint storeDataInAttributeList(int attributeNumber, int coordinateSize, std::vector<float>* data);
+    static GLuint storeDataInAttributeList(int attributeNumber, int coordinateSize, float* data, int dataSize);
 
     static void unbindVAO();
 

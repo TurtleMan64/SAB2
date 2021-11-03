@@ -389,21 +389,21 @@ void ManiaMightyModel::setOrientation(float x, float y, float z, float xRot, flo
 
 void ManiaMightyModel::setBaseColor(float r, float g, float b)
 {
-                    baseColour.set(r, g, b);
-    myBody        ->baseColour.set(r, g, b);
-    myHead        ->baseColour.set(r, g, b);
-    myLeftHumerus ->baseColour.set(r, g, b);
-    myLeftForearm ->baseColour.set(r, g, b);
-    myLeftHand    ->baseColour.set(r, g, b);
-    myLeftThigh   ->baseColour.set(r, g, b);
-    myLeftShin    ->baseColour.set(r, g, b);
-    myLeftFoot    ->baseColour.set(r, g, b);
-    myRightHumerus->baseColour.set(r, g, b);
-    myRightForearm->baseColour.set(r, g, b);
-    myRightHand   ->baseColour.set(r, g, b);
-    myRightThigh  ->baseColour.set(r, g, b);
-    myRightShin   ->baseColour.set(r, g, b);
-    myRightFoot   ->baseColour.set(r, g, b);
+                    baseColor.set(r, g, b);
+    myBody        ->baseColor.set(r, g, b);
+    myHead        ->baseColor.set(r, g, b);
+    myLeftHumerus ->baseColor.set(r, g, b);
+    myLeftForearm ->baseColor.set(r, g, b);
+    myLeftHand    ->baseColor.set(r, g, b);
+    myLeftThigh   ->baseColor.set(r, g, b);
+    myLeftShin    ->baseColor.set(r, g, b);
+    myLeftFoot    ->baseColor.set(r, g, b);
+    myRightHumerus->baseColor.set(r, g, b);
+    myRightForearm->baseColor.set(r, g, b);
+    myRightHand   ->baseColor.set(r, g, b);
+    myRightThigh  ->baseColor.set(r, g, b);
+    myRightShin   ->baseColor.set(r, g, b);
+    myRightFoot   ->baseColor.set(r, g, b);
 }
 
 void ManiaMightyModel::setBaseAlpha(float a)

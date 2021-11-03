@@ -10,13 +10,13 @@
 #include "../entities/camera.hpp"
 #include "../toolbox/maths.hpp"
 #include "../entities/light.hpp"
-#include "../loading/loader.hpp"
+#include "../loading/loadergl.hpp"
 #include "particleshader.hpp"
 
 ParticleShader::ParticleShader()
 {
-    vertexShaderId = Loader::loadShader("res/Shaders/particles/particleVShader.txt", GL_VERTEX_SHADER);
-    fragmentShaderId = Loader::loadShader("res/Shaders/particles/particleFShader.txt", GL_FRAGMENT_SHADER);
+    vertexShaderId = LoaderGL::loadShader("res/Shaders/particles/particleVShader.txt", GL_VERTEX_SHADER);
+    fragmentShaderId = LoaderGL::loadShader("res/Shaders/particles/particleFShader.txt", GL_FRAGMENT_SHADER);
     programId = glCreateProgram();
     glAttachShader(programId, vertexShaderId);
     glAttachShader(programId, fragmentShaderId);

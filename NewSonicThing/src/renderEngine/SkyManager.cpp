@@ -11,17 +11,17 @@ float SkyManager::sunRadius;
 float SkyManager::timeOfDay; //0 = morning, 360 = next morning
 float SkyManager::sunModelRadius;
 
-Vector3f SkyManager::currentFogColourDay;
-Vector3f SkyManager::currentFogColourNight;
-Vector3f SkyManager::colourFogInterpolated;
+Vector3f SkyManager::currentFogColorDay;
+Vector3f SkyManager::currentFogColorNight;
+Vector3f SkyManager::colorFogInterpolated;
 
-Vector3f SkyManager::colourSunNight;
-Vector3f SkyManager::colourSunDay;
-Vector3f SkyManager::colourSunInterpolated;
+Vector3f SkyManager::colorSunNight;
+Vector3f SkyManager::colorSunDay;
+Vector3f SkyManager::colorSunInterpolated;
 
-Vector3f SkyManager::colourMoonDay;
-Vector3f SkyManager::colourMoonNight;
-Vector3f SkyManager::colourMoonInterpolated;
+Vector3f SkyManager::colorMoonDay;
+Vector3f SkyManager::colorMoonNight;
+Vector3f SkyManager::colorMoonInterpolated;
 
 float SkyManager::fogDensity = 0.00005f;
 float SkyManager::fogGradient = 2.0f;
@@ -42,18 +42,18 @@ void SkyManager::initSkyManager(Entity* mySun, Entity *center)
     sunRadius = 100000;
     sunModelRadius = 7400;
 
-    currentFogColourDay.set(49 / 255.0f, 101 / 255.0f, 231 / 255.0f);
-    currentFogColourNight.set(0.05f, 0.05f, 0.075f);
+    currentFogColorDay.set(49 / 255.0f, 101 / 255.0f, 231 / 255.0f);
+    currentFogColorNight.set(0.05f, 0.05f, 0.075f);
 
-    colourSunNight.set(0.0f, 0.0f, 0.0f);
-    colourSunDay.set(1.0f, 1.0f, 1.0f);
+    colorSunNight.set(0.0f, 0.0f, 0.0f);
+    colorSunDay.set(1.0f, 1.0f, 1.0f);
 
-    colourMoonNight.set(0.3f, 0.3f, 0.45f);
-    colourMoonDay.set(0.0f, 0.0f, 0.0f);
+    colorMoonNight.set(0.3f, 0.3f, 0.45f);
+    colorMoonDay.set(0.0f, 0.0f, 0.0f);
 
-    colourSunInterpolated.set(1, 1, 1);
-    colourFogInterpolated.set(1, 1, 1);
-    colourMoonInterpolated.set(1, 1, 1);
+    colorSunInterpolated.set(1, 1, 1);
+    colorFogInterpolated.set(1, 1, 1);
+    colorMoonInterpolated.set(1, 1, 1);
 
     dayFactor = 1;
     nightFactor = 1;
@@ -105,15 +105,15 @@ void SkyManager::calculateValues()
 
     if (timeOfDay >= 180)
     {
-        colourFogInterpolated.set(&currentFogColourNight);
-        colourSunInterpolated.set(&colourSunNight);
-        colourMoonInterpolated.set(&colourMoonNight);
+        colorFogInterpolated.set(&currentFogColorNight);
+        colorSunInterpolated.set(&colorSunNight);
+        colorMoonInterpolated.set(&colorMoonNight);
     }
     else
     {
-        colourFogInterpolated.set(&currentFogColourDay);
-        colourSunInterpolated.set(&colourSunDay);
-        colourMoonInterpolated.set(&colourMoonDay);
+        colorFogInterpolated.set(&currentFogColorDay);
+        colorSunInterpolated.set(&colorSunDay);
+        colorMoonInterpolated.set(&colorMoonDay);
     }
 
     if (sin(sunAngle) <= 0.2f && sin(sunAngle) >= -0.2f)//  sunrise / sunset
@@ -121,41 +121,41 @@ void SkyManager::calculateValues()
         dayFactor = ((sinf(sunAngle)*2.5f) + 0.5f);
         nightFactor = 1 - dayFactor;
 
-        colourFogInterpolated.x = ((currentFogColourNight.x*nightFactor) + (currentFogColourDay.x*dayFactor));
-        colourFogInterpolated.y = ((currentFogColourNight.y*nightFactor) + (currentFogColourDay.y*dayFactor));
-        colourFogInterpolated.z = ((currentFogColourNight.z*nightFactor) + (currentFogColourDay.z*dayFactor));
+        colorFogInterpolated.x = ((currentFogColorNight.x*nightFactor) + (currentFogColorDay.x*dayFactor));
+        colorFogInterpolated.y = ((currentFogColorNight.y*nightFactor) + (currentFogColorDay.y*dayFactor));
+        colorFogInterpolated.z = ((currentFogColorNight.z*nightFactor) + (currentFogColorDay.z*dayFactor));
 
-        colourSunInterpolated.x = ((colourSunNight.x*nightFactor) + (colourSunDay.x*dayFactor));
-        colourSunInterpolated.y = ((colourSunNight.y*nightFactor) + (colourSunDay.y*dayFactor));
-        colourSunInterpolated.z = ((colourSunNight.z*nightFactor) + (colourSunDay.z*dayFactor));
+        colorSunInterpolated.x = ((colorSunNight.x*nightFactor) + (colorSunDay.x*dayFactor));
+        colorSunInterpolated.y = ((colorSunNight.y*nightFactor) + (colorSunDay.y*dayFactor));
+        colorSunInterpolated.z = ((colorSunNight.z*nightFactor) + (colorSunDay.z*dayFactor));
 
-        colourMoonInterpolated.x = ((colourMoonNight.x*nightFactor) + (colourMoonDay.x*dayFactor));
-        colourMoonInterpolated.y = ((colourMoonNight.y*nightFactor) + (colourMoonDay.y*dayFactor));
-        colourMoonInterpolated.z = ((colourMoonNight.z*nightFactor) + (colourMoonDay.z*dayFactor));
+        colorMoonInterpolated.x = ((colorMoonNight.x*nightFactor) + (colorMoonDay.x*dayFactor));
+        colorMoonInterpolated.y = ((colorMoonNight.y*nightFactor) + (colorMoonDay.y*dayFactor));
+        colorMoonInterpolated.z = ((colorMoonNight.z*nightFactor) + (colorMoonDay.z*dayFactor));
     }
 
-    Global::gameLightSun->color = colourSunInterpolated;
-    Global::gameLightMoon->color = colourMoonInterpolated;
+    Global::gameLightSun->color = colorSunInterpolated;
+    Global::gameLightMoon->color = colorMoonInterpolated;
 }
 
-Vector3f* SkyManager::getFogColour()
+Vector3f* SkyManager::getFogColor()
 {
-    return &colourFogInterpolated;
+    return &colorFogInterpolated;
 }
 
 float SkyManager::getFogRed()
 {
-    return colourFogInterpolated.x;
+    return colorFogInterpolated.x;
 }
 
 float SkyManager::getFogGreen()
 {
-    return colourFogInterpolated.y;
+    return colorFogInterpolated.y;
 }
 
 float SkyManager::getFogBlue()
 {
-    return colourFogInterpolated.z;
+    return colorFogInterpolated.z;
 }
 
 void SkyManager::increaseTimeOfDay(float timeIncrease)
@@ -185,10 +185,10 @@ float SkyManager::getOverallBrightness()
     return rawVal*0.75f + 0.25f;
 }
 
-void SkyManager::setFogColours(Vector3f* newFogDay, Vector3f* newFogNight)
+void SkyManager::setFogColors(Vector3f* newFogDay, Vector3f* newFogNight)
 {
-    currentFogColourDay.set(newFogDay);
-    currentFogColourNight.set(newFogNight);
+    currentFogColorDay.set(newFogDay);
+    currentFogColorNight.set(newFogNight);
 }
 
 void SkyManager::setCenterObject(Entity* newCenter)
@@ -198,22 +198,22 @@ void SkyManager::setCenterObject(Entity* newCenter)
 
 void SkyManager::setSunColorDay(Vector3f* newSunColor)
 {
-    colourSunDay.set(newSunColor);
+    colorSunDay.set(newSunColor);
 }
 
 void SkyManager::setSunColorNight(Vector3f* newSunColor)
 {
-    colourSunNight.set(newSunColor);
+    colorSunNight.set(newSunColor);
 }
 
 void SkyManager::setMoonColorDay(Vector3f* newSunColor)
 {
-    colourMoonDay.set(newSunColor);
+    colorMoonDay.set(newSunColor);
 }
 
 void SkyManager::setMoonColorNight(Vector3f* newSunColor)
 {
-    colourMoonNight.set(newSunColor);
+    colorMoonNight.set(newSunColor);
 }
 
 void SkyManager::setFogVars(float newDensity, float newGradient)

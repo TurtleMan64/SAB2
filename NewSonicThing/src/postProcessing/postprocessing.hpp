@@ -23,7 +23,7 @@ public:
 
     static void init();
     
-    static void doPostProcessing(int colourTexture, int brightTexture);
+    static void doPostProcessing(int colorTexture, int brightTexture);
     
     static void cleanUp();
     

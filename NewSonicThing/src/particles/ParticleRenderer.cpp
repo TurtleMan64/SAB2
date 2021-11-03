@@ -2,7 +2,7 @@
 #include <unordered_map>
 #include <glad/glad.h>
 
-#include "../loading/loader.hpp"
+#include "../loading/loadergl.hpp"
 #include "../toolbox/matrix.hpp"
 #include "../models/models.hpp"
 #include "particleshader.hpp"
@@ -20,7 +20,7 @@ ParticleRenderer::ParticleRenderer(Matrix4f* projectionMatrix)
 {
     vboDataBuffer = std::vector<float>(MAX_INSTANCES*INSTANCED_DATA_LENGTH, 0.0f);
 
-    vbo = Loader::createEmptyVBO(INSTANCED_DATA_LENGTH*MAX_INSTANCES);
+    vbo = LoaderGL::createEmptyVBO(INSTANCED_DATA_LENGTH*MAX_INSTANCES);
 
     std::vector<float> vertices;
     vertices.push_back(-0.5f);
@@ -31,14 +31,14 @@ ParticleRenderer::ParticleRenderer(Matrix4f* projectionMatrix)
     vertices.push_back(0.5f);
     vertices.push_back(0.5f);
     vertices.push_back(-0.5f);
-    quad = new RawModel(Loader::loadToVAO(&vertices, 2)); INCR_NEW("RawModel");
+    quad = new RawModel(LoaderGL::loadToVAO(&vertices, 2)); INCR_NEW("RawModel");
 
-    Loader::addInstancedAttribute(quad->getVaoId(), vbo, 1, 4, INSTANCED_DATA_LENGTH,  0);
-    Loader::addInstancedAttribute(quad->getVaoId(), vbo, 2, 4, INSTANCED_DATA_LENGTH,  4);
-    Loader::addInstancedAttribute(quad->getVaoId(), vbo, 3, 4, INSTANCED_DATA_LENGTH,  8);
-    Loader::addInstancedAttribute(quad->getVaoId(), vbo, 4, 4, INSTANCED_DATA_LENGTH, 12);
-    Loader::addInstancedAttribute(quad->getVaoId(), vbo, 5, 4, INSTANCED_DATA_LENGTH, 16);
-    Loader::addInstancedAttribute(quad->getVaoId(), vbo, 6, 1, INSTANCED_DATA_LENGTH, 20);
+    LoaderGL::addInstancedAttribute(quad->getVaoId(), vbo, 1, 4, INSTANCED_DATA_LENGTH,  0);
+    LoaderGL::addInstancedAttribute(quad->getVaoId(), vbo, 2, 4, INSTANCED_DATA_LENGTH,  4);
+    LoaderGL::addInstancedAttribute(quad->getVaoId(), vbo, 3, 4, INSTANCED_DATA_LENGTH,  8);
+    LoaderGL::addInstancedAttribute(quad->getVaoId(), vbo, 4, 4, INSTANCED_DATA_LENGTH, 12);
+    LoaderGL::addInstancedAttribute(quad->getVaoId(), vbo, 5, 4, INSTANCED_DATA_LENGTH, 16);
+    LoaderGL::addInstancedAttribute(quad->getVaoId(), vbo, 6, 1, INSTANCED_DATA_LENGTH, 20);
 
     shader = new ParticleShader; INCR_NEW("ParticleShader");
     shader->start();
@@ -78,7 +78,7 @@ void ParticleRenderer::render(
                         count++;
                     }
                 }
-                Loader::updateVBO(vbo, count*INSTANCED_DATA_LENGTH, &vboDataBuffer);
+                LoaderGL::updateVBO(vbo, count*INSTANCED_DATA_LENGTH, &vboDataBuffer);
                 glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, quad->getVertexCount(), count);
             }
             for (auto texture : (*particlesGF))
@@ -100,7 +100,7 @@ void ParticleRenderer::render(
                         count++;
                     }
                 }
-                Loader::updateVBO(vbo, count*INSTANCED_DATA_LENGTH, &vboDataBuffer);
+                LoaderGL::updateVBO(vbo, count*INSTANCED_DATA_LENGTH, &vboDataBuffer);
                 glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, quad->getVertexCount(), count);
             }
             break;
@@ -122,7 +122,7 @@ void ParticleRenderer::render(
                     updateTexCoordInfo(particle);
                     count++;
                 }
-                Loader::updateVBO(vbo, count*INSTANCED_DATA_LENGTH, &vboDataBuffer);
+                LoaderGL::updateVBO(vbo, count*INSTANCED_DATA_LENGTH, &vboDataBuffer);
                 glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, quad->getVertexCount(), count);
             }
             for (auto texture : (*particlesGF))
@@ -141,7 +141,7 @@ void ParticleRenderer::render(
                     updateTexCoordInfo(particle);
                     count++;
                 }
-                Loader::updateVBO(vbo, count*INSTANCED_DATA_LENGTH, &vboDataBuffer);
+                LoaderGL::updateVBO(vbo, count*INSTANCED_DATA_LENGTH, &vboDataBuffer);
                 glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, quad->getVertexCount(), count);
             }
             break;
@@ -166,7 +166,7 @@ void ParticleRenderer::render(
                         count++;
                     }
                 }
-                Loader::updateVBO(vbo, count*INSTANCED_DATA_LENGTH, &vboDataBuffer);
+                LoaderGL::updateVBO(vbo, count*INSTANCED_DATA_LENGTH, &vboDataBuffer);
                 glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, quad->getVertexCount(), count);
             }
             for (auto texture : (*particlesGF))
@@ -188,7 +188,7 @@ void ParticleRenderer::render(
                         count++;
                     }
                 }
-                Loader::updateVBO(vbo, count*INSTANCED_DATA_LENGTH, &vboDataBuffer);
+                LoaderGL::updateVBO(vbo, count*INSTANCED_DATA_LENGTH, &vboDataBuffer);
                 glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, quad->getVertexCount(), count);
             }
             break;

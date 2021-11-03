@@ -10,14 +10,14 @@
 #include "../entities/camera.hpp"
 #include "../toolbox/maths.hpp"
 #include "../entities/light.hpp"
-#include "../loading/loader.hpp"
+#include "../loading/loadergl.hpp"
 #include "../engineTester/main.hpp"
 #include "entityshader.hpp"
 
 EntityShader::EntityShader(const char* vertexFile, const char* fragmentFile)
 {
-    vertexShaderId = Loader::loadShader(vertexFile, GL_VERTEX_SHADER);
-    fragmentShaderId = Loader::loadShader(fragmentFile, GL_FRAGMENT_SHADER);
+    vertexShaderId = LoaderGL::loadShader(vertexFile, GL_VERTEX_SHADER);
+    fragmentShaderId = LoaderGL::loadShader(fragmentFile, GL_FRAGMENT_SHADER);
     programId = glCreateProgram();
     glAttachShader(programId, vertexShaderId);
     glAttachShader(programId, fragmentShaderId);
@@ -92,9 +92,9 @@ void EntityShader::loadGlowAmount(float glowAmount)
     loadFloat(location_glowAmount, glowAmount);
 }
 
-void EntityShader::loadBaseColour(Vector3f* baseColour)
+void EntityShader::loadBaseColor(Vector3f* baseColor)
 {
-    loadVector(location_baseColour, baseColour);
+    loadVector(location_baseColor, baseColor);
 }
 
 void EntityShader::loadBaseAlpha(float baseAlpha)
@@ -108,10 +108,10 @@ void EntityShader::loadTextureOffsets(float offX, float offY)
     loadFloat(location_texOffY, offY);
 }
 
-void EntityShader::loadSkyColour(float r, float g, float b)
+void EntityShader::loadSkyColor(float r, float g, float b)
 {
-    Vector3f newColour(r, g, b);
-    loadVector(location_skyColour, &newColour);
+    Vector3f newColor(r, g, b);
+    loadVector(location_skyColor, &newColor);
 }
 
 void EntityShader::loadFogDensity(float density)
@@ -138,8 +138,8 @@ void EntityShader::bindAttributes()
 {
     if (Global::renderBloom)
     {
-        bindFragOutput(0, "out_Colour");
-        bindFragOutput(1, "out_BrightColour");
+        bindFragOutput(0, "out_Color");
+        bindFragOutput(1, "out_BrightColor");
     }
 
     bindAttribute(0, "position");
@@ -170,11 +170,11 @@ void EntityShader::getAllUniformLocations()
     location_useFakeLighting        = getUniformLocation("useFakeLighting");
     location_hasTransparency        = getUniformLocation("hasTransparency");
     location_glowAmount             = getUniformLocation("glowAmount");
-    location_baseColour             = getUniformLocation("baseColour");
+    location_baseColor             = getUniformLocation("baseColor");
     location_baseAlpha              = getUniformLocation("baseAlpha");
     location_texOffX                = getUniformLocation("texOffX");
     location_texOffY                = getUniformLocation("texOffY");
-    location_skyColour              = getUniformLocation("skyColour");
+    location_skyColor              = getUniformLocation("skyColor");
     location_fogDensity             = getUniformLocation("fogDensity");
     location_fogGradient            = getUniformLocation("fogGradient");
     location_clipPlane              = getUniformLocation("clipPlane");

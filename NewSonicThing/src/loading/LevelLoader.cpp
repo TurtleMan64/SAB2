@@ -454,8 +454,8 @@ void LevelLoader::loadLevel(std::string levelFilename)
         int splitLength = 0;
         char** dat = split(lineBuf, ' ', &splitLength);
 
-        Vector3f newSunColour(toFloat(dat[0]), toFloat(dat[1]), toFloat(dat[2]));
-        SkyManager::setSunColorDay(&newSunColour);
+        Vector3f newSunColor(toFloat(dat[0]), toFloat(dat[1]), toFloat(dat[2]));
+        SkyManager::setSunColorDay(&newSunColor);
 
         free(dat);
     }
@@ -468,8 +468,8 @@ void LevelLoader::loadLevel(std::string levelFilename)
         int splitLength = 0;
         char** dat = split(lineBuf, ' ', &splitLength);
 
-        Vector3f newSunColour(toFloat(dat[0]), toFloat(dat[1]), toFloat(dat[2]));
-        SkyManager::setSunColorNight(&newSunColour);
+        Vector3f newSunColor(toFloat(dat[0]), toFloat(dat[1]), toFloat(dat[2]));
+        SkyManager::setSunColorNight(&newSunColor);
 
         free(dat);
     }
@@ -482,8 +482,8 @@ void LevelLoader::loadLevel(std::string levelFilename)
         int splitLength = 0;
         char** dat = split(lineBuf, ' ', &splitLength);
 
-        Vector3f newMoonColour(toFloat(dat[0]), toFloat(dat[1]), toFloat(dat[2]));
-        SkyManager::setMoonColorDay(&newMoonColour);
+        Vector3f newMoonColor(toFloat(dat[0]), toFloat(dat[1]), toFloat(dat[2]));
+        SkyManager::setMoonColorDay(&newMoonColor);
 
         free(dat);
     }
@@ -496,8 +496,8 @@ void LevelLoader::loadLevel(std::string levelFilename)
         int splitLength = 0;
         char** dat = split(lineBuf, ' ', &splitLength);
 
-        Vector3f newMoonColour(toFloat(dat[0]), toFloat(dat[1]), toFloat(dat[2]));
-        SkyManager::setMoonColorNight(&newMoonColour);
+        Vector3f newMoonColor(toFloat(dat[0]), toFloat(dat[1]), toFloat(dat[2]));
+        SkyManager::setMoonColorNight(&newMoonColor);
 
         free(dat);
     }
@@ -532,7 +532,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
         free(dat);
     }
 
-    SkyManager::setFogColours(&fogDay, &fogNight);
+    SkyManager::setFogColors(&fogDay, &fogNight);
 
     std::string fogVars;
     getlineSafe(file, fogVars);

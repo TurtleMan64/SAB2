@@ -59,14 +59,14 @@ void FontShader::bindAttribute(int attribute, const char* variableName)
 
 void FontShader::getAllUniformLocations()
 {
-    location_colour = getUniformLocation("colour");
+    location_color = getUniformLocation("color");
     location_translation = getUniformLocation("translation");
     location_scale = getUniformLocation("scale");
 }
 
-void FontShader::loadColour(Vector3f* colour)
+void FontShader::loadColor(Vector3f* color)
 {
-    loadVector(location_colour, colour);
+    loadVector(location_color, color);
 }
 
 void FontShader::loadTranslation(Vector2f* translation)

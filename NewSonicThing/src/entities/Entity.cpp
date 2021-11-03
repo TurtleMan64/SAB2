@@ -23,7 +23,7 @@ Entity::Entity()
     this->rotRoll = 0;
     this->scale = 1;
     this->visible = true;
-    this->baseColour.set(1,1,1);
+    this->baseColor.set(1,1,1);
 }
 
 Entity::Entity(Vector3f* position, float rotX, float rotY, float rotZ, float scale)
@@ -37,7 +37,7 @@ Entity::Entity(Vector3f* position, float rotX, float rotY, float rotZ, float sca
     this->rotRoll = 0;
     this->scale = scale;
     this->visible = true;
-    this->baseColour.set(1,1,1);
+    this->baseColor.set(1,1,1);
 }
 
 Entity::~Entity()
@@ -116,14 +116,14 @@ void Entity::setPosition(float newX, float newY, float newZ)
     this->position.z = newZ;
 }
 
-Vector3f* Entity::getBaseColour()
+Vector3f* Entity::getBaseColor()
 {
-    return &baseColour;
+    return &baseColor;
 }
 
-void Entity::setBaseColour(float red, float green, float blue)
+void Entity::setBaseColor(float red, float green, float blue)
 {
-    baseColour.set(red, green, blue);
+    baseColor.set(red, green, blue);
 }
 
 void Entity::setModelsRenderOrder(std::list<TexturedModel*>* models, char newOrder)

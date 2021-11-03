@@ -3,7 +3,7 @@
 #include <list>
 
 #include "models.hpp"
-#include "../loading/loader.hpp"
+#include "../loading/loadergl.hpp"
 
 RawModel::RawModel()
 {
@@ -48,10 +48,10 @@ std::list<GLuint>* RawModel::getVboIds()
 
 void RawModel::deleteMe()
 {
-    Loader::deleteVAO(vaoId);
+    LoaderGL::deleteVAO(vaoId);
     for (auto vbo : vboIds)
     {
-        Loader::deleteVBO(vbo);
+        LoaderGL::deleteVBO(vbo);
     }
     vboIds.clear();
 }

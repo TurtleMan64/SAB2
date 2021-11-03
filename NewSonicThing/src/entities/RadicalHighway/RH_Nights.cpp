@@ -30,8 +30,8 @@ void RH_Nights::step()
         timer -= 4.0f;
     }
 
-    baseColour.set(1, 1, 1);
-    baseColour.scale(1.0f + timer*5);
+    baseColor.set(1, 1, 1);
+    baseColor.scale(1.0f + timer*5);
 }
 
 std::list<TexturedModel*>* RH_Nights::getModels()

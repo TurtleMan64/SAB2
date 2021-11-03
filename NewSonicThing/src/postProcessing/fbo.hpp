@@ -16,12 +16,12 @@ private:
 
     bool multisampleAndMultiTarget;
     
-    GLuint colourTexture;
+    GLuint colorTexture;
     GLuint depthTexture;
 
     GLuint depthBuffer;
-    GLuint colourBuffer;
-    GLuint colourBuffer2;
+    GLuint colorBuffer;
+    GLuint colorBuffer2;
     
 public:
     static int NONE;
@@ -42,7 +42,7 @@ public:
     
     //void bindToRead();
     
-    GLuint getColourTexture();
+    GLuint getColorTexture();
     
     //int getDepthTexture();
     
@@ -61,7 +61,7 @@ private:
     
     void createDepthTextureAttachment();
     
-    GLuint createMultisampleColourAttatchment(int attachment);
+    GLuint createMultisampleColorAttatchment(int attachment);
     
     void createDepthBufferAttachment();
 };

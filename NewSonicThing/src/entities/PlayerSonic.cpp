@@ -5,7 +5,7 @@
 #include "../models/models.hpp"
 #include "../toolbox/vector.hpp"
 #include "../renderEngine/display.hpp"
-#include "../loading/loader.hpp"
+#include "../loading/loadergl.hpp"
 #include "../loading/modelloader.hpp"
 #include "../engineTester/main.hpp"
 #include "../entities/camera.hpp"
@@ -80,7 +80,7 @@ PlayerSonic::PlayerSonic(float x, float y, float z)
     {
         float aspectRatio = Display::ASPECT_RATIO;
 
-        homingAttackReticle = new GuiTexture(Loader::loadTexture("res/Images/HomingReticleSmooth.png"), 0.5f, 0.5f, 0.1f/aspectRatio, 0.1f, 0); INCR_NEW("GuiTexture")
+        homingAttackReticle = new GuiTexture(LoaderGL::loadTexture("res/Images/HomingReticleSmooth.png"), 0.5f, 0.5f, 0.1f/aspectRatio, 0.1f, 0); INCR_NEW("GuiTexture")
         homingAttackReticle->setVisible(true);
     }
 }
@@ -89,7 +89,7 @@ PlayerSonic::~PlayerSonic()
 {
     if (homingAttackReticle != nullptr)
     {
-        Loader::deleteTexture(homingAttackReticle->getTexture());
+        LoaderGL::deleteTexture(homingAttackReticle->getTexture());
         delete homingAttackReticle; homingAttackReticle = nullptr; INCR_DEL("GuiTexture")
     }
 }

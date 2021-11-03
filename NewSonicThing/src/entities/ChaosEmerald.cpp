@@ -44,16 +44,16 @@ ChaosEmerald::ChaosEmerald(float x, float y, float z, int id)
 
     switch (id)
     {
-        case 0: baseColour.set(36,  211, 0);   break;
-        case 1: baseColour.set(248, 0,   236); break;
-        case 2: baseColour.set(20,  196, 249); break;
-        case 3: baseColour.set(240, 0,   0);   break;
-        case 4: baseColour.set(248, 204, 0);   break;
-        case 5: baseColour.set(3,   0,   248); break;
-        case 6: baseColour.set(185, 185, 185); break;
+        case 0: baseColor.set(36,  211, 0);   break;
+        case 1: baseColor.set(248, 0,   236); break;
+        case 2: baseColor.set(20,  196, 249); break;
+        case 3: baseColor.set(240, 0,   0);   break;
+        case 4: baseColor.set(248, 204, 0);   break;
+        case 5: baseColor.set(3,   0,   248); break;
+        case 6: baseColor.set(185, 185, 185); break;
         default: break;
     }
-    baseColour.scale(0.00392156862f); //divide by 255
+    baseColor.scale(0.00392156862f); //divide by 255
 
     if (found)
     {

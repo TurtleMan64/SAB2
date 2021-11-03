@@ -38,8 +38,8 @@ public:
     //if you pad with 0's, set this to darken them
     bool darkenPaddedDigits;
 
-    //colours of the numbers. default is white
-    std::vector<Vector3f> colours;
+    //colors of the numbers. default is white
+    std::vector<Vector3f> colors;
 
     //0 = left, 1 = center, 2 = right
     int alignment;

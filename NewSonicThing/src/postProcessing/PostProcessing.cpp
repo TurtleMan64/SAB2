@@ -7,7 +7,7 @@
 #include "../gaussianBlur/horizontalblur.hpp"
 #include "../gaussianBlur/verticalblur.hpp"
 #include "../bloom/combinefilter.hpp"
-#include "../loading/loader.hpp"
+#include "../loading/loadergl.hpp"
 #include "../renderEngine/display.hpp"
 
 std::vector<float> PostProcessing::POSITIONS;
@@ -29,7 +29,7 @@ void PostProcessing::init()
     PostProcessing::POSITIONS.push_back(1);
     PostProcessing::POSITIONS.push_back(-1);
     
-    PostProcessing::quadModel = Loader::loadToVAO(&PostProcessing::POSITIONS, 2);
+    PostProcessing::quadModel = LoaderGL::loadToVAO(&PostProcessing::POSITIONS, 2);
     
     PostProcessing::hBlur  = new HorizontalBlur(Display::WINDOW_WIDTH/16, Display::WINDOW_HEIGHT/16); INCR_NEW("HorizontalBlur");
     PostProcessing::vBlur  = new VerticalBlur  (Display::WINDOW_WIDTH/16, Display::WINDOW_HEIGHT/16); INCR_NEW("VerticalBlur");
@@ -38,7 +38,7 @@ void PostProcessing::init()
     PostProcessing::combineFilter = new CombineFilter; INCR_NEW("CombineFilter");
 }
 
-void PostProcessing::doPostProcessing(int colourTexture, int brightTexture)
+void PostProcessing::doPostProcessing(int colorTexture, int brightTexture)
 {
     ANALYSIS_START("Post Processing");
     PostProcessing::start();
@@ -46,7 +46,7 @@ void PostProcessing::doPostProcessing(int colourTexture, int brightTexture)
     PostProcessing::vBlur2->render(PostProcessing::hBlur2->getOutputTexture());
     PostProcessing::hBlur->render(PostProcessing::vBlur2->getOutputTexture());
     PostProcessing::vBlur->render(PostProcessing::hBlur->getOutputTexture());
-    PostProcessing::combineFilter->render(colourTexture, PostProcessing::vBlur->getOutputTexture());
+    PostProcessing::combineFilter->render(colorTexture, PostProcessing::vBlur->getOutputTexture());
     PostProcessing::end();
     ANALYSIS_DONE("Post Processing");
 }

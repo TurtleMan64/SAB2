@@ -4,7 +4,7 @@
 #include <unordered_set>
 
 #include "modeltexture.hpp"
-#include "../loading/loader.hpp"
+#include "../loading/loadergl.hpp"
 #include "../toolbox/maths.hpp"
 
 std::unordered_set<ModelTexture*> ModelTexture::animatedTextureReferences;
@@ -99,7 +99,7 @@ void ModelTexture::deleteMe()
 {
     for (GLuint id : texIds)
     {
-        Loader::deleteTexture(id);
+        LoaderGL::deleteTexture(id);
     }
     texIds.clear();
     ModelTexture::animatedTextureReferences.erase(this);

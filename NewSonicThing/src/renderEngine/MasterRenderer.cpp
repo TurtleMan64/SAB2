@@ -7,7 +7,7 @@
 #include "entityrenderer.hpp"
 #include "../entities/entity.hpp"
 #include "../models/models.hpp"
-#include "../loading/loader.hpp"
+#include "../loading/loadergl.hpp"
 #include "display.hpp"
 #include "../toolbox/maths.hpp"
 #include "../toolbox/matrix.hpp"
@@ -129,7 +129,7 @@ void MasterRenderer::init()
     MasterRenderer::shadowMapRenderer = new ShadowMapMasterRenderer; INCR_NEW("ShadowMapMasterRenderer");
     MasterRenderer::shadowMapRenderer2 = new ShadowMapMasterRenderer2; INCR_NEW("ShadowMapMasterRenderer2");
 
-    MasterRenderer::randomMap = Loader::loadTextureNoInterpolation("res/Images/randomMap.png");
+    MasterRenderer::randomMap = LoaderGL::loadTextureNoInterpolation("res/Images/randomMap.png");
 
 
     //create frame buffer
@@ -182,7 +182,7 @@ void MasterRenderer::render(Camera* camera, float clipX, float clipY, float clip
     Vector4f plane = Maths::calcPlaneValues(&startPos, &camDir);
 
     MasterRenderer::entityShader->loadClipPlaneBehind(plane.x, plane.y, plane.z, plane.w);
-    MasterRenderer::entityShader->loadSkyColour(fogRed, fogGreen, fogBlue);
+    MasterRenderer::entityShader->loadSkyColor(fogRed, fogGreen, fogBlue);
     MasterRenderer::entityShader->loadSun(Global::gameLightSun);
     MasterRenderer::entityShader->loadFogGradient(SkyManager::getFogGradient());
     MasterRenderer::entityShader->loadFogDensity(SkyManager::getFogDensity());
@@ -218,7 +218,7 @@ void MasterRenderer::render(Camera* camera, float clipX, float clipY, float clip
     MasterRenderer::entityShader->start();
     MasterRenderer::entityShader->loadClipPlane(clipX, clipY, clipZ, clipW);
     MasterRenderer::entityShader->loadClipPlaneBehind(plane.x, plane.y, plane.z, plane.w);
-    MasterRenderer::entityShader->loadSkyColour(fogRed, fogGreen, fogBlue);
+    MasterRenderer::entityShader->loadSkyColor(fogRed, fogGreen, fogBlue);
     MasterRenderer::entityShader->loadSun(Global::gameLightSun);
     MasterRenderer::entityShader->loadFogGradient(SkyManager::getFogGradient());
     MasterRenderer::entityShader->loadFogDensity(SkyManager::getFogDensity());
@@ -250,7 +250,7 @@ void MasterRenderer::render(Camera* camera, float clipX, float clipY, float clip
     MasterRenderer::entityShader->start();
     MasterRenderer::entityShader->loadClipPlane(clipX, clipY, clipZ, clipW);
     MasterRenderer::entityShader->loadClipPlaneBehind(plane.x, plane.y, plane.z, plane.w);
-    MasterRenderer::entityShader->loadSkyColour(fogRed, fogGreen, fogBlue);
+    MasterRenderer::entityShader->loadSkyColor(fogRed, fogGreen, fogBlue);
     MasterRenderer::entityShader->loadSun(Global::gameLightSun);
     MasterRenderer::entityShader->loadFogGradient(SkyManager::getFogGradient());
     MasterRenderer::entityShader->loadFogDensity(SkyManager::getFogDensity());
@@ -272,7 +272,7 @@ void MasterRenderer::render(Camera* camera, float clipX, float clipY, float clip
         MasterRenderer::entityShader->start();
         MasterRenderer::entityShader->loadClipPlane(clipX, clipY, clipZ, clipW);
         MasterRenderer::entityShader->loadClipPlaneBehind(plane.x, plane.y, plane.z, plane.w);
-        MasterRenderer::entityShader->loadSkyColour(fogRed, fogGreen, fogBlue);
+        MasterRenderer::entityShader->loadSkyColor(fogRed, fogGreen, fogBlue);
         MasterRenderer::entityShader->loadSun(Global::gameLightSun);
         MasterRenderer::entityShader->loadFogGradient(SkyManager::getFogGradient());
         MasterRenderer::entityShader->loadFogDensity(SkyManager::getFogDensity());

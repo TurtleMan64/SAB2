@@ -11,7 +11,7 @@
 #include "../fontMeshCreator/fonttype.hpp"
 #include "../renderEngine/display.hpp"
 #include "../entities/controllableplayer.hpp"
-#include "../loading/loader.hpp"
+#include "../loading/loadergl.hpp"
 #include "timer.hpp"
 
 float HUD::bonusTimer = 0.0f;
@@ -51,16 +51,16 @@ HUD::HUD()
     GuiTextureResources::textureLifeIcon->setSizeScaled(w*2, s*2);
 
 
-    pointBonusIds[0] = Loader::loadTexture("res/Images/PointBonus/0.png");
-    pointBonusIds[1] = Loader::loadTexture("res/Images/PointBonus/1.png");
-    pointBonusIds[2] = Loader::loadTexture("res/Images/PointBonus/2.png");
-    pointBonusIds[3] = Loader::loadTexture("res/Images/PointBonus/3.png");
-    pointBonusIds[4] = Loader::loadTexture("res/Images/PointBonus/4.png");
-    pointBonusIds[5] = Loader::loadTexture("res/Images/PointBonus/5.png");
-    pointBonusIds[6] = Loader::loadTexture("res/Images/PointBonus/6.png");
-    pointBonusIds[7] = Loader::loadTexture("res/Images/PointBonus/7.png");
-    pointBonusIds[8] = Loader::loadTexture("res/Images/PointBonus/8.png");
-    pointBonusIds[9] = Loader::loadTexture("res/Images/PointBonus/9.png");
+    pointBonusIds[0] = LoaderGL::loadTexture("res/Images/PointBonus/0.png");
+    pointBonusIds[1] = LoaderGL::loadTexture("res/Images/PointBonus/1.png");
+    pointBonusIds[2] = LoaderGL::loadTexture("res/Images/PointBonus/2.png");
+    pointBonusIds[3] = LoaderGL::loadTexture("res/Images/PointBonus/3.png");
+    pointBonusIds[4] = LoaderGL::loadTexture("res/Images/PointBonus/4.png");
+    pointBonusIds[5] = LoaderGL::loadTexture("res/Images/PointBonus/5.png");
+    pointBonusIds[6] = LoaderGL::loadTexture("res/Images/PointBonus/6.png");
+    pointBonusIds[7] = LoaderGL::loadTexture("res/Images/PointBonus/7.png");
+    pointBonusIds[8] = LoaderGL::loadTexture("res/Images/PointBonus/8.png");
+    pointBonusIds[9] = LoaderGL::loadTexture("res/Images/PointBonus/9.png");
     pointBonus = new GuiTexture(pointBonusIds[7], safeAreaX + 4*w, safeAreaY + 5*s, 8*w, s, 0); INCR_NEW("GuiTexture")
 }
 
@@ -77,7 +77,7 @@ HUD::~HUD()
     delete this->pointBonus; INCR_DEL("GuiTexture");
     for (int i = 0; i < 10; i++)
     {
-        Loader::deleteTexture(pointBonusIds[i]);
+        LoaderGL::deleteTexture(pointBonusIds[i]);
     }
 }
 

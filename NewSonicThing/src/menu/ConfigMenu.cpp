@@ -9,7 +9,7 @@
 
 #include "../fontMeshCreator/guitext.hpp"
 #include "../fontMeshCreator/fonttype.hpp"
-#include "../loading/loader.hpp"
+#include "../loading/loadergl.hpp"
 #include "../toolbox/input.hpp"
 #include "../loading/levelloader.hpp"
 #include "../fontMeshCreator/guitext.hpp"
@@ -43,12 +43,12 @@ void ConfigMenu::loadResources()
         std::fprintf(stdout, "Warning: ConfigMenu loading resources when they are already loaded.\n");
     }
 
-    textureParallelogram              = Loader::loadTexture("res/Images/MainMenu/Parallelogram.png");
-    textureParallelogramBackdrop      = Loader::loadTexture("res/Images/MainMenu/ParallelogramBackdrop.png");
-    textureParallelogramHalf          = Loader::loadTexture("res/Images/MainMenu/ParallelogramHalf.png");
-    textureParallelogramHalfBackdrop  = Loader::loadTexture("res/Images/MainMenu/ParallelogramHalfBackdrop.png");
-    textureParallelogramHalf2         = Loader::loadTexture("res/Images/MainMenu/ParallelogramHalf2.png");
-    textureParallelogramHalf2Backdrop = Loader::loadTexture("res/Images/MainMenu/ParallelogramHalf2Backdrop.png");
+    textureParallelogram              = LoaderGL::loadTexture("res/Images/MainMenu/Parallelogram.png");
+    textureParallelogramBackdrop      = LoaderGL::loadTexture("res/Images/MainMenu/ParallelogramBackdrop.png");
+    textureParallelogramHalf          = LoaderGL::loadTexture("res/Images/MainMenu/ParallelogramHalf.png");
+    textureParallelogramHalfBackdrop  = LoaderGL::loadTexture("res/Images/MainMenu/ParallelogramHalfBackdrop.png");
+    textureParallelogramHalf2         = LoaderGL::loadTexture("res/Images/MainMenu/ParallelogramHalf2.png");
+    textureParallelogramHalf2Backdrop = LoaderGL::loadTexture("res/Images/MainMenu/ParallelogramHalf2Backdrop.png");
 
     float aspectRatio = Display::ASPECT_RATIO;
 
@@ -116,12 +116,12 @@ void ConfigMenu::unloadResources()
 
     GuiManager::clearGuisToRender(); //gets rid of some annoying bug. prints a gl error without this sometimes
 
-    Loader::deleteTexture(textureParallelogram);
-    Loader::deleteTexture(textureParallelogramBackdrop);
-    Loader::deleteTexture(textureParallelogramHalf);
-    Loader::deleteTexture(textureParallelogramHalfBackdrop);
-    Loader::deleteTexture(textureParallelogramHalf2);
-    Loader::deleteTexture(textureParallelogramHalf2Backdrop);
+    LoaderGL::deleteTexture(textureParallelogram);
+    LoaderGL::deleteTexture(textureParallelogramBackdrop);
+    LoaderGL::deleteTexture(textureParallelogramHalf);
+    LoaderGL::deleteTexture(textureParallelogramHalfBackdrop);
+    LoaderGL::deleteTexture(textureParallelogramHalf2);
+    LoaderGL::deleteTexture(textureParallelogramHalf2Backdrop);
     textureParallelogram              = GL_NONE;
     textureParallelogramBackdrop      = GL_NONE;
     textureParallelogramHalf          = GL_NONE;

@@ -14,11 +14,11 @@ CombineFilter::CombineFilter()
     renderer = new ImageRenderer; INCR_NEW("ImageRenderer");
 }
 
-void CombineFilter::render(GLuint colourTexture, GLuint highlightTexture)
+void CombineFilter::render(GLuint colorTexture, GLuint highlightTexture)
 {
     shader->start();
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, colourTexture);
+    glBindTexture(GL_TEXTURE_2D, colorTexture);
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, highlightTexture);
     renderer->renderQuad();

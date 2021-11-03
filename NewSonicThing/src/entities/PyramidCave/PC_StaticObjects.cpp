@@ -10,7 +10,7 @@
 #include "../../animation/body.hpp"
 
 std::list<TexturedModel*> PC_StaticObjects::models;
-std::list<TexturedModel*> PC_StaticObjects::modelsVertexColours;
+std::list<TexturedModel*> PC_StaticObjects::modelsVertexColors;
 std::list<TexturedModel*> PC_StaticObjects::modelsTransparent;
 CollisionModel* PC_StaticObjects::cmOriginal;
 
@@ -26,7 +26,7 @@ PC_StaticObjects::PC_StaticObjects()
     scale = 1;
     visible = true;
     
-    setupModelVertexColours();
+    setupModelVertexColors();
     setupModelTransparent();
 
     updateTransformationMatrix();
@@ -58,7 +58,7 @@ void PC_StaticObjects::loadStaticModels()
     #endif
 
     ModelLoader::loadModel(&PC_StaticObjects::models, "res/Models/Objects/MetalHarbor/StaticObjects/", "StaticObjects");
-    ModelLoader::loadModel(&PC_StaticObjects::modelsVertexColours, "res/Models/Objects/MetalHarbor/StaticObjects/", "StaticObjectsVertexColours");
+    ModelLoader::loadModel(&PC_StaticObjects::modelsVertexColors, "res/Models/Objects/MetalHarbor/StaticObjects/", "StaticObjectsVertexColors");
     ModelLoader::loadModel(&PC_StaticObjects::modelsTransparent, "res/Models/Objects/LevelSpecific/PyramidCave/StaticObjects/", "HallwayLight");
 
     setModelsRenderOrder(&PC_StaticObjects::modelsTransparent, 1);
@@ -76,17 +76,17 @@ void PC_StaticObjects::deleteStaticModels()
     #endif
 
     Entity::deleteModels(&PC_StaticObjects::models);
-    Entity::deleteModels(&PC_StaticObjects::modelsVertexColours);
+    Entity::deleteModels(&PC_StaticObjects::modelsVertexColors);
     Entity::deleteModels(&PC_StaticObjects::modelsTransparent);
     Entity::deleteCollisionModel(&PC_StaticObjects::cmOriginal);
 }
 
-void PC_StaticObjects::setupModelVertexColours()
+void PC_StaticObjects::setupModelVertexColors()
 {
-    modelVertexColours = new Body(&PC_StaticObjects::modelsVertexColours);
-    modelVertexColours->setVisible(true);
+    modelVertexColors = new Body(&PC_StaticObjects::modelsVertexColors);
+    modelVertexColors->setVisible(true);
     INCR_NEW("Entity");
-    Global::addEntity(modelVertexColours);
+    Global::addEntity(modelVertexColors);
 }
 
 void PC_StaticObjects::setupModelTransparent()

@@ -29,7 +29,7 @@
 #include "main.hpp"
 #include "../renderEngine/masterrenderer.hpp"
 #include "../renderEngine/display.hpp"
-#include "../loading/loader.hpp"
+#include "../loading/loadergl.hpp"
 #include "../toolbox/input.hpp"
 #include "../models/models.hpp"
 #include "../shaders/entityshader.hpp"
@@ -345,7 +345,7 @@ int main(int argc, char** argv)
     FreeConsole();
     #endif
 
-    Loader::init();
+    LoaderGL::init();
 
     Input::init();
 
@@ -359,7 +359,7 @@ int main(int argc, char** argv)
 
     AudioMaster::init();
 
-    Global::fontVipnagorgialla = new FontType(Loader::loadTexture("res/Fonts/vipnagorgialla.png"), "res/Fonts/vipnagorgialla.fnt"); INCR_NEW("FontType");
+    Global::fontVipnagorgialla = new FontType(LoaderGL::loadTexture("res/Fonts/vipnagorgialla.png"), "res/Fonts/vipnagorgialla.fnt"); INCR_NEW("FontType");
 
     TextMaster::init();
 
@@ -844,7 +844,7 @@ int main(int argc, char** argv)
             Global::gameMultisampleFbo->unbindFrameBuffer();
             Global::gameMultisampleFbo->resolveToFbo(GL_COLOR_ATTACHMENT0, Global::gameOutputFbo);
             Global::gameMultisampleFbo->resolveToFbo(GL_COLOR_ATTACHMENT1, Global::gameOutputFbo2);
-            PostProcessing::doPostProcessing(Global::gameOutputFbo->getColourTexture(), Global::gameOutputFbo2->getColourTexture());
+            PostProcessing::doPostProcessing(Global::gameOutputFbo->getColorTexture(), Global::gameOutputFbo2->getColorTexture());
         }
 
         MasterRenderer::clearAllEntities();
@@ -1036,7 +1036,7 @@ int main(int argc, char** argv)
     #endif
 
     MasterRenderer::cleanUp();
-    Loader::cleanUp();
+    LoaderGL::cleanUp();
     TextMaster::cleanUp();
     AudioMaster::cleanUp();
     GuiRenderer::cleanUp();

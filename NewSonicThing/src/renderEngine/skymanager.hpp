@@ -17,17 +17,17 @@ private:
     static float timeOfDay; //0 = morning, 360 = next morning
     static float sunModelRadius;
 
-    static Vector3f currentFogColourDay;
-    static Vector3f currentFogColourNight;
-    static Vector3f colourFogInterpolated;
+    static Vector3f currentFogColorDay;
+    static Vector3f currentFogColorNight;
+    static Vector3f colorFogInterpolated;
 
-    static Vector3f colourSunNight;
-    static Vector3f colourSunDay;
-    static Vector3f colourSunInterpolated;
+    static Vector3f colorSunNight;
+    static Vector3f colorSunDay;
+    static Vector3f colorSunInterpolated;
 
-    static Vector3f colourMoonDay;
-    static Vector3f colourMoonNight;
-    static Vector3f colourMoonInterpolated;
+    static Vector3f colorMoonDay;
+    static Vector3f colorMoonNight;
+    static Vector3f colorMoonInterpolated;
 
     static float fogDensity;// = 0.00005f;
     static float fogGradient;// = 2.0f;
@@ -47,7 +47,7 @@ public:
 
     static void calculateValues();
 
-    static Vector3f* getFogColour();
+    static Vector3f* getFogColor();
 
     static float getFogRed();
 
@@ -63,7 +63,7 @@ public:
 
     static float getOverallBrightness();
 
-    static void setFogColours(Vector3f* newFogDay, Vector3f* newFogNight);
+    static void setFogColors(Vector3f* newFogDay, Vector3f* newFogNight);
 
     static void setCenterObject(Entity* newCenter);
 

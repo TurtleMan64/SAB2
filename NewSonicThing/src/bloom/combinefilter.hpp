@@ -15,7 +15,7 @@ private:
 public:
     CombineFilter();
     
-    void render(GLuint colourTexture, GLuint highlightTexture);
+    void render(GLuint colorTexture, GLuint highlightTexture);
     
     void cleanUp();
 };

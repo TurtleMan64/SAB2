@@ -9,12 +9,12 @@
 #include "../toolbox/vector.hpp"
 #include "../toolbox/matrix.hpp"
 #include "../toolbox/maths.hpp"
-#include "../loading/loader.hpp"
+#include "../loading/loadergl.hpp"
 
 GuiShader::GuiShader(const char* vertexFile, const char* fragmentFile)
 {
-    vertexShaderId = Loader::loadShader(vertexFile, GL_VERTEX_SHADER);
-    fragmentShaderId = Loader::loadShader(fragmentFile, GL_FRAGMENT_SHADER);
+    vertexShaderId = LoaderGL::loadShader(vertexFile, GL_VERTEX_SHADER);
+    fragmentShaderId = LoaderGL::loadShader(fragmentFile, GL_FRAGMENT_SHADER);
     programId = glCreateProgram();
     glAttachShader(programId, vertexShaderId);
     glAttachShader(programId, fragmentShaderId);

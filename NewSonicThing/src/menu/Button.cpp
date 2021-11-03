@@ -79,7 +79,7 @@ void Button::generateText(std::string newText, bool darkText)
     generateText(newText);
     if (darkText)
     {
-        text->colour.set(0.5f, 0.5f, 0.5f);
+        text->color.set(0.5f, 0.5f, 0.5f);
     }
 }
 

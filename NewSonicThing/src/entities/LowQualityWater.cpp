@@ -25,7 +25,7 @@ LowQualityWater::LowQualityWater(
     position.x = x;
     position.y = y;
     position.z = z;
-    baseColour.set(r, g, b);
+    baseColor.set(r, g, b);
     baseAlpha = a;
     updateTransformationMatrix();
 }

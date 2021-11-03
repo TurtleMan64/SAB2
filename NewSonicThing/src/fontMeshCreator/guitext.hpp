@@ -23,7 +23,7 @@ public:
     int textMeshVao;
     std::vector<int> textMeshVbos;
     int vertexCount;
-    Vector3f colour;
+    Vector3f color;
     bool visible;
 
     Vector2f position;
@@ -86,7 +86,7 @@ public:
     FontType* getFont();
 
     /**
-    * Set the colour of the text.
+    * Set the color of the text.
     *
     * @param r
     *            - red value, between 0 and 1.
@@ -95,12 +95,12 @@ public:
     * @param b
     *            - blue value, between 0 and 1.
     */
-    void setColour(float r, float g, float b);
+    void setColor(float r, float g, float b);
 
     /**
-    * @return the colour of the text.
+    * @return the color of the text.
     */
-    Vector3f* getColour();
+    Vector3f* getColor();
 
     /**
     * @return The position of the top-left corner of the text in screen-space.

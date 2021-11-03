@@ -10,51 +10,51 @@
 #include <cmath>
 #include <cstring>
 
-#include "loader.hpp"
+#include "loadergl.hpp"
 #include "../engineTester/main.hpp"
 
 #include "../models/models.hpp"
 #include "../toolbox/getline.hpp"
 #include "../renderEngine/display.hpp"
 
-int Loader::anisotropicFilterIsSupported = 0;
-float Loader::anisotropyLevel = 0.0f;
+int LoaderGL::anisotropicFilterIsSupported = 0;
+float LoaderGL::anisotropyLevel = 0.0f;
 
-std::list<GLuint> Loader::vaos;
-std::list<GLuint> Loader::vbos;
+std::list<GLuint> LoaderGL::vaos;
+std::list<GLuint> LoaderGL::vbos;
 //std::list<GLuint> Loader::textures;
 
-std::unordered_map<std::string, Loader::TextureEntry> Loader::textures;
-std::unordered_map<GLuint, std::string> Loader::texIdToFilename;
+std::unordered_map<std::string, LoaderGL::TextureEntry> LoaderGL::textures;
+std::unordered_map<GLuint, std::string> LoaderGL::texIdToFilename;
 
-int Loader::vaoNumber = 0;
-int Loader::vboNumber = 0;
+int LoaderGL::vaoNumber = 0;
+int LoaderGL::vboNumber = 0;
 //int Loader::texNumber = 0;
 
-void Loader::init()
+void LoaderGL::init()
 {
-    Loader::anisotropicFilterIsSupported = glfwExtensionSupported("GL_EXT_texture_filter_anisotropic");
+    LoaderGL::anisotropicFilterIsSupported = glfwExtensionSupported("GL_EXT_texture_filter_anisotropic");
 
     const GLuint GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT = 0x84FF;
     float maxAnisotropyLevel;
     glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnisotropyLevel);
-    Loader::anisotropyLevel = fmin(4.0f, maxAnisotropyLevel);
+    LoaderGL::anisotropyLevel = fmin(4.0f, maxAnisotropyLevel);
 }
 
-RawModel Loader::loadToVAO(std::vector<float>* positions, 
-                           std::vector<float>* textureCoords, 
-                           std::vector<float>* normals, 
-                           std::vector<float>* vertexColors, 
+RawModel LoaderGL::loadToVAO(std::vector<float>* positions,
+                           std::vector<float>* textureCoords,
+                           std::vector<float>* normals,
+                           std::vector<float>* vertexColors,
                            std::vector<int>* indicies)
 {
     GLuint vaoId = createVAO();
     std::list<GLuint> vboIds;
 
     vboIds.push_back(bindIndiciesBuffer(indicies));
-    vboIds.push_back(storeDataInAttributeList(0, 3, positions));
-    vboIds.push_back(storeDataInAttributeList(1, 2, textureCoords));
-    vboIds.push_back(storeDataInAttributeList(2, 3, normals));
-    vboIds.push_back(storeDataInAttributeList(3, 4, vertexColors));
+    vboIds.push_back(storeDataInAttributeList(0, 3, &(positions->at(0)),     (int)positions->size()));
+    vboIds.push_back(storeDataInAttributeList(1, 2, &(textureCoords->at(0)), (int)textureCoords->size()));
+    vboIds.push_back(storeDataInAttributeList(2, 3, &(normals->at(0)),       (int)normals->size()));
+    vboIds.push_back(storeDataInAttributeList(3, 4, &(vertexColors->at(0)),  (int)vertexColors->size()));
 
     unbindVAO();
 
@@ -62,25 +62,25 @@ RawModel Loader::loadToVAO(std::vector<float>* positions,
 }
 
 //for text
-std::vector<int> Loader::loadToVAO(std::vector<float>* positions, std::vector<float>* textureCoords)
+std::vector<int> LoaderGL::loadToVAO(std::vector<float>* positions, std::vector<float>* textureCoords)
 {
     std::vector<int> vertexObjects;
 
     vertexObjects.push_back(createVAO());
-    vertexObjects.push_back(storeDataInAttributeList(0, 2, positions));
-    vertexObjects.push_back(storeDataInAttributeList(1, 2, textureCoords));
+    vertexObjects.push_back(storeDataInAttributeList(0, 2, &(positions->at(0)),     (int)positions->size()));
+    vertexObjects.push_back(storeDataInAttributeList(1, 2, &(textureCoords->at(0)), (int)textureCoords->size()));
     unbindVAO();
 
     return vertexObjects;
 }
 
 //for water
-RawModel Loader::loadToVAO(std::vector<float>* positions, int dimensions)
+RawModel LoaderGL::loadToVAO(std::vector<float>* positions, int dimensions)
 {
     GLuint vaoId = createVAO();
     std::list<GLuint> vboIds;
 
-    vboIds.push_back(storeDataInAttributeList(0, dimensions, positions));
+    vboIds.push_back(storeDataInAttributeList(0, dimensions, &(positions->at(0)), (int)positions->size()));
 
     unbindVAO();
 
@@ -88,7 +88,7 @@ RawModel Loader::loadToVAO(std::vector<float>* positions, int dimensions)
 }
 
 //for instanced rendering particles
-GLuint Loader::createEmptyVBO(int floatCount)
+GLuint LoaderGL::createEmptyVBO(int floatCount)
 {
     GLuint vboId;
     glGenBuffers(1, &vboId);
@@ -101,7 +101,7 @@ GLuint Loader::createEmptyVBO(int floatCount)
     return vboId;
 }
 
-void Loader::addInstancedAttribute(GLuint vao, GLuint vbo, int attribute, int dataSize, int instancedDataLength, long long offset)
+void LoaderGL::addInstancedAttribute(GLuint vao, GLuint vbo, int attribute, int dataSize, int instancedDataLength, long long offset)
 {
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBindVertexArray(vao);
@@ -111,7 +111,7 @@ void Loader::addInstancedAttribute(GLuint vao, GLuint vbo, int attribute, int da
     glBindVertexArray(0);
 }
 
-void Loader::updateVBO(GLuint vbo, int bufferNumFloats, std::vector<float>* buffer)
+void LoaderGL::updateVBO(GLuint vbo, int bufferNumFloats, std::vector<float>* buffer)
 {
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, buffer->size()*4, nullptr, GL_STREAM_DRAW); //clear current buffer (unnessesary but adds speed up apparently)
@@ -119,12 +119,12 @@ void Loader::updateVBO(GLuint vbo, int bufferNumFloats, std::vector<float>* buff
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-GLuint Loader::loadTexture(const char* fileName)
+GLuint LoaderGL::loadTexture(const char* fileName)
 {
-    if (Loader::textures.find(fileName) != Loader::textures.end())
+    if (LoaderGL::textures.find(fileName) != LoaderGL::textures.end())
     {
         //texture is already loaded, return the GLuint
-        TextureEntry* entry = &Loader::textures[fileName];
+        TextureEntry* entry = &LoaderGL::textures[fileName];
         entry->count = entry->count+1;
         return entry->id;
     }
@@ -146,7 +146,7 @@ GLuint Loader::loadTexture(const char* fileName)
     entry.count = 1;
     entry.id = textureId;
     textures[fileName] = entry;
-    Loader::texIdToFilename[textureId] = fileName;
+    LoaderGL::texIdToFilename[textureId] = fileName;
 
     glBindTexture(GL_TEXTURE_2D, textureId);
 
@@ -166,12 +166,12 @@ GLuint Loader::loadTexture(const char* fileName)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, 0.0f); //set to 0 if using anisotropic, around -0.4f if not
 
-    if (Loader::anisotropicFilterIsSupported)
+    if (LoaderGL::anisotropicFilterIsSupported)
     {
         //Not sure why these aren't defined... but I've spent too much time trying to fix it.
         const GLuint GL_TEXTURE_MAX_ANISOTROPY_EXT  = 0x84FE;
 
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, Loader::anisotropyLevel);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, LoaderGL::anisotropyLevel);
     }
 
     SOIL_free_image_data(image);
@@ -181,12 +181,12 @@ GLuint Loader::loadTexture(const char* fileName)
     return textureId;
 }
 
-GLuint Loader::loadTextureNoInterpolation(const char* fileName)
+GLuint LoaderGL::loadTextureNoInterpolation(const char* fileName)
 {
-    if (Loader::textures.find(fileName) != Loader::textures.end())
+    if (LoaderGL::textures.find(fileName) != LoaderGL::textures.end())
     {
         //texture is already loaded, return the GLuint
-        TextureEntry* entry = &Loader::textures[fileName];
+        TextureEntry* entry = &LoaderGL::textures[fileName];
         entry->count = entry->count+1;
         return entry->id;
     }
@@ -194,7 +194,7 @@ GLuint Loader::loadTextureNoInterpolation(const char* fileName)
     int width, height, channels;
     unsigned char* image = SOIL_load_image((Global::pathToEXE + fileName).c_str(), &width, &height, &channels, SOIL_LOAD_RGBA);
 
-    if (image == 0)
+    if (image == nullptr)
     {
         const char* err = SOIL_last_result();
         std::fprintf(stdout, "Error loading image '%s', because '%s'\n", (Global::pathToEXE + fileName).c_str(), err);
@@ -208,7 +208,7 @@ GLuint Loader::loadTextureNoInterpolation(const char* fileName)
     entry.count = 1;
     entry.id = textureId;
     textures[fileName] = entry;
-    Loader::texIdToFilename[textureId] = fileName;
+    LoaderGL::texIdToFilename[textureId] = fileName;
 
     glBindTexture(GL_TEXTURE_2D, textureId);
 
@@ -230,7 +230,7 @@ GLuint Loader::loadTextureNoInterpolation(const char* fileName)
     return textureId;
 }
 
-GLuint Loader::createVAO()
+GLuint LoaderGL::createVAO()
 {
     GLuint vaoId = 0;
     glGenVertexArrays(1, &vaoId);
@@ -240,7 +240,7 @@ GLuint Loader::createVAO()
     return vaoId;
 }
 
-GLuint Loader::storeDataInAttributeList(int attributeNumber, int coordinateSize, std::vector<float>* data)
+GLuint LoaderGL::storeDataInAttributeList(int attributeNumber, int coordinateSize, float* data, int dataSize)
 {
     GLuint vboId = 0;
     glGenBuffers(1, &vboId);
@@ -248,14 +248,14 @@ GLuint Loader::storeDataInAttributeList(int attributeNumber, int coordinateSize,
     vbos.push_back(vboId);
     glBindBuffer(GL_ARRAY_BUFFER, vboId);
 
-    glBufferData(GL_ARRAY_BUFFER, data->size()*sizeof(float), (GLvoid*)(&((*data)[0])), GL_STATIC_DRAW); 
+    glBufferData(GL_ARRAY_BUFFER, dataSize*sizeof(float), (GLvoid*)data, GL_STATIC_DRAW); 
     glVertexAttribPointer(attributeNumber, coordinateSize, GL_FLOAT, GL_FALSE, 0, 0); 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     return vboId;
 }
 
-GLuint Loader::bindIndiciesBuffer(std::vector<int>* indicies)
+GLuint LoaderGL::bindIndiciesBuffer(std::vector<int>* indicies)
 {
     GLuint vboId = 0;
     glGenBuffers(1, &vboId);
@@ -268,12 +268,12 @@ GLuint Loader::bindIndiciesBuffer(std::vector<int>* indicies)
     return vboId;
 }
 
-void Loader::unbindVAO()
+void LoaderGL::unbindVAO()
 {
     glBindVertexArray(0);
 }
 
-void Loader::cleanUp()
+void LoaderGL::cleanUp()
 {
     for (auto vaoId : vaos)
     {
@@ -299,21 +299,21 @@ void Loader::cleanUp()
     texIdToFilename.clear();
 }
 
-void Loader::deleteVAO(GLuint vaoId)
+void LoaderGL::deleteVAO(GLuint vaoId)
 {
     vaoNumber--;
     glDeleteVertexArrays(1, &vaoId);
     vaos.remove(vaoId);
 }
 
-void Loader::deleteVBO(GLuint vboId)
+void LoaderGL::deleteVBO(GLuint vboId)
 {
     vboNumber--;
     glDeleteBuffers(1, &vboId);
     vbos.remove(vboId);
 }
 
-void Loader::deleteTexture(GLuint texId)
+void LoaderGL::deleteTexture(GLuint texId)
 {
     std::string filename = texIdToFilename[texId];
     TextureEntry* entry = &textures[filename];
@@ -328,7 +328,7 @@ void Loader::deleteTexture(GLuint texId)
     }
 }
 
-void Loader::deleteTexturedModels(std::list<TexturedModel*>* tm)
+void LoaderGL::deleteTexturedModels(std::list<TexturedModel*>* tm)
 {
     for (auto model : (*tm))
     {
@@ -336,7 +336,7 @@ void Loader::deleteTexturedModels(std::list<TexturedModel*>* tm)
     }
 }
 
-void Loader::printInfo()
+void LoaderGL::printInfo()
 {
     std::fprintf(stdout, "VAO Count = %d = %d\n", vaoNumber, (int)vaos.size());
     std::fprintf(stdout, "VBO Count = %d = %d\n", vboNumber, (int)vbos.size());
@@ -358,7 +358,7 @@ void Loader::printInfo()
     }
 }
 
-GLuint Loader::loadShader(const char* file, int shaderType)
+GLuint LoaderGL::loadShader(const char* file, int shaderType)
 {
     std::ifstream sourceFile;
     sourceFile.open(Global::pathToEXE+file);

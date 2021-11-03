@@ -1,5 +1,5 @@
 #include "waterrenderer.hpp"
-#include "../loading/loader.hpp"
+#include "../loading/loadergl.hpp"
 #include "watershader.hpp"
 #include "waterframebuffers.hpp"
 #include "watertile.hpp"
@@ -19,8 +19,8 @@ WaterRenderer::WaterRenderer(WaterShader* shader, Matrix4f* projectionMatrix, Wa
     this->shader = shader;
     this->fbos = fbos;
     this->shadowMapRenderer = shadowMapRenderer;
-    dudvTexture = Loader::loadTexture("res/Images/waterDUDV.png");
-    normalMap   = Loader::loadTexture("res/Images/normalMap.png");
+    dudvTexture = LoaderGL::loadTexture("res/Images/waterDUDV.png");
+    normalMap   = LoaderGL::loadTexture("res/Images/normalMap.png");
     shader->start();
     shader->connectTextureUnits();
     shader->loadProjectionMatrix(projectionMatrix);
@@ -95,7 +95,7 @@ void WaterRenderer::setUpVAO()
     vertices.push_back(1);
     vertices.push_back(1);
 
-    quad = new RawModel(Loader::loadToVAO(&vertices, 2)); INCR_NEW("RawModel");
+    quad = new RawModel(LoaderGL::loadToVAO(&vertices, 2)); INCR_NEW("RawModel");
 }
 
 void WaterRenderer::render(std::vector<WaterTile*>* water, Camera* camera, Light* sun)

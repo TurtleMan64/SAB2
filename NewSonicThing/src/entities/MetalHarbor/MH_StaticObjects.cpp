@@ -10,7 +10,7 @@
 #include "../dummy.hpp"
 
 std::list<TexturedModel*> MH_StaticObjects::models;
-std::list<TexturedModel*> MH_StaticObjects::modelsVertexColours;
+std::list<TexturedModel*> MH_StaticObjects::modelsVertexColors;
 std::list<TexturedModel*> MH_StaticObjects::modelsTransparent;
 CollisionModel* MH_StaticObjects::cmOriginal;
 
@@ -26,7 +26,7 @@ MH_StaticObjects::MH_StaticObjects()
     scale = 1;
     visible = true;
     
-    setupModelVertexColours();
+    setupModelVertexColors();
     setupModelTransparent();
 
     updateTransformationMatrix();
@@ -58,7 +58,7 @@ void MH_StaticObjects::loadStaticModels()
     #endif
 
     ModelLoader::loadModel(&MH_StaticObjects::models, "res/Models/Objects/MetalHarbor/StaticObjects/", "StaticObjects");
-    ModelLoader::loadModel(&MH_StaticObjects::modelsVertexColours, "res/Models/Objects/MetalHarbor/StaticObjects/", "StaticObjectsVertexColours");
+    ModelLoader::loadModel(&MH_StaticObjects::modelsVertexColors, "res/Models/Objects/MetalHarbor/StaticObjects/", "StaticObjectsVertexColors");
     ModelLoader::loadModel(&MH_StaticObjects::modelsTransparent, "res/Models/Objects/MetalHarbor/StaticObjects/", "StaticObjectsTransparent");
 
     setModelsRenderOrder(&MH_StaticObjects::modelsTransparent, 1);
@@ -76,17 +76,17 @@ void MH_StaticObjects::deleteStaticModels()
     #endif
 
     Entity::deleteModels(&MH_StaticObjects::models);
-    Entity::deleteModels(&MH_StaticObjects::modelsVertexColours);
+    Entity::deleteModels(&MH_StaticObjects::modelsVertexColors);
     Entity::deleteModels(&MH_StaticObjects::modelsTransparent);
     Entity::deleteCollisionModel(&MH_StaticObjects::cmOriginal);
 }
 
-void MH_StaticObjects::setupModelVertexColours()
+void MH_StaticObjects::setupModelVertexColors()
 {
-    modelVertexColours = new Dummy(&MH_StaticObjects::modelsVertexColours);
-    modelVertexColours->setVisible(true);
+    modelVertexColors = new Dummy(&MH_StaticObjects::modelsVertexColors);
+    modelVertexColors->setVisible(true);
     INCR_NEW("Entity");
-    Global::addEntity(modelVertexColours);
+    Global::addEntity(modelVertexColors);
 }
 
 void MH_StaticObjects::setupModelTransparent()

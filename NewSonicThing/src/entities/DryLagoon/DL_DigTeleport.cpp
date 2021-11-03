@@ -31,7 +31,7 @@ DL_DigTeleport::DL_DigTeleport(
 
     teleportLocation.set(xTarget, yTarget, zTarget);
 
-    baseColour.set(r, g, b);
+    baseColor.set(r, g, b);
 
     updateTransformationMatrix();
 

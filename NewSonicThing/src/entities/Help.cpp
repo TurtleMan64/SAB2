@@ -49,7 +49,7 @@ Help::Help(float x, float y, float z, std::string message)
 {
     position.set(x, y, z);
     visible = true;
-    baseColour.set(Maths::nextUniform(), Maths::nextUniform(), Maths::nextUniform());
+    baseColor.set(Maths::nextUniform(), Maths::nextUniform(), Maths::nextUniform());
     updateTransformationMatrix();
 
     char msgBuf[512];

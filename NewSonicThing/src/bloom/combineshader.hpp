@@ -10,7 +10,7 @@ private:
     GLuint vertexShaderId;
     GLuint fragmentShaderId;
 
-    int location_colourTexture;
+    int location_colorTexture;
     int location_highlightTexture;
 
 public:

@@ -6,7 +6,7 @@
 
 #include "../fontMeshCreator/guitext.hpp"
 #include "../fontMeshCreator/fonttype.hpp"
-#include "../loading/loader.hpp"
+#include "../loading/loadergl.hpp"
 #include "../renderEngine/display.hpp"
 #include "../toolbox/input.hpp"
 #include "../loading/levelloader.hpp"
@@ -51,9 +51,9 @@ void MainMenu::loadResources()
         return;
     }
 
-    textureParallelogram = Loader::loadTexture("res/Images/MainMenu/Parallelogram.png");
-    textureParallelogramBackdrop = Loader::loadTexture("res/Images/MainMenu/ParallelogramBackdrop.png");
-    textureLogo = Loader::loadTexture("res/Images/MainMenu/Logo.png");
+    textureParallelogram = LoaderGL::loadTexture("res/Images/MainMenu/Parallelogram.png");
+    textureParallelogramBackdrop = LoaderGL::loadTexture("res/Images/MainMenu/ParallelogramBackdrop.png");
+    textureLogo = LoaderGL::loadTexture("res/Images/MainMenu/Logo.png");
     logo = GuiTexture(textureLogo, 0.5f, 0.4f, 0.6f * (767.0f / 784.0f) / aspectRatio, 0.6f, 0.0f);
 
     float fontScale = 0.08f;
@@ -158,9 +158,9 @@ void MainMenu::unloadResources()
 
     menuButtons.clear();
 
-    Loader::deleteTexture(textureParallelogram);
-    Loader::deleteTexture(textureParallelogramBackdrop);
-    Loader::deleteTexture(textureLogo);
+    LoaderGL::deleteTexture(textureParallelogram);
+    LoaderGL::deleteTexture(textureParallelogramBackdrop);
+    LoaderGL::deleteTexture(textureLogo);
     textureParallelogram         = GL_NONE;
     textureParallelogramBackdrop = GL_NONE;
     textureLogo                  = GL_NONE;

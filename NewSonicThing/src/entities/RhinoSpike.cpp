@@ -45,7 +45,7 @@ RhinoSpike::RhinoSpike(float x, float y, float z)
 
     updateTransformationMatrix();
 
-    //baseColour.set(Maths::nextUniform()*5, Maths::nextUniform()*5, Maths::nextUniform()*5);
+    //baseColor.set(Maths::nextUniform()*5, Maths::nextUniform()*5, Maths::nextUniform()*5);
 }
 
 void RhinoSpike::step()

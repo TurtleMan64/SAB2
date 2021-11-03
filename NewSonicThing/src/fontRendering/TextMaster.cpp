@@ -2,7 +2,7 @@
 #include <unordered_map>
 
 #include "textmaster.hpp"
-#include "../loading/loader.hpp"
+#include "../loading/loadergl.hpp"
 #include "../fontMeshCreator/textmeshdata.hpp"
 #include "../fontMeshCreator/fonttype.hpp"
 #include "../fontMeshCreator/guitext.hpp"
@@ -29,7 +29,7 @@ void TextMaster::loadText(GUIText* text)
 {
     FontType* font = text->getFont();
     TextMeshData* data = font->loadText(text);
-    std::vector<int> vertexObjects = Loader::loadToVAO(data->getVertexPositions(), data->getTextureCoords());
+    std::vector<int> vertexObjects = LoaderGL::loadToVAO(data->getVertexPositions(), data->getTextureCoords());
     int vao = vertexObjects[0];
     std::vector<int> vbos;
     vbos.push_back(vertexObjects[1]);

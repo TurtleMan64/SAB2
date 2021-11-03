@@ -6,12 +6,12 @@
 #include "../entities/camera.hpp"
 #include "../toolbox/maths.hpp"
 #include "../entities/light.hpp"
-#include "../loading/loader.hpp"
+#include "../loading/loadergl.hpp"
 
 ShadowShader2::ShadowShader2(const char* vertexFile, const char* fragmentFile)
 {
-    vertexShaderId = Loader::loadShader(vertexFile, GL_VERTEX_SHADER);
-    fragmentShaderId = Loader::loadShader(fragmentFile, GL_FRAGMENT_SHADER);
+    vertexShaderId = LoaderGL::loadShader(vertexFile, GL_VERTEX_SHADER);
+    fragmentShaderId = LoaderGL::loadShader(fragmentFile, GL_FRAGMENT_SHADER);
     programId = glCreateProgram();
     glAttachShader(programId, vertexShaderId);
     glAttachShader(programId, fragmentShaderId);

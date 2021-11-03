@@ -72,17 +72,17 @@ void PauseScreen::setVisible(bool visible)
 
 void PauseScreen::selectButton()
 {
-    textResume ->setColour(0.5f, 0.5f, 0.5f);
-    textRestart->setColour(0.5f, 0.5f, 0.5f);
-    textCamera ->setColour(0.5f, 0.5f, 0.5f);
-    textQuit   ->setColour(0.5f, 0.5f, 0.5f);
+    textResume ->setColor(0.5f, 0.5f, 0.5f);
+    textRestart->setColor(0.5f, 0.5f, 0.5f);
+    textCamera ->setColor(0.5f, 0.5f, 0.5f);
+    textQuit   ->setColor(0.5f, 0.5f, 0.5f);
 
     switch (menuSelection)
     {
-        case 0: textResume ->setColour(1.0f, 1.0f, 1.0f); break;
-        case 1: textRestart->setColour(1.0f, 1.0f, 1.0f); break;
-        case 2: textCamera ->setColour(1.0f, 1.0f, 1.0f); break;
-        case 3: textQuit   ->setColour(1.0f, 1.0f, 1.0f); break;
+        case 0: textResume ->setColor(1.0f, 1.0f, 1.0f); break;
+        case 1: textRestart->setColor(1.0f, 1.0f, 1.0f); break;
+        case 2: textCamera ->setColor(1.0f, 1.0f, 1.0f); break;
+        case 3: textQuit   ->setColor(1.0f, 1.0f, 1.0f); break;
         default: break;
     }
 }

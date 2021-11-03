@@ -7,7 +7,7 @@
 
 #include "../fontMeshCreator/guitext.hpp"
 #include "../fontMeshCreator/fonttype.hpp"
-#include "../loading/loader.hpp"
+#include "../loading/loadergl.hpp"
 #include "../renderEngine/display.hpp"
 #include "../toolbox/input.hpp"
 #include "../loading/levelloader.hpp"
@@ -45,12 +45,12 @@ void MissionMenu::loadResources()
         return;
     }
 
-    textureParallelogram              = Loader::loadTexture("res/Images/MainMenu/Parallelogram.png");
-    textureParallelogramBackdrop      = Loader::loadTexture("res/Images/MainMenu/ParallelogramBackdrop.png");
-    textureParallelogramHalf          = Loader::loadTexture("res/Images/MainMenu/ParallelogramHalf.png");
-    textureParallelogramHalfBackdrop  = Loader::loadTexture("res/Images/MainMenu/ParallelogramHalfBackdrop.png");
-    textureParallelogramHalf2         = Loader::loadTexture("res/Images/MainMenu/ParallelogramHalf2.png");
-    textureParallelogramHalf2Backdrop = Loader::loadTexture("res/Images/MainMenu/ParallelogramHalf2Backdrop.png");
+    textureParallelogram              = LoaderGL::loadTexture("res/Images/MainMenu/Parallelogram.png");
+    textureParallelogramBackdrop      = LoaderGL::loadTexture("res/Images/MainMenu/ParallelogramBackdrop.png");
+    textureParallelogramHalf          = LoaderGL::loadTexture("res/Images/MainMenu/ParallelogramHalf.png");
+    textureParallelogramHalfBackdrop  = LoaderGL::loadTexture("res/Images/MainMenu/ParallelogramHalfBackdrop.png");
+    textureParallelogramHalf2         = LoaderGL::loadTexture("res/Images/MainMenu/ParallelogramHalf2.png");
+    textureParallelogramHalf2Backdrop = LoaderGL::loadTexture("res/Images/MainMenu/ParallelogramHalf2Backdrop.png");
 
     float aspectRatio = Display::ASPECT_RATIO;
     levelButtons.clear();
@@ -73,16 +73,16 @@ void MissionMenu::loadResources()
     }
     currButtonId = 0;
 
-    textureRankA       = Loader::loadTexture("res/Images/MainMenu/RankA.png");
-    textureRankB       = Loader::loadTexture("res/Images/MainMenu/RankB.png");
-    textureRankC       = Loader::loadTexture("res/Images/MainMenu/RankC.png");
-    textureRankD       = Loader::loadTexture("res/Images/MainMenu/RankD.png");
-    textureRankE       = Loader::loadTexture("res/Images/MainMenu/RankE.png");
-    textureBlank       = Loader::loadTexture("res/Images/MainMenu/NoRank.png");
-    textureSelect      = Loader::loadTexture("res/Images/MainMenu/MissionSelect.png");
-    textureNpcFound    = Loader::loadTexture("res/Images/MainMenu/NpcFound.png");
-    textureNpcLost     = Loader::loadTexture("res/Images/MainMenu/NpcMissing.png");
-    textureEmeraldLost = Loader::loadTexture("res/Images/MainMenu/EmeraldMissing.png");
+    textureRankA       = LoaderGL::loadTexture("res/Images/MainMenu/RankA.png");
+    textureRankB       = LoaderGL::loadTexture("res/Images/MainMenu/RankB.png");
+    textureRankC       = LoaderGL::loadTexture("res/Images/MainMenu/RankC.png");
+    textureRankD       = LoaderGL::loadTexture("res/Images/MainMenu/RankD.png");
+    textureRankE       = LoaderGL::loadTexture("res/Images/MainMenu/RankE.png");
+    textureBlank       = LoaderGL::loadTexture("res/Images/MainMenu/NoRank.png");
+    textureSelect      = LoaderGL::loadTexture("res/Images/MainMenu/MissionSelect.png");
+    textureNpcFound    = LoaderGL::loadTexture("res/Images/MainMenu/NpcFound.png");
+    textureNpcLost     = LoaderGL::loadTexture("res/Images/MainMenu/NpcMissing.png");
+    textureEmeraldLost = LoaderGL::loadTexture("res/Images/MainMenu/EmeraldMissing.png");
 
     const float rankWidth = 0.07f/aspectRatio;
     missionButton = new Button("_____", Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.69f, 0.5f, 0.56f / aspectRatio, 0.07f, true); INCR_NEW("Button");
@@ -118,12 +118,12 @@ void MissionMenu::unloadResources()
 
     delete missionButton; missionButton = nullptr; INCR_DEL("Button");
 
-    Loader::deleteTexture(textureParallelogram);
-    Loader::deleteTexture(textureParallelogramBackdrop);
-    Loader::deleteTexture(textureParallelogramHalf);
-    Loader::deleteTexture(textureParallelogramHalfBackdrop);
-    Loader::deleteTexture(textureParallelogramHalf2);
-    Loader::deleteTexture(textureParallelogramHalf2Backdrop);
+    LoaderGL::deleteTexture(textureParallelogram);
+    LoaderGL::deleteTexture(textureParallelogramBackdrop);
+    LoaderGL::deleteTexture(textureParallelogramHalf);
+    LoaderGL::deleteTexture(textureParallelogramHalfBackdrop);
+    LoaderGL::deleteTexture(textureParallelogramHalf2);
+    LoaderGL::deleteTexture(textureParallelogramHalf2Backdrop);
     textureParallelogram              = GL_NONE;
     textureParallelogramBackdrop      = GL_NONE;
     textureParallelogramHalf          = GL_NONE;
@@ -131,13 +131,13 @@ void MissionMenu::unloadResources()
     textureParallelogramHalf2         = GL_NONE;
     textureParallelogramHalf2Backdrop = GL_NONE;
 
-    Loader::deleteTexture(textureRankA);
-    Loader::deleteTexture(textureRankB);
-    Loader::deleteTexture(textureRankC);
-    Loader::deleteTexture(textureRankD);
-    Loader::deleteTexture(textureRankE);
-    Loader::deleteTexture(textureBlank);
-    Loader::deleteTexture(textureSelect);
+    LoaderGL::deleteTexture(textureRankA);
+    LoaderGL::deleteTexture(textureRankB);
+    LoaderGL::deleteTexture(textureRankC);
+    LoaderGL::deleteTexture(textureRankD);
+    LoaderGL::deleteTexture(textureRankE);
+    LoaderGL::deleteTexture(textureBlank);
+    LoaderGL::deleteTexture(textureSelect);
     textureRankA  = GL_NONE;
     textureRankB  = GL_NONE;
     textureRankC  = GL_NONE;
@@ -146,9 +146,9 @@ void MissionMenu::unloadResources()
     textureBlank  = GL_NONE;
     textureSelect = GL_NONE;
 
-    Loader::deleteTexture(textureNpcFound);
-    Loader::deleteTexture(textureNpcLost);
-    Loader::deleteTexture(textureEmeraldLost);
+    LoaderGL::deleteTexture(textureNpcFound);
+    LoaderGL::deleteTexture(textureNpcLost);
+    LoaderGL::deleteTexture(textureEmeraldLost);
     textureNpcFound = GL_NONE;
     textureNpcLost = GL_NONE;
     textureEmeraldLost = GL_NONE;

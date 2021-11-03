@@ -29,11 +29,11 @@ Fbo::Fbo(int width, int height)
 void Fbo::cleanUp()
 {
     glDeleteFramebuffers(1, &frameBuffer);
-    glDeleteTextures(1, &colourTexture);
+    glDeleteTextures(1, &colorTexture);
     glDeleteTextures(1, &depthTexture);
     glDeleteRenderbuffers(1, &depthBuffer);
-    glDeleteRenderbuffers(1, &colourBuffer);
-    glDeleteRenderbuffers(1, &colourBuffer2);
+    glDeleteRenderbuffers(1, &colorBuffer);
+    glDeleteRenderbuffers(1, &colorBuffer2);
 }
 
 void Fbo::resize(int newWidth, int newHeight)
@@ -58,9 +58,9 @@ void Fbo::unbindFrameBuffer()
     glViewport(0, 0, Display::WINDOW_WIDTH, Display::WINDOW_HEIGHT);
 }
 
-GLuint Fbo::getColourTexture()
+GLuint Fbo::getColorTexture()
 {
-    return colourTexture;
+    return colorTexture;
 }
 
 void Fbo::resolveToFbo(int readBuffer, Fbo* outputFbo)
@@ -78,8 +78,8 @@ void Fbo::initialiseFrameBuffer(int type)
     createFrameBuffer();
     if (multisampleAndMultiTarget)
     {
-        colourBuffer = createMultisampleColourAttatchment(GL_COLOR_ATTACHMENT0);
-        colourBuffer2 = createMultisampleColourAttatchment(GL_COLOR_ATTACHMENT1);
+        colorBuffer = createMultisampleColorAttatchment(GL_COLOR_ATTACHMENT0);
+        colorBuffer2 = createMultisampleColorAttatchment(GL_COLOR_ATTACHMENT1);
     }
     else
     {
@@ -121,14 +121,14 @@ void Fbo::determineDrawBuffers()
 
 void Fbo::createTextureAttachment()
 {
-    glGenTextures(1, &colourTexture);
-    glBindTexture(GL_TEXTURE_2D, colourTexture);
+    glGenTextures(1, &colorTexture);
+    glBindTexture(GL_TEXTURE_2D, colorTexture);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colourTexture, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorTexture, 0);
 }
 
 void Fbo::createDepthTextureAttachment()
@@ -141,13 +141,13 @@ void Fbo::createDepthTextureAttachment()
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthTexture, 0);
 }
 
-GLuint Fbo::createMultisampleColourAttatchment(int attachment)
+GLuint Fbo::createMultisampleColorAttatchment(int attachment)
 {
-    glGenRenderbuffers(1, &colourBuffer);
-    glBindRenderbuffer(GL_RENDERBUFFER, colourBuffer);
+    glGenRenderbuffers(1, &colorBuffer);
+    glBindRenderbuffer(GL_RENDERBUFFER, colorBuffer);
     glRenderbufferStorageMultisample(GL_RENDERBUFFER, Display::AA_SAMPLES, GL_RGBA8, width, height);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, attachment, GL_RENDERBUFFER, colourBuffer);
-    return colourBuffer;
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, attachment, GL_RENDERBUFFER, colorBuffer);
+    return colorBuffer;
 }
 
 void Fbo::createDepthBufferAttachment()

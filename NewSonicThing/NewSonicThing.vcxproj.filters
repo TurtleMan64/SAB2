@@ -723,10 +723,10 @@
     <ClCompile Include="src\loading\LevelLoader.cpp">
       <Filter>Source Files\loading</Filter>
     </ClCompile>
-    <ClCompile Include="src\loading\Loader.cpp">
+    <ClCompile Include="src\loading\ModelLoader.cpp">
       <Filter>Source Files\loading</Filter>
     </ClCompile>
-    <ClCompile Include="src\loading\ModelLoader.cpp">
+    <ClCompile Include="src\loading\LoaderGL.cpp">
       <Filter>Source Files\loading</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1316,10 +1316,10 @@
     <ClInclude Include="src\loading\levelloader.hpp">
       <Filter>Source Files\loading</Filter>
     </ClInclude>
-    <ClInclude Include="src\loading\loader.hpp">
+    <ClInclude Include="src\loading\modelloader.hpp">
       <Filter>Source Files\loading</Filter>
     </ClInclude>
-    <ClInclude Include="src\loading\modelloader.hpp">
+    <ClInclude Include="src\loading\loadergl.hpp">
       <Filter>Source Files\loading</Filter>
     </ClInclude>
   </ItemGroup>

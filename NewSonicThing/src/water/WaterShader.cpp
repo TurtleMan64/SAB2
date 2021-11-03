@@ -11,20 +11,20 @@
 #include "../entities/camera.hpp"
 #include "../toolbox/maths.hpp"
 #include "../entities/light.hpp"
-#include "../loading/loader.hpp"
+#include "../loading/loadergl.hpp"
 #include "watershader.hpp"
 
 WaterShader::WaterShader()
 {
     if (Global::renderShadowsFar)
     {
-        vertexShaderId = Loader::loadShader("res/Shaders/water/waterVertexWithShadows.txt", GL_VERTEX_SHADER);
-        fragmentShaderId = Loader::loadShader("res/Shaders/water/waterFragmentWithShadows.txt", GL_FRAGMENT_SHADER);
+        vertexShaderId = LoaderGL::loadShader("res/Shaders/water/waterVertexWithShadows.txt", GL_VERTEX_SHADER);
+        fragmentShaderId = LoaderGL::loadShader("res/Shaders/water/waterFragmentWithShadows.txt", GL_FRAGMENT_SHADER);
     }
     else
     {
-        vertexShaderId = Loader::loadShader("res/Shaders/water/waterVertex.txt", GL_VERTEX_SHADER);
-        fragmentShaderId = Loader::loadShader("res/Shaders/water/waterFragment.txt", GL_FRAGMENT_SHADER);
+        vertexShaderId = LoaderGL::loadShader("res/Shaders/water/waterVertex.txt", GL_VERTEX_SHADER);
+        fragmentShaderId = LoaderGL::loadShader("res/Shaders/water/waterFragment.txt", GL_FRAGMENT_SHADER);
     }
     programId = glCreateProgram();
     glAttachShader(programId, vertexShaderId);
@@ -121,8 +121,8 @@ void WaterShader::loadToShadowSpaceMatrix(Matrix4f* matrix)
 
 void WaterShader::bindAttributes()
 {
-    bindFragOutput(0, "out_Colour");
-    bindFragOutput(1, "out_BrightColour");
+    bindFragOutput(0, "out_Color");
+    bindFragOutput(1, "out_BrightColor");
     bindAttribute(0, "position");
 }
 

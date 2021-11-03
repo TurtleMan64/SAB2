@@ -30,7 +30,7 @@ void ImageRenderer::renderQuad()
 
 int ImageRenderer::getOutputTexture()
 {
-    return fbo->getColourTexture();
+    return fbo->getColorTexture();
 }
 
 void ImageRenderer::resize(int newWidth, int newHeight)

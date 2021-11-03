@@ -4,7 +4,7 @@
 
 #include <glad/glad.h>
 #include "../engineTester/main.hpp"
-#include "../loading/loader.hpp"
+#include "../loading/loadergl.hpp"
 #include "../models/models.hpp"
 #include "../toolbox/maths.hpp"
 #include "../toolbox/matrix.hpp"
@@ -25,7 +25,7 @@ void GuiRenderer::init()
     positions.push_back(1);
     positions.push_back(1);
     positions.push_back(-1);
-    GuiRenderer::quadModel = Loader::loadToVAO(&positions, 2);
+    GuiRenderer::quadModel = LoaderGL::loadToVAO(&positions, 2);
     GuiRenderer::shader = new GuiShader("res/Shaders/guis/guiVertexShader.txt", "res/Shaders/guis/guiFragmentShader.txt"); INCR_NEW("GuiShader");
 }
 
