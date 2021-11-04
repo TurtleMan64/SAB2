@@ -247,10 +247,10 @@ void LevelLoader::loadLevel(std::string levelFilename)
         {
             if      (currLvl->displayName == "Tutorial")        Global::levelId = LVL_TUTORIAL;
             else if (currLvl->displayName == "City Escape")     Global::levelId = LVL_CITY_ESCAPE;
-            else if (currLvl->displayName == "Seaside Hill")    Global::levelId = LVL_SEASIdE_HILL;
+            else if (currLvl->displayName == "Seaside Hill")    Global::levelId = LVL_SEASIDE_HILL;
             else if (currLvl->displayName == "Green Forest")    Global::levelId = LVL_GREEN_FOREST;
             else if (currLvl->displayName == "Metal Harbor")    Global::levelId = LVL_METAL_HARBOR;
-            else if (currLvl->displayName == "Pyramid Cave")    Global::levelId = LVL_PYRAMId_CAVE;
+            else if (currLvl->displayName == "Pyramid Cave")    Global::levelId = LVL_PYRAMID_CAVE;
             else if (currLvl->displayName == "Speed Highway")   Global::levelId = LVL_SPEED_HIGHWAY;
             else if (currLvl->displayName == "Radical Highway") Global::levelId = LVL_RADICAL_HIGHWAY;
             else if (currLvl->displayName == "Frog Forest")     Global::levelId = LVL_FROG_FOREST;

@@ -342,7 +342,7 @@ Menu* ConfigMenu::step()
 
     //extern unsigned int SCR_WIdTH;
     //extern unsigned int SCR_HEIGHT;
-    extern float VFOV_BASE;
+    //extern float VFOV_BASE;
 
     if (shouldGoLeft)
     {

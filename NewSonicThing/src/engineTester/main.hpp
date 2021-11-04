@@ -40,13 +40,13 @@ class TC_Kart;
 #define LVL_TUTORIAL         0
 #define LVL_GREEN_FOREST     1
 #define LVL_METAL_HARBOR     2
-#define LVL_PYRAMId_CAVE     3
+#define LVL_PYRAMID_CAVE     3
 #define LVL_SKY_RAIL         4
 #define LVL_RADICAL_HIGHWAY  5
 #define LVL_GREEN_HILL_ZONE  6
 #define LVL_CITY_ESCAPE      7
 #define LVL_WINDY_VALLEY     8
-#define LVL_SEASIdE_HILL     9
+#define LVL_SEASIDE_HILL     9
 #define LVL_FROG_FOREST     10
 #define LVL_TEST            11
 #define LVL_SPEED_HIGHWAY   12
@@ -59,7 +59,7 @@ class TC_Kart;
 #define LVL_DRAGON_ROAD     19
 #define LVL_EMERALD_COAST   20
 
-#define DEV_MODE
+//#define DEV_MODE
 //#define PERFORMANCE_ANALYSIS
 
 #ifdef DEV_MODE
@@ -258,14 +258,18 @@ public:
 
     static void clearTitleCard();
 
+    #ifdef DEV_MODE
     static void debugNew(const char* name);
 
     static void debugDel(const char* name);
+    #endif
 
+    #ifdef PERFORMANCE_ANALYSIS
     static void performanceAnalysisStart(const char* name);
 
     static void performanceAnalysisDone(const char* name);
 
     static void performanceAnalysisReport();
+    #endif
 };
 #endif

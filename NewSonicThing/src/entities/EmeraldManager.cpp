@@ -19,6 +19,7 @@
 #include <vector>
 #include <list>
 #include <unordered_map>
+#include <algorithm>
 
 EmeraldPiece* EmeraldManager::piece1 = nullptr;
 EmeraldPiece* EmeraldManager::piece2 = nullptr;

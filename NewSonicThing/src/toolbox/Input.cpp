@@ -4,7 +4,7 @@
 #include <GLFW/glfw3.h>
 #include <SDL2/SDL.h>
 #else
-#include "/usr/include/GLFW/glfw3.hpp"
+#include "/usr/include/GLFW/glfw3.h"
 #endif
 
 #include <iostream>

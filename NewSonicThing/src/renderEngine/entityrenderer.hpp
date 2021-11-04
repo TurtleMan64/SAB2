@@ -7,6 +7,7 @@ class Entity;
 class Matrix4f;
 
 #include <unordered_map>
+#include <list>
 
 class EntityRenderer
 {

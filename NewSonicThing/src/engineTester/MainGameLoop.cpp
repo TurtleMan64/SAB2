@@ -298,12 +298,12 @@ int main(int argc, char** argv)
     Global::gameLevelIdsSonic.push_back(LVL_GREEN_FOREST);
     Global::gameLevelIdsSonic.push_back(LVL_METAL_HARBOR);
     Global::gameLevelIdsSonic.push_back(LVL_SKY_RAIL);
-    Global::gameLevelIdsSonic.push_back(LVL_PYRAMId_CAVE);
+    Global::gameLevelIdsSonic.push_back(LVL_PYRAMID_CAVE);
     Global::gameLevelIdsSonic.push_back(LVL_RADICAL_HIGHWAY);
     Global::gameLevelIdsSonic.push_back(LVL_GREEN_HILL_ZONE);
     Global::gameLevelIdsSonic.push_back(LVL_CITY_ESCAPE);
     Global::gameLevelIdsSonic.push_back(LVL_WINDY_VALLEY);
-    Global::gameLevelIdsSonic.push_back(LVL_SEASIdE_HILL);
+    Global::gameLevelIdsSonic.push_back(LVL_SEASIDE_HILL);
     Global::gameLevelIdsSonic.push_back(LVL_FROG_FOREST);
     Global::gameLevelIdsSonic.push_back(LVL_TEST);
     Global::gameLevelIdsSonic.push_back(LVL_SPEED_HIGHWAY);
@@ -314,12 +314,12 @@ int main(int argc, char** argv)
     Global::gameLevelIdsTails.push_back(LVL_TUTORIAL);
     Global::gameLevelIdsTails.push_back(LVL_GREEN_FOREST);
     Global::gameLevelIdsTails.push_back(LVL_METAL_HARBOR);
-    Global::gameLevelIdsTails.push_back(LVL_PYRAMId_CAVE);
+    Global::gameLevelIdsTails.push_back(LVL_PYRAMID_CAVE);
     Global::gameLevelIdsTails.push_back(LVL_RADICAL_HIGHWAY);
     Global::gameLevelIdsTails.push_back(LVL_GREEN_HILL_ZONE);
     Global::gameLevelIdsTails.push_back(LVL_CITY_ESCAPE);
     Global::gameLevelIdsTails.push_back(LVL_WINDY_VALLEY);
-    Global::gameLevelIdsTails.push_back(LVL_SEASIdE_HILL);
+    Global::gameLevelIdsTails.push_back(LVL_SEASIDE_HILL);
     Global::gameLevelIdsTails.push_back(LVL_FROG_FOREST);
     Global::gameLevelIdsTails.push_back(LVL_TEST);
     Global::gameLevelIdsTails.push_back(LVL_SPEED_HIGHWAY);
@@ -1868,13 +1868,14 @@ void Global::clearTitleCard()
     }
 }
 
+#ifdef DEV_MODE
+
 std::unordered_map<std::string, int> heapObjects;
 
 void Global::debugNew(const char* name)
 {
     Global::countNew++;
 
-    #ifdef DEV_MODE
     if (heapObjects.find(name) == heapObjects.end())
     {
         heapObjects[name] = 1;
@@ -1884,16 +1885,12 @@ void Global::debugNew(const char* name)
         int num = heapObjects[name];
         heapObjects[name] = num+1;
     }
-    #else
-    name;
-    #endif
 }
 
 void Global::debugDel(const char* name)
 {
     Global::countDelete++;
 
-    #ifdef DEV_MODE
     if (heapObjects.find(name) == heapObjects.end())
     {
         std::fprintf(stdout, "Warning: trying to delete '%s' when there are none.\n", name);
@@ -1904,10 +1901,10 @@ void Global::debugDel(const char* name)
         int num = heapObjects[name];
         heapObjects[name] = num-1;
     }
-    #else
-    name;
-    #endif
 }
+#endif
+
+#ifdef PERFORMANCE_ANALYSIS
 
 std::unordered_map<std::string, float> operationTotalTimes;
 std::unordered_map<std::string, float> operationStartTimes;
@@ -1969,3 +1966,5 @@ void Global::performanceAnalysisReport()
     operationStartTimes.clear();
     operationTotalTimes.clear();
 }
+
+#endif
