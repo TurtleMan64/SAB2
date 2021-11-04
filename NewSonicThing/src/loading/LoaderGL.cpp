@@ -42,10 +42,10 @@ void LoaderGL::init()
 }
 
 RawModel LoaderGL::loadToVAO(std::vector<float>* positions,
-                           std::vector<float>* textureCoords,
-                           std::vector<float>* normals,
-                           std::vector<float>* vertexColors,
-                           std::vector<int>* indicies)
+                             std::vector<float>* textureCoords,
+                             std::vector<float>* normals,
+                             std::vector<float>* vertexColors,
+                             std::vector<int>* indicies)
 {
     GLuint vaoId = createVAO();
     std::list<GLuint> vboIds;

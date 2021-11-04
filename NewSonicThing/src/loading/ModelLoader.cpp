@@ -304,6 +304,8 @@ int ModelLoader::loadVclModel(std::list<TexturedModel*>* models, std::string fil
     std::vector<Vertex*>  vertices;
     std::vector<Vector2f> textures;
     std::vector<Vector3f> normals;
+    //float* textures = nullptr;
+    //float* normals = nullptr;
     std::vector<RawModel> rawModelsList;
     std::vector<ModelTexture> modelTextures;
 
@@ -352,12 +354,17 @@ int ModelLoader::loadVclModel(std::list<TexturedModel*>* models, std::string fil
 
     int numTexCoords;
     ModelLoader::read(&numTexCoords, 4, file);
+
+    //textures = new float[numTexCoords*2];
+
+    //ModelLoader::read(textures, numTexCoords*8, file);
+
     textures.reserve(numTexCoords + 1);
     for (int i = 0; i < numTexCoords; i++)
     {
         float t[2];
         ModelLoader::read(t, 8, file);
-
+    
         Vector2f texCoord(t[0], t[1]);
         textures.push_back(texCoord);
     }
@@ -367,21 +374,41 @@ int ModelLoader::loadVclModel(std::list<TexturedModel*>* models, std::string fil
     //int bytesPerIndVT;
     //fread(&bytesPerIndVT, sizeof(int), 1, file);
 
+    int numNormals = 1;
+
     if (vclVersion == 0)
     {
         Vector3f normal(0, 1, 0); //hard coded normal of up
         normals.push_back(normal);
+
+        //normals = new float[3];
+        //normals[0] = 0.0f;
+        //normals[1] = 1.0f;
+        //normals[2] = 0.0f;
     }
     else
     {
-        int numNormals;
         ModelLoader::read(&numNormals, 4, file);
+        //normals = new float[numNormals*3];
+
+        //for (int i = 0; i < numNormals; i++)
+        //{
+        //    char vn[3];
+        //    ModelLoader::read(vn, 3, file);
+        //
+        //    Vector3f norm(vn[0], vn[1], vn[2]);
+        //    norm.normalize();
+        //    normals[i*3 + 0] = norm.x;
+        //    normals[i*3 + 1] = norm.y;
+        //    normals[i*3 + 2] = norm.z;
+        //}
+
         normals.reserve(numNormals + 1);
         for (int i = 0; i < numNormals; i++)
         {
             char vn[3];
             ModelLoader::read(vn, 3, file);
-
+        
             Vector3f norm(vn[0], vn[1], vn[2]);
             norm.normalize();
             normals.push_back(norm);
@@ -445,10 +472,6 @@ int ModelLoader::loadVclModel(std::list<TexturedModel*>* models, std::string fil
 
         //save the model we've been building so far...
         removeUnusedVertices(&vertices);
-
-        //std::vector<Vertex*>  vertices;
-        //std::vector<Vector2f> textures;
-        //std::vector<Vector3f> normals;
 
         std::vector<float> verticesArray;
         std::vector<float> texturesArray;
