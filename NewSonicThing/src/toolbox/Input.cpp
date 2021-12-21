@@ -1,6 +1,6 @@
 #include <glad/glad.h>
 
-#ifdef _WIN32
+#if defined(_WIN32) || defined(__APPLE__)
 #include <GLFW/glfw3.h>
 #include <SDL2/SDL.h>
 #else
