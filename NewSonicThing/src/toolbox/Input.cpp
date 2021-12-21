@@ -470,9 +470,7 @@ void Input::init()
     Input::inputs.uniqueVar = 1149650285; //Value that is very easy to find with a memory scan
 
     SDL_SetHintWithPriority(SDL_HINT_GAMECONTROLLER_USE_BUTTON_LABELS, "0", SDL_HINT_OVERRIDE);
-
     SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER);
-    SDL_InitSubSystem(SDL_INIT_JOYSTICK);
 
     SDL_version linked;
     SDL_GetVersion(&linked);
@@ -795,6 +793,5 @@ bool Input::changeController(int direction)
 void Input::cleanUp()
 {
     SDL_QuitSubSystem(SDL_INIT_GAMECONTROLLER);
-    SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
     SDL_Quit();
 }

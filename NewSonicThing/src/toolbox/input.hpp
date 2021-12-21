@@ -54,7 +54,7 @@ struct InputStruct
 
 class Input
 {
-private:
+public:
     static SDL_GameController* controller;
 
     static double mousePreviousX;

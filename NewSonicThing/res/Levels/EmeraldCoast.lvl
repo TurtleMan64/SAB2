@@ -46,6 +46,9 @@ false
 # Lost Chao
 81 4136.474609 838.261292 1291.671875 16
 
+# Mighty Race
+70 res/Models/Levels/EmeraldCoast/MightyRace.ghost 3
+
 # Low Quality Water
 37  -8000 -3.5  -8000   0.494 0.835 0.871   0.3
 37  -8000 -3.5      0   0.494 0.835 0.871   0.3

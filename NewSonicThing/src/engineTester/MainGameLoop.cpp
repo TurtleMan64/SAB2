@@ -242,7 +242,6 @@ void listen();
 MenuManager Global::menuManager;
 Timer* Global::mainHudTimer = nullptr;
 
-#undef main
 int main(int argc, char** argv)
 {
     if (argc > 0)

@@ -59,7 +59,7 @@ class TC_Kart;
 #define LVL_DRAGON_ROAD     19
 #define LVL_EMERALD_COAST   20
 
-//#define DEV_MODE
+#define DEV_MODE
 //#define PERFORMANCE_ANALYSIS
 
 #ifdef DEV_MODE
