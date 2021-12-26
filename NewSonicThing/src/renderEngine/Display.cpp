@@ -67,10 +67,14 @@ int Display::createDisplay()
         glfwWindowHint(GLFW_REFRESH_RATE, Display::F_HZ);
     }
 
-    int screenWidth  = Display::WINDOW_WIDTH;
-    int screenHeight = Display::WINDOW_HEIGHT;
+    int screenWidth;
+    int screenHeight;
 
-
+#ifdef __APPLE__
+    glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GL_FALSE);
+#endif
+    screenWidth  = Display::WINDOW_WIDTH;
+    screenHeight = Display::WINDOW_HEIGHT;
     //int count;
     //const GLFWvidmode* modes = glfwGetVideoModes(monitor, &count);
 
