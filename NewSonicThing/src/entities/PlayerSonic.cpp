@@ -34,6 +34,7 @@
 #include "shieldmagnet.hpp"
 #include "../guis/guitexture.hpp"
 #include "../menu/hud.hpp"
+#include "../renderEngine/masterrenderer.hpp"
 
 #include <list>
 #include <vector>
@@ -2712,6 +2713,8 @@ void PlayerSonic::refreshCamera()
             camRadiusTarget -= camRadiusSpeed*inputZoom*dt;
             camRadiusTarget = fmaxf(fminf(camRadiusTarget, camRadiusMax), camRadiusMin);
             camRadius = Maths::approach(camRadius, camRadiusTarget, camRadiusApproach, dt);
+
+            camRadius = camRadiusMax - (MasterRenderer::getVFOV() - 80.0f);
 
             camOffset.setLength(camRadius);
         }

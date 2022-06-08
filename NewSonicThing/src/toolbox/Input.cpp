@@ -102,7 +102,7 @@ void Input::pollInputs()
     Input::inputs.INPUT_PREVIOUS_LB      = Input::inputs.INPUT_LB;
     Input::inputs.INPUT_PREVIOUS_RB      = Input::inputs.INPUT_RB;
     Input::inputs.INPUT_PREVIOUS_START   = Input::inputs.INPUT_START;
-    Input::inputs.INPUT_PREVIOUS_TAB     = Input::inputs.INPUT_TAB;
+    Input::inputs.INPUT_PREVIOUS_ESC     = Input::inputs.INPUT_ESC;
 
     Input::inputs.INPUT_PREVIOUS_X  = Input::inputs.INPUT_X;
     Input::inputs.INPUT_PREVIOUS_Y  = Input::inputs.INPUT_Y;
@@ -119,7 +119,7 @@ void Input::pollInputs()
     Input::inputs.INPUT_RB      = false;
     Input::inputs.INPUT_SELECT  = false;
     Input::inputs.INPUT_START   = false;
-    Input::inputs.INPUT_TAB     = false;
+    Input::inputs.INPUT_ESC     = false;
 
     Input::inputs.INPUT_X  = 0;
     Input::inputs.INPUT_Y  = 0;
@@ -285,10 +285,10 @@ void Input::pollInputs()
     mousePreviousX = xpos;
     mousePreviousY = ypos;
 
-    if (glfwGetKey(Display::window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-    {
-        glfwSetWindowShouldClose(Display::window, true);
-    }
+    //if (glfwGetKey(Display::window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+    //{
+    //    glfwSetWindowShouldClose(Display::window, true);
+    //}
 
     if (glfwGetKey(Display::window, GLFW_KEY_SPACE) == GLFW_PRESS)
     {
@@ -318,9 +318,9 @@ void Input::pollInputs()
     {
         Input::inputs.INPUT_RB = true;
     }
-    if (glfwGetKey(Display::window, GLFW_KEY_TAB) == GLFW_PRESS)
+    if (glfwGetKey(Display::window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
     {
-        Input::inputs.INPUT_TAB = true;
+        Input::inputs.INPUT_ESC = true;
     }
 
     if (glfwGetKey(Display::window, GLFW_KEY_W) == GLFW_PRESS)
@@ -427,16 +427,11 @@ void Input::pollInputs()
     #endif
 
 
-    if (Input::inputs.INPUT_TAB && !Input::inputs.INPUT_PREVIOUS_TAB)
+    if (Input::inputs.INPUT_ESC && !Input::inputs.INPUT_PREVIOUS_ESC)
     {
-        if (freeMouse)
+        if (!Input::freeMouse)
         {
-            freeMouse = false;
-            glfwSetInputMode(Display::window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-        }
-        else
-        {
-            freeMouse = true;
+            Input::freeMouse = true;
             glfwSetInputMode(Display::window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
         }
     }

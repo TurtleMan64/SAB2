@@ -363,12 +363,12 @@ void AudioPlayer::loadSettings()
             {
                 if (strcmp(lineSplit[0], "SFX_Volume") == 0)
                 {
-                    AudioPlayer::soundLevelSFX = std::stof(lineSplit[1], nullptr);
+                    AudioPlayer::soundLevelSFX = 0.01f*std::stof(lineSplit[1], nullptr);
                     AudioPlayer::soundLevelSFX = fmaxf(0.0f, fminf(AudioPlayer::soundLevelSFX, 1.0f));
                 }
                 else if (strcmp(lineSplit[0], "Music_Volume") == 0)
                 {
-                    AudioPlayer::soundLevelBGM = std::stof(lineSplit[1], nullptr);
+                    AudioPlayer::soundLevelBGM = 0.01f*std::stof(lineSplit[1], nullptr);
                     AudioPlayer::soundLevelBGM = fmaxf(0.0f, fminf(AudioPlayer::soundLevelBGM, 1.0f));
                 }
             }

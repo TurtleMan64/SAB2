@@ -17,8 +17,8 @@ Collision 7
 0 -0.2 -1
 1
 2
-res/Audio/BGM/g_hill_intro.ogg
-res/Audio/BGM/g_hill_loop.ogg
+res/Audio/BGM/ManiaGreenHill_intro.ogg
+res/Audio/BGM/ManiaGreenHill_loop.ogg
 -1987.898682 -1389.900879 -7010.665039
 -0.000567 0.000000 -0.002836
 0 1 0

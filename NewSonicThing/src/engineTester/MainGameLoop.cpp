@@ -248,6 +248,8 @@ int main(int argc, char** argv)
     {
         Global::pathToEXE = argv[0];
 
+        printf("%s\n", argv[0]);
+
         #ifdef _WIN32
         int idx = (int)Global::pathToEXE.find_last_of('\\', Global::pathToEXE.size());
         Global::pathToEXE = Global::pathToEXE.substr(0, idx+1);
@@ -536,13 +538,13 @@ int main(int argc, char** argv)
 
         ANALYSIS_START("Entity Management");
         //entities managment
-        for (auto entityToAdd : gameEntitiesToAdd)
+        for (Entity* entityToAdd : gameEntitiesToAdd)
         {
             gameEntities.insert(entityToAdd);
         }
         gameEntitiesToAdd.clear();
 
-        for (auto entityToDelete : gameEntitiesToDelete)
+        for (Entity* entityToDelete : gameEntitiesToDelete)
         {
             gameEntities.erase(entityToDelete);
             delete entityToDelete; INCR_DEL("Entity");
@@ -550,14 +552,14 @@ int main(int argc, char** argv)
         gameEntitiesToDelete.clear();
 
         //chunked entities mamanegement
-        for (auto entityToAdd : gameChunkedEntitiesToAdd)
+        for (Entity* entityToAdd : gameChunkedEntitiesToAdd)
         {
             int realIndex = Global::getChunkIndex(entityToAdd->getX(), entityToAdd->getZ());
             gameChunkedEntities[realIndex].insert(entityToAdd);
         }
         gameChunkedEntitiesToAdd.clear();
 
-        for (auto entityToDelete : gameChunkedEntitiesToDelete)
+        for (Entity* entityToDelete : gameChunkedEntitiesToDelete)
         {
             int realIndex = Global::getChunkIndex(entityToDelete->getX(), entityToDelete->getZ());
             size_t numDeleted = gameChunkedEntities[realIndex].erase(entityToDelete);
@@ -1333,10 +1335,10 @@ void Global::saveConfigData()
     }
     else
     {
-        file << "#High-quality water\n";
-        file << "#Should be 'on' or 'off'\n";
-        if (Global::useHighQualityWater) { file << "HQ_Water on\n\n"; }
-        else                             { file << "HQ_Water off\n\n"; }
+        file << "#Reflective water.\n";
+        file << "#Should be 'on' or 'off'.\n";
+        if (Global::useHighQualityWater) { file << "Reflective_Water on\n\n"; }
+        else                             { file << "Reflective_Water off\n\n"; }
 
         //file << "#Resolution of the high quality water\n";
         //file << "HQ_Water_Reflection_Width "  << Global::HQWaterReflectionWidth  << "\n";
@@ -1344,25 +1346,29 @@ void Global::saveConfigData()
         //file << "HQ_Water_Refraction_Width "  << Global::HQWaterRefractionWidth  << "\n";
         //file << "HQ_Water_Refraction_Height " << Global::HQWaterRefractionHeight << "\n\n";
 
-        file << "#Render particles\n";
-        if (Global::renderParticles) { file << "Render_Particles on\n\n"; }
-        else                         { file << "Render_Particles off\n\n"; }
+        file << "#Show particles.\n";
+        if (Global::renderParticles) { file << "Show_Particles on\n\n"; }
+        else                         { file << "Show_Particles off\n\n"; }
 
-        file << "#Render bloom effect\n";
-        if (Global::renderBloom) { file << "Render_Bloom on\n\n"; }
-        else                     { file << "Render_Bloom off\n\n"; }
+        file << "#Bloom post processing.\n";
+        if (Global::renderBloom) { file << "Bloom on\n\n"; }
+        else                     { file << "Bloom off\n\n"; }
 
-        file << "#Number of multisamples to use for anti-aliasing\n";
+        file << "#Shows FPS in the corner of the screen.\n";
+        if (Global::displayFPS)  { file << "Show_FPS on\n\n"; }
+        else                     { file << "Show_FPS off\n\n"; }
+
+        file << "#Number of multisamples to use for anti-aliasing.\n";
         file << "Anti-Aliasing_Samples " << Display::AA_SAMPLES << "\n\n";
 
-        file << "#Vertical Field of View\n";
+        file << "#Vertical Field of View.\n";
         file << "FOV " << MasterRenderer::VFOV_BASE << "\n\n";
 
-        file << "#Unlock_Framerate\n";
-        if (Global::framerateUnlock) { file << "Unlock_Framerate on\n\n"; }
-        else                         { file << "Unlock_Framerate off\n\n"; }
+        file << "#V-Sync.\n";
+        if (Global::framerateUnlock) { file << "V-Sync on\n\n"; }
+        else                         { file << "V-Sync off\n\n"; }
 
-        file << "#If framerate is unlocked, fps will not exceed this limit. -1 for no limit.\n";
+        file << "#If v-sync is off, fps will not exceed this limit. -1 for no limit.\n";
         file << "FPS_Limit " << (int)Global::fpsLimit << "\n";
 
         file.close();
@@ -1377,13 +1383,13 @@ void Global::saveConfigData()
     }
     else
     {
-        file << "#Volume of sound effects\n";
-        file << "#Should be 0 for no sfx, 1 for full volume sfx\n";
-        file << "SFX_Volume " << Format::floatToPretty(AudioPlayer::soundLevelSFX, 2) << "\n\n";
+        file << "#Volume of sound effects.\n";
+        file << "#Should be 0 for no sfx, 100 for full volume sfx.\n";
+        file << "SFX_Volume " << (int)(AudioPlayer::soundLevelSFX*100) << "\n\n";
 
-        file << "#Volume of music\n";
-        file << "#Should be 0 for no music, 1 for full volume music\n";
-        file << "Music_Volume " << Format::floatToPretty(AudioPlayer::soundLevelBGM, 2) << "\n";
+        file << "#Volume of music.\n";
+        file << "#Should be 0 for no music, 100 for full volume music.\n";
+        file << "Music_Volume " << (int)(AudioPlayer::soundLevelBGM*100) << "\n";
 
         file.close();
     }

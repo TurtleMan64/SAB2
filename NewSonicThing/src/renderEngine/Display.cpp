@@ -1,6 +1,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <SOIL/SOIL.h>
+#include <SOIL2/SOIL2.h>
 
 #include <iostream>
 #include <cmath>
@@ -70,9 +70,6 @@ int Display::createDisplay()
     int screenWidth;
     int screenHeight;
 
-#ifdef __APPLE__
-    glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GL_FALSE);
-#endif
     screenWidth  = Display::WINDOW_WIDTH;
     screenHeight = Display::WINDOW_HEIGHT;
     //int count;
@@ -96,6 +93,7 @@ int Display::createDisplay()
     glfwMakeContextCurrent(Display::window);
     glfwSetFramebufferSizeCallback(Display::window, Display::framebufferSizeCallback);
     glfwSetWindowCloseCallback(Display::window, Display::windowCloseCallback);
+    glfwSetMouseButtonCallback(Display::window, Display::mouseButtonCallback);
 
     GLFWimage icons[5];
     icons[0].pixels = SOIL_load_image((Global::pathToEXE+"res/Images/Icon16.png").c_str(), &icons[0].width, &icons[0].height, 0, SOIL_LOAD_RGBA);
@@ -103,12 +101,21 @@ int Display::createDisplay()
     icons[2].pixels = SOIL_load_image((Global::pathToEXE+"res/Images/Icon32.png").c_str(), &icons[2].width, &icons[2].height, 0, SOIL_LOAD_RGBA);
     icons[3].pixels = SOIL_load_image((Global::pathToEXE+"res/Images/Icon48.png").c_str(), &icons[3].width, &icons[3].height, 0, SOIL_LOAD_RGBA);
     icons[4].pixels = SOIL_load_image((Global::pathToEXE+"res/Images/Icon64.png").c_str(), &icons[4].width, &icons[4].height, 0, SOIL_LOAD_RGBA);
-    glfwSetWindowIcon(Display::window, 5, icons);
-    SOIL_free_image_data(icons[0].pixels);
-    SOIL_free_image_data(icons[1].pixels);
-    SOIL_free_image_data(icons[2].pixels);
-    SOIL_free_image_data(icons[3].pixels);
-    SOIL_free_image_data(icons[4].pixels);
+    
+    if (icons[0].pixels != nullptr &&
+        icons[1].pixels != nullptr &&
+        icons[2].pixels != nullptr &&
+        icons[3].pixels != nullptr &&
+        icons[4].pixels != nullptr)
+    {
+        glfwSetWindowIcon(Display::window, 5, icons);
+    }
+
+    if (icons[0].pixels != nullptr) { SOIL_free_image_data(icons[0].pixels); }
+    if (icons[1].pixels != nullptr) { SOIL_free_image_data(icons[1].pixels); }
+    if (icons[2].pixels != nullptr) { SOIL_free_image_data(icons[2].pixels); }
+    if (icons[3].pixels != nullptr) { SOIL_free_image_data(icons[3].pixels); }
+    if (icons[4].pixels != nullptr) { SOIL_free_image_data(icons[4].pixels); }
 
     // glad: load all OpenGL function pointers
     // ---------------------------------------
@@ -205,6 +212,18 @@ void Display::windowCloseCallback(GLFWwindow* /*windowHandle*/)
     Global::gameState = STATE_EXITING;
 }
 
+void Display::mouseButtonCallback(GLFWwindow* /*window*/, int button, int action, int /*mods*/)
+{
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+    {
+        if (Input::freeMouse)
+        {
+            Input::freeMouse = false;
+            glfwSetInputMode(Display::window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        }
+    }
+}
+
 void Display::loadDisplaySettings()
 {
     std::ifstream file(Global::pathToEXE + "Settings/DisplaySettings.ini");
@@ -284,7 +303,7 @@ void Display::loadGraphicsSettings()
 
             if (splitLength == 2)
             {
-                if (strcmp(lineSplit[0], "HQ_Water") == 0)
+                if (strcmp(lineSplit[0], "Reflective_Water") == 0)
                 {
                     if (strcmp(lineSplit[1], "on") == 0)
                     {
@@ -295,27 +314,27 @@ void Display::loadGraphicsSettings()
                         Global::useHighQualityWater = false;
                     }
                 }
-                else if (strcmp(lineSplit[0], "HQ_Water_Reflection_Width") == 0)
-                {
-                    Global::HQWaterReflectionWidth = (unsigned)std::stoi(lineSplit[1], nullptr, 10);
-                }
-                else if (strcmp(lineSplit[0], "HQ_Water_Reflection_Height") == 0)
-                {
-                    Global::HQWaterReflectionHeight = (unsigned)std::stoi(lineSplit[1], nullptr, 10);
-                }
-                else if (strcmp(lineSplit[0], "HQ_Water_Refraction_Width") == 0)
-                {
-                    Global::HQWaterRefractionWidth = (unsigned)std::stoi(lineSplit[1], nullptr, 10);
-                }
-                else if (strcmp(lineSplit[0], "HQ_Water_Refraction_Height") == 0)
-                {
-                    Global::HQWaterRefractionHeight = (unsigned)std::stoi(lineSplit[1], nullptr, 10);
-                }
+                //else if (strcmp(lineSplit[0], "HQ_Water_Reflection_Width") == 0)
+                //{
+                //    Global::HQWaterReflectionWidth = (unsigned)std::stoi(lineSplit[1], nullptr, 10);
+                //}
+                //else if (strcmp(lineSplit[0], "HQ_Water_Reflection_Height") == 0)
+                //{
+                //    Global::HQWaterReflectionHeight = (unsigned)std::stoi(lineSplit[1], nullptr, 10);
+                //}
+                //else if (strcmp(lineSplit[0], "HQ_Water_Refraction_Width") == 0)
+                //{
+                //    Global::HQWaterRefractionWidth = (unsigned)std::stoi(lineSplit[1], nullptr, 10);
+                //}
+                //else if (strcmp(lineSplit[0], "HQ_Water_Refraction_Height") == 0)
+                //{
+                //    Global::HQWaterRefractionHeight = (unsigned)std::stoi(lineSplit[1], nullptr, 10);
+                //}
                 else if (strcmp(lineSplit[0], "FOV") == 0)
                 {
                     MasterRenderer::VFOV_BASE = std::stof(lineSplit[1], nullptr);
                 }
-                else if (strcmp(lineSplit[0], "Unlock_Framerate") == 0)
+                else if (strcmp(lineSplit[0], "V-Sync") == 0)
                 {
                     if (strcmp(lineSplit[1], "on") == 0)
                     {
@@ -346,7 +365,7 @@ void Display::loadGraphicsSettings()
                 {
                     Display::AA_SAMPLES = std::stoi(lineSplit[1], nullptr, 10);
                 }
-                else if (strcmp(lineSplit[0], "Render_Particles") == 0)
+                else if (strcmp(lineSplit[0], "Show_Particles") == 0)
                 {
                     if (strcmp(lineSplit[1], "on") == 0)
                     {
@@ -357,7 +376,7 @@ void Display::loadGraphicsSettings()
                         Global::renderParticles = false;
                     }
                 }
-                else if (strcmp(lineSplit[0], "Render_Bloom") == 0)
+                else if (strcmp(lineSplit[0], "Bloom") == 0)
                 {
                     if (strcmp(lineSplit[1], "on") == 0)
                     {
@@ -368,32 +387,32 @@ void Display::loadGraphicsSettings()
                         Global::renderBloom = false;
                     }
                 }
-                else if (strcmp(lineSplit[0], "Render_Shadows_Far") == 0)
-                {
-                    if (strcmp(lineSplit[1], "on") == 0)
-                    {
-                        Global::renderShadowsFar = true;
-                    }
-                    else
-                    {
-                        Global::renderShadowsFar = false;
-                    }
-                }
-                else if (strcmp(lineSplit[0], "Render_Shadows_Close") == 0)
-                {
-                    if (strcmp(lineSplit[1], "on") == 0)
-                    {
-                        Global::renderShadowsClose = true;
-                    }
-                    else
-                    {
-                        Global::renderShadowsClose = false;
-                    }
-                }
-                else if (strcmp(lineSplit[0], "Shadows_Far_Quality") == 0)
-                {
-                    Global::shadowsFarQuality = std::stoi(lineSplit[1], nullptr, 10);
-                }
+                //else if (strcmp(lineSplit[0], "Render_Shadows_Far") == 0)
+                //{
+                //    if (strcmp(lineSplit[1], "on") == 0)
+                //    {
+                //        Global::renderShadowsFar = true;
+                //    }
+                //    else
+                //    {
+                //        Global::renderShadowsFar = false;
+                //    }
+                //}
+                //else if (strcmp(lineSplit[0], "Render_Shadows_Close") == 0)
+                //{
+                //    if (strcmp(lineSplit[1], "on") == 0)
+                //    {
+                //        Global::renderShadowsClose = true;
+                //    }
+                //    else
+                //    {
+                //        Global::renderShadowsClose = false;
+                //    }
+                //}
+                //else if (strcmp(lineSplit[0], "Shadows_Far_Quality") == 0)
+                //{
+                //    Global::shadowsFarQuality = std::stoi(lineSplit[1], nullptr, 10);
+                //}
             }
             free(lineSplit);
         }

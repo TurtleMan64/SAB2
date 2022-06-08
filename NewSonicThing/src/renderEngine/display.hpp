@@ -11,6 +11,7 @@ private:
     static void loadGraphicsSettings();
     static void framebufferSizeCallback(GLFWwindow* window, int width, int height);
     static void windowCloseCallback(GLFWwindow* window);
+    static void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 
 public:
     static GLFWwindow* window;
