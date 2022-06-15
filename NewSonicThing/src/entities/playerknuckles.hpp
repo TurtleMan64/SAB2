@@ -9,7 +9,7 @@ class PlayerModel;
 class Source;
 class ShieldGreen;
 class ShieldMagnet;
-class GuiTexture;
+class GuiImage;
 
 #include <list>
 #include <vector>
@@ -150,7 +150,7 @@ private:
     bool isHomingOnPoint = false;
     const float homingAttackRangeMax =  115.0f;
     const float homingAttackDotThreshold = 0.65f;
-    GuiTexture* homingAttackReticle = nullptr;
+    GuiImage* homingAttackReticle = nullptr;
 
     const float breakObjectsSpeed = 200.0f; //how fast you need to be going to break through objects like boxes
 

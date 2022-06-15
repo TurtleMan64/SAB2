@@ -18,9 +18,9 @@
 #include "../particles/particletexture.hpp"
 #include "../entities/camera.hpp"
 #include "../particles/particlemaster.hpp"
-#include "../guis/guitextureresources.hpp"
+#include "../guis/guiimageresources.hpp"
 #include "../guis/guimanager.hpp"
-#include "../guis/guitexture.hpp"
+#include "../guis/guiimage.hpp"
 #include "missionmenu.hpp"
 #include "configmenu.hpp"
 #include "extras.hpp"
@@ -51,10 +51,10 @@ void MainMenu::loadResources()
         return;
     }
 
-    textureParallelogram = LoaderGL::loadTexture("res/Images/MainMenu/Parallelogram.png");
+    textureParallelogram         = LoaderGL::loadTexture("res/Images/MainMenu/Parallelogram.png");
     textureParallelogramBackdrop = LoaderGL::loadTexture("res/Images/MainMenu/ParallelogramBackdrop.png");
-    textureLogo = LoaderGL::loadTexture("res/Images/MainMenu/Logo.png");
-    logo = GuiTexture(textureLogo, 0.5f, 0.4f, 0.6f * (767.0f / 784.0f) / aspectRatio, 0.6f, 0.0f);
+    textureLogo                  = LoaderGL::loadTexture("res/Images/MainMenu/Logo.png");
+    logo = new GuiImage(textureLogo, 0.72f, 0.4f, 0.6f * (767.0f / 784.0f) / aspectRatio, 0.6f, 0.0f); INCR_NEW("GuiImage");
 
     float fontScale = 0.08f;
 
@@ -115,7 +115,7 @@ void MainMenu::draw()
 
     if (visible)
     {
-        GuiManager::addGuiToRender(&logo);
+        GuiManager::addImageToRender(logo);
 
         float animationOffset = animationDirection * 12 * (animationTime) * (animationTime);
 
@@ -164,7 +164,7 @@ void MainMenu::unloadResources()
     textureParallelogram         = GL_NONE;
     textureParallelogramBackdrop = GL_NONE;
     textureLogo                  = GL_NONE;
-    logo.setTexture(GL_NONE);
+    logo->textureId              = GL_NONE;
 }
 
 void MainMenu::resetAnimation()

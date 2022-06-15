@@ -1,0 +1,32 @@
+# Blender MTL File: 'None'
+# Material Count: 3
+
+newmtl material_487
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.020000 0.020000 0.020000
+Ni 0.000000
+d 1.000000
+illum 2
+map_Kd E:\CWorkspace\NewSonicThing\NewSonicThing\res\Models\Levels\EmeraldCoast\b1ebf29c.png
+
+newmtl material_487_chair.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.020000 0.020000 0.020000
+Ni 0.000000
+d 1.000000
+illum 2
+map_Kd E:\CWorkspace\NewSonicThing\NewSonicThing\res\Models\Levels\EmeraldCoast\chair.png
+
+newmtl material_489
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.020000 0.020000 0.020000
+Ni 0.000000
+d 1.000000
+illum 2
+map_Kd E:\CWorkspace\NewSonicThing\NewSonicThing\res\Models\Levels\EmeraldCoast\18fd1252.png

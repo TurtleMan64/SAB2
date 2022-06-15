@@ -463,13 +463,16 @@ bool CollisionChecker::checkCollision(
                                     float thisDist = (cix - px1)*(cix - px1) + (ciy - py1)*(ciy - py1) + (ciz - pz1)*(ciz - pz1);
                                     if (thisDist < minDistSquared)
                                     {
-                                        triangleCollide = true;
-                                        collideTriangle = currTriangle;
-                                        collidePosition.x = cix;
-                                        collidePosition.y = ciy;
-                                        collidePosition.z = ciz;
-                                        minDistSquared = thisDist;
-                                        finalModel = cm;
+                                        if (!CollisionChecker::checkCamera || !currTriangle->isNoCam())
+                                        {
+                                            triangleCollide = true;
+                                            collideTriangle = currTriangle;
+                                            collidePosition.x = cix;
+                                            collidePosition.y = ciy;
+                                            collidePosition.z = ciz;
+                                            minDistSquared = thisDist;
+                                            finalModel = cm;
+                                        }
                                     }
                                 }
                             }

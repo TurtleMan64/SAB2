@@ -6,8 +6,8 @@
 #include "../fontMeshCreator/guinumber.hpp"
 #include "../fontMeshCreator/guitext.hpp"
 #include "../guis/guimanager.hpp"
-#include "../guis/guitextureresources.hpp"
-#include "../guis/guitexture.hpp"
+#include "../guis/guiimageresources.hpp"
+#include "../guis/guiimage.hpp"
 #include "../fontMeshCreator/fonttype.hpp"
 #include "../renderEngine/display.hpp"
 #include "../entities/controllableplayer.hpp"
@@ -15,7 +15,7 @@
 #include "timer.hpp"
 
 float HUD::bonusTimer = 0.0f;
-GuiTexture* HUD::pointBonus = nullptr;
+GuiImage* HUD::pointBonus = nullptr;
 GLuint HUD::pointBonusIds[10] = {0};
 
 HUD::HUD()
@@ -42,13 +42,13 @@ HUD::HUD()
     this->textSpeedUnits = new GUIText("km/h", s, Global::fontVipnagorgialla, 1 - safeAreaX, 1.0f - safeAreaY, 8, false); INCR_NEW("GUIText");
     this->numberSpeed = new GUINumber(Global::gameMainVehicleSpeed, 1.0f - safeAreaX - this->textSpeedUnits->maxLineWidth - 0.003f, 1.0f - safeAreaY, speedometerScale * s, 8, false, 0, false); INCR_NEW("GUINumber");
 
-    GuiTextureResources::textureRing->setX(safeAreaX + w);
-    GuiTextureResources::textureRing->setY(safeAreaY + s*3);
-    GuiTextureResources::textureRing->setSizeScaled(w*2, s*2);
+    GuiImageResources::textureRing->setX(safeAreaX + w);
+    GuiImageResources::textureRing->setY(safeAreaY + s*3);
+    GuiImageResources::textureRing->setSizeScaled(w*2, s*2);
 
-    GuiTextureResources::textureLifeIcon->setX(safeAreaX + w);
-    GuiTextureResources::textureLifeIcon->setY(1.0f - (safeAreaY + s));
-    GuiTextureResources::textureLifeIcon->setSizeScaled(w*2, s*2);
+    GuiImageResources::textureLifeIcon->setX(safeAreaX + w);
+    GuiImageResources::textureLifeIcon->setY(1.0f - (safeAreaY + s));
+    GuiImageResources::textureLifeIcon->setSizeScaled(w*2, s*2);
 
 
     pointBonusIds[0] = LoaderGL::loadTexture("res/Images/PointBonus/0.png");
@@ -61,7 +61,7 @@ HUD::HUD()
     pointBonusIds[7] = LoaderGL::loadTexture("res/Images/PointBonus/7.png");
     pointBonusIds[8] = LoaderGL::loadTexture("res/Images/PointBonus/8.png");
     pointBonusIds[9] = LoaderGL::loadTexture("res/Images/PointBonus/9.png");
-    pointBonus = new GuiTexture(pointBonusIds[7], safeAreaX + 4*w, safeAreaY + 5*s, 8*w, s, 0); INCR_NEW("GuiTexture")
+    pointBonus = new GuiImage(pointBonusIds[7], safeAreaX + 4*w, safeAreaY + 5*s, 8*w, s, 0); INCR_NEW("GuiImage")
 }
 
 HUD::~HUD()
@@ -74,7 +74,7 @@ HUD::~HUD()
     this->numberSpeed->deleteMe(); delete this->numberSpeed; INCR_DEL("GUINumber");
     this->textSpeedUnits->deleteMe(); delete this->textSpeedUnits; INCR_DEL("GUIText");
     this->textLivesMission->deleteMe(); delete this->textLivesMission; INCR_DEL("GUIText");
-    delete this->pointBonus; INCR_DEL("GuiTexture");
+    delete this->pointBonus; INCR_DEL("GuiImage");
     for (int i = 0; i < 10; i++)
     {
         LoaderGL::deleteTexture(pointBonusIds[i]);
@@ -142,8 +142,8 @@ void HUD::draw()
 
         this->timer->refresh();
 
-        GuiManager::addGuiToRender(GuiTextureResources::textureLifeIcon);
-        GuiManager::addGuiToRender(GuiTextureResources::textureRing);
+        GuiManager::addImageToRender(GuiImageResources::textureLifeIcon);
+        GuiManager::addImageToRender(GuiImageResources::textureRing);
     }
 
     if (bonusTimer > 0.0f)
@@ -166,7 +166,7 @@ void HUD::draw()
 
         pointBonus->setScale(newScale*1.5f);
 
-        GuiManager::addGuiToRender(pointBonus);
+        GuiManager::addImageToRender(pointBonus);
     }
 }
 
@@ -208,5 +208,5 @@ void HUD::displayPointBonus(int idx)
     {
         idx = 9;
     }
-    pointBonus->setTexture(pointBonusIds[idx]);
+    pointBonus->textureId = pointBonusIds[idx];
 }

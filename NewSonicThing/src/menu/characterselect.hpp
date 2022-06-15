@@ -7,7 +7,7 @@ class Button;
 #include <vector>
 #include <string>
 #include "menu.hpp"
-#include "../guis/guitexture.hpp"
+#include "../guis/guiimage.hpp"
 
 class CharacterSelect : public Menu
 {
@@ -32,7 +32,7 @@ private:
 
     int currentButtonIndex = 0;
     std::vector<Button*> buttonsCharacterNames;
-    std::vector<GuiTexture> characterIcons;
+    std::vector<GuiImage*> characterIcons;
 
     bool visible = false;
 

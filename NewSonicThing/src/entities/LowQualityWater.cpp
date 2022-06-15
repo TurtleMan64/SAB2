@@ -7,6 +7,7 @@
 #include "lowqualitywater.hpp"
 #include "../loading/modelloader.hpp"
 #include "../engineTester/main.hpp"
+#include "../entities/controllableplayer.hpp"
 
 #include <list>
 #include <iostream>
@@ -19,12 +20,14 @@ LowQualityWater::LowQualityWater()
 }
 
 LowQualityWater::LowQualityWater(
-    float x, float y, float z, 
+    int x, int z, 
     float r, float g, float b, float a)
 {
-    position.x = x;
-    position.y = y;
-    position.z = z;
+    this->x = x;
+    this->z = z;
+    //position.x = x;
+    //position.y = y;
+    //position.z = z;
     baseColor.set(r, g, b);
     baseAlpha = a;
     updateTransformationMatrix();
@@ -32,7 +35,26 @@ LowQualityWater::LowQualityWater(
 
 void LowQualityWater::step()
 {
+    if (Global::waterHeight != position.y)
+    {
+        position.y = Global::waterHeight;
+        updateTransformationMatrix();
+    }
 
+    int centerX = (int)std::round(Global::gameMainPlayer->position.x / 8000.0f);
+    int centerZ = (int)std::round(Global::gameMainPlayer->position.z / 8000.0f);
+
+    int newX = centerX + x;
+    int newZ = centerZ + z;
+    int currentX = (int)std::round(position.x / 8000.0f);
+    int currentZ = (int)std::round(position.z / 8000.0f);
+
+    if (newX != currentX || newZ != currentZ)
+    {
+        position.x = newX * 8000.0f;
+        position.z = newZ * 8000.0f;
+        updateTransformationMatrix();
+    }
 }
 
 std::list<TexturedModel*>* LowQualityWater::getModels()

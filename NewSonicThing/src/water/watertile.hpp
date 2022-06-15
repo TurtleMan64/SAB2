@@ -4,6 +4,8 @@
 class WaterTile
 {
 private:
+    int xIdx;
+    int zIdx;
     float x;
     float z;
 

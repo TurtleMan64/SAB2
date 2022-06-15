@@ -1,6 +1,6 @@
 #include "watertile.hpp"
 
-const float WaterTile::TILE_SIZE = 1500;
+constexpr float WaterTile::TILE_SIZE = 1500;
 
 WaterTile::WaterTile(float centerX, float centerZ)
 {

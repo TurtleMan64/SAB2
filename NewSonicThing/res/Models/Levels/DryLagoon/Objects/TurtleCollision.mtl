@@ -3,6 +3,7 @@
 newmtl Mesh_0327.rip
 Ns 19.607843
 Ni 1.000000
+type nocam
 d 1.000000
 map_Kd Tex_0049_0.dds
 

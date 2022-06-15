@@ -15,9 +15,9 @@
 #include "../audio/audioplayer.hpp"
 #include "../audio/source.hpp"
 #include "../entities/camera.hpp"
-#include "../guis/guitextureresources.hpp"
+#include "../guis/guiimageresources.hpp"
 #include "../guis/guimanager.hpp"
-#include "../guis/guitexture.hpp"
+#include "../guis/guiimage.hpp"
 #include "button.hpp"
 #include "mainmenu.hpp"
 #include "../toolbox/maths.hpp"
@@ -86,14 +86,14 @@ void MissionMenu::loadResources()
 
     const float rankWidth = 0.07f/aspectRatio;
     missionButton = new Button("_____", Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.69f, 0.5f, 0.56f / aspectRatio, 0.07f, true); INCR_NEW("Button");
-    rankM1        = new GuiTexture(textureRankA,  0.69f-rankWidth*1.5f, 0.4967f, rankWidth,      rankWidth*aspectRatio,      0); INCR_NEW("GuiTexture");
-    rankM2        = new GuiTexture(textureRankB,  0.69f-rankWidth*0.5f, 0.4967f, rankWidth,      rankWidth*aspectRatio,      0); INCR_NEW("GuiTexture");
-    rankM3        = new GuiTexture(textureRankC,  0.69f+rankWidth*0.5f, 0.4967f, rankWidth,      rankWidth*aspectRatio,      0); INCR_NEW("GuiTexture");
-    rankM4        = new GuiTexture(textureRankD,  0.69f+rankWidth*1.5f, 0.4967f, rankWidth,      rankWidth*aspectRatio,      0); INCR_NEW("GuiTexture");
-    missionSelect = new GuiTexture(textureSelect, 0.69f-rankWidth*1.5f, 0.4967f, rankWidth*1.5f, rankWidth*aspectRatio*1.5f, 0); INCR_NEW("GuiTexture");
+    rankM1        = new GuiImage(textureRankA,  0.69f-rankWidth*1.5f, 0.4967f, rankWidth,      rankWidth*aspectRatio,      0); INCR_NEW("GuiImage");
+    rankM2        = new GuiImage(textureRankB,  0.69f-rankWidth*0.5f, 0.4967f, rankWidth,      rankWidth*aspectRatio,      0); INCR_NEW("GuiImage");
+    rankM3        = new GuiImage(textureRankC,  0.69f+rankWidth*0.5f, 0.4967f, rankWidth,      rankWidth*aspectRatio,      0); INCR_NEW("GuiImage");
+    rankM4        = new GuiImage(textureRankD,  0.69f+rankWidth*1.5f, 0.4967f, rankWidth,      rankWidth*aspectRatio,      0); INCR_NEW("GuiImage");
+    missionSelect = new GuiImage(textureSelect, 0.69f-rankWidth*1.5f, 0.4967f, rankWidth*1.5f, rankWidth*aspectRatio*1.5f, 0); INCR_NEW("GuiImage");
     
-    npc     = new GuiTexture(textureNpcLost,     0.69f-rankWidth*1.0f, 0.4f, 0.15f/aspectRatio, 0.15f, 0); INCR_NEW("GuiTexture");
-    emerald = new GuiTexture(textureEmeraldLost, 0.69f+rankWidth*1.0f, 0.4f, 0.12f/aspectRatio, 0.12f, 0); INCR_NEW("GuiTexture");
+    npc     = new GuiImage(textureNpcLost,     0.69f-rankWidth*1.0f, 0.4f, 0.15f/aspectRatio, 0.15f, 0); INCR_NEW("GuiImage");
+    emerald = new GuiImage(textureEmeraldLost, 0.69f+rankWidth*1.0f, 0.4f, 0.12f/aspectRatio, 0.12f, 0); INCR_NEW("GuiImage");
 
     timeButton  = new Button("Time: ", Global::fontVipnagorgialla, textureParallelogramHalf2, textureParallelogramHalf2Backdrop, 0.69f + 0.56f/4, 0.65f, 1.12f / aspectRatio, 0.07f, true, true); INCR_NEW("Button");
     scoreButton = new Button("Score:", Global::fontVipnagorgialla, textureParallelogramHalf2, textureParallelogramHalf2Backdrop, 0.69f + 0.56f/4, 0.8f,  1.12f / aspectRatio, 0.07f, true, true); INCR_NEW("Button");
@@ -106,8 +106,6 @@ void MissionMenu::unloadResources()
         std::fprintf(stdout, "Warning: MissionMenu unloading resources when they are empty.\n");
         return;
     }
-
-    GuiManager::clearGuisToRender();
 
     for (int i = 0; i < (int)levelButtons.size(); i++)
     {
@@ -149,18 +147,18 @@ void MissionMenu::unloadResources()
     LoaderGL::deleteTexture(textureNpcFound);
     LoaderGL::deleteTexture(textureNpcLost);
     LoaderGL::deleteTexture(textureEmeraldLost);
-    textureNpcFound = GL_NONE;
-    textureNpcLost = GL_NONE;
+    textureNpcFound    = GL_NONE;
+    textureNpcLost     = GL_NONE;
     textureEmeraldLost = GL_NONE;
 
-    delete rankM1;        rankM1        = nullptr; INCR_DEL("GuiTexture");
-    delete rankM2;        rankM2        = nullptr; INCR_DEL("GuiTexture");
-    delete rankM3;        rankM3        = nullptr; INCR_DEL("GuiTexture");
-    delete rankM4;        rankM4        = nullptr; INCR_DEL("GuiTexture");
-    delete missionSelect; missionSelect = nullptr; INCR_DEL("GuiTexture");
+    delete rankM1;        rankM1        = nullptr; INCR_DEL("GuiImage");
+    delete rankM2;        rankM2        = nullptr; INCR_DEL("GuiImage");
+    delete rankM3;        rankM3        = nullptr; INCR_DEL("GuiImage");
+    delete rankM4;        rankM4        = nullptr; INCR_DEL("GuiImage");
+    delete missionSelect; missionSelect = nullptr; INCR_DEL("GuiImage");
 
-    delete npc;     npc     = nullptr; INCR_DEL("GuiTexture");
-    delete emerald; emerald = nullptr; INCR_DEL("GuiTexture");
+    delete npc;     npc     = nullptr; INCR_DEL("GuiImage");
+    delete emerald; emerald = nullptr; INCR_DEL("GuiImage");
 
     delete timeButton;  timeButton  = nullptr; INCR_DEL("Button");
     delete scoreButton; scoreButton = nullptr; INCR_DEL("Button");
@@ -213,72 +211,72 @@ void MissionMenu::draw(bool updateMissionText)
 
         int numMissions = level.numMissions;
 
-        if (numMissions >= 4) { GuiManager::addGuiToRender(rankM4); }
-        if (numMissions >= 3) { GuiManager::addGuiToRender(rankM3); }
-        if (numMissions >= 2) { GuiManager::addGuiToRender(rankM2); }
-        if (numMissions >= 1) { GuiManager::addGuiToRender(rankM1); }
+        if (numMissions >= 4) { GuiManager::addImageToRender(rankM4); }
+        if (numMissions >= 3) { GuiManager::addImageToRender(rankM3); }
+        if (numMissions >= 2) { GuiManager::addImageToRender(rankM2); }
+        if (numMissions >= 1) { GuiManager::addImageToRender(rankM1); }
 
         if (numMissions >= 4)
         {
             std::string rank = "";
-            rankM4->setTexture(textureBlank);
+            rankM4->textureId = textureBlank;
             if (Global::gameSaveData.find(level.displayName+"_"+Global::characterNames[Global::currentCharacterType]+"_M4_RANK") != Global::gameSaveData.end())
             {
                 rank = Global::gameSaveData[level.displayName+"_"+Global::characterNames[Global::currentCharacterType]+"_M4_RANK"];
-                if (rank == "A") { rankM4->setTexture(textureRankA); }
-                if (rank == "B") { rankM4->setTexture(textureRankB); }
-                if (rank == "C") { rankM4->setTexture(textureRankC); }
-                if (rank == "D") { rankM4->setTexture(textureRankD); }
-                if (rank == "E") { rankM4->setTexture(textureRankE); }
+                if (rank == "A") { rankM4->textureId = textureRankA; }
+                if (rank == "B") { rankM4->textureId = textureRankB; }
+                if (rank == "C") { rankM4->textureId = textureRankC; }
+                if (rank == "D") { rankM4->textureId = textureRankD; }
+                if (rank == "E") { rankM4->textureId = textureRankE; }
             }
         }
         if (numMissions >= 3)
         {
             std::string rank = "";
-            rankM3->setTexture(textureBlank);
+            rankM3->textureId = textureBlank;
             if (Global::gameSaveData.find(level.displayName+"_"+Global::characterNames[Global::currentCharacterType]+"_M3_RANK") != Global::gameSaveData.end())
             {
                 rank = Global::gameSaveData[level.displayName+"_"+Global::characterNames[Global::currentCharacterType]+"_M3_RANK"];
-                if (rank == "A") { rankM3->setTexture(textureRankA); }
-                if (rank == "B") { rankM3->setTexture(textureRankB); }
-                if (rank == "C") { rankM3->setTexture(textureRankC); }
-                if (rank == "D") { rankM3->setTexture(textureRankD); }
-                if (rank == "E") { rankM3->setTexture(textureRankE); }
+                if (rank == "A") { rankM3->textureId = textureRankA; }
+                if (rank == "B") { rankM3->textureId = textureRankB; }
+                if (rank == "C") { rankM3->textureId = textureRankC; }
+                if (rank == "D") { rankM3->textureId = textureRankD; }
+                if (rank == "E") { rankM3->textureId = textureRankE; }
             }
         }
         if (numMissions >= 2)
         {
             std::string rank = "";
-            rankM2->setTexture(textureBlank);
+            rankM2->textureId = textureBlank;
             if (Global::gameSaveData.find(level.displayName+"_"+Global::characterNames[Global::currentCharacterType]+"_M2_RANK") != Global::gameSaveData.end())
             {
                 rank = Global::gameSaveData[level.displayName+"_"+Global::characterNames[Global::currentCharacterType]+"_M2_RANK"];
-                if (rank == "A") { rankM2->setTexture(textureRankA); }
-                if (rank == "B") { rankM2->setTexture(textureRankB); }
-                if (rank == "C") { rankM2->setTexture(textureRankC); }
-                if (rank == "D") { rankM2->setTexture(textureRankD); }
-                if (rank == "E") { rankM2->setTexture(textureRankE); }
+                if (rank == "A") { rankM2->textureId = textureRankA; }
+                if (rank == "B") { rankM2->textureId = textureRankB; }
+                if (rank == "C") { rankM2->textureId = textureRankC; }
+                if (rank == "D") { rankM2->textureId = textureRankD; }
+                if (rank == "E") { rankM2->textureId = textureRankE; }
             }
         }
         if (numMissions >= 1)
         {
             std::string rank = "";
-            rankM1->setTexture(textureBlank);
+            rankM1->textureId = textureBlank;
             if (Global::gameSaveData.find(level.displayName+"_"+Global::characterNames[Global::currentCharacterType]+"_M1_RANK") != Global::gameSaveData.end())
             {
                 rank = Global::gameSaveData[level.displayName+"_"+Global::characterNames[Global::currentCharacterType]+"_M1_RANK"];
-                if (rank == "A") { rankM1->setTexture(textureRankA); }
-                if (rank == "B") { rankM1->setTexture(textureRankB); }
-                if (rank == "C") { rankM1->setTexture(textureRankC); }
-                if (rank == "D") { rankM1->setTexture(textureRankD); }
-                if (rank == "E") { rankM1->setTexture(textureRankE); }
+                if (rank == "A") { rankM1->textureId = textureRankA; }
+                if (rank == "B") { rankM1->textureId = textureRankB; }
+                if (rank == "C") { rankM1->textureId = textureRankC; }
+                if (rank == "D") { rankM1->textureId = textureRankD; }
+                if (rank == "E") { rankM1->textureId = textureRankE; }
             }
         }
 
         float aspectRatio = Display::ASPECT_RATIO;
         const float rankWidth = 0.07f/aspectRatio;
         missionSelect->setX(0.69f - rankWidth*1.5f + (Global::gameMissionNumber*rankWidth));
-        GuiManager::addGuiToRender(missionSelect);
+        GuiManager::addImageToRender(missionSelect);
 
         if (updateMissionText)
         {
@@ -334,7 +332,7 @@ void MissionMenu::draw(bool updateMissionText)
         }
 
         //update npc and emerald
-        GuiManager::addGuiToRender(emerald);
+        GuiManager::addImageToRender(emerald);
         if (Global::stageNpcCounts.find(buttLvlId) != Global::stageNpcCounts.end())
         {
             int numNpcs = Global::stageNpcCounts[buttLvlId];
@@ -353,14 +351,14 @@ void MissionMenu::draw(bool updateMissionText)
 
             if (foundNpcs == numNpcs)
             {
-                npc->setTexture(textureNpcFound);
+                npc->textureId = textureNpcFound;
             }
             else
             {
-                npc->setTexture(textureNpcLost);
+                npc->textureId = textureNpcLost;
             }
 
-            GuiManager::addGuiToRender(npc);
+            GuiManager::addImageToRender(npc);
         }
     }
 }

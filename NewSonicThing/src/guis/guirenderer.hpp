@@ -1,7 +1,7 @@
 #ifndef GUIRENDERER_H
 #define GUIRENDERER_H
 
-class GuiTexture;
+class GuiImage;
 class GuiShader;
 
 #include <list>
@@ -16,7 +16,7 @@ private:
 public:
     static void init();
     
-    static void render(std::list<GuiTexture*>* guis);
+    static void render(std::list<GuiImage*>* guis);
     
     static void cleanUp();
 };

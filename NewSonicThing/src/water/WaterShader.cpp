@@ -69,21 +69,26 @@ void WaterShader::loadSun(Light* sun)
 {
     loadVector(location_sunColor,     &sun->color);
     loadVector(location_sunDirection, &sun->direction);
+    //printf("location_sunColor     = %f %f %f\n", sun->color.x, sun->color.y, sun->color.z);
+    //printf("location_sunDirection = %f %f %f\n", sun->direction.x, sun->direction.y, sun->direction.z);
 }
 
 void WaterShader::loadWaterHeight(float waterHeight)
 {
     loadFloat(location_waterHeight, waterHeight);
+    //printf("location_waterHeight = %f\n", waterHeight);
 }
 
 void WaterShader::loadWaterMurkyAmount(float murkyAmount)
 {
     loadFloat(location_murkiness, murkyAmount);
+    //printf("location_murkiness = %f\n", murkyAmount);
 }
 
 void WaterShader::loadWaterColor(Vector3f* waterColor)
 {
     loadVector(location_waterColor, waterColor);
+    //printf("location_waterColor = %f %f %f\n", waterColor->x, waterColor->y, waterColor->z);
 }
 
 void WaterShader::loadMoveFactor(float factor)
@@ -99,6 +104,7 @@ void WaterShader::loadProjectionMatrix(Matrix4f* projection)
 void WaterShader::loadClipPlaneBehind(Vector4f* plane)
 {
     loadVector4f(location_clipPlaneBehind, plane);
+    //printf("location_clipPlaneBehind = %f %f %f %f\n", plane->x, plane->y, plane->z, plane->w);
 }
 
 void WaterShader::loadViewMatrix(Camera* cam)
@@ -107,6 +113,7 @@ void WaterShader::loadViewMatrix(Camera* cam)
     Maths::createViewMatrix(&viewMatrix, cam);
     loadMatrix(location_viewMatrix, &viewMatrix);
     loadVector(location_cameraPosition, &cam->eye);
+    //printf("location_cameraPosition = %f %f %f\n", cam->eye.x, cam->eye.y, cam->eye.z);
 }
 
 void WaterShader::loadModelMatrix(Matrix4f* modelMatrix)

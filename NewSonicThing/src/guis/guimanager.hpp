@@ -4,23 +4,23 @@
 class FontType;
 class GUIText;
 class GUINumber;
-class GuiTexture;
+class GuiImage;
 
 #include <list>
 
 class GuiManager
 {
 private:
-    static std::list<GuiTexture*> guisToRender;
+    static std::list<GuiImage*> guisToRender;
 
 public:
     static void init();
 
     static void refresh();
 
-    static void addGuiToRender(GuiTexture* newImage);
+    static void addImageToRender(GuiImage* newImage);
 
-    static void removeGui(GuiTexture* newImage);
+    static void removeImageToRender(GuiImage* imageToRemove);
 
     static void clearGuisToRender();
 };

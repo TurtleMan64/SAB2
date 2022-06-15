@@ -12,11 +12,14 @@ class LowQualityWater : public Entity
 private:
     static std::list<TexturedModel*> models;
 
+    int x = 0;
+    int z = 0;
+
 public:
     LowQualityWater();
 
     LowQualityWater(
-        float x, float y, float z, 
+        int x, int z, 
         float r, float g, float b, float a);
 
     void step();

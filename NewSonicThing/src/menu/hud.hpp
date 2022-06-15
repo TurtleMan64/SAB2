@@ -3,7 +3,7 @@
 
 class GUINumber;
 class GUIText;
-class GuiTexture;
+class GuiImage;
 class Timer;
 
 #include "menu.hpp"
@@ -31,7 +31,7 @@ private:
     Timer* timer = nullptr;
 
     static float bonusTimer;
-    static GuiTexture* pointBonus;
+    static GuiImage* pointBonus;
     static GLuint pointBonusIds[10];
 
 public:

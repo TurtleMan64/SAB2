@@ -2,7 +2,7 @@
 #define EMERALDMANAGER_H
 
 class EmeraldPiece;
-class GuiTexture;
+class GuiImage;
 
 #include "entity.hpp"
 #include <glad/glad.h>
@@ -25,12 +25,12 @@ private:
     static GLuint radarRedId;
     static GLuint nearPieceId;
 
-    static GuiTexture* radar1;
-    static GuiTexture* radar2;
-    static GuiTexture* radar3;
-    static GuiTexture* nearPiece;
+    static GuiImage* radar1;
+    static GuiImage* radar2;
+    static GuiImage* radar3;
+    static GuiImage* nearPiece;
 
-    static void updatePiece(EmeraldPiece* piece, float* pingTimer, GuiTexture* radar, EmeraldPiece* closestPiece);
+    static void updatePiece(EmeraldPiece* piece, float* pingTimer, GuiImage* radar, EmeraldPiece* closestPiece);
 
 public:
     EmeraldManager();

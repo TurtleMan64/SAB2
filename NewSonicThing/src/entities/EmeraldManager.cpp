@@ -10,8 +10,8 @@
 #include "../toolbox/vector.hpp"
 #include "../entities/camera.hpp"
 #include "../guis/guirenderer.hpp"
-#include "../guis/guitextureresources.hpp"
-#include "../guis/guitexture.hpp"
+#include "../guis/guiimageresources.hpp"
+#include "../guis/guiimage.hpp"
 #include "../menu/timer.hpp"
 #include "../loading/loadergl.hpp"
 #include "../renderEngine/display.hpp"
@@ -36,35 +36,31 @@ GLuint EmeraldManager::radarYellowId = 0;
 GLuint EmeraldManager::radarRedId    = 0;
 GLuint EmeraldManager::nearPieceId   = 0;
 
-GuiTexture* EmeraldManager::radar1    = nullptr;
-GuiTexture* EmeraldManager::radar2    = nullptr;
-GuiTexture* EmeraldManager::radar3    = nullptr;
-GuiTexture* EmeraldManager::nearPiece = nullptr;
+GuiImage* EmeraldManager::radar1    = nullptr;
+GuiImage* EmeraldManager::radar2    = nullptr;
+GuiImage* EmeraldManager::radar3    = nullptr;
+GuiImage* EmeraldManager::nearPiece = nullptr;
 
 EmeraldManager::~EmeraldManager()
 {
     if (EmeraldManager::radar1 != nullptr)
     {
-        GuiManager::removeGui(EmeraldManager::radar1);
-        delete EmeraldManager::radar1; INCR_DEL("GuiTexture");
+        delete EmeraldManager::radar1; INCR_DEL("GuiImage");
         EmeraldManager::radar1 = nullptr;
     }
     if (EmeraldManager::radar2 != nullptr)
     {
-        GuiManager::removeGui(EmeraldManager::radar2);
-        delete EmeraldManager::radar2; INCR_DEL("GuiTexture");
+        delete EmeraldManager::radar2; INCR_DEL("GuiImage");
         EmeraldManager::radar2 = nullptr;
     }
     if (EmeraldManager::radar3 != nullptr)
     {
-        GuiManager::removeGui(EmeraldManager::radar3);
-        delete EmeraldManager::radar3; INCR_DEL("GuiTexture");
+        delete EmeraldManager::radar3; INCR_DEL("GuiImage");
         EmeraldManager::radar3 = nullptr;
     }
     if (EmeraldManager::nearPiece != nullptr)
     {
-        GuiManager::removeGui(EmeraldManager::nearPiece);
-        delete EmeraldManager::nearPiece; INCR_DEL("GuiTexture");
+        delete EmeraldManager::nearPiece; INCR_DEL("GuiImage");
         EmeraldManager::nearPiece = nullptr;
     }
 
@@ -97,11 +93,11 @@ EmeraldManager::EmeraldManager()
     float s = 0.05f; //size of radar tiles
 
     //Create Radar gui textures
-    EmeraldManager::radar1 = new GuiTexture(EmeraldManager::radarGreyId, 0.5f-((1.5f*s)/r), 1-s, s/r, s, 0); INCR_NEW("GuiTexture");
-    EmeraldManager::radar2 = new GuiTexture(EmeraldManager::radarGreyId, 0.5f,              1-s, s/r, s, 0); INCR_NEW("GuiTexture");
-    EmeraldManager::radar3 = new GuiTexture(EmeraldManager::radarGreyId, 0.5f+((1.5f*s)/r), 1-s, s/r, s, 0); INCR_NEW("GuiTexture");
+    EmeraldManager::radar1 = new GuiImage(EmeraldManager::radarGreyId, 0.5f-((1.5f*s)/r), 1-s, s/r, s, 0); INCR_NEW("GuiImage");
+    EmeraldManager::radar2 = new GuiImage(EmeraldManager::radarGreyId, 0.5f,              1-s, s/r, s, 0); INCR_NEW("GuiImage");
+    EmeraldManager::radar3 = new GuiImage(EmeraldManager::radarGreyId, 0.5f+((1.5f*s)/r), 1-s, s/r, s, 0); INCR_NEW("GuiImage");
 
-    EmeraldManager::nearPiece = new GuiTexture(EmeraldManager::nearPieceId, 0, 0, 0.1f/r, 0.1f, 0); INCR_NEW("GuiTexture");
+    EmeraldManager::nearPiece = new GuiImage(EmeraldManager::nearPieceId, 0, 0, 0.1f/r, 0.1f, 0); INCR_NEW("GuiImage");
 
     std::vector<EmeraldPiece*> piece1List;
     std::vector<EmeraldPiece*> piece2List;
@@ -159,9 +155,9 @@ EmeraldManager::EmeraldManager()
     {
         EmeraldManager::piecesRemaining = totalPieces;
 
-        EmeraldManager::radar1->setVisible(false);
-        EmeraldManager::radar2->setVisible(false);
-        EmeraldManager::radar3->setVisible(false);
+        EmeraldManager::radar1->visible = false;
+        EmeraldManager::radar2->visible = false;
+        EmeraldManager::radar3->visible = false;
     }
     else if (Global::gameIsNormalMode)
     {
@@ -269,22 +265,22 @@ EmeraldManager::EmeraldManager()
             }
         }
 
-        EmeraldManager::radar1->setVisible(false);
-        EmeraldManager::radar2->setVisible(false);
-        EmeraldManager::radar3->setVisible(false);
+        EmeraldManager::radar1->visible = false;
+        EmeraldManager::radar2->visible = false;
+        EmeraldManager::radar3->visible = false;
     }
 }
 
-void EmeraldManager::updatePiece(EmeraldPiece* piece, float* pingTimer, GuiTexture* radar, EmeraldPiece* closestPiece)
+void EmeraldManager::updatePiece(EmeraldPiece* piece, float* pingTimer, GuiImage* radar, EmeraldPiece* closestPiece)
 {
     extern float dt;
 
     if (piece == nullptr)
     {
-        radar->setVisible(false);
+        radar->visible = false;
         return;
     }
-    radar->setTexture(EmeraldManager::radarGreyId);
+    radar->textureId = EmeraldManager::radarGreyId;
     radar->setScale(1);
 
     float distToPiece =  (piece->position - Global::gameMainPlayer->position).length();
@@ -313,7 +309,7 @@ void EmeraldManager::updatePiece(EmeraldPiece* piece, float* pingTimer, GuiTextu
         {
             *pingTimer += 1.0f;
         }
-        radar->setTexture(EmeraldManager::radarBlueId);
+        radar->textureId = EmeraldManager::radarBlueId;
         radar->setScale(1 + 0.5f*(*pingTimer));
     }
     else if (distToPiece >= 200 && distToPiece < 600)
@@ -322,7 +318,7 @@ void EmeraldManager::updatePiece(EmeraldPiece* piece, float* pingTimer, GuiTextu
         {
             *pingTimer = 0.5f;
         }
-        radar->setTexture(EmeraldManager::radarGreenId);
+        radar->textureId = EmeraldManager::radarGreenId;
         radar->setScale(1 + 0.5f*(*pingTimer/0.5f));
     }
     else if (distToPiece >= 50 && distToPiece < 200)
@@ -331,7 +327,7 @@ void EmeraldManager::updatePiece(EmeraldPiece* piece, float* pingTimer, GuiTextu
         {
             *pingTimer = 0.25f;
         }
-        radar->setTexture(EmeraldManager::radarYellowId);
+        radar->textureId = EmeraldManager::radarYellowId;
         radar->setScale(1 + 0.5f*(*pingTimer/0.25f));
     }
     else if (distToPiece >= 0 && distToPiece < 50)
@@ -340,7 +336,7 @@ void EmeraldManager::updatePiece(EmeraldPiece* piece, float* pingTimer, GuiTextu
         {
             *pingTimer = 0.2f;
         }
-        radar->setTexture(EmeraldManager::radarRedId);
+        radar->textureId = EmeraldManager::radarRedId;
         radar->setScale(1 + 0.5f*(*pingTimer/0.2f));
     }
 }
@@ -357,9 +353,9 @@ void EmeraldManager::step()
     EmeraldManager::updatePiece(EmeraldManager::piece2, &EmeraldManager::pingTimer2, EmeraldManager::radar2, closestPiece);
     EmeraldManager::updatePiece(EmeraldManager::piece3, &EmeraldManager::pingTimer3, EmeraldManager::radar3, closestPiece);
 
-    GuiManager::addGuiToRender(EmeraldManager::radar1);
-    GuiManager::addGuiToRender(EmeraldManager::radar2);
-    GuiManager::addGuiToRender(EmeraldManager::radar3);
+    GuiManager::addImageToRender(EmeraldManager::radar1);
+    GuiManager::addImageToRender(EmeraldManager::radar2);
+    GuiManager::addImageToRender(EmeraldManager::radar3);
 
     if (closestPiece != nullptr)
     {
@@ -370,7 +366,7 @@ void EmeraldManager::step()
             pos.y += 15;
             Vector2f screenPos = Maths::calcScreenCoordsOfWorldPoint(&pos);
             EmeraldManager::nearPiece->getPosition()->set(&screenPos);
-            GuiManager::addGuiToRender(EmeraldManager::nearPiece);
+            GuiManager::addImageToRender(EmeraldManager::nearPiece);
         }
     }
 }

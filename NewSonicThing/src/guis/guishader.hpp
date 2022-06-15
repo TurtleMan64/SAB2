@@ -9,11 +9,12 @@ class Vector3f;
 class GuiShader
 {
 private:
-    GLuint programId;
-    GLuint vertexShaderId;
-    GLuint fragmentShaderId;
+    GLuint programId        = GL_NONE;
+    GLuint vertexShaderId   = GL_NONE;
+    GLuint fragmentShaderId = GL_NONE;
 
     int location_transformationMatrix;
+    int location_alpha;
 
 public:
     GuiShader(const char* vertFile, const char* fragFile);
@@ -26,6 +27,7 @@ public:
 
     void loadTransformation(Matrix4f* matrix);
 
+    void loadAlpha(float alpha);
 
 protected:
     void bindAttributes();
@@ -37,6 +39,8 @@ protected:
     int getUniformLocation(const char* uniName);
 
     void loadMatrix(int location, Matrix4f* matrix);
+
+    void loadFloat(int location, float alpha);
 };
 
 #endif

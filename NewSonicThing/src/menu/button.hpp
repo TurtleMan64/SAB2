@@ -5,22 +5,22 @@ class GUIText;
 class FontType;
 
 #include <string>
-#include "../guis/guitexture.hpp"
+#include "../guis/guiimage.hpp"
 #include <glad/glad.h>
 
 class Button
 {
 private:
-    bool visible;
-    bool visibleHighlight;
+    bool visible = false;
+    bool visibleHighlight = false;
 
     GUIText* text = nullptr;
-    bool textIsLeftAnchored;
-    float scaleX;
-    float anchorOffset = 0;
+    bool textIsLeftAnchored = false;
+    float scaleX = 1.0f;
+    float anchorOffset = 0.0f;
 
-    GuiTexture texture;
-    GuiTexture textureHighlight; // For Arcade
+    GuiImage* texture = nullptr;
+    GuiImage* textureHighlight = nullptr;
 
 public:
     /*

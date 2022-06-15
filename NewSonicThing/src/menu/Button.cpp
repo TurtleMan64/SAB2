@@ -4,7 +4,7 @@
 #include "../fontMeshCreator/guitext.hpp"
 #include "../fontMeshCreator/fonttype.hpp"
 #include "../guis/guimanager.hpp"
-#include "../guis/guitexture.hpp"
+#include "../guis/guiimage.hpp"
 #include "../renderEngine/display.hpp"
 
 /*
@@ -19,8 +19,8 @@
 Button::Button(std::string label, FontType* font, GLuint texture, GLuint highlight, float posX, float posY, float scaleX, float scaleY, bool visible)
 {
     this->text = new GUIText(label, scaleY, font, posX, posY, 4, true); INCR_NEW("GUIText");
-    this->texture = GuiTexture(texture, posX, posY, scaleX, scaleY, 0);
-    this->textureHighlight = GuiTexture(highlight, posX, posY, scaleX, scaleY, 0);
+    this->texture = new GuiImage(texture, posX, posY, scaleX, scaleY, 0); INCR_NEW("GuiImage");
+    this->textureHighlight = new GuiImage(highlight, posX, posY, scaleX, scaleY, 0); INCR_NEW("GuiImage");
     this->textIsLeftAnchored = false;
     this->scaleX = scaleX;
 
@@ -44,8 +44,8 @@ Button::Button(std::string label, FontType* font, GLuint textureId, GLuint highl
     this->scaleX = scaleX;
     textIsLeftAnchored = leftAnchored;
 
-    texture = GuiTexture(textureId, posX, posY, scaleX, scaleY, 0);
-    textureHighlight = GuiTexture(highlight, posX, posY, scaleX, scaleY, 0);
+    texture = new GuiImage(textureId, posX, posY, scaleX, scaleY, 0); INCR_NEW("GuiImage");
+    textureHighlight = new GuiImage(highlight, posX, posY, scaleX, scaleY, 0); INCR_NEW("GuiImage");
 
     Button::setVisible(visible);
 }
@@ -53,6 +53,8 @@ Button::Button(std::string label, FontType* font, GLuint textureId, GLuint highl
 Button::~Button()
 {
     this->text->deleteMe(); delete this->text; INCR_DEL("GUIText");
+    delete texture; INCR_DEL("GuiImage");
+    delete textureHighlight; INCR_DEL("GuiImage");
 }
 
 void Button::generateText(std::string newText)
@@ -83,7 +85,6 @@ void Button::generateText(std::string newText, bool darkText)
     }
 }
 
-// Changes the button position. Should be preceded by GuiManager::clearGuisToRender.
 void Button::setPos(float xPos, float yPos)
 {
     if (textIsLeftAnchored)
@@ -97,10 +98,10 @@ void Button::setPos(float xPos, float yPos)
         text->getPosition()->y = yPos;
     }
 
-    this->texture.setX(xPos);
-    this->texture.setY(yPos);
-    this->textureHighlight.setX(xPos);
-    this->textureHighlight.setY(yPos);
+    this->texture->setX(xPos);
+    this->texture->setY(yPos);
+    this->textureHighlight->setX(xPos);
+    this->textureHighlight->setY(yPos);
 }
 
 void Button::setVisible(bool makeVisible)
@@ -108,18 +109,16 @@ void Button::setVisible(bool makeVisible)
     this->text->setVisibility(makeVisible);
     if (!makeVisible && this->visible)
     {
-        GuiManager::removeGui(&this->texture);
-        GuiManager::removeGui(&this->textureHighlight);
-
         this->visible = makeVisible;
         this->text->setVisibility(false);
         this->visibleHighlight = makeVisible;
     }
     else if (makeVisible)
     {
-        GuiManager::addGuiToRender(&this->texture);
+        GuiManager::addImageToRender(this->texture);
         this->text->setVisibility(true);
         this->visible = makeVisible;
+        this->texture->alpha = 0.2f;
     }
 }
 
@@ -127,13 +126,15 @@ void Button::setHighlight(bool makeVisible)
 {
     if (this->visibleHighlight && !makeVisible)
     {
-        GuiManager::removeGui(&this->textureHighlight);
         this->visibleHighlight = false;
+        this->texture->alpha = 0.2f;
     }
     else if (!this->visibleHighlight && makeVisible)
     {
-        GuiManager::addGuiToRender(&this->textureHighlight);
+        //GuiManager::addImageToRender(this->textureHighlight);
+        //GuiManager::removeImageToRender(this->texture);
         this->visibleHighlight = true;
+        this->texture->alpha = 1.0f;
     }
 }
 

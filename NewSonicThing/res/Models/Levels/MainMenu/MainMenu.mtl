@@ -1,0 +1,136 @@
+# Material Count: 17
+
+newmtl material_53_ecch_128s_sunakusa.png
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd ecch_128s_sunakusa.png
+
+newmtl material_13
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+Tr 0
+renderOrder 1
+map_Kd era_s_kuro.png
+
+newmtl material_56
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd mrb_256s_pekia.png
+
+newmtl material_5
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+mixLinear
+animSpeed 2
+numImages 10
+map_Kd s_m128_sea001.png
+s_m128_sea002.png
+s_m128_sea003.png
+s_m128_sea004.png
+s_m128_sea005.png
+s_m128_sea006.png
+s_m128_sea007.png
+s_m128_sea008.png
+s_m128_sea009.png
+s_m128_sea010.png
+
+newmtl material_8
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd edb_o_isu01.png
+
+newmtl material_14
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd edb_o_kasa01.png
+
+newmtl material_7
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd edb_o_isu03.png
+
+newmtl material_11
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd edb_o_isu05.png
+
+newmtl material_55
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd mrb_256s_pekie.png
+
+newmtl material_20
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd mrb_128s_kusa.png
+
+newmtl material_10
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd edb_o_isu02.png
+
+newmtl material_51
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd ecch_128s_suna.png
+
+newmtl material_12
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd edb_o_isu06.png
+
+newmtl material_15
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd edb_o_kasa02.png
+
+newmtl material_6
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd edb_o_kankyo4.png
+
+newmtl material_9
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd edb_o_isu04.png
+
+newmtl material_36
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+Tr 0
+renderOrder 1
+animSpeed 7
+mixLinear
+numImages 15
+map_Kd s_m128_wave001.png
+s_m128_wave002.png
+s_m128_wave003.png
+s_m128_wave004.png
+s_m128_wave005.png
+s_m128_wave006.png
+s_m128_wave007.png
+s_m128_wave008.png
+s_m128_wave009.png
+s_m128_wave010.png
+s_m128_wave011.png
+s_m128_wave012.png
+s_m128_wave013.png
+s_m128_wave014.png
+s_m128_wave015.png

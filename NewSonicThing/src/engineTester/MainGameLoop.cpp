@@ -60,9 +60,9 @@
 #include "../postProcessing/postprocessing.hpp"
 #include "../postProcessing/fbo.hpp"
 #include "../guis/guirenderer.hpp"
-#include "../guis/guitextureresources.hpp"
+#include "../guis/guiimageresources.hpp"
 #include "../toolbox/level.hpp"
-#include "../guis/guitexture.hpp"
+#include "../guis/guiimage.hpp"
 #include "../particles/particle.hpp"
 #include "../entities/skysphere.hpp"
 #include "../fontMeshCreator/guinumber.hpp"
@@ -248,8 +248,6 @@ int main(int argc, char** argv)
     {
         Global::pathToEXE = argv[0];
 
-        printf("%s\n", argv[0]);
-
         #ifdef _WIN32
         int idx = (int)Global::pathToEXE.find_last_of('\\', Global::pathToEXE.size());
         Global::pathToEXE = Global::pathToEXE.substr(0, idx+1);
@@ -374,7 +372,7 @@ int main(int argc, char** argv)
         ParticleResources::loadParticles();
     }
 
-    GuiTextureResources::loadGuiTextures();
+    GuiImageResources::loadGuiImages();
 
     CollisionChecker::initChecker();
     AnimationResources::createAnimations();
@@ -437,10 +435,12 @@ int main(int argc, char** argv)
 
     Global::gameState = STATE_TITLE;
 
-    GuiTexture* rankDisplay = nullptr;
+    GuiImage* rankDisplay = nullptr;
+
+    LevelLoader::loadTitle();
 
     //extern GLuint transparentDepthTexture;
-    //GuiTexture* debugDepth = new GuiTexture(transparentDepthTexture, 0.2f, 0.8f, 0.3f, 0.3f, 0); INCR_NEW("GuiTexture");
+    //GuiImage* debugDepth = new GuiImage(transparentDepthTexture, 0.2f, 0.8f, 0.3f, 0.3f, 0); INCR_NEW("GuiImage");
 
     std::list<std::unordered_set<Entity*>*> entityChunkedList;
 
@@ -702,8 +702,13 @@ int main(int argc, char** argv)
             {
                 //vsync during title. no need to stress the system.
                 glfwSwapInterval(1);
+
+                skySphere.step();
+                ModelTexture::updateAnimations(dt);
                 Global::gameCamera->refresh();
                 ParticleMaster::update(Global::gameCamera);
+                Global::gameClock+=dt;
+
                 break;
             }
 
@@ -760,7 +765,6 @@ int main(int argc, char** argv)
             MasterRenderer::processEntity(Global::gameStageManager);
         }
         MasterRenderer::processEntity(&stage);
-        //Master_renderShadowMaps(&lightSun);
         MasterRenderer::processEntity(&skySphere);
 
         float waterBlendAmount = 0.0f;
@@ -852,7 +856,7 @@ int main(int argc, char** argv)
 
         if (rankDisplay != nullptr)
         {
-            GuiManager::addGuiToRender(rankDisplay);
+            GuiManager::addImageToRender(rankDisplay);
         }
 
         //GuiManager::addGuiToRender(debugDepth);
@@ -984,11 +988,11 @@ int main(int argc, char** argv)
                 rankDisplay = nullptr;
                 switch (rank)
                 {
-                    case 0: rankDisplay = GuiTextureResources::textureRankE; break;
-                    case 1: rankDisplay = GuiTextureResources::textureRankD; break;
-                    case 2: rankDisplay = GuiTextureResources::textureRankC; break;
-                    case 3: rankDisplay = GuiTextureResources::textureRankB; break;
-                    case 4: rankDisplay = GuiTextureResources::textureRankA; break;
+                    case 0: rankDisplay = GuiImageResources::textureRankE; break;
+                    case 1: rankDisplay = GuiImageResources::textureRankD; break;
+                    case 2: rankDisplay = GuiImageResources::textureRankC; break;
+                    case 3: rankDisplay = GuiImageResources::textureRankB; break;
+                    case 4: rankDisplay = GuiImageResources::textureRankA; break;
                     default: break;
                 }
                 AudioPlayer::play(44, &Global::gameMainPlayer->position);
@@ -1385,11 +1389,11 @@ void Global::saveConfigData()
     {
         file << "#Volume of sound effects.\n";
         file << "#Should be 0 for no sfx, 100 for full volume sfx.\n";
-        file << "SFX_Volume " << (int)(AudioPlayer::soundLevelSFX*100) << "\n\n";
+        file << "SFX_Volume " << (int)std::round(AudioPlayer::soundLevelSFX*100) << "\n\n";
 
         file << "#Volume of music.\n";
         file << "#Should be 0 for no music, 100 for full volume music.\n";
-        file << "Music_Volume " << (int)(AudioPlayer::soundLevelBGM*100) << "\n";
+        file << "Music_Volume " << (int)std::round(AudioPlayer::soundLevelBGM*100) << "\n";
 
         file.close();
     }
@@ -1826,15 +1830,15 @@ void Global::createTitleCard()
     switch (Global::currentCharacterType)
     {
         case Global::PlayableCharacter::Sonic:
-            GuiManager::addGuiToRender(GuiTextureResources::textureLineBlue);
+            GuiManager::addImageToRender(GuiImageResources::textureLineBlue);
             break;
 
         case Global::PlayableCharacter::Tails:
-            GuiManager::addGuiToRender(GuiTextureResources::textureLineYellow);
+            GuiManager::addImageToRender(GuiImageResources::textureLineYellow);
             break;
 
         case Global::PlayableCharacter::Knuckles:
-            GuiManager::addGuiToRender(GuiTextureResources::textureLineRed);
+            GuiManager::addImageToRender(GuiImageResources::textureLineRed);
             break;
 
         default: break;

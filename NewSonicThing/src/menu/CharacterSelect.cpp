@@ -16,9 +16,9 @@
 #include "../audio/audioplayer.hpp"
 #include "../audio/source.hpp"
 #include "../entities/camera.hpp"
-#include "../guis/guitextureresources.hpp"
+#include "../guis/guiimageresources.hpp"
 #include "../guis/guimanager.hpp"
-#include "../guis/guitexture.hpp"
+#include "../guis/guiimage.hpp"
 #include "button.hpp"
 #include "mainmenu.hpp"
 #include "missionmenu.hpp"
@@ -60,9 +60,9 @@ void CharacterSelect::loadResources()
     buttonsCharacterNames.push_back(new Button("Knuckles", Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (separation*(2)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
 
     characterIcons.clear();
-    characterIcons.push_back(GuiTexture(textureSonic,    0.68f, 0.5f + (separation*(0)), separation/aspectRatio, separation, 0));
-    characterIcons.push_back(GuiTexture(textureTails,    0.68f, 0.5f + (separation*(1)), separation/aspectRatio, separation, 0));
-    characterIcons.push_back(GuiTexture(textureKnuckles, 0.68f, 0.5f + (separation*(2)), separation/aspectRatio, separation, 0));
+    characterIcons.push_back(new GuiImage(textureSonic,    0.68f, 0.5f + (separation*(0)), separation/aspectRatio, separation, 0)); INCR_NEW("GuiImage");
+    characterIcons.push_back(new GuiImage(textureTails,    0.68f, 0.5f + (separation*(1)), separation/aspectRatio, separation, 0)); INCR_NEW("GuiImage");
+    characterIcons.push_back(new GuiImage(textureKnuckles, 0.68f, 0.5f + (separation*(2)), separation/aspectRatio, separation, 0)); INCR_NEW("GuiImage");
 }
 
 void CharacterSelect::unloadResources()
@@ -91,7 +91,7 @@ void CharacterSelect::unloadResources()
 
     for (int i = 0; i < (int)characterIcons.size(); i++)
     {
-        GuiManager::removeGui(&characterIcons[i]);
+        delete characterIcons[i]; INCR_DEL("GuiImage");
     }
     characterIcons.clear();
 
@@ -120,8 +120,8 @@ void CharacterSelect::draw()
 
         for (int i = 0; i < (int)characterIcons.size(); i++)
         {
-            characterIcons[i].setY(0.5f + offsetCurr + (separation*(i)));
-            GuiManager::addGuiToRender(&characterIcons[i]);
+            characterIcons[i]->setY(0.5f + offsetCurr + (separation*(i)));
+            GuiManager::addImageToRender(characterIcons[i]);
         }
     }
 

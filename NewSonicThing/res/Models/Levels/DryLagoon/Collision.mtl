@@ -3,6 +3,7 @@
 newmtl Mesh_0482.rip
 Ns 37.254902
 Ni 1.000000
+type nocam
 d 0.000000
 map_Kd Tex_0063_0.dds
 
@@ -139,6 +140,7 @@ map_Kd kd_dl_hasira3_vq.png
 newmtl Mesh_0481.rip
 Ns 37.254902
 Ni 1.000000
+type nocam
 d 0.000000
 map_Kd Tex_0062_0.dds
 

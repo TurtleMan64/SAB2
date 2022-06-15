@@ -162,7 +162,10 @@ void LevelLoader::loadTitle()
     Global::startStageTimer = -1;
 
     Global::stageUsesWater = true;
-    Global::waterHeight = 0.0f;
+    Global::waterHeight = 1.5f;
+    Global::stageWaterMurkyAmount = 0.0f;
+    Global::stageWaterBlendAmount = 0.0f;
+    Global::stageWaterColor = Vector3f(0, 0, 0);
 
     Global::gameRingCount = 0;
     Global::gameScore = 0;
@@ -192,7 +195,50 @@ void LevelLoader::loadTitle()
 
     Global::gameLightSun->direction.set(0, -1, 0);
 
+    SkyManager::setTimeOfDay(155.0f);
+    SkyManager::fogBottomPosition = -1000.0f;
+    SkyManager::fogBottomThickness = 1.0f;
+    SkyManager::setFogVars(0.00000000005f, 2.0f);
+    Vector3f fogDay(0.0922f, 0.4961f, 0.7059f);
+    Vector3f fogNight(0.05f, 0.05f, 0.075f);
+    SkyManager::setFogColors(&fogDay, &fogNight);
+
     MasterRenderer::VFOV_ADDITION = 0;
+
+    Global::renderWithCulling = false;
+
+    // load in the beach model
+    {
+        Stage::deleteModels();
+
+        std::vector<std::string> fnames;
+        std::vector<std::vector<Vector3f>> mins;
+        std::vector<std::vector<Vector3f>> maxs;
+
+        fnames.push_back("MainMenu6");
+
+        std::vector<Vector3f> minList;
+        std::vector<Vector3f> maxList;
+
+        minList.push_back(Vector3f(-10000, -10000, -10000));
+        maxList.push_back(Vector3f( 10000,  10000,  10000));
+
+        mins.push_back(minList);
+        maxs.push_back(maxList);
+
+        Stage::loadModels("Levels/MainMenu", &fnames, &mins, &maxs);
+        Stage::respawnChunks();
+
+        //Global::gameCamera->eye.set(-42.3515f, 19.4405f, -245.31f);
+        //Global::gameCamera->target.set(-146.867f, 1.56817f, -261.094f);
+        Global::gameCamera->eye.set(-42.3515f, 18.4405f, -245.31f);
+        Global::gameCamera->target.set(-146.867f, 15.56817f, -261.094f);
+        Global::gameCamera->up.set(0, 1, 0);
+    }
+
+    AudioPlayer::loadBGM((char*)"res/Audio/BGM/AmbientWaves_intro.ogg");
+    AudioPlayer::loadBGM((char*)"res/Audio/BGM/AmbientWaves_loop.ogg");
+    AudioPlayer::playBGMWithIntro(0, 1);
 
     //use vsync on the title screen
     glfwSwapInterval(1); 
@@ -940,7 +986,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
         }
     }
 
-    //GuiManager::addGuiToRender(GuiTextureResources::textureRing);
+    //GuiManager::addGuiToRender(GuiImageResources::textureRing);
 
     Global::finishStageTimer = -1.0f;
 
@@ -1292,9 +1338,9 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             {
                 LowQualityWater::loadStaticModels();
                 LowQualityWater* water = new LowQualityWater(
-                    toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
-                    toFloat(dat[4]), toFloat(dat[5]), toFloat(dat[6]), //color
-                    toFloat(dat[7]));                                  //alpha
+                    toInt(dat[1]), toInt(dat[2]),                      //position
+                    toFloat(dat[3]), toFloat(dat[4]), toFloat(dat[5]), //color
+                    toFloat(dat[6]));                                  //alpha
                 INCR_NEW("Entity");
                 Global::addEntity(water);
             }

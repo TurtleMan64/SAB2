@@ -11,8 +11,8 @@ class Extras : public Menu
 private:
     GUIText* textTime = nullptr;
     GUIText* timeBro = nullptr;
-    bool selectInputPrevious;
-    bool backInputPrevious;
+    bool selectInputPrevious = false;
+    bool backInputPrevious = false;
 
 public:
     Extras();

@@ -13,7 +13,7 @@
 #include <cmath>
 #include <string>
 
-std::list<GuiTexture*> GuiManager::guisToRender;
+std::list<GuiImage*> GuiManager::guisToRender;
 
 void GuiManager::init()
 {
@@ -22,16 +22,15 @@ void GuiManager::init()
 
 void GuiManager::refresh()
 {
-    //Render images
     GuiRenderer::render(&GuiManager::guisToRender);
 }
 
-void GuiManager::addGuiToRender(GuiTexture* newImage)
+void GuiManager::addImageToRender(GuiImage* newImage)
 {
     GuiManager::guisToRender.push_back(newImage);
 }
 
-void GuiManager::removeGui(GuiTexture* imageToRemove)
+void GuiManager::removeImageToRender(GuiImage* imageToRemove)
 {
     GuiManager::guisToRender.remove(imageToRemove);
 }

@@ -31,7 +31,7 @@
 #include "stage.hpp"
 #include "shieldgreen.hpp"
 #include "shieldmagnet.hpp"
-#include "../guis/guitexture.hpp"
+#include "../guis/guiimage.hpp"
 #include "../menu/hud.hpp"
 #include "../renderEngine/masterrenderer.hpp"
 
@@ -72,8 +72,8 @@ PlayerTails::PlayerTails(float x, float y, float z)
     {
         float aspectRatio = Display::ASPECT_RATIO;
 
-        homingAttackReticle = new GuiTexture(LoaderGL::loadTexture("res/Images/HomingReticleSmooth.png"), 0.5f, 0.5f, 0.1f/aspectRatio, 0.1f, 0); INCR_NEW("GuiTexture")
-        homingAttackReticle->setVisible(true);
+        homingAttackReticle = new GuiImage(LoaderGL::loadTexture("res/Images/HomingReticleSmooth.png"), 0.5f, 0.5f, 0.1f/aspectRatio, 0.1f, 0); INCR_NEW("GuiImage");
+        homingAttackReticle->visible = true;
     }
 }
 
@@ -81,8 +81,8 @@ PlayerTails::~PlayerTails()
 {
     if (homingAttackReticle != nullptr)
     {
-        LoaderGL::deleteTexture(homingAttackReticle->getTexture());
-        delete homingAttackReticle; homingAttackReticle = nullptr; INCR_DEL("GuiTexture")
+        LoaderGL::deleteTexture(homingAttackReticle->textureId);
+        delete homingAttackReticle; homingAttackReticle = nullptr; INCR_DEL("GuiImage");
     }
 
     if (sourceFly != nullptr)
@@ -329,8 +329,8 @@ void PlayerTails::step()
     }
 
     //Homing attack
-    homingAttackReticle->setVisible(false);
-    GuiManager::addGuiToRender(homingAttackReticle);
+    homingAttackReticle->visible = false;
+    GuiManager::addImageToRender(homingAttackReticle);
     if (onGround)
     {
         homingAttackTimer = -1.0f;
@@ -347,7 +347,7 @@ void PlayerTails::step()
             {
                 Vector2f pos = Maths::calcScreenCoordsOfWorldPoint(&homeTar);
                 homingAttackReticle->getPosition()->set(&pos);
-                homingAttackReticle->setVisible(true);
+                homingAttackReticle->visible = true;
             }
 
             if (inputJump && !inputJumpPrevious)

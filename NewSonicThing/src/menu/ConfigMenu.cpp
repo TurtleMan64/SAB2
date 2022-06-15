@@ -16,9 +16,9 @@
 #include "../audio/audioplayer.hpp"
 #include "../audio/source.hpp"
 #include "../entities/camera.hpp"
-#include "../guis/guitextureresources.hpp"
+#include "../guis/guiimageresources.hpp"
 #include "../guis/guimanager.hpp"
-#include "../guis/guitexture.hpp"
+#include "../guis/guiimage.hpp"
 #include "button.hpp"
 #include "mainmenu.hpp"
 #include "../toolbox/maths.hpp"
@@ -113,8 +113,6 @@ void ConfigMenu::unloadResources()
     {
         std::fprintf(stdout, "Warning: ConfigMenu unloading resources when they are empty.\n");
     }
-
-    GuiManager::clearGuisToRender(); //gets rid of some annoying bug. prints a gl error without this sometimes
 
     LoaderGL::deleteTexture(textureParallelogram);
     LoaderGL::deleteTexture(textureParallelogramBackdrop);

@@ -85,15 +85,15 @@ void WaterRenderer::setUpVAO()
     vertices.push_back(-1);
     vertices.push_back(-1);
     vertices.push_back(-1);
-    vertices.push_back(1);
-    vertices.push_back(1);
+    vertices.push_back( 1);
+    vertices.push_back( 1);
     vertices.push_back(-1);
-    vertices.push_back(1);
+    vertices.push_back( 1);
     vertices.push_back(-1);
     vertices.push_back(-1);
-    vertices.push_back(1);
-    vertices.push_back(1);
-    vertices.push_back(1);
+    vertices.push_back( 1);
+    vertices.push_back( 1);
+    vertices.push_back( 1);
 
     quad = new RawModel(LoaderGL::loadToVAO(&vertices, 2)); INCR_NEW("RawModel");
 }

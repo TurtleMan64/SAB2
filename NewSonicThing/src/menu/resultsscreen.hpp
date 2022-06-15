@@ -15,9 +15,9 @@ private:
     void loadResources();
     void unloadResources();
 
-    float fontSize;
-    bool selectInputPrevious;
-    bool backInputPrevious;
+    float fontSize = 1.0f;
+    bool selectInputPrevious = false;
+    bool backInputPrevious = false;
 
     GUIText* textArcadeModeClear = nullptr;
     GUIText* textClearTime = nullptr;

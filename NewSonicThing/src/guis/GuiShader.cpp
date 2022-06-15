@@ -49,6 +49,11 @@ void GuiShader::loadTransformation(Matrix4f* matrix)
     loadMatrix(location_transformationMatrix, matrix);
 }
 
+void GuiShader::loadAlpha(float alpha)
+{
+    loadFloat(location_alpha, alpha);
+}
+
 void GuiShader::bindAttributes()
 {
     bindAttribute(0, "position");
@@ -62,6 +67,7 @@ void GuiShader::bindAttribute(int attribute, const char* variableName)
 void GuiShader::getAllUniformLocations()
 {
     location_transformationMatrix = getUniformLocation("transformationMatrix");
+    location_alpha                = getUniformLocation("alpha");
 }
 
 int GuiShader::getUniformLocation(const char* uniformName)
@@ -75,4 +81,9 @@ void GuiShader::loadMatrix(int location, Matrix4f* matrix)
 {
     matrix->store(guiMatrixBuffer);
     glUniformMatrix4fv(location, 1, GL_FALSE, guiMatrixBuffer);
+}
+
+void GuiShader::loadFloat(int location, float alpha)
+{
+    glUniform1f(location, alpha);
 }

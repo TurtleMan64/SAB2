@@ -6,13 +6,13 @@
 class WaterFrameBuffers
 {
 private:
-    GLuint reflectionFrameBuffer;
-    GLuint reflectionTexture;
-    GLuint reflectionDepthBuffer;
+    GLuint reflectionFrameBuffer = GL_NONE;
+    GLuint reflectionTexture     = GL_NONE;
+    GLuint reflectionDepthBuffer = GL_NONE;
 
-    GLuint refractionFrameBuffer;
-    GLuint refractionTexture;
-    GLuint refractionDepthTexture;
+    GLuint refractionFrameBuffer  = GL_NONE;
+    GLuint refractionTexture      = GL_NONE;
+    GLuint refractionDepthTexture = GL_NONE;
 
     void initialiseReflectionFrameBuffer();
 

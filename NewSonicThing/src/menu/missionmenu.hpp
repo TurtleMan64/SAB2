@@ -2,7 +2,7 @@
 #define MISSIONMENU_H
 
 class Button;
-class GuiTexture;
+class GuiImage;
 
 #include <glad/glad.h>
 #include <vector>
@@ -17,15 +17,15 @@ private:
     GLuint textureParallelogramHalfBackdrop  = GL_NONE;
     GLuint textureParallelogramHalf2         = GL_NONE;
     GLuint textureParallelogramHalf2Backdrop = GL_NONE;
-    GLuint textureRankA  = GL_NONE;
-    GLuint textureRankB  = GL_NONE;
-    GLuint textureRankC  = GL_NONE;
-    GLuint textureRankD  = GL_NONE;
-    GLuint textureRankE  = GL_NONE;
-    GLuint textureBlank  = GL_NONE;
-    GLuint textureSelect = GL_NONE;
-    GLuint textureNpcFound = GL_NONE;
-    GLuint textureNpcLost = GL_NONE;
+    GLuint textureRankA       = GL_NONE;
+    GLuint textureRankB       = GL_NONE;
+    GLuint textureRankC       = GL_NONE;
+    GLuint textureRankD       = GL_NONE;
+    GLuint textureRankE       = GL_NONE;
+    GLuint textureBlank       = GL_NONE;
+    GLuint textureSelect      = GL_NONE;
+    GLuint textureNpcFound    = GL_NONE;
+    GLuint textureNpcLost     = GL_NONE;
     GLuint textureEmeraldLost = GL_NONE;
 
     int moveXPrevious = 0;
@@ -40,13 +40,13 @@ private:
     std::vector<Button*> levelButtons;
 
     Button* missionButton = nullptr;
-    GuiTexture* rankM1 = nullptr;
-    GuiTexture* rankM2 = nullptr;
-    GuiTexture* rankM3 = nullptr;
-    GuiTexture* rankM4 = nullptr;
-    GuiTexture* missionSelect = nullptr;
-    GuiTexture* npc = nullptr;
-    GuiTexture* emerald = nullptr;
+    GuiImage* rankM1 = nullptr;
+    GuiImage* rankM2 = nullptr;
+    GuiImage* rankM3 = nullptr;
+    GuiImage* rankM4 = nullptr;
+    GuiImage* missionSelect = nullptr;
+    GuiImage* npc = nullptr;
+    GuiImage* emerald = nullptr;
 
     Button* timeButton  = nullptr;
     Button* scoreButton = nullptr;
@@ -68,7 +68,7 @@ public:
     void unloadResources();
     Menu* step();
     
-    float fontSize;
+    float fontSize = 1.0f;
 };
 
 #endif

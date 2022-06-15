@@ -16,7 +16,7 @@
 #include "../particles/particletexture.hpp"
 #include "../entities/camera.hpp"
 #include "../particles/particlemaster.hpp"
-#include "../guis/guitextureresources.hpp"
+#include "../guis/guiimageresources.hpp"
 #include "../guis/guimanager.hpp"
 #include "hud.hpp"
 #include "timer.hpp"
@@ -120,8 +120,8 @@ Menu* PauseScreen::step()
     selectButton();
 
     //Add life and ring icon since the HUD is no longer being drawn
-    GuiManager::addGuiToRender(GuiTextureResources::textureLifeIcon);
-    GuiManager::addGuiToRender(GuiTextureResources::textureRing);
+    GuiManager::addImageToRender(GuiImageResources::textureLifeIcon);
+    GuiManager::addImageToRender(GuiImageResources::textureRing);
 
     if (pressedSelect)
     {

@@ -1,0 +1,182 @@
+# Material Count: 24
+
+newmtl material_489
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd 18fd1252.png
+
+newmtl None
+Ns 20.000000
+Ni 0.000000
+Tr 0.5
+d 1.000000
+map_Kd black.png
+
+newmtl 43_43_43
+Ns 10.000000
+Ni 0.000000
+d 1.000000
+map_Kd 43_43_43.png
+
+newmtl material_53_ecch_128s_sunakusa.png
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd ecch_128s_sunakusa.png
+
+newmtl material_13
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+Tr 0
+renderOrder 1
+map_Kd era_s_kuro.png
+
+newmtl material_56
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd mrb_256s_pekia.png
+
+newmtl 170_21_21
+Ns 10.000000
+Ni 0.000000
+d 1.000000
+map_Kd 170_21_21.png
+
+newmtl material_5
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+mixSinusoidal
+animSpeed 2
+numImages 10
+map_Kd s_m128_sea001.png
+s_m128_sea002.png
+s_m128_sea003.png
+s_m128_sea004.png
+s_m128_sea005.png
+s_m128_sea006.png
+s_m128_sea007.png
+s_m128_sea008.png
+s_m128_sea009.png
+s_m128_sea010.png
+
+newmtl 255_217_0
+Ns 10.000000
+Ni 0.000000
+d 1.000000
+map_Kd 255_217_0.png
+
+newmtl 250_21_21
+Ns 10.000000
+Ni 0.000000
+d 1.000000
+map_Kd 250_21_21.png
+
+newmtl material_487
+Ns 20.000000
+Ni 0.000000
+d 0.000000
+fogScale 0
+glow 1
+map_Kd skybg.png
+
+newmtl material_487_b1ebf29c.png
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd b1ebf29c.png
+
+newmtl 250_251_254
+Ns 10.000000
+Ni 0.000000
+d 1.000000
+map_Kd 250_251_254.png
+
+newmtl material_14
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd edb_o_kasa01.png
+
+newmtl 21_128_224
+Ns 10.000000
+Ni 0.000000
+d 1.000000
+map_Kd 21_128_224.png
+
+newmtl material_55
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd mrb_256s_pekie.png
+
+newmtl material_20
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd mrb_128s_kusa.png
+
+newmtl material_487_chair.png
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd chair.png
+
+newmtl 21_128_224.002
+Ns 10.000000
+Ni 0.000000
+d 1.000000
+map_Kd 252_193_150.png
+
+newmtl material_51
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd ecch_128s_suna.png
+
+newmtl 56_56_56
+Ns 10.000000
+Ni 0.000000
+d 1.000000
+map_Kd 56_56_56.png
+
+newmtl material_15
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd edb_o_kasa02.png
+
+newmtl 21_87_203
+Ns 10.000000
+Ni 0.000000
+d 1.000000
+map_Kd 21_87_203.png
+
+newmtl material_36
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+Tr 0
+renderOrder 1
+animSpeed 7
+mixLinear
+numImages 15
+map_Kd s_m128_wave001.png
+s_m128_wave002.png
+s_m128_wave003.png
+s_m128_wave004.png
+s_m128_wave005.png
+s_m128_wave006.png
+s_m128_wave007.png
+s_m128_wave008.png
+s_m128_wave009.png
+s_m128_wave010.png
+s_m128_wave011.png
+s_m128_wave012.png
+s_m128_wave013.png
+s_m128_wave014.png
+s_m128_wave015.png
+

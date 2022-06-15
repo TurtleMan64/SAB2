@@ -273,12 +273,6 @@
     <ClCompile Include="src\guis\GuiShader.cpp">
       <Filter>Source Files\guis</Filter>
     </ClCompile>
-    <ClCompile Include="src\guis\GuiTexture.cpp">
-      <Filter>Source Files\guis</Filter>
-    </ClCompile>
-    <ClCompile Include="src\guis\GuiTextureResources.cpp">
-      <Filter>Source Files\guis</Filter>
-    </ClCompile>
     <ClCompile Include="src\models\RawModel.cpp">
       <Filter>Source Files\models</Filter>
     </ClCompile>
@@ -729,6 +723,12 @@
     <ClCompile Include="src\loading\LoaderGL.cpp">
       <Filter>Source Files\loading</Filter>
     </ClCompile>
+    <ClCompile Include="src\guis\GuiImage.cpp">
+      <Filter>Source Files\guis</Filter>
+    </ClCompile>
+    <ClCompile Include="src\guis\GuiImageResources.cpp">
+      <Filter>Source Files\guis</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.hpp">
@@ -864,12 +864,6 @@
       <Filter>Source Files\guis</Filter>
     </ClInclude>
     <ClInclude Include="src\guis\guishader.hpp">
-      <Filter>Source Files\guis</Filter>
-    </ClInclude>
-    <ClInclude Include="src\guis\guitexture.hpp">
-      <Filter>Source Files\guis</Filter>
-    </ClInclude>
-    <ClInclude Include="src\guis\guitextureresources.hpp">
       <Filter>Source Files\guis</Filter>
     </ClInclude>
     <ClInclude Include="src\models\models.hpp">
@@ -1321,6 +1315,12 @@
     </ClInclude>
     <ClInclude Include="src\loading\loadergl.hpp">
       <Filter>Source Files\loading</Filter>
+    </ClInclude>
+    <ClInclude Include="src\guis\guiimage.hpp">
+      <Filter>Source Files\guis</Filter>
+    </ClInclude>
+    <ClInclude Include="src\guis\guiimageresources.hpp">
+      <Filter>Source Files\guis</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

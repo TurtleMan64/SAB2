@@ -4,5 +4,6 @@ newmtl happa5
 Ns 20
 Ni 0.02
 d 1.000000
+type nocam
 map_Kd komonoA.png
 

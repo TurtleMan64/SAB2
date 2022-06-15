@@ -106,7 +106,10 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>opengl32.lib;glfw3_mt.lib;OpenAL32.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;SDL2.lib;SDL2main.lib;SOIL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3_mt.lib;OpenAL32.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;SDL2.lib;SDL2main.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../Libraries/StaticCode;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <SubSystem>Console</SubSystem>
+      <AdditionalOptions>/NODEFAULTLIB:library</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -146,9 +149,8 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>opengl32.lib;glfw3_mt.lib;OpenAL32.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;SDL2.lib;SDL2main.lib;SOIL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalOptions>
-      </AdditionalOptions>
+      <AdditionalDependencies>opengl32.lib;glfw3_mt.lib;OpenAL32.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;SDL2.lib;SDL2main.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/NODEFAULTLIB:library</AdditionalOptions>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>../Libraries/StaticCode;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -296,8 +298,8 @@
     <ClCompile Include="src\guis\GuiManager.cpp" />
     <ClCompile Include="src\guis\GuiRenderer.cpp" />
     <ClCompile Include="src\guis\GuiShader.cpp" />
-    <ClCompile Include="src\guis\GuiTexture.cpp" />
-    <ClCompile Include="src\guis\GuiTextureResources.cpp" />
+    <ClCompile Include="src\guis\GuiImage.cpp" />
+    <ClCompile Include="src\guis\GuiImageResources.cpp" />
     <ClCompile Include="src\loading\LevelLoader.cpp" />
     <ClCompile Include="src\loading\LoaderGL.cpp" />
     <ClCompile Include="src\loading\ModelLoader.cpp" />
@@ -496,8 +498,8 @@
     <ClInclude Include="src\guis\guimanager.hpp" />
     <ClInclude Include="src\guis\guirenderer.hpp" />
     <ClInclude Include="src\guis\guishader.hpp" />
-    <ClInclude Include="src\guis\guitexture.hpp" />
-    <ClInclude Include="src\guis\guitextureresources.hpp" />
+    <ClInclude Include="src\guis\guiimage.hpp" />
+    <ClInclude Include="src\guis\guiimageresources.hpp" />
     <ClInclude Include="src\loading\levelloader.hpp" />
     <ClInclude Include="src\loading\loadergl.hpp" />
     <ClInclude Include="src\loading\modelloader.hpp" />
