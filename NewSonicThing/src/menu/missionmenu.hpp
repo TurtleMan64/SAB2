@@ -57,16 +57,14 @@ private:
     float offsetTarget = 0;
     float offsetCurr = 0;
 
-private:
-    void draw(bool updateMissionText);
-    void setVisible(bool visibleStatus);
-
 public:
     MissionMenu();
     ~MissionMenu();
     void loadResources();
     void unloadResources();
     Menu* step();
+    void draw();
+    void setVisible(bool isVisible);
     
     float fontSize = 1.0f;
 };

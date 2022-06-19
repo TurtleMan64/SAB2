@@ -28,7 +28,7 @@
 ConfigMenu::ConfigMenu()
 {
     loadResources();
-    setVisible(false);
+    setVisible(true);
 }
 
 ConfigMenu::~ConfigMenu()
@@ -148,7 +148,7 @@ void ConfigMenu::draw()
 
     offsetTarget = -currentButtonIndex*0.1f;
     offsetCurr = Maths::approach(offsetCurr, offsetTarget, 15.0f, dt);
-    if (fabsf(offsetTarget - offsetCurr) < 0.002f)
+    if (fabsf(offsetTarget - offsetCurr) < 0.001f)
     {
         offsetCurr = offsetTarget;
     }
@@ -165,10 +165,10 @@ void ConfigMenu::draw()
             buttonsValues[i]->setVisible(true);
             buttonsValues[i]->setHighlight(false);
         }
-    }
 
-    buttonsNames[currentButtonIndex]->setHighlight(true);
-    buttonsValues[currentButtonIndex]->setHighlight(true);
+        buttonsNames[currentButtonIndex]->setHighlight(true);
+        buttonsValues[currentButtonIndex]->setHighlight(true);
+    }
 }
 
 void ConfigMenu::setVisible(bool visibleStatus)
@@ -530,8 +530,6 @@ Menu* ConfigMenu::step()
         }
     }
 
-    draw();
-
     if (pressedSelect)
     {
         switch (currentButtonIndex)
@@ -561,7 +559,13 @@ Menu* ConfigMenu::step()
     if (pressedBack)
     {
         AudioPlayer::play(37, Global::gameCamera->getFadePosition1());
+        setVisible(false);
+
         retVal = PopMenu::get();
+        Global::menuConfig = nullptr;
+
+        Global::menuMain->setVisible(true);
+        Global::menuMain->draw();
 
         Global::saveConfigData();
     }

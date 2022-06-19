@@ -5,9 +5,9 @@ class Menu
 {
 public:
     virtual Menu* step() = 0;
-    virtual ~Menu()
-    {
-    }
+    virtual ~Menu() {};
+    virtual void draw();
+    virtual void setVisible(bool);
 };
 
 // Singleton menus. Used to return commands using step()
@@ -20,6 +20,8 @@ private:
 public:
     Menu* step() { return nullptr; }
     ~PopMenu() {}
+    void draw() {}
+    void setVisible(bool) {}
 
     static Menu* get();
 };
@@ -32,6 +34,8 @@ private:
 public:
     Menu* step() { return nullptr; }
     ~ClearStack() {}
+    void draw() {}
+    void setVisible(bool) {}
 
     static Menu* get();
 };
@@ -44,6 +48,8 @@ private:
 public:
     Menu* step() { return nullptr; }
     ~SwitchStack() {}
+    void draw() {}
+    void setVisible(bool) {}
 
     static Menu* get();
 };

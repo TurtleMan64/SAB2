@@ -24,7 +24,7 @@ Button::Button(std::string label, FontType* font, GLuint texture, GLuint highlig
     this->textIsLeftAnchored = false;
     this->scaleX = scaleX;
 
-    Button::setVisible(visible);
+    setVisible(visible);
 }
 
 Button::Button(std::string label, FontType* font, GLuint textureId, GLuint highlight, float posX, float posY, float scaleX, float scaleY, bool visible, bool leftAnchored)
@@ -47,7 +47,7 @@ Button::Button(std::string label, FontType* font, GLuint textureId, GLuint highl
     texture = new GuiImage(textureId, posX, posY, scaleX, scaleY, 0); INCR_NEW("GuiImage");
     textureHighlight = new GuiImage(highlight, posX, posY, scaleX, scaleY, 0); INCR_NEW("GuiImage");
 
-    Button::setVisible(visible);
+    setVisible(visible);
 }
 
 Button::~Button()
@@ -98,47 +98,42 @@ void Button::setPos(float xPos, float yPos)
         text->getPosition()->y = yPos;
     }
 
-    this->texture->setX(xPos);
-    this->texture->setY(yPos);
-    this->textureHighlight->setX(xPos);
-    this->textureHighlight->setY(yPos);
+    texture->setX(xPos);
+    texture->setY(yPos);
+    textureHighlight->setX(xPos);
+    textureHighlight->setY(yPos);
 }
 
-void Button::setVisible(bool makeVisible)
+void Button::setVisible(bool isVisible)
 {
-    this->text->setVisibility(makeVisible);
-    if (!makeVisible && this->visible)
+    visible = isVisible;
+    text->visible = isVisible;
+    if (!isVisible)
     {
-        this->visible = makeVisible;
-        this->text->setVisibility(false);
-        this->visibleHighlight = makeVisible;
+        GuiManager::removeImageToRender(texture);
+        visibleHighlight = false;
     }
-    else if (makeVisible)
+    else
     {
-        GuiManager::addImageToRender(this->texture);
-        this->text->setVisibility(true);
-        this->visible = makeVisible;
-        this->texture->alpha = 0.2f;
+        GuiManager::addImageToRender(texture);
     }
 }
 
-void Button::setHighlight(bool makeVisible)
+void Button::setHighlight(bool isHighlight)
 {
-    if (this->visibleHighlight && !makeVisible)
+    if (isHighlight)
     {
-        this->visibleHighlight = false;
-        this->texture->alpha = 0.2f;
+        visibleHighlight = true;
+        texture->alpha = 1.0f;
     }
-    else if (!this->visibleHighlight && makeVisible)
+    else
     {
-        //GuiManager::addImageToRender(this->textureHighlight);
-        //GuiManager::removeImageToRender(this->texture);
-        this->visibleHighlight = true;
-        this->texture->alpha = 1.0f;
+        visibleHighlight = false;
+        texture->alpha = 0.35f;
     }
 }
 
 GUIText* Button::getText()
 {
-    return this->text;
+    return text;
 }

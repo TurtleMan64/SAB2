@@ -84,13 +84,22 @@ Menu* ResultsScreen::step()
         pressedBack = true;
     }
 
-    textArcadeModeClear->visible = true;
-    textClearTime->visible = true;
-
     if ((pressedSelect && !selectInputPrevious) ||
         (pressedBack && !backInputPrevious))
     {
         retVal = PopMenu::get();
+        Global::menuResults = nullptr;
+
+        textArcadeModeClear->visible = false;
+        textClearTime->visible = false;
+
+        Global::menuMain->setVisible(true);
+        Global::menuMain->draw();
+    }
+    else
+    {
+        textArcadeModeClear->visible = true;
+        textClearTime->visible = true;
     }
 
     selectInputPrevious = pressedSelect;

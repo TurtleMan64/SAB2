@@ -129,6 +129,7 @@ void MenuManager::step()
             {
                 //printf("currentStack returned a menu\n");
                 this->push(retVal);
+                //retVal->step();
             }
         }
     }

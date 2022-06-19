@@ -111,8 +111,6 @@ void MainMenu::draw()
         animating = false;
     }
 
-    //GuiManager::clearGuisToRender();
-
     if (visible)
     {
         GuiManager::addImageToRender(logo);
@@ -134,11 +132,11 @@ void MainMenu::draw()
 
 void MainMenu::setVisible(bool visibleStatus)
 {
-    for (int i = 0; i < this->buttonCount; i++)
+    for (int i = 0; i < buttonCount; i++)
     {
-        this->menuButtons[i]->setVisible(visibleStatus);
+        menuButtons[i]->setVisible(visibleStatus);
     }
-    this->visible = visibleStatus;
+    visible = visibleStatus;
 }
 
 void MainMenu::unloadResources()
@@ -219,7 +217,6 @@ Menu* MainMenu::step()
             {
                 Global::gameIsArcadeMode = true;
                 AudioPlayer::play(38, Global::gameCamera->getFadePosition1());
-                //retVal = new CharacterSelect; INCR_NEW("Menu");
                 setVisible(false);
 
                 Global::gameMissionNumber = 0;
@@ -245,27 +242,49 @@ Menu* MainMenu::step()
             }
 
             case mission:
+            {
                 Global::gameIsArcadeMode = false;
                 AudioPlayer::play(38, Global::gameCamera->getFadePosition1());
-                retVal = new CharacterSelect; INCR_NEW("Menu");
+                Global::menuCharacterSelect = new CharacterSelect; INCR_NEW("Menu");
+                retVal = Global::menuCharacterSelect;
                 setVisible(false);
+                Global::menuCharacterSelect->draw();
+                animationTime = 0.00f;
+                animating = false;
                 break;
+            }
 
             case extra:
+            {
                 AudioPlayer::play(38, Global::gameCamera->getFadePosition1());
-                retVal = new Extras; INCR_NEW("Menu");
+                Global::menuExtras = new Extras; INCR_NEW("Menu");
+                retVal = Global::menuExtras;
                 setVisible(false);
+                Global::menuExtras->draw();
+                animationTime = 0.00f;
+                animating = false;
                 break;
+            }
 
             case config:
+            {
                 AudioPlayer::play(38, Global::gameCamera->getFadePosition1());
-                retVal = new ConfigMenu; INCR_NEW("Menu");
+                Global::menuConfig = new ConfigMenu; INCR_NEW("Menu");
+                retVal = Global::menuConfig;
                 setVisible(false);
+                Global::menuConfig->draw();
+                animationTime = 0.00f;
+                animating = false;
                 break;
+            }
 
             case exit:
+            {
                 Global::gameState = STATE_EXITING;
                 break;
+            }
+
+            default: break;
         }
     }
 

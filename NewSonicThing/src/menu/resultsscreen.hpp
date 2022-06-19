@@ -26,6 +26,8 @@ public:
     ResultsScreen();
     ~ResultsScreen();
     Menu* step();
+    void draw() {}
+    void setVisible(bool) {}
 };
 
 #endif

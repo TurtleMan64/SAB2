@@ -42,8 +42,6 @@ private:
 
     void loadResources();
 
-    void setVisible(bool visibleStatus);
-
 public:
     MainMenu();
 
@@ -52,6 +50,8 @@ public:
     Menu* step();
 
     void draw();
+
+    void setVisible(bool isVisible);
 };
 
 #endif

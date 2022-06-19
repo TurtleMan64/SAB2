@@ -18,6 +18,8 @@ public:
     Extras();
     ~Extras();
     Menu* step();
+    void draw() {}
+    void setVisible(bool) {}
 };
 
 #endif

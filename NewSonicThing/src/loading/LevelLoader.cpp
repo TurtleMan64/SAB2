@@ -167,6 +167,23 @@ void LevelLoader::loadTitle()
     Global::stageWaterBlendAmount = 0.0f;
     Global::stageWaterColor = Vector3f(0, 0, 0);
 
+    if (Global::useHighQualityWater)
+    {
+        for (WaterTile* tile : Global::gameWaterTiles)
+        {
+            delete tile; INCR_DEL("WaterTile");
+        }
+        Global::gameWaterTiles.clear();
+
+        for (int r = -1; r <= 2; r++)
+        {
+            for (int c = -1; c <= 2; c++)
+            {
+                Global::gameWaterTiles.push_back(new WaterTile(r*WaterTile::TILE_SIZE*2 - WaterTile::TILE_SIZE, c*WaterTile::TILE_SIZE*2 - WaterTile::TILE_SIZE)); INCR_NEW("WaterTile");
+            }
+        }
+    }
+
     Global::gameRingCount = 0;
     Global::gameScore = 0;
     Global::gameLives = 4;

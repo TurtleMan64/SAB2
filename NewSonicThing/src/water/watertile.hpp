@@ -4,13 +4,11 @@
 class WaterTile
 {
 private:
-    int xIdx;
-    int zIdx;
     float x;
     float z;
 
 public:
-    static const float TILE_SIZE;
+    static constexpr float TILE_SIZE = 3000.0f;
 
     WaterTile(float centerX, float centerZ);
 

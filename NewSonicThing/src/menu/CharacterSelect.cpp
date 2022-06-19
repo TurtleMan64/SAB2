@@ -29,7 +29,7 @@ CharacterSelect::CharacterSelect()
 {
     fontSize = 0.05f;
     loadResources();
-    setVisible(false);
+    setVisible(true);
     offsetCurr = 0.0f;
     offsetTarget = 0.0f;
 }
@@ -104,7 +104,7 @@ void CharacterSelect::draw()
 
     offsetTarget = -currentButtonIndex*separation;
     offsetCurr = Maths::approach(offsetCurr, offsetTarget, 15.0f, dt);
-    if (fabsf(offsetTarget - offsetCurr) < 0.002f)
+    if (fabsf(offsetTarget - offsetCurr) < 0.001f)
     {
         offsetCurr = offsetTarget;
     }
@@ -118,14 +118,14 @@ void CharacterSelect::draw()
             buttonsCharacterNames[i]->setHighlight(false);
         }
 
+        buttonsCharacterNames[currentButtonIndex]->setHighlight(true);
+
         for (int i = 0; i < (int)characterIcons.size(); i++)
         {
             characterIcons[i]->setY(0.5f + offsetCurr + (separation*(i)));
             GuiManager::addImageToRender(characterIcons[i]);
         }
     }
-
-    buttonsCharacterNames[currentButtonIndex]->setHighlight(true);
 }
 
 void CharacterSelect::setVisible(bool visibleStatus)
@@ -290,8 +290,6 @@ Menu* CharacterSelect::step()
         }
     }
 
-    draw();
-
     if (pressedSelect)
     {
         AudioPlayer::play(38, Global::gameCamera->getFadePosition1());
@@ -327,14 +325,26 @@ Menu* CharacterSelect::step()
         }
         else
         {
-            retVal = new MissionMenu; INCR_NEW("Menu");
+            Global::menuMission = new MissionMenu; INCR_NEW("Menu");
+            retVal = Global::menuMission;
+            retVal->draw();
+
+            offsetCurr = offsetTarget;
         }
     }
     else if (pressedBack)
     {
         AudioPlayer::play(37, Global::gameCamera->getFadePosition1());
+        setVisible(false);
+
         retVal = PopMenu::get();
+        Global::menuCharacterSelect = nullptr;
+
+        Global::menuMain->setVisible(true);
+        Global::menuMain->draw();
     }
+
+    draw();
 
     return retVal;
 }

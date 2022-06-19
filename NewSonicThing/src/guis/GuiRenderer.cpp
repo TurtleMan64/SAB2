@@ -39,17 +39,24 @@ void GuiRenderer::render(std::list<GuiImage*>* guis)
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
 
-    for (GuiImage* gui: (*guis))
+    std::unordered_set<GuiImage*> imagesAlreadyDrawn;
+
+    for (GuiImage* gui : (*guis))
     {
         if (gui->visible)
         {
-            glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, gui->textureId);
-            Matrix4f matrix;
-            Maths::createTransformationMatrix(&matrix, gui->getPosition(), gui->rotation, gui->getSizeScaled());
-            GuiRenderer::shader->loadTransformation(&matrix);
-            GuiRenderer::shader->loadAlpha(gui->alpha);
-            glDrawArrays(GL_TRIANGLE_STRIP, 0, GuiRenderer::quadModel.getVertexCount());
+            // make sure we dont render a guiimage twice in the same frame.
+            if (imagesAlreadyDrawn.find(gui) == imagesAlreadyDrawn.end())
+            {
+                imagesAlreadyDrawn.insert(gui);
+                glActiveTexture(GL_TEXTURE0);
+                glBindTexture(GL_TEXTURE_2D, gui->textureId);
+                Matrix4f matrix;
+                Maths::createTransformationMatrix(&matrix, gui->getPosition(), gui->rotation, gui->getSizeScaled());
+                GuiRenderer::shader->loadTransformation(&matrix);
+                GuiRenderer::shader->loadAlpha(gui->alpha);
+                glDrawArrays(GL_TRIANGLE_STRIP, 0, GuiRenderer::quadModel.getVertexCount());
+            }
         }
     }
 

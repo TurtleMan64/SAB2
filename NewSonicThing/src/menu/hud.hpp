@@ -38,6 +38,7 @@ public:
     HUD();
     ~HUD();
     void draw();
+    void setVisible(bool) {}
     Menu* step();
     Timer* getTimer();
 

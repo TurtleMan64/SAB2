@@ -5,6 +5,9 @@ Menu* PopMenu::retVal = nullptr;
 Menu* ClearStack::retVal = nullptr;
 Menu* SwitchStack::retVal = nullptr;
 
+void Menu::draw() {}
+void Menu::setVisible(bool) {}
+
 Menu* PopMenu::get()
 {
     if (PopMenu::retVal == nullptr)

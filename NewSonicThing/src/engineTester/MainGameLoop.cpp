@@ -239,7 +239,13 @@ void doListenThread();
 
 void listen();
 
-MenuManager Global::menuManager;
+MenuManager      Global::menuManager;
+MainMenu*        Global::menuMain            = nullptr;
+CharacterSelect* Global::menuCharacterSelect = nullptr;
+MissionMenu*     Global::menuMission         = nullptr;
+ConfigMenu*      Global::menuConfig          = nullptr;
+Extras*          Global::menuExtras          = nullptr;
+ResultsScreen*   Global::menuResults         = nullptr;
 Timer* Global::mainHudTimer = nullptr;
 
 int main(int argc, char** argv)
@@ -364,8 +370,8 @@ int main(int argc, char** argv)
 
     GuiManager::init();
 
-    Global::menuManager.push(new MainMenu); INCR_NEW("MainMenu");
-
+    Global::menuMain = new MainMenu; INCR_NEW("Menu");
+    Global::menuManager.push(Global::menuMain);
 
     //if (Global::renderParticles)
     {
@@ -407,13 +413,6 @@ int main(int argc, char** argv)
         Global::gameWaterFBOs     = new WaterFrameBuffers; INCR_NEW("WaterFrameBuffers");
         WaterShader* waterShader  = new WaterShader; INCR_NEW("WaterShader");
         Global::gameWaterRenderer = new WaterRenderer(waterShader, MasterRenderer::projectionMatrix, Global::gameWaterFBOs, MasterRenderer::getShadowRenderer()); INCR_NEW("WaterRenderer");
-        for (int r = -1; r <= 2; r++)
-        {
-            for (int c = -1; c <= 2; c++)
-            {
-                Global::gameWaterTiles.push_back(new WaterTile(r*WaterTile::TILE_SIZE*2-WaterTile::TILE_SIZE, c*WaterTile::TILE_SIZE*2-WaterTile::TILE_SIZE)); INCR_NEW("WaterTile");
-            }
-        }
     }
 
     if (Global::renderBloom)
@@ -443,6 +442,8 @@ int main(int argc, char** argv)
     //GuiImage* debugDepth = new GuiImage(transparentDepthTexture, 0.2f, 0.8f, 0.3f, 0.3f, 0); INCR_NEW("GuiImage");
 
     std::list<std::unordered_set<Entity*>*> entityChunkedList;
+
+    //GUIText* debugNumber = new GUIText("a", 0.04f, Global::fontVipnagorgialla, 0, 0, 0, true);
 
     while (Global::gameState != STATE_EXITING && Display::displayWantsToClose() == 0)
     {
@@ -858,6 +859,9 @@ int main(int argc, char** argv)
         {
             GuiManager::addImageToRender(rankDisplay);
         }
+
+        //debugNumber->deleteMe();
+        //debugNumber = new GUIText(std::to_string(Global::renderCount), 0.04f, Global::fontVipnagorgialla, 0, 0, 0, true);
 
         //GuiManager::addGuiToRender(debugDepth);
 

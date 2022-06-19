@@ -17,6 +17,12 @@ class GUIText;
 class Timer;
 class ControllablePlayer;
 class TC_Kart;
+class MainMenu;
+class CharacterSelect;
+class MissionMenu;
+class ConfigMenu;
+class Extras;
+class ResultsScreen;
 
 #include <string>
 #include <random>
@@ -87,6 +93,12 @@ class Global
 public:
     static std::string pathToEXE;
     static MenuManager menuManager;
+    static MainMenu* menuMain;
+    static CharacterSelect* menuCharacterSelect;
+    static MissionMenu* menuMission;
+    static ConfigMenu* menuConfig;
+    static Extras* menuExtras;
+    static ResultsScreen* menuResults;
     static Timer* mainHudTimer;
     static Camera* gameCamera;
     static ControllablePlayer* gameMainPlayer;

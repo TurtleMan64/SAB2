@@ -27,14 +27,13 @@ private:
     bool pausedSounds[14];
 
     void selectButton();
-    void setVisible(bool visible);
 
 public:
     PauseScreen();
-
     ~PauseScreen();
-
     Menu* step();
+    void draw() {}
+    void setVisible(bool visible);
 };
 
 #endif

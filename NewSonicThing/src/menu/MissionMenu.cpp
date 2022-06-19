@@ -21,20 +21,22 @@
 #include "button.hpp"
 #include "mainmenu.hpp"
 #include "../toolbox/maths.hpp"
+#include "characterselect.hpp"
 
 MissionMenu::MissionMenu()
 {
-    this->fontSize = 0.05f;
-    this->loadResources();
-    this->visible = true;
-    this->offsetCurr = 0.0f;
-    this->offsetTarget = 0.0f;
-    this->currButtonId = 0;
+    fontSize = 0.05f;
+    loadResources();
+    visible = true;
+    offsetCurr = 0.0f;
+    offsetTarget = 0.0f;
+    currButtonId = 0;
+    setVisible(true);
 }
 
 MissionMenu::~MissionMenu()
 {
-    this->unloadResources();
+    unloadResources();
 }
 
 void MissionMenu::loadResources()
@@ -164,13 +166,13 @@ void MissionMenu::unloadResources()
     delete scoreButton; scoreButton = nullptr; INCR_DEL("Button");
 }
 
-void MissionMenu::draw(bool updateMissionText)
+void MissionMenu::draw()
 {
     extern float dt;
 
     this->offsetTarget = -this->currButtonId*0.15f;
     this->offsetCurr = Maths::approach(this->offsetCurr, this->offsetTarget, 15.0f, dt);
-    if (fabsf(this->offsetTarget-this->offsetCurr) < 0.002f)
+    if (fabsf(this->offsetTarget-this->offsetCurr) < 0.001f)
     {
         this->offsetCurr = this->offsetTarget;
     }
@@ -278,7 +280,7 @@ void MissionMenu::draw(bool updateMissionText)
         missionSelect->setX(0.69f - rankWidth*1.5f + (Global::gameMissionNumber*rankWidth));
         GuiManager::addImageToRender(missionSelect);
 
-        if (updateMissionText)
+        //if (updateMissionText)
         {
             std::string missionTimeString  = "ERROR";
             std::string missionScoreString = "ERROR";
@@ -395,7 +397,7 @@ Menu* MissionMenu::step()
     int moveX = (int)round(Input::inputs.INPUT_X);
     int moveY = (int)round(Input::inputs.INPUT_Y);
 
-    this->setVisible(true);
+    setVisible(true);
 
     if ((Input::inputs.INPUT_ACTION1 && !Input::inputs.INPUT_PREVIOUS_ACTION1) || 
         (Input::inputs.INPUT_START   && !Input::inputs.INPUT_PREVIOUS_START))
@@ -523,9 +525,6 @@ Menu* MissionMenu::step()
         }
     }
 
-    //have to do true every time in case of getting a new record, it will update when the menu is reloaded
-    this->draw(true);//shouldUpdateMissionText);
-
     if (pressedSelect)
     {
         this->setVisible(false);
@@ -553,8 +552,17 @@ Menu* MissionMenu::step()
     else if (pressedBack)
     {
         AudioPlayer::play(37, Global::gameCamera->getFadePosition1());
+        setVisible(false);
+
         retVal = PopMenu::get();
+        Global::menuMission = nullptr;
+
+        Global::menuCharacterSelect->setVisible(true);
+        Global::menuCharacterSelect->draw();
     }
+
+    //have to do true every time in case of getting a new record, it will update when the menu is reloaded
+    draw();//shouldUpdateMissionText);
 
     return retVal;
 }

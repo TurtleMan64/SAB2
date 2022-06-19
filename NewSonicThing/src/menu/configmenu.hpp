@@ -40,10 +40,6 @@ private:
     float offsetTarget = 0.0f;
     float offsetCurr   = 0.0f;
 
-private:
-    void draw();
-    void setVisible(bool visibleStatus);
-
     static std::string boolToString(bool value);
     static std::string floatToString(float value);
 
@@ -54,6 +50,8 @@ public:
     ConfigMenu();
     ~ConfigMenu();
     Menu* step();
+    void draw();
+    void setVisible(bool isVisible);
 };
 
 #endif

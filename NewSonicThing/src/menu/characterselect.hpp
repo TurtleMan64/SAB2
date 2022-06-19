@@ -40,10 +40,6 @@ private:
     float offsetTarget = 0;
     float offsetCurr = 0;
 
-private:
-    void draw();
-    void setVisible(bool visibleStatus);
-
     void loadResources();
     void unloadResources();
 
@@ -51,8 +47,10 @@ public:
     CharacterSelect();
     ~CharacterSelect();
     Menu* step();
-    
-    float fontSize;
+    void draw();
+    void setVisible(bool isVisible);
+
+    float fontSize = 1.0f;
 };
 
 #endif
