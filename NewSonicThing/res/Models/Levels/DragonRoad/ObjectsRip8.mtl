@@ -4,185 +4,185 @@ newmtl Mesh_0597.rip
 Ns 92.156863
 Ni 1.000000
 d 1.000000
-map_Kd tex\Red3.dds
+map_Kd tex/Red3.dds
 
 newmtl Mesh_0538.rip
 Ns 92.156863
 Ni 1.000000
 d 1.000000
-map_Kd tex\Statue2.dds
+map_Kd tex/Statue2.dds
 
 newmtl Mesh_0532.rip
 Ns 92.156863
 Ni 1.000000
 d 1.000000
-map_Kd tex\Decor6.dds
+map_Kd tex/Decor6.dds
 
 newmtl Mesh_0137.rip_Decor1.dds
 Ns 92.156863
 Ni 1.000000
 d 1.000000
-map_Kd tex\Decor1.dds
+map_Kd tex/Decor1.dds
 
 newmtl Mesh_0266.rip
 Ns 92.156863
 Ni 1.000000
 d 1.000000
-map_Kd tex\TreeBranch2.dds
+map_Kd tex/TreeBranch2.dds
 
 newmtl Mesh_0562.rip
 Ns 92.156863
 Ni 1.000000
 d 1.000000
-map_Kd tex\Misc3.dds
+map_Kd tex/Misc3.dds
 
 newmtl Mesh_0567.rip
 Ns 92.156863
 Ni 1.000000
 d 1.000000
-map_Kd tex\Bamboo.dds
+map_Kd tex/Bamboo.dds
 
 newmtl Mesh_0137.rip_GreatWallSide.png
 Ns 92.156863
 Ni 1.000000
 d 1.000000
-map_Kd tex\GreatWallSide.png
+map_Kd tex/GreatWallSide.png
 
 newmtl Mesh_0535.rip
 Ns 92.156863
 Ni 1.000000
 d 1.000000
-map_Kd tex\Statue1.dds
+map_Kd tex/Statue1.dds
 
 newmtl Mesh_0563.rip
 Ns 92.156863
 Ni 1.000000
 d 1.000000
-map_Kd tex\Tile1.dds
+map_Kd tex/Tile1.dds
 
 newmtl Mesh_0579.rip
 Ns 92.156863
 Ni 1.000000
 d 1.000000
-map_Kd tex\Shingles4.dds
+map_Kd tex/Shingles4.dds
 
 newmtl Mesh_0573.rip
 Ns 92.156863
 Ni 1.000000
 d 1.000000
-map_Kd tex\Brick6.dds
+map_Kd tex/Brick6.dds
 
 newmtl Mesh_0605.rip
 Ns 92.156863
 Ni 1.000000
 d 1.000000
-map_Kd tex\Decor3.dds
+map_Kd tex/Decor3.dds
 
 newmtl Mesh_0137.rip_Decor2.dds
 Ns 92.156863
 Ni 1.000000
 d 1.000000
-map_Kd tex\Decor2.dds
+map_Kd tex/Decor2.dds
 
 newmtl Mesh_0536.rip
 Ns 92.156863
 Ni 1.000000
 d 1.000000
-map_Kd tex\Statue4.dds
+map_Kd tex/Statue4.dds
 
 newmtl Mesh_0554.rip
 Ns 92.156863
 Ni 1.000000
 d 1.000000
-map_Kd tex\Rock1.dds
+map_Kd tex/Rock1.dds
 
 newmtl Mesh_0587.rip
 Ns 92.156863
 Ni 1.000000
 d 1.000000
-map_Kd tex\GreatWallRailing.png
+map_Kd tex/GreatWallRailing.png
 
 newmtl Mesh_0584.rip
 Ns 92.156863
 Ni 1.000000
 d 1.000000
-map_Kd tex\Red1.dds
+map_Kd tex/Red1.dds
 
 newmtl Mesh_0137.rip_DragonSymbol.dds
 Ns 92.156863
 Ni 1.000000
 d 1.000000
-map_Kd tex\DragonSymbol.dds
+map_Kd tex/DragonSymbol.dds
 
 newmtl Mesh_0578.rip
 Ns 92.156863
 Ni 1.000000
 d 1.000000
-map_Kd tex\Shingles3.dds
+map_Kd tex/Shingles3.dds
 
 newmtl Mesh_0137.rip
 Ns 92.156863
 Ni 1.000000
 d 1.000000
-map_Kd tex\Brick3.dds
+map_Kd tex/Brick3.dds
 
 newmtl Mesh_0544.rip
 Ns 92.156863
 Ni 1.000000
 d 1.000000
-map_Kd tex\Brick8.dds
+map_Kd tex/Brick8.dds
 
 newmtl Mesh_0601.rip
 Ns 92.156863
 Ni 1.000000
 d 1.000000
-map_Kd tex\Red5.dds
+map_Kd tex/Red5.dds
 
 newmtl Mesh_0527.rip
 Ns 92.156863
 Ni 1.000000
 d 1.000000
-map_Kd tex\Decor4.dds
+map_Kd tex/Decor4.dds
 
 newmtl Mesh_0586.rip
 Ns 92.156863
 Ni 1.000000
 d 1.000000
-map_Kd tex\Brick2.dds
+map_Kd tex/Brick2.dds
 
 newmtl Mesh_0530.rip
 Ns 92.156863
 Ni 1.000000
 d 1.000000
-map_Kd tex\Plaster1.dds
+map_Kd tex/Plaster1.dds
 
 newmtl Mesh_0537.rip
 Ns 92.156863
 Ni 1.000000
 d 1.000000
-map_Kd tex\Statue3.dds
+map_Kd tex/Statue3.dds
 
 newmtl Mesh_0526.rip
 Ns 92.156863
 Ni 1.000000
 d 1.000000
-map_Kd tex\Red4.dds
+map_Kd tex/Red4.dds
 
 newmtl Mesh_0137.rip_Brick7.dds
 Ns 92.156863
 Ni 1.000000
 d 1.000000
-map_Kd tex\Brick7.dds
+map_Kd tex/Brick7.dds
 
 newmtl Mesh_0262.rip
 Ns 92.156863
 Ni 1.000000
 d 1.000000
-map_Kd tex\Fence.dds
+map_Kd tex/Fence.dds
 
 newmtl Mesh_0577.rip
 Ns 92.156863
 Ni 1.000000
 d 1.000000
-map_Kd tex\Stonework2.dds
+map_Kd tex/Stonework2.dds
 

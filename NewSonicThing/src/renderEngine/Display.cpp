@@ -67,6 +67,10 @@ int Display::createDisplay()
         glfwWindowHint(GLFW_REFRESH_RATE, Display::F_HZ);
     }
 
+    #ifdef __APPLE__
+    glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GL_FALSE);
+    #endif
+
     int screenWidth;
     int screenHeight;
 
@@ -338,11 +342,11 @@ void Display::loadGraphicsSettings()
                 {
                     if (strcmp(lineSplit[1], "on") == 0)
                     {
-                        Global::framerateUnlock = true;
+                        Global::framerateUnlock = false;
                     }
                     else
                     {
-                        Global::framerateUnlock = false;
+                        Global::framerateUnlock = true;
                     }
                 }
                 else if (strcmp(lineSplit[0], "FPS_Limit") == 0)

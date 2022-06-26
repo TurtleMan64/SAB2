@@ -12,8 +12,6 @@
 #include "../shadows/shadowmapmasterrenderer.hpp"
 #include "../entities/camera.hpp"
 
-const float WaterRenderer::WAVE_SPEED = 0.0002f;
-
 WaterRenderer::WaterRenderer(WaterShader* shader, Matrix4f* projectionMatrix, WaterFrameBuffers* fbos, ShadowMapMasterRenderer* shadowMapRenderer)
 {
     this->shader = shader;
@@ -46,7 +44,9 @@ void WaterRenderer::prepareRender(Camera* camera, Light* sun)
     {
         shader->loadToShadowSpaceMatrix(shadowMapRenderer->getToShadowMapSpaceMatrix());
     }
-    moveFactor += WAVE_SPEED;
+
+    extern float dt;
+    moveFactor += WaterRenderer::WAVE_SPEED*dt;
     moveFactor = fmodf(moveFactor, 1);
     shader->loadMoveFactor(moveFactor);
     shader->loadSun(sun);

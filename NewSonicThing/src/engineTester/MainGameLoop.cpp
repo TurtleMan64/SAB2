@@ -79,9 +79,11 @@
 #include "../menu/hud.hpp"
 #include "../toolbox/format.hpp"
 #include "../entities/TwinkleCircuit/tckart.hpp"
+#include "../toolbox/maths.hpp"
 #ifdef _WIN32
 #include <windows.h>
 #include <tchar.h>
+#include "../toolbox/usleep.hpp"
 #endif
 
 std::string Global::pathToEXE;
@@ -438,6 +440,10 @@ int main(int argc, char** argv)
 
     LevelLoader::loadTitle();
 
+    timeNew = 0.0;
+    timeOld = 0.0;
+    dt = 0.016f;
+
     //extern GLuint transparentDepthTexture;
     //GuiImage* debugDepth = new GuiImage(transparentDepthTexture, 0.2f, 0.8f, 0.3f, 0.3f, 0); INCR_NEW("GuiImage");
 
@@ -451,15 +457,18 @@ int main(int argc, char** argv)
 
         timeNew = glfwGetTime();
 
-        #ifndef WIN32LOL
+        #ifndef _WIN32
         //spin lock to meet the target fps, and gives extremely consistent dt's.
         // also of course uses a ton of cpu.
         if (Global::gameState == STATE_RUNNING && Global::framerateUnlock)
         {
-            double dtFrameNeedsToTake = 1.0/((double)Global::fpsLimit);
-            while ((timeNew - timeOld) < dtFrameNeedsToTake)
+            if (Global::fpsLimit > 0.0f)
             {
-                timeNew = glfwGetTime();
+                double dtFrameNeedsToTake = 1.0/((double)Global::fpsLimit);
+                while ((timeNew - timeOld) < dtFrameNeedsToTake)
+                {
+                    timeNew = glfwGetTime();
+                }
             }
         }
         #else
@@ -473,26 +482,36 @@ int main(int argc, char** argv)
         // which is the video looks choppy at bad fps targets. For example, if you set the target to 
         // 60fps on a 60fps monitor, then it looks fine. But, if you set the target to 90fps, then
         // it looks very choppy.
-        // EDIT: Sleep no longer does this and always does like intervals of 16ms... so this is pointless now...
         if (Global::gameState == STATE_RUNNING && Global::framerateUnlock)
         {
             if (Global::fpsLimit > 0.0f)
             {
                 double dtFrameNeedsToTake = 1.0/((double)Global::fpsLimit);
                 timeNew = glfwGetTime();
+
+                bool slept = false;
         
-                const double sleepBuffer = 0.00175; //sleep will hopefully never take longer than this to return
+                const double sleepBuffer = 0.002; //sleep will hopefully never take longer than this to return (2 milliseconds)
                 double sleepTime = (dtFrameNeedsToTake - (timeNew - timeOld)) - sleepBuffer;
                 int msToSleep = (int)(sleepTime*1000);
                 if (msToSleep >= 1)
                 {
-                    Sleep(msToSleep);
+                    usleep(msToSleep*1000);
+                    slept = true;
                 }
+
+                bool spinned = false;
         
                 timeNew = glfwGetTime();
                 while ((timeNew - timeOld) < dtFrameNeedsToTake)
                 {
                     timeNew = glfwGetTime();
+                    spinned = true;
+                }
+
+                if (slept && !spinned)
+                {
+                    printf("slept for too long! (%f seconds too much)\n", (timeNew - timeOld) - dtFrameNeedsToTake);
                 }
             }
         }
@@ -869,7 +888,30 @@ int main(int argc, char** argv)
         GuiManager::clearGuisToRender();
         TextMaster::render();
 
+        //int sleepFor = (int)(8000*Maths::random());
+        //usleep(sleepFor);
+
+        //timeNew = glfwGetTime();
+        ////spin lock to meet the target fps, and gives extremely consistent dt's.
+        //// also of course uses a ton of cpu.
+        //if (Global::gameState == STATE_RUNNING && Global::framerateUnlock)
+        //{
+        //    if (Global::fpsLimit > 0.0f)
+        //    {
+        //        double dtFrameNeedsToTake = 1.0/((double)Global::fpsLimit);
+        //        while ((timeNew - timeOld) < dtFrameNeedsToTake)
+        //        {
+        //            timeNew = glfwGetTime();
+        //        }
+        //    }
+        //}
+
         Display::updateDisplay();
+
+        //dt = (float)(timeNew - timeOld);
+        //dt = std::fminf(dt, 0.04f); //Anything lower than 25fps will slow the gameplay down
+        ////dt *= 0.5f;
+        //timeOld = timeNew;
 
         AudioPlayer::refreshBGM();
 
@@ -1373,8 +1415,8 @@ void Global::saveConfigData()
         file << "FOV " << MasterRenderer::VFOV_BASE << "\n\n";
 
         file << "#V-Sync.\n";
-        if (Global::framerateUnlock) { file << "V-Sync on\n\n"; }
-        else                         { file << "V-Sync off\n\n"; }
+        if (!Global::framerateUnlock) { file << "V-Sync on\n\n"; }
+        else                          { file << "V-Sync off\n\n"; }
 
         file << "#If v-sync is off, fps will not exceed this limit. -1 for no limit.\n";
         file << "FPS_Limit " << (int)Global::fpsLimit << "\n";

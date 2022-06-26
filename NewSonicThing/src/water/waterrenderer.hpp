@@ -35,7 +35,7 @@ private:
     void setUpVAO();
 
 public:
-    static const float WAVE_SPEED;
+    static constexpr float WAVE_SPEED = 0.012f;
 
     WaterRenderer(WaterShader* shader, Matrix4f* projectionMatrix, WaterFrameBuffers* fbos, ShadowMapMasterRenderer* shadowMapRenderer);
 

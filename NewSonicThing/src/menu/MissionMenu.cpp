@@ -548,6 +548,8 @@ Menu* MissionMenu::step()
         Global::isNewLevel = true;
         Global::shouldLoadLevel = true;
         retVal = SwitchStack::get();
+
+        offsetCurr = offsetTarget;
     }
     else if (pressedBack)
     {

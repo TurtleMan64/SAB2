@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{2D007BCD-B385-49CD-8760-71051BAD8A62}</ProjectGuid>
     <RootNamespace>NewSonicThing</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -350,6 +350,7 @@
     <ClCompile Include="src\toolbox\Maths.cpp" />
     <ClCompile Include="src\toolbox\Matrix.cpp" />
     <ClCompile Include="src\toolbox\Split.cpp" />
+    <ClCompile Include="src\toolbox\Usleep.cpp" />
     <ClCompile Include="src\toolbox\Vector.cpp" />
     <ClCompile Include="src\water\WaterFrameBuffers.cpp" />
     <ClCompile Include="src\water\WaterRenderer.cpp" />
@@ -549,6 +550,7 @@
     <ClInclude Include="src\toolbox\maths.hpp" />
     <ClInclude Include="src\toolbox\matrix.hpp" />
     <ClInclude Include="src\toolbox\split.hpp" />
+    <ClInclude Include="src\toolbox\usleep.hpp" />
     <ClInclude Include="src\toolbox\vector.hpp" />
     <ClInclude Include="src\water\waterframebuffers.hpp" />
     <ClInclude Include="src\water\waterrenderer.hpp" />

@@ -729,6 +729,9 @@
     <ClCompile Include="src\guis\GuiImageResources.cpp">
       <Filter>Source Files\guis</Filter>
     </ClCompile>
+    <ClCompile Include="src\toolbox\Usleep.cpp">
+      <Filter>Source Files\toolbox</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.hpp">
@@ -1321,6 +1324,9 @@
     </ClInclude>
     <ClInclude Include="src\guis\guiimageresources.hpp">
       <Filter>Source Files\guis</Filter>
+    </ClInclude>
+    <ClInclude Include="src\toolbox\usleep.hpp">
+      <Filter>Source Files\toolbox</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

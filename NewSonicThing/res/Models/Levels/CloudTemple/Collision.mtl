@@ -10,7 +10,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd tex\cloud.png
+map_Kd tex/cloud.png
 
 newmtl Mesh_0132.rip_ssz_ground_km1_greenglass01_dif.png
 Ns 9.803922
@@ -21,7 +21,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd tex\ssz_ground_km1_greenglass01_dif.png
+map_Kd tex/ssz_ground_km1_greenglass01_dif.png
 
 newmtl Mesh_0132.rip_ssz_rock_km1_relief03_dif.png
 Ns 9.803922
@@ -32,7 +32,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd tex\ssz_rock_km1_relief03_dif.png
+map_Kd tex/ssz_rock_km1_relief03_dif.png
 
 newmtl Mesh_0132.rip_ssz_rock_km1_relief03_dif.png.001
 Ns 19.607843
@@ -43,7 +43,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd tex\ssz_rock_km1_relief03_dif.png
+map_Kd tex/ssz_rock_km1_relief03_dif.png
 
 newmtl Mesh_0132.rip_ssz_rock_km1_relief03_dif.png.002
 Ns 37.254902
@@ -54,7 +54,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd tex\ssz_rock_km1_relief03_dif.png
+map_Kd tex/ssz_rock_km1_relief03_dif.png
 
 newmtl Mesh_0132.rip_ssz_rock_km1_relief04_dif.png
 Ns 9.803922
@@ -65,7 +65,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd tex\ssz_rock_km1_relief04_dif.png
+map_Kd tex/ssz_rock_km1_relief04_dif.png
 
 newmtl Mesh_0132.rip_ssz_rock_km1_relief04_dif.png_NONE
 Ns 9.803922
@@ -76,7 +76,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd tex\ssz_rock_km1_relief04_dif.png
+map_Kd tex/ssz_rock_km1_relief04_dif.png
 
 newmtl Mesh_0132.rip_ssz_rock_km1_wall02_dif.png
 Ns 9.803922
@@ -87,7 +87,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd tex\ssz_rock_km1_wall02_dif.png
+map_Kd tex/ssz_rock_km1_wall02_dif.png
 
 newmtl Mesh_0132.rip_ssz_rock_km1_wall02_dif.png.001
 Ns 19.607843
@@ -98,7 +98,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd tex\ssz_rock_km1_wall02_dif.png
+map_Kd tex/ssz_rock_km1_wall02_dif.png
 
 newmtl Mesh_0132.rip_ssz_rock_km1_wall03_dif.png
 Ns 9.803922
@@ -109,7 +109,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd tex\ssz_rock_km1_wall03_dif.png
+map_Kd tex/ssz_rock_km1_wall03_dif.png
 
 newmtl Mesh_0132.rip_ssz_rock_km1_wall03_dif.png.001
 Ns 19.607843
@@ -120,7 +120,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd tex\ssz_rock_km1_wall03_dif.png
+map_Kd tex/ssz_rock_km1_wall03_dif.png
 
 newmtl Mesh_0132.rip_ssz_rock_km1_wall03_dif.png.002
 Ns 37.254902
@@ -131,4 +131,4 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd tex\ssz_rock_km1_wall03_dif.png
+map_Kd tex/ssz_rock_km1_wall03_dif.png
