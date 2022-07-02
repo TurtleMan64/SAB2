@@ -77,9 +77,9 @@ void Beetle::step()
     posBob.y += Beetle::bobHeight*sinf((bobTimer*Maths::PI)*Beetle::bobPeriodScale);
     blades->rotY += 360*dt;
 
-    if (fabsf(position.x - Global::gameMainPlayer->position.x) < Beetle::activationRange &&
-        fabsf(position.y - Global::gameMainPlayer->position.y) < Beetle::activationRange &&
-        fabsf(position.z - Global::gameMainPlayer->position.z) < Beetle::activationRange)
+    if (std::abs(position.x - Global::gameMainPlayer->position.x) < Beetle::activationRange &&
+        std::abs(position.y - Global::gameMainPlayer->position.y) < Beetle::activationRange &&
+        std::abs(position.z - Global::gameMainPlayer->position.z) < Beetle::activationRange)
     {
         Vector3f toPlayerDiff = Global::gameMainPlayer->position - position;
 
@@ -166,7 +166,7 @@ void Beetle::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading Beetle static models...\n");
+    printf("Loading Beetle static models...\n");
     #endif
 
     ModelLoader::loadModel(&Beetle::modelsBody,   "res/Models/Objects/Beetle/", "Beetle");
@@ -176,7 +176,7 @@ void Beetle::loadStaticModels()
 void Beetle::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting Beetle static models...\n");
+    printf("Deleting Beetle static models...\n");
     #endif
 
     Entity::deleteModels(&Beetle::modelsBody);

@@ -47,7 +47,7 @@ void MainMenu::loadResources()
 {
     if (menuButtons.size() != 0)
     {
-        std::fprintf(stdout, "Main Menu trying to load resources when they are already loaded!\n");
+        printf("Main Menu trying to load resources when they are already loaded!\n");
         return;
     }
 
@@ -143,7 +143,7 @@ void MainMenu::unloadResources()
 {
     if (menuButtons.size() == 0)
     {
-        std::fprintf(stdout, "Main Menu trying to unload resources when they are already unloaded!\n");
+        printf("Main Menu trying to unload resources when they are already unloaded!\n");
         return;
     }
 

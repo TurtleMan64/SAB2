@@ -133,7 +133,7 @@ void Help::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading Help static models...\n");
+    printf("Loading Help static models...\n");
     #endif
 
     ModelLoader::loadModel(&Help::models, "res/Models/Objects/Help/", "Help");
@@ -142,7 +142,7 @@ void Help::loadStaticModels()
 void Help::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting Help static models...\n");
+    printf("Deleting Help static models...\n");
     #endif
 
     Entity::deleteModels(&Help::models);

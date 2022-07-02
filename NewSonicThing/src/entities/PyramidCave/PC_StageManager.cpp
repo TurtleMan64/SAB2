@@ -42,7 +42,7 @@ void PC_StageManager::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading PC_StageManager static models...\n");
+    printf("Loading PC_StageManager static models...\n");
     #endif
 
     ModelLoader::loadModel(&PC_StageManager::modelsSkydome,  "res/Models/Levels/PyramidCave/Sky/", "Sky");
@@ -51,7 +51,7 @@ void PC_StageManager::loadStaticModels()
 void PC_StageManager::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting PC_StageManager static models...\n");
+    printf("Deleting PC_StageManager static models...\n");
     #endif
 
     Entity::deleteModels(&PC_StageManager::modelsSkydome);

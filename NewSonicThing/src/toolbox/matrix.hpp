@@ -64,7 +64,7 @@ public:
     void set(Matrix4f* other);
 
     //angle in radians
-    void rotate(float, Vector3f*);
+    void rotate(float radians, const Vector3f* axis);
 
     Vector4f transform(Vector4f* vec);
 

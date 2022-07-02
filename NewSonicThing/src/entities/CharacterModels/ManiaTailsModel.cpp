@@ -467,7 +467,7 @@ void ManiaTailsModel::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading mania tails static models...\n");
+    printf("Loading mania tails static models...\n");
     #endif
 
     ModelLoader::loadModel(&ManiaTailsModel::modelBody,         "res/Models/Characters/ManiaTails/", "Body");
@@ -614,7 +614,7 @@ void ManiaTailsModel::updateFlyMatrix()
 void ManiaTailsModel::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting mania tails static models...\n");
+    printf("Deleting mania tails static models...\n");
     #endif
 
     Entity::deleteModels(&ManiaTailsModel::modelBody);

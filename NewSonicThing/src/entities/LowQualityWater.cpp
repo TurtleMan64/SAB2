@@ -70,7 +70,7 @@ void LowQualityWater::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading LowQualityWater static models...\n");
+    printf("Loading LowQualityWater static models...\n");
     #endif
 
     ModelLoader::loadModel(&LowQualityWater::models, "res/Models/Objects/Water/", "LowQualityWater");
@@ -79,7 +79,7 @@ void LowQualityWater::loadStaticModels()
 void LowQualityWater::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting LowQualityWater models...\n");
+    printf("Deleting LowQualityWater models...\n");
     #endif
 
     Entity::deleteModels(&LowQualityWater::models);

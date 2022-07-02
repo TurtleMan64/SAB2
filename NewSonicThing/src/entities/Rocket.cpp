@@ -160,7 +160,7 @@ void Rocket::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading Rocket static models...\n");
+    printf("Loading Rocket static models...\n");
     #endif
 
     ModelLoader::loadModel(&Rocket::modelsRocket, "res/Models/Objects/Rocket/", "Rocket");
@@ -175,7 +175,7 @@ void Rocket::loadStaticModels()
 void Rocket::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting Rocket static models...\n");
+    printf("Deleting Rocket static models...\n");
     #endif
 
     Entity::deleteModels(&Rocket::modelsRocket);
@@ -220,19 +220,19 @@ float Rocket::getPlayerToRocketDifferenceHorizontalSquared()
 bool Rocket::rocketAppearSoundCanPlay()
 {
     return !rocketAppearSoundPlayed && (playerToRocketPositionDifferenceHorizontalSquared <= pow(HITBOX_RADIUS * 30, 2)
-            && fabsf(playerToRocketPositionDifference.y) < (HITBOX_HEIGHT * 10));
+            && std::abs(playerToRocketPositionDifference.y) < (HITBOX_HEIGHT * 10));
 }
 
 bool Rocket::rocketAppearSoundCanReset()
 {
     return (playerToRocketPositionDifferenceHorizontalSquared >= pow(HITBOX_RADIUS * 150, 2)
-            && fabsf(playerToRocketPositionDifference.y) < (HITBOX_HEIGHT * 50));
+            && std::abs(playerToRocketPositionDifference.y) < (HITBOX_HEIGHT * 50));
 }
 
 bool Rocket::playerWithinRocketHitbox()
 {
     return (playerToRocketPositionDifferenceHorizontalSquared <= pow(HITBOX_RADIUS, 2)
-            && fabsf(playerToRocketPositionDifference.y) < HITBOX_HEIGHT);
+            && std::abs(playerToRocketPositionDifference.y) < HITBOX_HEIGHT);
 }
 
 void Rocket::makeExhaustParticles(float rocketSpeed)

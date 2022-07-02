@@ -35,7 +35,7 @@ void FF_StageManager::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading FF_StageManager static models...\n");
+    printf("Loading FF_StageManager static models...\n");
     #endif
 
     ModelLoader::loadModel(&FF_StageManager::modelsSkydome, "res/Models/Levels/FrogForest/", "Skybox");
@@ -44,7 +44,7 @@ void FF_StageManager::loadStaticModels()
 void FF_StageManager::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting FF_StageManager static models...\n");
+    printf("Deleting FF_StageManager static models...\n");
     #endif
 
     Entity::deleteModels(&FF_StageManager::modelsSkydome);

@@ -37,7 +37,7 @@ std::istream& getlineSafe(std::istream& is, std::string& t)
 
     std::istream::sentry se(is, true);
     std::streambuf* sb = is.rdbuf();
-    //std::fprintf(stdout, "inavail = %lld\n", sb->in_avail());
+    //printf("inavail = %lld\n", sb->in_avail());
 
     for (;;)
     {
@@ -46,16 +46,16 @@ std::istream& getlineSafe(std::istream& is, std::string& t)
         switch (c)
         {
             case '\n':
-                std::fprintf(stdout, "line1 = '%s'\n", t.c_str());
+                printf("line1 = '%s'\n", t.c_str());
                 if (sb->in_avail() == 0)
                 {
                     is.setstate(std::ios::eofbit);
-                    std::fprintf(stdout, "End of File1\n");
+                    printf("End of File1\n");
                 }
                 return is;
                 
             case '\r':
-                std::fprintf(stdout, "line2 = '%s'\n", t.c_str());
+                printf("line2 = '%s'\n", t.c_str());
                 if (sb->sgetc() == '\n')
                 {
                     sb->sbumpc();
@@ -63,12 +63,12 @@ std::istream& getlineSafe(std::istream& is, std::string& t)
                 if (sb->in_avail() == 0)
                 {
                     is.setstate(std::ios::eofbit);
-                    std::fprintf(stdout, "End of File2\n");
+                    printf("End of File2\n");
                 }
                 return is;
                 
             case std::streambuf::traits_type::eof():
-                std::fprintf(stdout, "line3 = '%s'\n", t.c_str());
+                printf("line3 = '%s'\n", t.c_str());
                 // Also handle the case when the last line has no line ending
                 //if (t.empty())
                 //{
@@ -77,7 +77,7 @@ std::istream& getlineSafe(std::istream& is, std::string& t)
                 //if (sb->in_avail() == 0)
                 {
                     is.setstate(std::ios::eofbit);
-                    std::fprintf(stdout, "End of File3\n");
+                    printf("End of File3\n");
                 }
                 return is;
                 

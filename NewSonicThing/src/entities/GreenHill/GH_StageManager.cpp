@@ -65,7 +65,7 @@ void GH_StageManager::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading GH_StageManager static models...\n");
+    printf("Loading GH_StageManager static models...\n");
     #endif
 
     ModelLoader::loadModel(&GH_StageManager::modelsSkyCylinder,   "res/Models/Levels/GreenHillZone/Sky/",   "SkyCylinder");
@@ -77,7 +77,7 @@ void GH_StageManager::loadStaticModels()
 void GH_StageManager::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting GH_StageManager static models...\n");
+    printf("Deleting GH_StageManager static models...\n");
     #endif
 
     Entity::deleteModels(&GH_StageManager::modelsSkyCylinder);

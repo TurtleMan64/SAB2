@@ -108,7 +108,7 @@ void MH_Missle::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading MH_Missle static models...\n");
+    printf("Loading MH_Missle static models...\n");
     #endif
 
     ModelLoader::loadModel(&MH_Missle::models, "res/Models/Levels/MetalHarbor/Objects/", "Missle");
@@ -117,7 +117,7 @@ void MH_Missle::loadStaticModels()
 void MH_Missle::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting MH_Missle static models...\n");
+    printf("Deleting MH_Missle static models...\n");
     #endif
 
     Entity::deleteModels(&MH_Missle::models);

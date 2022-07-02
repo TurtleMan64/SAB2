@@ -136,7 +136,7 @@ RaceGhost::RaceGhost(const char* filePath, int missionNumber)
 
         if (!file.is_open())
         {
-            std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE + filePath).c_str());
+            printf("Error: Cannot load file '%s'\n", (Global::pathToEXE + filePath).c_str());
             file.close();
             Global::deleteEntity(this);
             return;
@@ -304,7 +304,7 @@ std::list<TexturedModel*>* RaceGhost::getModels()
 void RaceGhost::loadStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading RaceGhost static models...\n");
+    printf("Loading RaceGhost static models...\n");
     #endif
 
     ManiaMightyModel::loadStaticModels();
@@ -315,7 +315,7 @@ void RaceGhost::loadStaticModels()
 void RaceGhost::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting RaceGhost static models...\n");
+    printf("Deleting RaceGhost static models...\n");
     #endif
 
     ManiaMightyModel::deleteStaticModels();

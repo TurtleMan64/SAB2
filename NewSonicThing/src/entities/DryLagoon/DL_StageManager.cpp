@@ -54,7 +54,7 @@ void DL_StageManager::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading DL_StageManager static models...\n");
+    printf("Loading DL_StageManager static models...\n");
     #endif
 
     ModelLoader::loadModel(&DL_StageManager::modelsSkydome,  "res/Models/Levels/DryLagoon/", "Skydrum");
@@ -63,7 +63,7 @@ void DL_StageManager::loadStaticModels()
 void DL_StageManager::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting DL_StageManager static models...\n");
+    printf("Deleting DL_StageManager static models...\n");
     #endif
 
     Entity::deleteModels(&DL_StageManager::modelsSkydome);

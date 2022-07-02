@@ -58,12 +58,6 @@
     <Filter Include="Source Files\shaders">
       <UniqueIdentifier>{59645955-9b37-4cd2-9150-837c22211f80}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\shadows">
-      <UniqueIdentifier>{d4a9f951-8370-433f-a11c-416763efbefc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\shadows2">
-      <UniqueIdentifier>{8378c840-783a-452a-9f49-4648e0a7b312}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\textures">
       <UniqueIdentifier>{8d6e4f6c-b763-4949-8acc-8a6222d05b96}</UniqueIdentifier>
     </Filter>
@@ -132,6 +126,9 @@
     </Filter>
     <Filter Include="Source Files\loading">
       <UniqueIdentifier>{8d5ece52-87e7-49bc-a9c9-629760562f6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entities\SeasideHill">
+      <UniqueIdentifier>{4a401a88-8b81-4ea8-8571-87454324bfb3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -314,36 +311,6 @@
     </ClCompile>
     <ClCompile Include="src\renderEngine\SkyManager.cpp">
       <Filter>Source Files\renderEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shadows\ShadowBox.cpp">
-      <Filter>Source Files\shadows</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shadows\ShadowFrameBuffer.cpp">
-      <Filter>Source Files\shadows</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shadows\ShadowMapEntityRenderer.cpp">
-      <Filter>Source Files\shadows</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shadows\ShadowMapMasterRenderer.cpp">
-      <Filter>Source Files\shadows</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shadows\ShadowShader.cpp">
-      <Filter>Source Files\shadows</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shadows2\ShadowBox2.cpp">
-      <Filter>Source Files\shadows2</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shadows2\ShadowFrameBuffer2.cpp">
-      <Filter>Source Files\shadows2</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shadows2\ShadowMapEntityRenderer2.cpp">
-      <Filter>Source Files\shadows2</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shadows2\ShadowMapMasterRenderer2.cpp">
-      <Filter>Source Files\shadows2</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shadows2\ShadowShader2.cpp">
-      <Filter>Source Files\shadows2</Filter>
     </ClCompile>
     <ClCompile Include="src\textures\ModelTexture.cpp">
       <Filter>Source Files\textures</Filter>
@@ -732,6 +699,18 @@
     <ClCompile Include="src\toolbox\Usleep.cpp">
       <Filter>Source Files\toolbox</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\ItemBalloon.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\SeasideHill\SH_StageManager.cpp">
+      <Filter>Source Files\entities\SeasideHill</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\SeasideHill\SH_StoneBlock.cpp">
+      <Filter>Source Files\entities\SeasideHill</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\SeasideHill\SH_RisingPlatform.cpp">
+      <Filter>Source Files\entities\SeasideHill</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.hpp">
@@ -904,36 +883,6 @@
     </ClInclude>
     <ClInclude Include="src\renderEngine\skymanager.hpp">
       <Filter>Source Files\renderEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shadows\shadowbox.hpp">
-      <Filter>Source Files\shadows</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shadows\shadowframebuffer.hpp">
-      <Filter>Source Files\shadows</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shadows\shadowmapentityrenderer.hpp">
-      <Filter>Source Files\shadows</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shadows\shadowmapmasterrenderer.hpp">
-      <Filter>Source Files\shadows</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shadows\shadowshader.hpp">
-      <Filter>Source Files\shadows</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shadows2\shadowbox2.hpp">
-      <Filter>Source Files\shadows2</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shadows2\shadowframebuffer2.hpp">
-      <Filter>Source Files\shadows2</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shadows2\shadowmapentityrenderer2.hpp">
-      <Filter>Source Files\shadows2</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shadows2\shadowmapmasterrenderer2.hpp">
-      <Filter>Source Files\shadows2</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shadows2\shadowshader2.hpp">
-      <Filter>Source Files\shadows2</Filter>
     </ClInclude>
     <ClInclude Include="src\textures\modeltexture.hpp">
       <Filter>Source Files\textures</Filter>
@@ -1327,6 +1276,18 @@
     </ClInclude>
     <ClInclude Include="src\toolbox\usleep.hpp">
       <Filter>Source Files\toolbox</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\itemballoon.hpp">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\SeasideHill\shstagemanager.hpp">
+      <Filter>Source Files\entities\SeasideHill</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\SeasideHill\shstoneblock.hpp">
+      <Filter>Source Files\entities\SeasideHill</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\SeasideHill\shrisingplatform.hpp">
+      <Filter>Source Files\entities\SeasideHill</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

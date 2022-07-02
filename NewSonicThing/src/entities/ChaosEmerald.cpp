@@ -74,9 +74,9 @@ void ChaosEmerald::step()
 {
     Vector3f diff = Global::gameMainPlayer->position - position;
 
-    if (fabsf(diff.x) < 50 &&
-        fabsf(diff.z) < 50 &&
-        fabsf(diff.y) < 50)
+    if (std::abs(diff.x) < 50 &&
+        std::abs(diff.z) < 50 &&
+        std::abs(diff.y) < 50)
     {
         diff = Global::gameMainPlayer->getCenterPosition() - position;
         if (diff.lengthSquared() < 6.0f*6.0f + 4.4f*4.4f)
@@ -118,7 +118,7 @@ void ChaosEmerald::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading ChaosEmerald static models...\n");
+    printf("Loading ChaosEmerald static models...\n");
     #endif
 
     ModelLoader::loadModel(&ChaosEmerald::models, "res/Models/Objects/ChaosEmerald/", "ChaosEmerald");
@@ -127,7 +127,7 @@ void ChaosEmerald::loadStaticModels()
 void ChaosEmerald::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting ChaosEmerald static models...\n");
+    printf("Deleting ChaosEmerald static models...\n");
     #endif
 
     Entity::deleteModels(&ChaosEmerald::models);

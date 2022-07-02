@@ -7,7 +7,7 @@
 
 HorizontalBlur::HorizontalBlur(int targetFboWidth, int targetFboHeight)
 {
-    shader = new HorizontalBlurShader("res/Shaders/gaussianBlur/horizontalBlurVertex.txt", "res/Shaders/gaussianBlur/blurFragment.txt"); INCR_NEW("HorizontalBlurShader");
+    shader = new HorizontalBlurShader("res/Shaders/gaussianBlur/BlurHorizontalVert.glsl", "res/Shaders/gaussianBlur/BlurFrag.glsl"); INCR_NEW("HorizontalBlurShader");
     shader->start();
     shader->loadTargetWidth((float)targetFboWidth);
     shader->stop();

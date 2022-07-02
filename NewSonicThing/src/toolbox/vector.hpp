@@ -52,6 +52,14 @@ public:
     bool operator == (const Vector3f &other);
 };
 
+const Vector3f X_AXIS(1, 0, 0);
+const Vector3f Y_AXIS(0, 1, 0);
+const Vector3f Z_AXIS(0, 0, 1);
+
+const Vector3f X_AXIS_N(-1,  0,  0);
+const Vector3f Y_AXIS_N( 0, -1,  0);
+const Vector3f Z_AXIS_N( 0,  0, -1);
+
 class Vector2f
 {
 public:

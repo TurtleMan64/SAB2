@@ -23,7 +23,7 @@ RailSegment::RailSegment(Vector3f* begin, Vector3f* end, Vector3f* beginNormal, 
     length = pointsDiff.length();
     if (length < 1.0f)
     {
-        std::fprintf(stdout, "Warning: Very small rail segment.\n");
+        printf("Warning: Very small rail segment.\n");
     }
 
     //Ring* ring1 = new Ring(pointBegin.x, pointBegin.y, pointBegin.z); INCR_NEW
@@ -107,7 +107,7 @@ Rail::Rail(const char* railPath)
     std::ifstream file(Global::pathToEXE+railPath);
     if (!file.is_open())
     {
-        std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE+railPath).c_str());
+        printf("Error: Cannot load file '%s'\n", (Global::pathToEXE+railPath).c_str());
         file.close();
     }
     else

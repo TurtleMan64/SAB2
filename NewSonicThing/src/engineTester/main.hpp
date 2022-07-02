@@ -6,7 +6,6 @@ class Camera;
 class Stage;
 class SkySphere;
 class Light;
-class ShadowMapMasterRenderer;
 class Fbo;
 class Checkpoint;
 class WaterRenderer;
@@ -64,6 +63,7 @@ class ResultsScreen;
 #define LVL_CLOUD_TEMPLE    18
 #define LVL_DRAGON_ROAD     19
 #define LVL_EMERALD_COAST   20
+#define LVL_FREEZEEZY_PEAK  21
 
 #define DEV_MODE
 //#define PERFORMANCE_ANALYSIS
@@ -214,16 +214,6 @@ public:
     static bool renderBloom;
 
     static bool framerateUnlock;
-
-    static bool renderShadowsFar;
-    static bool renderShadowsClose;
-    static int shadowsFarQuality;
-
-    static bool unlockedSonicDoll;
-    static bool unlockedMechaSonic;
-    static bool unlockedDage4;
-    static bool unlockedManiaSonic;
-    static bool unlockedAmy;
 
     //how many npcs are in each level
     static std::unordered_map<int, int> stageNpcCounts;

@@ -130,7 +130,7 @@ GLuint FontShader::loadShader(const char* fileName, int type)
     }
     else
     {
-        std::fprintf(stdout, "Error: Could not find shader file '%s'\n", (Global::pathToEXE+fileName).c_str());
+        printf("Error: Could not find shader file '%s'\n", (Global::pathToEXE+fileName).c_str());
         sourceFile.close();
         return 0;
     }

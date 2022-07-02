@@ -82,7 +82,7 @@ void SpeedRamp::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading SpeedRamp static models...\n");
+    printf("Loading SpeedRamp static models...\n");
     #endif
 
     ModelLoader::loadModel(&SpeedRamp::models, "res/Models/Objects/BigJump/", "BigJump");
@@ -96,7 +96,7 @@ void SpeedRamp::loadStaticModels()
 void SpeedRamp::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting SpeedRamp static models...\n");
+    printf("Deleting SpeedRamp static models...\n");
     #endif
 
     Entity::deleteModels(&SpeedRamp::models);

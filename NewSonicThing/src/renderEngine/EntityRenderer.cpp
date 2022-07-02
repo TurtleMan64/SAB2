@@ -23,18 +23,8 @@ EntityRenderer::EntityRenderer(EntityShader* shader, Matrix4f* projectionMatrix)
     this->shader = shader;
 }
 
-void EntityRenderer::renderNEW(std::unordered_map<TexturedModel*, std::list<Entity*>>* entitiesMap, Matrix4f* toShadowSpaceFar, Matrix4f* toShadowSpaceClose)
+void EntityRenderer::renderNEW(std::unordered_map<TexturedModel*, std::list<Entity*>>* entitiesMap)
 {
-    if (Global::renderShadowsFar)
-    {
-        shader->loadToShadowSpaceMatrixFar(toShadowSpaceFar);
-    }
-
-    if (Global::renderShadowsClose)
-    {
-        shader->loadToShadowSpaceMatrixClose(toShadowSpaceClose);
-    }
-
     clockTime = Global::gameClock;
 
     for (auto entry : (*entitiesMap))
@@ -76,7 +66,7 @@ void EntityRenderer::prepareTexturedModel(TexturedModel* model)
     shader->loadTextureOffsets(clockTime * (texture->scrollX), clockTime * (texture->scrollY));
     //if (texture->hasMultipleImages())
     {
-        //std::fprintf(stdout, "mix factor = %f\n", texture->animationSpeed);
+        //printf("mix factor = %f\n", texture->animationSpeed);
     }
     shader->loadMixFactor(texture->mixFactor());
     shader->loadFogScale(texture->fogScale);

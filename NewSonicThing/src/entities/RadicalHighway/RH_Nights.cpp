@@ -47,7 +47,7 @@ void RH_Nights::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading RH_Nights static models...\n");
+    printf("Loading RH_Nights static models...\n");
     #endif
 
     ModelLoader::loadModel(&RH_Nights::models, "res/Models/Levels/RadicalHighway/Objects/", "Nights");
@@ -56,7 +56,7 @@ void RH_Nights::loadStaticModels()
 void RH_Nights::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting RH_Nights static models...\n");
+    printf("Deleting RH_Nights static models...\n");
     #endif
 
     Entity::deleteModels(&RH_Nights::models);

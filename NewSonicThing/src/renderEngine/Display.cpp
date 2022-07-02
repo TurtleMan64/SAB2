@@ -36,7 +36,7 @@ int Display::createDisplay()
     // ------------------------------
     if (glfwInit() == GL_FALSE)
     {
-        std::fprintf(stdout, "Error: GLFW could not be initialized (glfwInit() failed).\n");
+        printf("Error: GLFW could not be initialized (glfwInit() failed).\n");
         return -1;
     }
     //glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -81,7 +81,7 @@ int Display::createDisplay()
 
     //for (int i = 0; i < count; i++)
     //{
-        //std::fprintf(stdout, "%s\n", modes[i].);
+        //printf("%s\n", modes[i].);
     //}
 
     // glfw window creation
@@ -129,11 +129,11 @@ int Display::createDisplay()
         return -1;
     }
 
-    std::fprintf(stdout, "Video renderer: %s\n", glGetString(GL_RENDERER));
-    std::fprintf(stdout, "Video vendor:   %s\n", glGetString(GL_VENDOR));
-    std::fprintf(stdout, "OpenGL version: %s\n", glGetString(GL_VERSION));
-    std::fprintf(stdout, "GLSL version:   %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
-    std::fprintf(stdout, "GLFW version:   %s\n", glfwGetVersionString());
+    printf("Video renderer: %s\n", glGetString(GL_RENDERER));
+    printf("Video vendor:   %s\n", glGetString(GL_VENDOR));
+    printf("OpenGL version: %s\n", glGetString(GL_VERSION));
+    printf("GLSL version:   %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+    printf("GLFW version:   %s\n", glfwGetVersionString());
 
     glfwSwapInterval(1); //1 = vsync. 0 = off. 2 = half monitor refresh rate
     glEnable(GL_MULTISAMPLE);
@@ -157,18 +157,18 @@ int Display::createDisplay()
     }
 
     //glfwGetWindowAttrib(window, GLFW_SAMPLES);
-    //std::fprintf(stdout, "samples:   %d\n", glfwGetWindowAttrib(window, GLFW_SAMPLES));
+    //printf("samples:   %d\n", glfwGetWindowAttrib(window, GLFW_SAMPLES));
 
     //float aniso = 0.0f;
     //glGetFloatv(GL_MAX_TEXTURE_LOD_BIAS, &aniso);
-    //std::fprintf(stdout, "max lod bias:   %f\n", aniso);
+    //printf("max lod bias:   %f\n", aniso);
 
     //To check what extensions are avalible 
     //int ext_cnt;
     //glGetIntegerv(GL_NUM_EXTENSIONS, &ext_cnt);
     //for (int i = 0; i < ext_cnt; i++)
     {
-        //std::fprintf(stdout, "extensions:   %s\n", glGetStringi(GL_EXTENSIONS, i));
+        //printf("extensions:   %s\n", glGetStringi(GL_EXTENSIONS, i));
     }
 
     //Master_makeProjectionMatrix();
@@ -233,7 +233,7 @@ void Display::loadDisplaySettings()
     std::ifstream file(Global::pathToEXE + "Settings/DisplaySettings.ini");
     if (!file.is_open())
     {
-        std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE + "Settings/DisplaySettings.ini").c_str());
+        printf("Error: Cannot load file '%s'\n", (Global::pathToEXE + "Settings/DisplaySettings.ini").c_str());
         file.close();
     }
     else
@@ -288,7 +288,7 @@ void Display::loadGraphicsSettings()
     std::ifstream file(Global::pathToEXE + "Settings/GraphicsSettings.ini");
     if (!file.is_open())
     {
-        std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE + "Settings/GraphicsSettings.ini").c_str());
+        printf("Error: Cannot load file '%s'\n", (Global::pathToEXE + "Settings/GraphicsSettings.ini").c_str());
         file.close();
     }
     else
@@ -391,32 +391,6 @@ void Display::loadGraphicsSettings()
                         Global::renderBloom = false;
                     }
                 }
-                //else if (strcmp(lineSplit[0], "Render_Shadows_Far") == 0)
-                //{
-                //    if (strcmp(lineSplit[1], "on") == 0)
-                //    {
-                //        Global::renderShadowsFar = true;
-                //    }
-                //    else
-                //    {
-                //        Global::renderShadowsFar = false;
-                //    }
-                //}
-                //else if (strcmp(lineSplit[0], "Render_Shadows_Close") == 0)
-                //{
-                //    if (strcmp(lineSplit[1], "on") == 0)
-                //    {
-                //        Global::renderShadowsClose = true;
-                //    }
-                //    else
-                //    {
-                //        Global::renderShadowsClose = false;
-                //    }
-                //}
-                //else if (strcmp(lineSplit[0], "Shadows_Far_Quality") == 0)
-                //{
-                //    Global::shadowsFarQuality = std::stoi(lineSplit[1], nullptr, 10);
-                //}
             }
             free(lineSplit);
         }

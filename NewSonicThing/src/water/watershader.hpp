@@ -9,17 +9,17 @@ class Vector4f;
 
 #include <glad/glad.h>
 
-
 class WaterShader
 {
 private:
-    GLuint programId;
-    GLuint vertexShaderId;
-    GLuint fragmentShaderId;
+    GLuint programId        = GL_NONE;
+    GLuint vertexShaderId   = GL_NONE;
+    GLuint fragmentShaderId = GL_NONE;
 
     int location_modelMatrix;
     int location_viewMatrix;
     int location_projectionMatrix;
+    int location_frustrumFar;
     int location_reflectionTexture;
     int location_refractionTexture;
     int location_dudvMap;
@@ -29,8 +29,6 @@ private:
     int location_sunDirection;
     int location_sunColor;
     int location_depthMap;
-    int location_shadowMap;
-    int location_toShadowMapSpace;
     int location_waterHeight;
     int location_clipPlaneBehind;
     int location_murkiness;
@@ -62,8 +60,6 @@ public:
     void loadViewMatrix(Camera* camera);
 
     void loadModelMatrix(Matrix4f* modelMatrix);
-
-    void loadToShadowSpaceMatrix(Matrix4f* matrix);
 
     void loadClipPlaneBehind(Vector4f* plane);
 

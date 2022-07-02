@@ -124,6 +124,10 @@
 #include "../entities/EmeraldCoast/ecdolphin.hpp"
 #include "../entities/lowqualitywater.hpp"
 #include "../renderEngine/masterrenderer.hpp"
+#include "../entities/itemballoon.hpp"
+#include "../entities/SeasideHill/shstagemanager.hpp"
+#include "../entities/SeasideHill/shstoneblock.hpp"
+#include "../entities/SeasideHill/shrisingplatform.hpp"
 
 int LevelLoader::numLevels = 0;
 
@@ -212,6 +216,8 @@ void LevelLoader::loadTitle()
 
     Global::gameLightSun->direction.set(0, -1, 0);
 
+    Vector3f sunColorDay(1.0f, 0.92f, 0.84f);
+    SkyManager::setSunColorDay(&sunColorDay);
     SkyManager::setTimeOfDay(155.0f);
     SkyManager::fogBottomPosition = -1000.0f;
     SkyManager::fogBottomThickness = 1.0f;
@@ -221,6 +227,8 @@ void LevelLoader::loadTitle()
     SkyManager::setFogColors(&fogDay, &fogNight);
 
     MasterRenderer::VFOV_ADDITION = 0;
+    MasterRenderer::FAR_PLANE = 60000.0f;
+    MasterRenderer::makeProjectionMatrix();
 
     Global::renderWithCulling = false;
 
@@ -329,6 +337,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
             else if (currLvl->displayName == "Cloud Temple")    Global::levelId = LVL_CLOUD_TEMPLE;
             else if (currLvl->displayName == "Dragon Road")     Global::levelId = LVL_DRAGON_ROAD;
             else if (currLvl->displayName == "Emerald Coast")   Global::levelId = LVL_EMERALD_COAST;
+            else if (currLvl->displayName == "Freezeezy Peak")  Global::levelId = LVL_FREEZEEZY_PEAK;
         }
 
         Global::spawnAtCheckpoint  = false;
@@ -370,7 +379,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
     std::ifstream file(Global::pathToEXE + "res/Levels/" + fname);
     if (!file.is_open())
     {
-        std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE + "res/Levels/" + fname).c_str());
+        printf("Error: Cannot load file '%s'\n", (Global::pathToEXE + "res/Levels/" + fname).c_str());
         file.close();
         return;
     }
@@ -825,11 +834,11 @@ void LevelLoader::loadLevel(std::string levelFilename)
     Level* currentLevel = &Global::gameLevelData[Global::levelId];
     std::string missionType = (currentLevel->missionData[Global::gameMissionNumber])[0];
 
-    if (missionType == "Normal") Global::gameIsNormalMode = true;
-    if (missionType == "Ring")   Global::gameIsRingMode   = true;
-    if (missionType == "Chao")   Global::gameIsChaoMode   = true;
-    if (missionType == "Hard")   Global::gameIsHardMode   = true;
-    if (missionType == "Race")   Global::gameIsRaceMode   = true;
+    if (missionType == "Normal") { Global::gameIsNormalMode = true; }
+    if (missionType == "Ring")   { Global::gameIsRingMode   = true; }
+    if (missionType == "Chao")   { Global::gameIsChaoMode   = true; }
+    if (missionType == "Hard")   { Global::gameIsHardMode   = true; }
+    if (missionType == "Race")   { Global::gameIsRaceMode   = true; }
 
     if (Global::gameIsRingMode)
     {
@@ -1020,6 +1029,17 @@ void LevelLoader::loadLevel(std::string levelFilename)
     //previousTime = 0.0;
 
     MasterRenderer::VFOV_ADDITION = 0;
+
+    if (Global::levelId == LVL_SEASIDE_HILL)
+    {
+        MasterRenderer::FAR_PLANE = 90000.0f;
+        MasterRenderer::makeProjectionMatrix();
+    }
+    else
+    {
+        MasterRenderer::FAR_PLANE = 60000.0f;
+        MasterRenderer::makeProjectionMatrix();
+    }
 
     //unlock framerate during gameplay
     if (Global::framerateUnlock)
@@ -1579,6 +1599,11 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                     Global::gameStageManager = new FF_StageManager; INCR_NEW("Entity");
                     break;
 
+                case 15:
+                    SH_StageManager::loadStaticModels();
+                    Global::gameStageManager = new SH_StageManager; INCR_NEW("Entity");
+                    break;
+
                 default: break;
             }
             return;
@@ -2043,6 +2068,49 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             return;
         }
 
+        case 115: //Item Balloon
+        {
+            ItemBalloon::loadStaticModels();
+            ItemBalloon* item = new ItemBalloon(
+                    toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position x,y,z
+                    toInt(dat[4]));                                    //item type
+            INCR_NEW("Entity");
+            chunkedEntities->push_back(item);
+            return;
+        }
+
+        case 116: //Seaside Hill specific
+        {
+            switch (toInt(dat[1]))
+            {
+                case 0: //Destroyable Stone Block
+                {
+                    SH_StoneBlock::loadStaticModels();
+                    SH_StoneBlock* block = new SH_StoneBlock(
+                            toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]), //position x,y,z
+                            0.0f);
+                    INCR_NEW("Entity");
+                    chunkedEntities->push_back(block);
+                    return;
+                }
+
+                case 1: //Rising Stone Platform
+                {
+                    SH_RisingPlatform::loadStaticModels();
+                    SH_RisingPlatform* platform = new SH_RisingPlatform(
+                            toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]),  //position x,y,z
+                            toInt(dat[5]), toFloat(dat[6]),                     //type, moving distance
+                            toFloat(dat[7]), toFloat(dat[8]), toFloat(dat[9])); //trigger location and radius
+                    INCR_NEW("Entity");
+                    chunkedEntities->push_back(platform);
+                    return;
+                }
+
+                default:
+                    return;
+            }
+        }
+
         default:
         {
             return;
@@ -2059,7 +2127,7 @@ void LevelLoader::loadLevelData()
     std::ifstream file(Global::pathToEXE + "res/Levels/LevelData.dat");
     if (!file.is_open())
     {
-        std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE + "res/Levels/LevelData.dat").c_str());
+        printf("Error: Cannot load file '%s'\n", (Global::pathToEXE + "res/Levels/LevelData.dat").c_str());
         file.close();
     }
     else
@@ -2214,6 +2282,10 @@ void LevelLoader::freeAllStaticModels()
     EC_Seagull::deleteStaticModels();
     EC_Dolphin::deleteStaticModels();
     LowQualityWater::deleteStaticModels();
+    ItemBalloon::deleteStaticModels();
+    SH_StageManager::deleteStaticModels();
+    SH_StoneBlock::deleteStaticModels();
+    SH_RisingPlatform::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()

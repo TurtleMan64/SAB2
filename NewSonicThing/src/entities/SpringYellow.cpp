@@ -57,9 +57,9 @@ void SpringYellow::step()
 {
     cooldownTimer = std::fmaxf(cooldownTimer - dt, 0.0f);
 
-    if (fabsf(hitCenter.y - Global::gameMainPlayer->position.y) < fastCheckRadius &&
-        fabsf(hitCenter.z - Global::gameMainPlayer->position.z) < fastCheckRadius &&
-        fabsf(hitCenter.x - Global::gameMainPlayer->position.x) < fastCheckRadius &&
+    if (std::abs(hitCenter.y - Global::gameMainPlayer->position.y) < fastCheckRadius &&
+        std::abs(hitCenter.z - Global::gameMainPlayer->position.z) < fastCheckRadius &&
+        std::abs(hitCenter.x - Global::gameMainPlayer->position.x) < fastCheckRadius &&
         cooldownTimer == 0.0f)
     {
         Vector3f playerCenter = Global::gameMainPlayer->getCenterPosition();
@@ -86,7 +86,7 @@ void SpringYellow::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading SpringYellow static models...\n");
+    printf("Loading SpringYellow static models...\n");
     #endif
 
     ModelLoader::loadModel(&SpringYellow::models, "res/Models/Objects/Spring/", "SpringYellow");
@@ -95,7 +95,7 @@ void SpringYellow::loadStaticModels()
 void SpringYellow::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting SpringYellow static models...\n");
+    printf("Deleting SpringYellow static models...\n");
     #endif
 
     Entity::deleteModels(&SpringYellow::models);

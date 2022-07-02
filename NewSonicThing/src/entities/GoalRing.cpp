@@ -144,7 +144,7 @@ void GoalRing::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading GoalRing static models...\n");
+    printf("Loading GoalRing static models...\n");
     #endif
 
     ModelLoader::loadModel(&GoalRing::modelsRing, "res/Models/Objects/GoalRing/", "Pass1");
@@ -156,7 +156,7 @@ void GoalRing::loadStaticModels()
 void GoalRing::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting GoalRing static models...\n");
+    printf("Deleting GoalRing static models...\n");
     #endif
 
     Entity::deleteModels(&GoalRing::modelsRing);

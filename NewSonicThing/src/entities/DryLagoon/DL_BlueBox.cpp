@@ -44,8 +44,8 @@ void DL_BlueBox::step()
         const float hitPad = 5.0f;
 
         Vector3f diff = Global::gameMainPlayer->getCenterPosition() - position;
-        if (fabsf(diff.x) <= 10 + hitPad &&
-            fabsf(diff.z) <= 10 + hitPad &&
+        if (std::abs(diff.x) <= 10 + hitPad &&
+            std::abs(diff.z) <= 10 + hitPad &&
                   diff.y  <= 20 + hitPad &&
                   diff.y  >=  0 - hitPad)
         {
@@ -92,7 +92,7 @@ void DL_BlueBox::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading DL_BlueBox static models...\n");
+    printf("Loading DL_BlueBox static models...\n");
     #endif
 
     ModelLoader::loadModel(&DL_BlueBox::models, "res/Models/Levels/DryLagoon/Objects/", "Box");
@@ -106,7 +106,7 @@ void DL_BlueBox::loadStaticModels()
 void DL_BlueBox::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting DL_BlueBox static models...\n");
+    printf("Deleting DL_BlueBox static models...\n");
     #endif
 
     Entity::deleteModels(&DL_BlueBox::models);

@@ -47,7 +47,7 @@ void CE_StageManager::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading CE_StageManager static models...\n");
+    printf("Loading CE_StageManager static models...\n");
     #endif
 
     ModelLoader::loadModel(&CE_StageManager::modelsSkydome,  "res/Models/Levels/CityEscape/Sky/", "Sky");
@@ -56,7 +56,7 @@ void CE_StageManager::loadStaticModels()
 void CE_StageManager::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting CE_StageManager static models...\n");
+    printf("Deleting CE_StageManager static models...\n");
     #endif
 
     Entity::deleteModels(&CE_StageManager::modelsSkydome);

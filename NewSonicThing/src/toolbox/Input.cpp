@@ -379,29 +379,29 @@ void Input::pollInputs()
             float yrot = 0;
             float zrot = 0;
             Maths::sphereAnglesFromPosition(&Global::gameMainPlayer->vel, &yrot, &zrot);
-            //std::fprintf(stdout, "Time of day: %f\n", SkyManager::getTimeOfDay());
-            std::fprintf(stdout, "position = %f %f %f\n", Global::gameMainPlayer->position.x, Global::gameMainPlayer->position.y, Global::gameMainPlayer->position.z);
-            //std::fprintf(stdout, "%f %f %f\n", Global::gameMainPlayer->position.x, Global::gameMainPlayer->position.y, Global::gameMainPlayer->position.z);
-            std::fprintf(stdout, "velocity = %f %f %f\n", Global::gameMainPlayer->vel.x, Global::gameMainPlayer->vel.y, Global::gameMainPlayer->vel.z);
-            std::fprintf(stdout, "normal   = %f %f %f\n", Global::gameMainPlayer->relativeUp.x, Global::gameMainPlayer->relativeUp.y, Global::gameMainPlayer->relativeUp.z);
-            std::fprintf(stdout, "yrot     = %f\n", yrot);
-            //std::fprintf(stdout, "cam yaw = %f   cam pitch: %f\n", Global::gameCamera->getYaw(), Global::gameCamera->getPitch());
-            std::fprintf(stdout, "cam pos  = %f %f %f\n", Global::gameCamera->eye.x, Global::gameCamera->eye.y, Global::gameCamera->eye.z);
-            std::fprintf(stdout, "cam dir  = %f %f %f\n", Global::gameMainPlayer->camDir.x, Global::gameMainPlayer->camDir.y, Global::gameMainPlayer->camDir.z);
-            std::fprintf(stdout, "\n");
+            //printf("Time of day: %f\n", SkyManager::getTimeOfDay());
+            printf("position = %f %f %f\n", Global::gameMainPlayer->position.x, Global::gameMainPlayer->position.y, Global::gameMainPlayer->position.z);
+            //printf("%f %f %f\n", Global::gameMainPlayer->position.x, Global::gameMainPlayer->position.y, Global::gameMainPlayer->position.z);
+            printf("velocity = %f %f %f\n", Global::gameMainPlayer->vel.x, Global::gameMainPlayer->vel.y, Global::gameMainPlayer->vel.z);
+            printf("normal   = %f %f %f\n", Global::gameMainPlayer->relativeUp.x, Global::gameMainPlayer->relativeUp.y, Global::gameMainPlayer->relativeUp.z);
+            printf("yrot     = %f\n", yrot);
+            //printf("cam yaw = %f   cam pitch: %f\n", Global::gameCamera->getYaw(), Global::gameCamera->getPitch());
+            printf("cam pos  = %f %f %f\n", Global::gameCamera->eye.x, Global::gameCamera->eye.y, Global::gameCamera->eye.z);
+            printf("cam dir  = %f %f %f\n", Global::gameMainPlayer->camDir.x, Global::gameMainPlayer->camDir.y, Global::gameMainPlayer->camDir.z);
+            printf("\n");
 
-            //std::fprintf(stdout, "106 1  %f %f %f  %f %f %f   %f %f %f\n", 
+            //printf("106 1  %f %f %f  %f %f %f   %f %f %f\n", 
             //    Global::gameKart->position.x, Global::gameKart->position.y, Global::gameKart->position.z,
             //    Global::gameKart->vel.x, Global::gameKart->vel.y, Global::gameKart->vel.z, 
             //    Global::gameKart->currNorm.x, Global::gameKart->currNorm.y, Global::gameKart->currNorm.z);
         }
 
-        //std::fprintf(stdout, "diff = %d\n", Global::countNew-Global::countDelete);
+        //printf("diff = %d\n", Global::countNew-Global::countDelete);
         //extern std::unordered_map<std::string, int> heapObjects;
         //std::unordered_map<std::string, int>::iterator it = heapObjects.begin();
         //while (it != heapObjects.end())
         {
-            //std::fprintf(stdout, "'%s' count: %d\n", it->first.c_str(), it->second);
+            //printf("'%s' count: %d\n", it->first.c_str(), it->second);
             //it++;
         }
 
@@ -476,7 +476,7 @@ void Input::init()
     std::ifstream file(Global::pathToEXE + "Settings/CameraSensitivity.ini");
     if (!file.is_open())
     {
-        std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE + "Settings/CameraSensitivity.ini").c_str());
+        printf("Error: Cannot load file '%s'\n", (Global::pathToEXE + "Settings/CameraSensitivity.ini").c_str());
         file.close();
     }
     else
@@ -526,7 +526,7 @@ void Input::init()
     std::ifstream file2(Global::pathToEXE + "Settings/ControllerConfig.ini");
     if (!file2.is_open())
     {
-        std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE + "Settings/ControllerConfig.ini").c_str());
+        printf("Error: Cannot load file '%s'\n", (Global::pathToEXE + "Settings/ControllerConfig.ini").c_str());
         file2.close();
     }
     else

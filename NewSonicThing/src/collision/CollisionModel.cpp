@@ -48,7 +48,7 @@ void CollisionModel::generateQuadTree(int maxDepth)
 {
     if (quadTreeRoot != nullptr)
     {
-        std::fprintf(stdout, "Warning: generating a quad tree on a collision model when it already has one. Memory leak!\n");
+        printf("Warning: generating a quad tree on a collision model when it already has one. Memory leak!\n");
     }
 
     treeMaxDepth = maxDepth;
@@ -116,7 +116,7 @@ void CollisionModel::transformModel(CollisionModel* targetModel, Vector3f* trans
 {
     if (targetModel->triangles.size() != triangles.size())
     {
-        std::fprintf(stdout, "Warning: Trying to transform a collision model based on another collision model that doesn't have the same amount of triangles.\n");
+        printf("Warning: Trying to transform a collision model based on another collision model that doesn't have the same amount of triangles.\n");
         return;
     }
 
@@ -170,7 +170,7 @@ void CollisionModel::transformModel(CollisionModel* targetModel, Vector3f* trans
 {
     if (targetModel->triangles.size() != triangles.size())
     {
-        std::fprintf(stdout, "Warning: Trying to transform a collision model based on another collision model that doesn't have the same amount of triangles.\n");
+        printf("Warning: Trying to transform a collision model based on another collision model that doesn't have the same amount of triangles.\n");
         return;
     }
 
@@ -229,7 +229,7 @@ void CollisionModel::transformModel(CollisionModel* targetModel, Vector3f* trans
 {
     if (targetModel->triangles.size() != triangles.size())
     {
-        std::fprintf(stdout, "Warning: Trying to transform a collision model based on another collision model that doesn't have the same amount of triangles.\n");
+        printf("Warning: Trying to transform a collision model based on another collision model that doesn't have the same amount of triangles.\n");
         return;
     }
 
@@ -276,7 +276,7 @@ void CollisionModel::transformModelWithScale(CollisionModel* targetModel, Vector
 {
     if (targetModel->triangles.size() != triangles.size())
     {
-        std::fprintf(stdout, "Warning: Trying to transform a collision model based on another collision model that doesn't have the same amount of triangles.\n");
+        printf("Warning: Trying to transform a collision model based on another collision model that doesn't have the same amount of triangles.\n");
         return;
     }
 
@@ -327,7 +327,7 @@ void CollisionModel::transformModel(CollisionModel* targetModel, Vector3f* trans
 {
     if (targetModel->triangles.size() != triangles.size())
     {
-        std::fprintf(stdout, "Warning: Trying to transform a collision model based on another collision model that doesn't have the same amount of triangles.\n");
+        printf("Warning: Trying to transform a collision model based on another collision model that doesn't have the same amount of triangles.\n");
         return;
     }
 

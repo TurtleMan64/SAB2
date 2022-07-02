@@ -35,21 +35,13 @@ void Maths::createTransformationMatrix(Matrix4f* matrix, Vector3f* translation, 
 {
     matrix->setIdentity();
     matrix->translate(translation);
-    Vector3f vec;
 
-    vec.set(0, 1, 0);
-    matrix->rotate(toRadians(ry), &vec);
+    matrix->rotate(toRadians(ry), &Y_AXIS);
+    matrix->rotate(toRadians(rz), &Z_AXIS);
+    matrix->rotate(toRadians(rx), &X_AXIS);
+    matrix->rotate(toRadians(rs), &Z_AXIS);
 
-    vec.set(0, 0, 1);
-    matrix->rotate(toRadians(rz), &vec);
-
-    vec.set(1, 0, 0);
-    matrix->rotate(toRadians(rx), &vec);
-
-    vec.set(0, 0, 1);
-    matrix->rotate(toRadians(rs), &vec);
-
-    vec.set(scale, scale, scale);
+    Vector3f vec(scale, scale, scale);
     matrix->scale(&vec);
 }
 
@@ -57,21 +49,13 @@ void Maths::createTransformationMatrix(Matrix4f* matrix, Vector3f* translation, 
 {
     matrix->setIdentity();
     matrix->translate(translation);
-    Vector3f vec;
 
-    vec.set(0, 1, 0);
-    matrix->rotate(toRadians(ry), &vec);
+    matrix->rotate(toRadians(ry), &Y_AXIS);
+    matrix->rotate(toRadians(rz), &Z_AXIS);
+    matrix->rotate(toRadians(rx), &X_AXIS);
+    matrix->rotate(toRadians(rs), &Z_AXIS);
 
-    vec.set(0, 0, 1);
-    matrix->rotate(toRadians(rz), &vec);
-
-    vec.set(1, 0, 0);
-    matrix->rotate(toRadians(rx), &vec);
-
-    vec.set(0, 0, 1);
-    matrix->rotate(toRadians(rs), &vec);
-
-    vec.set(scaleX, scaleY, scaleZ);
+    Vector3f vec(scaleX, scaleY, scaleZ);
     matrix->scale(&vec);
 }
 
@@ -79,21 +63,13 @@ void Maths::createTransformationMatrixYXZY(Matrix4f* matrix, Vector3f* translati
 {
     matrix->setIdentity();
     matrix->translate(translation);
-    Vector3f vec;
 
-    vec.set(0, 1, 0);
-    matrix->rotate(toRadians(ry), &vec);
+    matrix->rotate(toRadians(ry), &Y_AXIS);
+    matrix->rotate(toRadians(rz), &Z_AXIS);
+    matrix->rotate(toRadians(rx), &X_AXIS);
+    matrix->rotate(toRadians(rs), &Y_AXIS);
 
-    vec.set(0, 0, 1);
-    matrix->rotate(toRadians(rz), &vec);
-
-    vec.set(1, 0, 0);
-    matrix->rotate(toRadians(rx), &vec);
-
-    vec.set(0, 1, 0);
-    matrix->rotate(toRadians(rs), &vec);
-
-    vec.set(scale, scale, scale);
+    Vector3f vec(scale, scale, scale);
     matrix->scale(&vec);
 }
 
@@ -111,18 +87,12 @@ void Maths::createTransformationMatrixYXZ(Matrix4f* matrix, Vector3f* translatio
 {
     matrix->setIdentity();
     matrix->translate(translation);
-    Vector3f vec;
 
-    vec.set(0, 0, 1);
-    matrix->rotate(toRadians(rz), &vec);
+    matrix->rotate(toRadians(rz), &Z_AXIS);
+    matrix->rotate(toRadians(rx), &X_AXIS);
+    matrix->rotate(toRadians(ry), &Y_AXIS);
 
-    vec.set(1, 0, 0);
-    matrix->rotate(toRadians(rx), &vec);
-
-    vec.set(0, 1, 0);
-    matrix->rotate(toRadians(ry), &vec);
-
-    vec.set(scale, scale, scale);
+    Vector3f vec(scale, scale, scale);
     matrix->scale(&vec);
 }
 
@@ -225,7 +195,7 @@ float Maths::compareTwoAngles(float origAng1, float origAng2)
     float ang1 = fmodf(fmodf(origAng1, 360) + 360, 360);
     float ang2 = fmodf(fmodf(origAng2, 360) + 360, 360);
 
-    float d = fmodf(fabsf(ang1 - ang2), 360);
+    float d = fmodf(std::abs(ang1 - ang2), 360);
     float r = d > 180 ? 360 - d : d;
 
     //calculate sign
@@ -341,7 +311,7 @@ Vector3f Maths::applyDrag(Vector3f* velocity, float drag, float deltaTime)
 
 float Maths::applyDrag(float velocity, float drag, float deltaTime)
 {
-    float length = fabsf(velocity);
+    float length = std::abs(velocity);
     if (length < 0.0001f)
     {
         return velocity;
@@ -393,7 +363,7 @@ void Maths::rotatePoint(float result[],
 {
     if (sqrtf(u*u + v*v + w*w) < 0.000000001f)
     {
-        //std::fprintf(stdout, "Warning: trying to rotate by a very small axis [%f %f %f]\n", u, v, w);
+        //printf("Warning: trying to rotate by a very small axis [%f %f %f]\n", u, v, w);
         result[0] = x;
         result[1] = y;
         result[2] = z;
@@ -452,7 +422,7 @@ Vector3f Maths::interpolateVector(Vector3f* A, Vector3f* B, float percent)
 
     if (mag < 0.0000001f)
     {
-        //std::fprintf(stdout, "Warning: Trying to interpolate between small vectors\n");
+        //printf("Warning: Trying to interpolate between small vectors\n");
         return Vector3f(A);
     }
 
@@ -476,19 +446,19 @@ Vector3f Maths::interpolateVectorDebug(Vector3f* A, Vector3f* B, float percent)
 
     if (mag < 0.0000001f)
     {
-        std::fprintf(stdout, "1\n");
+        printf("1\n");
         return Vector3f(A);
     }
 
     if (dotProduct/mag > 0.9999999f)
     {
-        std::fprintf(stdout, "2\n");
+        printf("2\n");
         return Vector3f(A);
     }
 
     float angle = acos(dotProduct/mag);
     percent = fminf(1.0f, fmaxf(0.0f, percent));
-    std::fprintf(stdout, "percent=%f\n", percent);
+    printf("percent=%f\n", percent);
     return Maths::rotatePoint(A, &perpen, angle*percent);
 }
 
@@ -551,17 +521,17 @@ Vector3f Maths::calculatePerpendicular(Vector3f* vec)
 Vector3f Maths::projectAlongLine(Vector3f* A, Vector3f* line)
 {
     Vector3f master(A);
-    //std::fprintf(stdout, "master = %f %f %f\n", master.x, master.y, master.z);
+    //printf("master = %f %f %f\n", master.x, master.y, master.z);
     Vector3f perpen1 = Maths::calculatePerpendicular(line);
     perpen1.normalize();
-    //std::fprintf(stdout, "perpen1 = %f %f %f\n", perpen1.x, perpen1.y, perpen1.z);
+    //printf("perpen1 = %f %f %f\n", perpen1.x, perpen1.y, perpen1.z);
     Vector3f perpen2 = perpen1.cross(line);
     perpen2.normalize();
-    //std::fprintf(stdout, "perpen2 = %f %f %f\n", perpen2.x, perpen2.y, perpen2.z);
+    //printf("perpen2 = %f %f %f\n", perpen2.x, perpen2.y, perpen2.z);
     master = Maths::projectOntoPlane(&master, &perpen1);
-    //std::fprintf(stdout, "master = %f %f %f\n", master.x, master.y, master.z);
+    //printf("master = %f %f %f\n", master.x, master.y, master.z);
     master = Maths::projectOntoPlane(&master, &perpen2);
-    //std::fprintf(stdout, "master = %f %f %f\n", master.x, master.y, master.z);
+    //printf("master = %f %f %f\n", master.x, master.y, master.z);
     return master;
 }
 
@@ -697,11 +667,11 @@ bool Maths::pointIsInCylinder(Vector3f* point, Vector3f* c1, Vector3f* c2, float
     Vector3f p(point);
     p = p - c1; //move c1 to origin
 
-    if (fabsf(angDiff) < 0.0001f)
+    if (std::abs(angDiff) < 0.0001f)
     {
         //skip rotate if the cylinder already is aligned with x axis
     }
-    else if (fabsf(angDiff) > Maths::PI - 0.0001f)
+    else if (std::abs(angDiff) > Maths::PI - 0.0001f)
     {
         //rotate 180 degrees
         Vector3f yAxis(0, 1, 0);

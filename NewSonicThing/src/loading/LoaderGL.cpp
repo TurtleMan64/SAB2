@@ -135,7 +135,7 @@ GLuint LoaderGL::loadTexture(const char* fileName)
     if (image == nullptr)
     {
         const char* err = SOIL_last_result();
-        std::fprintf(stdout, "Error loading image '%s', because '%s'\n", (Global::pathToEXE + fileName).c_str(), err);
+        printf("Error loading image '%s', because '%s'\n", (Global::pathToEXE + fileName).c_str(), err);
         return GL_NONE;
     }
 
@@ -197,7 +197,7 @@ GLuint LoaderGL::loadTextureNoInterpolation(const char* fileName)
     if (image == nullptr)
     {
         const char* err = SOIL_last_result();
-        std::fprintf(stdout, "Error loading image '%s', because '%s'\n", (Global::pathToEXE + fileName).c_str(), err);
+        printf("Error loading image '%s', because '%s'\n", (Global::pathToEXE + fileName).c_str(), err);
         return GL_NONE;
     }
 
@@ -338,22 +338,22 @@ void LoaderGL::deleteTexturedModels(std::list<TexturedModel*>* tm)
 
 void LoaderGL::printInfo()
 {
-    std::fprintf(stdout, "VAO Count = %d = %d\n", vaoNumber, (int)vaos.size());
-    std::fprintf(stdout, "VBO Count = %d = %d\n", vboNumber, (int)vbos.size());
-    //std::fprintf(stdout, "TEX Count = %d = %d\n", texNumber, (int)textures.size());
+    printf("VAO Count = %d = %d\n", vaoNumber, (int)vaos.size());
+    printf("VBO Count = %d = %d\n", vboNumber, (int)vbos.size());
+    //printf("TEX Count = %d = %d\n", texNumber, (int)textures.size());
 
     //if (textures.size() == 3)
     {
         //for (GLuint i : textures)
         {
-            //std::fprintf(stdout, "    %d\n", i);
+            //printf("    %d\n", i);
         }
     }
 
     std::unordered_map<std::string, TextureEntry>::iterator it = textures.begin();
     while (it != textures.end())
     {
-        std::fprintf(stdout, "%s -> %d, %d\n", it->first.c_str(), it->second.id, it->second.count);
+        printf("%s -> %d, %d\n", it->first.c_str(), it->second.id, it->second.count);
         it++;
     }
 }
@@ -377,7 +377,7 @@ GLuint LoaderGL::loadShader(const char* file, int shaderType)
     }
     else
     {
-        std::fprintf(stdout, "Error: Could not find shader file '%s'\n", (Global::pathToEXE + file).c_str());
+        printf("Error: Could not find shader file '%s'\n", (Global::pathToEXE + file).c_str());
         sourceFile.close();
         return 0;
     }

@@ -5,8 +5,6 @@ class Entity;
 class Matrix4f;
 class Light;
 class Camera;
-class ShadowMapMasterRenderer;
-class ShadowMapMasterRenderer2;
 class EntityShader;
 class EntityRenderer;
 class TexturedModel;
@@ -20,8 +18,6 @@ class MasterRenderer
 private:
     static EntityShader* entityShader;
     static EntityRenderer* entityRenderer;
-    static ShadowMapMasterRenderer* shadowMapRenderer;
-    static ShadowMapMasterRenderer2* shadowMapRenderer2;
 
     static std::unordered_map<TexturedModel*, std::list<Entity*>> entitiesMap;
     static std::unordered_map<TexturedModel*, std::list<Entity*>> entitiesMapPass2;
@@ -30,7 +26,6 @@ private:
     static std::unordered_map<TexturedModel*, std::list<Entity*>> entitiesMapTransparent;
     static std::unordered_map<TexturedModel*, std::list<Entity*>> entitiesMapPass6;
 
-    static GLuint randomMap;
     static GLuint transparentFrameBuffer;
     static GLuint transparentDepthTexture;
 
@@ -41,8 +36,8 @@ private:
     static void prepareRenderDepthOnly();
 
 public:
-    static const float NEAR_PLANE;
-    static const float FAR_PLANE;
+    static constexpr float NEAR_PLANE = 1.5f;
+    static float FAR_PLANE;
     static float VFOV_BASE; // Vertical Field of View
     static float VFOV_ADDITION; // Additional Field of View from kart speed
 
@@ -67,15 +62,5 @@ public:
     static void makeProjectionMatrix();
 
     static float getVFOV();
-
-    static GLuint getShadowMapTexture();
-
-    static ShadowMapMasterRenderer* getShadowRenderer();
-
-    static GLuint getShadowMapTexture2();
-
-    static ShadowMapMasterRenderer2* getShadowRenderer2();
-
-    static void renderShadowMaps(Light* sun);
 };
 #endif

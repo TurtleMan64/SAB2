@@ -1074,7 +1074,7 @@ void TC_Kart::step()
     //currNormFlatNormalized.normalize();
     //
     //Vector3f coordsFlat = Maths::coordinatesRelativeToBasis(&currNormFlatNormalized, &velFlatNormalized, &planeWeTC_KarteAbout, &normDiffFlat);
-    //std::fprintf(stdout, "[%f %f %f]\n", coordsFlat.x, coordsFlat.y, coordsFlat.z);
+    //printf("[%f %f %f]\n", coordsFlat.x, coordsFlat.y, coordsFlat.z);
     //
     //float extraPan = coordsFlat.y;
 
@@ -1174,7 +1174,7 @@ void TC_Kart::step()
     }
 
     //Vector3f posDiffDelta = position - prevPos;
-    //std::fprintf(stdout, "delta pos = %f\n\n", posDiffDelta.length()/dt);
+    //printf("delta pos = %f\n\n", posDiffDelta.length()/dt);
 
 
 
@@ -1323,10 +1323,10 @@ void TC_Kart::step()
     Vector3f vnorm(&vel);
     vnorm.normalize();
     //printf("end of kart step %f\n", Global::gameCamera->eye.x);
-    //std::fprintf(stdout, "pos  = [%f, %f, %f]\n", position.x, position.y, position.z);
-    //std::fprintf(stdout, "norm = [%f, %f, %f]\n", currNorm.x, currNorm.y, currNorm.z);
-    //std::fprintf(stdout, "dir  = [%f, %f, %f]\n", vnorm   .x, vnorm   .y, vnorm   .z);
-    //std::fprintf(stdout, "%f %f %f   %f %f %f   %f %f %f\n", position.x, position.y, position.z, currNorm.x, currNorm.y, currNorm.z, vnorm.x, vnorm.y, vnorm.z);
+    //printf("pos  = [%f, %f, %f]\n", position.x, position.y, position.z);
+    //printf("norm = [%f, %f, %f]\n", currNorm.x, currNorm.y, currNorm.z);
+    //printf("dir  = [%f, %f, %f]\n", vnorm   .x, vnorm   .y, vnorm   .z);
+    //printf("%f %f %f   %f %f %f   %f %f %f\n", position.x, position.y, position.z, currNorm.x, currNorm.y, currNorm.z, vnorm.x, vnorm.y, vnorm.z);
 }
 
 void TC_Kart::createEngineParticles(Vector3f* initPos, Vector3f* endPos, float initialScale, int count)
@@ -1442,7 +1442,7 @@ void TC_Kart::checkpointTest()
         lastCheckpointId = newCheckpointId;
     }
 
-    //std::fprintf(stdout, "currentLap = %d    lapDistance = %d    checkId = %d\n", currentLap, lapDistance, newCheckpointId);
+    //printf("currentLap = %d    lapDistance = %d    checkId = %d\n", currentLap, lapDistance, newCheckpointId);
     */
 
 }
@@ -1689,7 +1689,7 @@ void TC_Kart::loadVehicleInfo()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading TC_Kart static models...\n");
+    printf("Loading TC_Kart static models...\n");
     #endif
 
     ModelLoader::loadModel(&TC_Kart::models, "res/Models/Levels/TwinkleCircuit/Objects/Kart/", "Kart");
@@ -1699,7 +1699,7 @@ void TC_Kart::loadVehicleInfo()
 void TC_Kart::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting TC_Kart static models...\n");
+    printf("Deleting TC_Kart static models...\n");
     #endif
 
     Entity::deleteModels(&TC_Kart::models);

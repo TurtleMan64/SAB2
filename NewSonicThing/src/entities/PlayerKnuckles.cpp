@@ -921,7 +921,7 @@ void PlayerKnuckles::step()
                     float currentAngle = acosf(dot);
                     float maxAngle = currentAngle-targetAngle;
                     //rotate whichever is "less" rotation
-                    if (fabsf(tryingToRotate) < fabsf(maxAngle))
+                    if (std::abs(tryingToRotate) < std::abs(maxAngle))
                     {
                         camDir = Maths::rotatePoint(&camDir, &perpen, tryingToRotate);
                     }
@@ -948,7 +948,7 @@ void PlayerKnuckles::step()
                     float currentAngle = acosf(dot);
                     float maxAngle = currentAngle-targetAngle;
                     //rotate whichever is "less" rotation
-                    if (fabsf(tryingToRotate) < fabsf(maxAngle))
+                    if (std::abs(tryingToRotate) < std::abs(maxAngle))
                     {
                         camDir = Maths::rotatePoint(&camDir, &perpen, tryingToRotate);
                     }
@@ -1044,7 +1044,7 @@ void PlayerKnuckles::step()
         if (Global::isAutoCam)
         {
             Vector3f neutralDirection = relativeUp.scaleCopy(-1);
-            neutralDirection.y = fabsf(neutralDirection.y)*2;
+            neutralDirection.y = std::abs(neutralDirection.y)*2;
 
             Vector3f velInf = vel;
             if (velInf.y < 0)
@@ -1424,7 +1424,7 @@ void PlayerKnuckles::step()
                     CollisionChecker::falseAlarm();
 
                     float len = vel.length();
-                    float dot = fabsf(vel.dot(colNormal)/len);
+                    float dot = std::abs(vel.dot(colNormal)/len);
                     float fact = sqrtf(1 - dot*dot);
                     Vector3f bounce   = Maths::bounceVector(&vel, colNormal, 1.0f);
                     Vector3f parallel = Maths::projectOntoPlane(&vel, colNormal);
@@ -1687,21 +1687,21 @@ void PlayerKnuckles::step()
     Global::gameMainVehicleSpeed = (int)(vel.length());
 
     //Vector3f posDiffDelta = position - prevPos;
-    //std::fprintf(stdout, "delta pos = %f\n\n", posDiffDelta.length()/dt);
+    //printf("delta pos = %f\n\n", posDiffDelta.length()/dt);
 
 
-    //std::fprintf(stdout, "%f\n", animationTime);
-    //std::fprintf(stdout, "%f\n\n\n\n", vel.length());
+    //printf("%f\n", animationTime);
+    //printf("%f\n\n\n\n", vel.length());
 
-    //std::fprintf(stdout, "camDir       = [%f, %f, %f]\n", camDir.x, camDir.y, camDir.z);
-    //std::fprintf(stdout, "camDirSmooth = [%f, %f, %f]\n", camDirSmooth.x, camDirSmooth.y, camDirSmooth.z);
+    //printf("camDir       = [%f, %f, %f]\n", camDir.x, camDir.y, camDir.z);
+    //printf("camDirSmooth = [%f, %f, %f]\n", camDirSmooth.x, camDirSmooth.y, camDirSmooth.z);
 
     //Vector3f vnorm(&vel);
     //vnorm.normalize();
-    //std::fprintf(stdout, "pos  = [%f, %f, %f]\n", position.x, position.y, position.z);
-    //std::fprintf(stdout, "norm = [%f, %f, %f]\n", currNorm.x, currNorm.y, currNorm.z);
-    //std::fprintf(stdout, "dir  = [%f, %f, %f]\n", vnorm   .x, vnorm   .y, vnorm   .z);
-    //std::fprintf(stdout, "%f %f %f   %f %f %f   %f %f %f\n", position.x, position.y, position.z, currNorm.x, currNorm.y, currNorm.z, vnorm.x, vnorm.y, vnorm.z);
+    //printf("pos  = [%f, %f, %f]\n", position.x, position.y, position.z);
+    //printf("norm = [%f, %f, %f]\n", currNorm.x, currNorm.y, currNorm.z);
+    //printf("dir  = [%f, %f, %f]\n", vnorm   .x, vnorm   .y, vnorm   .z);
+    //printf("%f %f %f   %f %f %f   %f %f %f\n", position.x, position.y, position.z, currNorm.x, currNorm.y, currNorm.z, vnorm.x, vnorm.y, vnorm.z);
     centerPosPrev = getCenterPosition();
 }
 
@@ -1710,7 +1710,7 @@ void PlayerKnuckles::spindash()
     Vector3f newDir = Maths::projectOntoPlane(&spindashDirection, &relativeUp);
     newDir.setLength(storedSpindashSpeed);
     vel.set(&newDir);
-    //std::fprintf(stdout, "spindash at %f speed\n", storedSpindashSpeed);
+    //printf("spindash at %f speed\n", storedSpindashSpeed);
     //isBall = true;
     isBall = false; //geeks idea change
     AudioPlayer::play(40, &position); //peel release
@@ -1852,7 +1852,7 @@ void PlayerKnuckles::moveMeGround()
     }
 
     //Add to velocity based on the slope you are on
-    //std::fprintf(stdout, "relativeU.y = %f\n", relativeUp.y);
+    //printf("relativeU.y = %f\n", relativeUp.y);
     if (relativeUp.y < 0.99f)
     {
         if (!isSpindashing || vel.lengthSquared() > spindashPowerfulFrictionThreshold*spindashPowerfulFrictionThreshold) //if you are stopped and charging a spindash, dont move sonic
@@ -3023,7 +3023,7 @@ std::list<TexturedModel*>* PlayerKnuckles::getModels()
 void PlayerKnuckles::loadVehicleInfo()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading PlayerKnuckles static models...\n");
+    printf("Loading PlayerKnuckles static models...\n");
     #endif
     
     ManiaKnucklesModel::loadStaticModels();
@@ -3032,7 +3032,7 @@ void PlayerKnuckles::loadVehicleInfo()
 void PlayerKnuckles::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting PlayerKnuckles static models...\n");
+    printf("Deleting PlayerKnuckles static models...\n");
     #endif
     
     ManiaKnucklesModel::deleteStaticModels();

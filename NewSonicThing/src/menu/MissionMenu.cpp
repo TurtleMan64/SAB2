@@ -43,7 +43,7 @@ void MissionMenu::loadResources()
 {
     if (levelButtons.size() != 0)
     {
-        std::fprintf(stdout, "Warning: MissionMenu loading resources when they are already loaded.\n");
+        printf("Warning: MissionMenu loading resources when they are already loaded.\n");
         return;
     }
 
@@ -105,7 +105,7 @@ void MissionMenu::unloadResources()
 {
     if ((int)levelButtons.size() == 0)
     {
-        std::fprintf(stdout, "Warning: MissionMenu unloading resources when they are empty.\n");
+        printf("Warning: MissionMenu unloading resources when they are empty.\n");
         return;
     }
 
@@ -172,7 +172,7 @@ void MissionMenu::draw()
 
     this->offsetTarget = -this->currButtonId*0.15f;
     this->offsetCurr = Maths::approach(this->offsetCurr, this->offsetTarget, 15.0f, dt);
-    if (fabsf(this->offsetTarget-this->offsetCurr) < 0.001f)
+    if (std::abs(this->offsetTarget-this->offsetCurr) < 0.001f)
     {
         this->offsetCurr = this->offsetTarget;
     }

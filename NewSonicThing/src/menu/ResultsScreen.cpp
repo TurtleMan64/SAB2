@@ -40,7 +40,7 @@ void ResultsScreen::loadResources()
 {
     if (textArcadeModeClear != nullptr)
     {
-        std::fprintf(stdout, "Warning: ResultsScreen loading resources when they are already loaded.\n");
+        printf("Warning: ResultsScreen loading resources when they are already loaded.\n");
     }
 
     textArcadeModeClear = new GUIText("Congrats bro", 0.2f, Global::fontVipnagorgialla, 0.5f, 0.5f, 4, false); INCR_NEW("GUIText")
@@ -59,7 +59,7 @@ void ResultsScreen::unloadResources()
 {
     if (textArcadeModeClear == nullptr)
     {
-        std::fprintf(stdout, "Warning: ResultsScreen unloading resources when they are empty.\n");
+        printf("Warning: ResultsScreen unloading resources when they are empty.\n");
     }
 
     textArcadeModeClear->deleteMe(); delete textArcadeModeClear; textArcadeModeClear = nullptr; INCR_DEL("GUIText")

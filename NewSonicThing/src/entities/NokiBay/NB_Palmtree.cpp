@@ -58,7 +58,7 @@ void NB_Palmtree::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading NB_Palmtree static models...\n");
+    printf("Loading NB_Palmtree static models...\n");
     #endif
 
     ModelLoader::loadModel(&NB_Palmtree::models, "res/Models/Levels/NokiBay/Palmtree/", "Palm");
@@ -72,7 +72,7 @@ void NB_Palmtree::loadStaticModels()
 void NB_Palmtree::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting NB_Palmtree static models...\n");
+    printf("Deleting NB_Palmtree static models...\n");
     #endif
 
     Entity::deleteModels(&NB_Palmtree::models);

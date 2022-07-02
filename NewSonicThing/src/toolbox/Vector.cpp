@@ -1,5 +1,4 @@
-#include <math.h>
-#include <cstdio>
+#include <cmath>
 
 #include "vector.hpp"
 
@@ -43,10 +42,10 @@ void Vector3f::setLength(float newLength)
     }
     else 
     {
-        //std::fprintf(stdout, "Warning: Trying to set length of a very small vector [%f %f %f]\n", x, y, z);
-        float xa = fabsf(x);
-        float ya = fabsf(y);
-        float max = fmaxf(xa, fmaxf(ya, fabsf(z)));
+        //printf("Warning: Trying to set length of a very small vector [%f %f %f]\n", x, y, z);
+        float xa = std::abs(x);
+        float ya = std::abs(y);
+        float max = fmaxf(xa, fmaxf(ya, std::abs(z)));
         if (xa == max)
         {
             y = 0;
@@ -101,10 +100,10 @@ void Vector3f::normalize()
     }
     else
     {
-        //std::fprintf(stdout, "Warning: Trying to normalize a very small vector [%f %f %f]\n", x, y, z);
-        float xa = fabsf(x);
-        float ya = fabsf(y);
-        float max = fmaxf(xa, fmaxf(ya, fabsf(z)));
+        //printf("Warning: Trying to normalize a very small vector [%f %f %f]\n", x, y, z);
+        float xa = std::abs(x);
+        float ya = std::abs(y);
+        float max = fmaxf(xa, fmaxf(ya, std::abs(z)));
         if (xa == max)
         {
             y = 0;

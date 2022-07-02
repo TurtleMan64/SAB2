@@ -96,9 +96,9 @@ void HintMonitor::step()
 
     if (!collected)
     {
-        if (fabsf(position.y - (Global::gameMainPlayer->position.y + 30)) < 30 &&
-            fabsf(position.z - Global::gameMainPlayer->position.z) < 40 &&
-            fabsf(position.x - Global::gameMainPlayer->position.x) < 40)
+        if (std::abs(position.y - (Global::gameMainPlayer->position.y + 30)) < 30 &&
+            std::abs(position.z - Global::gameMainPlayer->position.z) < 40 &&
+            std::abs(position.x - Global::gameMainPlayer->position.x) < 40)
         {
             Vector3f diff = Global::gameMainPlayer->position - position;
             diff.y = 0;
@@ -156,7 +156,7 @@ void HintMonitor::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading HintMonitor static models...\n");
+    printf("Loading HintMonitor static models...\n");
     #endif
 
     ModelLoader::loadModel(&HintMonitor::models, "res/Models/Objects/Monitor/", "Monitor");
@@ -165,7 +165,7 @@ void HintMonitor::loadStaticModels()
 void HintMonitor::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting HintMonitor static models...\n");
+    printf("Deleting HintMonitor static models...\n");
     #endif
 
     Entity::deleteModels(&HintMonitor::models);

@@ -52,7 +52,7 @@ void DP_BigShine::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading DP_BigShine static models...\n");
+    printf("Loading DP_BigShine static models...\n");
     #endif
 
     ModelLoader::loadModel(&DP_BigShine::models, "res/Models/Levels/DelfinoPlaza/BigShine/", "BigShine");
@@ -61,7 +61,7 @@ void DP_BigShine::loadStaticModels()
 void DP_BigShine::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting DP_BigShine static models...\n");
+    printf("Deleting DP_BigShine static models...\n");
     #endif
 
     Entity::deleteModels(&DP_BigShine::models);

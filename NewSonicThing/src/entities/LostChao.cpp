@@ -112,7 +112,7 @@ void LostChao::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading LostChao static models...\n");
+    printf("Loading LostChao static models...\n");
     #endif
 
     ModelLoader::loadModel(&LostChao::models, "res/Models/Objects/Chao/", "Chao");
@@ -121,7 +121,7 @@ void LostChao::loadStaticModels()
 void LostChao::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting LostChao static models...\n");
+    printf("Deleting LostChao static models...\n");
     #endif
 
     Entity::deleteModels(&LostChao::models);

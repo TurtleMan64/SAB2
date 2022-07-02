@@ -180,7 +180,7 @@ void ManiaMightyModel::animate(int animIndex, float time)
                 case  9: models = &ManiaMightyModel::modelDash9;  break;
                 case 10: models = &ManiaMightyModel::modelDash10; break;
                 case 11: models = &ManiaMightyModel::modelDash11; break;
-                default: std::fprintf(stdout, "dash animation index out of bounds"); break;
+                default: printf("dash animation index out of bounds"); break;
             }
             updateTransformationMatrix();
             setLimbsVisibility(false);
@@ -273,7 +273,7 @@ void ManiaMightyModel::animate(int animIndex, float time)
                 case 15: models = &ManiaMightyModel::modelJog15; break;
                 case 16: models = &ManiaMightyModel::modelJog16; break;
                 case 17: models = &ManiaMightyModel::modelJog17; break;
-                default: std::fprintf(stdout, "warning: jog animation index out of bounds\n"); break;
+                default: printf("warning: jog animation index out of bounds\n"); break;
             }
             updateTransformationMatrix();
             setLimbsVisibility(false);
@@ -462,7 +462,7 @@ void ManiaMightyModel::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading mania mighty static models...\n");
+    printf("Loading mania mighty static models...\n");
     #endif
 
     ModelLoader::loadModel(&ManiaMightyModel::modelBody,         "res/Models/Characters/ManiaMighty/", "LimbBody");
@@ -603,7 +603,7 @@ void ManiaMightyModel::updateFlyMatrix()
 void ManiaMightyModel::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting mania mighty static models...\n");
+    printf("Deleting mania mighty static models...\n");
     #endif
 
     Entity::deleteModels(&ManiaMightyModel::modelBody);

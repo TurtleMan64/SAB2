@@ -58,7 +58,7 @@ void DP_Leaves::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading DP_Leaves static models...\n");
+    printf("Loading DP_Leaves static models...\n");
     #endif
 
     ModelLoader::loadModel(&DP_Leaves::models, "res/Models/Levels/DelfinoPlaza/PalmLeaves/", "PalmLeaves");
@@ -72,7 +72,7 @@ void DP_Leaves::loadStaticModels()
 void DP_Leaves::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting DP_Leaves static models...\n");
+    printf("Deleting DP_Leaves static models...\n");
     #endif
 
     Entity::deleteModels(&DP_Leaves::models);

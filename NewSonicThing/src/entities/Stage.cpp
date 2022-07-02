@@ -97,7 +97,7 @@ void Stage::loadModels(
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading stage models...\n");
+    printf("Loading stage models...\n");
     #endif
 
     std::string path = "res/Models/";
@@ -117,7 +117,7 @@ void Stage::loadModels(
 void Stage::deleteModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting stage models...\n");
+    printf("Deleting stage models...\n");
     #endif
 
     for (int i = 0; i < (int)Stage::chunkModels.size(); i++)

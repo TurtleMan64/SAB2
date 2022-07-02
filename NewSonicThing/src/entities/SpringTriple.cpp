@@ -66,9 +66,9 @@ void SpringTriple::step()
 {
     cooldownTimer = std::fmaxf(cooldownTimer - dt, 0.0f);
 
-    if (fabsf(hitCenter2.y - Global::gameMainPlayer->position.y) < 40 &&
-        fabsf(hitCenter2.z - Global::gameMainPlayer->position.z) < 40 &&
-        fabsf(hitCenter2.x - Global::gameMainPlayer->position.x) < 40 &&
+    if (std::abs(hitCenter2.y - Global::gameMainPlayer->position.y) < 40 &&
+        std::abs(hitCenter2.z - Global::gameMainPlayer->position.z) < 40 &&
+        std::abs(hitCenter2.x - Global::gameMainPlayer->position.x) < 40 &&
         cooldownTimer == 0.0f)
     {
         Vector3f playerCenter = Global::gameMainPlayer->getCenterPosition();
@@ -97,7 +97,7 @@ void SpringTriple::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading triple spring static models...\n");
+    printf("Loading triple spring static models...\n");
     #endif
 
     ModelLoader::loadModel(&SpringTriple::models, "res/Models/Objects/Spring/", "TripleSpring");
@@ -106,7 +106,7 @@ void SpringTriple::loadStaticModels()
 void SpringTriple::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting triple spring static models...\n");
+    printf("Deleting triple spring static models...\n");
     #endif
 
     Entity::deleteModels(&SpringTriple::models);

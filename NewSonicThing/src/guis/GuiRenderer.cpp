@@ -26,7 +26,7 @@ void GuiRenderer::init()
     positions.push_back( 1);
     positions.push_back(-1);
     GuiRenderer::quadModel = LoaderGL::loadToVAO(&positions, 2);
-    GuiRenderer::shader = new GuiShader("res/Shaders/guis/guiVertexShader.txt", "res/Shaders/guis/guiFragmentShader.txt"); INCR_NEW("GuiShader");
+    GuiRenderer::shader = new GuiShader("res/Shaders/guis/GuiVert.glsl", "res/Shaders/guis/GuiFrag.glsl"); INCR_NEW("GuiShader");
 }
 
 void GuiRenderer::render(std::list<GuiImage*>* guis)

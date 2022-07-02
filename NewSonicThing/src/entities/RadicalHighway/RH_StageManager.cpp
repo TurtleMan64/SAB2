@@ -34,7 +34,7 @@ void RH_StageManager::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading RH_StageManager static models...\n");
+    printf("Loading RH_StageManager static models...\n");
     #endif
 
     ModelLoader::loadModel(&RH_StageManager::modelsSkydome,  "res/Models/Levels/RadicalHighway/Sky/", "Sky");
@@ -43,7 +43,7 @@ void RH_StageManager::loadStaticModels()
 void RH_StageManager::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting RH_StageManager static models...\n");
+    printf("Deleting RH_StageManager static models...\n");
     #endif
 
     Entity::deleteModels(&RH_StageManager::modelsSkydome);

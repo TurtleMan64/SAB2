@@ -58,7 +58,7 @@ void SR_StageManager::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading SR_StageManager static models...\n");
+    printf("Loading SR_StageManager static models...\n");
     #endif
 
     ModelLoader::loadModel(&SR_StageManager::modelsSkyPass1,       "res/Models/Levels/SkyRail/Sky/", "Pass1");
@@ -74,7 +74,7 @@ void SR_StageManager::loadStaticModels()
 void SR_StageManager::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting SRStageManager static models...\n");
+    printf("Deleting SRStageManager static models...\n");
     #endif
 
     Entity::deleteModels(&SR_StageManager::modelsSkyPass1);

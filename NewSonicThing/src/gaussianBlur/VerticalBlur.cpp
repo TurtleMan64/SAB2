@@ -7,7 +7,7 @@
 
 VerticalBlur::VerticalBlur(int targetFboWidth, int targetFboHeight)
 {
-    shader = new VerticalBlurShader("res/Shaders/gaussianBlur/verticalBlurVertex.txt", "res/Shaders/gaussianBlur/blurFragment.txt"); INCR_NEW("VerticalBlurShader");
+    shader = new VerticalBlurShader("res/Shaders/gaussianBlur/BlurVerticalVert.glsl", "res/Shaders/gaussianBlur/BlurFrag.glsl"); INCR_NEW("VerticalBlurShader");
     shader->start();
     shader->loadTargetHeight((float)targetFboHeight);
     shader->stop();

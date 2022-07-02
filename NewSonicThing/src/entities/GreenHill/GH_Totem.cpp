@@ -58,7 +58,7 @@ void GH_Totem::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading GH_Totem static models...\n");
+    printf("Loading GH_Totem static models...\n");
     #endif
 
     ModelLoader::loadModel(&GH_Totem::models, "res/Models/Levels/GreenHillZone/Objects/", "GreenHillTotem");
@@ -72,7 +72,7 @@ void GH_Totem::loadStaticModels()
 void GH_Totem::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting GH_Totem static models...\n");
+    printf("Deleting GH_Totem static models...\n");
     #endif
 
     Entity::deleteModels(&GH_Totem::models);

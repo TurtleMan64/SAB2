@@ -172,7 +172,7 @@ void ManiaKnucklesModel::animate(int animIndex, float time)
                 case  9: models = &ManiaKnucklesModel::modelDash9;  break;
                 case 10: models = &ManiaKnucklesModel::modelDash10; break;
                 case 11: models = &ManiaKnucklesModel::modelDash11; break;
-                default: std::fprintf(stdout, "dash animation index out of bounds"); break;
+                default: printf("dash animation index out of bounds"); break;
             }
             updateTransformationMatrix();
             setLimbsVisibility(false);
@@ -258,7 +258,7 @@ void ManiaKnucklesModel::animate(int animIndex, float time)
                 case 15: models = &ManiaKnucklesModel::modelJog15; break;
                 case 16: models = &ManiaKnucklesModel::modelJog16; break;
                 case 17: models = &ManiaKnucklesModel::modelJog17; break;
-                default: std::fprintf(stdout, "warning: jog animation index out of bounds\n"); break;
+                default: printf("warning: jog animation index out of bounds\n"); break;
             }
             updateTransformationMatrix();
             setLimbsVisibility(false);
@@ -462,7 +462,7 @@ void ManiaKnucklesModel::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading mania knuckles static models...\n");
+    printf("Loading mania knuckles static models...\n");
     #endif
 
     ModelLoader::ModelLoader::loadModel(&ManiaKnucklesModel::modelBody,         "res/Models/Characters/ManiaKnuckles/", "Body");
@@ -587,7 +587,7 @@ void ManiaKnucklesModel::updateLimbsMatrix()
 void ManiaKnucklesModel::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting mania knuckles static models...\n");
+    printf("Deleting mania knuckles static models...\n");
     #endif
 
     Entity::deleteModels(&ManiaKnucklesModel::modelBody);

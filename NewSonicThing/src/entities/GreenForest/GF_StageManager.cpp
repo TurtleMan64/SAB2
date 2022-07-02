@@ -104,7 +104,7 @@ void GF_StageManager::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading GF_StageManager static models...\n");
+    printf("Loading GF_StageManager static models...\n");
     #endif
 
     ModelLoader::loadModel(&GF_StageManager::modelsSkydome,  "res/Models/Levels/GreenForest/", "Skydome");
@@ -113,7 +113,7 @@ void GF_StageManager::loadStaticModels()
 void GF_StageManager::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting GF_StageManager static models...\n");
+    printf("Deleting GF_StageManager static models...\n");
     #endif
 
     Entity::deleteModels(&GF_StageManager::modelsSkydome);

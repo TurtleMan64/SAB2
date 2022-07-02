@@ -55,8 +55,6 @@
 #include "../particles/particlemaster.hpp"
 #include "../particles/particleresources.hpp"
 #include "../toolbox/split.hpp"
-#include "../shadows/shadowmapmasterrenderer.hpp"
-#include "../shadows2/shadowmapmasterrenderer2.hpp"
 #include "../postProcessing/postprocessing.hpp"
 #include "../postProcessing/fbo.hpp"
 #include "../guis/guirenderer.hpp"
@@ -144,11 +142,6 @@ bool Global::framerateUnlock = false;
 
 bool Global::useFullscreen = false;
 
-bool Global::renderShadowsFar = false;
-bool Global::renderShadowsClose = false;
-int Global::shadowsFarQuality = 0;
-
-
 //extern bool INPUT_JUMP;
 //extern bool INPUT_ACTION;
 //extern bool INPUT_ACTION2;
@@ -226,12 +219,6 @@ float Global::checkpointTime = 0;
 GUIText* Global::titleCardLevelName          = nullptr;
 GUIText* Global::titleCardMission            = nullptr;
 GUIText* Global::titleCardMissionDescription = nullptr;
-
-bool Global::unlockedSonicDoll = true;
-bool Global::unlockedMechaSonic = true;
-bool Global::unlockedDage4 = true;
-bool Global::unlockedManiaSonic = true;
-bool Global::unlockedAmy = true;
 
 std::unordered_map<int, int> Global::stageNpcCounts;
 
@@ -337,6 +324,7 @@ int main(int argc, char** argv)
     Global::gameLevelIdsKnuckles.push_back(LVL_DRY_LAGOON);
     Global::gameLevelIdsKnuckles.push_back(LVL_DELFINO_PLAZA);
     Global::gameLevelIdsKnuckles.push_back(LVL_NOKI_BAY);
+    Global::gameLevelIdsKnuckles.push_back(LVL_FREEZEEZY_PEAK);
 
     //create NPC list
     Global::stageNpcCounts[LVL_SKY_RAIL]        = 3;
@@ -414,7 +402,7 @@ int main(int argc, char** argv)
     {
         Global::gameWaterFBOs     = new WaterFrameBuffers; INCR_NEW("WaterFrameBuffers");
         WaterShader* waterShader  = new WaterShader; INCR_NEW("WaterShader");
-        Global::gameWaterRenderer = new WaterRenderer(waterShader, MasterRenderer::projectionMatrix, Global::gameWaterFBOs, MasterRenderer::getShadowRenderer()); INCR_NEW("WaterRenderer");
+        Global::gameWaterRenderer = new WaterRenderer(waterShader, MasterRenderer::projectionMatrix, Global::gameWaterFBOs); INCR_NEW("WaterRenderer");
     }
 
     if (Global::renderBloom)
@@ -554,7 +542,7 @@ int main(int argc, char** argv)
         #endif
 
         //long double thisTime = std::time(0);
-        //std::fprintf(stdout, "time: %f time\n", thisTime);
+        //printf("time: %f time\n", thisTime);
 
         ANALYSIS_START("Entity Management");
         //entities managment
@@ -596,7 +584,7 @@ int main(int argc, char** argv)
 
                 if (numDeleted == 0)
                 {
-                    std::fprintf(stdout, "Error: Tried to delete a chunked entity that wasn't in the lists.\n");
+                    printf("Error: Tried to delete a chunked entity that wasn't in the lists.\n");
                 }
                 else
                 {
@@ -785,7 +773,7 @@ int main(int argc, char** argv)
             MasterRenderer::processEntity(Global::gameStageManager);
         }
         MasterRenderer::processEntity(&stage);
-        MasterRenderer::processEntity(&skySphere);
+        //MasterRenderer::processEntity(&skySphere);
 
         float waterBlendAmount = 0.0f;
         if (cam.inWater || (cam.eye.y < Global::waterHeight && Global::stageUsesWater))
@@ -1055,10 +1043,10 @@ int main(int argc, char** argv)
         if (timeNew - previousTime >= 1.0)
         {
             Global::currentCalculatedFPS = (int)(std::round(frameCount/(timeNew - previousTime)));
-            //std::fprintf(stdout, "fps: %f\n", frameCount / (timeNew - previousTime));
-            //std::fprintf(stdout, "diff: %d\n", Global::countNew - Global::countDelete);
+            //printf("fps: %f\n", frameCount / (timeNew - previousTime));
+            //printf("diff: %d\n", Global::countNew - Global::countDelete);
             //Loader::printInfo();
-            //std::fprintf(stdout, "entity counts: %d %d %d\n", gameEntities.size(), gameEntitiesPass2.size(), gameTransparentEntities.size());
+            //printf("entity counts: %d %d %d\n", gameEntities.size(), gameEntitiesPass2.size(), gameTransparentEntities.size());
             frameCount = 0;
             previousTime = timeNew;
         }
@@ -1074,7 +1062,7 @@ int main(int argc, char** argv)
                 //Global::gameOutputFbo2->resize(SCR_WIdTH, SCR_HEIGHT);
             }
         }
-        //std::fprintf(stdout, "dt: %f\n", dt);
+        //printf("dt: %f\n", dt);
 
         ANALYSIS_DONE("Frame Time");
         ANALYSIS_REPORT();
@@ -1153,13 +1141,13 @@ void increaseProcessPriority()
     if (!SetPriorityClass(GetCurrentProcess(), ABOVE_NORMAL_PRIORITY_CLASS))
     {
         dwError = GetLastError();
-        std::fprintf(stdout, "Failed to enter above normal mode (%d)\n", (int)dwError);
+        printf("Failed to enter above normal mode (%d)\n", (int)dwError);
     }
 
     if (!SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_ABOVE_NORMAL))
     {
         dwError = GetLastError();
-        std::fprintf(stdout, "Failed to enter above normal mode (%d)\n", (int)dwError);
+        printf("Failed to enter above normal mode (%d)\n", (int)dwError);
     }
     
 
@@ -1197,7 +1185,7 @@ void Global::loadSaveData()
     std::ifstream file(Global::pathToEXE+"res/SaveData/SaveData.sav");
     if (!file.is_open())
     {
-        std::fprintf(stdout, "No save data found. Creating new save file...\n");
+        printf("No save data found. Creating new save file...\n");
         file.close();
         Global::saveSaveData();
     }
@@ -1718,12 +1706,12 @@ int Global::getChunkIndex(float x, float z)
     if (realIndex >= (int)gameChunkedEntities.size())
     {
         std::fprintf(stderr, "Error: Index out of bounds on gameNearbyEntities. THIS IS VERY BAD.\n");
-        std::fprintf(stdout, "    x = %f       z = %f\n", x, z);
-        std::fprintf(stdout, "    relativeX = %f      relativeZ = %f\n", relativeX, relativeZ);
-        std::fprintf(stdout, "    iX = %d        iZ = %d\n", iX, iZ);
-        std::fprintf(stdout, "    chunkedEntitiesWidth = %d             chunkedEntitiesHeight = %d\n", chunkedEntitiesWidth, chunkedEntitiesHeight);
-        std::fprintf(stdout, "    chunkedEntitiesChunkSize = %f\n", chunkedEntitiesChunkSize);
-        std::fprintf(stdout, "    realIndex = %d          gameChunkedEntities.size() = %d\n", realIndex, (int)gameChunkedEntities.size());
+        printf("    x = %f       z = %f\n", x, z);
+        printf("    relativeX = %f      relativeZ = %f\n", relativeX, relativeZ);
+        printf("    iX = %d        iZ = %d\n", iX, iZ);
+        printf("    chunkedEntitiesWidth = %d             chunkedEntitiesHeight = %d\n", chunkedEntitiesWidth, chunkedEntitiesHeight);
+        printf("    chunkedEntitiesChunkSize = %f\n", chunkedEntitiesChunkSize);
+        printf("    realIndex = %d          gameChunkedEntities.size() = %d\n", realIndex, (int)gameChunkedEntities.size());
         return 0;
     }
 
@@ -1948,7 +1936,7 @@ void Global::debugDel(const char* name)
 
     if (heapObjects.find(name) == heapObjects.end())
     {
-        std::fprintf(stdout, "Warning: trying to delete '%s' when there are none.\n", name);
+        printf("Warning: trying to delete '%s' when there are none.\n", name);
         heapObjects[name] = 0;
     }
     else

@@ -42,7 +42,7 @@ bool MetaFile::processNextLine()
     values.clear();
 
     getlineSafe((*reader), line);
-    //std::fprintf(stdout, "line = '%s'\n", line.c_str());
+    //printf("line = '%s'\n", line.c_str());
 
     char lineBuf[1024];
     memcpy(lineBuf, line.c_str(), line.size()+1);
@@ -61,7 +61,7 @@ bool MetaFile::processNextLine()
         {
             std::string vp0 = lineSplit2[0];
             std::string vp1 = lineSplit2[1];
-            //std::fprintf(stdout, "'%s' '%s'\n", vp0.c_str(), vp1.c_str());
+            //printf("'%s' '%s'\n", vp0.c_str(), vp1.c_str());
             values[vp0] = vp1;
         }
         free(lineSplit2);
@@ -110,7 +110,7 @@ void MetaFile::openFile(std::string filename)
     reader = new std::ifstream(Global::pathToEXE+filename); INCR_NEW("ifstream");
     if (!reader->is_open())
     {
-        std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE+filename).c_str());
+        printf("Error: Cannot load file '%s'\n", (Global::pathToEXE+filename).c_str());
         reader->close();
         delete reader; INCR_DEL("ifstream");
         reader = nullptr;
@@ -167,7 +167,7 @@ Character* MetaFile::loadCharacter(int imageSize)
     float xOff = (getValueOfVariable("xoffset") + padding[PAD_LEFT] - DESIRED_PADDING) * horizontalPerPixelSize;
     float yOff = (getValueOfVariable("yoffset") + (padding[PAD_TOP] - DESIRED_PADDING)) * verticalPerPixelSize;
     float xAdvance = (getValueOfVariable("xadvance") - paddingWidth) * horizontalPerPixelSize;
-    //std::fprintf(stdout, "%d %f %f %f %f %f %f %f %f %f\n", id, xTex, yTex, xTexSize, yTexSize, xOff, yOff, quadWidth, quadHeight, xAdvance);
+    //printf("%d %f %f %f %f %f %f %f %f %f\n", id, xTex, yTex, xTexSize, yTexSize, xOff, yOff, quadWidth, quadHeight, xAdvance);
     INCR_NEW("Character");
     return new Character(id, xTex, yTex, xTexSize, yTexSize, xOff, yOff, quadWidth, quadHeight, xAdvance);
 }

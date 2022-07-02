@@ -53,9 +53,9 @@ void Spring::step()
 {
     cooldownTimer = std::fmaxf(cooldownTimer - dt, 0.0f);
 
-    if (fabsf(hitCenter.y - Global::gameMainPlayer->position.y) < 40 &&
-        fabsf(hitCenter.z - Global::gameMainPlayer->position.z) < 40 &&
-        fabsf(hitCenter.x - Global::gameMainPlayer->position.x) < 40 &&
+    if (std::abs(hitCenter.y - Global::gameMainPlayer->position.y) < 40 &&
+        std::abs(hitCenter.z - Global::gameMainPlayer->position.z) < 40 &&
+        std::abs(hitCenter.x - Global::gameMainPlayer->position.x) < 40 &&
         cooldownTimer == 0.0f)
     {
         if ((Global::gameMainPlayer->getCenterPosition() - hitCenter).lengthSquared() < (10.83f*10.83f)+(4.0f*4.0f)) //10.83 = radius of spring, 4 = radius of sonic
@@ -82,7 +82,7 @@ void Spring::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading spring static models...\n");
+    printf("Loading spring static models...\n");
     #endif
 
     ModelLoader::loadModel(&Spring::models, "res/Models/Objects/Spring/", "Spring");
@@ -91,7 +91,7 @@ void Spring::loadStaticModels()
 void Spring::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting spring static models...\n");
+    printf("Deleting spring static models...\n");
     #endif
 
     Entity::deleteModels(&Spring::models);

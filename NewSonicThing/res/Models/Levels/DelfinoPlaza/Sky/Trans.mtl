@@ -4,6 +4,7 @@ newmtl Cloud1.png
 Ns 20
 Ni 0.0
 d 0
+renderOrder 3
 Tr 0
 map_Kd Cloud1.png
 

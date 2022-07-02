@@ -199,7 +199,7 @@ void MH_CratePlatform::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading MH_CratePlatform static models...\n");
+    printf("Loading MH_CratePlatform static models...\n");
     #endif
 
     ModelLoader::loadModel(&MH_CratePlatform::modelsCratePlatformLong, "res/Models/Objects/MetalHarbor/CratePlatform/", "CratePlatformLong");
@@ -223,7 +223,7 @@ void MH_CratePlatform::loadStaticModels()
 void MH_CratePlatform::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting MH_CratePlatform static models...\n");
+    printf("Deleting MH_CratePlatform static models...\n");
     #endif
 
     Entity::deleteModels(&MH_CratePlatform::modelsCratePlatformLong);

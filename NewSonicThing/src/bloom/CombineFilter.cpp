@@ -7,7 +7,7 @@
 
 CombineFilter::CombineFilter()
 {
-    shader = new CombineShader("res/Shaders/bloom/simpleVertex.txt", "res/Shaders/bloom/combineFragment.txt"); INCR_NEW("CombineShader");
+    shader = new CombineShader("res/Shaders/bloom/BloomVert.glsl", "res/Shaders/bloom/BloomFrag.glsl"); INCR_NEW("CombineShader");
     shader->start();
     shader->connectTextureUnits();
     shader->stop();

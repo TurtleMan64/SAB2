@@ -161,6 +161,19 @@ EmeraldManager::EmeraldManager()
     }
     else if (Global::gameIsNormalMode)
     {
+        if (piece1List.size() <= 0)
+        {
+            printf("Error: No Emerald Piece 1's exist to pick from.\n");
+        }
+        if (piece2List.size() <= 0)
+        {
+            printf("Error: No Emerald Piece 2's exist to pick from.\n");
+        }
+        if (piece3List.size() <= 0)
+        {
+            printf("Error: No Emerald Piece 3's exist to pick from.\n");
+        }
+
         //Pick a random p1
         EmeraldManager::piece1 = piece1List[(int)(Maths::random()*piece1List.size())];
         Vector3f p1Loc(EmeraldManager::piece1->getPosition());

@@ -18,12 +18,12 @@ QuadTreeNode::QuadTreeNode(float xBoundMin, float xBoundMax, float zBoundMin, fl
 
     this->depth = depth;
 
-    //std::fprintf(stdout, "v %f %f 0\n", xBoundMin, zBoundMin);
-    //std::fprintf(stdout, "v %f %f 0\n", xBoundMax, zBoundMin);
-    //std::fprintf(stdout, "v %f %f 0\n", xBoundMin, zBoundMax);
-    //std::fprintf(stdout, "v %f %f 0\n", xBoundMax, zBoundMax);
-    //std::fprintf(stdout, "f %d// %d// %d\n", iwfviub,   iwfviub+1, iwfviub+2);
-    //std::fprintf(stdout, "f %d// %d// %d\n", iwfviub+1, iwfviub+2, iwfviub+3);
+    //printf("v %f %f 0\n", xBoundMin, zBoundMin);
+    //printf("v %f %f 0\n", xBoundMax, zBoundMin);
+    //printf("v %f %f 0\n", xBoundMin, zBoundMax);
+    //printf("v %f %f 0\n", xBoundMax, zBoundMax);
+    //printf("f %d// %d// %d\n", iwfviub,   iwfviub+1, iwfviub+2);
+    //printf("f %d// %d// %d\n", iwfviub+1, iwfviub+2, iwfviub+3);
     //iwfviub+=4;
 
     if (depth == depthMax) //We are a leaf node = dont create any more nodes, we claim all remaining triangles
@@ -47,11 +47,11 @@ QuadTreeNode::QuadTreeNode(float xBoundMin, float xBoundMax, float zBoundMin, fl
             zMaxVertical = 0;
         }
 
-        //std::fprintf(stdout, "leaf node rectangle = x: %f to %f,\tz: %f to %f\n", xBoundMin, xBoundMax, zBoundMin, zBoundMax);
-        //std::fprintf(stdout, "v %f %f 0\n", xBoundMin, zBoundMin);
-        //std::fprintf(stdout, "v %f %f 0\n", xBoundMax, zBoundMin);
-        //std::fprintf(stdout, "v %f %f 0\n", xBoundMin, zBoundMax);
-        //std::fprintf(stdout, "v %f %f 0\n", xBoundMax, zBoundMax);
+        //printf("leaf node rectangle = x: %f to %f,\tz: %f to %f\n", xBoundMin, xBoundMax, zBoundMin, zBoundMax);
+        //printf("v %f %f 0\n", xBoundMin, zBoundMin);
+        //printf("v %f %f 0\n", xBoundMax, zBoundMin);
+        //printf("v %f %f 0\n", xBoundMin, zBoundMax);
+        //printf("v %f %f 0\n", xBoundMax, zBoundMax);
     }
     else //claim triangles that cross the border, create child nodes if nessesary
     {

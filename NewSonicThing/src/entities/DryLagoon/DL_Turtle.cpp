@@ -101,7 +101,7 @@ void DL_Turtle::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading DL_Turtle static models...\n");
+    printf("Loading DL_Turtle static models...\n");
     #endif
 
     ModelLoader::loadModel(&DL_Turtle::models, "res/Models/Levels/DryLagoon/Objects/", "Turtle");
@@ -115,7 +115,7 @@ void DL_Turtle::loadStaticModels()
 void DL_Turtle::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting DL_Turtle static models...\n");
+    printf("Deleting DL_Turtle static models...\n");
     #endif
 
     Entity::deleteModels(&DL_Turtle::models);

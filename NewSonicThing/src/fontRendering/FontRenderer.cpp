@@ -9,7 +9,7 @@
 
 FontRenderer::FontRenderer()
 {
-    shader = new FontShader("res/Shaders/fontRendering/fontVertex.txt", "res/Shaders/fontRendering/fontFragment.txt"); INCR_NEW("FontShader");
+    shader = new FontShader("res/Shaders/fontRendering/FontVert.glsl", "res/Shaders/fontRendering/FontFrag.glsl"); INCR_NEW("FontShader");
 }
 
 void FontRenderer::render(

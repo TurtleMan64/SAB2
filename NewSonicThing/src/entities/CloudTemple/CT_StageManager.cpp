@@ -35,7 +35,7 @@ void CT_StageManager::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading CT_StageManager static models...\n");
+    printf("Loading CT_StageManager static models...\n");
     #endif
 
     ModelLoader::loadModel(&CT_StageManager::modelsSkydome,  "res/Models/Levels/CloudTemple/Sky/", "Sky");
@@ -44,7 +44,7 @@ void CT_StageManager::loadStaticModels()
 void CT_StageManager::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting CT_StageManager static models...\n");
+    printf("Deleting CT_StageManager static models...\n");
     #endif
 
     Entity::deleteModels(&CT_StageManager::modelsSkydome);

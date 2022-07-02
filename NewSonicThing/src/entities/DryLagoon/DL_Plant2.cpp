@@ -42,7 +42,7 @@ void DL_Plant2::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading DL_Plant2 static models...\n");
+    printf("Loading DL_Plant2 static models...\n");
     #endif
 
     ModelLoader::loadModel(&DL_Plant2::models, "res/Models/Levels/DryLagoon/Objects/", "Flower");
@@ -51,7 +51,7 @@ void DL_Plant2::loadStaticModels()
 void DL_Plant2::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting DL_Plant2 static models...\n");
+    printf("Deleting DL_Plant2 static models...\n");
     #endif
 
     Entity::deleteModels(&DL_Plant2::models);

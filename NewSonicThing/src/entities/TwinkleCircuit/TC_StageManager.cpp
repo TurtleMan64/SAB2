@@ -33,7 +33,7 @@ void TC_StageManager::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading TC_StageManager static models...\n");
+    printf("Loading TC_StageManager static models...\n");
     #endif
 
     ModelLoader::loadModel(&TC_StageManager::modelsSkydome,  "res/Models/Levels/TwinkleCircuit/Sky/", "Sky");
@@ -42,7 +42,7 @@ void TC_StageManager::loadStaticModels()
 void TC_StageManager::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting TC_StageManager static models...\n");
+    printf("Deleting TC_StageManager static models...\n");
     #endif
 
     Entity::deleteModels(&TC_StageManager::modelsSkydome);

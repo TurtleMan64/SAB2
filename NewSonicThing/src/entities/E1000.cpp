@@ -161,9 +161,9 @@ void E1000::step()
 {
     extern float dt;
 
-    if (fabsf(position.x - Global::gameMainPlayer->position.x) < E1000::activationRange &&
-        fabsf(position.y - Global::gameMainPlayer->position.y) < E1000::activationRange &&
-        fabsf(position.z - Global::gameMainPlayer->position.z) < E1000::activationRange)
+    if (std::abs(position.x - Global::gameMainPlayer->position.x) < E1000::activationRange &&
+        std::abs(position.y - Global::gameMainPlayer->position.y) < E1000::activationRange &&
+        std::abs(position.z - Global::gameMainPlayer->position.z) < E1000::activationRange)
     {
         shootTimer+=dt;
 
@@ -271,7 +271,7 @@ void E1000::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading E1000 static models...\n");
+    printf("Loading E1000 static models...\n");
     #endif
 
     ModelLoader::loadModel(&E1000::modelsBody,   "res/Models/Objects/E1000/", "E1000");
@@ -281,7 +281,7 @@ void E1000::loadStaticModels()
 void E1000::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting E1000 static models...\n");
+    printf("Deleting E1000 static models...\n");
     #endif
 
     Entity::deleteModels(&E1000::modelsBody);

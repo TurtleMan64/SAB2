@@ -56,7 +56,7 @@ void ParticleResources::loadParticles()
     INCR_NEW("ParticleTexture") textureSparkleWhite      = new ParticleTexture(LoaderGL::loadTexture("res/Images/Particles/SparkleWhite.png"),           1, 1.0f,  1);
     INCR_NEW("ParticleTexture") textureWaterDrop         = new ParticleTexture(LoaderGL::loadTexture("res/Images/Particles/WaterDrop.png"),              1, 1.0f,  0);
     INCR_NEW("ParticleTexture") textureWhiteTrail        = new ParticleTexture(LoaderGL::loadTexture("res/Images/Particles/SpTrailWhite.png"),           1, 0.1f,  1);
-    INCR_NEW("ParticleTexture") textureLightBlueTrail    = new ParticleTexture(LoaderGL::loadTexture("res/Images/Particles/SpTrailLightBlue.png"),       1, 0.1f,  1);
+    INCR_NEW("ParticleTexture") textureLightBlueTrail    = new ParticleTexture(LoaderGL::loadTexture("res/Images/Particles/SpTrailBlue2.png"),       1, 0.1f,  1);
     INCR_NEW("ParticleTexture") textureBlueTrail         = new ParticleTexture(LoaderGL::loadTexture("res/Images/Particles/SpTrailBlue.png"),            1, 0.1f,  1);
     INCR_NEW("ParticleTexture") textureBlackTrail        = new ParticleTexture(LoaderGL::loadTexture("res/Images/Particles/SpTrailBlack.png"),           1, 0.1f,  1);
     INCR_NEW("ParticleTexture") textureGrayTrail         = new ParticleTexture(LoaderGL::loadTexture("res/Images/Particles/SpTrailGray.png"),            1, 0.1f,  1);

@@ -132,9 +132,9 @@ void RingMoving::step()
     }
 
     //pick up
-    if (fabsf(position.y - Global::gameMainPlayer->position.y) < 40 &&
-        fabsf(position.z - Global::gameMainPlayer->position.z) < 40 &&
-        fabsf(position.x - Global::gameMainPlayer->position.x) < 40 &&
+    if (std::abs(position.y - Global::gameMainPlayer->position.y) < 40 &&
+        std::abs(position.z - Global::gameMainPlayer->position.z) < 40 &&
+        std::abs(position.x - Global::gameMainPlayer->position.x) < 40 &&
         (ageTimer > 1.0f || ageTimer < 0.0f))
     {
         if ((Global::gameMainPlayer->getCenterPosition() - position).lengthSquared() < (5.0f*5.0f + 9.0f*9.0f))

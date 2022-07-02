@@ -117,9 +117,9 @@ void Checkpoint::step()
     const float playerColH = 4.0f;
     const float playerColV = 4.0f;
 
-    if (fabsf(position.y - Global::gameMainPlayer->position.y) < 40 &&
-        fabsf(position.z - Global::gameMainPlayer->position.z) < 40 &&
-        fabsf(position.x - Global::gameMainPlayer->position.x) < 40)
+    if (std::abs(position.y - Global::gameMainPlayer->position.y) < 40 &&
+        std::abs(position.z - Global::gameMainPlayer->position.z) < 40 &&
+        std::abs(position.x - Global::gameMainPlayer->position.x) < 40)
     {
         if (!isHit &&
             Global::gameMainPlayer->getX() > position.x - colHorizontal - playerColH && Global::gameMainPlayer->getX() < position.x + colHorizontal + playerColH &&
@@ -178,7 +178,7 @@ void Checkpoint::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading Checkpoint static models...\n");
+    printf("Loading Checkpoint static models...\n");
     #endif
 
     ModelLoader::loadModel(&Checkpoint::modelsBase, "res/Models/Objects/Checkpoint/", "Base");
@@ -188,7 +188,7 @@ void Checkpoint::loadStaticModels()
 void Checkpoint::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting Checkpoint static models...\n");
+    printf("Deleting Checkpoint static models...\n");
     #endif
 
     Entity::deleteModels(&Checkpoint::modelsBase);

@@ -40,7 +40,7 @@ void ConfigMenu::loadResources()
 {
     if (buttonsNames.size() != 0)
     {
-        std::fprintf(stdout, "Warning: ConfigMenu loading resources when they are already loaded.\n");
+        printf("Warning: ConfigMenu loading resources when they are already loaded.\n");
     }
 
     textureParallelogram              = LoaderGL::loadTexture("res/Images/MainMenu/Parallelogram.png");
@@ -111,7 +111,7 @@ void ConfigMenu::unloadResources()
 {
     if ((int)buttonsNames.size() == 0)
     {
-        std::fprintf(stdout, "Warning: ConfigMenu unloading resources when they are empty.\n");
+        printf("Warning: ConfigMenu unloading resources when they are empty.\n");
     }
 
     LoaderGL::deleteTexture(textureParallelogram);
@@ -148,7 +148,7 @@ void ConfigMenu::draw()
 
     offsetTarget = -currentButtonIndex*0.1f;
     offsetCurr = Maths::approach(offsetCurr, offsetTarget, 15.0f, dt);
-    if (fabsf(offsetTarget - offsetCurr) < 0.001f)
+    if (std::abs(offsetTarget - offsetCurr) < 0.001f)
     {
         offsetCurr = offsetTarget;
     }

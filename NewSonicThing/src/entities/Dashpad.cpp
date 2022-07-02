@@ -59,9 +59,9 @@ Dashpad::Dashpad(
 
 void Dashpad::step()
 {
-    if (fabsf(position.x - Global::gameMainPlayer->position.x) < 50 && 
-        fabsf(position.z - Global::gameMainPlayer->position.z) < 50 && 
-        fabsf(position.y - Global::gameMainPlayer->position.y) < 50)
+    if (std::abs(position.x - Global::gameMainPlayer->position.x) < 50 && 
+        std::abs(position.z - Global::gameMainPlayer->position.z) < 50 && 
+        std::abs(position.y - Global::gameMainPlayer->position.y) < 50)
     {
         Vector3f diff = Global::gameMainPlayer->position - position;
 
@@ -116,7 +116,7 @@ void Dashpad::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading Dashpad static models...\n");
+    printf("Loading Dashpad static models...\n");
     #endif
 
     ModelLoader::loadModel(&Dashpad::models,  "res/Models/Objects/Dashpad/", "Dashpad");
@@ -125,7 +125,7 @@ void Dashpad::loadStaticModels()
 void Dashpad::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting Dashpad static models...\n");
+    printf("Deleting Dashpad static models...\n");
     #endif
 
     Entity::deleteModels(&Dashpad::models);

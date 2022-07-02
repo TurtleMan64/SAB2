@@ -295,7 +295,7 @@ void EmeraldPiece::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading EmeraldPiece static models...\n");
+    printf("Loading EmeraldPiece static models...\n");
     #endif
 
     ModelLoader::loadModel(&EmeraldPiece::models, "res/Models/Objects/Emerald/", "Emerald");
@@ -304,7 +304,7 @@ void EmeraldPiece::loadStaticModels()
 void EmeraldPiece::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting EmeraldPiece static models...\n");
+    printf("Deleting EmeraldPiece static models...\n");
     #endif
 
     Entity::deleteModels(&EmeraldPiece::models);

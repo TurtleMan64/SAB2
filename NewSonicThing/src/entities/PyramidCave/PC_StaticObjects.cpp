@@ -54,7 +54,7 @@ void PC_StaticObjects::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading PC_StaticObjects static models...\n");
+    printf("Loading PC_StaticObjects static models...\n");
     #endif
 
     ModelLoader::loadModel(&PC_StaticObjects::models, "res/Models/Objects/MetalHarbor/StaticObjects/", "StaticObjects");
@@ -72,7 +72,7 @@ void PC_StaticObjects::loadStaticModels()
 void PC_StaticObjects::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting PC_StaticObjects static models...\n");
+    printf("Deleting PC_StaticObjects static models...\n");
     #endif
 
     Entity::deleteModels(&PC_StaticObjects::models);

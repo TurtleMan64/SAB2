@@ -54,9 +54,9 @@ bool CollisionChecker::checkCollision(Vector3f* p1, Vector3f* p2)
 
 int CollisionChecker::getBiggest(float A, float B, float C)
 {
-    A = fabsf(A);
-    B = fabsf(B);
-    C = fabsf(C);
+    A = std::abs(A);
+    B = std::abs(B);
+    C = std::abs(C);
 
     if (A > B)
     {
@@ -486,17 +486,17 @@ bool CollisionChecker::checkCollision(
     //if (CollisionChecker::debug && CollisionChecker::checkPlayer && finalModel != nullptr)
     {
         //print the path being checked
-        //std::fprintf(stdout, "v %f %f %f\n", px1, py1, pz1);
-        //std::fprintf(stdout, "v %f %f %f\n", px2, py2, pz2);
-        //std::fprintf(stdout, "l %d/1 %d/1\n", debugCount, debugCount+1);
+        //printf("v %f %f %f\n", px1, py1, pz1);
+        //printf("v %f %f %f\n", px2, py2, pz2);
+        //printf("l %d/1 %d/1\n", debugCount, debugCount+1);
         //debugCount+=2;
     }
     //else if (CollisionChecker::debug && CollisionChecker::checkPlayer && finalModel == nullptr)
     {
         //print the path being checked
-        //std::fprintf(stdout, "v %f %f %f\n", px1, py1, pz1);
-        //std::fprintf(stdout, "v %f %f %f\n", px2, py2, pz2);
-        //std::fprintf(stdout, "l %d/2 %d/2\n", debugCount, debugCount+1);
+        //printf("v %f %f %f\n", px1, py1, pz1);
+        //printf("v %f %f %f\n", px2, py2, pz2);
+        //printf("l %d/2 %d/2\n", debugCount, debugCount+1);
         //debugCount+=2;
     }
 
@@ -539,9 +539,9 @@ bool CollisionChecker::checkPointInTriangle3D(
     float checkx, float checky, float checkz,
     Triangle3D* tri)
 {
-    float nX = fabsf(tri->normal.x);
-    float nY = fabsf(tri->normal.y);
-    float nZ = fabsf(tri->normal.z);
+    float nX = std::abs(tri->normal.x);
+    float nY = std::abs(tri->normal.y);
+    float nZ = std::abs(tri->normal.z);
 
     if (nY > nX && nY > nZ)
     {

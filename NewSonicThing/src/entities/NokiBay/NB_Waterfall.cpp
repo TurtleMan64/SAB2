@@ -46,7 +46,7 @@ void NB_Waterfall::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading NB_Waterfall static models...\n");
+    printf("Loading NB_Waterfall static models...\n");
     #endif
 
     ModelLoader::loadModel(&NB_Waterfall::models, "res/Models/Levels/NokiBay/Waterfall/", "Waterfall");
@@ -61,7 +61,7 @@ void NB_Waterfall::loadStaticModels()
 void NB_Waterfall::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting NB_Waterfall static models...\n");
+    printf("Deleting NB_Waterfall static models...\n");
     #endif
 
     Entity::deleteModels(&NB_Waterfall::models);

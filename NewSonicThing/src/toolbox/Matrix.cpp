@@ -223,10 +223,10 @@ void Matrix4f::scale(Vector2f* vec)
 }
 
 //angle in radians
-void Matrix4f::rotate(float angle, Vector3f* axis)
+void Matrix4f::rotate(float radians, const Vector3f* axis)
 {
-    float c = cosf(angle);
-    float s = sinf(angle);
+    float c = cosf(radians);
+    float s = sinf(radians);
     float oneminusc = 1.0f - c;
     float xy = axis->x*axis->y;
     float yz = axis->y*axis->z;

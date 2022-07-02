@@ -111,9 +111,9 @@ void Hunter::step()
 {
     extern float dt;
 
-    if (fabsf(position.x - Global::gameMainPlayer->position.x) < Hunter::activationRange &&
-        fabsf(position.y - Global::gameMainPlayer->position.y) < Hunter::activationRange &&
-        fabsf(position.z - Global::gameMainPlayer->position.z) < Hunter::activationRange)
+    if (std::abs(position.x - Global::gameMainPlayer->position.x) < Hunter::activationRange &&
+        std::abs(position.y - Global::gameMainPlayer->position.y) < Hunter::activationRange &&
+        std::abs(position.z - Global::gameMainPlayer->position.z) < Hunter::activationRange)
     {
         shootTimer+=dt;
 
@@ -215,7 +215,7 @@ void Hunter::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading Hunter static models...\n");
+    printf("Loading Hunter static models...\n");
     #endif
 
     ModelLoader::loadModel(&Hunter::modelsBody,   "res/Models/Objects/Hunter/", "Hunter");
@@ -225,7 +225,7 @@ void Hunter::loadStaticModels()
 void Hunter::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting Hunter static models...\n");
+    printf("Deleting Hunter static models...\n");
     #endif
 
     Entity::deleteModels(&Hunter::modelsBody);

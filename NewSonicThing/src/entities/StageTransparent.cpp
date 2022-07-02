@@ -29,7 +29,7 @@ StageTransparent::StageTransparent(const char* objFolder, const char* objFilenam
     if (StageTransparent::models.size() == 0)
     {
         #ifdef DEV_MODE
-        std::fprintf(stdout, "Loading StageTransparent static models...\n");
+        printf("Loading StageTransparent static models...\n");
         #endif
 
         ModelLoader::loadModel(&StageTransparent::models, objFolder, objFilename);
@@ -53,7 +53,7 @@ std::list<TexturedModel*>* StageTransparent::getModels()
 void StageTransparent::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting StageTransparent static models...\n");
+    printf("Deleting StageTransparent static models...\n");
     #endif
 
     Entity::deleteModels(&StageTransparent::models);

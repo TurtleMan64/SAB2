@@ -156,7 +156,7 @@ void Pulley::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading Pulley static models...\n");
+    printf("Loading Pulley static models...\n");
     #endif
 
     ModelLoader::loadModel(&Pulley::modelsHandle, "res/Models/Objects/Pulley/", "PulleyHandle");
@@ -172,7 +172,7 @@ void Pulley::loadStaticModels()
 void Pulley::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting Pulley static models...\n");
+    printf("Deleting Pulley static models...\n");
     #endif
 
     Entity::deleteModels(&Pulley::modelsHandle);
@@ -213,7 +213,7 @@ inline bool Pulley::playerWithinHandleHitbox()
     float playerPulleyDistanceHorizontalSquared = (playerPulleyDistance.x)*(playerPulleyDistance.x) + 
                                                   (playerPulleyDistance.z)*(playerPulleyDistance.z);
     return (playerPulleyDistanceHorizontalSquared <= (HITBOX_RADIUS*HITBOX_RADIUS) &&
-            fabsf(playerPulleyDistance.y) <= HITBOX_HEIGHT);
+            std::abs(playerPulleyDistance.y) <= HITBOX_HEIGHT);
 }
 
 inline bool Pulley::handleAtBottom() const

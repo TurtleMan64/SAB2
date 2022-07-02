@@ -34,11 +34,6 @@ private:
     int location_fogGradient            = 0;
     int location_clipPlane              = 0;
     int location_clipPlaneBehind        = 0;
-    int location_shadowMapFar           = 0;
-    int location_toShadowMapSpaceFar    = 0;
-    int location_shadowMapClose         = 0;
-    int location_toShadowMapSpaceClose  = 0;
-    int location_randomMap              = 0;
     int location_mixFactor              = 0;
     int location_textureSampler2        = 0;
     int location_fogScale               = 0;
@@ -95,10 +90,6 @@ public:
     void loadClipPlane(float clipX, float clipY, float clipZ, float clipW);
 
     void loadClipPlaneBehind(float clipX, float clipY, float clipZ, float clipW);
-
-    void loadToShadowSpaceMatrixFar(Matrix4f* matrix);
-
-    void loadToShadowSpaceMatrixClose(Matrix4f* matrix);
 
     void loadMixFactor(float factor);
 

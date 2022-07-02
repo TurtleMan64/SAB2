@@ -60,11 +60,11 @@ ItemCapsule::ItemCapsule(float x, float y, float z, float upX, float upY, float 
 
     if (boxType == 0)
     {
-        entityGlass = new Dummy(&ItemCapsule::modelsAnchoredGlass); INCR_NEW("Entity")
+        entityGlass = new Dummy(&ItemCapsule::modelsAnchoredGlass); INCR_NEW("Entity");
     }
     else
     {
-        entityGlass = new Dummy(&ItemCapsule::modelsFloatingGlass); INCR_NEW("Entity")
+        entityGlass = new Dummy(&ItemCapsule::modelsFloatingGlass); INCR_NEW("Entity");
     }
 
     entityGlass->visible = true;
@@ -85,22 +85,22 @@ ItemCapsule::ItemCapsule(float x, float y, float z, float upX, float upY, float 
 
     switch (itemType)
     {
-        case  0:  entityItem = new Dummy(&ItemCapsule::modelsItemSpeedUp);    INCR_NEW("Entity") break;
-        case  1:  entityItem = new Dummy(&ItemCapsule::modelsItemRing5);      INCR_NEW("Entity") break;
-        case  2:  entityItem = new Dummy(&ItemCapsule::modelsItem1Up);        INCR_NEW("Entity") break;
-        case  3:  entityItem = new Dummy(&ItemCapsule::modelsItemRing10);     INCR_NEW("Entity") break;
-        case  4:  entityItem = new Dummy(&ItemCapsule::modelsItemRing20);     INCR_NEW("Entity") break;
-        case  5:  entityItem = new Dummy(&ItemCapsule::modelsItemBarrierG);   INCR_NEW("Entity") break;
-        case  6:  entityItem = new Dummy(&ItemCapsule::modelsItemBomb);       INCR_NEW("Entity") break;
+        case  0:  entityItem = new Dummy(&ItemCapsule::modelsItemSpeedUp);    INCR_NEW("Entity"); break;
+        case  1:  entityItem = new Dummy(&ItemCapsule::modelsItemRing5);      INCR_NEW("Entity"); break;
+        case  2:  entityItem = new Dummy(&ItemCapsule::modelsItem1Up);        INCR_NEW("Entity"); break;
+        case  3:  entityItem = new Dummy(&ItemCapsule::modelsItemRing10);     INCR_NEW("Entity"); break;
+        case  4:  entityItem = new Dummy(&ItemCapsule::modelsItemRing20);     INCR_NEW("Entity"); break;
+        case  5:  entityItem = new Dummy(&ItemCapsule::modelsItemBarrierG);   INCR_NEW("Entity"); break;
+        case  6:  entityItem = new Dummy(&ItemCapsule::modelsItemBomb);       INCR_NEW("Entity"); break;
         case  7:  break;
-        case  8:  entityItem = new Dummy(&ItemCapsule::modelsItemBarrierB);   INCR_NEW("Entity") break;
+        case  8:  entityItem = new Dummy(&ItemCapsule::modelsItemBarrierB);   INCR_NEW("Entity"); break;
         case  9:  break;
-        case 10:  entityItem = new Dummy(&ItemCapsule::modelsItemInvincible); INCR_NEW("Entity") break;
+        case 10:  entityItem = new Dummy(&ItemCapsule::modelsItemInvincible); INCR_NEW("Entity"); break;
         default:  break;
     }
     if (entityItem == nullptr)
     {
-        entityItem = new Dummy(&ItemCapsule::modelsItemRing5); INCR_NEW("Entity")
+        entityItem = new Dummy(&ItemCapsule::modelsItemRing5); INCR_NEW("Entity");
         this->itemType = 1;
     }
 
@@ -127,9 +127,9 @@ void ItemCapsule::step()
     entityItem->increaseRotation(300*dt, 0, 0);
     entityItem->updateTransformationMatrix();
 
-    if (abs(position.x - Global::gameMainPlayer->position.x) < 50 && 
-        abs(position.z - Global::gameMainPlayer->position.z) < 50 &&
-        abs(position.y - Global::gameMainPlayer->position.y) < 50)
+    if (std::abs(position.x - Global::gameMainPlayer->position.x) < 50 && 
+        std::abs(position.z - Global::gameMainPlayer->position.z) < 50 &&
+        std::abs(position.y - Global::gameMainPlayer->position.y) < 50)
     {
         float distToPlayer = (Global::gameMainPlayer->getCenterPosition() - centerPos).lengthSquared();
 
@@ -210,7 +210,7 @@ void ItemCapsule::die()
         {
             //green shield
             Global::gameScore += 100;
-            ShieldGreen* shield = new ShieldGreen; INCR_NEW("Entity")
+            ShieldGreen* shield = new ShieldGreen; INCR_NEW("Entity");
             Global::addEntity(shield);
             Global::gameMainPlayer->setShieldGreen(shield);
             break;
@@ -258,7 +258,7 @@ void ItemCapsule::die()
         {
             //electric shield
             Global::gameScore += 100;
-            ShieldMagnet* shield = new ShieldMagnet; INCR_NEW("Entity")
+            ShieldMagnet* shield = new ShieldMagnet; INCR_NEW("Entity");
             Global::addEntity(shield);
             Global::gameMainPlayer->setShieldMagnet(shield);
             break;
@@ -297,7 +297,7 @@ void ItemCapsule::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading ItemCapsule static models...\n");
+    printf("Loading ItemCapsule static models...\n");
     #endif
 
     ModelLoader::loadModel(&ItemCapsule::modelsAnchoredBase,   "res/Models/Objects/ItemBox/", "ItemBoxBase");
@@ -322,7 +322,7 @@ void ItemCapsule::loadStaticModels()
 void ItemCapsule::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting ItemCapsule static models...\n");
+    printf("Deleting ItemCapsule static models...\n");
     #endif
 
     Entity::deleteModels(&ItemCapsule::modelsAnchoredBase);

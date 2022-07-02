@@ -27,7 +27,7 @@ public:
 
     void render(Entity* entity);
 
-    void renderNEW(std::unordered_map<TexturedModel*, std::list<Entity*>>* entities, Matrix4f* toShadowSpaceFar, Matrix4f* toShadowSpaceClose);
+    void renderNEW(std::unordered_map<TexturedModel*, std::list<Entity*>>* entities);
 
     void updateProjectionMatrix(Matrix4f* projectionMatrix);
 };

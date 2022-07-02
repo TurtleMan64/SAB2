@@ -8,7 +8,7 @@ private:
     float z;
 
 public:
-    static constexpr float TILE_SIZE = 3000.0f;
+    static constexpr float TILE_SIZE = 3000.0f*2;
 
     WaterTile(float centerX, float centerZ);
 

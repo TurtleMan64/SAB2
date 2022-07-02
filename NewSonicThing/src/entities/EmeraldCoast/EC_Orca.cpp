@@ -199,7 +199,7 @@ void EC_Orca::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading EC_Orca static models...\n");
+    printf("Loading EC_Orca static models...\n");
     #endif
 
     ModelLoader::loadModel(&EC_Orca::models, "res/Models/Levels/EmeraldCoast/Orca/", "Orca");
@@ -208,7 +208,7 @@ void EC_Orca::loadStaticModels()
 void EC_Orca::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting EC_Orca static models...\n");
+    printf("Deleting EC_Orca static models...\n");
     #endif
     
     Entity::deleteModels(&EC_Orca::models);

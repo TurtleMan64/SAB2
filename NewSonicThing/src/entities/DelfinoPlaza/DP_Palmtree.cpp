@@ -58,7 +58,7 @@ void DP_Palmtree::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading DP_Palmtree static models...\n");
+    printf("Loading DP_Palmtree static models...\n");
     #endif
 
     ModelLoader::loadModel(&DP_Palmtree::models, "res/Models/Levels/DelfinoPlaza/Palm/", "Palm");
@@ -72,7 +72,7 @@ void DP_Palmtree::loadStaticModels()
 void DP_Palmtree::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting DP_Palmtree static models...\n");
+    printf("Deleting DP_Palmtree static models...\n");
     #endif
 
     Entity::deleteModels(&DP_Palmtree::models);

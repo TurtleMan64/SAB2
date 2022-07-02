@@ -42,7 +42,7 @@ void DL_Tree::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading DL_Tree static models...\n");
+    printf("Loading DL_Tree static models...\n");
     #endif
 
     ModelLoader::loadModel(&DL_Tree::models, "res/Models/Levels/DryLagoon/Objects/", "Tree");
@@ -51,7 +51,7 @@ void DL_Tree::loadStaticModels()
 void DL_Tree::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting DL_Tree static models...\n");
+    printf("Deleting DL_Tree static models...\n");
     #endif
 
     Entity::deleteModels(&DL_Tree::models);

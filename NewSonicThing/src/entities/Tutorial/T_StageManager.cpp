@@ -56,7 +56,7 @@ void T_StageManager::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading T_StageManager static models...\n");
+    printf("Loading T_StageManager static models...\n");
     #endif
 
     ModelLoader::loadModel(&T_StageManager::modelsSkyPass1,       "res/Models/Levels/DelfinoPlaza/Sky/", "Blue");
@@ -70,7 +70,7 @@ void T_StageManager::loadStaticModels()
 void T_StageManager::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting T_StageManager static models...\n");
+    printf("Deleting T_StageManager static models...\n");
     #endif
 
     Entity::deleteModels(&T_StageManager::modelsSkyPass1);

@@ -81,7 +81,7 @@ void GH_Flower::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading GH_Flower static models...\n");
+    printf("Loading GH_Flower static models...\n");
     #endif
 
     ModelLoader::loadModel(&GH_Flower::modelsBase, "res/Models/Levels/GreenHillZone/Objects/", "GreenHillPFlowerBase");
@@ -91,7 +91,7 @@ void GH_Flower::loadStaticModels()
 void GH_Flower::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting GH_Flower static models...\n");
+    printf("Deleting GH_Flower static models...\n");
     #endif
 
     Entity::deleteModels(&GH_Flower::modelsBase);

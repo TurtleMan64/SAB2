@@ -144,7 +144,7 @@ void EC_Dolphin::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading EC_Dolphin static models...\n");
+    printf("Loading EC_Dolphin static models...\n");
     #endif
 
     ModelLoader::loadModel(&EC_Dolphin::models, "res/Models/Levels/EmeraldCoast/Dolphin/", "Dolphin");
@@ -153,7 +153,7 @@ void EC_Dolphin::loadStaticModels()
 void EC_Dolphin::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting EC_Dolphin static models...\n");
+    printf("Deleting EC_Dolphin static models...\n");
     #endif
 
     Entity::deleteModels(&EC_Dolphin::models);

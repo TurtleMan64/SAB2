@@ -74,7 +74,7 @@ void RH_Blimp::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading RH_Blimp static models...\n");
+    printf("Loading RH_Blimp static models...\n");
     #endif
 
     ModelLoader::loadModel(&RH_Blimp::modelsBlimp,     "res/Models/Levels/RadicalHighway/Objects/", "Blimp");
@@ -84,7 +84,7 @@ void RH_Blimp::loadStaticModels()
 void RH_Blimp::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting RH_Blimp static models...\n");
+    printf("Deleting RH_Blimp static models...\n");
     #endif
 
     Entity::deleteModels(&RH_Blimp::modelsBlimp);

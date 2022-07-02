@@ -9,14 +9,12 @@
 #include "../toolbox/maths.hpp"
 #include "../toolbox/vector.hpp"
 #include "../toolbox/matrix.hpp"
-#include "../shadows/shadowmapmasterrenderer.hpp"
 #include "../entities/camera.hpp"
 
-WaterRenderer::WaterRenderer(WaterShader* shader, Matrix4f* projectionMatrix, WaterFrameBuffers* fbos, ShadowMapMasterRenderer* shadowMapRenderer)
+WaterRenderer::WaterRenderer(WaterShader* shader, Matrix4f* projectionMatrix, WaterFrameBuffers* fbos)
 {
     this->shader = shader;
     this->fbos = fbos;
-    this->shadowMapRenderer = shadowMapRenderer;
     dudvTexture = LoaderGL::loadTexture("res/Images/waterDUDV.png");
     normalMap   = LoaderGL::loadTexture("res/Images/normalMap.png");
     shader->start();
@@ -39,11 +37,6 @@ void WaterRenderer::prepareRender(Camera* camera, Light* sun)
     //startPos = startPos + camDir.scaleCopy(-100);
     Vector4f plane = Maths::calcPlaneValues(&startPos, &camDir);
     shader->loadClipPlaneBehind(&plane);
-
-    if (Global::renderShadowsFar)
-    {
-        shader->loadToShadowSpaceMatrix(shadowMapRenderer->getToShadowMapSpaceMatrix());
-    }
 
     extern float dt;
     moveFactor += WaterRenderer::WAVE_SPEED*dt;
@@ -102,8 +95,8 @@ void WaterRenderer::render(std::vector<WaterTile*>* water, Camera* camera, Light
 {
     ANALYSIS_START("Water Rendering");
     prepareRender(camera, sun);
-    float xOff = WaterTile::TILE_SIZE*((int)(camera->eye.x/WaterTile::TILE_SIZE));
-    float zOff = WaterTile::TILE_SIZE*((int)(camera->eye.z/WaterTile::TILE_SIZE));
+    float xOff = camera->eye.x;
+    float zOff = camera->eye.z;
     for (WaterTile* tile : (*water))
     {
         Matrix4f modelMatrix;

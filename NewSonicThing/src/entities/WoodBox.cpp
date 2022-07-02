@@ -44,8 +44,8 @@ void WoodBox::step()
         const float hitPad = 5.0f;
 
         Vector3f diff = Global::gameMainPlayer->getCenterPosition() - position;
-        if (fabsf(diff.x) <= 10 + hitPad &&
-            fabsf(diff.z) <= 10 + hitPad &&
+        if (std::abs(diff.x) <= 10 + hitPad &&
+            std::abs(diff.z) <= 10 + hitPad &&
                   diff.y  <= 20 + hitPad &&
                   diff.y  >=  0 - hitPad)
         {
@@ -92,7 +92,7 @@ void WoodBox::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading WoodBox static models...\n");
+    printf("Loading WoodBox static models...\n");
     #endif
 
     ModelLoader::loadModel(&WoodBox::models, "res/Models/Objects/WoodBox/", "WoodBox");
@@ -106,7 +106,7 @@ void WoodBox::loadStaticModels()
 void WoodBox::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting WoodBox static models...\n");
+    printf("Deleting WoodBox static models...\n");
     #endif
 
     Entity::deleteModels(&WoodBox::models);

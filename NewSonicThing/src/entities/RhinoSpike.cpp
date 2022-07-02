@@ -52,9 +52,9 @@ void RhinoSpike::step()
 {
     extern float dt;
 
-    if (fabsf(position.x - Global::gameMainPlayer->position.x) < RhinoSpike::moveRange &&
-        fabsf(position.y - Global::gameMainPlayer->position.y) < RhinoSpike::moveRange &&
-        fabsf(position.z - Global::gameMainPlayer->position.z) < RhinoSpike::moveRange)
+    if (std::abs(position.x - Global::gameMainPlayer->position.x) < RhinoSpike::moveRange &&
+        std::abs(position.y - Global::gameMainPlayer->position.y) < RhinoSpike::moveRange &&
+        std::abs(position.z - Global::gameMainPlayer->position.z) < RhinoSpike::moveRange)
     {
         Vector3f toPlayerDiff = Global::gameMainPlayer->position - position;
 
@@ -388,7 +388,7 @@ void RhinoSpike::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading RhinoSpike static models...\n");
+    printf("Loading RhinoSpike static models...\n");
     #endif
 
     ModelLoader::loadModel(&RhinoSpike::models, "res/Models/Objects/RhinoSpike/", "RhinoSpike");
@@ -397,7 +397,7 @@ void RhinoSpike::loadStaticModels()
 void RhinoSpike::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting RhinoSpike static models...\n");
+    printf("Deleting RhinoSpike static models...\n");
     #endif
 
     Entity::deleteModels(&RhinoSpike::models);

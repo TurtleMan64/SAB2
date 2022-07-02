@@ -17,6 +17,7 @@
 #include "../particles/particlemaster.hpp"
 #include "shieldmagnet.hpp"
 #include "ringmoving.hpp"
+#include "../toolbox/matrix.hpp"
 
 #include <list>
 #include <iostream>
@@ -31,9 +32,9 @@ Ring::Ring()
 
 Ring::Ring(float x, float y, float z)
 {
-    this->position.x = x;
-    this->position.y = y;
-    this->position.z = z;
+    position.x = x;
+    position.y = y;
+    position.z = z;
     moves = false;
     xVel = 0;
     yVel = 0;
@@ -64,9 +65,9 @@ Ring::Ring(float x, float y, float z)
 
 Ring::Ring(float x, float y, float z, float xVel, float yVel, float zVel)
 {
-    this->position.x = x;
-    this->position.y = y;
-    this->position.z = z;
+    position.x = x;
+    position.y = y;
+    position.z = z;
     moves = true;
     this->xVel = xVel;
     this->yVel = yVel;
@@ -79,12 +80,16 @@ Ring::Ring(float x, float y, float z, float xVel, float yVel, float zVel)
 void Ring::step()
 {
     extern float dt;
-    increaseRotation(0, 5*60*dt, 0);
-    updateTransformationMatrix();
 
-    if (fabsf(position.y - Global::gameMainPlayer->position.y) < 40 &&
-        fabsf(position.z - Global::gameMainPlayer->position.z) < 40 &&
-        fabsf(position.x - Global::gameMainPlayer->position.x) < 40 &&
+    rotY += 5*60*dt;
+
+    transformationMatrix.setIdentity();
+    transformationMatrix.translate(&position);
+    transformationMatrix.rotate(Maths::toRadians(rotY), &Y_AXIS);
+
+    if (std::abs(position.y - Global::gameMainPlayer->position.y) < 40 &&
+        std::abs(position.z - Global::gameMainPlayer->position.z) < 40 &&
+        std::abs(position.x - Global::gameMainPlayer->position.x) < 40 &&
         grabTimer == 0)
     {
         float toPlayerDistSquared = (Global::gameMainPlayer->getCenterPosition() - position).lengthSquared();
@@ -143,7 +148,7 @@ void Ring::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading ring static models...\n");
+    printf("Loading ring static models...\n");
     #endif
 
     ModelLoader::loadModel(&Ring::models, "res/Models/Objects/Ring/", "Ring");
@@ -152,7 +157,7 @@ void Ring::loadStaticModels()
 void Ring::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting ring static models...\n");
+    printf("Deleting ring static models...\n");
     #endif
 
     Entity::deleteModels(&Ring::models);

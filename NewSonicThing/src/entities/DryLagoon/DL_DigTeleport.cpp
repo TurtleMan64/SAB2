@@ -99,7 +99,7 @@ void DL_DigTeleport::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading DL_DigTeleport static models...\n");
+    printf("Loading DL_DigTeleport static models...\n");
     #endif
 
     ModelLoader::loadModel(&DL_DigTeleport::models, "res/Models/Levels/DryLagoon/Objects/", "DigTeleport");
@@ -113,7 +113,7 @@ void DL_DigTeleport::loadStaticModels()
 void DL_DigTeleport::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting DL_DigTeleport static models...\n");
+    printf("Deleting DL_DigTeleport static models...\n");
     #endif
 
     Entity::deleteModels(&DL_DigTeleport::models);

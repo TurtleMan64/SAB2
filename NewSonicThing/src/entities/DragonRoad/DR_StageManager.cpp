@@ -51,7 +51,7 @@ void DR_StageManager::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading DR_StageManager static models...\n");
+    printf("Loading DR_StageManager static models...\n");
     #endif
 
     ModelLoader::loadModel(&DR_StageManager::modelsSkydome,  "res/Models/Levels/DragonRoad/Sky/", "Sky");
@@ -60,7 +60,7 @@ void DR_StageManager::loadStaticModels()
 void DR_StageManager::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting DR_StageManager static models...\n");
+    printf("Deleting DR_StageManager static models...\n");
     #endif
 
     Entity::deleteModels(&DR_StageManager::modelsSkydome);

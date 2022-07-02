@@ -61,7 +61,7 @@ void RH_Ramp::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading RH_Ramp static models...\n");
+    printf("Loading RH_Ramp static models...\n");
     #endif
 
     ModelLoader::loadModel(&RH_Ramp::models, "res/Models/Levels/RadicalHighway/Objects/", "Ramp");
@@ -75,7 +75,7 @@ void RH_Ramp::loadStaticModels()
 void RH_Ramp::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting RH_Ramp static models...\n");
+    printf("Deleting RH_Ramp static models...\n");
     #endif
 
     Entity::deleteModels(&RH_Ramp::models);

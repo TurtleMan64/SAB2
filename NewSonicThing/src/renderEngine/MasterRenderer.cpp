@@ -15,8 +15,6 @@
 #include "skymanager.hpp"
 #include "../water/waterrenderer.hpp"
 #include "../particles/particlemaster.hpp"
-#include "../shadows/shadowmapmasterrenderer.hpp"
-#include "../shadows2/shadowmapmasterrenderer2.hpp"
 
 #include <iostream>
 #include <list>
@@ -24,8 +22,6 @@
 
 EntityShader* MasterRenderer::entityShader = nullptr;
 EntityRenderer* MasterRenderer::entityRenderer = nullptr;
-ShadowMapMasterRenderer* MasterRenderer::shadowMapRenderer = nullptr;
-ShadowMapMasterRenderer2* MasterRenderer::shadowMapRenderer2 = nullptr;
 
 std::unordered_map<TexturedModel*, std::list<Entity*>> MasterRenderer::entitiesMap;
 std::unordered_map<TexturedModel*, std::list<Entity*>> MasterRenderer::entitiesMapPass2;
@@ -36,88 +32,23 @@ std::unordered_map<TexturedModel*, std::list<Entity*>> MasterRenderer::entitiesM
 
 Matrix4f* MasterRenderer::projectionMatrix = nullptr;
 
-GLuint MasterRenderer::randomMap = GL_NONE;
 GLuint MasterRenderer::transparentFrameBuffer  = GL_NONE;
 GLuint MasterRenderer::transparentDepthTexture = GL_NONE;
 GLuint MasterRenderer::currentBoundFramebuffer = GL_NONE;
 
 float MasterRenderer::VFOV_BASE = 75.0f;
 float MasterRenderer::VFOV_ADDITION = 0.0f;
-
-const float MasterRenderer::NEAR_PLANE = 1.5f;
-const float MasterRenderer::FAR_PLANE = 60000.0f;
+float MasterRenderer::FAR_PLANE = 60000.0f;
 
 void MasterRenderer::init()
 {
-    if (Global::renderShadowsFar)
+    if (Global::renderBloom)
     {
-        if (Global::renderShadowsClose)
-        {
-            if (Global::renderBloom)
-            {
-                switch (Global::shadowsFarQuality)
-                {
-                case 0:  entityShader = new EntityShader("res/Shaders/entity/vertexShaderShadowBoth.txt", "res/Shaders/entity/fragmentShaderShadow1BothBloom.txt");  break;
-                case 1:  entityShader = new EntityShader("res/Shaders/entity/vertexShaderShadowBoth.txt", "res/Shaders/entity/fragmentShaderShadow9BothBloom.txt");  break;
-                default: entityShader = new EntityShader("res/Shaders/entity/vertexShaderShadowBoth.txt", "res/Shaders/entity/fragmentShaderShadow25BothBloom.txt"); break;
-                }
-            }
-            else
-            {
-                switch (Global::shadowsFarQuality)
-                {
-                case 0:  entityShader = new EntityShader("res/Shaders/entity/vertexShaderShadowBoth.txt", "res/Shaders/entity/fragmentShaderShadow1Both.txt");  break;
-                case 1:  entityShader = new EntityShader("res/Shaders/entity/vertexShaderShadowBoth.txt", "res/Shaders/entity/fragmentShaderShadow9Both.txt");  break;
-                default: entityShader = new EntityShader("res/Shaders/entity/vertexShaderShadowBoth.txt", "res/Shaders/entity/fragmentShaderShadow25Both.txt"); break;
-                }
-            }
-        }
-        else
-        {
-            if (Global::renderBloom)
-            {
-                switch (Global::shadowsFarQuality)
-                {
-                case 0:  entityShader = new EntityShader("res/Shaders/entity/vertexShaderShadowFar.txt", "res/Shaders/entity/fragmentShaderShadow1FarBloom.txt");  break;
-                case 1:  entityShader = new EntityShader("res/Shaders/entity/vertexShaderShadowFar.txt", "res/Shaders/entity/fragmentShaderShadow9FarBloom.txt");  break;
-                default: entityShader = new EntityShader("res/Shaders/entity/vertexShaderShadowFar.txt", "res/Shaders/entity/fragmentShaderShadow25FarBloom.txt"); break;
-                }
-            }
-            else
-            {
-                switch (Global::shadowsFarQuality)
-                {
-                case 0:  entityShader = new EntityShader("res/Shaders/entity/vertexShaderShadowFar.txt", "res/Shaders/entity/fragmentShaderShadow1Far.txt");  break;
-                case 1:  entityShader = new EntityShader("res/Shaders/entity/vertexShaderShadowFar.txt", "res/Shaders/entity/fragmentShaderShadow9Far.txt");  break;
-                default: entityShader = new EntityShader("res/Shaders/entity/vertexShaderShadowFar.txt", "res/Shaders/entity/fragmentShaderShadow25Far.txt"); break;
-                }
-            }
-        }
+        entityShader = new EntityShader("res/Shaders/entity/EntityVert.glsl", "res/Shaders/entity/EntityBloomFrag.glsl");
     }
     else
     {
-        if (Global::renderShadowsClose)
-        {
-            if (Global::renderBloom)
-            {
-                entityShader = new EntityShader("res/Shaders/entity/vertexShaderShadowClose.txt", "res/Shaders/entity/fragmentShaderShadowCloseBloom.txt");
-            }
-            else
-            {
-                entityShader = new EntityShader("res/Shaders/entity/vertexShaderShadowClose.txt", "res/Shaders/entity/fragmentShaderShadowClose.txt");
-            }
-        }
-        else
-        {
-            if (Global::renderBloom)
-            {
-                entityShader = new EntityShader("res/Shaders/entity/vertexShader.txt", "res/Shaders/entity/fragmentShaderBloom.txt");
-            }
-            else
-            {
-                entityShader = new EntityShader("res/Shaders/entity/vertexShader.txt", "res/Shaders/entity/fragmentShader.txt");
-            }
-        }
+        entityShader = new EntityShader("res/Shaders/entity/EntityVert.glsl", "res/Shaders/entity/EntityFrag.glsl");
     }
     INCR_NEW("ShaderProgram");
 
@@ -125,12 +56,6 @@ void MasterRenderer::init()
 
     MasterRenderer::entityRenderer = new EntityRenderer(MasterRenderer::entityShader, MasterRenderer::projectionMatrix); INCR_NEW("EntityRenderer");
     MasterRenderer::makeProjectionMatrix();
-
-    MasterRenderer::shadowMapRenderer = new ShadowMapMasterRenderer; INCR_NEW("ShadowMapMasterRenderer");
-    MasterRenderer::shadowMapRenderer2 = new ShadowMapMasterRenderer2; INCR_NEW("ShadowMapMasterRenderer2");
-
-    MasterRenderer::randomMap = LoaderGL::loadTextureNoInterpolation("res/Images/randomMap.png");
-
 
     //create frame buffer
     glGenFramebuffers(1, &MasterRenderer::transparentFrameBuffer); //generate name for frame buffer
@@ -195,15 +120,15 @@ void MasterRenderer::render(Camera* camera, float clipX, float clipY, float clip
     MasterRenderer::entityShader->loadWaterBlendAmount(waterBlendAmount);
     MasterRenderer::entityShader->connectTextureUnits();
 
-    MasterRenderer::entityRenderer->renderNEW(&MasterRenderer::entitiesMap, MasterRenderer::shadowMapRenderer->getToShadowMapSpaceMatrix(), MasterRenderer::shadowMapRenderer2->getToShadowMapSpaceMatrix());
-    MasterRenderer::entityRenderer->renderNEW(&MasterRenderer::entitiesMapPass2, MasterRenderer::shadowMapRenderer->getToShadowMapSpaceMatrix(), MasterRenderer::shadowMapRenderer2->getToShadowMapSpaceMatrix());
-    MasterRenderer::entityRenderer->renderNEW(&MasterRenderer::entitiesMapPass3, MasterRenderer::shadowMapRenderer->getToShadowMapSpaceMatrix(), MasterRenderer::shadowMapRenderer2->getToShadowMapSpaceMatrix());
+    MasterRenderer::entityRenderer->renderNEW(&MasterRenderer::entitiesMap);
+    MasterRenderer::entityRenderer->renderNEW(&MasterRenderer::entitiesMapPass2);
+    MasterRenderer::entityRenderer->renderNEW(&MasterRenderer::entitiesMapPass3);
 
     glDepthMask(false);
-    MasterRenderer::entityRenderer->renderNEW(&MasterRenderer::entitiesMapNoDepth, MasterRenderer::shadowMapRenderer->getToShadowMapSpaceMatrix(), MasterRenderer::shadowMapRenderer2->getToShadowMapSpaceMatrix());
+    MasterRenderer::entityRenderer->renderNEW(&MasterRenderer::entitiesMapNoDepth);
     MasterRenderer::prepareRenderDepthOnly();
     glDepthMask(true);
-    MasterRenderer::entityRenderer->renderNEW(&MasterRenderer::entitiesMapNoDepth, MasterRenderer::shadowMapRenderer->getToShadowMapSpaceMatrix(), MasterRenderer::shadowMapRenderer2->getToShadowMapSpaceMatrix());
+    MasterRenderer::entityRenderer->renderNEW(&MasterRenderer::entitiesMapNoDepth);
     glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
     glBindTexture(GL_TEXTURE_2D, 0);
     MasterRenderer::entityShader->stop();
@@ -231,7 +156,7 @@ void MasterRenderer::render(Camera* camera, float clipX, float clipY, float clip
     MasterRenderer::entityShader->loadWaterBlendAmount(waterBlendAmount);
     MasterRenderer::entityShader->connectTextureUnits();
 
-    MasterRenderer::entityRenderer->renderNEW(&MasterRenderer::entitiesMapTransparent, MasterRenderer::shadowMapRenderer->getToShadowMapSpaceMatrix(), MasterRenderer::shadowMapRenderer2->getToShadowMapSpaceMatrix());
+    MasterRenderer::entityRenderer->renderNEW(&MasterRenderer::entitiesMapTransparent);
     MasterRenderer::entityShader->stop();
     
     //We have finished creating depth buffer for transparent entities. Now go and do a 2nd pass, this time
@@ -263,7 +188,7 @@ void MasterRenderer::render(Camera* camera, float clipX, float clipY, float clip
     MasterRenderer::entityShader->loadWaterBlendAmount(waterBlendAmount);
     MasterRenderer::entityShader->connectTextureUnits();
 
-    MasterRenderer::entityRenderer->renderNEW(&MasterRenderer::entitiesMapTransparent, MasterRenderer::shadowMapRenderer->getToShadowMapSpaceMatrix(), MasterRenderer::shadowMapRenderer2->getToShadowMapSpaceMatrix());
+    MasterRenderer::entityRenderer->renderNEW(&MasterRenderer::entitiesMapTransparent);
     glBindTexture(GL_TEXTURE_2D, 0);
     MasterRenderer::entityShader->stop();
 
@@ -285,7 +210,7 @@ void MasterRenderer::render(Camera* camera, float clipX, float clipY, float clip
         MasterRenderer::entityShader->loadWaterBlendAmount(waterBlendAmount);
         MasterRenderer::entityShader->connectTextureUnits();
 
-        MasterRenderer::entityRenderer->renderNEW(&MasterRenderer::entitiesMapPass6, MasterRenderer::shadowMapRenderer->getToShadowMapSpaceMatrix(), MasterRenderer::shadowMapRenderer2->getToShadowMapSpaceMatrix());
+        MasterRenderer::entityRenderer->renderNEW(&MasterRenderer::entitiesMapPass6);
 
         MasterRenderer::entityShader->stop();
     }
@@ -370,15 +295,6 @@ void MasterRenderer::prepareNormalRender()
     glDepthMask(true);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    //glActiveTexture(GL_TEXTURE5);
-    //glBindTexture(GL_TEXTURE_2D, Master_getShadowMapTexture());
-
-    //glActiveTexture(GL_TEXTURE6);
-    //glBindTexture(GL_TEXTURE_2D, Master_getShadowMapTexture2());
-
-    //glActiveTexture(GL_TEXTURE7);
-    //glBindTexture(GL_TEXTURE_2D, randomMap);
-
     if (Global::renderWithCulling)
     {
         MasterRenderer::enableCulling();
@@ -433,12 +349,6 @@ void MasterRenderer::cleanUp()
     delete MasterRenderer::entityShader;     INCR_DEL("ShaderProgram");
     delete MasterRenderer::entityRenderer;   INCR_DEL("EntityRenderer");
     delete MasterRenderer::projectionMatrix; INCR_DEL("Matrix4f");
-
-    MasterRenderer::shadowMapRenderer->cleanUp();
-    delete MasterRenderer::shadowMapRenderer; INCR_DEL("ShadowMapMasterRenderer");
-
-    MasterRenderer::shadowMapRenderer2->cleanUp();
-    delete MasterRenderer::shadowMapRenderer2; INCR_DEL("ShadowMapMasterRenderer2");
 }
 
 void MasterRenderer::enableCulling()
@@ -494,34 +404,3 @@ float MasterRenderer::getVFOV()
     return MasterRenderer::VFOV_BASE + MasterRenderer::VFOV_ADDITION;
 }
 
-GLuint MasterRenderer::getShadowMapTexture()
-{
-    return shadowMapRenderer->getShadowMap();
-}
-
-GLuint MasterRenderer::getShadowMapTexture2()
-{
-    return shadowMapRenderer2->getShadowMap();
-}
-
-ShadowMapMasterRenderer* MasterRenderer::getShadowRenderer()
-{
-    return shadowMapRenderer;
-}
-
-ShadowMapMasterRenderer2* MasterRenderer::getShadowRenderer2()
-{
-    return shadowMapRenderer2;
-}
-
-void MasterRenderer::renderShadowMaps(Light* sun)
-{
-    if (Global::renderShadowsFar)
-    {
-        shadowMapRenderer->render(&entitiesMap, sun);
-    }
-    if (Global::renderShadowsClose)
-    {
-        shadowMapRenderer2->render(&entitiesMap, sun);
-    }
-}

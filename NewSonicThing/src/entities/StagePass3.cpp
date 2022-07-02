@@ -29,7 +29,7 @@ StagePass3::StagePass3(const char* objFolder, const char* objFilename)
     if (StagePass3::models.size() == 0)
     {
         #ifdef DEV_MODE
-        std::fprintf(stdout, "Loading StagePass3 static models...\n");
+        printf("Loading StagePass3 static models...\n");
         #endif
 
         ModelLoader::loadModel(&StagePass3::models, objFolder, objFilename);
@@ -53,7 +53,7 @@ std::list<TexturedModel*>* StagePass3::getModels()
 void StagePass3::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting StagePass3 static models...\n");
+    printf("Deleting StagePass3 static models...\n");
     #endif
 
     Entity::deleteModels(&StagePass3::models);

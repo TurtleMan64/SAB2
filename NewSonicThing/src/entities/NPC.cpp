@@ -180,7 +180,7 @@ void NPC::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading NPC static models...\n");
+    printf("Loading NPC static models...\n");
     #endif
 
     ModelLoader::loadModel(&NPC::models,        "res/Models/Objects/NPC/", "NPC");
@@ -192,7 +192,7 @@ void NPC::loadStaticModels()
 void NPC::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting NPC static models...\n");
+    printf("Deleting NPC static models...\n");
     #endif
 
     Entity::deleteModels(&NPC::models);

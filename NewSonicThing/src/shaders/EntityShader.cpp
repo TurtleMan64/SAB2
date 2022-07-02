@@ -179,11 +179,6 @@ void EntityShader::getAllUniformLocations()
     location_fogGradient            = getUniformLocation("fogGradient");
     location_clipPlane              = getUniformLocation("clipPlane");
     location_clipPlaneBehind        = getUniformLocation("clipPlaneBehind");
-    location_shadowMapFar           = getUniformLocation("shadowMapFar");
-    location_toShadowMapSpaceFar    = getUniformLocation("toShadowMapSpaceFar");
-    location_shadowMapClose         = getUniformLocation("shadowMapClose");
-    location_toShadowMapSpaceClose  = getUniformLocation("toShadowMapSpaceClose");
-    location_randomMap              = getUniformLocation("randomMap");
     location_mixFactor              = getUniformLocation("mixFactor");
     location_textureSampler2        = getUniformLocation("textureSampler2");
     location_fogScale               = getUniformLocation("fogScale");
@@ -241,32 +236,8 @@ void EntityShader::loadClipPlaneBehind(float clipX, float clipY, float clipZ, fl
 
 void EntityShader::connectTextureUnits()
 {
-    if (Global::renderShadowsFar || Global::renderShadowsClose)
-    {
-        if (Global::renderShadowsFar)
-        {
-            loadInt(location_shadowMapFar, 5);
-        }
-        if (Global::renderShadowsClose)
-        {
-            loadInt(location_shadowMapClose, 6);
-        }
-
-        loadInt(location_randomMap, 7);
-    }
-
     loadInt(location_textureSampler2, 1);
     loadInt(location_depthBufferTransparent, 8);
-}
-
-void EntityShader::loadToShadowSpaceMatrixFar(Matrix4f* matrix)
-{
-    loadMatrix(location_toShadowMapSpaceFar, matrix);
-}
-
-void EntityShader::loadToShadowSpaceMatrixClose(Matrix4f* matrix)
-{
-    loadMatrix(location_toShadowMapSpaceClose, matrix);
 }
 
 void EntityShader::loadMixFactor(float factor)

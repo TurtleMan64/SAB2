@@ -79,7 +79,7 @@ void GH_Sunflower::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading GH_Sunflower static models...\n");
+    printf("Loading GH_Sunflower static models...\n");
     #endif
 
     ModelLoader::loadModel(&GH_Sunflower::modelsBase, "res/Models/Levels/GreenHillZone/Objects/", "GreenHillSunflowerBase");
@@ -90,7 +90,7 @@ void GH_Sunflower::loadStaticModels()
 void GH_Sunflower::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting GH_Sunflower static models...\n");
+    printf("Deleting GH_Sunflower static models...\n");
     #endif
 
     Entity::deleteModels(&GH_Sunflower::modelsBase);

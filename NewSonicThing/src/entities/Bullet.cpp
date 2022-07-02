@@ -102,7 +102,7 @@ void Bullet::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading Bullet static models...\n");
+    printf("Loading Bullet static models...\n");
     #endif
 
     ModelLoader::loadModel(&Bullet::models, "res/Models/Objects/Bullet/", "Bullet");
@@ -113,7 +113,7 @@ void Bullet::loadStaticModels()
 void Bullet::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting Bullet static models...\n");
+    printf("Deleting Bullet static models...\n");
     #endif
 
     Entity::deleteModels(&Bullet::models);

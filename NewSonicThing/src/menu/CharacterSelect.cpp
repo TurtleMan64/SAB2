@@ -43,7 +43,7 @@ void CharacterSelect::loadResources()
 {
     if (buttonsCharacterNames.size() != 0)
     {
-        std::fprintf(stdout, "Warning: CharacterSelect loading resources when they are already loaded.\n");
+        printf("Warning: CharacterSelect loading resources when they are already loaded.\n");
     }
 
     textureParallelogram         = LoaderGL::loadTexture("res/Images/MainMenu/Parallelogram.png");
@@ -69,7 +69,7 @@ void CharacterSelect::unloadResources()
 {
     if ((int)buttonsCharacterNames.size() == 0)
     {
-        std::fprintf(stdout, "Warning: CharacterSelect unloading resources when they are empty.\n");
+        printf("Warning: CharacterSelect unloading resources when they are empty.\n");
     }
 
     LoaderGL::deleteTexture(textureParallelogram);
@@ -104,7 +104,7 @@ void CharacterSelect::draw()
 
     offsetTarget = -currentButtonIndex*separation;
     offsetCurr = Maths::approach(offsetCurr, offsetTarget, 15.0f, dt);
-    if (fabsf(offsetTarget - offsetCurr) < 0.001f)
+    if (std::abs(offsetTarget - offsetCurr) < 0.001f)
     {
         offsetCurr = offsetTarget;
     }

@@ -48,7 +48,7 @@ void GH_Tree::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading GH_Tree static models...\n");
+    printf("Loading GH_Tree static models...\n");
     #endif
 
     ModelLoader::loadModel(&GH_Tree::models, "res/Models/Levels/GreenHillZone/Objects/", "GreenHillTree");
@@ -57,7 +57,7 @@ void GH_Tree::loadStaticModels()
 void GH_Tree::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting GH_Tree static models...\n");
+    printf("Deleting GH_Tree static models...\n");
     #endif
 
     Entity::deleteModels(&GH_Tree::models);

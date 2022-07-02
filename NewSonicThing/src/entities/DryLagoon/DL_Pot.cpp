@@ -44,8 +44,8 @@ void DL_Pot::step()
         const float hitPad = 5.0f;
 
         Vector3f diff = Global::gameMainPlayer->getCenterPosition() - position;
-        if (fabsf(diff.x) <= 10 + hitPad &&
-            fabsf(diff.z) <= 10 + hitPad &&
+        if (std::abs(diff.x) <= 10 + hitPad &&
+            std::abs(diff.z) <= 10 + hitPad &&
                   diff.y  <= 20 + hitPad &&
                   diff.y  >=  0 - hitPad)
         {
@@ -92,7 +92,7 @@ void DL_Pot::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading DL_Pot static models...\n");
+    printf("Loading DL_Pot static models...\n");
     #endif
 
     ModelLoader::loadModel(&DL_Pot::models, "res/Models/Levels/DryLagoon/Objects/", "Pot");
@@ -106,7 +106,7 @@ void DL_Pot::loadStaticModels()
 void DL_Pot::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting DL_Pot static models...\n");
+    printf("Deleting DL_Pot static models...\n");
     #endif
 
     Entity::deleteModels(&DL_Pot::models);

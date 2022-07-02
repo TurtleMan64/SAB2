@@ -14,8 +14,8 @@ private:
     static std::list<TexturedModel*> modelsSkyPass2;
     static std::list<TexturedModel*> modelsSkyTransparent;
 
-    Dummy* skyPass2;
-    Dummy* skyTransparent;
+    Dummy* skyPass2 = nullptr;
+    Dummy* skyTransparent = nullptr;
 
 public:
     DP_StageManager();

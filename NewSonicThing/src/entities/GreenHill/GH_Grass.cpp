@@ -48,7 +48,7 @@ void GH_Grass::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading GH_Grass static models...\n");
+    printf("Loading GH_Grass static models...\n");
     #endif
 
     ModelLoader::loadModel(&GH_Grass::models, "res/Models/Levels/GreenHillZone/Objects/", "GreenHillGrass");
@@ -57,7 +57,7 @@ void GH_Grass::loadStaticModels()
 void GH_Grass::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting GH_Grass static models...\n");
+    printf("Deleting GH_Grass static models...\n");
     #endif
 
     Entity::deleteModels(&GH_Grass::models);

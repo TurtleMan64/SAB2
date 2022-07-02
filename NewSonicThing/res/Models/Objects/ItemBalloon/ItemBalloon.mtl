@@ -1,0 +1,7 @@
+# Material Count: 1
+
+newmtl Balloon
+Ns 20
+Ni 0.05
+map_Kd Tex_0080_0.png
+

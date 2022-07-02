@@ -172,7 +172,7 @@ void ManiaSonicModel::animate(int animIndex, float time)
                 case  9: models = &ManiaSonicModel::modelDash9;  break;
                 case 10: models = &ManiaSonicModel::modelDash10; break;
                 case 11: models = &ManiaSonicModel::modelDash11; break;
-                default: std::fprintf(stdout, "dash animation index out of bounds"); break;
+                default: printf("dash animation index out of bounds"); break;
             }
             updateTransformationMatrix();
             setLimbsVisibility(false);
@@ -255,7 +255,7 @@ void ManiaSonicModel::animate(int animIndex, float time)
                 case 15: models = &ManiaSonicModel::modelJog15; break;
                 case 16: models = &ManiaSonicModel::modelJog16; break;
                 case 17: models = &ManiaSonicModel::modelJog17; break;
-                default: std::fprintf(stdout, "warning: jog animation index out of bounds\n"); break;
+                default: printf("warning: jog animation index out of bounds\n"); break;
             }
             updateTransformationMatrix();
             setLimbsVisibility(false);
@@ -415,7 +415,7 @@ void ManiaSonicModel::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading mania sonic static models...\n");
+    printf("Loading mania sonic static models...\n");
     #endif
 
     ModelLoader::loadModel(&ManiaSonicModel::modelBody,         "res/Models/Characters/ManiaSonic/", "Body");
@@ -544,7 +544,7 @@ void ManiaSonicModel::updateLimbsMatrix()
 void ManiaSonicModel::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting mania sonic static models...\n");
+    printf("Deleting mania sonic static models...\n");
     #endif
 
     Entity::deleteModels(&ManiaSonicModel::modelBody);

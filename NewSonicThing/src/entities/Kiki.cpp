@@ -201,7 +201,7 @@ void Kiki::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading Kiki static models...\n");
+    printf("Loading Kiki static models...\n");
     #endif
 
     ModelLoader::loadModel(&Kiki::models,    "res/Models/Objects/Kiki/", "Kiki");
@@ -211,7 +211,7 @@ void Kiki::loadStaticModels()
 void Kiki::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting Kiki static models...\n");
+    printf("Deleting Kiki static models...\n");
     #endif
 
     Entity::deleteModels(&Kiki::models);

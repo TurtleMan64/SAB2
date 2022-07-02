@@ -111,7 +111,7 @@ void EC_Seagull::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading EC_Seagull static models...\n");
+    printf("Loading EC_Seagull static models...\n");
     #endif
 
     ModelLoader::loadModel(&EC_Seagull::models, "res/Models/Levels/EmeraldCoast/Seagull/", "Seagull");
@@ -120,7 +120,7 @@ void EC_Seagull::loadStaticModels()
 void EC_Seagull::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting EC_Seagull static models...\n");
+    printf("Deleting EC_Seagull static models...\n");
     #endif
 
     Entity::deleteModels(&EC_Seagull::models);

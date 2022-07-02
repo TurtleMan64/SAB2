@@ -86,7 +86,7 @@ void TC_Dash::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading TC_Dash static models...\n");
+    printf("Loading TC_Dash static models...\n");
     #endif
 
     ModelLoader::loadModel(&TC_Dash::models, "res/Models/Levels/TwinkleCircuit/Objects/Dash/", "Dash");
@@ -95,7 +95,7 @@ void TC_Dash::loadStaticModels()
 void TC_Dash::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting TC_Dash static models...\n");
+    printf("Deleting TC_Dash static models...\n");
     #endif
 
     Entity::deleteModels(&TC_Dash::models);

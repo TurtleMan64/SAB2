@@ -123,7 +123,7 @@ int ModelLoader::loadBinaryModel(std::list<TexturedModel*>* models, std::string 
         fileType[2] != 'j' ||
         fileType[3] != 0)
     {
-        std::fprintf(stdout, "Error: File '%s' is not a valid .binobj file\n", (filePath+fileName).c_str());
+        printf("Error: File '%s' is not a valid .binobj file\n", (filePath+fileName).c_str());
         return -2;
     }
 
@@ -292,7 +292,7 @@ int ModelLoader::loadVclModel(std::list<TexturedModel*>* models, std::string fil
         fileType[1] != 'c' ||
         fileType[2] != 'l')
     {
-        std::fprintf(stdout, "Error: File '%s' is not a valid .binvcl file\n", (filePath+fileName).c_str());
+        printf("Error: File '%s' is not a valid .binvcl file\n", (filePath+fileName).c_str());
         return -2;
     }
 
@@ -514,7 +514,7 @@ int ModelLoader::loadObjModel(std::list<TexturedModel*>* models, std::string fil
     std::ifstream file(Global::pathToEXE+filePath+fileName);
     if (!file.is_open())
     {
-        //std::fprintf(stdout, "Error: Cannot load file '%s'\n", (filePath + fileName).c_str());
+        //printf("Error: Cannot load file '%s'\n", (filePath + fileName).c_str());
         file.close();
         return -1;
     }
@@ -541,7 +541,7 @@ int ModelLoader::loadObjModel(std::list<TexturedModel*>* models, std::string fil
     while (!file.eof())
     {
         getlineSafe(file, line);
-        //std::fprintf(stdout, "line = '%s'\n", line.c_str());
+        //printf("line = '%s'\n", line.c_str());
 
         char lineBuf[256];
         memcpy(lineBuf, line.c_str(), line.size()+1);
@@ -563,12 +563,13 @@ int ModelLoader::loadObjModel(std::list<TexturedModel*>* models, std::string fil
                     std::string p1(lineSplit[1]);
                     std::string p2(lineSplit[2]);
                     std::string p3(lineSplit[3]);
-                    if (splitLength == 7) //with vertex colors
+                    Vector3f position(std::stof(p1, nullptr), std::stof(p2, nullptr), std::stof(p3, nullptr));
+
+                    if (splitLength == 7) //with RGB vertex colors
                     {
                         std::string c1(lineSplit[4]);
                         std::string c2(lineSplit[5]);
                         std::string c3(lineSplit[6]);
-                        Vector3f vertex(std::stof(p1, nullptr), std::stof(p2, nullptr), std::stof(p3, nullptr));
 
                         float r = std::stof(c1, nullptr);
                         float g = std::stof(c2, nullptr);
@@ -588,13 +589,23 @@ int ModelLoader::loadObjModel(std::list<TexturedModel*>* models, std::string fil
                         }
                         Vector4f colors(r, g, b, a);
 
-                        Vertex* newVertex = new Vertex((int)vertices.size(), &vertex, &colors); INCR_NEW("Vertex");
+                        Vertex* newVertex = new Vertex((int)vertices.size(), &position, &colors); INCR_NEW("Vertex");
+                        vertices.push_back(newVertex);
+                    }
+                    else if (splitLength == 8) //with RGBA vertex colors
+                    {
+                        float r = std::stof(lineSplit[4], nullptr);
+                        float g = std::stof(lineSplit[5], nullptr);
+                        float b = std::stof(lineSplit[6], nullptr);
+                        float a = std::stof(lineSplit[7], nullptr);
+                        Vector4f colors(r, g, b, a);
+
+                        Vertex* newVertex = new Vertex((int)vertices.size(), &position, &colors); INCR_NEW("Vertex");
                         vertices.push_back(newVertex);
                     }
                     else
                     {
-                        Vector3f vertex(std::stof(p1, nullptr), std::stof(p2, nullptr), std::stof(p3, nullptr));
-                        Vertex* newVertex = new Vertex((int)vertices.size(), &vertex); INCR_NEW("Vertex");
+                        Vertex* newVertex = new Vertex((int)vertices.size(), &position); INCR_NEW("Vertex");
                         vertices.push_back(newVertex);
                     }
                 }
@@ -939,12 +950,13 @@ int ModelLoader::loadObjModelWithMTL(std::list<TexturedModel*>* models, std::str
                     std::string p1(lineSplit[1]);
                     std::string p2(lineSplit[2]);
                     std::string p3(lineSplit[3]);
-                    if (splitLength == 7) //with vertex colors
+                    Vector3f position(std::stof(p1, nullptr), std::stof(p2, nullptr), std::stof(p3, nullptr));
+
+                    if (splitLength == 7) //with RGB vertex colors
                     {
                         std::string c1(lineSplit[4]);
                         std::string c2(lineSplit[5]);
                         std::string c3(lineSplit[6]);
-                        Vector3f vertex(std::stof(p1, nullptr), std::stof(p2, nullptr), std::stof(p3, nullptr));
                         
                         float r = std::stof(c1, nullptr);
                         float g = std::stof(c2, nullptr);
@@ -964,13 +976,23 @@ int ModelLoader::loadObjModelWithMTL(std::list<TexturedModel*>* models, std::str
                         }
                         Vector4f colors(r, g, b, a);
 
-                        Vertex* newVertex = new Vertex((int)vertices.size(), &vertex, &colors); INCR_NEW("Vertex");
+                        Vertex* newVertex = new Vertex((int)vertices.size(), &position, &colors); INCR_NEW("Vertex");
+                        vertices.push_back(newVertex);
+                    }
+                    else if (splitLength == 8) //with RGBA vertex colors
+                    {
+                        float r = std::stof(lineSplit[4], nullptr);
+                        float g = std::stof(lineSplit[5], nullptr);
+                        float b = std::stof(lineSplit[6], nullptr);
+                        float a = std::stof(lineSplit[7], nullptr);
+                        Vector4f colors(r, g, b, a);
+
+                        Vertex* newVertex = new Vertex((int)vertices.size(), &position, &colors); INCR_NEW("Vertex");
                         vertices.push_back(newVertex);
                     }
                     else
                     {
-                        Vector3f vertex(std::stof(p1, nullptr), std::stof(p2, nullptr), std::stof(p3, nullptr));
-                        Vertex* newVertex = new Vertex((int)vertices.size(), &vertex); INCR_NEW("Vertex");
+                        Vertex* newVertex = new Vertex((int)vertices.size(), &position); INCR_NEW("Vertex");
                         vertices.push_back(newVertex);
                     }
                 }
@@ -1087,7 +1109,7 @@ int ModelLoader::loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::
         fileType[2] != 'j' ||
         fileType[3] != 0)
     {
-        std::fprintf(stdout, "Error: File '%s' is not a valid .binobj file\n", (filePath+fileNameBin).c_str());
+        printf("Error: File '%s' is not a valid .binobj file\n", (filePath+fileNameBin).c_str());
         return -2;
     }
 
@@ -1360,7 +1382,7 @@ CollisionModel* ModelLoader::loadCollisionModel(std::string filePath, std::strin
     std::ifstream file(Global::pathToEXE + "res/" + filePath + fileName + ".obj");
     if (!file.is_open())
     {
-        std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE + "res/" + filePath + fileName + ".obj").c_str());
+        printf("Error: Cannot load file '%s'\n", (Global::pathToEXE + "res/" + filePath + fileName + ".obj").c_str());
         file.close();
         return collisionModel;
     }
@@ -1431,7 +1453,7 @@ CollisionModel* ModelLoader::loadCollisionModel(std::string filePath, std::strin
                 std::ifstream fileMTL(Global::pathToEXE + "res/" + filePath + lineSplit[1]);
                 if (!fileMTL.is_open())
                 {
-                    std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE + "res/" + filePath + lineSplit[1]).c_str());
+                    printf("Error: Cannot load file '%s'\n", (Global::pathToEXE + "res/" + filePath + lineSplit[1]).c_str());
                     fileMTL.close();
                     file.close();
                     return collisionModel;
@@ -1584,7 +1606,7 @@ CollisionModel* ModelLoader::loadBinaryQuadTree(std::string filePath, std::strin
     int err = fopen_s(&file, (Global::pathToEXE + "res/" + filePath+fileName+".qtree").c_str(), "rb");
     if (file == nullptr || err != 0)
     {
-        //std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE + "res/" + filePath+fileName+".qtree").c_str());
+        //printf("Error: Cannot load file '%s'\n", (Global::pathToEXE + "res/" + filePath+fileName+".qtree").c_str());
         return nullptr;
     }
 
@@ -1597,7 +1619,7 @@ CollisionModel* ModelLoader::loadBinaryQuadTree(std::string filePath, std::strin
         fileType[2] != 'r' ||
         fileType[3] != 'e')
     {
-        std::fprintf(stdout, "Error: File '%s' is not a valid .qtree file\n", (Global::pathToEXE + "res/" + filePath+fileName+".qtree").c_str());
+        printf("Error: File '%s' is not a valid .qtree file\n", (Global::pathToEXE + "res/" + filePath+fileName+".qtree").c_str());
         return collisionModel;
     }
 
@@ -1640,7 +1662,7 @@ CollisionModel* ModelLoader::loadBinaryCollisionModel(std::string filePath, std:
     int err = fopen_s(&file, (Global::pathToEXE + "res/" + filePath+fileName+".bincol").c_str(), "rb");
     if (file == nullptr || err != 0)
     {
-        std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE + "res/" + filePath+fileName+".bincol").c_str());
+        printf("Error: Cannot load file '%s'\n", (Global::pathToEXE + "res/" + filePath+fileName+".bincol").c_str());
         return nullptr;
     }
 
@@ -1653,7 +1675,7 @@ CollisionModel* ModelLoader::loadBinaryCollisionModel(std::string filePath, std:
         fileType[2] != 'l' ||
         fileType[3] != 0)
     {
-        std::fprintf(stdout, "Error: File '%s' is not a valid .bincol file\n", (Global::pathToEXE + "res/" + filePath+fileName+".bincol").c_str());
+        printf("Error: File '%s' is not a valid .bincol file\n", (Global::pathToEXE + "res/" + filePath+fileName+".bincol").c_str());
         return collisionModel;
     }
 
@@ -1671,7 +1693,7 @@ CollisionModel* ModelLoader::loadBinaryCollisionModel(std::string filePath, std:
         std::ifstream fileMTL(Global::pathToEXE + "res/" + filePath + mtlname);
         if (!fileMTL.is_open())
         {
-            std::fprintf(stdout, "Error: Cannot load file '%s'\n", (Global::pathToEXE + "res/" + filePath + mtlname).c_str());
+            printf("Error: Cannot load file '%s'\n", (Global::pathToEXE + "res/" + filePath + mtlname).c_str());
             fileMTL.close();
             fclose(file);
             return collisionModel;

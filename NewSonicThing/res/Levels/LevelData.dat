@@ -1,4 +1,4 @@
-21
+22
 
 Tutorial.lvl
 Tutorial
@@ -154,3 +154,11 @@ Normal;15000;Run along the beach!
 Ring;90;200;Collect 200 Rings!
 Chao;35;Find the lost chao!
 Race;110;71.632294;Race against Mighty!
+
+FreezeezyPeak.lvl
+Freezeezy Peak
+4
+Normal;14000;Find all the pieces of the master emerald!
+Ring;40;100;Collect 100 Rings!
+Chao;25;Find the lost chao!
+Hard;15000;Complete hard mode!

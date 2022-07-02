@@ -718,7 +718,7 @@ void PlayerSonic::step()
                 float currentAngle = acosf(dot);
                 float maxAngle = currentAngle-targetAngle;
                 //rotate whichever is "less" rotation
-                if (fabsf(tryingToRotate) < fabsf(maxAngle))
+                if (std::abs(tryingToRotate) < std::abs(maxAngle))
                 {
                     camDir = Maths::rotatePoint(&camDir, &perpen, tryingToRotate);
                 }
@@ -750,7 +750,7 @@ void PlayerSonic::step()
                 float currentAngle = acosf(dot);
                 float maxAngle = currentAngle-targetAngle;
                 //rotate whichever is "less" rotation
-                if (fabsf(tryingToRotate) < fabsf(maxAngle))
+                if (std::abs(tryingToRotate) < std::abs(maxAngle))
                 {
                     camDir = Maths::rotatePoint(&camDir, &perpen, tryingToRotate);
                 }
@@ -1150,7 +1150,7 @@ void PlayerSonic::step()
                     CollisionChecker::falseAlarm();
 
                     float len = vel.length();
-                    float dot = fabsf(vel.dot(colNormal)/len);
+                    float dot = std::abs(vel.dot(colNormal)/len);
                     float fact = sqrtf(1 - dot*dot);
                     Vector3f bounce   = Maths::bounceVector(&vel, colNormal, 1.0f);
                     Vector3f parallel = Maths::projectOntoPlane(&vel, colNormal);
@@ -1284,7 +1284,7 @@ void PlayerSonic::step()
     }
 
     //transition from running on ground to water
-    if (onGroundBefore && Global::stageUsesWater && Global::levelId != LVL_EMERALD_COAST &&
+    if (onGroundBefore && Global::stageUsesWater && Global::levelId != LVL_EMERALD_COAST && Global::levelId != LVL_SEASIDE_HILL &&
         posBefore.y >= Global::waterHeight &&
         position.y  <= Global::waterHeight)
     {
@@ -1489,21 +1489,21 @@ void PlayerSonic::step()
     Global::gameMainVehicleSpeed = (int)(vel.length());
 
     //Vector3f posDiffDelta = position - prevPos;
-    //std::fprintf(stdout, "delta pos = %f\n\n", posDiffDelta.length()/dt);
+    //printf("delta pos = %f\n\n", posDiffDelta.length()/dt);
 
 
-    //std::fprintf(stdout, "%f\n", animationTime);
-    //std::fprintf(stdout, "%f\n\n\n\n", vel.length());
+    //printf("%f\n", animationTime);
+    //printf("%f\n\n\n\n", vel.length());
 
-    //std::fprintf(stdout, "camDir       = [%f, %f, %f]\n", camDir.x, camDir.y, camDir.z);
-    //std::fprintf(stdout, "camDirSmooth = [%f, %f, %f]\n", camDirSmooth.x, camDirSmooth.y, camDirSmooth.z);
+    //printf("camDir       = [%f, %f, %f]\n", camDir.x, camDir.y, camDir.z);
+    //printf("camDirSmooth = [%f, %f, %f]\n", camDirSmooth.x, camDirSmooth.y, camDirSmooth.z);
 
     //Vector3f vnorm(&vel);
     //vnorm.normalize();
-    //std::fprintf(stdout, "pos  = [%f, %f, %f]\n", position.x, position.y, position.z);
-    //std::fprintf(stdout, "norm = [%f, %f, %f]\n", currNorm.x, currNorm.y, currNorm.z);
-    //std::fprintf(stdout, "dir  = [%f, %f, %f]\n", vnorm   .x, vnorm   .y, vnorm   .z);
-    //std::fprintf(stdout, "%f %f %f   %f %f %f   %f %f %f\n", position.x, position.y, position.z, currNorm.x, currNorm.y, currNorm.z, vnorm.x, vnorm.y, vnorm.z);
+    //printf("pos  = [%f, %f, %f]\n", position.x, position.y, position.z);
+    //printf("norm = [%f, %f, %f]\n", currNorm.x, currNorm.y, currNorm.z);
+    //printf("dir  = [%f, %f, %f]\n", vnorm   .x, vnorm   .y, vnorm   .z);
+    //printf("%f %f %f   %f %f %f   %f %f %f\n", position.x, position.y, position.z, currNorm.x, currNorm.y, currNorm.z, vnorm.x, vnorm.y, vnorm.z);
     centerPosPrev = getCenterPosition();
 }
 
@@ -1512,7 +1512,7 @@ void PlayerSonic::spindash()
     Vector3f newDir = Maths::projectOntoPlane(&spindashDirection, &relativeUp);
     newDir.setLength(storedSpindashSpeed);
     vel.set(&newDir);
-    //std::fprintf(stdout, "spindash at %f speed\n", storedSpindashSpeed);
+    //printf("spindash at %f speed\n", storedSpindashSpeed);
     //isBall = true;
     isBall = false; //geeks idea change
     AudioPlayer::play(40, &position); //peel release
@@ -1663,7 +1663,7 @@ void PlayerSonic::moveMeGround()
     }
 
     //Add to velocity based on the slope you are on
-    //std::fprintf(stdout, "relativeU.y = %f\n", relativeUp.y);
+    //printf("relativeU.y = %f\n", relativeUp.y);
     if (relativeUp.y < 0.99f)
     {
         if (!isSpindashing || vel.lengthSquared() > spindashPowerfulFrictionThreshold*spindashPowerfulFrictionThreshold) //if you are stopped and charging a spindash, dont move sonic
@@ -2249,11 +2249,12 @@ void PlayerSonic::updateAnimationValues()
                 rng.scale(75.0f);
                 rng = Maths::projectOntoPlane(&rng, &relativeUp);
 
-                if (isRunningOnWater)
+                if (isRunningOnWater || (Global::stageUsesWater && position.y < Global::waterHeight))
                 {
                     float partScale = 5.0f+Maths::nextGaussian();
                     Vector3f spd = rng;
-                    Vector3f partPos = position + relativeUp.scaleCopy(partScale/2);
+                    Vector3f partPos = position;
+                    partPos.y = Global::waterHeight + partScale/2;
                     //todo make this look good
                     ParticleMaster::createParticle(ParticleResources::textureSplash, &partPos, &spd, 0, 0.25f + (0.125f*Maths::nextGaussian()), 0, partScale, 0.0f, false, false, 1.0f, true);
                 }
@@ -2617,7 +2618,7 @@ std::list<TexturedModel*>* PlayerSonic::getModels()
 void PlayerSonic::loadVehicleInfo()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading PlayerSonic static models...\n");
+    printf("Loading PlayerSonic static models...\n");
     #endif
     
     ManiaSonicModel::loadStaticModels();
@@ -2628,7 +2629,7 @@ void PlayerSonic::loadVehicleInfo()
 void PlayerSonic::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting PlayerSonic static models...\n");
+    printf("Deleting PlayerSonic static models...\n");
     #endif
     
     ManiaSonicModel::deleteStaticModels();

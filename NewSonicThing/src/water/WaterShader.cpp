@@ -13,19 +13,12 @@
 #include "../entities/light.hpp"
 #include "../loading/loadergl.hpp"
 #include "watershader.hpp"
+#include "../renderEngine/masterrenderer.hpp"
 
 WaterShader::WaterShader()
 {
-    if (Global::renderShadowsFar)
-    {
-        vertexShaderId = LoaderGL::loadShader("res/Shaders/water/waterVertexWithShadows.txt", GL_VERTEX_SHADER);
-        fragmentShaderId = LoaderGL::loadShader("res/Shaders/water/waterFragmentWithShadows.txt", GL_FRAGMENT_SHADER);
-    }
-    else
-    {
-        vertexShaderId = LoaderGL::loadShader("res/Shaders/water/waterVertex.txt", GL_VERTEX_SHADER);
-        fragmentShaderId = LoaderGL::loadShader("res/Shaders/water/waterFragment.txt", GL_FRAGMENT_SHADER);
-    }
+    vertexShaderId   = LoaderGL::loadShader("res/Shaders/water/WaterVert.glsl", GL_VERTEX_SHADER);
+    fragmentShaderId = LoaderGL::loadShader("res/Shaders/water/WaterFrag.glsl", GL_FRAGMENT_SHADER);
     programId = glCreateProgram();
     glAttachShader(programId, vertexShaderId);
     glAttachShader(programId, fragmentShaderId);
@@ -62,33 +55,27 @@ void WaterShader::connectTextureUnits()
     loadInt(location_dudvMap, 2);
     loadInt(location_normalMap, 3);
     loadInt(location_depthMap, 4);
-    loadInt(location_shadowMap, 5);
 }
 
 void WaterShader::loadSun(Light* sun)
 {
     loadVector(location_sunColor,     &sun->color);
     loadVector(location_sunDirection, &sun->direction);
-    //printf("location_sunColor     = %f %f %f\n", sun->color.x, sun->color.y, sun->color.z);
-    //printf("location_sunDirection = %f %f %f\n", sun->direction.x, sun->direction.y, sun->direction.z);
 }
 
 void WaterShader::loadWaterHeight(float waterHeight)
 {
     loadFloat(location_waterHeight, waterHeight);
-    //printf("location_waterHeight = %f\n", waterHeight);
 }
 
 void WaterShader::loadWaterMurkyAmount(float murkyAmount)
 {
     loadFloat(location_murkiness, murkyAmount);
-    //printf("location_murkiness = %f\n", murkyAmount);
 }
 
 void WaterShader::loadWaterColor(Vector3f* waterColor)
 {
     loadVector(location_waterColor, waterColor);
-    //printf("location_waterColor = %f %f %f\n", waterColor->x, waterColor->y, waterColor->z);
 }
 
 void WaterShader::loadMoveFactor(float factor)
@@ -99,12 +86,12 @@ void WaterShader::loadMoveFactor(float factor)
 void WaterShader::loadProjectionMatrix(Matrix4f* projection)
 {
     loadMatrix(location_projectionMatrix, projection);
+    loadFloat(location_frustrumFar, MasterRenderer::FAR_PLANE);
 }
 
 void WaterShader::loadClipPlaneBehind(Vector4f* plane)
 {
     loadVector4f(location_clipPlaneBehind, plane);
-    //printf("location_clipPlaneBehind = %f %f %f %f\n", plane->x, plane->y, plane->z, plane->w);
 }
 
 void WaterShader::loadViewMatrix(Camera* cam)
@@ -113,17 +100,11 @@ void WaterShader::loadViewMatrix(Camera* cam)
     Maths::createViewMatrix(&viewMatrix, cam);
     loadMatrix(location_viewMatrix, &viewMatrix);
     loadVector(location_cameraPosition, &cam->eye);
-    //printf("location_cameraPosition = %f %f %f\n", cam->eye.x, cam->eye.y, cam->eye.z);
 }
 
 void WaterShader::loadModelMatrix(Matrix4f* modelMatrix)
 {
     loadMatrix(location_modelMatrix, modelMatrix);
-}
-
-void WaterShader::loadToShadowSpaceMatrix(Matrix4f* matrix)
-{
-    loadMatrix(location_toShadowMapSpace, matrix);
 }
 
 void WaterShader::bindAttributes()
@@ -146,6 +127,7 @@ void WaterShader::bindFragOutput(int attatchment, const char* variableName)
 void WaterShader::getAllUniformLocations()
 {
     location_projectionMatrix  = getUniformLocation("projectionMatrix");
+    location_frustrumFar       = getUniformLocation("FAR");
     location_viewMatrix        = getUniformLocation("viewMatrix");
     location_modelMatrix       = getUniformLocation("modelMatrix");
     location_reflectionTexture = getUniformLocation("reflectionTexture");
@@ -157,8 +139,6 @@ void WaterShader::getAllUniformLocations()
     location_sunColor          = getUniformLocation("sunColor");
     location_sunDirection      = getUniformLocation("sunDirection");
     location_depthMap          = getUniformLocation("depthMap");
-    location_shadowMap         = getUniformLocation("shadowMap");
-    location_toShadowMapSpace  = getUniformLocation("toShadowMapSpace");
     location_waterHeight       = getUniformLocation("waterHeight");
     location_clipPlaneBehind   = getUniformLocation("clipPlaneBehind");
     location_murkiness         = getUniformLocation("murkiness");

@@ -35,7 +35,7 @@ void SS_StageManager::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading CS_StageManager static models...\n");
+    printf("Loading CS_StageManager static models...\n");
     #endif
 
     ModelLoader::loadModel(&SS_StageManager::modelsSkydome,  "res/Models/Levels/SacredSky/Sky/", "Sky");
@@ -44,7 +44,7 @@ void SS_StageManager::loadStaticModels()
 void SS_StageManager::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting CS_StageManager static models...\n");
+    printf("Deleting CS_StageManager static models...\n");
     #endif
 
     Entity::deleteModels(&SS_StageManager::modelsSkydome);

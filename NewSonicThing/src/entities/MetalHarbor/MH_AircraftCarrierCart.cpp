@@ -188,7 +188,7 @@ void MH_AircraftCarrierCart::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Loading MH_AircraftCarrierCart static models...\n");
+    printf("Loading MH_AircraftCarrierCart static models...\n");
     #endif
 
     ModelLoader::loadModel(&MH_AircraftCarrierCart::models, "res/Models/Objects/MetalHarbor/AircraftCarrierCart/", "AircraftCarrierCart");
@@ -209,7 +209,7 @@ void MH_AircraftCarrierCart::loadStaticModels()
 void MH_AircraftCarrierCart::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    std::fprintf(stdout, "Deleting MH_AircraftCarrierCart static models...\n");
+    printf("Deleting MH_AircraftCarrierCart static models...\n");
     #endif
 
     Entity::deleteModels(&MH_AircraftCarrierCart::models);
