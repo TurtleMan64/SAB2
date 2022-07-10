@@ -1,6 +1,6 @@
 # Blender v2.78 (sub 0) OBJ File: ''
 # www.blender.org
-mtllib All.mtl
+mtllib Materials.mtl
 v 4.767111 5.741449 0.206666
 v 4.170725 5.761841 0.198806
 v 4.138268 5.652014 0.086939

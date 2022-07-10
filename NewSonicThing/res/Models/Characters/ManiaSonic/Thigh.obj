@@ -1,6 +1,6 @@
 # Blender v2.78 (sub 0) OBJ File: ''
 # www.blender.org
-mtllib Thigh.mtl
+mtllib Materials.mtl
 v 0.00175 -1.200894 -0.195721
 v -5.35E-4 -1.304487 -0.195424
 v -0.192692 -1.209143 -0.002005

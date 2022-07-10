@@ -1,6 +1,6 @@
 # Blender v2.79 (sub 0) OBJ File: ''
 # www.blender.org
-mtllib Body.mtl
+mtllib Materials.mtl
 v 0.001654 -1.444396 -0.006584
 v 0.713573 -1.032838 0.707191
 v 1.009438 -1.030621 -0.005582

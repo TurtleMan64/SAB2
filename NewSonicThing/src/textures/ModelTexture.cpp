@@ -20,6 +20,8 @@ ModelTexture::ModelTexture()
     animatedProgress = 0.0f;
     animationSpeed = 0.0f;
     currentImageIndex = 0;
+    scrollX = 0.0f;
+    scrollY = 0.0f;
     mixingType = 1;
     fogScale = 1.0f;
     renderOrder = 0;

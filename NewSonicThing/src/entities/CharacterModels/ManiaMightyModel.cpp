@@ -462,7 +462,7 @@ void ManiaMightyModel::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    printf("Loading mania mighty static models...\n");
+    printf("Loading ManiaMightyModel static models...\n");
     #endif
 
     ModelLoader::loadModel(&ManiaMightyModel::modelBody,         "res/Models/Characters/ManiaMighty/", "LimbBody");
@@ -603,7 +603,7 @@ void ManiaMightyModel::updateFlyMatrix()
 void ManiaMightyModel::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    printf("Deleting mania mighty static models...\n");
+    printf("Deleting ManiaMightyModel static models...\n");
     #endif
 
     Entity::deleteModels(&ManiaMightyModel::modelBody);

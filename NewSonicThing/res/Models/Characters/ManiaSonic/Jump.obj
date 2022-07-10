@@ -1,6 +1,6 @@
 # Blender v2.79 (sub 0) OBJ File: ''
 # www.blender.org
-mtllib JumpMaterials.mtl
+mtllib Materials.mtl
 v -7.491338 -5.625043 0.000004
 v -6.664486 -4.284931 0.000004
 v -6.881430 -4.057581 0.282291

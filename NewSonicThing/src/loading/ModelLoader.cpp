@@ -626,7 +626,16 @@ int ModelLoader::loadObjModel(std::list<TexturedModel*>* models, std::string fil
                 }
                 else if (strcmp(lineSplit[0], "usemtl") == 0) //first usetml found, before any faces entered
                 {
-                    modelTextures.push_back(mtlMap[lineSplit[1]]);
+                    auto material = mtlMap.find(lineSplit[1]);
+                    if (material != mtlMap.end())
+                    {
+                        modelTextures.push_back(material->second);
+                    }
+                    else
+                    {
+                        std::string fn = Global::pathToEXE + filePath + fileName;
+                        printf("Error: Trying to use material '%s', but it doesn't exist. (%s)\n", lineSplit[1], fn.c_str());
+                    }
                 }
                 else if (strcmp(lineSplit[0], "f") == 0)
                 {
@@ -653,7 +662,16 @@ int ModelLoader::loadObjModel(std::list<TexturedModel*>* models, std::string fil
                 }
                 else if (strcmp(lineSplit[0], "usemtl") == 0 && (vertices.size() > 0)) //found another new material, so save the previous model and start a new one
                 {
-                    modelTextures.push_back(mtlMap[lineSplit[1]]);
+                    auto material = mtlMap.find(lineSplit[1]);
+                    if (material != mtlMap.end())
+                    {
+                        modelTextures.push_back(material->second);
+                    }
+                    else
+                    {
+                        std::string fn = Global::pathToEXE + filePath + fileName;
+                        printf("Error: Trying to use material '%s', but it doesn't exist. (%s)\n", lineSplit[1], fn.c_str());
+                    }
 
                     //save the model we've been building so far...
                     removeUnusedVertices(&vertices);
@@ -1013,7 +1031,16 @@ int ModelLoader::loadObjModelWithMTL(std::list<TexturedModel*>* models, std::str
                 }
                 else if (strcmp(lineSplit[0], "usemtl") == 0) //first usetml found, before any faces entered
                 {
-                    modelTextures.push_back(mtlMap[lineSplit[1]]);
+                    auto material = mtlMap.find(lineSplit[1]);
+                    if (material != mtlMap.end())
+                    {
+                        modelTextures.push_back(material->second);
+                    }
+                    else
+                    {
+                        std::string fn = Global::pathToEXE + filePath + fileNameOBJ;
+                        printf("Error: Trying to use material '%s', but it doesn't exist. (%s)\n", lineSplit[1], fn.c_str());
+                    }
                 }
                 else if (strcmp(lineSplit[0], "f") == 0)
                 {
@@ -1040,7 +1067,16 @@ int ModelLoader::loadObjModelWithMTL(std::list<TexturedModel*>* models, std::str
                 }
                 else if (strcmp(lineSplit[0], "usemtl") == 0 && (vertices.size() > 0)) //found another new material, so save the previous model and start a new one
                 {
-                    modelTextures.push_back(mtlMap[lineSplit[1]]);
+                    auto material = mtlMap.find(lineSplit[1]);
+                    if (material != mtlMap.end())
+                    {
+                        modelTextures.push_back(material->second);
+                    }
+                    else
+                    {
+                        std::string fn = Global::pathToEXE + filePath + fileNameOBJ;
+                        printf("Error: Trying to use material '%s', but it doesn't exist. (%s)\n", lineSplit[1], fn.c_str());
+                    }
 
                     //save the model we've been building so far...
                     removeUnusedVertices(&vertices);
@@ -1438,6 +1474,8 @@ CollisionModel* ModelLoader::loadCollisionModel(std::string filePath, std::strin
                 currSound = -1;
                 currParticle = 0;
 
+                bool found = false;
+
                 for (FakeTexture dummy : fakeTextures)
                 {
                     if (dummy.name == lineSplit[1])
@@ -1445,7 +1483,14 @@ CollisionModel* ModelLoader::loadCollisionModel(std::string filePath, std::strin
                         currType = dummy.type;
                         currSound = dummy.sound;
                         currParticle = dummy.particle;
+                        found = true;
                     }
+                }
+
+                if (found)
+                {
+                    std::string fn = Global::pathToEXE + filePath + fileName;
+                    printf("Error: Trying to use collision material '%s', but it doesn't exist. (%s)\n", lineSplit[1], fn.c_str());
                 }
             }
             else if (strcmp(lineSplit[0], "mtllib") == 0)

@@ -1,6 +1,6 @@
 # Blender v2.78 (sub 0) OBJ File: ''
 # www.blender.org
-mtllib ShoeLeft.mtl
+mtllib Materials.mtl
 v -1.206376 -1.04057 -0.940503
 v -1.196074 -0.283349 -0.98488
 v -1.197362 -0.299194 0.8325

@@ -1,6 +1,6 @@
 # Blender v2.79 (sub 0) OBJ File: ''
 # www.blender.org
-mtllib JogMaterials.mtl
+mtllib Materials.mtl
 v 17.169510 -14.443821 -0.617156
 v 17.226318 -12.636462 -0.590723
 v 16.892483 -12.539481 -0.252343

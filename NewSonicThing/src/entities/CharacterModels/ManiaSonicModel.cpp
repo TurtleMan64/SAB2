@@ -415,7 +415,7 @@ void ManiaSonicModel::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    printf("Loading mania sonic static models...\n");
+    printf("Loading ManiaSonicModel static models...\n");
     #endif
 
     ModelLoader::loadModel(&ManiaSonicModel::modelBody,         "res/Models/Characters/ManiaSonic/", "Body");
@@ -544,7 +544,7 @@ void ManiaSonicModel::updateLimbsMatrix()
 void ManiaSonicModel::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    printf("Deleting mania sonic static models...\n");
+    printf("Deleting ManiaSonicModel static models...\n");
     #endif
 
     Entity::deleteModels(&ManiaSonicModel::modelBody);

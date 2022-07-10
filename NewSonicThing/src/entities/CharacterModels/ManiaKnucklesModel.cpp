@@ -462,10 +462,10 @@ void ManiaKnucklesModel::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    printf("Loading mania knuckles static models...\n");
+    printf("Loading ManiaKnucklesModel static models...\n");
     #endif
 
-    ModelLoader::ModelLoader::loadModel(&ManiaKnucklesModel::modelBody,         "res/Models/Characters/ManiaKnuckles/", "Body");
+    ModelLoader::loadModel(&ManiaKnucklesModel::modelBody,         "res/Models/Characters/ManiaKnuckles/", "Body");
     ModelLoader::loadModel(&ManiaKnucklesModel::modelHead,         "res/Models/Characters/ManiaKnuckles/", "Head");
     ModelLoader::loadModel(&ManiaKnucklesModel::modelLeftHumerus,  "res/Models/Characters/ManiaKnuckles/", "Thigh");
     ModelLoader::loadModel(&ManiaKnucklesModel::modelLeftForearm,  "res/Models/Characters/ManiaKnuckles/", "Forearm");
@@ -587,7 +587,7 @@ void ManiaKnucklesModel::updateLimbsMatrix()
 void ManiaKnucklesModel::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    printf("Deleting mania knuckles static models...\n");
+    printf("Deleting ManiaKnucklesModel static models...\n");
     #endif
 
     Entity::deleteModels(&ManiaKnucklesModel::modelBody);
