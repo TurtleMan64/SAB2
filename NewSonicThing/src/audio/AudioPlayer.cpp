@@ -96,6 +96,10 @@ void AudioPlayer::loadSoundEffects()
     AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/Kart/Boost.ogg"));                   //71
     AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/BombThrow.ogg"));            //72
     AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/BombExplosion.ogg"));        //73
+    AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/DashRing.ogg"));             //74
+    AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/Bazooka.ogg"));              //75
+    AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/Hint.ogg"));                 //76
+    AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/RainbowRing.ogg"));          //77
 }
 
 void AudioPlayer::loadBGM(char* fileName)

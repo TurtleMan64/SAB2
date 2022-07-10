@@ -10,8 +10,12 @@ class TexturedModel;
 class SH_RisingPlatform : public CollideableObject
 {
 private:
-    static std::list<TexturedModel*> models;
-    static CollisionModel* cmOriginal;
+    static std::list<TexturedModel*> modelsSmall;
+    static std::list<TexturedModel*> modelsMedium;
+    static std::list<TexturedModel*> modelsLarge;
+    static CollisionModel* cmSmallOriginal;
+    static CollisionModel* cmMediumOriginal;
+    static CollisionModel* cmLargeOriginal;
 
     int type = 0;
     float movingDistance = 1.0f;
@@ -22,7 +26,7 @@ private:
     float triggerR = 1.0f;
 
 public:
-    SH_RisingPlatform(float x, float y, float z, int type, float distance, float tX, float tZ, float tR);
+    SH_RisingPlatform(float x, float y, float z, float rotY, int type, float distance, float tX, float tZ, float tR);
 
     void step();
 

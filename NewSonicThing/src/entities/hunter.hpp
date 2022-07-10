@@ -13,13 +13,12 @@ class Hunter : public Entity
 private:
     static std::list<TexturedModel*> modelsBody;
     static std::list<TexturedModel*> modelsGun;
-    static std::list<TexturedModel*> modelsBullet;
     
-    const float activationRange = 140.0f;
-    const float lookSpeed = 5.0f;
-    const float hitRadius = 7.2f;
-    const float hitHeight = 27.0f;
-    const float timeUntilShoot = 2.0f;
+    static constexpr float activationRange = 140.0f;
+    static constexpr float lookSpeed = 5.0f;
+    static constexpr float hitRadius = 8.5f;
+    static constexpr float hitHeight = 27.0f;
+    static constexpr float timeUntilShoot = 2.0f;
 
     float bulletSpeed = 120.0f; //this changes based on distance to sonic
 

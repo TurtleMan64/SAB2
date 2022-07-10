@@ -61,8 +61,8 @@ void Button::generateText(std::string newText)
 {
     float textScale = text->getFontSize();
     FontType* textFont = text->getFont();
-    float textPosX = text->getPosition()->getX();
-    float textPosY = text->getPosition()->getY();
+    float textPosX = text->position.x;
+    float textPosY = text->position.y;
 
     text->deleteMe(); delete text; INCR_DEL("GUIText");
     text = nullptr;

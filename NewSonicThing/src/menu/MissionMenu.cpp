@@ -99,6 +99,7 @@ void MissionMenu::loadResources()
 
     timeButton  = new Button("Time: ", Global::fontVipnagorgialla, textureParallelogramHalf2, textureParallelogramHalf2Backdrop, 0.69f + 0.56f/4, 0.65f, 1.12f / aspectRatio, 0.07f, true, true); INCR_NEW("Button");
     scoreButton = new Button("Score:", Global::fontVipnagorgialla, textureParallelogramHalf2, textureParallelogramHalf2Backdrop, 0.69f + 0.56f/4, 0.8f,  1.12f / aspectRatio, 0.07f, true, true); INCR_NEW("Button");
+    ringsButton = new Button("Rings:", Global::fontVipnagorgialla, textureParallelogramHalf2, textureParallelogramHalf2Backdrop, 0.69f + 0.56f/4, 0.95f, 1.12f / aspectRatio, 0.07f, true, true); INCR_NEW("Button");
 }
 
 void MissionMenu::unloadResources()
@@ -164,6 +165,7 @@ void MissionMenu::unloadResources()
 
     delete timeButton;  timeButton  = nullptr; INCR_DEL("Button");
     delete scoreButton; scoreButton = nullptr; INCR_DEL("Button");
+    delete ringsButton; ringsButton = nullptr; INCR_DEL("Button");
 }
 
 void MissionMenu::draw()
@@ -200,6 +202,10 @@ void MissionMenu::draw()
         scoreButton->setVisible(true);
         scoreButton->setHighlight(false);
         scoreButton->setHighlight(true);
+
+        ringsButton->setVisible(true);
+        ringsButton->setHighlight(false);
+        ringsButton->setHighlight(true);
 
         std::vector<int>* levelIdsToUse = &Global::gameLevelIdsKnuckles;
         switch (Global::currentCharacterType)
@@ -331,6 +337,15 @@ void MissionMenu::draw()
             {
                 scoreButton->generateText("Score: ");
             }
+
+            if (Global::gameSaveData.find(level.displayName+"_RINGS") != Global::gameSaveData.end())
+            {
+                ringsButton->generateText("Rings: "+Global::gameSaveData[level.displayName+"_RINGS"]+"/"+std::to_string(level.totalRings));
+            }
+            else
+            {
+                ringsButton->generateText("Rings: 0/"+std::to_string(level.totalRings));
+            }
         }
 
         //update npc and emerald
@@ -375,6 +390,7 @@ void MissionMenu::setVisible(bool visibleStatus)
     missionButton->setVisible(visibleStatus);
     timeButton->setVisible(visibleStatus);
     scoreButton->setVisible(visibleStatus);
+    ringsButton->setVisible(visibleStatus);
     visible = visibleStatus;
 }
 

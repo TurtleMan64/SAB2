@@ -711,6 +711,15 @@
     <ClCompile Include="src\entities\SeasideHill\SH_RisingPlatform.cpp">
       <Filter>Source Files\entities\SeasideHill</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\Flapper.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\DashRing.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\EggPawn.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.hpp">
@@ -1288,6 +1297,15 @@
     </ClInclude>
     <ClInclude Include="src\entities\SeasideHill\shrisingplatform.hpp">
       <Filter>Source Files\entities\SeasideHill</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\flapper.hpp">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\dashring.hpp">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\eggpawn.hpp">
+      <Filter>Source Files\entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

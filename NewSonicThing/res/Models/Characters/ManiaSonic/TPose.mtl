@@ -1,0 +1,44 @@
+# Material Count: 7
+
+newmtl sonic_red
+Ns 19.000000
+Ni 0.000000
+d 1.000000
+map_Kd 250_21_21.png
+
+newmtl sonic_black
+Ns 268.000000
+Ni 0.000000
+d 1.000000
+map_Kd 43_43_43.png
+
+newmtl sonic_blue_21_128_224.png
+Ns 17.000000
+Ni 0.000000
+d 1.000000
+map_Kd 21_128_224.png
+
+newmtl sonic_yellow
+Ns 17.000000
+Ni 0.000000
+d 1.000000
+map_Kd 255_217_0.png
+
+newmtl sonic_skin
+Ns 7.000000
+Ni 0.000000
+d 1.000000
+map_Kd 252_193_150.png
+
+newmtl sonic_white
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd 254_251_250.png
+
+newmtl sonic_blue
+Ns 17.000000
+Ni 0.000000
+d 1.000000
+map_Kd 21_87_203.png
+

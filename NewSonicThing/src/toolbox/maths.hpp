@@ -81,7 +81,7 @@ public:
     //angle of rotation, in radians
     static Vector3f rotatePoint(
         Vector3f* pointToRotate,
-        Vector3f* axisOfRotation,
+        const Vector3f* axisOfRotation,
         float theta);
 
     //Given two vectors, linear rotate from the A to B by percent and return that new vector.

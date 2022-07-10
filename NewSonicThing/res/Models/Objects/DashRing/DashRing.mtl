@@ -1,0 +1,21 @@
+# Material Count: 3
+
+newmtl g0m0b
+Ns 20
+Ni 0.1
+d 1.000000
+map_Kd obj_dsr2.png
+
+newmtl g1m0
+Ns 20
+Ni 0.1
+d 1.000000
+map_Kd obj_dshr.png
+
+newmtl g0m0
+Ns 20
+Ni 0.1
+scrollY 4
+d 1.000000
+map_Kd obj_dsh3.png
+

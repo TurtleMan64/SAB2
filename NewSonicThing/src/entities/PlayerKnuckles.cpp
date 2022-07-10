@@ -2935,6 +2935,14 @@ void PlayerKnuckles::animate()
         float newB = Maths::interpolate(invincibleColor1.z, invincibleColor2.z, progress);
         newBaseColor.set(newR, newG, newB);
     }
+    else if (speedShoesTimer > 0.0f)
+    {
+        float progress = 0.5f + 0.5f*sinf(speedShoesTimer*10.0f);
+        float newR = Maths::interpolate(2.3f, 1.0f, progress);
+        float newG = Maths::interpolate(3.0f, 1.0f, progress);
+        float newB = Maths::interpolate(2.5f, 1.0f, progress);
+        newBaseColor.set(newR, newG, newB);
+    }
     playerModel->setBaseColor(newBaseColor.x, newBaseColor.y, newBaseColor.z);
 
     if (Global::finishStageTimer >= 1.0f)

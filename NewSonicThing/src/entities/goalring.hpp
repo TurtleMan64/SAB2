@@ -2,7 +2,6 @@
 #define GOALRING_H
 
 class TexturedModel;
-class Dummy;
 class Source;
 
 #include <list>
@@ -11,10 +10,8 @@ class Source;
 class GoalRing : public Entity
 {
 private:
-    static std::list<TexturedModel*> modelsRing;
-    static std::list<TexturedModel*> modelsText;
+    static std::list<TexturedModel*> models;
 
-    Dummy* text = nullptr;
     Source* sourceRing = nullptr;
 
 public:

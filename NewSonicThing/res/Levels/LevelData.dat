@@ -2,6 +2,7 @@
 
 Tutorial.lvl
 Tutorial
+202
 4
 Normal;100;Learn how to play the game so you don't get mad at simple things.
 Ring;100;100;Collect 100 Rings!
@@ -10,6 +11,7 @@ Race;100;62.166862;Race against Mighty!
 
 GreenForest.lvl
 Green Forest
+391
 3
 Normal;14500;Escape from the island!
 Ring;90;200;Collect 200 Rings!
@@ -17,6 +19,7 @@ Chao;65;Find the lost chao!
 
 MetalHarbor.lvl
 Metal Harbor
+157
 3
 Normal;14000;Escape from the military base!
 Ring;80;150;Collect 150 Rings!
@@ -24,6 +27,7 @@ Chao;45;Find the lost chao!
 
 PyramidCave.lvl
 Pyramid Cave
+100
 3
 Normal;100;Complete as Blue Falcon
 Ring;100;100;Collect 100 Rings!
@@ -31,6 +35,7 @@ Chao;100;Complete as Soic Phantom
 
 SkyRail.lvl
 Sky Rail
+314
 3
 Normal;13000;Chase the Tornado!
 Ring;100;100;Collect 100 Rings!
@@ -38,6 +43,7 @@ Chao;100;Find the lost chao!
 
 RadicalHighway.lvl
 Radical Highway
+325
 3
 Normal;12500;Break through the besieging military!
 Ring;90;150;Collect 150 Rings!
@@ -45,6 +51,7 @@ Chao;90;Find the lost chao!
 
 GreenHillZone.lvl
 Green Hill Zone
+271
 3
 Normal;14000;Pursue Eggman
 Ring;60;150;Collect 150 Rings!
@@ -52,6 +59,7 @@ Chao;40;Find the lost chao!
 
 CityEscape.lvl
 City Escape
+440
 3
 Normal;100;Complete as Blue Falcon
 Ring;100;100;Collect 100 Rings!
@@ -59,6 +67,7 @@ Chao;100;Complete as Soic Phantom
 
 WindyValley.lvl
 Windy Valley
+100
 3
 Normal;100;Complete as Blue Falcon
 Ring;100;100;Collect 100 Rings!
@@ -66,6 +75,7 @@ Chao;100;Complete as Soic Phantom
 
 SeasideHill.lvl
 Seaside Hill
+1126
 3
 Normal;100;Complete as Blue Falcon
 Ring;100;100;Collect 100 Rings!
@@ -73,6 +83,7 @@ Chao;100;Complete as Soic Phantom
 
 FrogForest.lvl
 Frog Forest
+78
 3
 Normal;100;Complete as Blue Falcon
 Ring;100;100;Collect 100 Rings!
@@ -80,12 +91,14 @@ Chao;100;Complete as Soic Phantom
 
 Test.lvl
 Epic Test Level
+100
 2
 Normal;100;Complete as Blue Falcon
 Ring;100;100;Collect 100 Rings!
 
 SpeedHighway.lvl
 Speed Highway
+100
 4
 Normal;100;Complete as Blue Falcon
 Ring;100;100;Collect 100 Rings!
@@ -94,6 +107,7 @@ Hard;100;Complete as Black Shadow
 
 NokiBay.lvl
 Noki Bay
+185
 4
 Normal;15000;Find all the pieces of the master emerald!
 Ring;80;100;Collect 100 Rings!
@@ -102,6 +116,7 @@ Hard;15000;Clear hard mode!
 
 DelfinoPlaza.lvl
 Delfino Plaza
+208
 4
 Normal;15000;Find all the pieces of the master emerald!
 Ring;90;100;Collect 100 Rings!
@@ -110,6 +125,7 @@ Hard;14000;Clear hard mode!
 
 SacredSky.lvl
 Sacred Sky
+211
 4
 Normal;13000;Learn how to play the game so you don't get mad at simple things.
 Ring;60;100;Collect 100 Rings!
@@ -118,6 +134,7 @@ Race;100;54.755398;Race against Mighty!
 
 DryLagoon.lvl
 Dry Lagoon
+124
 4
 Normal;14000;Find all the pieces of the master emerald!
 Ring;40;100;Collect 100 Rings!
@@ -126,6 +143,7 @@ Hard;15000;Complete hard mode!
 
 TwinkleCircuit.lvl
 Twinkle Circuit
+276
 3
 Normal;11000;Race to the finish!
 Ring;65;150;Collect 150 Rings!
@@ -133,6 +151,7 @@ Race;100;90;Clear in 1:30!
 
 CloudTemple.lvl
 Cloud Temple
+148
 4
 Normal;11000;Race to the finish!
 Ring;45;110;Collect 110 Rings!
@@ -141,6 +160,7 @@ Race;100;62.010754;Race against Mighty!
 
 DragonRoad.lvl
 Dragon Road
+332
 4
 Normal;15000;Race to the finish!
 Ring;90;200;Collect 200 Rings!
@@ -149,6 +169,7 @@ Race;110;108.235413;Race against Mighty!
 
 EmeraldCoast.lvl
 Emerald Coast
+251
 4
 Normal;15000;Run along the beach!
 Ring;90;200;Collect 200 Rings!
@@ -157,6 +178,7 @@ Race;110;71.632294;Race against Mighty!
 
 FreezeezyPeak.lvl
 Freezeezy Peak
+100
 4
 Normal;14000;Find all the pieces of the master emerald!
 Ring;40;100;Collect 100 Rings!

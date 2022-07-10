@@ -61,7 +61,7 @@ private:
     const float airRunPush = 25.0f; //30.0
     const float airRunFrictionUp = 0.75f; //0.25    //maybe make another variable for this to use when vel.y < 0?
     const float airRunFrictionDown = 0.25f; //For when sonic is falling down
-    const float airFrictionThreshold = 50.0f; //When youre going slower than this horizontally, don't apply friction
+    const float airFrictionThreshold = 75.0f; //When youre going slower than this horizontally, don't apply friction
     const float airNeutralFriction = 1.25f;
     const float slopeRunAccel = 9000.0f;
 

@@ -1,0 +1,14 @@
+# Material Count: 2
+
+newmtl mat1
+Ns 5.000000
+Ni 0.000000
+d 1.000000
+map_Kd en_pw0.png
+
+newmtl mat2
+Ns 5.000000
+Ni 0.000000
+d 1.000000
+map_Kd en_pw1.png
+

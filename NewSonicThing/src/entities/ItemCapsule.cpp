@@ -118,6 +118,20 @@ ItemCapsule::ItemCapsule(float x, float y, float z, float upX, float upY, float 
     {
         entityItem->scale = 1.75f;
     }
+
+    switch (this->itemType)
+    {
+        case  1: Global::gameDebugRingCount+= 5; break;
+        case  3: Global::gameDebugRingCount+=10; break;
+        case  4: Global::gameDebugRingCount+=20; break;
+        case  0:
+        case  2:
+        case  5:
+        case  6:
+        case  8:
+        case 10:
+        default: break;
+    }
 }
 
 void ItemCapsule::step()
@@ -270,11 +284,8 @@ void ItemCapsule::die()
             Global::gameMainPlayer->setInvincibleTimer(25.0f);
             break;
 
-
         default:
-        {
             break;
-        }
     }
 }
 

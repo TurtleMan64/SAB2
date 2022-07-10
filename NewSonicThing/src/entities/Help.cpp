@@ -13,6 +13,7 @@
 #include "controllableplayer.hpp"
 #include "../guis/guimanager.hpp"
 #include "../fontMeshCreator/fonttype.hpp"
+#include "../audio/audioplayer.hpp"
 
 #include <list>
 #include <iostream>
@@ -91,6 +92,8 @@ void Help::step()
             float size = 3.0f/myMessage1.length();
             size = std::fminf(size, 0.09f);
 
+            AudioPlayer::play(76, &position);
+
             messageGUI1 = new GUIText(myMessage1, size, Global::fontVipnagorgialla, 0.5f, 0.785f, 7, true); INCR_NEW("GUIText")
         }
             
@@ -98,6 +101,8 @@ void Help::step()
         {
             float size = 3.0f/myMessage2.length();
             size = std::fminf(size, 0.09f);
+
+            AudioPlayer::play(76, &position);
 
             messageGUI2 = new GUIText(myMessage2, size, Global::fontVipnagorgialla, 0.5f, 0.875f, 7, true); INCR_NEW("GUIText")
         }

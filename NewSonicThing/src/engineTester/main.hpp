@@ -118,6 +118,7 @@ public:
     static bool isNewLevel;
     static bool isAutoCam;
     static int gameRingCount;
+    static int gameDebugRingCount;
     static int gameScore;
     static int gameLives;
     static float gameClock;

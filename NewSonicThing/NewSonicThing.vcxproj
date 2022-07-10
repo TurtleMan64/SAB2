@@ -185,6 +185,7 @@
     <ClCompile Include="src\entities\Dashpad.cpp" />
     <ClCompile Include="src\entities\Camera.cpp" />
     <ClCompile Include="src\entities\ControllablePlayer.cpp" />
+    <ClCompile Include="src\entities\DashRing.cpp" />
     <ClCompile Include="src\entities\DelfinoPlaza\DP_BigShine.cpp" />
     <ClCompile Include="src\entities\DelfinoPlaza\DP_Leaves.cpp" />
     <ClCompile Include="src\entities\DelfinoPlaza\DP_Palmtree.cpp" />
@@ -199,11 +200,13 @@
     <ClCompile Include="src\entities\DryLagoon\DL_Tree.cpp" />
     <ClCompile Include="src\entities\DryLagoon\DL_Turtle.cpp" />
     <ClCompile Include="src\entities\E1000.cpp" />
+    <ClCompile Include="src\entities\EggPawn.cpp" />
     <ClCompile Include="src\entities\EmeraldCoast\EC_Dolphin.cpp" />
     <ClCompile Include="src\entities\EmeraldCoast\EC_Seagull.cpp" />
     <ClCompile Include="src\entities\EmeraldCoast\EC_Orca.cpp" />
     <ClCompile Include="src\entities\EmeraldManager.cpp" />
     <ClCompile Include="src\entities\EmeraldPiece.cpp" />
+    <ClCompile Include="src\entities\Flapper.cpp" />
     <ClCompile Include="src\entities\FrogForest\FF_StageManager.cpp" />
     <ClCompile Include="src\entities\GreenForest\GF_Particle.cpp" />
     <ClCompile Include="src\entities\GreenForest\GF_Vine.cpp" />
@@ -381,6 +384,7 @@
     <ClInclude Include="src\entities\dashpad.hpp" />
     <ClInclude Include="src\entities\camera.hpp" />
     <ClInclude Include="src\entities\controllableplayer.hpp" />
+    <ClInclude Include="src\entities\dashring.hpp" />
     <ClInclude Include="src\entities\DelfinoPlaza\dpbigshine.hpp" />
     <ClInclude Include="src\entities\DelfinoPlaza\dpleaves.hpp" />
     <ClInclude Include="src\entities\DelfinoPlaza\dppalmtree.hpp" />
@@ -395,11 +399,13 @@
     <ClInclude Include="src\entities\DryLagoon\dltree.hpp" />
     <ClInclude Include="src\entities\DryLagoon\dlturtle.hpp" />
     <ClInclude Include="src\entities\e1000.hpp" />
+    <ClInclude Include="src\entities\eggpawn.hpp" />
     <ClInclude Include="src\entities\EmeraldCoast\ecdolphin.hpp" />
     <ClInclude Include="src\entities\EmeraldCoast\ecseagull.hpp" />
     <ClInclude Include="src\entities\EmeraldCoast\ecorca.hpp" />
     <ClInclude Include="src\entities\emeraldmanager.hpp" />
     <ClInclude Include="src\entities\emeraldpiece.hpp" />
+    <ClInclude Include="src\entities\flapper.hpp" />
     <ClInclude Include="src\entities\FrogForest\ffstagemanager.hpp" />
     <ClInclude Include="src\entities\GreenForest\gfparticle.hpp" />
     <ClInclude Include="src\entities\GreenForest\gfvine.hpp" />

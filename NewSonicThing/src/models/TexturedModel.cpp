@@ -16,8 +16,8 @@ TexturedModel::TexturedModel(RawModel* model, ModelTexture* texture)
     this->rawModel.setVaoId(model->getVaoId());
     this->rawModel.setVertexCount(model->getVertexCount());
 
-    std::list<GLuint>* myVBOs = this->rawModel.getVboIds();
-    std::list<GLuint>* theirVBOs = model->getVboIds();
+    std::vector<GLuint>* myVBOs = this->rawModel.getVboIds();
+    std::vector<GLuint>* theirVBOs = model->getVboIds();
 
     for (GLuint vbo : (*theirVBOs))
     {

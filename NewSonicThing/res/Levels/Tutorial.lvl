@@ -174,9 +174,9 @@ false
 #Help
 32 206.051956 0.100000 -126.951447 Press the A button to jump
 32 387.014343 100.241692 -111.562851 Hold X and release to peel-out
-32 1079.752563 100.241684 54.965832 Press B while going fast to roll down slopes
-32 4067.832764 -1458.528198 -3717.040771 Press X while in the air to bounce
-32 4078.416260 -1398.596436 -4389.109375 Press A after jumping to homing attack
+32 1079.752563 100.241684 54.965832 Press B while going fast to switch to ball form.;When a ball, you will gain speed when rolling down slopes.
+32 4067.832764 -1458.528198 -3717.040771 Press X while in the air to bounce; Bouncing allows you to reach higher spots than jumping.
+32 4078.416260 -1398.596436 -4389.109375 Press A after jumping to homing attack.;Hold A to cancel speed on contact.
 32 2785.450928 -1088.143433 -5001.548828 Press Y to light dash
 32 2740.510010 -1290.459473 3102.522705 Maintain a high speed to run on water
 32 3994.747070 -1272.937500 -5215.221191 Hold X to gain speed while grinding

@@ -8,7 +8,6 @@
 #include "../engineTester/main.hpp"
 #include "../entities/controllableplayer.hpp"
 #include "../toolbox/maths.hpp"
-#include "dummy.hpp"
 #include "../entities/camera.hpp"
 #include "../audio/audioplayer.hpp"
 #include "../audio/source.hpp"
@@ -20,8 +19,7 @@
 #include <iostream>
 #include <cmath>
 
-std::list<TexturedModel*> GoalRing::modelsRing;
-std::list<TexturedModel*> GoalRing::modelsText;
+std::list<TexturedModel*> GoalRing::models;
 
 GoalRing::GoalRing()
 {
@@ -44,11 +42,6 @@ GoalRing::GoalRing(float x, float y, float z)
     position.z = z;
     scale = 1;
     visible = true;
-
-    text = new Dummy(&GoalRing::modelsText); INCR_NEW("Entity");
-    text->setVisible(true);
-    text->setPosition(&position);
-    Global::addEntity(text);
 }
 
 void GoalRing::step()
@@ -57,7 +50,7 @@ void GoalRing::step()
         Global::gameIsChaoMode)
     {
         Global::deleteEntity(this);
-        Global::deleteEntity(text);
+  
     }
 
     if (Global::gameIsRaceMode && Global::mainHudTimer != nullptr)
@@ -65,15 +58,13 @@ void GoalRing::step()
         if (Global::mainHudTimer->totalTime >= Global::gameRaceTimeLimit)
         {
             Global::deleteEntity(this);
-            Global::deleteEntity(text);
 
             Global::gameMainPlayer->die();
         }
     }
 
     extern float dt;
-    increaseRotation(0, dt*100, 0);
-    text->setRotation(0, rotY, 0, 0);
+    rotY += dt*100;
     
     float distToPlayerSquared = (Global::gameMainPlayer->getCenterPosition() - position).lengthSquared();
 
@@ -107,7 +98,6 @@ void GoalRing::step()
             float size = 1.0f - 2.4f*Global::finishStageTimer;
 
             scale = size;
-            text->scale = size;
 
             if (sourceRing != nullptr)
             {
@@ -117,7 +107,6 @@ void GoalRing::step()
         else
         {
             visible = false;
-            text->setVisible(false);
 
             if (sourceRing != nullptr)
             {
@@ -128,17 +117,16 @@ void GoalRing::step()
     }
 
     updateTransformationMatrix();
-    text->updateTransformationMatrix();
 }
 
 std::list<TexturedModel*>* GoalRing::getModels()
 {
-    return &GoalRing::modelsRing;
+    return &GoalRing::models;
 }
 
 void GoalRing::loadStaticModels()
 {
-    if (GoalRing::modelsRing.size() > 0)
+    if (GoalRing::models.size() > 0)
     {
         return;
     }
@@ -147,10 +135,7 @@ void GoalRing::loadStaticModels()
     printf("Loading GoalRing static models...\n");
     #endif
 
-    ModelLoader::loadModel(&GoalRing::modelsRing, "res/Models/Objects/GoalRing/", "Pass1");
-    ModelLoader::loadModel(&GoalRing::modelsText, "res/Models/Objects/GoalRing/", "Pass2");
-
-    setModelsRenderOrder(&GoalRing::modelsText, 1);
+    ModelLoader::loadModel(&GoalRing::models, "res/Models/Objects/GoalRing/", "GoalRing");
 }
 
 void GoalRing::deleteStaticModels()
@@ -159,6 +144,5 @@ void GoalRing::deleteStaticModels()
     printf("Deleting GoalRing static models...\n");
     #endif
 
-    Entity::deleteModels(&GoalRing::modelsRing);
-    Entity::deleteModels(&GoalRing::modelsText);
+    Entity::deleteModels(&GoalRing::models);
 }

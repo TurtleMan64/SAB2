@@ -2,10 +2,6 @@
 
 #include "vector.hpp"
 
-float Vector3f::getX() { return x; }
-float Vector3f::getY() { return y; }
-float Vector3f::getZ() { return z; }
-
 void Vector3f::set(float newX, float newY, float newZ)
 {
     x = newX;
@@ -20,12 +16,12 @@ void Vector3f::set(Vector3f* other)
     z = other->z;
 }
 
-float Vector3f::length()
+float Vector3f::length() const
 {
     return sqrtf(x*x + y*y + z*z);
 }
 
-float Vector3f::lengthSquared()
+float Vector3f::lengthSquared() const
 {
     return (x * x) + (y * y) + (z * z);
 }
@@ -160,21 +156,21 @@ void Vector3f::scale(float scale)
     z *= scale;
 }
 
-Vector3f Vector3f::scaleCopy(float scale)
+Vector3f Vector3f::scaleCopy(float scale) const
 {
     return Vector3f(x*scale, y*scale, z*scale);
 }
 
-float Vector3f::dot(Vector3f* other)
+float Vector3f::dot(const Vector3f* other) const
 {
-    return x * other->getX() + y * other->getY() + z * other->getZ();
+    return x * other->x + y * other->y + z * other->z;
 }
 
-Vector3f Vector3f::cross(Vector3f* other)
+Vector3f Vector3f::cross(const Vector3f* other) const
 {
-    float x_ = y * other->getZ() - z * other->getY();
-    float y_ = z * other->getX() - x * other->getZ();
-    float z_ = x * other->getY() - y * other->getX();
+    float x_ = y * other->z - z * other->y;
+    float y_ = z * other->x - x * other->z;
+    float z_ = x * other->y - y * other->x;
 
     return Vector3f(x_, y_, z_);
 }
@@ -230,9 +226,6 @@ Vector3f::Vector3f(Vector3f* base)
 
 
 
-float Vector2f::getX() { return x; }
-float Vector2f::getY() { return y; }
-
 void Vector2f::set(float newX, float newY)
 {
     x = newX;
@@ -245,17 +238,17 @@ void Vector2f::set(Vector2f* vec)
     y = vec->y;
 }
 
-float Vector2f::length()
+float Vector2f::length() const
 {
     return sqrtf((x * x) + (y * y));
 }
 
-float Vector2f::lengthSquared()
+float Vector2f::lengthSquared() const
 {
     return (x * x) + (y * y);
 }
 
-Vector2f Vector2f::normalized()
+Vector2f Vector2f::normalized() const
 {
     float mag = length();
 
@@ -268,12 +261,12 @@ void Vector2f::neg()
     y = -y;
 }
 
-float Vector2f::dot(Vector2f* other)
+float Vector2f::dot(Vector2f* other) const
 {
-    return x * other->getX() + y * other->getY();
+    return x * other->x + y * other->y;
 }
 
-Vector2f Vector2f::scaleCopy(float scale)
+Vector2f Vector2f::scaleCopy(float scale) const
 {
     return Vector2f(x*scale, y*scale);
 }
@@ -335,10 +328,6 @@ Vector2f::Vector2f(Vector2f* base)
 
 
 
-float Vector4f::getX() { return x; }
-float Vector4f::getY() { return y; }
-float Vector4f::getZ() { return z; }
-float Vector4f::getW() { return w; }
 
 void Vector4f::set(float newX, float newY, float newZ, float newW)
 {
@@ -356,12 +345,12 @@ void Vector4f::set(Vector4f* other)
     w = other->w;
 }
 
-float Vector4f::length()
+float Vector4f::length() const
 {
     return sqrtf((x * x) + (y * y) + (z * z) + (w * w));
 }
 
-float Vector4f::lengthSquared()
+float Vector4f::lengthSquared() const
 {
     return (x * x) + (y * y) + (z * z) + (w * w);
 }
@@ -392,9 +381,9 @@ void Vector4f::scale(float scale)
     w *= scale;
 }
 
-float Vector4f::dot(Vector4f* other)
+float Vector4f::dot(Vector4f* other) const
 {
-    return x * other->getX() + y * other->getY() + z * other->getZ() + w * other->getW();
+    return x * other->x + y * other->y + z * other->z + w * other->w;
 }
 
 Vector4f Vector4f::operator + (const Vector4f &other)
@@ -436,8 +425,8 @@ Vector4f::Vector4f(float x, float y, float z, float w)
 
 Vector4f::Vector4f(Vector4f* base)
 {
-    this->x = base->x;
-    this->y = base->y;
-    this->z = base->z;
-    this->w = base->w;
+    x = base->x;
+    y = base->y;
+    z = base->z;
+    w = base->w;
 }

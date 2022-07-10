@@ -1,6 +1,6 @@
 #include <glad/glad.h>
 
-#include <list>
+#include <vector>
 
 #include "models.hpp"
 #include "../loading/loadergl.hpp"
@@ -10,12 +10,12 @@ RawModel::RawModel()
 
 }
 
-RawModel::RawModel(GLuint vaoId, int vertexCount, std::list<GLuint>* vboIds)
+RawModel::RawModel(GLuint vaoId, int vertexCount, std::vector<GLuint>* vboIds)
 {
     this->vaoId = vaoId;
     this->vertexCount = vertexCount;
 
-    for (auto id : (*vboIds))
+    for (GLuint id : (*vboIds))
     {
         this->vboIds.push_back(id);
     }
@@ -41,7 +41,7 @@ void RawModel::setVertexCount(int newCount)
     this->vertexCount = newCount;
 }
 
-std::list<GLuint>* RawModel::getVboIds()
+std::vector<GLuint>* RawModel::getVboIds()
 {
     return &vboIds;
 }

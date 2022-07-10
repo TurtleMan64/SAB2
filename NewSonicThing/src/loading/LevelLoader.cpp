@@ -128,6 +128,9 @@
 #include "../entities/SeasideHill/shstagemanager.hpp"
 #include "../entities/SeasideHill/shstoneblock.hpp"
 #include "../entities/SeasideHill/shrisingplatform.hpp"
+#include "../entities/flapper.hpp"
+#include "../entities/dashring.hpp"
+#include "../entities/eggpawn.hpp"
 
 int LevelLoader::numLevels = 0;
 
@@ -189,6 +192,7 @@ void LevelLoader::loadTitle()
     }
 
     Global::gameRingCount = 0;
+    Global::gameDebugRingCount = 0;
     Global::gameScore = 0;
     Global::gameLives = 4;
 
@@ -1046,6 +1050,8 @@ void LevelLoader::loadLevel(std::string levelFilename)
     {
         glfwSwapInterval(0);
     }
+
+    printf("This level has %d rings\n", Global::gameDebugRingCount);
 }
 
 
@@ -2099,8 +2105,8 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                     SH_RisingPlatform::loadStaticModels();
                     SH_RisingPlatform* platform = new SH_RisingPlatform(
                             toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]),  //position x,y,z
-                            toInt(dat[5]), toFloat(dat[6]),                     //type, moving distance
-                            toFloat(dat[7]), toFloat(dat[8]), toFloat(dat[9])); //trigger location and radius
+                            toFloat(dat[5]), toInt(dat[6]), toFloat(dat[7]),    //rotation, type, moving distance
+                            toFloat(dat[8]), toFloat(dat[9]), toFloat(dat[10])); //trigger location and radius
                     INCR_NEW("Entity");
                     chunkedEntities->push_back(platform);
                     return;
@@ -2111,10 +2117,45 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             }
         }
 
-        default:
+        case 117: //Flapper
         {
+            Flapper::loadStaticModels();
+            Bullet::loadStaticModels();
+            Flapper* flapper = new Flapper(
+                    toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), // position x,y,z
+                    toInt(dat[4]),                                     // type
+                    toFloat(dat[5]), toFloat(dat[6]),                  // direction x,z
+                    chunkedEntities);
+            INCR_NEW("Entity");
+            chunkedEntities->push_back(flapper);
             return;
         }
+
+        case 118: //Dash Ring
+        {
+            DashRing::loadStaticModels();
+            DashRing* ring = new DashRing(
+                    toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), // position x,y,z
+                    toFloat(dat[4]), toFloat(dat[5]), toFloat(dat[6]), // dir xyz
+                    toFloat(dat[7]), toFloat(dat[8]),                  // power, time lock
+                    toInt(dat[9]), toInt(dat[10]));                    // change camera, rainbow
+            INCR_NEW("Entity");
+            chunkedEntities->push_back(ring);
+            return;
+        }
+
+        case 119: //Egg Pawn
+        {
+            EggPawn::loadStaticModels();
+            EggPawn* pawn = new EggPawn(
+                    toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), // position x,y,z
+                    toFloat(dat[4]), toFloat(dat[5]));                 // dir xz
+            INCR_NEW("Entity");
+            chunkedEntities->push_back(pawn);
+            return;
+        }
+
+        default: return;
     }
 }
 
@@ -2148,6 +2189,10 @@ void LevelLoader::loadLevelData()
 
             getlineSafe(file, line);
             newLevel.displayName = line;
+
+            getlineSafe(file, line);
+            int ringCount = std::stoi(line);
+            newLevel.totalRings = ringCount;
 
             getlineSafe(file, line);
             int missionCount = std::stoi(line);
@@ -2286,6 +2331,9 @@ void LevelLoader::freeAllStaticModels()
     SH_StageManager::deleteStaticModels();
     SH_StoneBlock::deleteStaticModels();
     SH_RisingPlatform::deleteStaticModels();
+    Flapper::deleteStaticModels();
+    DashRing::deleteStaticModels();
+    EggPawn::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()

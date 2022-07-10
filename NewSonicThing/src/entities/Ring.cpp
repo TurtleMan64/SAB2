@@ -61,6 +61,8 @@ Ring::Ring(float x, float y, float z)
     //printf("v %f %f %f\n", res.x, res.y, res.z);
 
     //position = res;
+
+    Global::gameDebugRingCount+=1;
 }
 
 Ring::Ring(float x, float y, float z, float xVel, float yVel, float zVel)

@@ -2,9 +2,9 @@
 #include <GLFW/glfw3.h>
 #include <SOIL/SOIL.h>
 
-#include <vector>  //for std::vector
+#include <vector>
 #include <list>
-#include <string>  //for std::string
+#include <string>
 #include <iostream>
 #include <fstream>
 #include <cmath>
@@ -48,7 +48,7 @@ RawModel LoaderGL::loadToVAO(std::vector<float>* positions,
                              std::vector<int>* indicies)
 {
     GLuint vaoId = createVAO();
-    std::list<GLuint> vboIds;
+    std::vector<GLuint> vboIds;
 
     vboIds.push_back(bindIndiciesBuffer(indicies));
     vboIds.push_back(storeDataInAttributeList(0, 3, &(positions->at(0)),     (int)positions->size()));
@@ -78,7 +78,7 @@ std::vector<int> LoaderGL::loadToVAO(std::vector<float>* positions, std::vector<
 RawModel LoaderGL::loadToVAO(std::vector<float>* positions, int dimensions)
 {
     GLuint vaoId = createVAO();
-    std::list<GLuint> vboIds;
+    std::vector<GLuint> vboIds;
 
     vboIds.push_back(storeDataInAttributeList(0, dimensions, &(positions->at(0)), (int)positions->size()));
 

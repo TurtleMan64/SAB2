@@ -50,6 +50,7 @@ private:
 
     Button* timeButton  = nullptr;
     Button* scoreButton = nullptr;
+    Button* ringsButton = nullptr;
 
     bool visible = false;
 

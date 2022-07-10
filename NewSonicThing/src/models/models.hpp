@@ -3,7 +3,7 @@
 
 #include <glad/glad.h>
 
-#include <list>
+#include <vector>
 
 #include "../textures/modeltexture.hpp"
 
@@ -12,12 +12,12 @@ class RawModel
 private:
     GLuint vaoId;
     int vertexCount;
-    std::list<GLuint> vboIds;
+    std::vector<GLuint> vboIds;
 
 public:
     RawModel();
 
-    RawModel(GLuint vaoId, int vertexCount, std::list<GLuint>* vboIds);
+    RawModel(GLuint vaoId, int vertexCount, std::vector<GLuint>* vboIds);
 
     GLuint getVaoId();
     void setVaoId(GLuint newId);
@@ -28,7 +28,7 @@ public:
     void deleteMe();
 
     //for use in textured model constructor only
-    std::list<GLuint>* getVboIds();
+    std::vector<GLuint>* getVboIds();
 };
 
 class TexturedModel

@@ -78,6 +78,7 @@
 #include "../toolbox/format.hpp"
 #include "../entities/TwinkleCircuit/tckart.hpp"
 #include "../toolbox/maths.hpp"
+#include "../entities/eggpawn.hpp"
 #ifdef _WIN32
 #include <windows.h>
 #include <tchar.h>
@@ -161,6 +162,7 @@ bool Global::isAutoCam = true;
 std::string Global::levelName = "";
 std::string Global::levelNameDisplay = "";
 int Global::gameRingCount = 0;
+int Global::gameDebugRingCount = 0;
 int Global::gameScore = 0;
 int Global::gameLives = 4;
 float Global::gameClock = 0.0f;
@@ -600,6 +602,7 @@ int main(int argc, char** argv)
         ANALYSIS_DONE("Entity Management");
 
         cam.inWater = false;
+        EggPawn::pawns.clear();
 
         switch (Global::gameState)
         {
@@ -1520,6 +1523,18 @@ int Global::calculateRankAndUpdate()
             std::string newTimeString = std::to_string(newTime);
             Global::gameSaveData[currentLevel->displayName+"_"+Global::characterNames[Global::currentCharacterType]+missionTimeString] = newTimeString;
             Global::saveSaveData();
+        }
+
+        int savedRings = 0;
+        if (Global::gameSaveData.find(currentLevel->displayName+"_RINGS") != Global::gameSaveData.end())
+        {
+            std::string savedRingsString = Global::gameSaveData[currentLevel->displayName+"_RINGS"];
+            savedRings = std::stoi(savedRingsString);
+        }
+
+        if (Global::gameRingCount >= savedRings)
+        {
+            Global::gameSaveData[currentLevel->displayName+"_RINGS"] = std::to_string(Global::gameRingCount);
         }
 
         if (missionType == "Normal" || missionType == "Hard")

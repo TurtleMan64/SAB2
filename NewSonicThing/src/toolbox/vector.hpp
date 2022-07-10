@@ -1,9 +1,6 @@
 #ifndef VECTOR_H
 #define VECTOR_H
 
-#include <math.h>
-
-
 class Vector3f
 {
 public:
@@ -15,17 +12,13 @@ public:
     Vector3f(float x, float y, float z);
     Vector3f(Vector3f* other);
 
-    float getX();
-    float getY();
-    float getZ();
-
     void set(float x, float y, float z);
 
     void set(Vector3f* other);
 
-    float length();
+    float length() const;
 
-    float lengthSquared();
+    float lengthSquared() const;
 
     void setLength(float newLength);
 
@@ -33,13 +26,13 @@ public:
 
     void neg();
 
-    float dot(Vector3f* other);
+    float dot(const Vector3f* other) const;
 
     void scale(float scale);
 
-    Vector3f scaleCopy(float scale);
+    Vector3f scaleCopy(float scale) const;
 
-    Vector3f cross(Vector3f* other);
+    Vector3f cross(const Vector3f* other) const;
 
     Vector3f operator + (const Vector3f &other);
 
@@ -70,24 +63,21 @@ public:
     Vector2f(float x, float y);
     Vector2f(Vector2f* other);
 
-    float getX();
-    float getY();
-
     void set(float x, float y);
 
     void set(Vector2f* other);
 
-    float length();
+    float length() const;
 
-    float lengthSquared();
+    float lengthSquared() const;
 
-    Vector2f normalized();
+    Vector2f normalized() const;
 
     void neg();
 
-    float dot(Vector2f* other);
+    float dot(Vector2f* other) const;
 
-    Vector2f scaleCopy(float scale);
+    Vector2f scaleCopy(float scale) const;
 
     Vector2f operator + (const Vector2f &other);
 
@@ -112,24 +102,19 @@ public:
     Vector4f(float x, float y, float z, float w);
     Vector4f(Vector4f* other);
 
-    float getX();
-    float getY();
-    float getZ();
-    float getW();
-
     void set(float x, float y, float z, float w);
 
     void set(Vector4f* other);
 
-    float length();
+    float length() const;
 
-    float lengthSquared();
+    float lengthSquared() const;
 
     void normalize();
 
     void neg();
 
-    float dot(Vector4f* other);
+    float dot(Vector4f* other) const;
 
     void scale(float scale);
 

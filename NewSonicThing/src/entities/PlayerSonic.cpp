@@ -2124,6 +2124,8 @@ bool PlayerSonic::findHomingTarget(Vector3f* target)
 
 void PlayerSonic::homingAttack(Vector3f* target, bool homeInOnIt)
 {
+    homingAttackTimer = homingAttackTimerMax;
+
     if (homeInOnIt)
     {
         Vector3f homeTargetPoint(target);
@@ -2131,6 +2133,7 @@ void PlayerSonic::homingAttack(Vector3f* target, bool homeInOnIt)
         vel.setLength(6.7f*60.0f);
 
         isHomingOnPoint = true;
+        homingAttackTimer+=0.2f; //give some more time to home in on a target
     }
     else
     {
@@ -2147,7 +2150,6 @@ void PlayerSonic::homingAttack(Vector3f* target, bool homeInOnIt)
         isHomingOnPoint = false;
     }
 
-    homingAttackTimer = homingAttackTimerMax;
     isBall = false;
     isJumping = true;
     isBouncing = false;
@@ -2531,6 +2533,14 @@ void PlayerSonic::animate()
         float newR = Maths::interpolate(invincibleColor1.x, invincibleColor2.x, progress);
         float newG = Maths::interpolate(invincibleColor1.y, invincibleColor2.y, progress);
         float newB = Maths::interpolate(invincibleColor1.z, invincibleColor2.z, progress);
+        newBaseColor.set(newR, newG, newB);
+    }
+    else if (speedShoesTimer > 0.0f)
+    {
+        float progress = 0.5f + 0.5f*sinf(speedShoesTimer*10.0f);
+        float newR = Maths::interpolate(2.3f, 1.0f, progress);
+        float newG = Maths::interpolate(3.0f, 1.0f, progress);
+        float newB = Maths::interpolate(2.5f, 1.0f, progress);
         newBaseColor.set(newR, newG, newB);
     }
     playerModel->setBaseColor(newBaseColor.x, newBaseColor.y, newBaseColor.z);

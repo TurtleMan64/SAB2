@@ -398,7 +398,7 @@ void Maths::rotatePoint(float result[],
 //angle of rotation, in radians
 Vector3f Maths::rotatePoint(
     Vector3f* pointToRotate,
-    Vector3f* axisOfRotation,
+    const Vector3f* axisOfRotation,
     float theta)
 {
     float result[3];
@@ -705,10 +705,10 @@ Vector2f Maths::calcScreenCoordsOfWorldPoint(Vector3f* worldPoint)
     modelMatrix.m20 = viewMatrix.m02;
     modelMatrix.m21 = viewMatrix.m12;
     modelMatrix.m22 = viewMatrix.m22;
-    Vector3f axis(0, 0, 1);
-    modelMatrix.rotate(Maths::toRadians(0), &axis);
-    Vector3f scaleVec(1, 1, 1);
-    modelMatrix.scale(&scaleVec);
+    //Vector3f axis(0, 0, 1);
+    //modelMatrix.rotate(Maths::toRadians(0), &axis);
+    //Vector3f scaleVec(1, 1, 1);
+    //modelMatrix.scale(&scaleVec);
     Matrix4f modelViewMatrix = Matrix4f(modelMatrix);
     viewMatrix.multiply(&modelViewMatrix, &modelViewMatrix);
 

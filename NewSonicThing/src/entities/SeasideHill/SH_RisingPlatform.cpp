@@ -9,18 +9,23 @@
 #include "../controllableplayer.hpp"
 #include "../../audio/audioplayer.hpp"
 
-std::list<TexturedModel*> SH_RisingPlatform::models;
-CollisionModel* SH_RisingPlatform::cmOriginal = nullptr;
+std::list<TexturedModel*> SH_RisingPlatform::modelsSmall;
+std::list<TexturedModel*> SH_RisingPlatform::modelsMedium;
+std::list<TexturedModel*> SH_RisingPlatform::modelsLarge;
+CollisionModel* SH_RisingPlatform::cmSmallOriginal = nullptr;
+CollisionModel* SH_RisingPlatform::cmMediumOriginal = nullptr;
+CollisionModel* SH_RisingPlatform::cmLargeOriginal = nullptr;
 
-SH_RisingPlatform::SH_RisingPlatform(float x, float y, float z, int t, float distance, float tX, float tZ, float tR)
+SH_RisingPlatform::SH_RisingPlatform(float x, float y, float z, float rotY, int t, float distance, float tX, float tZ, float tR)
 {
-    position.set(x, y, z);
-    originalY = y;
+    position.set(x, y + distance, z);
+    this->rotY = rotY;
+    originalY = position.y;
 
     scale = 1;
     visible = true;
 
-    type = t;
+    type = Maths::clamp(0, t, 2);
     movingDistance = -distance;
     triggerX = tX;
     triggerZ = tZ;
@@ -28,14 +33,23 @@ SH_RisingPlatform::SH_RisingPlatform(float x, float y, float z, int t, float dis
 
     updateTransformationMatrix();
 
-    collideModelOriginal = SH_RisingPlatform::cmOriginal;
+    switch (type)
+    {
+        case 0:  collideModelOriginal = SH_RisingPlatform::cmSmallOriginal;  break;
+        case 1:  collideModelOriginal = SH_RisingPlatform::cmMediumOriginal; break;
+        default: collideModelOriginal = SH_RisingPlatform::cmLargeOriginal;  break;
+    }
     collideModelTransformed = collideModelOriginal->duplicateMe();
-
     CollisionChecker::addCollideModel(collideModelTransformed);
 
     // don't actually move the collision. just move the visible model.
     position.y = originalY + movingDistance;
     updateCollisionModel();
+
+    //temp: disable the moving animation
+    updateTransformationMatrix();
+    triggerTimer = 1.0f;
+
     position.y = originalY;
 }
 
@@ -71,12 +85,17 @@ void SH_RisingPlatform::step()
 
 std::list<TexturedModel*>* SH_RisingPlatform::getModels()
 {
-    return &SH_RisingPlatform::models;
+    switch (type)
+    {
+        case 0:  return &SH_RisingPlatform::modelsSmall;
+        case 1:  return &SH_RisingPlatform::modelsMedium;
+        default: return &SH_RisingPlatform::modelsLarge;
+    }
 }
 
 void SH_RisingPlatform::loadStaticModels()
 {
-    if (SH_RisingPlatform::models.size() > 0)
+    if (SH_RisingPlatform::modelsSmall.size() > 0)
     {
         return;
     }
@@ -85,11 +104,21 @@ void SH_RisingPlatform::loadStaticModels()
     printf("Loading SH_RisingPlatform static models...\n");
     #endif
 
-    ModelLoader::loadModel(&SH_RisingPlatform::models, "res/Models/Levels/SeasideHill/Objects/RisingPlatform/", "RisingPlatform");
+    ModelLoader::loadModel(&SH_RisingPlatform::modelsSmall,  "res/Models/Levels/SeasideHill/Objects/RisingPlatform/", "RisingPlatformSmall");
+    ModelLoader::loadModel(&SH_RisingPlatform::modelsMedium, "res/Models/Levels/SeasideHill/Objects/RisingPlatform/", "RisingPlatformMedium");
+    ModelLoader::loadModel(&SH_RisingPlatform::modelsLarge,  "res/Models/Levels/SeasideHill/Objects/RisingPlatform/", "RisingPlatformLarge");
 
-    if (SH_RisingPlatform::cmOriginal == nullptr)
+    if (SH_RisingPlatform::cmSmallOriginal == nullptr)
     {
-        SH_RisingPlatform::cmOriginal = ModelLoader::loadCollisionModel("Models/Levels/SeasideHill/Objects/RisingPlatform/", "RisingPlatform");
+        SH_RisingPlatform::cmSmallOriginal = ModelLoader::loadCollisionModel("Models/Levels/SeasideHill/Objects/RisingPlatform/", "RisingPlatformSmallCollision");
+    }
+    if (SH_RisingPlatform::cmMediumOriginal == nullptr)
+    {
+        SH_RisingPlatform::cmMediumOriginal = ModelLoader::loadCollisionModel("Models/Levels/SeasideHill/Objects/RisingPlatform/", "RisingPlatformMediumCollision");
+    }
+    if (SH_RisingPlatform::cmLargeOriginal == nullptr)
+    {
+        SH_RisingPlatform::cmLargeOriginal = ModelLoader::loadCollisionModel("Models/Levels/SeasideHill/Objects/RisingPlatform/", "RisingPlatformLargeCollision");
     }
 }
 
@@ -99,6 +128,10 @@ void SH_RisingPlatform::deleteStaticModels()
     printf("Deleting SH_RisingPlatform static models...\n");
     #endif
 
-    Entity::deleteModels(&SH_RisingPlatform::models);
-    Entity::deleteCollisionModel(&SH_RisingPlatform::cmOriginal);
+    Entity::deleteModels(&SH_RisingPlatform::modelsSmall);
+    Entity::deleteModels(&SH_RisingPlatform::modelsMedium);
+    Entity::deleteModels(&SH_RisingPlatform::modelsLarge);
+    Entity::deleteCollisionModel(&SH_RisingPlatform::cmSmallOriginal);
+    Entity::deleteCollisionModel(&SH_RisingPlatform::cmMediumOriginal);
+    Entity::deleteCollisionModel(&SH_RisingPlatform::cmLargeOriginal);
 }
