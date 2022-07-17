@@ -157,7 +157,7 @@ void SH_StoneBlock::loadStaticModels()
     printf("Loading SH_StoneBlock static models...\n");
     #endif
 
-    ModelLoader::loadModel(&SH_StoneBlock::models,    "res/Models/Levels/SeasideHill/Objects/BreakableBlock/", "Block");
+    ModelLoader::loadModel(&SH_StoneBlock::models,    "res/Models/Levels/SeasideHill/Objects/BreakableBlock/", "BreakableBlock");
     ModelLoader::loadModel(&SH_StoneBlock::modelsP1,  "res/Models/Levels/SeasideHill/Objects/BreakableBlock/", "Piece1");
     ModelLoader::loadModel(&SH_StoneBlock::modelsP2,  "res/Models/Levels/SeasideHill/Objects/BreakableBlock/", "Piece2");
     ModelLoader::loadModel(&SH_StoneBlock::modelsP3,  "res/Models/Levels/SeasideHill/Objects/BreakableBlock/", "Piece3");

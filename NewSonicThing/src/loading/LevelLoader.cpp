@@ -1161,12 +1161,12 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             return;
         }
 
-        case 11: //JumpPad
+        case 11: //SpeedRamp
         {
             SpeedRamp::loadStaticModels();
             SpeedRamp* ramp = new SpeedRamp(
                 toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
-                toFloat(dat[4]), toFloat(dat[5]), toFloat(dat[6]), //rotation direction
+                toFloat(dat[4]), toFloat(dat[5]), toFloat(dat[6]), //forward direction
                 toFloat(dat[7]), toFloat(dat[8]));                 //power, input lock time
             INCR_NEW("Entity");
             chunkedEntities->push_back(ramp);
@@ -1190,7 +1190,7 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             SpringTriple::loadStaticModels();
             SpringTriple* spring = new SpringTriple(
                 toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
-                toFloat(dat[4]), toFloat(dat[5]),                  //rotation direction
+                toFloat(dat[4]), toFloat(dat[5]),                  //forward direction
                 toFloat(dat[6]), toFloat(dat[7]));                 //power, time
             INCR_NEW("Entity");
             chunkedEntities->push_back(spring);
@@ -2102,14 +2102,14 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
 
                 case 1: //Rising Stone Platform
                 {
-                    SH_RisingPlatform::loadStaticModels();
-                    SH_RisingPlatform* platform = new SH_RisingPlatform(
-                            toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]),  //position x,y,z
-                            toFloat(dat[5]), toInt(dat[6]), toFloat(dat[7]),    //rotation, type, moving distance
-                            toFloat(dat[8]), toFloat(dat[9]), toFloat(dat[10])); //trigger location and radius
-                    INCR_NEW("Entity");
-                    chunkedEntities->push_back(platform);
-                    return;
+                    //SH_RisingPlatform::loadStaticModels();
+                    //SH_RisingPlatform* platform = new SH_RisingPlatform(
+                    //        toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]),  //position x,y,z
+                    //        toFloat(dat[5]), toInt(dat[6]), toFloat(dat[7]),    //rotation, type, moving distance
+                    //        toFloat(dat[8]), toFloat(dat[9]), toFloat(dat[10])); //trigger location and radius
+                    //INCR_NEW("Entity");
+                    //chunkedEntities->push_back(platform);
+                    //return;
                 }
 
                 default:

@@ -18,7 +18,7 @@ private:
     static CollisionModel* cmLargeOriginal;
 
     int type = 0;
-    float movingDistance = 1.0f;
+    float finalY = 1.0f;
     float originalY = 0.0f;
     float triggerTimer = 0.0f;
     float triggerX = 0.0f;
@@ -26,7 +26,7 @@ private:
     float triggerR = 1.0f;
 
 public:
-    SH_RisingPlatform(float x, float y, float z, float rotY, int type, float distance, float tX, float tZ, float tR);
+    SH_RisingPlatform(float x, float y, float z, float rotY, int type, float finalY, float tX, float tZ, float tR);
 
     void step();
 

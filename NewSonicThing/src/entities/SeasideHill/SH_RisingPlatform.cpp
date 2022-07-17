@@ -16,17 +16,18 @@ CollisionModel* SH_RisingPlatform::cmSmallOriginal = nullptr;
 CollisionModel* SH_RisingPlatform::cmMediumOriginal = nullptr;
 CollisionModel* SH_RisingPlatform::cmLargeOriginal = nullptr;
 
-SH_RisingPlatform::SH_RisingPlatform(float x, float y, float z, float rotY, int t, float distance, float tX, float tZ, float tR)
+SH_RisingPlatform::SH_RisingPlatform(float x, float y, float z, float rotY, int t, float finalY, float tX, float tZ, float tR)
 {
-    position.set(x, y + distance, z);
+
+    position.set(x, y, z);
     this->rotY = rotY;
     originalY = position.y;
+    this->finalY = finalY;
 
     scale = 1;
     visible = true;
 
     type = Maths::clamp(0, t, 2);
-    movingDistance = -distance;
     triggerX = tX;
     triggerZ = tZ;
     triggerR = tR;
@@ -43,12 +44,12 @@ SH_RisingPlatform::SH_RisingPlatform(float x, float y, float z, float rotY, int 
     CollisionChecker::addCollideModel(collideModelTransformed);
 
     // don't actually move the collision. just move the visible model.
-    position.y = originalY + movingDistance;
+    position.y = finalY;
     updateCollisionModel();
 
     //temp: disable the moving animation
-    updateTransformationMatrix();
-    triggerTimer = 1.0f;
+    //updateTransformationMatrix();
+    //triggerTimer = 1.0f;
 
     position.y = originalY;
 }
@@ -59,7 +60,7 @@ void SH_RisingPlatform::step()
     {
         Vector3f diff = position - Global::gameMainPlayer->position;
         diff.y = 0.0f;
-        if (diff.lengthSquared() < 300*300)
+        if (diff.lengthSquared() < 500*500)
         {
             triggerTimer = 0.00001f;
             //todo play sound
@@ -72,11 +73,11 @@ void SH_RisingPlatform::step()
 
         if (triggerTimer >= 1.0f)
         {
-            position.y = originalY + movingDistance;
+            position.y = finalY;
         }
         else
         {
-            position.y = originalY + movingDistance*(triggerTimer);
+            position.y = originalY + (finalY - originalY)*(triggerTimer);
         }
 
         updateTransformationMatrix();

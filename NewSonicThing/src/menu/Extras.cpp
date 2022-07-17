@@ -14,8 +14,11 @@ Extras::Extras()
     int minutes = (Global::gameTotalPlaytime%3600)/60;
     int seconds = Global::gameTotalPlaytime%60;
     std::string playtime = "Total Playtime: "+std::to_string(hours)+":"+std::to_string(minutes)+":"+std::to_string(seconds);
-    textTime = new GUIText(playtime, 0.2f, Global::fontVipnagorgialla, 0.0f, 0.45f, 1.0f, true, false, true); INCR_NEW("GUIText");
-    timeBro  = new GUIText("bro...........................", 0.1f, Global::fontVipnagorgialla, 0.0f, 0.6f, 1.0f, true, false, true); INCR_NEW("GUIText");
+    textTime = new GUIText(playtime, 0.05f, Global::fontVipnagorgialla, 0.0f, 0.45f, 3, true); INCR_NEW("GUIText");
+    //timeBro  = new GUIText("bro...........................", 0.1f, Global::fontVipnagorgialla, 0.0f, 0.6f, 1.0f, true, false, true); INCR_NEW("GUIText");
+    
+    //calculate completion percentage TODO
+    textCompletion = new GUIText("Game Completion: 100%", 0.05f, Global::fontVipnagorgialla, 0.0f, 0.65f, 3, true); INCR_NEW("GUIText");
 
     //GUIText::GUIText(std::string text, float fontSize, FontType* font, float x, float y, float maxLineLength,
     //bool centered, bool rightAligned, bool visible)
@@ -24,7 +27,8 @@ Extras::Extras()
 Extras::~Extras()
 {
     textTime->deleteMe(); delete textTime; INCR_DEL("GUIText");
-    timeBro->deleteMe(); delete timeBro; INCR_DEL("GUIText");
+    //timeBro->deleteMe(); delete timeBro; INCR_DEL("GUIText");
+    textCompletion->deleteMe(); delete textCompletion; INCR_DEL("GUIText");
 }
 
 Menu* Extras::step()
@@ -49,7 +53,8 @@ Menu* Extras::step()
         (pressedBack && !backInputPrevious))
     {
         textTime->visible = false;
-        timeBro->visible = false;
+        //timeBro->visible = false;
+        textCompletion->visible = false;
 
         retVal = PopMenu::get();
         Global::menuExtras = nullptr;
@@ -61,7 +66,8 @@ Menu* Extras::step()
     {
         //draw
         textTime->visible = true;
-        timeBro->visible = true;
+        //timeBro->visible = true;
+        textCompletion->visible = true;
     }
 
     selectInputPrevious = pressedSelect;

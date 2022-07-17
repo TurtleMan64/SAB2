@@ -258,6 +258,18 @@ void PlayerSonic::step()
                 isLightdashing = false;
             }
         }
+
+        if (isLightdashing)
+        {
+            if (onGround && relativeUp.y < wallStickThreshold)
+            {
+                reattachAfterLightdash = true;
+            }
+            else
+            {
+                reattachAfterLightdash = false;
+            }
+        }
     }
 
     //Move along lightdash trail
@@ -322,6 +334,18 @@ void PlayerSonic::step()
             isLightdashing = false;
             lightdashTrail.clear();
             lightdashTrailProgress = -1.0f;
+
+            //re attach to te ground
+            Vector3f down = position - relativeUp.scaleCopy(surfaceTension);
+            if (reattachAfterLightdash && CollisionChecker::checkCollision(&position, &down))
+            {
+                currentTriangle = CollisionChecker::getCollideTriangle();
+                relativeUp = currentTriangle->normal;
+                position = CollisionChecker::getCollidePosition();
+                position = position + relativeUp.scaleCopy(FLOOR_OFFSET);
+                onGround = true;
+                onGroundBefore = true;
+            }
         }
     }
 

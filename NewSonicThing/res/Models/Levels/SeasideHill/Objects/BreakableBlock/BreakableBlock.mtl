@@ -1,0 +1,42 @@
+# Blender MTL File: 'None'
+# Material Count: 6
+
+newmtl unnamed.0
+Ns 20
+Ni 0
+d 0
+map_Kd m1_2001.PNG
+
+newmtl unnamed.1
+Ns 20
+Ni 0
+d 0
+map_Kd m1_2008.PNG
+
+newmtl unnamed.2
+Ns 20
+Ni 0
+d 0
+map_Kd m1_1010.PNG
+
+newmtl unnamed.3
+Ns 20
+Ni 0
+Tr 0
+d 0
+renderOrder 1
+map_Kd pk1_flo3.PNG
+
+newmtl unnamed.4
+Ns 20
+Ni 0
+Tr 0
+d 0
+renderOrder 2
+map_Kd pk1_flo4.PNG
+
+newmtl unnamed.5
+Ns 20
+Ni 0
+d 0
+map_Kd m1_1002.PNG

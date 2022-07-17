@@ -116,6 +116,7 @@ private:
     bool velocityMovesPlayer = true;
 
     bool isLightdashing = false;
+    bool reattachAfterLightdash = false;
     std::vector<Vector3f> lightdashTrail;
     float lightdashTrailProgress = -1.0f;
     const float lightdashStartRingMinDist = 45.0f; //how close does the ring need to be to start lightdashing?

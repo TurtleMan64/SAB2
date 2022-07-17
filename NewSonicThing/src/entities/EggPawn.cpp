@@ -14,6 +14,7 @@
 #include "../particles/particle.hpp"
 #include "../particles/particlemaster.hpp"
 #include "../collision/collisionchecker.hpp"
+#include "../collision/triangle3d.hpp"
 
 #include <list>
 #include <iostream>
@@ -111,7 +112,7 @@ void EggPawn::step()
         }
         else
         {
-            position.y -= 30*dt;
+            position.y -= 90*dt;
         }
         center = position;
         center.y += centerHeight;
@@ -130,6 +131,19 @@ void EggPawn::step()
                 position = position - dir;
                 center = position;
                 center.y += centerHeight;
+            }
+            else if (CollisionChecker::checkCollision(position.x, position.y + centerHeight/4, position.z, position.x + dir.x, position.y + centerHeight/4, position.z + dir.z))
+            {
+                if (CollisionChecker::getCollideTriangle()->normal.y < 0.45f)
+                {
+                    Vector3f colPosition(CollisionChecker::getCollidePosition());
+                    Vector3f cent(position.x, position.y + centerHeight/4, position.z);
+                    float dist = collisionRadiusWall - (cent - colPosition).length();
+                    dir.setLength(dist);
+                    position = position - dir;
+                    center = position;
+                    center.y += centerHeight;
+                }
             }
         }
 

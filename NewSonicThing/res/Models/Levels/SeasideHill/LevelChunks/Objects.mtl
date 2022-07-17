@@ -1,0 +1,143 @@
+# Material Count: 23
+
+newmtl unnamed.020
+Ns 20
+Ni 0
+d 0
+map_Kd m1_1007.PNG
+
+newmtl unnamed.077
+Ns 20
+Ni 0
+d 0
+map_Kd pk1_flo1.PNG
+
+newmtl unnamed.007
+Ns 20
+Ni 0
+d 0
+map_Kd m1_1010.PNG
+
+newmtl unnamed.066
+Ns 20
+Ni 0
+d 0
+map_Kd pk1_flo3.PNG
+
+newmtl unnamed.287
+Ns 20
+Ni 0
+d 0
+map_Kd m1_1009.PNG
+
+newmtl unnamed.278
+Ns 20
+Ni 0
+d 0
+map_Kd pk1_flo6.PNG
+
+newmtl unnamed.098
+Ns 20
+Ni 0
+d 0
+map_Kd pk1_yas2.PNG
+
+newmtl unnamed.000
+Ns 20
+Ni 0
+d 0
+map_Kd m1_1006.PNG
+
+newmtl unnamed.052
+Ns 20
+Ni 0
+d 0
+map_Kd m1_2006.PNG
+
+newmtl unnamed.433
+Ns 20
+Ni 0
+d 0
+map_Kd k1_rop02.PNG
+
+newmtl unnamed.0
+Ns 20
+Ni 0
+d 0
+map_Kd m1_2004.PNG
+
+newmtl unnamed.286
+Ns 20
+Ni 0
+d 0
+map_Kd m1_5002.PNG
+
+newmtl unnamed.069
+Ns 20
+Ni 0
+d 0
+map_Kd pk1_flo7.PNG
+
+newmtl unnamed.024
+Ns 20
+Ni 0
+d 0
+map_Kd m1_2008.PNG
+
+newmtl unnamed.044
+Ns 20
+Ni 0
+d 0
+map_Kd m1_1008.PNG
+
+newmtl unnamed.279
+Ns 20
+Ni 0
+d 0
+map_Kd pk1_flo5.PNG
+
+newmtl unnamed.065
+Ns 20
+Ni 0
+d 0
+map_Kd pk1_flo4.PNG
+
+newmtl unnamed.289
+Ns 20
+Ni 0
+d 0
+map_Kd m1_1005.PNG
+
+newmtl unnamed.078
+Ns 20
+Ni 0
+d 0
+map_Kd k1_flo2.PNG
+
+newmtl unnamed.005
+Ns 20
+Ni 0
+d 0
+Tr 0
+renderOrder 4
+scrollY -1
+map_Kd tk1_mizu.PNG
+
+newmtl unnamed.018
+Ns 20
+Ni 0
+d 0
+map_Kd m1_2005.PNG
+
+newmtl unnamed.283
+Ns 20
+Ni 0
+d 0
+map_Kd m1_1012.PNG
+
+newmtl unnamed.001
+Ns 20
+Ni 0
+d 0
+map_Kd m1_2001.PNG
+
