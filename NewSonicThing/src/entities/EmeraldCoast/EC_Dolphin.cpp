@@ -85,7 +85,7 @@ void EC_Dolphin::step()
                 AudioPlayer::play(5, &position);
                 Vector3f pos(position.x, 5, position.z);
                 Vector3f velZero(0, 0, 0);
-                ParticleMaster::createParticle(ParticleResources::textureSplash, &pos, &velZero, 0, 0.5f, 0, 10, 0, false, false, 1.0f, true);
+                ParticleMaster::createParticle(ParticleResources::textureSplash, &pos, &velZero, 0, 0.5f, 10, 0, false, false, 1.0f, true);
             }
 
             inWaterPrevious = false;
@@ -103,7 +103,7 @@ void EC_Dolphin::step()
                 AudioPlayer::play(5, &position);
                 Vector3f pos(position.x, 5, position.z);
                 Vector3f velZero(0, 0, 0);
-                ParticleMaster::createParticle(ParticleResources::textureSplash, &pos, &velZero, 0, 0.5f, 0, 10, 0, false, false, 1.0f, true);
+                ParticleMaster::createParticle(ParticleResources::textureSplash, &pos, &velZero, 0, 0.5f, 10, 0, false, false, 1.0f, true);
             }
 
             inWaterPrevious = true;

@@ -64,6 +64,7 @@ class ResultsScreen;
 #define LVL_DRAGON_ROAD     19
 #define LVL_EMERALD_COAST   20
 #define LVL_FREEZEEZY_PEAK  21
+#define LVL_SWEET_MOUNTAIN  22
 
 #define DEV_MODE
 //#define PERFORMANCE_ANALYSIS
@@ -144,6 +145,7 @@ public:
     static int gameRingTarget; //How many rings you have to collect to finish the stage in Ring mode
     static bool gameIsArcadeMode;
     static int gameTotalPlaytime; //in seconds
+    static int gameAccumulatedRings;
     static float gameArcadePlaytime;
     static bool stageUsesWater;
     static Vector3f stageWaterColor;
@@ -152,6 +154,7 @@ public:
     static FontType* fontVipnagorgialla;
     static bool renderWithCulling; //if the stage uses backface culling or not
     static bool displayFPS;
+    static bool displaySpeedometer;
     static int currentCalculatedFPS;
     static int renderCount;
     //static const int syncToDisplayEveryXFrames = 1; //if for some reason you want to render at double, triple, etc. the fps of the monitor

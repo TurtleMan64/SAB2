@@ -21,7 +21,7 @@ void InsertionSort::sortHighToLow(std::list<Particle*>* list)
         std::advance(it, 1);
         Particle* item = *it;
 
-        if (item->getDistance() > itemMinusOne->getDistance())
+        if (item->distance > itemMinusOne->distance)
         {
             sortUpHighToLow(list, i);
         }
@@ -32,7 +32,7 @@ void InsertionSort::sortUpHighToLow(std::list<Particle*>* list, int i)
 {
     Particle* item = get(list, i);
     int attemptPos = i - 1;
-    while (attemptPos != 0 && get(list, attemptPos - 1)->getDistance() < item->getDistance())
+    while (attemptPos != 0 && get(list, attemptPos - 1)->distance < item->distance)
     {
         attemptPos--;
     }

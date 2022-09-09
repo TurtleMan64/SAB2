@@ -1,4 +1,4 @@
-#version 140
+#version 330
 
 out vec4 out_color;
 
@@ -18,14 +18,19 @@ void main(void)
     
     out_color = mix(color1, color2, blend);
     
-    if (glow > 0.5)
-    {
-        out_color = vec4(out_color.rgb, out_color.a*opacity);
-    }
-    else
-    {
-        out_color = vec4(out_color.rgb*brightness, out_color.a*opacity);
-    }
+    //if (glow > 0.5)
+    //{
+        //out_color = vec4(out_color.rgb, out_color.a*opacity);
+    //}
+    //else
+    //{
+        //out_color = vec4(out_color.rgb*brightness, out_color.a*opacity);
+    //}
+    
+    
+    float zeroIfGlow = ((floatBitsToInt(glow-0.001) >> 31) & 1); //0 if glow, 1 otherwise
+    float oneIfGlow  = ((floatBitsToInt(0.001-glow) >> 31) & 1); //1 if glow, 0 otherwise
+    out_color = oneIfGlow*vec4(out_color.rgb, out_color.a*opacity) + zeroIfGlow*vec4(out_color.rgb*brightness, out_color.a*opacity);
     
     //if(glow > 0.5)
     //{

@@ -131,6 +131,13 @@
 #include "../entities/flapper.hpp"
 #include "../entities/dashring.hpp"
 #include "../entities/eggpawn.hpp"
+#include "../entities/SeasideHill/shflag.hpp"
+#include "../entities/motobug.hpp"
+#include "../entities/rhinotank.hpp"
+#include "../entities/spikeball.hpp"
+#include "../entities/spinner.hpp"
+#include "../entities/SweetMountain/smstagemanager.hpp"
+#include "../entities/eggpawngun.hpp"
 
 int LevelLoader::numLevels = 0;
 
@@ -342,6 +349,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
             else if (currLvl->displayName == "Dragon Road")     Global::levelId = LVL_DRAGON_ROAD;
             else if (currLvl->displayName == "Emerald Coast")   Global::levelId = LVL_EMERALD_COAST;
             else if (currLvl->displayName == "Freezeezy Peak")  Global::levelId = LVL_FREEZEEZY_PEAK;
+            else if (currLvl->displayName == "Sweet Mountain")  Global::levelId = LVL_SWEET_MOUNTAIN;
         }
 
         Global::spawnAtCheckpoint  = false;
@@ -687,16 +695,33 @@ void LevelLoader::loadLevel(std::string levelFilename)
 
     //Read in BGM
 
-    std::string bgmHasLoopLine;
-    getlineSafe(file, bgmHasLoopLine);
+    int bgmHasIntro = 0;
+    std::string bgmHasIntroLine;
+    getlineSafe(file, bgmHasIntroLine);
+    {
+        char lineBuf[128];
+        memcpy(lineBuf, bgmHasIntroLine.c_str(), bgmHasIntroLine.size()+1);
+        int splitLength = 0;
+        char** dat = split(lineBuf, ' ', &splitLength);
 
-    int bgmHasLoop = stoi(bgmHasLoopLine);
+        bgmHasIntro = toInt(dat[0]);
 
+        free(dat);
+    }
 
+    int numBGM = 0;
     std::string numBGMLine;
     getlineSafe(file, numBGMLine);
+    {
+        char lineBuf[128];
+        memcpy(lineBuf, numBGMLine.c_str(), numBGMLine.size()+1);
+        int splitLength = 0;
+        char** dat = split(lineBuf, ' ', &splitLength);
 
-    int numBGM = stoi(numBGMLine);
+        numBGM = toInt(dat[0]);
+
+        free(dat);
+    }
 
     while (numBGM > 0)
     {
@@ -715,7 +740,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
 
 
     //Finish the level positions and cam settings
-    char finishBuf[512];
+    char finishBuf[128];
 
     std::string finishPosition;
     getlineSafe(file, finishPosition);
@@ -761,26 +786,44 @@ void LevelLoader::loadLevel(std::string levelFilename)
     //Global death height
     std::string deathHeightLine;
     getlineSafe(file, deathHeightLine);
-    Global::deathHeight = stof(deathHeightLine);
+    memcpy(finishBuf, deathHeightLine.c_str(), deathHeightLine.size()+1);
+    finishLength = 0;
+    finishSplit = split(finishBuf, ' ', &finishLength);
+    Global::deathHeight = toFloat(finishSplit[0]);
+    free(finishSplit);
 
     //Does the stage have water?
     std::string waterEnabledLine;
     getlineSafe(file, waterEnabledLine);
+    memcpy(finishBuf, waterEnabledLine.c_str(), waterEnabledLine.size()+1);
+    finishLength = 0;
+    finishSplit = split(finishBuf, ' ', &finishLength);
     Global::stageUsesWater = false;
-    if (waterEnabledLine == "water")
+    std::string waterEnabled = finishSplit[0];
+    if (waterEnabled == "water")
     {
         Global::stageUsesWater = true;
     }
+    free(finishSplit);
 
     //Global water height
     std::string waterHeightLine;
     getlineSafe(file, waterHeightLine);
-    Global::waterHeight = stof(waterHeightLine);
+    memcpy(finishBuf, waterHeightLine.c_str(), waterHeightLine.size()+1);
+    finishLength = 0;
+    finishSplit = split(finishBuf, ' ', &finishLength);
+    Global::waterHeight = toFloat(finishSplit[0]);
+    free(finishSplit);
 
     //Number of water tiles
     std::string waterTilesCountLine;
     getlineSafe(file, waterTilesCountLine);
-    int waterTilesCount = stoi(waterTilesCountLine);
+    memcpy(finishBuf, waterTilesCountLine.c_str(), waterTilesCountLine.size()+1);
+    finishLength = 0;
+    finishSplit = split(finishBuf, ' ', &finishLength);
+    int waterTilesCount = toInt(finishSplit[0]);
+    free(finishSplit);
+
     for (WaterTile* tile : Global::gameWaterTiles)
     {
         delete tile; INCR_DEL("WaterTile")
@@ -809,22 +852,39 @@ void LevelLoader::loadLevel(std::string levelFilename)
     //Underwater water color blend amount
     std::string stageWaterBlendAmountLine;
     getlineSafe(file, stageWaterBlendAmountLine);
-    Global::stageWaterBlendAmount = toFloat((char*)stageWaterBlendAmountLine.c_str());
+    memcpy(finishBuf, stageWaterBlendAmountLine.c_str(), stageWaterBlendAmountLine.size()+1);
+    finishLength = 0;
+    finishSplit = split(finishBuf, ' ', &finishLength);
+    Global::stageWaterBlendAmount = toFloat(finishSplit[0]);
+    free(finishSplit);
 
     //Water is murky
     std::string stageWaterMurkyLine;
     getlineSafe(file, stageWaterMurkyLine);
-    Global::stageWaterMurkyAmount = toFloat((char*)stageWaterMurkyLine.c_str());
+    memcpy(finishBuf, stageWaterMurkyLine.c_str(), stageWaterMurkyLine.size()+1);
+    finishLength = 0;
+    finishSplit = split(finishBuf, ' ', &finishLength);
+    Global::stageWaterMurkyAmount = toFloat(finishSplit[0]);
+    free(finishSplit);
 
     //Does the stage use backface culling?
     std::string backfaceCullingLine;
     getlineSafe(file, backfaceCullingLine);
-    Global::renderWithCulling = (backfaceCullingLine == "true");
+    memcpy(finishBuf, backfaceCullingLine.c_str(), backfaceCullingLine.size()+1);
+    finishLength = 0;
+    finishSplit = split(finishBuf, ' ', &finishLength);
+    std::string backfaceCulling = finishSplit[0];
+    Global::renderWithCulling = (backfaceCulling == "true");
+    free(finishSplit);
 
     //the chunked entity chunk size for this level
     std::string chunkSize;
     getlineSafe(file, chunkSize);
-    float newChunkSize = std::stof(chunkSize);
+    memcpy(finishBuf, chunkSize.c_str(), chunkSize.size()+1);
+    finishLength = 0;
+    finishSplit = split(finishBuf, ' ', &finishLength);
+    float newChunkSize = toFloat(finishSplit[0]);
+    free(finishSplit);
 
 
     GuiManager::clearGuisToRender();
@@ -1005,7 +1065,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
             Global::mainHudTimer->freeze(true);
         }
 
-        if (bgmHasLoop != 0)
+        if (bgmHasIntro != 0)
         {
             //By default, first 2 buffers are the intro and loop, respectively
             AudioPlayer::playBGMWithIntro(0, 1);
@@ -1610,6 +1670,11 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                     Global::gameStageManager = new SH_StageManager; INCR_NEW("Entity");
                     break;
 
+                case 16:
+                    SM_StageManager::loadStaticModels();
+                    Global::gameStageManager = new SM_StageManager; INCR_NEW("Entity");
+                    break;
+
                 default: break;
             }
             return;
@@ -2094,7 +2159,7 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                     SH_StoneBlock::loadStaticModels();
                     SH_StoneBlock* block = new SH_StoneBlock(
                             toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]), //position x,y,z
-                            0.0f);
+                            toFloat(dat[5]));                                  //rotY
                     INCR_NEW("Entity");
                     chunkedEntities->push_back(block);
                     return;
@@ -2109,7 +2174,18 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                     //        toFloat(dat[8]), toFloat(dat[9]), toFloat(dat[10])); //trigger location and radius
                     //INCR_NEW("Entity");
                     //chunkedEntities->push_back(platform);
-                    //return;
+                    return;
+                }
+
+                case 5: //Flag
+                {
+                    SH_Flag::loadStaticModels();
+                    SH_Flag* flag = new SH_Flag(
+                            toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]),  //position x,y,z
+                            toFloat(dat[5]));                                   //scale
+                    INCR_NEW("Entity");
+                    chunkedEntities->push_back(flag);
+                    return;
                 }
 
                 default:
@@ -2150,6 +2226,56 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             EggPawn* pawn = new EggPawn(
                     toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), // position x,y,z
                     toFloat(dat[4]), toFloat(dat[5]));                 // dir xz
+            INCR_NEW("Entity");
+            chunkedEntities->push_back(pawn);
+            return;
+        }
+
+        case 120: //Moto Bug
+        {
+            MotoBug::loadStaticModels();
+            MotoBug* bug = new MotoBug(toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]));
+            INCR_NEW("Entity");
+            chunkedEntities->push_back(bug);
+            return;
+        }
+
+        case 121: //Rhino Tank
+        {
+            RhinoTank::loadStaticModels();
+            RhinoTank* rhino = new RhinoTank(toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]));
+            INCR_NEW("Entity");
+            chunkedEntities->push_back(rhino);
+            return;
+        }
+
+        case 122: //Spikeball
+        {
+            Spikeball::loadStaticModels();
+            Spikeball* ball = new Spikeball(
+                    toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), // position x,y,z
+                    toFloat(dat[4]), toFloat(dat[5]));                 // radius, speed
+            INCR_NEW("Entity");
+            chunkedEntities->push_back(ball);
+            return;
+        }
+
+        case 123: //Spinner
+        {
+            Spinner::loadStaticModels();
+            Spinner* spinner = new Spinner(toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), chunkedEntities);
+            INCR_NEW("Entity");
+            chunkedEntities->push_back(spinner);
+            return;
+        }
+
+        case 124: //Egg Pawn Gun
+        {
+            EggPawnGun::loadStaticModels();
+            EggPawnGun* pawn = new EggPawnGun(
+                    toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), // position x,y,z
+                    toFloat(dat[4]), toFloat(dat[5]), //dir x z
+                    chunkedEntities);
             INCR_NEW("Entity");
             chunkedEntities->push_back(pawn);
             return;
@@ -2334,6 +2460,13 @@ void LevelLoader::freeAllStaticModels()
     Flapper::deleteStaticModels();
     DashRing::deleteStaticModels();
     EggPawn::deleteStaticModels();
+    SH_Flag::deleteStaticModels();
+    MotoBug::deleteStaticModels();
+    RhinoTank::deleteStaticModels();
+    Spikeball::deleteStaticModels();
+    Spinner::deleteStaticModels();
+    SM_StageManager::deleteStaticModels();
+    EggPawnGun::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()

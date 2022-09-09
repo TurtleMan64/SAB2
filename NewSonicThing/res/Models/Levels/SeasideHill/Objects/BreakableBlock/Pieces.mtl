@@ -1,0 +1,33 @@
+# Material Count: 5
+
+newmtl Material_1
+Ns 20
+Ni 0
+Tr 0
+map_Kd m1_2008.png
+
+newmtl mat3
+Ns 20
+Ni 0
+Tr 0
+map_Kd m1_1007.png
+
+newmtl mat1
+Ns 20
+Ni 0
+Tr 0
+renderOrder 1
+map_Kd pk1_flo3.png
+
+newmtl mat2
+Ns 20
+Ni 0
+Tr 0
+renderOrder 2
+map_Kd pk1_flo4.png
+
+newmtl mat4
+Ns 20
+Ni 0
+Tr 0
+map_Kd m1_1004.png

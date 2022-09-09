@@ -70,9 +70,9 @@ void DP_StageManager::step()
             vel2 = vel2 + randVel;
             vel3 = vel3 + randVel;
 
-            ParticleMaster::createParticle(ParticleResources::textureBubble, &origin1, &vel1, 100.0f, 3.0f, 0.0f, 3.0f, 16.0f, false, false, 0.6f, true);
-            ParticleMaster::createParticle(ParticleResources::textureBubble, &origin2, &vel2, 100.0f, 3.0f, 0.0f, 3.0f, 16.0f, false, false, 0.6f, true);
-            ParticleMaster::createParticle(ParticleResources::textureBubble, &origin3, &vel3, 100.0f, 3.0f, 0.0f, 3.0f, 16.0f, false, false, 0.6f, true);
+            ParticleMaster::createParticle(ParticleResources::textureBubble, &origin1, &vel1, 100.0f, 3.0f, 3.0f, 16.0f, false, false, 0.6f, true);
+            ParticleMaster::createParticle(ParticleResources::textureBubble, &origin2, &vel2, 100.0f, 3.0f, 3.0f, 16.0f, false, false, 0.6f, true);
+            ParticleMaster::createParticle(ParticleResources::textureBubble, &origin3, &vel3, 100.0f, 3.0f, 3.0f, 16.0f, false, false, 0.6f, true);
         }
     }
 }

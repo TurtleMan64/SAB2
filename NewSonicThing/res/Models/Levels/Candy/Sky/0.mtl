@@ -1,0 +1,15 @@
+# Blender MTL File: 'None'
+# Material Count: 1
+
+newmtl mat8
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.900000 0.900000 0.900000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+fogScale 0
+scrollX 0.02
+scrollY 0.02
+d 0
+illum 2
+map_Kd fct_z_kt1_cloudupperplane.png

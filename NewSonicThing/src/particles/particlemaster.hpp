@@ -15,8 +15,8 @@ class ParticleRenderer;
 class ParticleMaster
 {
 private:
-    static std::unordered_map<ParticleTexture*, std::list<ParticleStandard*>> particlesStandard;
-    static std::unordered_map<ParticleTexture*, std::list<GF_Particle*>> particlesGF;
+    static std::unordered_map<ParticleTexture*, std::list<ParticleStandard*>*> particlesStandard;
+    static std::unordered_map<ParticleTexture*, std::list<GF_Particle*>*> particlesGF;
     static ParticleRenderer* renderer;
 
 public:
@@ -35,11 +35,10 @@ public:
     static void createParticle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float lifeLength, float scale, bool onlyRendersOnce, bool optional);
 
     static void createParticle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float gravityEffect,
-        float lifeLength, float rotation, float scale, float scaleChange, bool posIsRef, bool onlyRendersOnce, float opacity, bool optional);
+        float lifeLength, float scale, float scaleChange, bool posIsRef, bool onlyRendersOnce, float opacity, bool optional);
 
     static void createParticle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float gravityEffect,
-        float lifeLength, float rotation, float scaleX, float scaleXChange, float scaleY, float scaleYChange, 
-        bool posIsRef, bool onlyRendersOnce, bool optional);
+        float lifeLength, float scale, float scaleChange, bool posIsRef, bool onlyRendersOnce, bool optional);
 
     static void addParticleStandard(ParticleStandard* particle);
 

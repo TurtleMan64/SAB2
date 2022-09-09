@@ -1,8 +1,15 @@
-# Material Count: 1
+# Material Count: 2
 
-newmtl None
+newmtl collision
 Ns 17.000000
 Ni 0.000000
 d 0.770833
 map_Kd white.png
+
+newmtl collision_death.png
+Ns 17.000000
+Ni 0.000000
+type death
+d 0.770833
+map_Kd death.png
 

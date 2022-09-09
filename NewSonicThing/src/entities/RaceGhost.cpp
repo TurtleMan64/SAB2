@@ -84,11 +84,13 @@ GhostFrame GhostFrame::interpolate(GhostFrame* f1, GhostFrame* f2, float time)
         pos.y = Maths::interpolate(f1->pos.y, f2->pos.y, percent);
         pos.z = Maths::interpolate(f1->pos.z, f2->pos.z, percent);
 
-        Vector4f rot;
-        rot.x = Maths::interpolate(f1->rot.x, f2->rot.x, percent);
-        rot.y = Maths::interpolate(f1->rot.y, f2->rot.y, percent);
-        rot.z = Maths::interpolate(f1->rot.z, f2->rot.z, percent);
-        rot.w = Maths::interpolate(f1->rot.w, f2->rot.w, percent);
+        //Vector4f rot;
+        //rot.x = Maths::interpolate(f1->rot.x, f2->rot.x, percent);
+        //rot.y = Maths::interpolate(f1->rot.y, f2->rot.y, percent);
+        //rot.z = Maths::interpolate(f1->rot.z, f2->rot.z, percent);
+        //rot.w = Maths::interpolate(f1->rot.w, f2->rot.w, percent);
+        // don't interpolate euler rotations linearly. would need something fancy like a quaternion to interpolate
+        Vector4f rot = f1->rot;
 
         Vector3f up;
         up.x = Maths::interpolate(f1->up.x, f2->up.x, percent);
@@ -211,7 +213,6 @@ RaceGhost::RaceGhost(const char* filePath, int missionNumber)
     myModel->setBaseVisibility(true);
     Global::addEntity(myModel);
 }
-
 
 void RaceGhost::step()
 {

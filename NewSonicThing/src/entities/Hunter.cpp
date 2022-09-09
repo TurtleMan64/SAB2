@@ -189,7 +189,7 @@ void Hunter::die()
             getZ() + spread*(Maths::random() - 0.5f));
         pos = pos + toCamDiff; //so that these aren't behind the big explosion
 
-        ParticleMaster::createParticle(ParticleResources::textureExplosion1, &pos, &vel, 0, 0.75f, 0, 3*Maths::random() + 6, 0, false, false, 0.5f, true);
+        ParticleMaster::createParticle(ParticleResources::textureExplosion1, &pos, &vel, 0, 0.75f, 3*Maths::random() + 6, 0, false, false, 0.5f, true);
     }
     
     Vector3f pos(
@@ -197,7 +197,7 @@ void Hunter::die()
         getY() + height,
         getZ());
     
-    ParticleMaster::createParticle(ParticleResources::textureExplosion2, &pos, &vel, 0, 0.916f, 0, 20, 0, false, false, 0.75f, true);
+    ParticleMaster::createParticle(ParticleResources::textureExplosion2, &pos, &vel, 0, 0.916f, 20, 0, false, false, 0.75f, true);
     
     Global::gameScore += 100;
 }

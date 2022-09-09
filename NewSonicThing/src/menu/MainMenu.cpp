@@ -64,7 +64,7 @@ void MainMenu::loadResources()
         "ARCADE",
         "MISSION",
         "EXTRA",
-        "CONFIG",
+        "SETTINGS",
         "EXIT"
         }
     );

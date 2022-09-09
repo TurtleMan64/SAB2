@@ -1,12 +1,12 @@
-#ifndef SPINNER_H
-#define SPINNER_H
+#ifndef BEETLE_H
+#define BEETLE_H
 
 class TexturedModel;
 class Dummy;
 
 #include <list>
 #include "entity.hpp"
-
+#include "../toolbox/vector.hpp"
 
 class Beetle : public Entity
 {
@@ -14,11 +14,11 @@ private:
     static std::list<TexturedModel*> modelsBody;
     static std::list<TexturedModel*> modelsBlades;
     
-    const float activationRange = 140.0f;
-    const float hitRadius = 12.0f;
-    const float bobHeight = 1.0f;
-    const float bobPeriodScale = 2.0f;
-    const float lookSpeed = 6.0f;
+    constexpr static float activationRange = 140.0f;
+    constexpr static float hitRadius = 12.0f;
+    constexpr static float bobHeight = 1.0f;
+    constexpr static float bobPeriodScale = 2.0f;
+    constexpr static float lookSpeed = 6.0f;
 
     Dummy* blades = nullptr;
     float bobTimer = 0.0f;

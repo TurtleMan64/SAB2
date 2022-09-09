@@ -5,7 +5,28 @@
 
 Matrix4f::Matrix4f()
 {
-    setIdentity();
+    // default to identity
+    m00 = 1.0f;
+    m01 = 0.0f;
+    m02 = 0.0f;
+    m03 = 0.0f;
+    m10 = 0.0f;
+    m11 = 1.0f;
+    m12 = 0.0f;
+    m13 = 0.0f;
+    m20 = 0.0f;
+    m21 = 0.0f;
+    m22 = 1.0f;
+    m23 = 0.0f;
+    m30 = 0.0f;
+    m31 = 0.0f;
+    m32 = 0.0f;
+    m33 = 1.0f;
+}
+
+Matrix4f::Matrix4f(bool)
+{
+    //dont init anything (for small speedup in functions that get called many times per frame)
 }
 
 Matrix4f::Matrix4f(Matrix4f* base)
@@ -68,10 +89,6 @@ void Matrix4f::setIdentity()
     m33 = 1.0f;
 }
 
-/**
-* Copy the buffered matrix into this matrix
-* @param buf The buffered matrix data
-*/
 void Matrix4f::load(float buf[])
 {
     m00 = buf[0];
@@ -92,10 +109,6 @@ void Matrix4f::load(float buf[])
     m33 = buf[15];
 }
 
-/**
-*
-* @param buf Buffer to put this matrix data into
-*/
 void Matrix4f::store(float buf[])
 {
     buf[0] = m00;
@@ -136,11 +149,6 @@ void Matrix4f::set(Matrix4f* other)
     m33 = other->m33;
 }
 
-/**
-* Multiply the right matrix by this matrix and place the result in a dest matrix.
-* @param right The right source matrix
-* @param dest The destination matrix
-*/
 void Matrix4f::multiply(Matrix4f* right, Matrix4f* dest)
 {
     float newm00 = this->m00 * right->m00 + this->m10 * right->m01 + this->m20 * right->m02 + this->m30 * right->m03;

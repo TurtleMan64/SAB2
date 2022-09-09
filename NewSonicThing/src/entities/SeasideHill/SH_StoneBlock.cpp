@@ -30,15 +30,10 @@ std::list<TexturedModel*> SH_StoneBlock::modelsP12;
 
 CollisionModel* SH_StoneBlock::cmOriginal = nullptr;
 
-SH_StoneBlock::SH_StoneBlock(float x, float y, float z, float /*rot*/)
+SH_StoneBlock::SH_StoneBlock(float x, float y, float z, float rot)
 {
     position.set(x, y, z);
-    rotX = 0;
-    rotY = 0;
-    rotZ = 0;
-
-    scale = 1;
-    visible = true;
+    rotY = rot;
 
     updateTransformationMatrix();
 
@@ -157,7 +152,7 @@ void SH_StoneBlock::loadStaticModels()
     printf("Loading SH_StoneBlock static models...\n");
     #endif
 
-    ModelLoader::loadModel(&SH_StoneBlock::models,    "res/Models/Levels/SeasideHill/Objects/BreakableBlock/", "BreakableBlock");
+    ModelLoader::loadModel(&SH_StoneBlock::models,    "res/Models/Levels/SeasideHill/Objects/BreakableBlock/", "Block");
     ModelLoader::loadModel(&SH_StoneBlock::modelsP1,  "res/Models/Levels/SeasideHill/Objects/BreakableBlock/", "Piece1");
     ModelLoader::loadModel(&SH_StoneBlock::modelsP2,  "res/Models/Levels/SeasideHill/Objects/BreakableBlock/", "Piece2");
     ModelLoader::loadModel(&SH_StoneBlock::modelsP3,  "res/Models/Levels/SeasideHill/Objects/BreakableBlock/", "Piece3");

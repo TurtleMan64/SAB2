@@ -12,8 +12,8 @@
 #include <unordered_map>
 #include <list>
 
-std::unordered_map<ParticleTexture*, std::list<ParticleStandard*>> ParticleMaster::particlesStandard;
-std::unordered_map<ParticleTexture*, std::list<GF_Particle*>> ParticleMaster::particlesGF;
+std::unordered_map<ParticleTexture*, std::list<ParticleStandard*>*> ParticleMaster::particlesStandard;
+std::unordered_map<ParticleTexture*, std::list<GF_Particle*>*> ParticleMaster::particlesGF;
 ParticleRenderer* ParticleMaster::renderer = nullptr;
 
 void ParticleMaster::init(Matrix4f* projectionMatrix)
@@ -26,20 +26,20 @@ void ParticleMaster::update(Camera* /*cam*/)
     ANALYSIS_START("Particle Updating");
     //standard
     {
-        std::unordered_map<ParticleTexture*, std::list<ParticleStandard*>>::iterator mapIt = ParticleMaster::particlesStandard.begin();
-        bool deletedEntry = false;
+        std::unordered_map<ParticleTexture*, std::list<ParticleStandard*>*>::iterator mapIt = ParticleMaster::particlesStandard.begin();
+        //bool deletedEntry = false;
 
         while (mapIt != ParticleMaster::particlesStandard.end())
         {
-            std::list<ParticleStandard*>* list = &mapIt->second;
+            std::list<ParticleStandard*>* list = mapIt->second;
 
             std::list<ParticleStandard*>::iterator it = list->begin();
 
-            deletedEntry = false;
+            //deletedEntry = false;
 
             while (it != list->end())
             {
-                ParticleStandard* p = *it;
+                ParticleStandard* p = it._Ptr->_Myval;
 
                 bool stillAlive = p->update();
                 if (stillAlive == false)
@@ -47,11 +47,11 @@ void ParticleMaster::update(Camera* /*cam*/)
                     it = list->erase(it);
                     delete p; INCR_DEL("ParticleStandard");
 
-                    if (list->size() == 0)
+                    //if (list->size() == 0)
                     {
-                        mapIt = ParticleMaster::particlesStandard.erase(mapIt);
-                        deletedEntry = true;
-                        break;
+                        //mapIt = ParticleMaster::particlesStandard.erase(mapIt);
+                        //deletedEntry = true;
+                        //break;
                     }
                 }
                 else
@@ -60,7 +60,7 @@ void ParticleMaster::update(Camera* /*cam*/)
                 }
             }
 
-            if (deletedEntry == false)
+            //if (deletedEntry == false)
             {
                 mapIt++;
             }
@@ -69,20 +69,20 @@ void ParticleMaster::update(Camera* /*cam*/)
 
     //GF
     {
-        std::unordered_map<ParticleTexture*, std::list<GF_Particle*>>::iterator mapIt = ParticleMaster::particlesGF.begin();
-        bool deletedEntry = false;
+        std::unordered_map<ParticleTexture*, std::list<GF_Particle*>*>::iterator mapIt = ParticleMaster::particlesGF.begin();
+        //bool deletedEntry = false;
 
         while (mapIt != ParticleMaster::particlesGF.end())
         {
-            std::list<GF_Particle*>* list = &mapIt->second;
+            std::list<GF_Particle*>* list = mapIt->second;
 
             std::list<GF_Particle*>::iterator it = list->begin();
 
-            deletedEntry = false;
+            //deletedEntry = false;
 
             while (it != list->end())
             {
-                GF_Particle* p = *it;
+                GF_Particle* p = it._Ptr->_Myval;
 
                 bool stillAlive = p->update();
                 if (stillAlive == false)
@@ -90,11 +90,11 @@ void ParticleMaster::update(Camera* /*cam*/)
                     it = list->erase(it);
                     delete p; INCR_DEL("GF_Particle");
 
-                    if (list->size() == 0)
+                    //if (list->size() == 0)
                     {
-                        mapIt = ParticleMaster::particlesGF.erase(mapIt);
-                        deletedEntry = true;
-                        break;
+                        //mapIt = ParticleMaster::particlesGF.erase(mapIt);
+                        //deletedEntry = true;
+                        //break;
                     }
                 }
                 else
@@ -103,7 +103,7 @@ void ParticleMaster::update(Camera* /*cam*/)
                 }
             }
 
-            if (deletedEntry == false)
+            //if (deletedEntry == false)
             {
                 mapIt++;
             }
@@ -129,13 +129,41 @@ void ParticleMaster::cleanUp()
 
 void ParticleMaster::addParticleStandard(ParticleStandard* particle)
 {
-    std::list<ParticleStandard*>* list = &ParticleMaster::particlesStandard[particle->getTexture()];
+    std::unordered_map<ParticleTexture*, std::list<ParticleStandard*>*>::iterator it;
+    it = ParticleMaster::particlesStandard.find(particle->texture);
+
+    std::list<ParticleStandard*>* list = nullptr;
+
+    if (it == ParticleMaster::particlesStandard.end())
+    {
+        list = new std::list<ParticleStandard*>(); INCR_NEW("std::list<ParticleStandard*>");
+        ParticleMaster::particlesStandard[particle->texture] = list;
+    }
+    else
+    {
+        list = it->second;
+    }
+
     list->push_back(particle);
 }
 
 void ParticleMaster::addParticleGF(GF_Particle* particle)
 {
-    std::list<GF_Particle*>* list = &ParticleMaster::particlesGF[particle->getTexture()];
+    std::unordered_map<ParticleTexture*, std::list<GF_Particle*>*>::iterator it;
+    it = ParticleMaster::particlesGF.find(particle->texture);
+
+    std::list<GF_Particle*>* list = nullptr;
+
+    if (it == ParticleMaster::particlesGF.end())
+    {
+        list = new std::list<GF_Particle*>(); INCR_NEW("std::list<GF_Particle*>");
+        ParticleMaster::particlesGF[particle->texture] = list;
+    }
+    else
+    {
+        list = it->second;
+    }
+
     list->push_back(particle);
 }
 
@@ -164,21 +192,20 @@ void ParticleMaster::createParticle(ParticleTexture* texture, Vector3f* position
 }
 
 void ParticleMaster::createParticle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float gravityEffect,
-    float lifeLength, float rotation, float scale, float scaleChange, bool posIsRef, bool onlyRendersOnce, float opacity, bool optional)
+    float lifeLength, float scale, float scaleChange, bool posIsRef, bool onlyRendersOnce, float opacity, bool optional)
 {
     if (Global::renderParticles || !optional)
     {
-        new ParticleStandard(texture, position, velocity, gravityEffect, lifeLength, rotation, scale, scaleChange, posIsRef, onlyRendersOnce, opacity); INCR_NEW("ParticleStandard");
+        new ParticleStandard(texture, position, velocity, gravityEffect, lifeLength, scale, scaleChange, posIsRef, onlyRendersOnce, opacity); INCR_NEW("ParticleStandard");
     }
 }
 
 void ParticleMaster::createParticle(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float gravityEffect,
-    float lifeLength, float rotation, float scaleX, float scaleXChange, float scaleY, float scaleYChange, 
-    bool posIsRef, bool onlyRendersOnce, bool optional)
+    float lifeLength, float scale, float scaleChange, bool posIsRef, bool onlyRendersOnce, bool optional)
 {
     if (Global::renderParticles || !optional)
     {
-        new ParticleStandard(texture, position, velocity, gravityEffect, lifeLength, rotation, scaleX, scaleXChange, scaleY, scaleYChange, posIsRef, onlyRendersOnce); INCR_NEW("ParticleStandard");
+        new ParticleStandard(texture, position, velocity, gravityEffect, lifeLength, scale, scaleChange, posIsRef, onlyRendersOnce); INCR_NEW("ParticleStandard");
     }
 }
 
@@ -198,7 +225,7 @@ void ParticleMaster::deleteAllParticles()
 
         for (auto particlesMap : ParticleMaster::particlesStandard)
         {
-            for (auto particle : particlesMap.second)
+            for (auto particle : *particlesMap.second)
             {
                 particlesToDelete.push_back(particle);
             }
@@ -218,7 +245,7 @@ void ParticleMaster::deleteAllParticles()
 
         for (auto particlesMap : ParticleMaster::particlesGF)
         {
-            for (auto particle : particlesMap.second)
+            for (auto particle : *particlesMap.second)
             {
                 particlesToDelete.push_back(particle);
             }

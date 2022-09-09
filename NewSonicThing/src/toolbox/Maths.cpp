@@ -15,19 +15,6 @@ std::uniform_real_distribution<float>* Maths::distributionUniform = new std::uni
 std::default_random_engine* Maths::generatorNormal = new std::default_random_engine(0);
 std::normal_distribution<float>* Maths::distributionNormal = new std::normal_distribution<float>(0.0f, 1.0f);
 
-const float Maths::PI = 3.14159265358979323846f;
-const float Maths::E  = 2.71828182845904523536f;
-
-float Maths::toRadians(float degrees)
-{
-    return (degrees*0.01745329251f);
-}
-
-float Maths::toDegrees(float radians)
-{
-    return (radians*57.2957795131f);
-}
-
 /*
 ** Blank Matrix4f should have already been created. This function does not allocate any memory to matrix.
 */

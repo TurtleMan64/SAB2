@@ -17,6 +17,7 @@
 #include "dummy.hpp"
 #include "shieldmagnet.hpp"
 #include "shieldgreen.hpp"
+#include "../menu/hud.hpp"
 
 #include <list>
 #include <iostream>
@@ -172,17 +173,16 @@ void ItemCapsule::die()
     Global::deleteChunkedEntity(entityItem);
     Global::deleteChunkedEntity(entityGlass);
 
-    float height = 6.0f;
     float spread = 10.0f;
     Vector3f vel(0,0,0);
     for (int i = 4; i != 0; i--)
     {
         Vector3f pos(
-            getX() + spread*(Maths::random() - 0.5f),
-            getY() + spread*(Maths::random() - 0.5f) + height,
-            getZ() + spread*(Maths::random() - 0.5f));
+            centerPos.x + spread*(Maths::random() - 0.5f),
+            centerPos.y + spread*(Maths::random() - 0.5f),
+            centerPos.z + spread*(Maths::random() - 0.5f));
 
-        ParticleMaster::createParticle(ParticleResources::textureExplosion1, &pos, &vel, 0, 0.75f, 0, 3*Maths::random() + 6, 0, false, false, 0.5f, true);
+        ParticleMaster::createParticle(ParticleResources::textureExplosion1, &pos, &vel, 0, 0.75f, 3*Maths::random() + 6, 0, false, false, 0.5f, true);
     }
     
     Global::gameMainPlayer->rebound(&centerPos);
@@ -224,9 +224,13 @@ void ItemCapsule::die()
         {
             //green shield
             Global::gameScore += 100;
-            ShieldGreen* shield = new ShieldGreen; INCR_NEW("Entity");
-            Global::addEntity(shield);
-            Global::gameMainPlayer->setShieldGreen(shield);
+            if (Global::gameMainPlayer->getShieldGreen()  == nullptr &&
+                Global::gameMainPlayer->getShieldMagnet() != nullptr)
+            {
+                ShieldGreen* shield = new ShieldGreen; INCR_NEW("Entity");
+                Global::addEntity(shield);
+                Global::gameMainPlayer->setShieldGreen(shield);
+            }
             break;
         }
 
@@ -241,7 +245,7 @@ void ItemCapsule::die()
                 if (e->isEnemy())
                 {
                     Vector3f diff = e->position - position;
-                    if (diff.lengthSquared() < 300*300)
+                    if (diff.lengthSquared() < BOMB_RADIUS*BOMB_RADIUS)
                     {
                         e->die();
                     }
@@ -249,7 +253,7 @@ void ItemCapsule::die()
             }
 
             std::list<std::unordered_set<Entity*>*> nearbyChunkedEntities;
-            Global::getNearbyEntities(position.x, position.z, &nearbyChunkedEntities, 300);
+            Global::getNearbyEntities(position.x, position.z, &nearbyChunkedEntities, BOMB_RADIUS);
             for (auto set : nearbyChunkedEntities)
             {
                 for (auto e : (*set))
@@ -257,7 +261,7 @@ void ItemCapsule::die()
                     if (e->isEnemy())
                     {
                         Vector3f diff = e->position - position;
-                        if (diff.lengthSquared() < 300*300)
+                        if (diff.lengthSquared() < BOMB_RADIUS*BOMB_RADIUS)
                         {
                             e->die();
                         }
@@ -272,9 +276,12 @@ void ItemCapsule::die()
         {
             //electric shield
             Global::gameScore += 100;
-            ShieldMagnet* shield = new ShieldMagnet; INCR_NEW("Entity");
-            Global::addEntity(shield);
-            Global::gameMainPlayer->setShieldMagnet(shield);
+            if (Global::gameMainPlayer->getShieldMagnet() == nullptr)
+            {
+                ShieldMagnet* shield = new ShieldMagnet; INCR_NEW("Entity");
+                Global::addEntity(shield);
+                Global::gameMainPlayer->setShieldMagnet(shield);
+            }
             break;
         }
 
@@ -287,6 +294,8 @@ void ItemCapsule::die()
         default:
             break;
     }
+
+    HUD::displayItem(itemType);
 }
 
 std::list<TexturedModel*>* ItemCapsule::getModels()

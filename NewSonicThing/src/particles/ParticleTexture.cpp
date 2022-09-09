@@ -8,23 +8,3 @@ ParticleTexture::ParticleTexture(GLuint textureId, int numberOfRows, float opaci
     this->opacity = opacity;
     this->glow = glow;
 }
-
-GLuint ParticleTexture::getTextureId()
-{
-    return textureId;
-}
-
-int ParticleTexture::getNumberOfRows()
-{
-    return numberOfRows;
-}
-
-float ParticleTexture::getOpacity()
-{
-    return opacity;
-}
-
-float ParticleTexture::getGlow()
-{
-    return glow;
-}

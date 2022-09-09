@@ -18,7 +18,7 @@ bool CollisionChecker::checkPlayer = false;
 bool CollisionChecker::checkCamera = false;
 
 //bool CollisionChecker::debug = false;
-//std::string CollisionChecker::debugFilename = "collision1.obj";
+//std::string CollisionChecker::debugFilename = "curve.obj";
 //int debugCount = 1;
 
 //std::vector<std::string> out;
@@ -82,6 +82,22 @@ int CollisionChecker::getBiggest(float A, float B, float C)
     }
 }
 
+float CollisionChecker::dotToThrehold(float dot)
+{
+    float val = std::abs(dot);
+
+    if (val < 0.02f) // the direction is very close to being flat
+    {
+        return 0.008f*0.008f; //use the biggset threshold in this case
+    }
+    else if (val < 0.04f)
+    {
+        return 0.004f*0.004f; //use a big threshold in this case
+    }
+
+    return 0.0004f*0.0004f; //can get away with a smaller threshold
+}
+
 //long long tCountTotal = 0;
 //long long tCountN = 0;
 //int tCountWorse = 0;
@@ -103,6 +119,9 @@ bool CollisionChecker::checkCollision(
     //    out.push_back("vt 0 0");
     //    out.push_back("vn 0 1 0");
     //}
+
+    Vector3f checkDir(px2-px1, py2-py1, pz2-pz1);
+    checkDir.normalize();
 
     for (CollisionModel* cm : CollisionChecker::collideModels)
     {
@@ -132,7 +151,7 @@ bool CollisionChecker::checkCollision(
                 //int triangleCount = 0;
                 //int deepCount = 0;
                 //debugCount = 1;
-                // tCountN++;
+                //tCountN++;
                 //int nodeCount = 0;
 
                 for (QuadTreeNode* node : set)
@@ -235,7 +254,9 @@ bool CollisionChecker::checkCollision(
                                         float ciy = py1 + u*(py2 - py1);
                                         float ciz = pz1 + u*(pz2 - pz1);
 
-                                        if (checkPointInTriangle3D(cix, ciy, ciz, currTriangle))
+                                        float threshold = dotToThrehold(currTriangle->normal.dot(&checkDir));
+
+                                        if (checkPointInTriangle3D(cix, ciy, ciz, currTriangle, threshold))
                                         {
                                             //what is the distance to the triangle? set it to maxdist
                                             float thisDist = (cix - px1)*(cix - px1) + (ciy - py1)*(ciy - py1) + (ciz - pz1)*(ciz - pz1);
@@ -356,7 +377,9 @@ bool CollisionChecker::checkCollision(
                                         float ciy = py1 + u*(py2 - py1);
                                         float ciz = pz1 + u*(pz2 - pz1);
 
-                                        if (checkPointInTriangle3D(cix, ciy, ciz, currTriangle))
+                                        float threshold = dotToThrehold(currTriangle->normal.dot(&checkDir));
+
+                                        if (checkPointInTriangle3D(cix, ciy, ciz, currTriangle, threshold))
                                         {
                                             //what is the distance to the triangle? set it to maxdist
                                             float thisDist = (cix - px1)*(cix - px1) + (ciy - py1)*(ciy - py1) + (ciz - pz1)*(ciz - pz1);
@@ -457,7 +480,9 @@ bool CollisionChecker::checkCollision(
                                 float ciy = py1 + u*(py2 - py1);
                                 float ciz = pz1 + u*(pz2 - pz1);
 
-                                if (checkPointInTriangle3D(cix, ciy, ciz, currTriangle))
+                                float threshold = dotToThrehold(currTriangle->normal.dot(&checkDir));
+
+                                if (checkPointInTriangle3D(cix, ciy, ciz, currTriangle, threshold))
                                 {
                                     //what is the distance to the triangle? set it to maxdist
                                     float thisDist = (cix - px1)*(cix - px1) + (ciy - py1)*(ciy - py1) + (ciz - pz1)*(ciz - pz1);
@@ -484,21 +509,21 @@ bool CollisionChecker::checkCollision(
     }
 
     //if (CollisionChecker::debug && CollisionChecker::checkPlayer && finalModel != nullptr)
-    {
-        //print the path being checked
-        //printf("v %f %f %f\n", px1, py1, pz1);
-        //printf("v %f %f %f\n", px2, py2, pz2);
-        //printf("l %d/1 %d/1\n", debugCount, debugCount+1);
-        //debugCount+=2;
-    }
+    //{
+    //    //print the path being checked
+    //    printf("v %f %f %f\n", px1, py1, pz1);
+    //    printf("v %f %f %f\n", px2, py2, pz2);
+    //    printf("l %d/1 %d/1\n", debugCount, debugCount+1);
+    //    debugCount+=2;
+    //}
     //else if (CollisionChecker::debug && CollisionChecker::checkPlayer && finalModel == nullptr)
-    {
-        //print the path being checked
-        //printf("v %f %f %f\n", px1, py1, pz1);
-        //printf("v %f %f %f\n", px2, py2, pz2);
-        //printf("l %d/2 %d/2\n", debugCount, debugCount+1);
-        //debugCount+=2;
-    }
+    //{
+    //    //print the path being checked
+    //    printf("v %f %f %f\n", px1, py1, pz1);
+    //    printf("v %f %f %f\n", px2, py2, pz2);
+    //    printf("l %d/2 %d/2\n", debugCount, debugCount+1);
+    //    debugCount+=2;
+    //}
 
     //if (CollisionChecker::debug)
     //{
@@ -520,7 +545,7 @@ bool CollisionChecker::checkCollision(
     //
     //    fclose(fptr);
     //
-    //    //CollisionChecker::debug = false;
+    //    CollisionChecker::debug = false;
     //}
 
     if (CollisionChecker::checkPlayer && finalModel != nullptr)
@@ -537,7 +562,7 @@ bool CollisionChecker::checkCollision(
 
 bool CollisionChecker::checkPointInTriangle3D(
     float checkx, float checky, float checkz,
-    Triangle3D* tri)
+    Triangle3D* tri, float threshold)
 {
     float nX = std::abs(tri->normal.x);
     float nY = std::abs(tri->normal.y);
@@ -550,7 +575,8 @@ bool CollisionChecker::checkPointInTriangle3D(
                 checkx, checkz, 
                 tri->p1X, tri->p1Z, 
                 tri->p2X, tri->p2Z, 
-                tri->p3X, tri->p3Z));
+                tri->p3X, tri->p3Z,
+                threshold));
     }
     else if (nX > nZ)
     {
@@ -559,7 +585,8 @@ bool CollisionChecker::checkPointInTriangle3D(
                 checkz, checky, 
                 tri->p1Z, tri->p1Y, 
                 tri->p2Z, tri->p2Y, 
-                tri->p3Z, tri->p3Y));
+                tri->p3Z, tri->p3Y,
+                threshold));
     }
 
     //from the front
@@ -567,12 +594,13 @@ bool CollisionChecker::checkPointInTriangle3D(
             checkx, checky, 
             tri->p1X, tri->p1Y, 
             tri->p2X, tri->p2Y, 
-            tri->p3X, tri->p3Y));
+            tri->p3X, tri->p3Y,
+            threshold));
 }
 
 //https://stackoverflow.com/questions/849211/shortest-distance-between-a-point-and-a-line-segment
 float CollisionChecker::pointToSegmentDistanceSquared(
-    float x, float y,
+    float x,  float y,
     float x1, float y1,
     float x2, float y2)
 {
@@ -608,7 +636,8 @@ bool CollisionChecker::checkPointInTriangle2D(
     float x,  float y,
     float x1, float y1,
     float x2, float y2,
-    float x3, float y3)
+    float x3, float y3,
+    float threshold)
 {
     float denominator = ((y2 - y3)*(x1 - x3) + (x3 - x2)*(y1 - y3));
     float a = ((y2 - y3)*(x - x3) + (x3 - x2)*(y - y3)) / denominator;
@@ -621,27 +650,30 @@ bool CollisionChecker::checkPointInTriangle2D(
     }
 
     //handle a literal edge case where the point falls extremely close to an edge
-    const float EPSILON_SQUARED = 0.0001f*0.0001f;
+    //TODO maybe make this check have different thresholds depending on the angle of the line coming in compared to the triangle's normal.
+    // it only really makes sense to have a high epsilon if the the line is nearly flat compared to the triangle.
+    //constexpr float EPSILON_SQUARED = 0.004f*0.004f;
+    const float EPSILON_SQUARED = threshold;
     float distToEdgeSquared = 0.0f;
 
     distToEdgeSquared = pointToSegmentDistanceSquared(x, y, x1, y1, x2, y2);
     if (distToEdgeSquared <= EPSILON_SQUARED)
     {
-        printf("Edge case detected with distToEdgeSquared %f\n", distToEdgeSquared);
+        printf("Edge case detected with distance to edge %f\n", sqrtf(distToEdgeSquared));
         return true;
     }
 
     distToEdgeSquared = pointToSegmentDistanceSquared(x, y, x2, y2, x3, y3);
     if (distToEdgeSquared <= EPSILON_SQUARED)
     {
-        printf("Edge case detected with distToEdgeSquared %f\n", distToEdgeSquared);
+        printf("Edge case detected with distance to edge %f\n", sqrtf(distToEdgeSquared));
         return true;
     }
 
     distToEdgeSquared = pointToSegmentDistanceSquared(x, y, x3, y3, x1, y1);
     if (distToEdgeSquared <= EPSILON_SQUARED)
     {
-        printf("Edge case detected with distToEdgeSquared %f\n", distToEdgeSquared);
+        printf("Edge case detected with distance to edge %f\n", sqrtf(distToEdgeSquared));
         return true;
     }
     

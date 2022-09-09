@@ -18,6 +18,7 @@ private:
     float power = 100.0f;
     float controlLockTime = 1.0f;
     bool changeCamera = false;
+    bool alreadyActivated = false;
     Vector3f forward;
     Vector3f top;
     Vector3f bottom;

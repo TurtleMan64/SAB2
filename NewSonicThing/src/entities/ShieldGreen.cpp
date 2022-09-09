@@ -35,11 +35,11 @@ void ShieldGreen::step()
 
         off.scale((1/16.0f)*60);
     
-        ParticleMaster::createParticle(ParticleResources::textureSparkleGreen, &pos1, &off, 0, 0.0833f, 0, 3.0f, -(3.0f / 0.0833f), false, false, 1.0f, true);
+        ParticleMaster::createParticle(ParticleResources::textureSparkleGreen, &pos1, &off, 0, 0.0833f, 3.0f, -(3.0f / 0.0833f), false, false, 1.0f, true);
 
         off.scale(-1);
 
-        ParticleMaster::createParticle(ParticleResources::textureSparkleGreen, &pos2, &off, 0, 0.0833f, 0, 3.0f, -(3.0f / 0.0833f), false, false, 1.0f, true);
+        ParticleMaster::createParticle(ParticleResources::textureSparkleGreen, &pos2, &off, 0, 0.0833f, 3.0f, -(3.0f / 0.0833f), false, false, 1.0f, true);
     }
 }
 

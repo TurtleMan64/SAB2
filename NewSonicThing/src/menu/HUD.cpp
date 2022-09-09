@@ -16,16 +16,20 @@
 
 float HUD::bonusTimer = 0.0f;
 GuiImage* HUD::pointBonus = nullptr;
-GLuint HUD::pointBonusIds[10] = {0};
+GLuint HUD::pointBonusIds[10] = {0,0,0,0,0,0,0,0,0,0};
+
+float HUD::itemTimer = 0.0f;
+GuiImage* HUD::itemImage = nullptr;
+GLuint HUD::items[11] = {0,0,0,0,0,0,0,0,0,0,0};
 
 HUD::HUD()
 {
-    this->aspectRatio = Display::ASPECT_RATIO;
+    aspectRatio = Display::ASPECT_RATIO;
     //this->safeAreaY = 0.015f;
     //this->safeAreaX = safeAreaY;// / this->aspectRatio;
 
     //this->s = 0.045f; //height of a character
-    this->w = s / this->aspectRatio; //width of a single text character
+    this->w = s / aspectRatio; //width of a single text character
 
     this->numberLives = new GUINumber(Global::gameLives, safeAreaX + w*2, 1.0f - (safeAreaY + s*0.4f), s, 6, false, 2, false); INCR_NEW("GUINumber");
     this->textLivesMission = new GUIText("Inf", s, Global::fontVipnagorgialla, safeAreaX + w*2, 1.0f - (safeAreaY + s*0.4f), 6, false);  INCR_NEW("GUIText");
@@ -61,7 +65,20 @@ HUD::HUD()
     pointBonusIds[7] = LoaderGL::loadTexture("res/Images/PointBonus/7.png");
     pointBonusIds[8] = LoaderGL::loadTexture("res/Images/PointBonus/8.png");
     pointBonusIds[9] = LoaderGL::loadTexture("res/Images/PointBonus/9.png");
-    pointBonus = new GuiImage(pointBonusIds[7], safeAreaX + 4*w, safeAreaY + 5*s, 8*w, s, 0); INCR_NEW("GuiImage")
+    pointBonus = new GuiImage(pointBonusIds[7], safeAreaX + 4*w, safeAreaY + 5*s, 8*w, s, 0); INCR_NEW("GuiImage");
+
+    items[ 0] = LoaderGL::loadTexture("res/Models/Objects/ItemBox/Items/item_speed.png");
+    items[ 1] = LoaderGL::loadTexture("res/Models/Objects/ItemBox/Items/item_ring5.png");
+    items[ 2] = LoaderGL::loadTexture("res/Models/Objects/ItemBox/Items/item_1up_sonic.png");
+    items[ 3] = LoaderGL::loadTexture("res/Models/Objects/ItemBox/Items/item_ring10.png");
+    items[ 4] = LoaderGL::loadTexture("res/Models/Objects/ItemBox/Items/item_ring20.png");
+    items[ 5] = LoaderGL::loadTexture("res/Models/Objects/ItemBox/Items/item_nbarria.png");
+    items[ 6] = LoaderGL::loadTexture("res/Models/Objects/ItemBox/Items/item_explosion.png");
+    items[ 7] = LoaderGL::loadTexture("res/Models/Objects/ItemBox/Items/item_health.png");
+    items[ 8] = LoaderGL::loadTexture("res/Models/Objects/ItemBox/Items/item_tbarria.png");
+    items[ 9] = LoaderGL::loadTexture("res/Models/Objects/ItemBox/Items/Blank.png");
+    items[10] = LoaderGL::loadTexture("res/Models/Objects/ItemBox/Items/item_muteki.png");
+    itemImage = new GuiImage(items[0], 0.5f, 0.82f, 0.133f/aspectRatio, 0.133f, 0); INCR_NEW("GuiImage");
 }
 
 HUD::~HUD()
@@ -78,6 +95,11 @@ HUD::~HUD()
     for (int i = 0; i < 10; i++)
     {
         LoaderGL::deleteTexture(pointBonusIds[i]);
+    }
+    delete this->itemImage; INCR_DEL("GuiImage");
+    for (int i = 0; i < 11; i++)
+    {
+        LoaderGL::deleteTexture(items[i]);
     }
 }
 
@@ -126,8 +148,19 @@ void HUD::draw()
         this->numberRings->refresh();
         this->numberScore->displayNumber = Global::gameScore;
         this->numberScore->refresh();
-        this->numberSpeed->displayNumber = Global::gameMainVehicleSpeed;
-        this->numberSpeed->refresh();
+
+        if (Global::displaySpeedometer)
+        {
+            this->numberSpeed->visible = true;
+            this->textSpeedUnits->visible = true;
+            this->numberSpeed->displayNumber = Global::gameMainVehicleSpeed;
+            this->numberSpeed->refresh();
+        }
+        else
+        {
+            this->numberSpeed->visible = false;
+            this->textSpeedUnits->visible = false;
+        }
 
         if (Global::gameIsArcadeMode)
         {
@@ -168,6 +201,29 @@ void HUD::draw()
 
         GuiManager::addImageToRender(pointBonus);
     }
+
+    if (itemTimer > 0.0f)
+    {
+        float time = 2.0f - itemTimer;
+        float newScale = 1.0f;
+
+        if (time < 0.2f)
+        {
+            newScale = time*5.0f;
+        }
+        else if (time < 1.2f)
+        {
+            newScale = 1.0f;
+        }
+        else
+        {
+            newScale = (itemTimer)*1.25f;
+        }
+
+        itemImage->setScale(newScale);
+
+        GuiManager::addImageToRender(itemImage);
+    }
 }
 
 Menu* HUD::step()
@@ -178,6 +234,7 @@ Menu* HUD::step()
 
     pauseTimer = fmaxf(0.0f, pauseTimer - dt);
     bonusTimer = fmaxf(0.0f, bonusTimer - dt);
+    itemTimer  = fmaxf(0.0f, itemTimer  - dt);
 
     if (Input::inputs.INPUT_START && !Input::inputs.INPUT_PREVIOUS_START &&
         Global::finishStageTimer < 0.0f &&
@@ -190,10 +247,10 @@ Menu* HUD::step()
 
     if (Global::startStageTimer <= 0.0f)
     {
-        this->timer->increment();
+        timer->increment();
     }
 
-    this->draw();
+    draw();
     return retVal;
 }
 
@@ -210,3 +267,18 @@ void HUD::displayPointBonus(int idx)
     }
     pointBonus->textureId = pointBonusIds[idx];
 }
+
+void HUD::displayItem(int idx)
+{
+    itemTimer = 2.0f;
+    if (idx < 0)
+    {
+        idx = 0;
+    }
+    else if (idx > 10)
+    {
+        idx = 10;
+    }
+    itemImage->textureId = items[idx];
+}
+

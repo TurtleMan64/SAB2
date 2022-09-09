@@ -167,6 +167,7 @@ int Global::gameScore = 0;
 int Global::gameLives = 4;
 float Global::gameClock = 0.0f;
 int Global::gameTotalPlaytime = 0;
+int Global::gameAccumulatedRings = 0;
 float Global::gameArcadePlaytime = 0;
 float Global::deathHeight = -100.0f;
 int Global::gameMainVehicleSpeed = 0;
@@ -190,6 +191,7 @@ float Global::stageWaterMurkyAmount = 0.0f;
 FontType* Global::fontVipnagorgialla = nullptr;
 bool Global::renderWithCulling = true;
 bool Global::displayFPS = true;
+bool Global::displaySpeedometer = true;
 //float Global::fpsTarget = 120.0f;
 float Global::fpsLimit = 60.0f;
 int Global::currentCalculatedFPS = 0;
@@ -327,6 +329,7 @@ int main(int argc, char** argv)
     Global::gameLevelIdsKnuckles.push_back(LVL_DELFINO_PLAZA);
     Global::gameLevelIdsKnuckles.push_back(LVL_NOKI_BAY);
     Global::gameLevelIdsKnuckles.push_back(LVL_FREEZEEZY_PEAK);
+    Global::gameLevelIdsKnuckles.push_back(LVL_SWEET_MOUNTAIN);
 
     //create NPC list
     Global::stageNpcCounts[LVL_SKY_RAIL]        = 3;
@@ -339,7 +342,7 @@ int main(int argc, char** argv)
     Global::stageNpcCounts[LVL_EMERALD_COAST]   = 5;
 
     #if !defined(DEV_MODE) && defined(_WIN32)
-    FreeConsole();
+    //FreeConsole(); //dont do this anymore, just change the subsystem to Windows instead of Console
     #endif
 
     LoaderGL::init();
@@ -447,6 +450,8 @@ int main(int argc, char** argv)
 
         timeNew = glfwGetTime();
 
+        ANALYSIS_START("Frame DT Spin");
+
         #ifndef _WIN32
         //spin lock to meet the target fps, and gives extremely consistent dt's.
         // also of course uses a ton of cpu.
@@ -503,13 +508,17 @@ int main(int argc, char** argv)
                 {
                     printf("slept for too long! (%f seconds too much)\n", (timeNew - timeOld) - dtFrameNeedsToTake);
                 }
+                else if (!slept && !spinned)
+                {
+                    //printf("frame has already taken too long!\n");
+                }
             }
         }
         #endif
 
         dt = (float)(timeNew - timeOld);
         dt = std::fminf(dt, 0.04f); //Anything lower than 25fps will slow the gameplay down
-        //dt *= 0.5f;
+        //dt *= 0.25f;
         timeOld = timeNew;
 
         Input::pollInputs();
@@ -527,20 +536,26 @@ int main(int argc, char** argv)
             Global::gameArcadePlaytime+=dt;
         }
 
+        ANALYSIS_DONE("Frame DT Spin");
+
         #ifdef DEV_MODE
+        ANALYSIS_START("ERROR CHECK GL");
         GLenum err = glGetError();
         if (err != GL_NO_ERROR)
         {
-            std::fprintf(stderr, "########  GL ERROR  ########\n");
-            std::fprintf(stderr, "%d\n", err);
+            printf("########  GL ERROR  ########\n");
+            printf("%d\n", err);
         }
+        ANALYSIS_DONE("ERROR CHECK GL");
 
+        ANALYSIS_START("ERROR CHECK AL");
         ALenum erral = alGetError();
         if (erral != AL_NO_ERROR)
         {
-            std::fprintf(stderr, "########  AL ERROR  ########\n");
-            std::fprintf(stderr, "%d\n", erral);
+            printf("########  AL ERROR  ########\n");
+            printf("%d\n", erral);
         }
+        ANALYSIS_DONE("ERROR CHECK AL");
         #endif
 
         //long double thisTime = std::time(0);
@@ -601,6 +616,8 @@ int main(int argc, char** argv)
         gameChunkedEntitiesToDelete.clear();
         ANALYSIS_DONE("Entity Management");
 
+        ANALYSIS_START("Object Logic");
+
         cam.inWater = false;
         EggPawn::pawns.clear();
 
@@ -608,7 +625,6 @@ int main(int argc, char** argv)
         {
             case STATE_RUNNING:
             {
-                ANALYSIS_START("Object Logic");
                 //game logic
 
                 //unlock framerate during gameplay
@@ -691,7 +707,6 @@ int main(int argc, char** argv)
                         Global::mainHudTimer->freeze(true);
                     }
                 }
-                ANALYSIS_DONE("Object Logic");
                 break;
             }
 
@@ -754,6 +769,10 @@ int main(int argc, char** argv)
 
         Stage::updateVisibleChunks();
         SkyManager::calculateValues();
+
+        ANALYSIS_DONE("Object Logic");
+
+        ANALYSIS_START("Object Render");
 
         //prepare entities to render
         for (Entity* e : gameEntities)
@@ -865,6 +884,8 @@ int main(int argc, char** argv)
 
         MasterRenderer::clearAllEntities();
 
+        ANALYSIS_DONE("Object Render");
+
         if (rankDisplay != nullptr)
         {
             GuiManager::addImageToRender(rankDisplay);
@@ -874,6 +895,8 @@ int main(int argc, char** argv)
         //debugNumber = new GUIText(std::to_string(Global::renderCount), 0.04f, Global::fontVipnagorgialla, 0, 0, 0, true);
 
         //GuiManager::addGuiToRender(debugDepth);
+
+        ANALYSIS_START("Screen Refresh");
 
         GuiManager::refresh();
         GuiManager::clearGuisToRender();
@@ -899,12 +922,20 @@ int main(int argc, char** argv)
 
         Display::updateDisplay();
 
+        ANALYSIS_DONE("Screen Refresh");
+
         //dt = (float)(timeNew - timeOld);
         //dt = std::fminf(dt, 0.04f); //Anything lower than 25fps will slow the gameplay down
         ////dt *= 0.5f;
         //timeOld = timeNew;
 
+        ANALYSIS_START("Audio Refresh");
+
         AudioPlayer::refreshBGM();
+
+        ANALYSIS_DONE("Audio Refresh");
+
+        ANALYSIS_START("Misc End Stuff");
 
         Global::clearTitleCard();
 
@@ -923,7 +954,7 @@ int main(int argc, char** argv)
             if (finishTimerBefore < 0.0166f && Global::finishStageTimer >= 0.0166f)
             {
                 Vector3f partVel(0, 0, 0);
-                ParticleMaster::createParticle(ParticleResources::textureWhiteFadeOutAndIn, Global::gameCamera->getFadePosition1(), &partVel, 0, 2.0f, 0, 900, 0, true, false, 1.0f, false);
+                ParticleMaster::createParticle(ParticleResources::textureWhiteFadeOutAndIn, Global::gameCamera->getFadePosition1(), &partVel, 0, 2.0f, 900, 0, true, false, 1.0f, false);
             }
 
             if (finishTimerBefore < 1.0f && Global::finishStageTimer >= 1.0f)
@@ -943,7 +974,7 @@ int main(int argc, char** argv)
             if (finishTimerBefore < 8.166f && Global::finishStageTimer >= 8.166f)
             {
                 Vector3f partVel(0, 0, 0);
-                ParticleMaster::createParticle(ParticleResources::textureBlackFadeOutAndIn, Global::gameCamera->getFadePosition1(), &partVel, 0, 2.0f, 0, 900, 0, true, false, 1.0f, false);
+                ParticleMaster::createParticle(ParticleResources::textureBlackFadeOutAndIn, Global::gameCamera->getFadePosition1(), &partVel, 0, 2.0f, 900, 0, true, false, 1.0f, false);
 
                 AudioPlayer::play(25, &Global::gameMainPlayer->position);
             }
@@ -1067,6 +1098,8 @@ int main(int argc, char** argv)
         }
         //printf("dt: %f\n", dt);
 
+        ANALYSIS_DONE("Misc End Stuff");
+
         ANALYSIS_DONE("Frame Time");
         ANALYSIS_REPORT();
     }
@@ -1176,8 +1209,8 @@ void Global::checkErrorAL(const char* description)
     ALenum erral = alGetError();
     if (erral != AL_NO_ERROR)
     {
-        fprintf(stdout, "########  AL ERROR  ########\n");
-        fprintf(stdout, "%s     %d\n", description, erral);
+        printf("########  AL ERROR  ########\n");
+        printf("%s     %d\n", description, erral);
     }
 }
 
@@ -1221,6 +1254,11 @@ void Global::loadSaveData()
     if (Global::gameSaveData.find("PLAYTIME") != Global::gameSaveData.end())
     {
         Global::gameTotalPlaytime = std::stoi(Global::gameSaveData["PLAYTIME"]);
+    }
+
+    if (Global::gameSaveData.find("RINGS") != Global::gameSaveData.end())
+    {
+        Global::gameAccumulatedRings = std::stoi(Global::gameSaveData["RINGS"]);
     }
 
     if (Global::gameSaveData.find("CAMERA") != Global::gameSaveData.end())
@@ -1304,7 +1342,7 @@ void Global::saveGhostData()
             raceLogFile.open(ghostFilename, std::ios::out | std::ios::trunc);
             if (!raceLogFile.is_open())
             {
-                std::fprintf(stderr, "Error: Failed to create/access '%s'\n", (ghostFilename).c_str());
+                printf("Error: Failed to create/access '%s'\n", (ghostFilename).c_str());
             }
             else
             {
@@ -1335,12 +1373,14 @@ void Global::saveSaveData()
 
     if (!file.is_open())
     {
-        std::fprintf(stderr, "Error: Failed to create/access '%s'\n", (Global::pathToEXE + "res/SaveData/SaveData.sav").c_str());
+        printf("Error: Failed to create/access '%s'\n", (Global::pathToEXE + "res/SaveData/SaveData.sav").c_str());
         file.close();
     }
     else
     {
         Global::gameSaveData["PLAYTIME"] = std::to_string(Global::gameTotalPlaytime);
+
+        Global::gameSaveData["RINGS"] = std::to_string(Global::gameAccumulatedRings);
 
         if (Global::isAutoCam)
         {
@@ -1371,7 +1411,7 @@ void Global::saveConfigData()
 
     if (!file.is_open())
     {
-        std::fprintf(stderr, "Error: Failed to create/access '%s'\n", (Global::pathToEXE + "Settings/GraphicsSettings.ini").c_str());
+        printf("Error: Failed to create/access '%s'\n", (Global::pathToEXE + "Settings/GraphicsSettings.ini").c_str());
         file.close();
     }
     else
@@ -1387,17 +1427,21 @@ void Global::saveConfigData()
         //file << "HQ_Water_Refraction_Width "  << Global::HQWaterRefractionWidth  << "\n";
         //file << "HQ_Water_Refraction_Height " << Global::HQWaterRefractionHeight << "\n\n";
 
-        file << "#Show particles.\n";
-        if (Global::renderParticles) { file << "Show_Particles on\n\n"; }
-        else                         { file << "Show_Particles off\n\n"; }
-
         file << "#Bloom post processing.\n";
         if (Global::renderBloom) { file << "Bloom on\n\n"; }
         else                     { file << "Bloom off\n\n"; }
 
+        file << "#Show particles.\n";
+        if (Global::renderParticles) { file << "Show_Particles on\n\n"; }
+        else                         { file << "Show_Particles off\n\n"; }
+
         file << "#Shows FPS in the corner of the screen.\n";
         if (Global::displayFPS)  { file << "Show_FPS on\n\n"; }
         else                     { file << "Show_FPS off\n\n"; }
+
+        file << "#Shows speedometer in the corner of the screen.\n";
+        if (Global::displaySpeedometer)  { file << "Show_Speedometer on\n\n"; }
+        else                             { file << "Show_Speedometer off\n\n"; }
 
         file << "#Number of multisamples to use for anti-aliasing.\n";
         file << "Anti-Aliasing_Samples " << Display::AA_SAMPLES << "\n\n";
@@ -1419,7 +1463,7 @@ void Global::saveConfigData()
 
     if (!file.is_open())
     {
-        std::fprintf(stderr, "Error: Failed to create/access '%s'\n", (Global::pathToEXE + "Settings/AudioSettings.ini").c_str());
+        printf("Error: Failed to create/access '%s'\n", (Global::pathToEXE + "Settings/AudioSettings.ini").c_str());
         file.close();
     }
     else
@@ -1502,7 +1546,6 @@ int Global::calculateRankAndUpdate()
         {
             std::string newScoreString = std::to_string(newScore);
             Global::gameSaveData[currentLevel->displayName+"_"+Global::characterNames[Global::currentCharacterType]+missionScoreString] = newScoreString;
-            Global::saveSaveData();
         }
 
         float newTime = 60000.0f;
@@ -1522,7 +1565,6 @@ int Global::calculateRankAndUpdate()
         {
             std::string newTimeString = std::to_string(newTime);
             Global::gameSaveData[currentLevel->displayName+"_"+Global::characterNames[Global::currentCharacterType]+missionTimeString] = newTimeString;
-            Global::saveSaveData();
         }
 
         int savedRings = 0;
@@ -1536,6 +1578,8 @@ int Global::calculateRankAndUpdate()
         {
             Global::gameSaveData[currentLevel->displayName+"_RINGS"] = std::to_string(Global::gameRingCount);
         }
+
+        Global::gameAccumulatedRings += Global::gameRingCount;
 
         if (missionType == "Normal" || missionType == "Hard")
         {
@@ -1563,8 +1607,6 @@ int Global::calculateRankAndUpdate()
                 }
 
                 Global::gameSaveData[currentLevel->displayName+"_"+Global::characterNames[Global::currentCharacterType]+missionRankString]  = newRankString;
-
-                Global::saveSaveData();
             }
         }
         else if (missionType == "Ring" || missionType == "Chao" || missionType == "Race")
@@ -1593,10 +1635,10 @@ int Global::calculateRankAndUpdate()
                 }
 
                 Global::gameSaveData[currentLevel->displayName+"_"+Global::characterNames[Global::currentCharacterType]+missionRankString] = newRankString;
-
-                Global::saveSaveData();
             }
         }
+
+        Global::saveSaveData();
     }
 
     return newRank;
@@ -1633,7 +1675,7 @@ void listen()
         }
         else if (input.size() > 1)
         {
-            fprintf(stdout, "input = '%s'\n", input.c_str());
+            printf("input = '%s'\n", input.c_str());
             //Global::gamePlayer->setGroundSpeed(0, 0);
             //Global::gamePlayer->setxVelAir(0);
             //Global::gamePlayer->setxVelAir(0);
@@ -1720,7 +1762,7 @@ int Global::getChunkIndex(float x, float z)
 
     if (realIndex >= (int)gameChunkedEntities.size())
     {
-        std::fprintf(stderr, "Error: Index out of bounds on gameNearbyEntities. THIS IS VERY BAD.\n");
+        printf("Error: Index out of bounds on gameNearbyEntities. THIS IS VERY BAD.\n");
         printf("    x = %f       z = %f\n", x, z);
         printf("    relativeX = %f      relativeZ = %f\n", relativeX, relativeZ);
         printf("    iX = %d        iZ = %d\n", iX, iZ);
@@ -1782,7 +1824,7 @@ void Global::getNearbyEntities(float x, float z, int renderDistance, std::list<s
 
         default:
         {
-            std::fprintf(stderr, "Error: Render distance not out of range.\n");
+            printf("Error: Render distance not out of range.\n");
             break;
         }
     }
@@ -1810,7 +1852,7 @@ void Global::recalculateEntityChunks(float minX, float maxX, float minZ, float m
 {
     if (gameChunkedEntities.size() != 0)
     {
-        std::fprintf(stderr, "Error: Trying to recalculate entity chunks when gameChunkedEntities is not 0.\n");
+        printf("Error: Trying to recalculate entity chunks when gameChunkedEntities is not 0.\n");
         return;
     }
 
@@ -1874,7 +1916,7 @@ void Global::createTitleCard()
     GuiManager::clearGuisToRender();
 
     Vector3f vel(0,0,0);
-    ParticleMaster::createParticle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &vel, 0, 1.0f, 0.0f, 50.0f, 0, true, false, 1.0f, false);
+    ParticleMaster::createParticle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &vel, 0, 1.0f, 50.0f, 0, true, false, false);
     
     switch (Global::currentCharacterType)
     {
@@ -2004,23 +2046,32 @@ void Global::performanceAnalysisDone(const char* name)
     }
 }
 
+float clockLast = 0.0f;
+
 void Global::performanceAnalysisReport()
 {
-    printf("Performance Report\n");
-
-    auto it = operationTotalTimes.begin();
-    while (it != operationTotalTimes.end())
+    //float frameTime = operationTotalTimes["Frame Time"];
+    //frameTime = 0.0f;
+    if (Global::gameClock - clockLast > 3.0f) //only show report every 3 seconds since showing it causes a lag spike
     {
-        printf("%s    %f\n", it->first.c_str(), 1000*it->second);
-        it++;
+        clockLast = Global::gameClock;
+        printf("Performance Report\n");
+
+        auto it = operationTotalTimes.begin();
+        while (it != operationTotalTimes.end())
+        {
+            printf("%s    %f\n", it->first.c_str(), 1000*it->second);
+            it++;
+        }
+
+        printf("\n");
+
+        if (!operationStartTimes.empty())
+        {
+            printf("operationTotalTimes was not empty. Some operations were not finished when doing the report.\n");
+        }
     }
 
-    printf("\n");
-
-    if (!operationStartTimes.empty())
-    {
-        printf("operationTotalTimes was not empty. Some operations were not finished when doing the report.\n");
-    }
     operationStartTimes.clear();
     operationTotalTimes.clear();
 }

@@ -130,6 +130,9 @@
     <Filter Include="Source Files\entities\SeasideHill">
       <UniqueIdentifier>{4a401a88-8b81-4ea8-8571-87454324bfb3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\entities\SweetMountain">
+      <UniqueIdentifier>{ae4cd14a-1cfd-4fd7-954f-266108e7717d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\glad.c">
@@ -720,6 +723,27 @@
     <ClCompile Include="src\entities\EggPawn.cpp">
       <Filter>Source Files\entities</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\SeasideHill\SH_Flag.cpp">
+      <Filter>Source Files\entities\SeasideHill</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\Spikeball.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\Spinner.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\MotoBug.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\RhinoTank.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\SweetMountain\SM_StageManager.cpp">
+      <Filter>Source Files\entities\SweetMountain</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\EggPawnGun.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.hpp">
@@ -1305,6 +1329,27 @@
       <Filter>Source Files\entities</Filter>
     </ClInclude>
     <ClInclude Include="src\entities\eggpawn.hpp">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\SeasideHill\shflag.hpp">
+      <Filter>Source Files\entities\SeasideHill</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\rhinotank.hpp">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\spikeball.hpp">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\spinner.hpp">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\motobug.hpp">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\SweetMountain\smstagemanager.hpp">
+      <Filter>Source Files\entities\SweetMountain</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\eggpawngun.hpp">
       <Filter>Source Files\entities</Filter>
     </ClInclude>
   </ItemGroup>

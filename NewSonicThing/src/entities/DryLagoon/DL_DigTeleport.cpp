@@ -58,7 +58,7 @@ void DL_DigTeleport::step()
         {
             timeUntilWarp = 0.7f;
             Vector3f vel(0, 0, 0);
-            ParticleMaster::createParticle(ParticleResources::textureBlackFadeOutAndIn, &Global::gameCamera->fadePosition1, &vel, 0, 1.4f, 0, 400, 0, true, false, 1.0f, false);
+            ParticleMaster::createParticle(ParticleResources::textureBlackFadeOutAndIn, &Global::gameCamera->fadePosition1, &vel, 0, 1.4f, 400, 0, true, false, 1.0f, false);
         }
     }
 

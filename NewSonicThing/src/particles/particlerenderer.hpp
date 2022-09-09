@@ -21,8 +21,8 @@ private:
     RawModel* quad = nullptr;
     ParticleShader* shader = nullptr;
 
-    const int MAX_INSTANCES = 10000;
-    const int INSTANCED_DATA_LENGTH = 21;
+    static constexpr int MAX_INSTANCES = 4100;
+    static constexpr int INSTANCED_DATA_LENGTH = 21;
 
     std::vector<float> vboDataBuffer;
     int vboBufferIdx = 0;
@@ -35,7 +35,7 @@ private:
 
     void finishRendering();
 
-    void updateModelViewMatrix(Vector3f* position, float rotation, float scaleX, float scaleY, Matrix4f* viewMatrix);
+    void updateModelViewMatrix(Particle* particle, Matrix4f* viewMatrix);
 
     void storeMatrixData(Matrix4f* matrix);
 
@@ -44,8 +44,8 @@ private:
 public:
     ParticleRenderer(Matrix4f* projectionMatrix);
 
-    void render(std::unordered_map<ParticleTexture*, std::list<ParticleStandard*>>* particlesStandard, 
-                std::unordered_map<ParticleTexture*, std::list<GF_Particle*>>* particlesGF,
+    void render(std::unordered_map<ParticleTexture*, std::list<ParticleStandard*>*>* particlesStandard, 
+                std::unordered_map<ParticleTexture*, std::list<GF_Particle*>*>* particlesGF,
                 Camera* camera, float brightness, int clipSide);
 
     void updateProjectionMatrix(Matrix4f* projectionMatrix);

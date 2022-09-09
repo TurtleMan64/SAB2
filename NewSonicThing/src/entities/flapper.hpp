@@ -19,7 +19,7 @@ private:
     static std::list<TexturedModel*> modelsGreenWingLeft;
     static std::list<TexturedModel*> modelsGun;
     
-    static constexpr float activationRange = 140.0f;
+    static constexpr float activationRange = 220.0f;
     static constexpr float lookSpeed = 5.0f;
     static constexpr float hitRadius = 9.0f;
     static constexpr float timeUntilShoot = 2.0f;
@@ -43,7 +43,7 @@ private:
 
     void updateWings();
 
-    int type;
+    int type = 0;
 
 public:
     Flapper();

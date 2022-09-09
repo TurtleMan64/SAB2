@@ -1,10 +1,10 @@
-22
+23
 
 Tutorial.lvl
 Tutorial
 202
 4
-Normal;100;Learn how to play the game so you don't get mad at simple things.
+Normal;100;Learn the basics!
 Ring;100;100;Collect 100 Rings!
 Chao;100;Find the lost chao!
 Race;100;62.166862;Race against Mighty!
@@ -31,7 +31,7 @@ Pyramid Cave
 3
 Normal;100;Complete as Blue Falcon
 Ring;100;100;Collect 100 Rings!
-Chao;100;Complete as Soic Phantom
+Chao;100;Find the lost chao!
 
 SkyRail.lvl
 Sky Rail
@@ -63,7 +63,7 @@ City Escape
 3
 Normal;100;Complete as Blue Falcon
 Ring;100;100;Collect 100 Rings!
-Chao;100;Complete as Soic Phantom
+Chao;100;Find the lost chao!
 
 WindyValley.lvl
 Windy Valley
@@ -75,21 +75,21 @@ Chao;100;Complete as Soic Phantom
 
 SeasideHill.lvl
 Seaside Hill
-1126
+643
 3
-Normal;100;Complete as Blue Falcon
-Ring;100;100;Collect 100 Rings!
-Chao;100;Complete as Soic Phantom
+Normal;100;Head for whale island!
+Ring;200;200;Collect 200 Rings!
+Chao;100;Find the lost chao!
 
 FrogForest.lvl
 Frog Forest
 78
 3
-Normal;100;Complete as Blue Falcon
+Normal;100;Venture through the jungle!
 Ring;100;100;Collect 100 Rings!
-Chao;100;Complete as Soic Phantom
+Chao;100;Find the lost chao!
 
-Test.lvl
+Curve.lvl
 Epic Test Level
 100
 2
@@ -171,13 +171,22 @@ EmeraldCoast.lvl
 Emerald Coast
 251
 4
-Normal;15000;Run along the beach!
+Normal;15000;Cruise this coast!
 Ring;90;200;Collect 200 Rings!
 Chao;35;Find the lost chao!
 Race;110;71.632294;Race against Mighty!
 
 FreezeezyPeak.lvl
 Freezeezy Peak
+100
+4
+Normal;14000;Find all the pieces of the master emerald!
+Ring;40;100;Collect 100 Rings!
+Chao;25;Find the lost chao!
+Hard;15000;Complete hard mode!
+
+SweetMountain.lvl
+Sweet Mountain
 100
 4
 Normal;14000;Find all the pieces of the master emerald!

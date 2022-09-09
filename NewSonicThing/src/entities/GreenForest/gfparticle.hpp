@@ -12,7 +12,7 @@ private:
     void respawn();
 
 public:
-    static const float pollenRadius;
+    static constexpr float pollenRadius = 200.0f;
     static int currentPopulation;
     static Vector3f centerSpawnPos;
     GF_Particle();

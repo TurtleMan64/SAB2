@@ -15,7 +15,7 @@ private:
     static constexpr float centerHeight = 12.7f;
     static constexpr float collisionRadiusPawn = 24.0f;
     static constexpr float collisionRadiusWall = 10.0f;
-    static constexpr float activationRange = 140.0f;
+    static constexpr float activationRange = 200.0f;
     static constexpr float hitRadius = 13.5f;
     static constexpr float lookSpeed = 1.5f;
 

@@ -19,12 +19,18 @@ private:
     static std::normal_distribution<float>* distributionNormal;
 
 public:
-    static const float PI;
-    static const float E;
+    static constexpr float PI = 3.14159265358979323846f;
+    static constexpr float E  = 2.71828182845904523536f;
 
-    static float toRadians(float deg);
+    static inline float toRadians(float deg)
+    {
+        return deg*0.01745329251f;
+    }
 
-    static float toDegrees(float rad);
+    static inline float toDegrees(float rad)
+    {
+        return rad*57.2957795131f;
+    }
 
     //Blank Matrix4f should have already been created. This function does not allocate any memory to matrix.
     static void createTransformationMatrix(Matrix4f* result, Vector3f* translation, float rX, float rY, float rZ, float rS, float scale);

@@ -128,7 +128,7 @@ void PlayerKnuckles::step()
         deadTimer    <= 1.0f)
     {
         Vector3f partVel(0, 0, 0);
-        ParticleMaster::createParticle(ParticleResources::textureBlackFadeOutAndIn, Global::gameCamera->getFadePosition1(), &partVel, 0, 2.0f, 0, 400, 0, true, false, 1, false);
+        ParticleMaster::createParticle(ParticleResources::textureBlackFadeOutAndIn, Global::gameCamera->getFadePosition1(), &partVel, 0, 2.0f, 400, 0, true, false, 1, false);
     }
     else if (deadTimerOld >  0.0f &&
              deadTimer    <= 0.0f)
@@ -732,7 +732,7 @@ void PlayerKnuckles::step()
             partVel.z += (Maths::random()-0.5f);
             partVel.scale(60);
 
-            ParticleMaster::createParticle(ParticleResources::textureDirt, &pos, &partVel, 0.08f*60*60, 1.0f, 0, 2*Maths::random()+0.5f, 0, false, false, 1.0f, true);
+            ParticleMaster::createParticle(ParticleResources::textureDirt, &pos, &partVel, 0.08f*60*60, 1.0f, 2*Maths::random()+0.5f, 0, false, false, 1.0f, true);
         
             dirtToMake--;
         }
@@ -1581,7 +1581,7 @@ void PlayerKnuckles::step()
                 (Maths::random() - 0.5f) * 3 + (vel.z/60.0f)*0.8f);
             partVel.scale(60.0f);
 
-            ParticleMaster::createParticle(playerModel->getBallTexture(), &partPos, &partVel, 0.12f*60.0f*60.0f, 0.5f, 0, 14.0f, -28.0f, false, false, 2.0f, true);
+            ParticleMaster::createParticle(playerModel->getBallTexture(), &partPos, &partVel, 0.12f*60.0f*60.0f, 0.5f, 14.0f, -28.0f, false, false, 2.0f, true);
         }
     }
 
@@ -1615,7 +1615,7 @@ void PlayerKnuckles::step()
                 Maths::random() - 0.5f + (vel.z/60.0f)*0.4f);
 
             bubVel.scale(60.0f);
-            ParticleMaster::createParticle(ParticleResources::textureBubble, &bubPos, &bubVel, 60*60*0.25f, 1.0f, 0.0f, 4.0f, 0.0f, false, false, 1.0f, true);
+            ParticleMaster::createParticle(ParticleResources::textureBubble, &bubPos, &bubVel, 60*60*0.25f, 1.0f, 4.0f, 0.0f, false, false, 1.0f, true);
         }
     }
 
@@ -1643,7 +1643,7 @@ void PlayerKnuckles::step()
                 Maths::random() - 0.5f + (vel.z/60.0f)*0.4f);
 
             bubVel.scale(60.0f);
-            ParticleMaster::createParticle(ParticleResources::textureBubble, &bubPos, &bubVel, 60*60*0.05f, 1.0f, 0.0f, 4.0f, 0.0f, false, false, 1.0f, true);
+            ParticleMaster::createParticle(ParticleResources::textureBubble, &bubPos, &bubVel, 60*60*0.05f, 1.0f, 4.0f, 0.0f, false, false, 1.0f, true);
         }
 
         vel.y = fmaxf(vel.y, -200.0f); //waterEntryMaxYVel
@@ -2206,7 +2206,7 @@ void PlayerKnuckles::rebound(Vector3f* source)
             vel.y = 0;
             vel.setLength(5.0f);
         }
-        else  //retain speed if you hold A during impact
+        else  //retain speed if you don't hold A during impact
         {
             if (homingAttackTimer > 0.0f) //if you came in from a homingAttack, cut speed a bit
             {
@@ -2214,7 +2214,19 @@ void PlayerKnuckles::rebound(Vector3f* source)
                 vel.setLength(vel.length()*0.45f);
             }
         }
-        vel.y = 126.0f;
+
+        if (!inputJump)
+        {
+            if (vel.y < 126.0f)
+            {
+                vel.y = 126.0f;
+            }
+        }
+        else
+        {
+            vel.y = 126.0f;
+        }
+
         position.set(source->x, source->y+0.01f, source->z);
         homingAttackTimer = -1.0f;
         canGlideTimer = 0.0f;
@@ -2613,7 +2625,7 @@ void PlayerKnuckles::updateAnimationValues()
 
                 Vector3f spd = relativeUp.scaleCopy(55.0f) + rng;
                 Vector3f partPos = position + relativeUp.scaleCopy(1.5f);
-                ParticleMaster::createParticle(ParticleResources::textureDust, &partPos, &spd, 0, 0.25f + (0.125f*Maths::nextGaussian()), 0, 5.0f+Maths::nextGaussian(), 0.0f, false, false, 1.0f, true);
+                ParticleMaster::createParticle(ParticleResources::textureDust, &partPos, &spd, 0, 0.25f + (0.125f*Maths::nextGaussian()), 5.0f+Maths::nextGaussian(), 0.0f, false, false, 1.0f, true);
             }
         }
     }
@@ -2662,7 +2674,7 @@ void PlayerKnuckles::updateAnimationValues()
         for (int i = 0; i < numParticles; i++)
         {
             Vector3f partPos = centerPosPrev + diff.scaleCopy(((float)i)/numParticles);
-            ParticleMaster::createParticle(trail, &partPos, &zero, 0, 0.25f, 0, 8.0f, -32.0f, false, false, opacity, true);
+            ParticleMaster::createParticle(trail, &partPos, &zero, 0, 0.25f, 8.0f, -32.0f, false, false, opacity, true);
         }
     }
 
@@ -2921,11 +2933,11 @@ void PlayerKnuckles::animate()
     //change color with shields/invincible
     if (myShieldGreen != nullptr)
     {
-        newBaseColor.set(0.8f, 1.2f, 0.9f);
+        newBaseColor.set(1.0f, 2.0f, 1.0f);
     }
     if (myShieldMagnet != nullptr)
     {
-        newBaseColor.set(0.8f, 0.9f, 1.2f);
+        newBaseColor.set(1.0f, 1.0f, 2.0f);
     }
     if (invincibleTimer > 0.0f)
     {
@@ -3264,7 +3276,7 @@ bool PlayerKnuckles::isDying()
 bool PlayerKnuckles::canDealDamage()
 {
     //return (hitTimer == 0.0f && hitFlashingTimer == 0.0f && !isReadingHint);
-    return (isGliding || isDrillDiving || isJumping || punchingTimer > 0.0f);
+    return (isGliding || isDrillDiving || isJumping || (punchingTimer > 0.0f) || (invincibleTimer > 0.0f));
 }
 
 bool PlayerKnuckles::canBreakObjects()

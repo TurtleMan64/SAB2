@@ -263,8 +263,8 @@ void Rocket::makeExhaustParticles(float rocketSpeed)
         particlePosition.z += 4*(Maths::random() - 0.5f);
 
         //create the particle using these calculated values
-        ParticleMaster::createParticle(ParticleResources::textureDust, &particlePosition, &particleVelocity, 0.0f, 0.1f, 0, 2*Maths::random() + 0.5f, 0, false, false, 1.0f, true);
-        ParticleMaster::createParticle(ParticleResources::textureDust, &particlePosition, &particleVelocity, 0.0f, 0.1f, 0, 2*Maths::random() + 0.5f, 0, false, false, 1.0f, true);
+        ParticleMaster::createParticle(ParticleResources::textureDust, &particlePosition, &particleVelocity, 0.0f, 0.1f, 2*Maths::random() + 0.5f, 0, false, false, 1.0f, true);
+        ParticleMaster::createParticle(ParticleResources::textureDust, &particlePosition, &particleVelocity, 0.0f, 0.1f, 2*Maths::random() + 0.5f, 0, false, false, 1.0f, true);
 
         dirtToMake--;
     }

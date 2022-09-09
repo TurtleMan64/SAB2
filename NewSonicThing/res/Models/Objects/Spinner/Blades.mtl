@@ -1,0 +1,35 @@
+	# Blender MTL File: 'None'
+	# Material Count: 3
+
+newmtl object_00570D8C_material_0
+	Ns 20
+	Ka 1.000000 1.000000 1.000000
+	Kd 1.000000 1.000000 1.000000
+	Ks 0.000000 0.000000 0.000000
+	Ke 0.000000 0.000000 0.000000
+	Ni 0.3
+	d 1.000000
+	illum 2
+	map_Kd reon_col00.png
+
+newmtl object_00570D8C_material_2
+	Ns 20
+	Ka 1.000000 1.000000 1.000000
+	Kd 1.000000 1.000000 1.000000
+	Ks 0.000000 0.000000 0.000000
+	Ke 0.000000 0.000000 0.000000
+	Ni 0.3
+	d 1.000000
+	illum 2
+	map_Kd bombbody.png
+
+newmtl object_00570D8C_material_3
+	Ns 20
+	Ka 1.000000 1.000000 1.000000
+	Kd 1.000000 1.000000 1.000000
+	Ks 0.000000 0.000000 0.000000
+	Ke 0.000000 0.000000 0.000000
+	Ni 0.3
+	d 1.000000
+	illum 2
+	map_Kd supi_hane.png

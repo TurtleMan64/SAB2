@@ -63,7 +63,7 @@ void DL_BlueBox::step()
                     getY() + spread*(Maths::random() - 0.5f) + height,
                     getZ() + spread*(Maths::random() - 0.5f));
 
-                ParticleMaster::createParticle(ParticleResources::textureExplosion1, &pos, &spd, 0, 1.55f, 0, 3*Maths::random() + 8, 0, false, false, 1.0f, true);
+                ParticleMaster::createParticle(ParticleResources::textureExplosion1, &pos, &spd, 0, 1.55f, 3*Maths::random() + 8, 0, false, false, 1.0f, true);
             }
 
             CollisionChecker::deleteCollideModel(collideModelTransformed);

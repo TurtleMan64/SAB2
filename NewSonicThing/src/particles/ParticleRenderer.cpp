@@ -10,6 +10,7 @@
 #include "particle.hpp"
 #include "particletexture.hpp"
 #include "particlerenderer.hpp"
+#include "particleresources.hpp"
 #include "../toolbox/maths.hpp"
 #include "../entities/camera.hpp"
 #include "../engineTester/main.hpp"
@@ -24,12 +25,12 @@ ParticleRenderer::ParticleRenderer(Matrix4f* projectionMatrix)
 
     std::vector<float> vertices;
     vertices.push_back(-0.5f);
-    vertices.push_back(0.5f);
+    vertices.push_back( 0.5f);
     vertices.push_back(-0.5f);
     vertices.push_back(-0.5f);
-    vertices.push_back(0.5f);
-    vertices.push_back(0.5f);
-    vertices.push_back(0.5f);
+    vertices.push_back( 0.5f);
+    vertices.push_back( 0.5f);
+    vertices.push_back( 0.5f);
     vertices.push_back(-0.5f);
     quad = new RawModel(LoaderGL::loadToVAO(&vertices, 2)); INCR_NEW("RawModel");
 
@@ -47,8 +48,8 @@ ParticleRenderer::ParticleRenderer(Matrix4f* projectionMatrix)
 }
 
 void ParticleRenderer::render(
-    std::unordered_map<ParticleTexture*, std::list<ParticleStandard*>>* particlesStandard,
-    std::unordered_map<ParticleTexture*, std::list<GF_Particle*>>* particlesGF,
+    std::unordered_map<ParticleTexture*, std::list<ParticleStandard*>*>* particlesStandard,
+    std::unordered_map<ParticleTexture*, std::list<GF_Particle*>*>* particlesGF,
     Camera* camera, float brightness, int clipSide)
 {
     Matrix4f viewMatrix;
@@ -59,139 +60,284 @@ void ParticleRenderer::render(
     switch (clipSide + 1)
     {
         case 0: //side -1
-            for (auto texture : (*particlesStandard))
+        {
+            std::unordered_map<ParticleTexture*, std::list<ParticleStandard*>*>::iterator it;
+            for (it = particlesStandard->begin(); it != particlesStandard->end(); it++)
             {
-                bindTexture(texture.first);
-                float texOpac = texture.first->getOpacity();
+                bindTexture(it->first);
 
-                std::list<ParticleStandard*>* texturesList = &texture.second;
+                std::list<ParticleStandard*>* particlesList = it->second;
 
                 vboBufferIdx = 0;
                 int count = 0;
-                for (ParticleStandard* particle : (*texturesList))
+                for (std::list<ParticleStandard*>::iterator particlesIterator = particlesList->begin(); particlesIterator != particlesList->end(); particlesIterator++)
                 {
-                    if (particle->getPosition()->y < Global::waterHeight)
+                    ParticleStandard* particle = particlesIterator._Ptr->_Myval;
+                    if (particle->positionRef->y < Global::waterHeight)
                     {
-                        shader->loadOpacity(texOpac*particle->getOpacity());
-                        updateModelViewMatrix(particle->getPosition(), particle->getRotation(), particle->getScaleX(), particle->getScaleY(), &viewMatrix);
+                        updateModelViewMatrix(particle, &viewMatrix);
                         updateTexCoordInfo(particle);
                         count++;
                     }
                 }
-                LoaderGL::updateVBO(vbo, count*INSTANCED_DATA_LENGTH, &vboDataBuffer);
-                glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, quad->getVertexCount(), count);
-            }
-            for (auto texture : (*particlesGF))
-            {
-                bindTexture(texture.first);
-                float texOpac = texture.first->getOpacity();
 
-                std::list<GF_Particle*>* texturesList = &texture.second;
-
-                vboBufferIdx = 0;
-                int count = 0;
-                for (GF_Particle* particle : (*texturesList))
+                float combinedOpacity = it->first->opacity;
+                if (particlesList->size() > 0)
                 {
-                    if (particle->getPosition()->y < Global::waterHeight)
-                    {
-                        shader->loadOpacity(texOpac*particle->getOpacity());
-                        updateModelViewMatrix(particle->getPosition(), particle->getRotation(), particle->getScaleX(), particle->getScaleY(), &viewMatrix);
-                        updateTexCoordInfo(particle);
-                        count++;
-                    }
+                    combinedOpacity = combinedOpacity*particlesList->front()->opacity;
                 }
+                shader->loadOpacity(combinedOpacity);
+
                 LoaderGL::updateVBO(vbo, count*INSTANCED_DATA_LENGTH, &vboDataBuffer);
                 glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, quad->getVertexCount(), count);
             }
+            ANALYSIS_START("GF Particle Render");
+            //if (particlesGF.size() >= 1)
+            //{
+            //    std::list<GF_Particle*>* ls = &particlesGF[ParticleResources::texturePollen];
+            //    ls = &particlesGF[ParticleResources::texturePollen];
+            //    ls = &particlesGF[ParticleResources::texturePollen];
+            //    ls = &particlesGF[ParticleResources::texturePollen];
+            //    ls = &particlesGF[ParticleResources::texturePollen];
+            //    ls = &particlesGF[ParticleResources::texturePollen];
+            //}
+            //printf("gf particles = %d\n", (int)particlesGF->size());
+            //{
+            //    //std::unordered_map<ParticleTexture*, std::list<GF_Particle*>> mymap;
+            //
+            //    int c = 0;
+            //    for (auto const &entry : particlesGF)
+            //    {
+            //        c++;
+            //    }
+            //    for (auto const &entry : particlesGF)
+            //    {
+            //        c++;
+            //    }
+            //    for (auto const &entry : particlesGF)
+            //    {
+            //        c++;
+            //    }
+            //    for (auto const &entry : particlesGF)
+            //    {
+            //        c++;
+            //    }
+            //    for (auto const &entry : particlesGF)
+            //    {
+            //        c++;
+            //    }
+            //    printf("c %d\n", c);
+            //    //int c = 0;
+            //    //std::unordered_map<ParticleTexture*, std::list<GF_Particle*>>::iter end = particlesGF->end();
+            //
+            //    //std::unordered_map<ParticleTexture*, std::list<GF_Particle*>>::iterator it = particlesGF->begin();
+            //    //while (it != particlesGF->end())
+            //    //{
+            //    //    it++;
+            //    //    c++;
+            //    //}
+            //    //
+            //    //int v = 0;
+            //    //it = particlesGF->begin();
+            //    //while (it != particlesGF->end())
+            //    //{
+            //    //    it++;
+            //    //    v++;
+            //    //}
+            //    //
+            //    //int b = 0;
+            //    //it = particlesGF->begin();
+            //    //while (it != particlesGF->end())
+            //    //{
+            //    //    it++;
+            //    //    b++;
+            //    //}
+            //    //
+            //    //int n = 0;
+            //    //it = particlesGF->begin();
+            //    //while (it != particlesGF->end())
+            //    //{
+            //    //    it++;
+            //    //    n++;
+            //    //}
+            //    //
+            //    //int m = 0;
+            //    //it = particlesGF->begin();
+            //    //while (it != particlesGF->end())
+            //    //{
+            //    //    it++;
+            //    //    m++;
+            //    //}
+            //    //printf("cbv %d%d%d%d%d\n", c, v, b, n, m);
+            //}
+            //std::unordered_map<ParticleTexture*, std::list<GF_Particle*>*>::iterator it2;
+            //for (it2 = particlesGF->begin(); it2 != particlesGF->end(); it2++)
+            //{
+            //    bindTexture(it2->first);
+            //
+            //    std::list<GF_Particle*>* particlesList = it2->second;
+            //
+            //    float combinedOpacity;
+            //    bool setOpacity = false;
+            //
+            //    vboBufferIdx = 0;
+            //    int count = 0;
+            //    for (std::list<GF_Particle*>::iterator particlesIterator = particlesList->begin(); particlesIterator != particlesList->end(); particlesIterator++)
+            //    {
+            //        GF_Particle* particle = particlesIterator._Ptr->_Myval;
+            //        if (particle->positionRef->y < Global::waterHeight)
+            //        {
+            //            updateModelViewMatrix(particle->positionRef, particle->rotation, particle->scaleX, particle->scaleY, &viewMatrix);
+            //            updateTexCoordInfo(particle);
+            //            count++;
+            //
+            //            if (!setOpacity)
+            //            {
+            //                combinedOpacity = it2->first->opacity*particle->opacity; //base opacity of the texture * individual particle's opacity
+            //                setOpacity = true;
+            //            }
+            //        }
+            //    }
+            //    shader->loadOpacity(combinedOpacity);
+            //    LoaderGL::updateVBO(vbo, count*INSTANCED_DATA_LENGTH, &vboDataBuffer);
+            //    glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, quad->getVertexCount(), count);
+            //}
+            ANALYSIS_DONE("GF Particle Render");
             break;
+        }
 
         case 1: //side 0
-            for (auto texture : (*particlesStandard))
+        {
+            std::unordered_map<ParticleTexture*, std::list<ParticleStandard*>*>::iterator it;
+            for (it = particlesStandard->begin(); it != particlesStandard->end(); it++)
             {
-                bindTexture(texture.first);
-                float texOpac = texture.first->getOpacity();
+                bindTexture(it->first);
 
-                std::list<ParticleStandard*>* texturesList = &texture.second;
+                std::list<ParticleStandard*>* particlesList = it->second;
 
                 vboBufferIdx = 0;
                 int count = 0;
-                for (ParticleStandard* particle : (*texturesList))
+                for (std::list<ParticleStandard*>::iterator particlesIterator = particlesList->begin(); particlesIterator != particlesList->end(); particlesIterator++)
                 {
-                    shader->loadOpacity(texOpac*particle->getOpacity());
-                    updateModelViewMatrix(particle->getPosition(), particle->getRotation(), particle->getScaleX(), particle->getScaleY(), &viewMatrix);
+                    ParticleStandard* particle = particlesIterator._Ptr->_Myval;
+
+                    updateModelViewMatrix(particle, &viewMatrix);
                     updateTexCoordInfo(particle);
                     count++;
                 }
+
+                float combinedOpacity = it->first->opacity;
+                if (particlesList->size() > 0)
+                {
+                    combinedOpacity = combinedOpacity*particlesList->front()->opacity;
+                }
+                shader->loadOpacity(combinedOpacity);
+
                 LoaderGL::updateVBO(vbo, count*INSTANCED_DATA_LENGTH, &vboDataBuffer);
                 glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, quad->getVertexCount(), count);
             }
-            for (auto texture : (*particlesGF))
+
+            ANALYSIS_START("GF Particle Render");
+            std::unordered_map<ParticleTexture*, std::list<GF_Particle*>*>::iterator it2;
+            for (it2 = particlesGF->begin(); it2 != particlesGF->end(); it2++)
             {
-                bindTexture(texture.first);
-                float texOpac = texture.first->getOpacity();
-
-                std::list<GF_Particle*>* texturesList = &texture.second;
-
+                bindTexture(it2->first);
+                
+                std::list<GF_Particle*>* particlesList = it2->second;
+                
                 vboBufferIdx = 0;
                 int count = 0;
-                for (GF_Particle* particle : (*texturesList))
+                for (std::list<GF_Particle*>::iterator particlesIterator = particlesList->begin(); particlesIterator != particlesList->end(); particlesIterator++)
                 {
-                    shader->loadOpacity(texOpac*particle->getOpacity());
-                    updateModelViewMatrix(particle->getPosition(), particle->getRotation(), particle->getScaleX(), particle->getScaleY(), &viewMatrix);
+                    GF_Particle* particle = particlesIterator._Ptr->_Myval;
+                    
+                    updateModelViewMatrix(particle, &viewMatrix);
                     updateTexCoordInfo(particle);
                     count++;
                 }
+
+                float combinedOpacity = it2->first->opacity;
+                if (particlesList->size() > 0)
+                {
+                    combinedOpacity = combinedOpacity*particlesList->front()->opacity;
+                }
+                shader->loadOpacity(combinedOpacity);
+
                 LoaderGL::updateVBO(vbo, count*INSTANCED_DATA_LENGTH, &vboDataBuffer);
                 glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, quad->getVertexCount(), count);
             }
+            ANALYSIS_DONE("GF Particle Render");
             break;
+        }
 
         case 2: //side 1
-            for (auto texture : (*particlesStandard))
+        {
+            std::unordered_map<ParticleTexture*, std::list<ParticleStandard*>*>::iterator it;
+            for (it = particlesStandard->begin(); it != particlesStandard->end(); it++)
             {
-                bindTexture(texture.first);
-                float texOpac = texture.first->getOpacity();
+                bindTexture(it->first);
 
-                std::list<ParticleStandard*>* texturesList = &texture.second;
+                std::list<ParticleStandard*>* particlesList = it->second;
 
                 vboBufferIdx = 0;
                 int count = 0;
-                for (ParticleStandard* particle : (*texturesList))
+                for (std::list<ParticleStandard*>::iterator particlesIterator = particlesList->begin(); particlesIterator != particlesList->end(); particlesIterator++)
                 {
-                    if (particle->getPosition()->y >= Global::waterHeight)
+                    ParticleStandard* particle = particlesIterator._Ptr->_Myval;
+                    if (particle->positionRef->y >= Global::waterHeight)
                     {
-                        shader->loadOpacity(texOpac*particle->getOpacity());
-                        updateModelViewMatrix(particle->getPosition(), particle->getRotation(), particle->getScaleX(), particle->getScaleY(), &viewMatrix);
+                        updateModelViewMatrix(particle, &viewMatrix);
                         updateTexCoordInfo(particle);
                         count++;
                     }
                 }
-                LoaderGL::updateVBO(vbo, count*INSTANCED_DATA_LENGTH, &vboDataBuffer);
-                glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, quad->getVertexCount(), count);
-            }
-            for (auto texture : (*particlesGF))
-            {
-                bindTexture(texture.first);
-                float texOpac = texture.first->getOpacity();
 
-                std::list<GF_Particle*>* texturesList = &texture.second;
-
-                vboBufferIdx = 0;
-                int count = 0;
-                for (GF_Particle* particle : (*texturesList))
+                float combinedOpacity = it->first->opacity;
+                if (particlesList->size() > 0)
                 {
-                    if (particle->getPosition()->y >= Global::waterHeight)
-                    {
-                        shader->loadOpacity(texOpac*particle->getOpacity());
-                        updateModelViewMatrix(particle->getPosition(), particle->getRotation(), particle->getScaleX(), particle->getScaleY(), &viewMatrix);
-                        updateTexCoordInfo(particle);
-                        count++;
-                    }
+                    combinedOpacity = combinedOpacity*particlesList->front()->opacity;
                 }
+                shader->loadOpacity(combinedOpacity);
+
                 LoaderGL::updateVBO(vbo, count*INSTANCED_DATA_LENGTH, &vboDataBuffer);
                 glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, quad->getVertexCount(), count);
             }
+            ANALYSIS_START("GF Particle Render");
+            //std::unordered_map<ParticleTexture*, std::list<GF_Particle*>*>::iterator it2;
+            //for (it2 = particlesGF->begin(); it2 != particlesGF->end(); it2++)
+            //{
+            //    bindTexture(it2->first);
+            //
+            //    std::list<GF_Particle*>* particlesList = it2->second;
+            //
+            //    float combinedOpacity;
+            //    bool setOpacity = false;
+            //
+            //    vboBufferIdx = 0;
+            //    int count = 0;
+            //    for (std::list<GF_Particle*>::iterator particlesIterator = particlesList->begin(); particlesIterator != particlesList->end(); particlesIterator++)
+            //    {
+            //        GF_Particle* particle = particlesIterator._Ptr->_Myval;
+            //        if (particle->positionRef->y >= Global::waterHeight)
+            //        {
+            //            updateModelViewMatrix(particle->positionRef, particle->rotation, particle->scaleX, particle->scaleY, &viewMatrix);
+            //            updateTexCoordInfo(particle);
+            //            count++;
+            //
+            //            if (!setOpacity)
+            //            {
+            //                combinedOpacity = it2->first->opacity*particle->opacity; //base opacity of the texture * individual particle's opacity
+            //                setOpacity = true;
+            //            }
+            //        }
+            //    }
+            //    shader->loadOpacity(combinedOpacity);
+            //    LoaderGL::updateVBO(vbo, count*INSTANCED_DATA_LENGTH, &vboDataBuffer);
+            //    glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, quad->getVertexCount(), count);
+            //}
+            ANALYSIS_DONE("GF Particle Render");
             break;
+        }
 
         default:
             break;
@@ -205,27 +351,38 @@ void ParticleRenderer::cleanUp()
     shader->cleanUp();
 }
 
-void ParticleRenderer::updateModelViewMatrix(Vector3f* position, float rotation, float scaleX, float scaleY, Matrix4f* viewMatrix)
+void ParticleRenderer::updateModelViewMatrix(Particle* particle, Matrix4f* viewMatrix)
 {
-    Matrix4f modelMatrix;
-    modelMatrix.translate(position);
+    Matrix4f modelMatrix(false);
+
     modelMatrix.m00 = viewMatrix->m00;
     modelMatrix.m01 = viewMatrix->m10;
     modelMatrix.m02 = viewMatrix->m20;
+    modelMatrix.m03 = 0;
     modelMatrix.m10 = viewMatrix->m01;
     modelMatrix.m11 = viewMatrix->m11;
     modelMatrix.m12 = viewMatrix->m21;
+    modelMatrix.m13 = 0;
     modelMatrix.m20 = viewMatrix->m02;
     modelMatrix.m21 = viewMatrix->m12;
     modelMatrix.m22 = viewMatrix->m22;
-    Vector3f axis(0, 0, 1);
-    modelMatrix.rotate(Maths::toRadians(rotation), &axis);
-    Vector3f scaleVec(scaleX, scaleY, 1);
-    modelMatrix.scale(&scaleVec);
-    Matrix4f modelViewMatrix = Matrix4f(modelMatrix);
-    viewMatrix->multiply(&modelViewMatrix, &modelViewMatrix);
-    storeMatrixData(&modelViewMatrix);
-    //shader->loadModelViewMatrix(&modelViewMatrix);
+    modelMatrix.m23 = 0;
+    modelMatrix.m30 = particle->positionRef->x;
+    modelMatrix.m31 = particle->positionRef->y;
+    modelMatrix.m32 = particle->positionRef->z;
+    modelMatrix.m33 = 1;
+
+    modelMatrix.m00 *= particle->scale;
+    modelMatrix.m01 *= particle->scale;
+    modelMatrix.m02 *= particle->scale;
+    modelMatrix.m03 *= particle->scale;
+    modelMatrix.m10 *= particle->scale;
+    modelMatrix.m11 *= particle->scale;
+    modelMatrix.m12 *= particle->scale;
+    modelMatrix.m13 *= particle->scale;
+
+    viewMatrix->multiply(&modelMatrix, &modelMatrix);
+    storeMatrixData(&modelMatrix);
 }
 
 void ParticleRenderer::storeMatrixData(Matrix4f* matrix)
@@ -250,11 +407,11 @@ void ParticleRenderer::storeMatrixData(Matrix4f* matrix)
 
 void ParticleRenderer::updateTexCoordInfo(Particle* particle)
 {
-    vboDataBuffer[vboBufferIdx] = particle->getTexOffset1()->x; vboBufferIdx++;
-    vboDataBuffer[vboBufferIdx] = particle->getTexOffset1()->y; vboBufferIdx++;
-    vboDataBuffer[vboBufferIdx] = particle->getTexOffset2()->x; vboBufferIdx++;
-    vboDataBuffer[vboBufferIdx] = particle->getTexOffset2()->y; vboBufferIdx++;
-    vboDataBuffer[vboBufferIdx] = particle->getBlend();         vboBufferIdx++;
+    vboDataBuffer[vboBufferIdx] = particle->texOffset1.x; vboBufferIdx++;
+    vboDataBuffer[vboBufferIdx] = particle->texOffset1.y; vboBufferIdx++;
+    vboDataBuffer[vboBufferIdx] = particle->texOffset2.x; vboBufferIdx++;
+    vboDataBuffer[vboBufferIdx] = particle->texOffset2.y; vboBufferIdx++;
+    vboDataBuffer[vboBufferIdx] = particle->blend;        vboBufferIdx++;
 }
 
 void ParticleRenderer::updateProjectionMatrix(Matrix4f* projectionMatrix)
@@ -267,9 +424,9 @@ void ParticleRenderer::updateProjectionMatrix(Matrix4f* projectionMatrix)
 void ParticleRenderer::bindTexture(ParticleTexture* texture)
 {
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture->getTextureId());
-    shader->loadGlow(texture->getGlow());
-    shader->loadNumberOfRows((float)texture->getNumberOfRows());
+    glBindTexture(GL_TEXTURE_2D, texture->textureId);
+    shader->loadGlow(texture->glow);
+    shader->loadNumberOfRows((float)texture->numberOfRows);
 }
 
 void ParticleRenderer::prepare()
@@ -286,7 +443,7 @@ void ParticleRenderer::prepare()
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glDepthMask(false);
-    glDisable(GL_CULL_FACE);
+    glEnable(GL_CULL_FACE);
 }
 
 void ParticleRenderer::finishRendering()

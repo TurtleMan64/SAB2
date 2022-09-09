@@ -26,6 +26,8 @@ private:
     static std::list<TexturedModel*> modelsItemSpeedUp;
     static std::list<TexturedModel*> modelsItemBarrierB;
 
+    static constexpr float BOMB_RADIUS = 400.0f;
+
     Vector3f centerPos;
     Vector3f upDir;
 

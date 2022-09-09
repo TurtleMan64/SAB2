@@ -115,7 +115,7 @@ void LoaderGL::updateVBO(GLuint vbo, int bufferNumFloats, std::vector<float>* bu
 {
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, buffer->size()*4, nullptr, GL_STREAM_DRAW); //clear current buffer (unnessesary but adds speed up apparently)
-    glBufferSubData(GL_ARRAY_BUFFER, 0, bufferNumFloats*4, &(*buffer)[0]);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, bufferNumFloats*4, &(buffer->at(0)));
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 

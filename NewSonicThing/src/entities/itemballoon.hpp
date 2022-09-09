@@ -12,6 +12,8 @@ class ItemBalloon : public Entity
 private:
     static std::list<TexturedModel*> models;
 
+    static constexpr float BOMB_RADIUS = 400.0f;
+
     int itemType = 0;
 
 public:

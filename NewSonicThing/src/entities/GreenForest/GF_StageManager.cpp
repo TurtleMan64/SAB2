@@ -79,7 +79,7 @@ void GF_StageManager::step()
     {
         firstFrame = false;
         Vector3f partVel(0, 0, 0);
-        ParticleMaster::createParticle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &partVel, 0, 1.0f, 0, 900, 0, true, false, 2.0f, false);
+        ParticleMaster::createParticle(ParticleResources::textureBlackFade, Global::gameCamera->getFadePosition1(), &partVel, 0, 1.0f, 900, 0, true, false, 2.0f, false);
     }
 
     //set pollen particles center point

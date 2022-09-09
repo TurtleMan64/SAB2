@@ -380,6 +380,28 @@ void Display::loadGraphicsSettings()
                         Global::renderParticles = false;
                     }
                 }
+                else if (strcmp(lineSplit[0], "Show_FPS") == 0)
+                {
+                    if (strcmp(lineSplit[1], "on") == 0)
+                    {
+                        Global::displayFPS = true;
+                    }
+                    else
+                    {
+                        Global::displayFPS = false;
+                    }
+                }
+                else if (strcmp(lineSplit[0], "Show_Speedometer") == 0)
+                {
+                    if (strcmp(lineSplit[1], "on") == 0)
+                    {
+                        Global::displaySpeedometer = true;
+                    }
+                    else
+                    {
+                        Global::displaySpeedometer = false;
+                    }
+                }
                 else if (strcmp(lineSplit[0], "Bloom") == 0)
                 {
                     if (strcmp(lineSplit[1], "on") == 0)

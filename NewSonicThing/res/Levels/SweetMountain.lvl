@@ -1,0 +1,74 @@
+Levels/Candy
+1
+SweetMountain -100000 -100000 -100000 100000 100000 100000
+Levels/Candy
+1
+SweetMountain 7
+0.988 0.969 0.937     # Sun Color (Day)
+0.0 0.0 0.0           # Sun Color (Night)
+0.0 0.0 0.0           # Moon Color (Day)
+0.3 0.3 0.45          # Moon Color (Night)
+0.902 0.8 0.756       # Fog Color (Day)
+0.05 0.05 0.075       # Fog Color (Night)
+0.0000000005 2.0      # Distance Fog Density + Gradient
+-100 1150             # Fog Bottom Y + Thickness
+90                    # Time of Day
+0.856350 -6 -0.476094 # Sun Direction
+0 -0.2 -1             # Camera Direction
+1                     # Does the BGM have an intro
+2                     # Number of BGM to load
+res/Audio/BGM/SweetMountain_intro.ogg
+res/Audio/BGM/SweetMountain_loop.ogg
+-1987.898682 -1389.900879 -7010.665039   # Finish Pose Position
+-0.000567 0.000000 -0.002836             # Finish Pose Direction
+0 1 0                                    # Finish Pose Normal
+0.191975 -0.100000 0.960805              # Finish Pose Camera Direction
+-1500                                    # Death Plane Y
+nowater                                  # Does the stage have Global Water
+0                                        # Global Water Y
+0                                        # Number of Global Water Tiles
+0 0 0                                    # Water Color
+0                                        # Water Blend Amount
+0                                        # Water Murkiness
+false                                    # Enable Backface Culling
+1500                                     # Entity Chunk Size
+
+
+# Player
+6 0 10 0
+
+# Stage Manager
+91 16
+
+
+# Hard Mode Pieces
+73 -149.4112 1020.11084 -96.938774 0 0 1
+73 8308.556 4257.995 5670.699      0 0 1
+73 573.17615 895.69666 -464.78772  0 0 1
+
+# Pieces
+73 55.046856 -18.203506 284.89145 1 0 0
+73 466.87466 501.1263 -249.66846  1 0 0
+73 -201.66508 685.89233 606.5562  1 0 0
+73 -561.8523 747.33496 414.44943  1 0 0
+73 -753.9561 863.02576 492.63306  1 0 0
+73 -252.47871 906.8916 -303.52618 1 0 0
+73 53.679874 619.7361 -85.41966   1 0 0
+73 -406.37503 580.48535 112.98456 1 0 0
+73 -346.45142 880.9431 66.10808   2 0 0
+73 -153.9568 874.6138 632.4746    2 0 0
+73 20.819286 764.6758 407.4073    2 0 0
+73 99.40973 595.1499 390.72537    2 0 0
+73 233.27481 183.8785 98.146126   2 0 0
+73 528.2269 1089.6979 -759.1899   2 0 0
+73 442.6064 779.63074 -464.90582  2 0 0
+73 561.30505 210.30835 -464.5895  3 0 0
+73 125.33153 974.49146 585.8359   3 0 0
+73 293.31696 243.63565 675.329    3 0 0
+73 266.1406 701.5626 641.8838     3 0 0
+73 19.054127 567.7237 517.9491    3 0 0
+73 499.71976 961.82153 -465.06415 3 0 0
+73 -355.05902 429.94873 414.60965 3 0 0
+
+# Emerald Manager
+74 0

@@ -81,13 +81,9 @@ Ring::Ring(float x, float y, float z, float xVel, float yVel, float zVel)
 
 void Ring::step()
 {
-    extern float dt;
-
-    rotY += 5*60*dt;
-
     transformationMatrix.setIdentity();
     transformationMatrix.translate(&position);
-    transformationMatrix.rotate(Maths::toRadians(rotY), &Y_AXIS);
+    transformationMatrix.rotate(Maths::toRadians(Global::gameClock*300), &Y_AXIS);
 
     if (std::abs(position.y - Global::gameMainPlayer->position.y) < 40 &&
         std::abs(position.z - Global::gameMainPlayer->position.z) < 40 &&
@@ -109,7 +105,7 @@ void Ring::step()
                 Vector3f partVel(0, 0.4f*60, 0);
             
                 ParticleMaster::createParticle(ParticleResources::textureSparkleYellow, &pos, &partVel,
-                    0.025f*60*60, 0.5f, 0, 4, -(4.0f / 0.5f), false, false, 0.5f, true);
+                    0.025f*60*60, 0.5f, 4, -(4.0f / 0.5f), false, false, 0.5f, true);
             }
 
             Global::increaseRingCount(1);
@@ -150,7 +146,7 @@ void Ring::loadStaticModels()
     }
 
     #ifdef DEV_MODE
-    printf("Loading ring static models...\n");
+    printf("Loading Ring static models...\n");
     #endif
 
     ModelLoader::loadModel(&Ring::models, "res/Models/Objects/Ring/", "Ring");
@@ -159,7 +155,7 @@ void Ring::loadStaticModels()
 void Ring::deleteStaticModels()
 {
     #ifdef DEV_MODE
-    printf("Deleting ring static models...\n");
+    printf("Deleting Ring static models...\n");
     #endif
 
     Entity::deleteModels(&Ring::models);

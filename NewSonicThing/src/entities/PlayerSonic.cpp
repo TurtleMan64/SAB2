@@ -124,7 +124,7 @@ void PlayerSonic::step()
         deadTimer    <= 1.0f)
     {
         Vector3f partVel(0, 0, 0);
-        ParticleMaster::createParticle(ParticleResources::textureBlackFadeOutAndIn, Global::gameCamera->getFadePosition1(), &partVel, 0, 2.0f, 0, 400, 0, true, false, 1, false);
+        ParticleMaster::createParticle(ParticleResources::textureBlackFadeOutAndIn, Global::gameCamera->getFadePosition1(), &partVel, 0, 2.0f, 400, 0, true, false, 1, false);
     }
     else if (deadTimerOld >  0.0f &&
              deadTimer    <= 0.0f)
@@ -886,12 +886,15 @@ void PlayerSonic::step()
         //    }
         //}
 
+        //bool result = CollisionChecker::checkCollision(78.440208f, 2096.371826f, 63.406719f, 65.663223f, 2093.205566f, 63.012226f);
+
         //speed before adjusting
         float originalSpeed = vel.length();
         CollisionChecker::setCheckPlayer(true);
         //CollisionChecker::debug = false;
         //CollisionChecker::debugFilename = "1.obj";
-        if (CollisionChecker::checkCollision(getX(), getY(), getZ(), getX()+vel.x*dt, getY()+vel.y*dt, getZ()+vel.z*dt))
+        std::vector<std::string> collisionPath;
+        if (CollisionChecker::checkCollision(position.x, position.y, position.z, position.x+vel.x*dt, position.y+vel.y*dt, position.z+vel.z*dt))
         {
             Vector3f* colNormal = &CollisionChecker::getCollideTriangle()->normal;
 
@@ -1138,6 +1141,7 @@ void PlayerSonic::step()
         }
         else //No initial collision
         {
+            Vector3f before = position;
             increasePosition(vel.x*dt, vel.y*dt, vel.z*dt);
 
             bool checkPassed = false;
@@ -1147,6 +1151,11 @@ void PlayerSonic::step()
                 CollisionChecker::setCheckPlayer(true);
                 //CollisionChecker::debugFilename = "4.obj";
                 checkPassed = CollisionChecker::checkCollision(getX(), getY(), getZ(), getX() - relativeUp.x*surfaceTension, getY() - relativeUp.y*surfaceTension, getZ() - relativeUp.z*surfaceTension);
+                //if (CollisionChecker::debug == false)
+                //{
+                //    printf("v %f %f %f\n", before.x, before.y, before.z);
+                //    printf("v %f %f %f\n\n", position.x, position.y, position.z);
+                //}
             }
             if (checkPassed)
             {
@@ -1401,7 +1410,7 @@ void PlayerSonic::step()
                 (Maths::random() - 0.5f) * 3 + (vel.z/60.0f)*0.8f);
             partVel.scale(60.0f);
 
-            ParticleMaster::createParticle(playerModel->getBallTexture(), &partPos, &partVel, 0.12f*60.0f*60.0f, 0.5f, 0, 14.0f, -28.0f, false, false, 2.0f, true);
+            ParticleMaster::createParticle(playerModel->getBallTexture(), &partPos, &partVel, 0.12f*60.0f*60.0f, 0.5f, 14.0f, -28.0f, false, false, 2.0f, true);
         }
     }
 
@@ -1441,7 +1450,7 @@ void PlayerSonic::step()
                 Maths::random() - 0.5f + (vel.z/60.0f)*0.4f);
 
             bubVel.scale(60.0f);
-            ParticleMaster::createParticle(ParticleResources::textureBubble, &bubPos, &bubVel, 60*60*0.25f, 1.0f, 0.0f, 4.0f, 0.0f, false, false, 1.0f, true);
+            ParticleMaster::createParticle(ParticleResources::textureBubble, &bubPos, &bubVel, 60*60*0.25f, 1.0f, 4.0f, 0.0f, false, false, 1.0f, true);
         }
     }
 
@@ -1469,7 +1478,7 @@ void PlayerSonic::step()
                 Maths::random() - 0.5f + (vel.z/60.0f)*0.4f);
 
             bubVel.scale(60.0f);
-            ParticleMaster::createParticle(ParticleResources::textureBubble, &bubPos, &bubVel, 60*60*0.05f, 1.0f, 0.0f, 4.0f, 0.0f, false, false, 1.0f, true);
+            ParticleMaster::createParticle(ParticleResources::textureBubble, &bubPos, &bubVel, 60*60*0.05f, 1.0f, 4.0f, 0.0f, false, false, 1.0f, true);
         }
 
         vel.y = fmaxf(vel.y, -200.0f); //waterEntryMaxYVel
@@ -1551,7 +1560,7 @@ void PlayerSonic::spindash()
 
         Vector3f spd = relativeUp.scaleCopy(55.0f) + rng;
         Vector3f partPos = position + relativeUp.scaleCopy(1.5f);
-        ParticleMaster::createParticle(ParticleResources::textureDust, &partPos, &spd, 0, 0.25f + (0.125f*Maths::nextGaussian()), 0, 5.0f+Maths::nextGaussian(), 0.0f, false, false, 1.0f, true);
+        ParticleMaster::createParticle(ParticleResources::textureDust, &partPos, &spd, 0, 0.25f + (0.125f*Maths::nextGaussian()), 5.0f+Maths::nextGaussian(), 0.0f, false, false, 1.0f, true);
     }
 }
 
@@ -1928,7 +1937,7 @@ void PlayerSonic::rebound(Vector3f* source)
             vel.y = 0;
             vel.setLength(5.0f);
         }
-        else  //retain speed if you hold A during impact
+        else  //retain speed if you don't hold A during impact
         {
             if (homingAttackTimer > 0.0f) //if you came in from a homingAttack, cut speed a bit
             {
@@ -1936,7 +1945,19 @@ void PlayerSonic::rebound(Vector3f* source)
                 vel.setLength(vel.length()*0.45f);
             }
         }
-        vel.y = 126.0f;
+
+        if (!inputJump)
+        {
+            if (vel.y < 126.0f)
+            {
+                vel.y = 126.0f;
+            }
+        }
+        else
+        {
+            vel.y = 126.0f;
+        }
+
         position.set(source->x, source->y+0.01f, source->z);
         homingAttackTimer = -1.0f;
         justHomingAttacked = false;
@@ -2275,20 +2296,20 @@ void PlayerSonic::updateAnimationValues()
                 rng.scale(75.0f);
                 rng = Maths::projectOntoPlane(&rng, &relativeUp);
 
-                if (isRunningOnWater || (Global::stageUsesWater && position.y < Global::waterHeight))
+                if (isRunningOnWater || (Global::stageUsesWater && (position.y < Global::waterHeight && position.y > Global::waterHeight - 10.0f)))
                 {
                     float partScale = 5.0f+Maths::nextGaussian();
                     Vector3f spd = rng;
                     Vector3f partPos = position;
                     partPos.y = Global::waterHeight + partScale/2;
                     //todo make this look good
-                    ParticleMaster::createParticle(ParticleResources::textureSplash, &partPos, &spd, 0, 0.25f + (0.125f*Maths::nextGaussian()), 0, partScale, 0.0f, false, false, 1.0f, true);
+                    ParticleMaster::createParticle(ParticleResources::textureSplash, &partPos, &spd, 0, 0.25f + (0.125f*Maths::nextGaussian()), partScale, 0.0f, false, false, 1.0f, true);
                 }
                 else
                 {
                     Vector3f spd = relativeUp.scaleCopy(55.0f) + rng;
                     Vector3f partPos = position + relativeUp.scaleCopy(1.5f);
-                    ParticleMaster::createParticle(ParticleResources::textureDust, &partPos, &spd, 0, 0.25f + (0.125f*Maths::nextGaussian()), 0, 5.0f+Maths::nextGaussian(), 0.0f, false, false, 1.0f, true);
+                    ParticleMaster::createParticle(ParticleResources::textureDust, &partPos, &spd, 0, 0.25f + (0.125f*Maths::nextGaussian()), 5.0f+Maths::nextGaussian(), 0.0f, false, false, 1.0f, true);
                 }
                 //new Particle(ParticleResources::textureDust, &partPos, 0.25f, 6.0f, 2.8f, false);
             }
@@ -2337,11 +2358,11 @@ void PlayerSonic::updateAnimationValues()
         for (int i = 0; i < numParticles; i++)
         {
             Vector3f partPos = centerPosPrev + diff.scaleCopy(((float)i)/numParticles);
-            ParticleMaster::createParticle(trail, &partPos, &zero, 0, 0.25f, 0, 8.0f, -32.0f, false, false, opacity, true);
+            ParticleMaster::createParticle(trail, &partPos, &zero, 0, 0.25f, 8.0f, -32.0f, false, false, opacity, true);
         }
     }
 
-    if (invincibleTimer != 0)
+    if (invincibleTimer > 0.0f)
     {
         //remove this in favor of baseColor rainbow effect
         //Vector3f center = getCenterPosition();
@@ -2545,11 +2566,11 @@ void PlayerSonic::animate()
     //change color with shields/invincible
     if (myShieldGreen != nullptr)
     {
-        newBaseColor.set(0.8f, 1.2f, 0.9f);
+        newBaseColor.set(1.0f, 2.0f, 1.0f);
     }
     if (myShieldMagnet != nullptr)
     {
-        newBaseColor.set(0.8f, 0.9f, 1.2f);
+        newBaseColor.set(1.0f, 1.0f, 2.0f);
     }
     if (invincibleTimer > 0.0f)
     {
@@ -2893,7 +2914,7 @@ bool PlayerSonic::isDying()
 bool PlayerSonic::canDealDamage()
 {
     //return (hitTimer == 0.0f && hitFlashingTimer == 0.0f);
-    return (isBouncing || isBall || isJumping || isSpindashing || isStomping);
+    return (isBouncing || isBall || isJumping || isSpindashing || isStomping || (invincibleTimer > 0.0f));
 }
 
 bool PlayerSonic::canBreakObjects()

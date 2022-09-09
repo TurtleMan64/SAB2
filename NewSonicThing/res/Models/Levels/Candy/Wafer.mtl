@@ -1,0 +1,22 @@
+# Blender MTL File: 'Objects.blend'
+# Material Count: 2
+
+newmtl mat1.024
+Ns 10.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.900000 0.900000 0.900000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 2
+map_Kd Sweet Mountain\fct_o_cw1_huafu01.png
+
+newmtl mat2.014
+Ns 10.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.900000 0.900000 0.900000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 2
+map_Kd Sweet Mountain\fct_o_cw1_huafu02.png

@@ -9,7 +9,6 @@
 
 extern float dt;
 
-const float GF_Particle::pollenRadius = 200.0f;
 int GF_Particle::currentPopulation = 0;
 Vector3f GF_Particle::centerSpawnPos;
 
@@ -19,9 +18,7 @@ GF_Particle::GF_Particle()
     positionRef = &position;
     gravityEffect = 0;
     lifeLength = 4.0f;
-    rotation = 0;
-    scaleXChange = -0.1f;
-    scaleYChange = -0.1f;
+    scaleChange = -0.1f;
     onlyRendersOnce = false;
     opacity = 1.0f;
     respawn();
@@ -45,7 +42,7 @@ void GF_Particle::respawn()
     velocity.x = (Maths::random()-0.5f)*30;
     velocity.y = (Maths::random()-0.5f)*30;
     velocity.z = (Maths::random()-0.5f)*30;
-    scaleX = Maths::random()*2.0f + 0.5f;
+    scale = Maths::random()*2.0f + 0.5f;
 }
 
 bool GF_Particle::update()
@@ -57,8 +54,7 @@ bool GF_Particle::update()
         respawn();
     }
 
-    scaleX = fmaxf(0, scaleX - 0.1f*dt);
-    scaleY = scaleX;
+    scale = fmaxf(0, scale - 0.1f*dt);
 
     position.x += velocity.x*dt;
     position.y += velocity.y*dt;

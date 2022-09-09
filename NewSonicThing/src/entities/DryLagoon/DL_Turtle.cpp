@@ -65,7 +65,7 @@ void DL_Turtle::step()
                 Global::gameMainPlayer->canMoveTimer = warpTimerMax*2 + 0.16666f;
 
                 Vector3f vel(0, 0, 0);
-                ParticleMaster::createParticle(ParticleResources::textureBlackFadeOutAndIn, &Global::gameCamera->fadePosition1, &vel, 0, warpTimerMax*2 + 0.16666f, 0, 400, 0, true, false, 1.0f, false);
+                ParticleMaster::createParticle(ParticleResources::textureBlackFadeOutAndIn, &Global::gameCamera->fadePosition1, &vel, 0, warpTimerMax*2 + 0.16666f, 400, 0, true, false, 1.0f, false);
             }
         }
     }

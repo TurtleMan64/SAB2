@@ -26,9 +26,14 @@ public:
     float m32;
     float m33;
 
+    // defaults to identity matrix
     Matrix4f();
 
-    Matrix4f(Matrix4f*);
+    // wont set any of the values (regardless of parameter)
+    Matrix4f(bool uninitialized);
+
+    // copies values of other
+    Matrix4f(Matrix4f* other);
 
     void setZero();
 
@@ -48,6 +53,7 @@ public:
 
     /**
     * Multiply the right matrix by this matrix and place the result in a dest matrix.
+    * right and dest can be the same matrix and it wont break.
     * @param right The right source matrix
     * @param dest The destination matrix
     */

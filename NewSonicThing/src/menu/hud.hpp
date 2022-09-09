@@ -34,6 +34,10 @@ private:
     static GuiImage* pointBonus;
     static GLuint pointBonusIds[10];
 
+    static float itemTimer;
+    static GuiImage* itemImage;
+    static GLuint items[11];
+
 public:
     HUD();
     ~HUD();
@@ -43,6 +47,7 @@ public:
     Timer* getTimer();
 
     static void displayPointBonus(int idx);
+    static void displayItem(int idx);
 };
 
 #endif

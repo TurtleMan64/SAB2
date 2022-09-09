@@ -1409,16 +1409,19 @@ CollisionModel* ModelLoader::loadCollisionModel(std::string filePath, std::strin
 {
     CollisionModel* collisionModel = new CollisionModel; INCR_NEW("CollisionModel");
 
+    std::string objFileName = Global::pathToEXE + "res/" + filePath + fileName + ".obj";
+    std::string mtlFileName = "default.mtl";
+
     std::list<FakeTexture> fakeTextures;
 
     char currType = 0;
     char currSound = 0;
     char currParticle = 0;
 
-    std::ifstream file(Global::pathToEXE + "res/" + filePath + fileName + ".obj");
+    std::ifstream file(objFileName);
     if (!file.is_open())
     {
-        printf("Error: Cannot load file '%s'\n", (Global::pathToEXE + "res/" + filePath + fileName + ".obj").c_str());
+        printf("Error: Cannot load file '%s'\n", objFileName.c_str());
         file.close();
         return collisionModel;
     }
@@ -1426,8 +1429,6 @@ CollisionModel* ModelLoader::loadCollisionModel(std::string filePath, std::strin
     std::string line;
 
     std::vector<Vector3f> vertices;
-
-
 
     while (!file.eof())
     {
@@ -1487,18 +1488,18 @@ CollisionModel* ModelLoader::loadCollisionModel(std::string filePath, std::strin
                     }
                 }
 
-                if (found)
+                if (!found)
                 {
-                    std::string fn = Global::pathToEXE + filePath + fileName;
-                    printf("Error: Trying to use collision material '%s', but it doesn't exist. (%s)\n", lineSplit[1], fn.c_str());
+                    printf("Error: Trying to use collision material '%s', but it doesn't exist. (%s) (%s)\n", lineSplit[1], objFileName.c_str(), mtlFileName.c_str());
                 }
             }
             else if (strcmp(lineSplit[0], "mtllib") == 0)
             {
-                std::ifstream fileMTL(Global::pathToEXE + "res/" + filePath + lineSplit[1]);
+                mtlFileName = Global::pathToEXE + "res/" + filePath + lineSplit[1];
+                std::ifstream fileMTL(mtlFileName);
                 if (!fileMTL.is_open())
                 {
-                    printf("Error: Cannot load file '%s'\n", (Global::pathToEXE + "res/" + filePath + lineSplit[1]).c_str());
+                    printf("Error: Cannot load file '%s'\n", mtlFileName.c_str());
                     fileMTL.close();
                     file.close();
                     return collisionModel;
@@ -1892,22 +1893,22 @@ void ModelLoader::deleteUnusedMtl(std::unordered_map<std::string, ModelTexture>*
     std::unordered_map<std::string, ModelTexture>::iterator it;
     for (it = mtlMap->begin(); it != mtlMap->end(); it++)
     {
-        bool foundTexture = false;
+        bool found = false;
         for (int i = 0; i < (int)usedMtls->size(); i++)
         {
-            ModelTexture texUsed = (*usedMtls)[i]; //get a copy of it
-            ModelTexture texInBigMap = it->second;
-            if (texUsed.equalTo(&texInBigMap))
+            ModelTexture* texUsed = &(usedMtls->at(i));
+            ModelTexture* texInBigMap = &(it->second);
+            if (texUsed->equalTo(texInBigMap))
             {
-                foundTexture = true;
+                found = true;
                 break;
             }
         }
 
-        if (!foundTexture)
+        // No one is using this material, so let's delete it.
+        if (!found)
         {
-            ModelTexture texToDelete = it->second;
-            texToDelete.deleteMe();
+            it->second.deleteMe();
         }
     }
 }

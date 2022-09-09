@@ -6,7 +6,7 @@ class Triangle3D;
 
 #include <list>
 #include "entity.hpp"
-
+#include "../toolbox/vector.hpp"
 
 class RhinoSpike : public Entity
 {

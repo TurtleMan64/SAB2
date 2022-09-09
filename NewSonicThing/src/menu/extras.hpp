@@ -10,8 +10,8 @@ class Extras : public Menu
 {
 private:
     GUIText* textTime = nullptr;
-    GUIText* timeBro = nullptr;
     GUIText* textCompletion = nullptr;
+    GUIText* textRings = nullptr;
     bool selectInputPrevious = false;
     bool backInputPrevious = false;
 

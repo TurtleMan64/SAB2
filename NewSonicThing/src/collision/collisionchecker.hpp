@@ -28,6 +28,8 @@ private:
 
     static int getBiggest(float A, float B, float C);
 
+    static float dotToThrehold(float dot);
+
 public:
     //static bool debug;
     //static std::string debugFilename;
@@ -54,10 +56,10 @@ public:
 
     static bool checkPointInTriangle3D(
         float checkx, float checky, float checkz,
-        Triangle3D* tri);
+        Triangle3D* tri, float threshold);
 
     static float pointToSegmentDistanceSquared(
-        float x, float y,
+        float x,  float y,
         float x1, float y1,
         float x2, float y2);
 
@@ -65,7 +67,8 @@ public:
         float x,  float y,
         float x1, float y1,
         float x2, float y2,
-        float x3, float y3);
+        float x3, float y3,
+        float threshold);
 
     //delete's all collide models
     static void deleteAllCollideModels();

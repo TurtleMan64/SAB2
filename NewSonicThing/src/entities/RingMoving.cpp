@@ -151,7 +151,7 @@ void RingMoving::step()
                 Vector3f partVel(0, 0.4f*60, 0);
             
                 ParticleMaster::createParticle(ParticleResources::textureSparkleYellow, &pos, &partVel,
-                    0.025f*60*60, 0.5f, 0, 4, -(4.0f / 0.5f), false, false, 0.5f, true);
+                    0.025f*60*60, 0.5f, 4, -(4.0f / 0.5f), false, false, 0.5f, true);
             }
 
             Global::increaseRingCount(1);

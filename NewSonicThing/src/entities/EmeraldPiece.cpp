@@ -88,7 +88,7 @@ void EmeraldPiece::step()
                 vel.scale(60);
 
                 ParticleMaster::createParticle(ParticleResources::textureSparkleGreen, &pos, &vel,
-                    0.025f*60*60, 0.5f, 0, 7, -(7.0f / 0.5f), false, false, 0.3f, true);
+                    0.025f*60*60, 0.5f, 7, -(7.0f / 0.5f), false, false, 0.3f, true);
             }
 
             EmeraldManager::collectPiece(this);

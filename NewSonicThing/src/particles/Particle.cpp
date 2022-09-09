@@ -35,11 +35,8 @@ ParticleStandard::ParticleStandard(ParticleTexture* texture, Vector3f* position,
     this->velocity.z = 0;
     this->gravityEffect = 0;
     this->lifeLength = lifeLength;
-    this->rotation = 0;
-    this->scaleX = scale;
-    this->scaleXChange = 0;
-    this->scaleY = scale;
-    this->scaleYChange = 0;
+    this->scale = scale;
+    this->scaleChange = 0;
     this->onlyRendersOnce = onlyRendersOnce;
     this->opacity = 1.0f;
     ParticleMaster::addParticleStandard(this);
@@ -57,11 +54,8 @@ ParticleStandard::ParticleStandard(ParticleTexture* texture, Vector3f* position,
     this->velocity.z = 0;
     this->gravityEffect = 0;
     this->lifeLength = lifeLength;
-    this->rotation = 0;
-    this->scaleX = scale;
-    this->scaleXChange = 0;
-    this->scaleY = scale;
-    this->scaleYChange = 0;
+    this->scale = scale;
+    this->scaleChange = 0;
     this->onlyRendersOnce = onlyRendersOnce;
     this->opacity = opacity;
     ParticleMaster::addParticleStandard(this);
@@ -79,18 +73,15 @@ ParticleStandard::ParticleStandard(ParticleTexture* texture, Vector3f* position,
     this->velocity.z = velocity->z;
     this->gravityEffect = 0;
     this->lifeLength = lifeLength;
-    this->rotation = 0;
-    this->scaleX = scale;
-    this->scaleXChange = 0;
-    this->scaleY = scale;
-    this->scaleYChange = 0;
+    this->scale = scale;
+    this->scaleChange = 0;
     this->onlyRendersOnce = onlyRendersOnce;
     this->opacity = 1.0f;
     ParticleMaster::addParticleStandard(this);
 }
 
 ParticleStandard::ParticleStandard(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float gravityEffect,
-    float lifeLength, float rotation, float scale, float scaleChange, bool posIsRef, bool onlyRendersOnce, float opacity)
+    float lifeLength, float scale, float scaleChange, bool posIsRef, bool onlyRendersOnce, float opacity)
 {
     this->texture = texture;
     if (posIsRef)
@@ -109,19 +100,15 @@ ParticleStandard::ParticleStandard(ParticleTexture* texture, Vector3f* position,
     this->velocity.z = velocity->z;
     this->gravityEffect = gravityEffect;
     this->lifeLength = lifeLength;
-    this->rotation = rotation;
-    this->scaleX = scale;
-    this->scaleXChange = scaleChange;
-    this->scaleY = scale;
-    this->scaleYChange = scaleChange;
+    this->scale = scale;
+    this->scaleChange = scaleChange;
     this->onlyRendersOnce = onlyRendersOnce;
     this->opacity = opacity;
     ParticleMaster::addParticleStandard(this);
 }
 
 ParticleStandard::ParticleStandard(ParticleTexture* texture, Vector3f* position, Vector3f* velocity, float gravityEffect,
-        float lifeLength, float rotation, float scaleX, float scaleXChange, float scaleY, float scaleYChange, 
-        bool posIsRef, bool onlyRendersOnce)
+        float lifeLength, float scale, float scaleChange, bool posIsRef, bool onlyRendersOnce)
 {
     this->texture = texture;
     if (posIsRef)
@@ -140,11 +127,8 @@ ParticleStandard::ParticleStandard(ParticleTexture* texture, Vector3f* position,
     this->velocity.z = velocity->z;
     this->gravityEffect = gravityEffect;
     this->lifeLength = lifeLength;
-    this->rotation = rotation;
-    this->scaleX = scaleX;
-    this->scaleXChange = scaleXChange;
-    this->scaleY = scaleY;
-    this->scaleYChange = scaleYChange;
+    this->scale = scale;
+    this->scaleChange = scaleChange;
     this->onlyRendersOnce = onlyRendersOnce;
     this->opacity = 1.0f;
     ParticleMaster::addParticleStandard(this);
@@ -153,7 +137,7 @@ ParticleStandard::ParticleStandard(ParticleTexture* texture, Vector3f* position,
 void Particle::updateTextureCoordInfo()
 {
     float lifeFactor = elapsedTime / lifeLength;
-    int stageCount = texture->getNumberOfRows() * texture->getNumberOfRows();
+    int stageCount = texture->numberOfRows * texture->numberOfRows;
     float atlasProgression = lifeFactor * stageCount;
     int index1 = (int)atlasProgression;
     int index2 = index1 < stageCount - 1 ? index1 + 1 : index1;
@@ -164,60 +148,10 @@ void Particle::updateTextureCoordInfo()
 
 void Particle::setTextureOffset(Vector2f* offset, int index)
 {
-    int column = index % texture->getNumberOfRows();
-    int row = index / texture->getNumberOfRows();
-    offset->x = (float)column / texture->getNumberOfRows();
-    offset->y = (float)row / texture->getNumberOfRows();
-}
-
-float Particle::getDistance()
-{
-    return distance;
-}
-
-ParticleTexture* Particle::getTexture()
-{
-    return texture;
-}
-
-Vector3f* Particle::getPosition()
-{
-    return positionRef;
-}
-
-float Particle::getRotation()
-{
-    return rotation;
-}
-
-float Particle::getScaleX()
-{
-    return scaleX;
-}
-
-float Particle::getScaleY()
-{
-    return scaleY;
-}
-
-float Particle::getOpacity()
-{
-    return opacity;
-}
-
-Vector2f* Particle::getTexOffset1()
-{
-    return &texOffset1;
-}
-
-Vector2f* Particle::getTexOffset2()
-{
-    return &texOffset2;
-}
-
-float Particle::getBlend()
-{
-    return blend;
+    int column = index % texture->numberOfRows;
+    int row = index / texture->numberOfRows;
+    offset->x = (float)column / texture->numberOfRows;
+    offset->y = (float)row / texture->numberOfRows;
 }
 
 bool Particle::update()
@@ -228,20 +162,12 @@ bool Particle::update()
 
 bool ParticleStandard::update()
 {
-    //printf("standard update being called\n");
     velocity.y -= gravityEffect*dt;
-    scaleX = fmaxf(0, scaleX + scaleXChange*dt);
-    scaleY = fmaxf(0, scaleY + scaleYChange*dt);
+    scale = fmaxf(0, scale + scaleChange*dt);
 
     position.x += velocity.x*dt;
     position.y += velocity.y*dt;
     position.z += velocity.z*dt;
-
-    //dont need this since we dont do the sort anyway...
-    //Vector3f dist(&camera->eye);
-    //dist = dist-position;
-
-    //distance = dist.lengthSquared();
 
     updateTextureCoordInfo();
     elapsedTime += dt;

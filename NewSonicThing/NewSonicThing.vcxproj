@@ -201,6 +201,7 @@
     <ClCompile Include="src\entities\DryLagoon\DL_Turtle.cpp" />
     <ClCompile Include="src\entities\E1000.cpp" />
     <ClCompile Include="src\entities\EggPawn.cpp" />
+    <ClCompile Include="src\entities\EggPawnGun.cpp" />
     <ClCompile Include="src\entities\EmeraldCoast\EC_Dolphin.cpp" />
     <ClCompile Include="src\entities\EmeraldCoast\EC_Seagull.cpp" />
     <ClCompile Include="src\entities\EmeraldCoast\EC_Orca.cpp" />
@@ -231,6 +232,7 @@
     <ClCompile Include="src\entities\MetalHarbor\MH_CratePlatform.cpp" />
     <ClCompile Include="src\entities\MetalHarbor\MH_Missle.cpp" />
     <ClCompile Include="src\entities\MetalHarbor\MH_StaticObjects.cpp" />
+    <ClCompile Include="src\entities\MotoBug.cpp" />
     <ClCompile Include="src\entities\NokiBay\NB_Palmtree.cpp" />
     <ClCompile Include="src\entities\NokiBay\NB_Waterfall.cpp" />
     <ClCompile Include="src\entities\NokiBay\NB_WaterPlatform.cpp" />
@@ -259,11 +261,13 @@
     <ClCompile Include="src\entities\RadicalHighway\RH_StageManager.cpp" />
     <ClCompile Include="src\entities\Rail.cpp" />
     <ClCompile Include="src\entities\RhinoSpike.cpp" />
+    <ClCompile Include="src\entities\RhinoTank.cpp" />
     <ClCompile Include="src\entities\Ring.cpp" />
     <ClCompile Include="src\entities\RingMoving.cpp" />
     <ClCompile Include="src\entities\Rocket.cpp" />
     <ClCompile Include="src\entities\Pulley.cpp" />
     <ClCompile Include="src\entities\SacredSky\SS_StageManager.cpp" />
+    <ClCompile Include="src\entities\SeasideHill\SH_Flag.cpp" />
     <ClCompile Include="src\entities\SeasideHill\SH_RisingPlatform.cpp" />
     <ClCompile Include="src\entities\SeasideHill\SH_StageManager.cpp" />
     <ClCompile Include="src\entities\SeasideHill\SH_StoneBlock.cpp" />
@@ -272,6 +276,8 @@
     <ClCompile Include="src\entities\SkyRail\SR_StageManager.cpp" />
     <ClCompile Include="src\entities\SkySphere.cpp" />
     <ClCompile Include="src\entities\SpeedRamp.cpp" />
+    <ClCompile Include="src\entities\Spikeball.cpp" />
+    <ClCompile Include="src\entities\Spinner.cpp" />
     <ClCompile Include="src\entities\Spring.cpp" />
     <ClCompile Include="src\entities\SpringTriple.cpp" />
     <ClCompile Include="src\entities\SpringYellow.cpp" />
@@ -279,6 +285,7 @@
     <ClCompile Include="src\entities\StagePass2.cpp" />
     <ClCompile Include="src\entities\StagePass3.cpp" />
     <ClCompile Include="src\entities\StageTransparent.cpp" />
+    <ClCompile Include="src\entities\SweetMountain\SM_StageManager.cpp" />
     <ClCompile Include="src\entities\Tutorial\T_StageManager.cpp" />
     <ClCompile Include="src\entities\TwinkleCircuit\TC_Dash.cpp" />
     <ClCompile Include="src\entities\TwinkleCircuit\TC_Kart.cpp" />
@@ -400,6 +407,7 @@
     <ClInclude Include="src\entities\DryLagoon\dlturtle.hpp" />
     <ClInclude Include="src\entities\e1000.hpp" />
     <ClInclude Include="src\entities\eggpawn.hpp" />
+    <ClInclude Include="src\entities\eggpawngun.hpp" />
     <ClInclude Include="src\entities\EmeraldCoast\ecdolphin.hpp" />
     <ClInclude Include="src\entities\EmeraldCoast\ecseagull.hpp" />
     <ClInclude Include="src\entities\EmeraldCoast\ecorca.hpp" />
@@ -430,6 +438,7 @@
     <ClInclude Include="src\entities\MetalHarbor\mhcrateplatform.hpp" />
     <ClInclude Include="src\entities\MetalHarbor\mhmissle.hpp" />
     <ClInclude Include="src\entities\MetalHarbor\mhstaticobjects.hpp" />
+    <ClInclude Include="src\entities\motobug.hpp" />
     <ClInclude Include="src\entities\NokiBay\nbpalmtree.hpp" />
     <ClInclude Include="src\entities\NokiBay\nbwaterfall.hpp" />
     <ClInclude Include="src\entities\NokiBay\nbwaterplatform.hpp" />
@@ -459,10 +468,12 @@
     <ClInclude Include="src\entities\RadicalHighway\rhstagemanager.hpp" />
     <ClInclude Include="src\entities\rail.hpp" />
     <ClInclude Include="src\entities\rhinospike.hpp" />
+    <ClInclude Include="src\entities\rhinotank.hpp" />
     <ClInclude Include="src\entities\ring.hpp" />
     <ClInclude Include="src\entities\ringmoving.hpp" />
     <ClInclude Include="src\entities\rocket.hpp" />
     <ClInclude Include="src\entities\SacredSky\ssstagemanager.hpp" />
+    <ClInclude Include="src\entities\SeasideHill\shflag.hpp" />
     <ClInclude Include="src\entities\SeasideHill\shrisingplatform.hpp" />
     <ClInclude Include="src\entities\SeasideHill\shstagemanager.hpp" />
     <ClInclude Include="src\entities\SeasideHill\shstoneblock.hpp" />
@@ -471,6 +482,8 @@
     <ClInclude Include="src\entities\SkyRail\srstagemanager.hpp" />
     <ClInclude Include="src\entities\skysphere.hpp" />
     <ClInclude Include="src\entities\speedramp.hpp" />
+    <ClInclude Include="src\entities\spikeball.hpp" />
+    <ClInclude Include="src\entities\spinner.hpp" />
     <ClInclude Include="src\entities\spring.hpp" />
     <ClInclude Include="src\entities\springtriple.hpp" />
     <ClInclude Include="src\entities\springyellow.hpp" />
@@ -478,6 +491,7 @@
     <ClInclude Include="src\entities\stagepass2.hpp" />
     <ClInclude Include="src\entities\stagepass3.hpp" />
     <ClInclude Include="src\entities\stagetransparent.hpp" />
+    <ClInclude Include="src\entities\SweetMountain\smstagemanager.hpp" />
     <ClInclude Include="src\entities\Tutorial\tstagemanager.hpp" />
     <ClInclude Include="src\entities\TwinkleCircuit\tcdash.hpp" />
     <ClInclude Include="src\entities\TwinkleCircuit\tckart.hpp" />

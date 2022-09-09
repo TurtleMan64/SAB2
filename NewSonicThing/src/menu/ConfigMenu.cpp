@@ -41,6 +41,7 @@ void ConfigMenu::loadResources()
     if (buttonsNames.size() != 0)
     {
         printf("Warning: ConfigMenu loading resources when they are already loaded.\n");
+        return;
     }
 
     textureParallelogram              = LoaderGL::loadTexture("res/Images/MainMenu/Parallelogram.png");
@@ -62,9 +63,10 @@ void ConfigMenu::loadResources()
     buttonsNames.push_back(new Button("FOV",              Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(2)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
     buttonsNames.push_back(new Button("SFX Volume",       Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(3)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
     buttonsNames.push_back(new Button("BGM Volume",       Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(4)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
-    buttonsNames.push_back(new Button("Render Particles", Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(5)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    buttonsNames.push_back(new Button("Show Particles",   Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(5)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
     buttonsNames.push_back(new Button("Show FPS",         Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(6)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
-    buttonsNames.push_back(new Button("Controller",       Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(7)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    buttonsNames.push_back(new Button("Speedometer",      Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(7)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    buttonsNames.push_back(new Button("Controller",       Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.32f, 0.5f + (0.1f*(8)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
 
     buttonsValues.clear();
     //buttonsValues.push_back(new Button(std::to_string(SCR_WIDTH),                         Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(0)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
@@ -77,7 +79,8 @@ void ConfigMenu::loadResources()
     buttonsValues.push_back(new Button(floatToString(100*AudioPlayer::soundLevelBGM)+"%", Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(4)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
     buttonsValues.push_back(new Button(boolToString(Global::renderParticles),             Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(5)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
     buttonsValues.push_back(new Button(boolToString(Global::displayFPS),                  Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(6)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
-    buttonsValues.push_back(new Button(Input::getControllerName(),                        Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(7)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    buttonsValues.push_back(new Button(boolToString(Global::displaySpeedometer),          Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(7)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
+    buttonsValues.push_back(new Button(Input::getControllerName(),                        Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.67f, 0.5f + (0.1f*(8)), 0.56f / aspectRatio, 0.07f, true)); INCR_NEW("Button");
 
     buttonsNames[1]->generateText("FPS Limit", !Global::framerateUnlock);
     if (Global::fpsLimit < 0)
@@ -112,6 +115,7 @@ void ConfigMenu::unloadResources()
     if ((int)buttonsNames.size() == 0)
     {
         printf("Warning: ConfigMenu unloading resources when they are empty.\n");
+        return;
     }
 
     LoaderGL::deleteTexture(textureParallelogram);
@@ -424,10 +428,15 @@ Menu* ConfigMenu::step()
                 break;
 
             case 7:
+                Global::displaySpeedometer = !Global::displaySpeedometer;
+                buttonsValues[7]->generateText(boolToString(Global::displaySpeedometer));
+                break;
+
+            case 8:
                 if (Input::changeController(-1))
                 {
                     AudioPlayer::play(36, Global::gameCamera->getFadePosition1());
-                    buttonsValues[7]->generateText(Input::getControllerName());
+                    buttonsValues[8]->generateText(Input::getControllerName());
                 }
                 break;
 
@@ -518,10 +527,15 @@ Menu* ConfigMenu::step()
                 break;
 
             case 7:
+                Global::displaySpeedometer = !Global::displaySpeedometer;
+                buttonsValues[7]->generateText(boolToString(Global::displaySpeedometer));
+                break;
+
+            case 8:
                 if (Input::changeController(1))
                 {
                     AudioPlayer::play(36, Global::gameCamera->getFadePosition1());
-                    buttonsValues[7]->generateText(Input::getControllerName());
+                    buttonsValues[8]->generateText(Input::getControllerName());
                 }
                 break;
 
@@ -549,6 +563,11 @@ Menu* ConfigMenu::step()
             case 6:
                 Global::displayFPS = !Global::displayFPS;
                 buttonsValues[6]->generateText(boolToString(Global::displayFPS));
+                break;
+
+            case 7:
+                Global::displaySpeedometer = !Global::displaySpeedometer;
+                buttonsValues[7]->generateText(boolToString(Global::displaySpeedometer));
                 break;
 
             default:

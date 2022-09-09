@@ -65,8 +65,8 @@ void SH_StageManager::loadStaticModels()
     printf("Loading SH_StageManager static models...\n");
     #endif
 
-    ModelLoader::loadModel(&SH_StageManager::modelsSkyPass1,       "res/Models/Levels/DelfinoPlaza/Sky/", "Blue");
-    ModelLoader::loadModel(&SH_StageManager::modelsSkyPass2,       "res/Models/Levels/DelfinoPlaza/Sky/", "Pass2");
+    ModelLoader::loadModel(&SH_StageManager::modelsSkyPass1, "res/Models/Levels/DelfinoPlaza/Sky/", "Blue");
+    ModelLoader::loadModel(&SH_StageManager::modelsSkyPass2, "res/Models/Levels/DelfinoPlaza/Sky/", "Pass2");
 }
 
 void SH_StageManager::deleteStaticModels()

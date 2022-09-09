@@ -1,0 +1,43 @@
+# Blender MTL File: 'Sketch.blend'
+# Material Count: 4
+
+newmtl None
+Ns 20
+Ka 0.000000 0.000000 0.000000
+Kd 0.8 0.8 0.8
+Ks 0.8 0.8 0.8
+Ni 0.02
+d 1
+scrollY -1
+illum 2
+map_Kd afct_i_tb1_chocolate.png
+
+newmtl None_fct_o_jh1_cream01.png
+Ns 20
+Ka 0.000000 0.000000 0.000000
+Kd 0.8 0.8 0.8
+Ks 0.8 0.8 0.8
+Ni 0.02
+d 1
+illum 2
+map_Kd fct_o_jh1_cream01.png
+
+newmtl None_fct_o_jh1_criff01.png
+Ns 20
+Ka 0.000000 0.000000 0.000000
+Kd 0.8 0.8 0.8
+Ks 0.8 0.8 0.8
+Ni 0.02
+d 1
+illum 2
+map_Kd fct_o_jh1_criff01.png
+
+newmtl None_fct_o_jh1_criff02.png
+Ns 20
+Ka 0.000000 0.000000 0.000000
+Kd 0.8 0.8 0.8
+Ks 0.8 0.8 0.8
+Ni 0.02
+d 1
+illum 2
+map_Kd fct_o_jh1_criff02.png

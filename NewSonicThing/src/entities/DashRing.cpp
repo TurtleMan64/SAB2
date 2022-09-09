@@ -10,6 +10,7 @@
 #include "../toolbox/maths.hpp"
 #include "../entities/camera.hpp"
 #include "../audio/audioplayer.hpp"
+#include "../menu/hud.hpp"
 
 #include <list>
 #include <iostream>
@@ -37,7 +38,7 @@ DashRing::DashRing(
     forward.normalize();
 
     this->power = power;
-    this->controlLockTime = 0.25f;//controlLockTime;
+    this->controlLockTime = controlLockTime;
     this->changeCamera = (bool)changeCamera;
     isRainbow = (bool)rainbow;
 
@@ -45,14 +46,14 @@ DashRing::DashRing(
 
     if (isRainbow)
     {
-        ringRadius = 17.0f + 3.0f;
+        ringRadius = 14.0f + sonicRadius;
 
         top    = position + forward.scaleCopy( 4 + sonicRadius);
         bottom = position + forward.scaleCopy(-4 - sonicRadius);
     }
     else
     {
-        ringRadius = 20.3f + 3.0f;
+        ringRadius = 20.3f + sonicRadius;
 
         top    = position + forward.scaleCopy( 9 + sonicRadius);
         bottom = position + forward.scaleCopy(-9 - sonicRadius);
@@ -60,7 +61,7 @@ DashRing::DashRing(
 
     if (power < 700)
     {
-        this->power = 700.0f;
+        //this->power = 700.0f;
     }
 
     Maths::sphereAnglesFromPosition(&forward, &rotY, &rotZ);
@@ -81,6 +82,13 @@ void DashRing::step()
                 if (isRainbow)
                 {
                     AudioPlayer::play(77, &position, 0.8f);
+
+                    if (!alreadyActivated)
+                    {
+                        HUD::displayPointBonus(0);
+                        Global::gameScore += 100;
+                        alreadyActivated = true;
+                    }
                 }
                 else
                 {

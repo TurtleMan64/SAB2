@@ -1,0 +1,243 @@
+# Blender MTL File: 'None'
+# Material Count: 20
+
+newmtl material_34C8EB0
+	Ns 20.0
+	Ka 0.698039 0.698039 0.698039
+	Kd 0.698039 0.698039 0.698039
+	Ks 1.000000 1.000000 1.000000
+	Ke 0.000000 0.000000 0.000000
+	Ni 0.1
+	d 1.000000
+	illum 2
+	map_Kd rhinobody0.png
+	map_Ka rhinobody0.png
+
+newmtl material_34C91FC
+	Ns 20.0
+	Ka 0.498039 0.498039 0.498039
+	Kd 0.498039 0.498039 0.498039
+	Ks 1.000000 1.000000 1.000000
+	Ke 0.000000 0.000000 0.000000
+	Ni 0.1
+	d 1.000000
+	illum 2
+	map_Kd burn2.png
+	map_Ka burn2.png
+
+newmtl material_34C9210
+	Ns 20.0
+	Ka 0.498039 0.498039 0.498039
+	Kd 0.498039 0.498039 0.498039
+	Ks 1.000000 1.000000 1.000000
+	Ke 0.000000 0.000000 0.000000
+	Ni 0.1
+	d 1.000000
+	illum 2
+	map_Kd burn0.png
+	map_Ka burn0.png
+
+newmtl material_34C9224
+	Ns 20.0
+	Ka 0.498039 0.498039 0.498039
+	Kd 0.498039 0.498039 0.498039
+	Ks 1.000000 1.000000 1.000000
+	Ke 0.000000 0.000000 0.000000
+	Ni 0.1
+	d 1.000000
+	illum 2
+	map_Kd burn1.png
+	map_Ka burn1.png
+
+newmtl material_34C97D8
+	Ns 20.0
+	Ka 0.698039 0.698039 0.698039
+	Kd 0.698039 0.698039 0.698039
+	Ks 1.000000 1.000000 1.000000
+	Ke 0.000000 0.000000 0.000000
+	Ni 0.1
+	d 1.000000
+	illum 2
+	map_Kd rhinoside2.png
+	map_Ka rhinoside2.png
+
+newmtl material_34C97EC
+	Ns 20.0
+	Ka 0.698039 0.698039 0.698039
+	Kd 0.698039 0.698039 0.698039
+	Ks 1.000000 1.000000 1.000000
+	Ke 0.000000 0.000000 0.000000
+	Ni 0.1
+	d 1.000000
+	illum 2
+	map_Kd rhinoside4.png
+	map_Ka rhinoside4.png
+
+newmtl material_34C9800
+	Ns 20.0
+	Ka 0.698039 0.698039 0.698039
+	Kd 0.698039 0.698039 0.698039
+	Ks 1.000000 1.000000 1.000000
+	Ke 0.000000 0.000000 0.000000
+	Ni 0.1
+	d 1.000000
+	illum 2
+	map_Kd rhinoside3.png
+	map_Ka rhinoside3.png
+
+newmtl material_34C9814
+	Ns 20.0
+	Ka 0.698039 0.698039 0.698039
+	Kd 0.698039 0.698039 0.698039
+	Ks 1.000000 1.000000 1.000000
+	Ke 0.000000 0.000000 0.000000
+	Ni 0.1
+	d 1.000000
+	illum 2
+	map_Kd rhinoside1.png
+	map_Ka rhinoside1.png
+
+newmtl material_34C9828
+	Ns 20.0
+	Ka 0.698039 0.698039 0.698039
+	Kd 0.698039 0.698039 0.698039
+	Ks 1.000000 1.000000 1.000000
+	Ke 0.000000 0.000000 0.000000
+	Ni 0.1
+	d 1.000000
+	illum 2
+	map_Kd rhinoside0.png
+	map_Ka rhinoside0.png
+
+newmtl material_34C9DF8
+	Ns 20.0
+	Ka 0.698039 0.698039 0.698039
+	Kd 0.698039 0.698039 0.698039
+	Ks 1.000000 1.000000 1.000000
+	Ke 0.000000 0.000000 0.000000
+	Ni 0.1
+	d 1.000000
+	scrollY 2.0
+	illum 2
+	map_Kd catarp.png
+	map_Ka catarp.png
+
+newmtl material_34C9E0C
+	Ns 20.0
+	Ka 0.698039 0.698039 0.698039
+	Kd 0.698039 0.698039 0.698039
+	Ks 1.000000 1.000000 1.000000
+	Ke 0.000000 0.000000 0.000000
+	Ni 0.1
+	d 1.000000
+	illum 2
+	map_Kd caterp3.png
+	map_Ka caterp3.png
+
+newmtl material_34CA648
+	Ns 20.0
+	Ka 0.698039 0.698039 0.698039
+	Kd 0.698039 0.698039 0.698039
+	Ks 1.000000 1.000000 1.000000
+	Ke 0.000000 0.000000 0.000000
+	Ni 0.1
+	d 1.000000
+	illum 2
+	map_Kd rhinoboard1.png
+	map_Ka rhinoboard1.png
+
+newmtl material_34CA65C
+	Ns 20.0
+	Ka 0.698039 0.698039 0.698039
+	Kd 0.698039 0.698039 0.698039
+	Ks 1.000000 1.000000 1.000000
+	Ke 0.000000 0.000000 0.000000
+	Ni 0.1
+	d 1.000000
+	illum 2
+	map_Kd rhinoboard0.png
+	map_Ka rhinoboard0.png
+
+newmtl material_34CAB08
+	Ns 20.0
+	Ka 0.698039 0.698039 0.698039
+	Kd 0.698039 0.698039 0.698039
+	Ks 1.000000 1.000000 1.000000
+	Ke 0.000000 0.000000 0.000000
+	Ni 0.1
+	d 1.000000
+	illum 2
+	map_Kd horn1.png
+	map_Ka horn1.png
+
+newmtl material_34CAB1C
+	Ns 20.0
+	Ka 0.698039 0.698039 0.698039
+	Kd 0.698039 0.698039 0.698039
+	Ks 1.000000 1.000000 1.000000
+	Ke 0.000000 0.000000 0.000000
+	Ni 0.1
+	d 1.000000
+	illum 2
+	map_Kd horn0.png
+	map_Ka horn0.png
+
+newmtl material_34CAEA0
+	Ns 20.0
+	Ka 0.698039 0.698039 0.698039
+	Kd 0.698039 0.698039 0.698039
+	Ks 1.000000 1.000000 1.000000
+	Ke 0.000000 0.000000 0.000000
+	Ni 0.1
+	d 1.000000
+	illum 2
+	map_Kd rhinobody1.png
+	map_Ka rhinobody1.png
+
+newmtl material_34CAEC8
+	Ns 20.0
+	Ka 0.698039 0.698039 0.698039
+	Kd 0.698039 0.698039 0.698039
+	Ks 1.000000 1.000000 1.000000
+	Ke 0.000000 0.000000 0.000000
+	Ni 0.1
+	d 1.000000
+	illum 2
+	map_Kd white.png
+	map_Ka white.png
+
+newmtl material_34CAEF0
+	Ns 20.0
+	Ka 0.698039 0.698039 0.698039
+	Kd 0.698039 0.698039 0.698039
+	Ks 1.000000 1.000000 1.000000
+	Ke 0.000000 0.000000 0.000000
+	Ni 0.1
+	d 1.000000
+	illum 2
+	map_Kd eneeye.png
+	map_Ka eneeye.png
+
+newmtl material_34CB8E8
+	Ns 20.0
+	Ka 0.698039 0.698039 0.698039
+	Kd 0.698039 0.698039 0.698039
+	Ks 1.000000 1.000000 1.000000
+	Ke 0.000000 0.000000 0.000000
+	Ni 0.1
+	d 1.000000
+	illum 2
+	map_Kd rhinobody2.png
+	map_Ka rhinobody2.png
+
+newmtl material_34CB8FC
+	Ns 20.0
+	Ka 0.698039 0.698039 0.698039
+	Kd 0.698039 0.698039 0.698039
+	Ks 1.000000 1.000000 1.000000
+	Ke 0.000000 0.000000 0.000000
+	Ni 0.1
+	d 1.000000
+	illum 2
+	map_Kd rhinobody3.png
+	map_Ka rhinobody3.png

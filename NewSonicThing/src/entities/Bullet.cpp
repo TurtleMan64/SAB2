@@ -64,7 +64,7 @@ void Bullet::step()
                 hit.y + spread*(Maths::random() - 0.5f),
                 hit.z + spread*(Maths::random() - 0.5f));
 
-            ParticleMaster::createParticle(ParticleResources::textureExplosion1, &pos, &bounce, 0, 0.75f, 0, 1*Maths::random() + 2, 0, false, false, 0.5f, true);
+            ParticleMaster::createParticle(ParticleResources::textureExplosion1, &pos, &bounce, 0, 0.75f, 1*Maths::random() + 2, 0, false, false, 0.5f, true);
         }
 
         Global::deleteEntity(this);

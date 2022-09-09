@@ -34,7 +34,7 @@ HintMonitor::HintMonitor(float x, float y, float z, float rotationY)
     visible = true;
     updateTransformationMatrix();
 
-    if (Global::gameIsHardMode)
+    if (!Global::gameIsNormalMode)
     {
         Global::deleteEntity(this);
     }
@@ -56,7 +56,7 @@ void HintMonitor::step()
             fadeoutTimer = 1.0f;
             Global::gameMainPlayer->canMoveTimer = 1.0f;
             Vector3f vel(0,0,0);
-            ParticleMaster::createParticle(ParticleResources::textureBlackFadeOutAndIn, &Global::gameCamera->fadePosition1, &vel, 0, 1.0f, 0, 400, 0, true, false, 1.0f, false);
+            ParticleMaster::createParticle(ParticleResources::textureBlackFadeOutAndIn, &Global::gameCamera->fadePosition1, &vel, 0, 1.0f, 400, 0, true, false, 1.0f, false);
         }
 
         if (readingTimer > 0.5f)
@@ -133,7 +133,7 @@ void HintMonitor::step()
                         Global::gameMainPlayer->canMoveTimer = 100000000000.0f;
                         Global::gameMainPlayer->setReadingHint(true);
                         Vector3f vel(0,0,0);
-                        ParticleMaster::createParticle(ParticleResources::textureBlackFadeOutAndIn, &Global::gameCamera->fadePosition1, &vel, 0, 1.0f, 0, 400, 0, true, false, 1.0f, false);
+                        ParticleMaster::createParticle(ParticleResources::textureBlackFadeOutAndIn, &Global::gameCamera->fadePosition1, &vel, 0, 1.0f, 400, 0, true, false, 1.0f, false);
                     }
                 }
             }
