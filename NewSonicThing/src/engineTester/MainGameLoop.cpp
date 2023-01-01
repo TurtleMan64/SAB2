@@ -579,14 +579,14 @@ int main(int argc, char** argv)
         //chunked entities mamanegement
         for (Entity* entityToAdd : gameChunkedEntitiesToAdd)
         {
-            int realIndex = Global::getChunkIndex(entityToAdd->getX(), entityToAdd->getZ());
+            int realIndex = Global::getChunkIndex(entityToAdd->position.x, entityToAdd->position.z);
             gameChunkedEntities[realIndex].insert(entityToAdd);
         }
         gameChunkedEntitiesToAdd.clear();
 
         for (Entity* entityToDelete : gameChunkedEntitiesToDelete)
         {
-            int realIndex = Global::getChunkIndex(entityToDelete->getX(), entityToDelete->getZ());
+            int realIndex = Global::getChunkIndex(entityToDelete->position.x, entityToDelete->position.z);
             size_t numDeleted = gameChunkedEntities[realIndex].erase(entityToDelete);
             if (numDeleted == 0)
             {
@@ -675,8 +675,9 @@ int main(int argc, char** argv)
                     Global::getNearbyEntities(cam.eye.x, cam.eye.z, 2, &entityChunkedList);
                     for (std::unordered_set<Entity*>* entitySet : entityChunkedList)
                     {
-                        for (Entity* e : (*entitySet))
+                        for (auto it = entitySet->cbegin(); it != entitySet->cend(); it++)
                         {
+                            Entity* e = it._Ptr->_Myval;
                             e->step();
                             //chunkCt++;
                         }
@@ -783,8 +784,9 @@ int main(int argc, char** argv)
         {
             for (std::unordered_set<Entity*>* entitySet : entityChunkedList)
             {
-                for (Entity* e : (*entitySet))
+                for (auto it = entitySet->cbegin(); it != entitySet->cend(); it++)
                 {
+                    Entity* e = it._Ptr->_Myval;
                     MasterRenderer::processEntity(e);
                 }
             }
@@ -1696,19 +1698,19 @@ void listen()
             //else if (input.c_str()[0] == 'x')
             //{
             //    const char* data = &input.c_str()[1];
-            //    Global::gamePlayer->setX(std::stof(data));
+            //    Global::gamePlayer->position.x = (std::stof(data));
             //    Global::gamePlayer->setGravity(0);
             //}
             //else if (input.c_str()[0] == 'y')
             //{
             //    const char* data = &input.c_str()[1];
-            //    Global::gamePlayer->setY(std::stof(data));
+            //    Global::gamePlayer->position.y = (std::stof(data));
             //    Global::gamePlayer->setGravity(0);
             //}
             //else if (input.c_str()[0] == 'z')
             //{
             //    const char* data = &input.c_str()[1];
-            //    Global::gamePlayer->setZ(std::stof(data));
+            //    Global::gamePlayer->position.z = (std::stof(data));
             //    Global::gamePlayer->setGravity(0);
             //}
             //else
@@ -1721,9 +1723,9 @@ void listen()
             //
             //    if (splitLength == 3)
             //    {
-            //        Global::gamePlayer->setX(std::stof(lineSplit[0]));
-            //        Global::gamePlayer->setY(std::stof(lineSplit[1]));
-            //        Global::gamePlayer->setZ(std::stof(lineSplit[2]));
+            //        Global::gamePlayer->position.x = (std::stof(lineSplit[0]));
+            //        Global::gamePlayer->position.y = (std::stof(lineSplit[1]));
+            //        Global::gamePlayer->position.z = (std::stof(lineSplit[2]));
             //        Global::gamePlayer->setGravity(0);
             //    }
             //    free(lineSplit);

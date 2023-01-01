@@ -11,7 +11,7 @@ class TexturedModel;
 
 #include <glad/glad.h>
 #include <unordered_map>
-#include <list>
+#include <vector>
 
 class MasterRenderer
 {
@@ -19,12 +19,12 @@ private:
     static EntityShader* entityShader;
     static EntityRenderer* entityRenderer;
 
-    static std::unordered_map<TexturedModel*, std::list<Entity*>> entitiesMap;
-    static std::unordered_map<TexturedModel*, std::list<Entity*>> entitiesMapPass2;
-    static std::unordered_map<TexturedModel*, std::list<Entity*>> entitiesMapPass3;
-    static std::unordered_map<TexturedModel*, std::list<Entity*>> entitiesMapNoDepth;
-    static std::unordered_map<TexturedModel*, std::list<Entity*>> entitiesMapTransparent;
-    static std::unordered_map<TexturedModel*, std::list<Entity*>> entitiesMapPass6;
+    static std::unordered_map<TexturedModel*, std::vector<Entity*>> entitiesMap;
+    static std::unordered_map<TexturedModel*, std::vector<Entity*>> entitiesMapPass2;
+    static std::unordered_map<TexturedModel*, std::vector<Entity*>> entitiesMapPass3;
+    static std::unordered_map<TexturedModel*, std::vector<Entity*>> entitiesMapNoDepth;
+    static std::unordered_map<TexturedModel*, std::vector<Entity*>> entitiesMapTransparent;
+    static std::unordered_map<TexturedModel*, std::vector<Entity*>> entitiesMapPass6;
 
     static GLuint transparentFrameBuffer;
     static GLuint transparentDepthTexture;

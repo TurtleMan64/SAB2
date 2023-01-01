@@ -20,9 +20,9 @@ GH_StageManager::GH_StageManager()
     waterFlat     = new Dummy(&GH_StageManager::modelsWaterFlat);     INCR_NEW("Entity");
     waterVertical = new Dummy(&GH_StageManager::modelsWaterVertical); INCR_NEW("Entity");
 
-    skyClouds->setVisible(true);
-    waterFlat->setVisible(true);
-    waterVertical->setVisible(true);
+    skyClouds->visible = (true);
+    waterFlat->visible = (true);
+    waterVertical->visible = (true);
 
     Global::addEntity(skyClouds);
     Global::addEntity(waterFlat);

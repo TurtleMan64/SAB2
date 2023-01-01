@@ -222,28 +222,28 @@ void MH_AircraftCarrierCart::deleteStaticModels()
 inline void MH_AircraftCarrierCart::setupModelWheelFront()
 {
     wheelFront = new Dummy(&MH_AircraftCarrierCart::modelsWheelFront); INCR_NEW("Entity");
-    wheelFront->setVisible(true);
+    wheelFront->visible = (true);
     Global::addEntity(wheelFront);
     wheelFront->setPosition(&position);
-    wheelFront->setRotY(rotY);
+    wheelFront->rotY = (rotY);
 }
 
 inline void MH_AircraftCarrierCart::setupModelWheelBack()
 {
     wheelBack = new Dummy(&MH_AircraftCarrierCart::modelsWheelBack); INCR_NEW("Entity");
-    wheelBack->setVisible(true);
+    wheelBack->visible = (true);
     Global::addEntity(wheelBack);
 
     wheelBack->setPosition(&position);
-    wheelBack->setRotY(rotY);
+    wheelBack->rotY = (rotY);
 }
 
 inline void MH_AircraftCarrierCart::setupModelTransparent()
 {
     bodyTransparent = new Dummy(&MH_AircraftCarrierCart::modelsTransparent); INCR_NEW("Entity");
-    bodyTransparent->setVisible(true);
+    bodyTransparent->visible = (true);
     Global::addEntity(bodyTransparent);
-    bodyTransparent->setRotY(rotY);
+    bodyTransparent->rotY = (rotY);
 }
 
 inline Vector3f MH_AircraftCarrierCart::calculateMovementAmount(Vector3f directionVectorLocal)

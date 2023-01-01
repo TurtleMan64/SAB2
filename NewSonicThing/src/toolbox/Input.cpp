@@ -363,7 +363,7 @@ void Input::pollInputs()
         if (Global::gameMainPlayer != nullptr)
         {
             extern float dt;
-            //Global::gameMainVehicle->getPosition()->y = Global::gameMainVehicle->getY()+600*dt;
+            //Global::gameMainVehicle->getPosition()->y = Global::gameMainVehicle->position.y+600*dt;
             Vector3f* v = &Global::gameMainPlayer->vel;
             Global::gameMainPlayer->vel.set(v->x, v->y+600*dt, v->z);
         }

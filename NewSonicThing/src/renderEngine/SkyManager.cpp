@@ -95,9 +95,9 @@ void SkyManager::calculateValues()
     sunOffset.neg();
     //Global::gameLightSun->direction = sunOffset;
 
-    //entitySun.setX(center->x + modelOffset.x);
-    //entitySun.setY(modelOffset.y);
-    //entitySun.setZ(center->z - modelOffset.z);
+    //entitySun.position.x = (center->x + modelOffset.x);
+    //entitySun.position.y = (modelOffset.y);
+    //entitySun.position.z = (center->z - modelOffset.z);
 
     Global::gameLightMoon->position.set(center->x + moonOffset.x,
                                         moonOffset.y,

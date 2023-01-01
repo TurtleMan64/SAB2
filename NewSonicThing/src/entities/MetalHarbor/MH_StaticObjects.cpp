@@ -84,7 +84,7 @@ void MH_StaticObjects::deleteStaticModels()
 void MH_StaticObjects::setupModelVertexColors()
 {
     modelVertexColors = new Dummy(&MH_StaticObjects::modelsVertexColors);
-    modelVertexColors->setVisible(true);
+    modelVertexColors->visible = (true);
     INCR_NEW("Entity");
     Global::addEntity(modelVertexColors);
 }
@@ -92,7 +92,7 @@ void MH_StaticObjects::setupModelVertexColors()
 void MH_StaticObjects::setupModelTransparent()
 {
     modelTransparent = new Dummy(&MH_StaticObjects::modelsTransparent);
-    modelTransparent->setVisible(true);
+    modelTransparent->visible = (true);
     INCR_NEW("Entity");
     Global::addEntity(modelTransparent);
 }

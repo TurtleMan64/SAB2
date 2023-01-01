@@ -27,7 +27,7 @@ private:
 	float yVel = 0;
 	float zVel = 0;
 	float furyTimer = 0;
-	constexpr static float furyTimerMax = 1.666f;
+	constexpr static float furyTimerMax = 2.3f;
 	bool inAir = true;
 	float clock = 0;
 	float animIndex = 0;

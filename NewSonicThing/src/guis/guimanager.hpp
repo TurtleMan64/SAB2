@@ -6,12 +6,12 @@ class GUIText;
 class GUINumber;
 class GuiImage;
 
-#include <list>
+#include <vector>
 
 class GuiManager
 {
 private:
-    static std::list<GuiImage*> guisToRender;
+    static std::vector<GuiImage*> guisToRender;
 
 public:
     static void init();

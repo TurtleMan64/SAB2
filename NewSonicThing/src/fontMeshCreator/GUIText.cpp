@@ -80,16 +80,6 @@ void GUIText::setPosition(Vector2f* newPos)
     position.set(newPos);
 }
 
-void GUIText::setVisibility(bool newVisible)
-{
-    visible = newVisible;
-}
-
-bool GUIText::isVisible()
-{
-    return visible;
-}
-
 int GUIText::getMesh()
 {
     return textMeshVao;
@@ -98,8 +88,9 @@ int GUIText::getMesh()
 void GUIText::setMeshInfo(int vao, std::vector<int>* vbos, int verticesCount)
 {
     this->textMeshVao = vao;
-    for (int vbo : (*vbos))
+    for (int i = 0; i < (int)vbos->size(); i++)
     {
+        int vbo = vbos->at(i);
         this->textMeshVbos.push_back(vbo);
     }
     this->vertexCount = verticesCount;

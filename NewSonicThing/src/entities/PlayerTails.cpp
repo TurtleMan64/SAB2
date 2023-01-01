@@ -954,7 +954,7 @@ void PlayerTails::step()
         //speed before adjusting
         float originalSpeed = vel.length();
         CollisionChecker::setCheckPlayer(true);
-        if (CollisionChecker::checkCollision(getX(), getY(), getZ(), getX()+vel.x*dt, getY()+vel.y*dt, getZ()+vel.z*dt))
+        if (CollisionChecker::checkCollision(position.x, position.y, position.z, position.x+vel.x*dt, position.y+vel.y*dt, position.z+vel.z*dt))
         {
             Vector3f* colNormal = &CollisionChecker::getCollideTriangle()->normal;
 
@@ -1014,7 +1014,7 @@ void PlayerTails::step()
                             //move additional distance
                             if (distLeftToMove > 0)
                             {
-                                if (CollisionChecker::checkCollision(getX(), getY(), getZ(), getX()+velToMove.x, getY()+velToMove.y, getZ()+velToMove.z) == false)
+                                if (CollisionChecker::checkCollision(position.x, position.y, position.z, position.x+velToMove.x, position.y+velToMove.y, position.z+velToMove.z) == false)
                                 {
                                     increasePosition(velToMove.x, velToMove.y, velToMove.z);
                                 }
@@ -1050,11 +1050,11 @@ void PlayerTails::step()
                             //Vector3f posDelta = posAfterMoveToWall - position;
                             //posAfterMoveToWall = posAfterMoveToWall + colNormal->scaleCopy(FLOOR_OFFSET);
                             //
-                            //if (CollisionChecker::checkCollision(getX(), getY(), getZ(), posAfterMoveToWall.x, posAfterMoveToWall.y, posAfterMoveToWall.z) == false)
+                            //if (CollisionChecker::checkCollision(position.x, position.y, position.z, posAfterMoveToWall.x, posAfterMoveToWall.y, posAfterMoveToWall.z) == false)
                             //{
                             //    setPosition(&posAfterMoveToWall);
                             //}
-                            //if (CollisionChecker::checkCollision(getX(), getY(), getZ(), getX() + newDirection.x, getY() + newDirection.y, getZ() + newDirection.z) == false)
+                            //if (CollisionChecker::checkCollision(position.x, position.y, position.z, position.x + newDirection.x, position.y + newDirection.y, position.z + newDirection.z) == false)
                             //{
                             //    increasePosition(newDirection.x, newDirection.y, newDirection.z);
                             //}
@@ -1137,7 +1137,7 @@ void PlayerTails::step()
                     while (distanceRemaining > 0.0f)
                     {
                         CollisionChecker::setCheckPlayer(true);
-                        if (CollisionChecker::checkCollision(getX(), getY(), getZ(), getX()+nextVel.x, getY()+nextVel.y, getZ()+nextVel.z))
+                        if (CollisionChecker::checkCollision(position.x, position.y, position.z, position.x+nextVel.x, position.y+nextVel.y, position.z+nextVel.z))
                         {
                             colNormal = &CollisionChecker::getCollideTriangle()->normal;
 
@@ -1212,7 +1212,7 @@ void PlayerTails::step()
             if (onGround)
             {
                 CollisionChecker::setCheckPlayer(true);
-                checkPassed = CollisionChecker::checkCollision(getX(), getY(), getZ(), getX() - relativeUp.x*surfaceTension, getY() - relativeUp.y*surfaceTension, getZ() - relativeUp.z*surfaceTension);
+                checkPassed = CollisionChecker::checkCollision(position.x, position.y, position.z, position.x - relativeUp.x*surfaceTension, position.y - relativeUp.y*surfaceTension, position.z - relativeUp.z*surfaceTension);
             }
             if (checkPassed)
             {

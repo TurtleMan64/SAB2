@@ -955,7 +955,7 @@ void PlayerSonic::step()
                             if (distLeftToMove > 0)
                             {
                                 //CollisionChecker::debugFilename = "2.obj";
-                                if (CollisionChecker::checkCollision(getX(), getY(), getZ(), getX()+velToMove.x, getY()+velToMove.y, getZ()+velToMove.z) == false)
+                                if (CollisionChecker::checkCollision(position.x, position.y, position.z, position.x+velToMove.x, position.y+velToMove.y, position.z+velToMove.z) == false)
                                 {
                                     increasePosition(velToMove.x, velToMove.y, velToMove.z);
                                 }
@@ -984,11 +984,11 @@ void PlayerSonic::step()
                             //Vector3f posDelta = posAfterMoveToWall - position;
                             //posAfterMoveToWall = posAfterMoveToWall + colNormal->scaleCopy(FLOOR_OFFSET);
                             //
-                            //if (CollisionChecker::checkCollision(getX(), getY(), getZ(), posAfterMoveToWall.x, posAfterMoveToWall.y, posAfterMoveToWall.z) == false)
+                            //if (CollisionChecker::checkCollision(position.x, position.y, position.z, posAfterMoveToWall.x, posAfterMoveToWall.y, posAfterMoveToWall.z) == false)
                             //{
                             //    setPosition(&posAfterMoveToWall);
                             //}
-                            //if (CollisionChecker::checkCollision(getX(), getY(), getZ(), getX() + newDirection.x, getY() + newDirection.y, getZ() + newDirection.z) == false)
+                            //if (CollisionChecker::checkCollision(position.x, position.y, position.z, position.x + newDirection.x, position.y + newDirection.y, position.z + newDirection.z) == false)
                             //{
                             //    increasePosition(newDirection.x, newDirection.y, newDirection.z);
                             //}
@@ -1072,7 +1072,7 @@ void PlayerSonic::step()
                     {
                         CollisionChecker::setCheckPlayer(true);
                         //CollisionChecker::debugFilename = std::to_string(distanceRemaining) + ".obj";
-                        if (CollisionChecker::checkCollision(getX(), getY(), getZ(), getX()+nextVel.x, getY()+nextVel.y, getZ()+nextVel.z))
+                        if (CollisionChecker::checkCollision(position.x, position.y, position.z, position.x+nextVel.x, position.y+nextVel.y, position.z+nextVel.z))
                         {
                             colNormal = &CollisionChecker::getCollideTriangle()->normal;
 
@@ -1150,7 +1150,7 @@ void PlayerSonic::step()
                 //CollisionChecker::debug = true;
                 CollisionChecker::setCheckPlayer(true);
                 //CollisionChecker::debugFilename = "4.obj";
-                checkPassed = CollisionChecker::checkCollision(getX(), getY(), getZ(), getX() - relativeUp.x*surfaceTension, getY() - relativeUp.y*surfaceTension, getZ() - relativeUp.z*surfaceTension);
+                checkPassed = CollisionChecker::checkCollision(position.x, position.y, position.z, position.x - relativeUp.x*surfaceTension, position.y - relativeUp.y*surfaceTension, position.z - relativeUp.z*surfaceTension);
                 //if (CollisionChecker::debug == false)
                 //{
                 //    printf("v %f %f %f\n", before.x, before.y, before.z);

@@ -59,9 +59,9 @@ void WoodBox::step()
             for (int i = 12; i != 0; i--)
             {
                 Vector3f pos(
-                    getX() + spread*(Maths::random() - 0.5f),
-                    getY() + spread*(Maths::random() - 0.5f) + height,
-                    getZ() + spread*(Maths::random() - 0.5f));
+                    position.x + spread*(Maths::random() - 0.5f),
+                    position.y + spread*(Maths::random() - 0.5f) + height,
+                    position.z + spread*(Maths::random() - 0.5f));
 
                 ParticleMaster::createParticle(ParticleResources::textureExplosion1, &pos, &spd, 0, 1.55f, 3*Maths::random() + 8, 0, false, false, 1.0f, true);
             }

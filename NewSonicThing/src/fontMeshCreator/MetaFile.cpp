@@ -41,7 +41,7 @@ bool MetaFile::processNextLine()
     }
     values.clear();
 
-    getlineSafe((*reader), line);
+    getlineSafe(*reader, line);
     //printf("line = '%s'\n", line.c_str());
 
     char lineBuf[1024];

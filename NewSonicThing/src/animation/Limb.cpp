@@ -89,10 +89,10 @@ void Limb::update(float time)
     float newSRot = 0;
     float newScale = 0;
 
-    for (unsigned int i = 0; i < (*animations)[animationIndex].keyframes.size() - 1; i++)
+    for (unsigned int i = 0; i < animations->at(animationIndex).keyframes.size() - 1; i++)
     {
-        key1 = &(*animations)[animationIndex].keyframes[i];
-        key2 = &(*animations)[animationIndex].keyframes[i + 1];
+        key1 = &(animations->at(animationIndex).keyframes[i]);
+        key2 = &(animations->at(animationIndex).keyframes[i + 1]);
 
         if (time >= key1->time && time <= key2->time)
         {

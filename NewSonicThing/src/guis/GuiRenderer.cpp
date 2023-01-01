@@ -29,7 +29,7 @@ void GuiRenderer::init()
     GuiRenderer::shader = new GuiShader("res/Shaders/guis/GuiVert.glsl", "res/Shaders/guis/GuiFrag.glsl"); INCR_NEW("GuiShader");
 }
 
-void GuiRenderer::render(std::list<GuiImage*>* guis)
+void GuiRenderer::render(std::vector<GuiImage*>* guis)
 {
     GuiRenderer::shader->start();
     glBindVertexArray(GuiRenderer::quadModel.getVaoId());
@@ -41,8 +41,10 @@ void GuiRenderer::render(std::list<GuiImage*>* guis)
 
     std::unordered_set<GuiImage*> imagesAlreadyDrawn;
 
-    for (GuiImage* gui : (*guis))
+    const int numGuis = (int)guis->size();
+    for (int i = 0; i < numGuis; i++)
     {
+        GuiImage* gui = guis->at(i);
         if (gui->visible)
         {
             // make sure we dont render a guiimage twice in the same frame.

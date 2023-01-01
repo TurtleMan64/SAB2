@@ -27,12 +27,12 @@ SkySphere::SkySphere()
 
 void SkySphere::step()
 {
-    //setRotY(SkyManager::getTimeOfDay());
+    //rotY = (SkyManager::getTimeOfDay());
     //if (Global::gamePlayer != nullptr) 
     {
         //game player was somtimes deallocated but not null? now i just set it in the player
-        //position.x = Global::gamePlayer->getX();
-        //position.z = Global::gamePlayer->getZ();
+        //position.x = Global::gamePlayer->position.x;
+        //position.z = Global::gamePlayer->position.z;
     }
     updateTransformationMatrix();
 }

@@ -1,17 +1,8 @@
 #include "watertile.hpp"
 
-WaterTile::WaterTile(float centerX, float centerZ)
+WaterTile::WaterTile(float x, float z)
 {
-    this->x = centerX;
-    this->z = centerZ;
+    this->centerX = x;
+    this->centerZ = z;
 }
 
-float WaterTile::getX()
-{
-    return x;
-}
-
-float WaterTile::getZ()
-{
-    return z;
-}

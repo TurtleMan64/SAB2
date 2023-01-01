@@ -7,7 +7,7 @@ class Entity;
 class Matrix4f;
 
 #include <unordered_map>
-#include <list>
+#include <vector>
 
 class EntityRenderer
 {
@@ -27,7 +27,7 @@ public:
 
     void render(Entity* entity);
 
-    void renderNEW(std::unordered_map<TexturedModel*, std::list<Entity*>>* entities);
+    void renderNEW(std::unordered_map<TexturedModel*, std::vector<Entity*>>* entities);
 
     void updateProjectionMatrix(Matrix4f* projectionMatrix);
 };

@@ -673,7 +673,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
         free(dat);
     }
 
-    //Global::gameSkySphere->setVisible(false);
+    //Global::gameSkySphere->visible = (false);
 
     Vector3f initialCamDir;
     std::string camOrientation;
@@ -970,16 +970,16 @@ void LevelLoader::loadLevel(std::string levelFilename)
             if (first)
             {
                 first = false;
-                minX = e->getX();
-                maxX = e->getX();
-                minZ = e->getZ();
-                maxZ = e->getZ();
+                minX = e->position.x;
+                maxX = e->position.x;
+                minZ = e->position.z;
+                maxZ = e->position.z;
                 continue;
             }
-            minX = std::fminf(minX, e->getX());
-            maxX = std::fmaxf(maxX, e->getX());
-            minZ = std::fminf(minZ, e->getZ());
-            maxZ = std::fmaxf(maxZ, e->getZ());
+            minX = std::fminf(minX, e->position.x);
+            maxX = std::fmaxf(maxX, e->position.x);
+            minZ = std::fminf(minZ, e->position.z);
+            maxZ = std::fmaxf(maxZ, e->position.z);
         }
 
         Global::recalculateEntityChunks(minX, maxX, minZ, maxZ, newChunkSize);
@@ -1188,9 +1188,9 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
         case 7: //Sky Sphere
         {
             SkySphere::loadModels(dat[1], dat[2], dat[3]);
-            Global::gameSkySphere->setScale(toFloat(dat[4]));
+            Global::gameSkySphere->scale = (toFloat(dat[4]));
             Global::gameSkySphere->setFollowsY((bool)toInt(dat[5]));
-            Global::gameSkySphere->setVisible(true);
+            Global::gameSkySphere->visible = (true);
             return;
         }
 
@@ -2272,6 +2272,7 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
         case 124: //Egg Pawn Gun
         {
             EggPawnGun::loadStaticModels();
+            Bullet::loadStaticModels();
             EggPawnGun* pawn = new EggPawnGun(
                     toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), // position x,y,z
                     toFloat(dat[4]), toFloat(dat[5]), //dir x z

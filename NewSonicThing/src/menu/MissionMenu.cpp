@@ -27,7 +27,6 @@ MissionMenu::MissionMenu()
 {
     fontSize = 0.05f;
     loadResources();
-    visible = true;
     offsetCurr = 0.0f;
     offsetTarget = 0.0f;
     currButtonId = 0;
@@ -67,7 +66,7 @@ void MissionMenu::loadResources()
 
     for (int i = 0; i < (int)levelIdsToUse->size(); i++)
     {
-        Level level = Global::gameLevelData[(*levelIdsToUse)[i]];
+        Level level = Global::gameLevelData[levelIdsToUse->at(i)];
         std::string buttonText = "";
         buttonText = level.displayName;
         Button* nextButton = new Button(level.displayName, Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.31f, 0.5f + (0.2f * i), 0.56f / aspectRatio, 0.07f, true); INCR_NEW("Button");
@@ -214,7 +213,7 @@ void MissionMenu::draw()
             case Global::PlayableCharacter::Tails: levelIdsToUse = &Global::gameLevelIdsTails; break;
             default: break;
         }
-        int buttLvlId = (*levelIdsToUse)[currButtonId];
+        int buttLvlId = levelIdsToUse->at(currButtonId);
         Level level = Global::gameLevelData[buttLvlId];
 
         int numMissions = level.numMissions;
@@ -388,9 +387,9 @@ void MissionMenu::setVisible(bool visibleStatus)
         levelButtons[i]->setHighlight(visibleStatus);
     }
     missionButton->setVisible(visibleStatus);
-    timeButton->setVisible(visibleStatus);
-    scoreButton->setVisible(visibleStatus);
-    ringsButton->setVisible(visibleStatus);
+    timeButton   ->setVisible(visibleStatus);
+    scoreButton  ->setVisible(visibleStatus);
+    ringsButton  ->setVisible(visibleStatus);
     visible = visibleStatus;
 }
 
@@ -532,7 +531,7 @@ Menu* MissionMenu::step()
             default: break;
         }
 
-        int numMissions = Global::gameLevelData[(*levelIdsToUse)[currButtonId]].numMissions;
+        int numMissions = Global::gameLevelData[levelIdsToUse->at(currButtonId)].numMissions;
         if (Global::gameMissionNumber < numMissions-1)
         {
             //shouldUpdateMissionText = true;
@@ -543,7 +542,7 @@ Menu* MissionMenu::step()
 
     if (pressedSelect)
     {
-        this->setVisible(false);
+        setVisible(false);
         AudioPlayer::play(38, Global::gameCamera->getFadePosition1());
 
         std::vector<int>* levelIdsToUse = &Global::gameLevelIdsKnuckles;
@@ -554,7 +553,7 @@ Menu* MissionMenu::step()
             default: break;
         }
 
-        Level* currentLevel = &Global::gameLevelData[(*levelIdsToUse)[currButtonId]];
+        Level* currentLevel = &Global::gameLevelData[levelIdsToUse->at(currButtonId)];
         Global::levelName = currentLevel->fileName;
         Global::levelNameDisplay = currentLevel->displayName;
         Global::gameMissionDescription = (currentLevel->missionData[Global::gameMissionNumber])[(currentLevel->missionData[Global::gameMissionNumber]).size() - 1];

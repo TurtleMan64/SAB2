@@ -89,7 +89,7 @@ void EC_Orca::step()
             if (inWaterPrevious == false)
             {
                 AudioPlayer::play(5, &position);
-                Vector3f pos(getX(), 25, getZ());
+                Vector3f pos(position.x, 25, position.z);
                 ParticleMaster::createParticle(ParticleResources::textureSplash, &pos, 40.0f/60, 40, false, true);
             }
 
@@ -102,7 +102,7 @@ void EC_Orca::step()
             if (inWaterPrevious)
             {
                 AudioPlayer::play(5, &position);
-                Vector3f pos(getX(), 25, getZ());
+                Vector3f pos(position.x, 25, position.z);
                 ParticleMaster::createParticle(ParticleResources::textureSplash, &pos, 40.0f/60, 40, false, true);
             }
 
@@ -121,8 +121,8 @@ void EC_Orca::step()
         float spd = sqrtf(xVel*xVel + zVel*zVel);
         float newRotZ = atan2f(yVel, spd);
 
-        setRotY(Maths::toDegrees(diffAng));//+5*cosf(seeTimer/10.0f));
-        setRotZ(Maths::toDegrees(newRotZ));
+        rotY = (Maths::toDegrees(diffAng));//+5*cosf(seeTimer/10.0f));
+        rotZ = (Maths::toDegrees(newRotZ));
 
         increasePosition(xVel*dt, yVel*dt, zVel*dt);
         updateTransformationMatrix();
@@ -165,7 +165,7 @@ void EC_Orca::step()
         if (position.y < 0.0f && !inWaterPrevious)
         {
             AudioPlayer::play(5, &position);
-            Vector3f pos(getX(), 25, getZ());
+            Vector3f pos(position.x, 25, position.z);
             ParticleMaster::createParticle(ParticleResources::textureSplash, &pos, 40.0f/60, 40, false, true);
 
             inWaterPrevious = true;
@@ -174,7 +174,7 @@ void EC_Orca::step()
         float spd = sqrtf(xVel*xVel + zVel*zVel);
         float newRotZ = atan2f(yVel, spd);
 
-        setRotZ(Maths::toDegrees(newRotZ));
+        rotZ = (Maths::toDegrees(newRotZ));
 
         increasePosition(xVel*dt, yVel*dt, zVel*dt);
         updateTransformationMatrix();

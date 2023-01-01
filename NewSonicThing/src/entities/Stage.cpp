@@ -1,6 +1,3 @@
-#include <glad/glad.h>
-#include <string>
-
 #include "../engineTester/main.hpp"
 #include "entity.hpp"
 #include "../models/models.hpp"
@@ -35,7 +32,7 @@ void Stage::respawnChunks()
     for (int i = 0; i < (int)Stage::chunkModels.size(); i++)
     {
         Dummy* chunk = new Dummy(&Stage::chunkModels[i]); INCR_NEW("Entity");
-        chunk->setVisible(true);
+        chunk->visible = (true);
         chunk->setPosition(0, 0, 0);
         chunk->updateTransformationMatrix();
         Global::addEntity(chunk);
@@ -71,7 +68,7 @@ void Stage::updateVisibleChunks()
             }
         }
 
-        Stage::chunkDummies[i]->setVisible(vis);
+        Stage::chunkDummies[i]->visible = (vis);
     }
 }
 
@@ -108,9 +105,9 @@ void Stage::loadModels(
         std::list<TexturedModel*> model;
         Stage::chunkModels.push_back(model);
 
-        ModelLoader::loadModel(&Stage::chunkModels[i], path, (*fnames)[i]);
-        Stage::chunkMin.push_back((*mins)[i]);
-        Stage::chunkMax.push_back((*maxs)[i]);
+        ModelLoader::loadModel(&Stage::chunkModels[i], path, fnames->at(i));
+        Stage::chunkMin.push_back(mins->at(i));
+        Stage::chunkMax.push_back(maxs->at(i));
     }
 }
 

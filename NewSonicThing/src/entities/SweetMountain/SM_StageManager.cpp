@@ -23,6 +23,13 @@ SM_StageManager::SM_StageManager()
     sky4 = new Dummy(&SM_StageManager::modelsSky4); INCR_NEW("Entity");
     sky5 = new Dummy(&SM_StageManager::modelsSky5); INCR_NEW("Entity");
 
+    //sky1->visible = false;
+    //sky2->visible = false;
+    //sky3->visible = false;
+    //sky4->visible = false;
+    //sky5->visible = false;
+    //visible = false;
+
     Global::addEntity(sky1);
     Global::addEntity(sky2);
     Global::addEntity(sky3);
@@ -41,7 +48,7 @@ void SM_StageManager::step()
 
     //set the position of the background sky dome
     position.set(&Global::gameCamera->eye);
-    position.y = 0;
+    position.y = 400;
 
     sky1->position = position;
     sky2->position = position;

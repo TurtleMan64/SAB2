@@ -94,9 +94,9 @@ void RhinoSpike::step()
 
         ControllablePlayer* p = Global::gameMainPlayer;
         
-        float xDiff = p->getX()-getX();
-        float zDiff = p->getZ()-getZ();
-        float angleRad = Maths::toRadians(getRotY());
+        float xDiff = p->position.x-position.x;
+        float zDiff = p->position.z-position.z;
+        float angleRad = Maths::toRadians(rotY);
         float newZ = ((xDiff)*-sinf(angleRad) - (zDiff)*cosf(angleRad));
         float mag = sqrtf((xDiff*xDiff)+(zDiff*zDiff));
 
@@ -104,9 +104,9 @@ void RhinoSpike::step()
 
         if (!inAir && triCol->normal.y >= 0.5f)
         {
-            float pushUpValue = -getY()+(((-triCol->A*(getX()+xVel))+
-                                          (-triCol->C*(getZ()+zVel))-
-                                           (triCol->D))/triCol->B);
+            float pushUpValue = -position.y+(((-triCol->A*(position.x+xVel))+
+                                              (-triCol->C*(position.z+zVel))-
+                                               (triCol->D))/triCol->B);
             yVel = pushUpValue;
         }
 
@@ -115,7 +115,7 @@ void RhinoSpike::step()
             if (furyTimer == 0)
             {
                 furyTimer = furyTimerMax;
-                setRotY(Maths::toDegrees(atan2f(-zDiff, xDiff)));
+                rotY = (Maths::toDegrees(atan2f(-zDiff, xDiff)));
                 //AudioRes.playSound(27, 1, getPosition());
                 xVel = 0;
                 zVel = 0;
@@ -135,7 +135,7 @@ void RhinoSpike::step()
                         xVel = 0;
                         zVel = 0;
                         yVel = 1;
-                        setRotY(Maths::random()*360);
+                        rotY = (Maths::random()*360);
                         clock = 0;
                     }
                     else
@@ -170,16 +170,16 @@ void RhinoSpike::step()
 
         if (mag < RhinoSpike::moveRange)
         {
-            if (CollisionChecker::checkCollision(getX(), getY(), getZ(), getX()+xVel*dt, getY()+yVel*dt, getZ()+zVel*dt) == false)
+            if (CollisionChecker::checkCollision(position.x, position.y, position.z, position.x+xVel*dt, position.y+yVel*dt, position.z+zVel*dt) == false)
             {
-                if (CollisionChecker::checkCollision(getX()+xVel*dt, getY()+yVel*dt, getZ()+zVel*dt, getX()+xVel*dt, getY() + yVel*dt - 1.0f, getZ()+zVel*dt) == true)
+                if (CollisionChecker::checkCollision(position.x+xVel*dt, position.y+yVel*dt, position.z+zVel*dt, position.x+xVel*dt, position.y + yVel*dt - 1.0f, position.z+zVel*dt) == true)
                 {
                     Triangle3D* savedTri = CollisionChecker::getCollideTriangle();
                     Vector3f triColPosition(CollisionChecker::getCollidePosition());
 
-                    float xTest =  10*cosf(Maths::toRadians(getRotY()));
-                    float zTest = -10*sinf(Maths::toRadians(getRotY()));
-                    if (CollisionChecker::checkCollision(getX()+xTest, getY(), getZ()+zTest, getX()+xTest, getY()-10.0f, getZ()+zTest) == true)
+                    float xTest =  10*cosf(Maths::toRadians(rotY));
+                    float zTest = -10*sinf(Maths::toRadians(rotY));
+                    if (CollisionChecker::checkCollision(position.x+xTest, position.y, position.z+zTest, position.x+xTest, position.y-10.0f, position.z+zTest) == true)
                     {
                         inAir = false;
                         triCol = savedTri;
@@ -193,34 +193,34 @@ void RhinoSpike::step()
                     
                         if (colYNormal >= 0.75f)
                         {
-                            setX(triColPosition.x);
-                            setY(triColPosition.y+colYNormal*0.5f);
-                            setZ(triColPosition.z);
+                            position.x = (triColPosition.x);
+                            position.y = (triColPosition.y+colYNormal*0.5f);
+                            position.z = (triColPosition.z);
                         }
                         else
                         {
                             if (colYNormal >= 0.5f)
                             {
-                                setX(triColPosition.x);
-                                setY(triColPosition.y+colYNormal*0.5f);
-                                setZ(triColPosition.z);
+                                position.x = (triColPosition.x);
+                                position.y = (triColPosition.y+colYNormal*0.5f);
+                                position.z = (triColPosition.z);
                                 xVel+=colXNormal*0.05f*60*60*dt;
                                 zVel+=colZNormal*0.05f*60*60*dt;
                             }
                             else
                             {
-                                setX(triColPosition.x+colXNormal*0.5f);
-                                setY(triColPosition.y+colYNormal*0.5f);
-                                setZ(triColPosition.z+colZNormal*0.5f);
+                                position.x = (triColPosition.x+colXNormal*0.5f);
+                                position.y = (triColPosition.y+colYNormal*0.5f);
+                                position.z = (triColPosition.z+colZNormal*0.5f);
                                 xVel = 0;
                                 zVel = 0;
-                                setRotY(getRotY()+180);
+                                rotY = (rotY+180);
                             }
                         }
                     }
                     else //turn around if we are abound to drive off a cliff
                     {
-                        setRotY(getRotY()+180);
+                        rotY = (rotY+180);
                     }
                 }
                 else
@@ -254,34 +254,34 @@ void RhinoSpike::step()
                 
                 if (colYNormal >= 0.75f)
                 {
-                    setX(triColPosition->x);
-                    setY(triColPosition->y+colYNormal*0.5f);
-                    setZ(triColPosition->z);
+                    position.x = (triColPosition->x);
+                    position.y = (triColPosition->y+colYNormal*0.5f);
+                    position.z = (triColPosition->z);
                 }
                 else
                 {
                     if (colYNormal >= 0.5f)
                     {
-                        setX(triColPosition->x);
-                        setY(triColPosition->y+colYNormal*0.5f);
-                        setZ(triColPosition->z);
+                        position.x = (triColPosition->x);
+                        position.y = (triColPosition->y+colYNormal*0.5f);
+                        position.z = (triColPosition->z);
                         xVel+=colXNormal*0.05f*60*60*dt;
                         zVel+=colZNormal*0.05f*60*60*dt;
                     }
                     else
                     {
-                        setX(triColPosition->x+colXNormal*0.5f);
-                        setY(triColPosition->y+colYNormal*0.5f);
-                        setZ(triColPosition->z+colZNormal*0.5f);
+                        position.x = (triColPosition->x+colXNormal*0.5f);
+                        position.y = (triColPosition->y+colYNormal*0.5f);
+                        position.z = (triColPosition->z+colZNormal*0.5f);
                         xVel = 0;
                         zVel = 0;
-                        setRotY(getRotY()+180);
+                        rotY = (rotY+180);
                     }
                 }
             }
         }
 
-        if (getY() < -50)
+        if (position.y < -50)
         {
             //die();
         }
@@ -308,18 +308,18 @@ void RhinoSpike::die()
     for (int i = 7; i != 0; i--)
     {
         Vector3f pos(
-            getX() + spread*(Maths::random() - 0.5f),
-            getY() + spread*(Maths::random() - 0.5f) + height,
-            getZ() + spread*(Maths::random() - 0.5f));
+            position.x + spread*(Maths::random() - 0.5f),
+            position.y + spread*(Maths::random() - 0.5f) + height,
+            position.z + spread*(Maths::random() - 0.5f));
         pos = pos + toCamDiff; //so that these aren't behind the big explosion
 
         ParticleMaster::createParticle(ParticleResources::textureExplosion1, &pos, &vel, 0, 0.75f, 3*Maths::random() + 6, 0, false, false, 0.5f, true);
     }
     
     Vector3f pos(
-        getX(),
-        getY() + height,
-        getZ());
+        position.x,
+        position.y + height,
+        position.z);
     
     ParticleMaster::createParticle(ParticleResources::textureExplosion2, &pos, &vel, 0, 0.916f, 20, 0, false, false, 0.75f, true);
     
@@ -353,19 +353,19 @@ bool RhinoSpike::playerIsInHitbox()
 void RhinoSpike::moveMe()
 {
     //extern float dt;
-    //xVel += (0.7f*dt*60*60*cosf(Maths::toRadians(-getRotY())));
-    //zVel += (0.7f*dt*60*60*sinf(Maths::toRadians(-getRotY())));
-    xVel = 150*cosf(Maths::toRadians(-getRotY()));
-    zVel = 150*sinf(Maths::toRadians(-getRotY()));
+    //xVel += (0.7f*dt*60*60*cosf(Maths::toRadians(-rotY)));
+    //zVel += (0.7f*dt*60*60*sinf(Maths::toRadians(-rotY)));
+    xVel = 150*cosf(Maths::toRadians(-rotY));
+    zVel = 150*sinf(Maths::toRadians(-rotY));
 }
     
 void RhinoSpike::moveMeSlow()
 {
     //extern float dt;
-    //xVel += (0.08f*dt*60*60*cosf(Maths::toRadians(-getRotY())));
-    //zVel += (0.08f*dt*60*60*sinf(Maths::toRadians(-getRotY())));
-    xVel = 15*cosf(Maths::toRadians(-getRotY()));
-    zVel = 15*sinf(Maths::toRadians(-getRotY()));
+    //xVel += (0.08f*dt*60*60*cosf(Maths::toRadians(-rotY)));
+    //zVel += (0.08f*dt*60*60*sinf(Maths::toRadians(-rotY)));
+    xVel = 15*cosf(Maths::toRadians(-rotY));
+    zVel = 15*sinf(Maths::toRadians(-rotY));
 }
     
 void RhinoSpike::applyFriction(float /*frictionToApply*/)

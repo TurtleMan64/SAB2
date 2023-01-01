@@ -64,10 +64,10 @@ PauseScreen::~PauseScreen()
 
 void PauseScreen::setVisible(bool visible)
 {
-    textResume ->setVisibility(visible);
-    textRestart->setVisibility(visible);
-    textCamera ->setVisibility(visible);
-    textQuit   ->setVisibility(visible);
+    textResume ->visible = (visible);
+    textRestart->visible = (visible);
+    textCamera ->visible = (visible);
+    textQuit   ->visible = (visible);
 }
 
 void PauseScreen::selectButton()

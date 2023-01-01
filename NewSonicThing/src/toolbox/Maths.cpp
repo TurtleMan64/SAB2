@@ -9,11 +9,11 @@
 #include "../engineTester/main.hpp"
 #include "../renderEngine/masterrenderer.hpp"
 
-std::mt19937* Maths::generatorUniform = new std::mt19937(0);
-std::uniform_real_distribution<float>* Maths::distributionUniform = new std::uniform_real_distribution<float>(0.0f, 1.0f);
+std::mt19937 Maths::generatorUniform(0);
+std::uniform_real_distribution<float> Maths::distributionUniform(0.0f, 1.0f);
 
-std::default_random_engine* Maths::generatorNormal = new std::default_random_engine(0);
-std::normal_distribution<float>* Maths::distributionNormal = new std::normal_distribution<float>(0.0f, 1.0f);
+std::default_random_engine Maths::generatorNormal(0);
+std::normal_distribution<float> Maths::distributionNormal(0.0f, 1.0f);
 
 /*
 ** Blank Matrix4f should have already been created. This function does not allocate any memory to matrix.
@@ -608,12 +608,12 @@ float Maths::random()
 
 float Maths::nextGaussian()
 {
-    return (*Maths::distributionNormal)(*Maths::generatorNormal);
+    return Maths::distributionNormal(Maths::generatorNormal);
 }
 
 float Maths::nextUniform()
 {
-    return (*Maths::distributionUniform)(*Maths::generatorUniform);
+    return Maths::distributionUniform(Maths::generatorUniform);
 }
 
 Vector4f Maths::calcPlaneValues(Vector3f* p1, Vector3f* p2, Vector3f* p3)

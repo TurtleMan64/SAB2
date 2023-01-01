@@ -117,7 +117,7 @@ void Pulley::step()
         Global::gameMainPlayer->startGrabbing();
 
         //Make player face the right direction
-        Global::gameMainPlayer->setRotY(rotY);
+        Global::gameMainPlayer->rotY = (rotY);
     }
     else if (!handleAtBottom())
     {
@@ -188,7 +188,7 @@ inline Vector3f Pulley::calculateCameraDirectionVector() const
 inline void Pulley::setupPulleyRope()
 {
     rope = new Body(&Pulley::modelsRope); INCR_NEW("Entity");
-    rope->setVisible(true);
+    rope->visible = (true);
     Global::addEntity(rope);
     rope->setPosition(&position);
 }
@@ -196,10 +196,10 @@ inline void Pulley::setupPulleyRope()
 inline void Pulley::setupPulleyTop()
 {
     top = new Body(&Pulley::modelsTop); INCR_NEW("Entity");
-    top->setVisible(true);
+    top->visible = (true);
     Global::addEntity(top);
     top->setPosition(&position);
-    top->setRotY(rotY);
+    top->rotY = (rotY);
 
     collideModelOriginal = Pulley::cmTop;
     collideModelTransformed = collideModelOriginal->duplicateMe();

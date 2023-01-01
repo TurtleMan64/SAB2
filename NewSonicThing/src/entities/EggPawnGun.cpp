@@ -57,7 +57,7 @@ EggPawnGun::EggPawnGun(float x, float y, float z, float dx, float dz, std::list<
     updateTransformationMatrix();
 
     gun = new Dummy(&EggPawnGun::modelsGun); INCR_NEW("Entity");
-    gun->setVisible(true);
+    gun->visible = (true);
     gun->setPosition(&position);
     gun->scale = scale;
     updateGun();
@@ -184,18 +184,18 @@ void EggPawnGun::die()
     for (int i = 7; i != 0; i--)
     {
         Vector3f pos(
-            getX() + spread*(Maths::random() - 0.5f),
-            getY() + spread*(Maths::random() - 0.5f) + height,
-            getZ() + spread*(Maths::random() - 0.5f));
+            position.x + spread*(Maths::random() - 0.5f),
+            position.y + spread*(Maths::random() - 0.5f) + height,
+            position.z + spread*(Maths::random() - 0.5f));
         pos = pos + toCamDiff; //so that these aren't behind the big explosion
 
         ParticleMaster::createParticle(ParticleResources::textureExplosion1, &pos, &vel, 0, 0.75f, 3*Maths::random() + 6, 0, false, false, 0.5f, true);
     }
     
     Vector3f pos(
-        getX(),
-        getY() + height,
-        getZ());
+        position.x,
+        position.y + height,
+        position.z);
     
     ParticleMaster::createParticle(ParticleResources::textureExplosion2, &pos, &vel, 0, 0.916f, 20, 0, false, false, 0.75f, true);
     

@@ -111,10 +111,6 @@ public:
 
     void setPosition(Vector2f* newPos);
 
-    void setVisibility(bool newVisible);
-
-    bool isVisible();
-
     /**
     * @return the Id of the text's VAO, which contains all the vertex data for
     *         the quads on which the text will be rendered.

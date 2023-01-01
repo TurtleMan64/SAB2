@@ -58,37 +58,37 @@ public:
     Vector3f* getBaseColor();
     void setBaseColor(float red, float green, float blue);
 
-    float getRotX() const;
-    void setRotX(float newRotX);
+    //float getRotX() const;
+    //void setRotX(float newRotX);
 
-    float getRotY() const;
-    void setRotY(float newRotY);
+    //float rotY const;
+    //void rotY = (float newRotY);
 
-    float getRotZ() const;
-    void setRotZ(float newRotZ);
+    //float getRotZ() const;
+    //void setRotZ(float newRotZ);
 
-    float getRotSpin() const;
-    void setRotSpin(float newRotSpin);
+    //float getRotSpin() const;
+    //void setRotSpin(float newRotSpin);
 
-    float getScale() const;
-    void setScale(float newScale);
+    //float getScale() const;
+    //void setScale(float newScale);
 
-    bool getVisible() const;
-    void setVisible(bool newVisible);
+    //bool getVisible() const;
+    //void setVisible(bool newVisible);
 
-    float getX() const;
+    //float position.x const;
 
-    float getY() const;
+    //float position.y const;
 
-    float getZ() const;
+    //float position.z const;
 
-    void setX(float newX);
+    //void position.x = (float newX);
 
-    void setY(float newY);
+    //void position.y = (float newY);
 
-    void setZ(float newZ);
+    //void position.z = (float newZ);
 
-    Matrix4f* getTransformationMatrix();
+    //Matrix4f* getTransformationMatrix();
 
     void updateTransformationMatrix();
 

@@ -64,8 +64,8 @@ void GF_StageManager::step()
 
     //set the position of the background sky dome
     position.y = Global::waterHeight+1000.0f;
-    position.x = Global::gameMainPlayer->getX();
-    position.z = Global::gameMainPlayer->getZ();
+    position.x = Global::gameMainPlayer->position.x;
+    position.z = Global::gameMainPlayer->position.z;
     updateTransformationMatrix();
 
     //kill sonic

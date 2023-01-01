@@ -563,7 +563,7 @@ void TC_Kart::step()
     float originalSpeed = vel.length();
 
     CollisionChecker::setCheckPlayer(true);
-    if (CollisionChecker::checkCollision(getX(), getY(), getZ(), getX()+overallVel.x*dt, getY()+overallVel.y*dt, getZ()+overallVel.z*dt))
+    if (CollisionChecker::checkCollision(position.x, position.y, position.z, position.x+overallVel.x*dt, position.y+overallVel.y*dt, position.z+overallVel.z*dt))
     {
         Vector3f* colNormal = &CollisionChecker::getCollideTriangle()->normal;
 
@@ -680,7 +680,7 @@ void TC_Kart::step()
                 while (distanceRemaining > 0.0f)
                 {
                     CollisionChecker::setCheckPlayer(true);
-                    if (CollisionChecker::checkCollision(getX(), getY(), getZ(), getX()+nextVel.x, getY()+nextVel.y, getZ()+nextVel.z))
+                    if (CollisionChecker::checkCollision(position.x, position.y, position.z, position.x+nextVel.x, position.y+nextVel.y, position.z+nextVel.z))
                     {
                         colNormal = &CollisionChecker::getCollideTriangle()->normal;
 
@@ -776,7 +776,7 @@ void TC_Kart::step()
         CollisionChecker::setCheckPlayer(true);
         if (onPlane)
         {
-            checkPassed = CollisionChecker::checkCollision(getX(), getY(), getZ(), getX() - currNorm.x*surfaceTension, getY() - currNorm.y*surfaceTension, getZ() - currNorm.z*surfaceTension);
+            checkPassed = CollisionChecker::checkCollision(position.x, position.y, position.z, position.x - currNorm.x*surfaceTension, position.y - currNorm.y*surfaceTension, position.z - currNorm.z*surfaceTension);
         }
         if (checkPassed)
         {
@@ -885,7 +885,7 @@ void TC_Kart::step()
             }
             //else
             {
-                //if (CollisionChecker::checkCollision(getX(), getY(), getZ(), getX(), getY() - 20, getZ()))
+                //if (CollisionChecker::checkCollision(position.x, position.y, position.z, position.x, position.y - 20, position.z))
                 {
                     //currentTriangle = CollisionChecker::getCollideTriangle();
                     //onPlane = true;
@@ -1204,7 +1204,7 @@ void TC_Kart::step()
         if (sourceEngine != nullptr)
         {
             sourceEngine->setPitch(overallVel.length()/370.0f);
-            sourceEngine->setPosition(getX(), getY(), getZ());
+            sourceEngine->setPosition(position.x, position.y, position.z);
         }
     }
     else
@@ -1226,7 +1226,7 @@ void TC_Kart::step()
         if (sourceStrafe != nullptr)
         {
             sourceStrafe->setPitch(0.5f + sourceStrafeTimer/3.0f);
-            sourceStrafe->setPosition(getX(), getY(), getZ());
+            sourceStrafe->setPosition(position.x, position.y, position.z);
         }
 
         sourceStrafeTimer = std::min(1.5f, sourceStrafeTimer+dt);
@@ -1251,7 +1251,7 @@ void TC_Kart::step()
         if (sourceSlipSlowdown != nullptr)
         {
             sourceSlipSlowdown->setPitch(overallVel.length()/400.0f);
-            sourceSlipSlowdown->setPosition(getX(), getY(), getZ());
+            sourceSlipSlowdown->setPosition(position.x, position.y, position.z);
         }
     }
     else
@@ -1275,7 +1275,7 @@ void TC_Kart::step()
         if (sourceDanger != nullptr)
         {
             sourceDanger->setPitch(1.9f - 3*health);
-            sourceDanger->setPosition(getX(), getY(), getZ());
+            sourceDanger->setPosition(position.x, position.y, position.z);
 
             float t = sourceDanger->getSoundCompletion();
             baseColor.set(0.5f+t/2, t, t);
@@ -1468,9 +1468,9 @@ void TC_Kart::explode()
     for (int i = 7; i != 0; i--)
     {
         Vector3f pos(
-            getX() + spread*(Maths::random() - 0.5f),
-            getY() + spread*(Maths::random() - 0.5f) + height,
-            getZ() + spread*(Maths::random() - 0.5f));
+            position.x + spread*(Maths::random() - 0.5f),
+            position.y + spread*(Maths::random() - 0.5f) + height,
+            position.z + spread*(Maths::random() - 0.5f));
 
         Vector3f vel2(0, 0, 0);
 
@@ -1478,9 +1478,9 @@ void TC_Kart::explode()
     }
 
     Vector3f pos(
-        getX(),
-        getY() + height,
-        getZ());
+        position.x,
+        position.y + height,
+        position.z);
 
     Vector3f vel2(0, 0, 0);
     

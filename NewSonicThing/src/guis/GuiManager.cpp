@@ -1,19 +1,10 @@
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
 #include "guimanager.hpp"
-#include "../engineTester/main.hpp"
-#include "../fontMeshCreator/guitext.hpp"
-#include "../fontMeshCreator/guinumber.hpp"
-#include "../fontMeshCreator/fonttype.hpp"
-#include "../menu/pausescreen.hpp"
+#include "guiimage.hpp"
 #include "guirenderer.hpp"
-#include "../toolbox/input.hpp"
 
-#include <cmath>
-#include <string>
+#include <vector>
 
-std::list<GuiImage*> GuiManager::guisToRender;
+std::vector<GuiImage*> GuiManager::guisToRender;
 
 void GuiManager::init()
 {
@@ -32,7 +23,15 @@ void GuiManager::addImageToRender(GuiImage* newImage)
 
 void GuiManager::removeImageToRender(GuiImage* imageToRemove)
 {
-    GuiManager::guisToRender.remove(imageToRemove);
+    for (int i = 0; i < (int)guisToRender.size(); i++)
+    {
+        if (guisToRender.at(i) == imageToRemove)
+        {
+            guisToRender.erase(guisToRender.begin() + i);
+            //i--;
+            break;
+        }
+    }
 }
 
 void GuiManager::clearGuisToRender()

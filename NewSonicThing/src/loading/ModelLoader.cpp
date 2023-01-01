@@ -1373,6 +1373,7 @@ void ModelLoader::convertDataToArrays(
     std::vector<float>* normalsArray,
     std::vector<float>* colorsArray)
 {
+    // TODO dont dereference these
     for (auto currentVertex : (*vertices))
     {
         Vector3f* position = &currentVertex->position;
@@ -1395,8 +1396,10 @@ void ModelLoader::convertDataToArrays(
 
 void ModelLoader::removeUnusedVertices(std::vector<Vertex*>* vertices)
 {
-    for (auto vertex : (*vertices))
+    const int numVertices = (int)vertices->size();
+    for (int i = 0; i < numVertices; i++)
     {
+        Vertex* vertex = vertices->at(i);
         if (vertex->isSet() == 0)
         {
             vertex->textureIndex = 0;

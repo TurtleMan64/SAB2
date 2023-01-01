@@ -151,7 +151,7 @@ Rail::Rail(const char* railPath)
         rails.push_back(RailSegment(&pointsList[i], &pointsList[i+1], &normalList[i], &normalList[i+1], &rails, i));
     }
 
-    setVisible(false);
+    visible = (false);
     currentSegment = nullptr;
     currentSegmentIndex = -1;
     timer = 0;
@@ -166,9 +166,9 @@ void Rail::step()
         if (timer < 0.0f)
         {
             const float pad = 30.0f;
-            if (Global::gameMainPlayer->getX() >= minX-pad && Global::gameMainPlayer->getX() <= maxX+pad &&
-                Global::gameMainPlayer->getY() >= minY-pad && Global::gameMainPlayer->getY() <= maxY+pad &&
-                Global::gameMainPlayer->getZ() >= minZ-pad && Global::gameMainPlayer->getZ() <= maxZ+pad)
+            if (Global::gameMainPlayer->position.x >= minX-pad && Global::gameMainPlayer->position.x <= maxX+pad &&
+                Global::gameMainPlayer->position.y >= minY-pad && Global::gameMainPlayer->position.y <= maxY+pad &&
+                Global::gameMainPlayer->position.z >= minZ-pad && Global::gameMainPlayer->position.z <= maxZ+pad)
             {
                 //Check if sonic should get on a rail
                 for (RailSegment r : rails)

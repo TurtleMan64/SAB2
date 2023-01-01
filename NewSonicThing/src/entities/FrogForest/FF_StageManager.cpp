@@ -16,9 +16,9 @@ FF_StageManager::FF_StageManager()
 void FF_StageManager::step()
 {
     //set the position of the background sky dome
-    position.y = Global::gameMainPlayer->getY();
-    position.x = Global::gameMainPlayer->getX();
-    position.z = Global::gameMainPlayer->getZ();
+    position.y = Global::gameMainPlayer->position.y;
+    position.x = Global::gameMainPlayer->position.x;
+    position.z = Global::gameMainPlayer->position.z;
     updateTransformationMatrix();
 }
 

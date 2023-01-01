@@ -33,9 +33,9 @@ GH_Flower::GH_Flower(float x, float y, float z, float rotY, float scale, std::li
     updateTransformationMatrix();
 
     petals = new Dummy(&GH_Flower::modelsTop); INCR_NEW("Entity");
-    petals->setVisible(true);
+    petals->visible = (true);
     petals->setPosition(&position);
-    petals->setRotY(rotY);
+    petals->rotY = (rotY);
     petals->updateTransformationMatrix();
     entityListToAdd->push_back(petals);
 }
@@ -52,18 +52,18 @@ void GH_Flower::step()
 
     if (valPrev > val)
     {
-        petals->setY(position.y);
+        petals->position.y = (position.y);
         petals->updateTransformationMatrix();
     }
     else if ((val >= 2.0f/2 && valPrev < 2.0f/2) || 
              (val >= 5.0f/2 && valPrev < 5.0f/2))
     {
-        petals->setY(position.y + 1.0f);
+        petals->position.y = (position.y + 1.0f);
         petals->updateTransformationMatrix();
     }
     else if (val >= 2.66666666667f/2 && valPrev < 2.66666666667f/2)
     {
-        petals->setY(position.y + 2.0f);
+        petals->position.y = (position.y + 2.0f);
         petals->updateTransformationMatrix();
     }
 }

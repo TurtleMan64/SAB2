@@ -134,90 +134,6 @@ void Entity::setModelsRenderOrder(std::list<TexturedModel*>* models, char newOrd
     }
 }
 
-float Entity::getRotX() const
-{
-    return rotX;
-}
-void Entity::setRotX(float newRotX)
-{
-    rotX = newRotX;
-}
-
-float Entity::getRotY() const
-{
-    return rotY;
-}
-void Entity::setRotY(float newRotY)
-{
-    rotY = newRotY;
-}
-
-float Entity::getRotZ() const
-{
-    return rotZ;
-}
-void Entity::setRotZ(float newRotZ)
-{
-    rotZ = newRotZ;
-}
-
-float Entity::getRotSpin() const
-{
-    return rotRoll;
-}
-void Entity::setRotSpin(float newRotSpin)
-{
-    rotRoll = newRotSpin;
-}
-
-float Entity::getScale() const
-{
-    return scale;
-}
-void Entity::setScale(float newScale)
-{
-    scale = newScale;
-}
-
-bool Entity::getVisible() const
-{
-    return visible;
-}
-void Entity::setVisible(bool newVisible)
-{
-    visible = newVisible;
-}
-
-float Entity::getX() const
-{
-    return position.x;
-}
-
-float Entity::getY() const
-{
-    return position.y;
-}
-
-float Entity::getZ() const
-{
-    return position.z;
-}
-
-void Entity::setX(float newX)
-{
-    position.x = newX;
-}
-
-void Entity::setY(float newY)
-{
-    position.y = newY;
-}
-
-void Entity::setZ(float newZ)
-{
-    position.z = newZ;
-}
-
 void Entity::updateTransformationMatrix()
 {
     Maths::createTransformationMatrix(&transformationMatrix, &position, rotX, rotY, rotZ, rotRoll, scale);
@@ -238,11 +154,6 @@ void Entity::updateTransformationMatrixYXZ()
     Maths::createTransformationMatrixYXZ(&transformationMatrix, &position, rotX, rotY, rotZ, scale);
 }
 
-Matrix4f* Entity::getTransformationMatrix()
-{
-    return &transformationMatrix;
-}
-
 bool Entity::canLightdashOn() const
 {
     return false;
@@ -260,8 +171,9 @@ Vector3f Entity::getHomingCenter() const
 
 void Entity::deleteModels(std::list<TexturedModel*>* modelsToDelete)
 {
-    for (auto model : (*modelsToDelete))
+    for (auto it = modelsToDelete->begin(); it != modelsToDelete->end(); it++)
     {
+        TexturedModel* model = it._Ptr->_Myval;
         model->deleteMe();
         delete model; INCR_DEL("TexturedModel");
     }

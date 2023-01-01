@@ -79,9 +79,9 @@ void ItemBalloon::die()
     for (int i = 4; i != 0; i--)
     {
         Vector3f pos(
-            getX() + spread*(Maths::random() - 0.5f),
-            getY() + spread*(Maths::random() - 0.5f) + height,
-            getZ() + spread*(Maths::random() - 0.5f));
+            position.x + spread*(Maths::random() - 0.5f),
+            position.y + spread*(Maths::random() - 0.5f) + height,
+            position.z + spread*(Maths::random() - 0.5f));
 
         ParticleMaster::createParticle(ParticleResources::textureExplosion1, &pos, &vel, 0, 0.75f, 3*Maths::random() + 6, 0, false, false, 0.5f, true);
     }

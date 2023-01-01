@@ -71,8 +71,8 @@ ItemCapsule::ItemCapsule(float x, float y, float z, float upX, float upY, float 
     entityGlass->visible = true;
     entityListToAdd->push_back(entityGlass);
     entityGlass->setPosition(&position);
-    entityGlass->setRotY(rotY);
-    entityGlass->setRotZ(rotZ);
+    entityGlass->rotY = (rotY);
+    entityGlass->rotZ = (rotZ);
     entityGlass->updateTransformationMatrix();
 
     if (boxType == 0)
@@ -108,8 +108,8 @@ ItemCapsule::ItemCapsule(float x, float y, float z, float upX, float upY, float 
     entityItem->visible = true;
     entityListToAdd->push_back(entityItem);
     entityItem->setPosition(&centerPos);
-    entityItem->setRotY(rotY);
-    entityItem->setRotZ(rotZ);
+    entityItem->rotY = (rotY);
+    entityItem->rotZ = (rotZ);
 
     if (boxType == 0)
     {

@@ -23,12 +23,12 @@
 EntityShader* MasterRenderer::entityShader = nullptr;
 EntityRenderer* MasterRenderer::entityRenderer = nullptr;
 
-std::unordered_map<TexturedModel*, std::list<Entity*>> MasterRenderer::entitiesMap;
-std::unordered_map<TexturedModel*, std::list<Entity*>> MasterRenderer::entitiesMapPass2;
-std::unordered_map<TexturedModel*, std::list<Entity*>> MasterRenderer::entitiesMapPass3;
-std::unordered_map<TexturedModel*, std::list<Entity*>> MasterRenderer::entitiesMapNoDepth;
-std::unordered_map<TexturedModel*, std::list<Entity*>> MasterRenderer::entitiesMapTransparent;
-std::unordered_map<TexturedModel*, std::list<Entity*>> MasterRenderer::entitiesMapPass6;
+std::unordered_map<TexturedModel*, std::vector<Entity*>> MasterRenderer::entitiesMap;
+std::unordered_map<TexturedModel*, std::vector<Entity*>> MasterRenderer::entitiesMapPass2;
+std::unordered_map<TexturedModel*, std::vector<Entity*>> MasterRenderer::entitiesMapPass3;
+std::unordered_map<TexturedModel*, std::vector<Entity*>> MasterRenderer::entitiesMapNoDepth;
+std::unordered_map<TexturedModel*, std::vector<Entity*>> MasterRenderer::entitiesMapTransparent;
+std::unordered_map<TexturedModel*, std::vector<Entity*>> MasterRenderer::entitiesMapPass6;
 
 Matrix4f* MasterRenderer::projectionMatrix = nullptr;
 
@@ -166,7 +166,7 @@ void MasterRenderer::render(Camera* camera, float clipX, float clipY, float clip
 
     //Note: There is some sort of bug somewhere around here. Transparent entities don't seem to get rendered to the bloom effect.
     // This means that things like the skybox color can "leak" into the bloom if your skybox model is all marked as transparent.
-    // It will also just mean in general that transparent entities won;t have bloom I think. Not really sure why this is happening
+    // It will also just mean in general that transparent entities won't have bloom I think. Not really sure why this is happening
     // or how to fix it.
 
     glActiveTexture(GL_TEXTURE8);
@@ -227,7 +227,7 @@ void MasterRenderer::processEntity(Entity* entity)
 
     if (entity->renderOrderOverride <= 5)
     {
-        std::unordered_map<TexturedModel*, std::list<Entity*>>* mapToUse = nullptr;
+        std::unordered_map<TexturedModel*, std::vector<Entity*>>* mapToUse = nullptr;
 
         switch (entity->renderOrderOverride)
         {
@@ -242,19 +242,39 @@ void MasterRenderer::processEntity(Entity* entity)
 
         std::list<TexturedModel*>* modellist = entity->getModels();
 
-        for (TexturedModel* entityModel : (*modellist))
+        for (auto it = modellist->cbegin(); it != modellist->cend(); it++)
         {
-            std::list<Entity*>* list = &(*mapToUse)[entityModel];
-            list->push_back(entity);
+            TexturedModel* entityModel = it._Ptr->_Myval;
+
+            auto location = mapToUse->find(entityModel);
+            if (location == mapToUse->end())
+            {
+                std::vector<Entity*> newEntityList;
+
+                newEntityList.push_back(entity);
+
+                mapToUse->insert({entityModel, newEntityList}); //this might break iterators...
+            }
+            else
+            {
+                std::vector<Entity*>* entityList = &location._Ptr->_Myval.second;
+
+                entityList->push_back(entity);
+            }
+
+            //std::vector<Entity*>* list = &(*mapToUse)[entityModel];
+            //list->push_back(entity);
         }
     }
     else
     {
         std::list<TexturedModel*>* modellist = entity->getModels();
 
-        for (TexturedModel* entityModel : (*modellist))
+        for (std::list<TexturedModel*>::const_iterator it = modellist->cbegin(); it != modellist->cend(); it++)
         {
-            std::unordered_map<TexturedModel*, std::list<Entity*>>* mapToUse = nullptr;
+            TexturedModel* entityModel = it._Ptr->_Myval;
+
+            std::unordered_map<TexturedModel*, std::vector<Entity*>>* mapToUse = nullptr;
 
             switch (entityModel->renderOrder)
             {
@@ -267,8 +287,25 @@ void MasterRenderer::processEntity(Entity* entity)
                 default: break;
             }
 
-            std::list<Entity*>* list = &(*mapToUse)[entityModel];
-            list->push_back(entity);
+            auto location = mapToUse->find(entityModel);
+            if (location == mapToUse->end())
+            {
+                std::vector<Entity*> newEntityList;
+
+                newEntityList.push_back(entity);
+
+                mapToUse->insert({entityModel, newEntityList}); //this might break iterators...
+            }
+            else
+            {
+                std::vector<Entity*>* entityList = &location._Ptr->_Myval.second;
+
+                entityList->push_back(entity);
+            }
+
+            // todo this dereference might be suboptimal. would need to check to see if entity is in the list before adding.
+            //std::vector<Entity*>* list = &(*mapToUse)[entityModel];
+            //list->push_back(entity);
         }
     }
 }

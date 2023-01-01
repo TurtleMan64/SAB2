@@ -13,7 +13,7 @@
 
 #include <iostream>
 #include <unordered_map>
-#include <list>
+#include <vector>
 
 EntityRenderer::EntityRenderer(EntityShader* shader, Matrix4f* projectionMatrix)
 {
@@ -23,19 +23,21 @@ EntityRenderer::EntityRenderer(EntityShader* shader, Matrix4f* projectionMatrix)
     this->shader = shader;
 }
 
-void EntityRenderer::renderNEW(std::unordered_map<TexturedModel*, std::list<Entity*>>* entitiesMap)
+void EntityRenderer::renderNEW(std::unordered_map<TexturedModel*, std::vector<Entity*>>* entitiesMap)
 {
     clockTime = Global::gameClock;
 
-    for (auto entry : (*entitiesMap))
+    for (auto it = entitiesMap->cbegin(); it != entitiesMap->cend(); it++)
     {
-        prepareTexturedModel(entry.first);
-        std::list<Entity*>* entityList = &entry.second;
+        prepareTexturedModel(it->first);
+        std::vector<Entity*>* entityList = &(it._Ptr->_Myval.second);
 
-        for (Entity* entity : (*entityList))
+        const int size = (int)entityList->size();
+        for (int i = 0; i < size; i++)
         {
+            Entity* entity = entityList->at(i);
             prepareInstance(entity);
-            glDrawElements(GL_TRIANGLES, (entry.first)->getRawModel()->getVertexCount(), GL_UNSIGNED_INT, 0);
+            glDrawElements(GL_TRIANGLES, (it->first)->getRawModel()->getVertexCount(), GL_UNSIGNED_INT, 0);
         }
         unbindTexturedModel();
     }
@@ -103,8 +105,10 @@ void EntityRenderer::render(Entity* entity)
 
     std::list<TexturedModel*>* models = entity->getModels();
 
-    for (auto texturedModel : (*models))
+    for (auto it = models->cbegin(); it != models->cend(); it++)
     {
+        TexturedModel* texturedModel = it._Ptr->_Myval;
+
         RawModel* model = texturedModel->getRawModel();
 
         prepareTexturedModel(texturedModel);

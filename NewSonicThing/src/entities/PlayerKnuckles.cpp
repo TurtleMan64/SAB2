@@ -342,7 +342,7 @@ void PlayerKnuckles::step()
     }
 
     //Homing attack
-    //homingAttackReticle->setVisible(false);
+    //homingAttackReticle->visible = (false);
     //GuiManager::addGuiToRender(homingAttackReticle);
     //if (onGround)
     //{
@@ -360,7 +360,7 @@ void PlayerKnuckles::step()
     //        {
     //            Vector2f pos = Maths::calcScreenCoordsOfWorldPoint(&homeTar);
     //            homingAttackReticle->getPosition()->set(&pos);
-    //            homingAttackReticle->setVisible(true);
+    //            homingAttackReticle->visible = (true);
     //        }
     //
     //        if (inputJump && !inputJumpPrevious)
@@ -1181,7 +1181,7 @@ void PlayerKnuckles::step()
                             //move additional distance
                             if (distLeftToMove > 0)
                             {
-                                if (CollisionChecker::checkCollision(getX(), getY(), getZ(), getX()+velToMove.x, getY()+velToMove.y, getZ()+velToMove.z) == false)
+                                if (CollisionChecker::checkCollision(position.x, position.y, position.z, position.x+velToMove.x, position.y+velToMove.y, position.z+velToMove.z) == false)
                                 {
                                     increasePosition(velToMove.x, velToMove.y, velToMove.z);
                                 }
@@ -1220,11 +1220,11 @@ void PlayerKnuckles::step()
                             //Vector3f posDelta = posAfterMoveToWall - position;
                             //posAfterMoveToWall = posAfterMoveToWall + colNormal->scaleCopy(FLOOR_OFFSET);
                             //
-                            //if (CollisionChecker::checkCollision(getX(), getY(), getZ(), posAfterMoveToWall.x, posAfterMoveToWall.y, posAfterMoveToWall.z) == false)
+                            //if (CollisionChecker::checkCollision(position.x, position.y, position.z, posAfterMoveToWall.x, posAfterMoveToWall.y, posAfterMoveToWall.z) == false)
                             //{
                             //    setPosition(&posAfterMoveToWall);
                             //}
-                            //if (CollisionChecker::checkCollision(getX(), getY(), getZ(), getX() + newDirection.x, getY() + newDirection.y, getZ() + newDirection.z) == false)
+                            //if (CollisionChecker::checkCollision(position.x, position.y, position.z, position.x + newDirection.x, position.y + newDirection.y, position.z + newDirection.z) == false)
                             //{
                             //    increasePosition(newDirection.x, newDirection.y, newDirection.z);
                             //}
@@ -1311,7 +1311,7 @@ void PlayerKnuckles::step()
                     while (distanceRemaining > 0.0f)
                     {
                         CollisionChecker::setCheckPlayer(true);
-                        if (CollisionChecker::checkCollision(getX(), getY(), getZ(), getX()+nextVel.x, getY()+nextVel.y, getZ()+nextVel.z))
+                        if (CollisionChecker::checkCollision(position.x, position.y, position.z, position.x+nextVel.x, position.y+nextVel.y, position.z+nextVel.z))
                         {
                             colNormal = &CollisionChecker::getCollideTriangle()->normal;
 
@@ -1383,7 +1383,7 @@ void PlayerKnuckles::step()
             if (onGround && !inWater)
             {
                 CollisionChecker::setCheckPlayer(true);
-                checkPassed = CollisionChecker::checkCollision(getX(), getY(), getZ(), getX() - relativeUp.x*surfaceTension, getY() - relativeUp.y*surfaceTension, getZ() - relativeUp.z*surfaceTension);
+                checkPassed = CollisionChecker::checkCollision(position.x, position.y, position.z, position.x - relativeUp.x*surfaceTension, position.y - relativeUp.y*surfaceTension, position.z - relativeUp.z*surfaceTension);
             }
             if (checkPassed)
             {
@@ -1588,62 +1588,70 @@ void PlayerKnuckles::step()
     //Water Transition
     if (!inWater && inWaterPrevious)
     {
-        AudioPlayer::play(5, &position);
-        Vector3f partPos(&position);
-        partPos.y = waterHeight + 5;
-        ParticleMaster::createParticle(ParticleResources::textureSplash, &partPos, 0.5f, 10.0f, false, true);
-
         if (!onGround)
         {
             vel.y += 50.0f; //waterExitBoost
         }
-        
-        int numBubbles = ((int)abs((vel.y/60.0f) * 8)) + 18;
-        for (int i = 0; i < numBubbles; i++)
+
+        AudioPlayer::play(5, &position);
+
+        if (Global::levelId != LVL_SWEET_MOUNTAIN)
         {
-            float xOff = (7*(Maths::random() - 0.5f));
-            float zOff = (7*(Maths::random() - 0.5f));
+            Vector3f partPos(&position);
+            partPos.y = waterHeight + 5;
+            ParticleMaster::createParticle(ParticleResources::textureSplash, &partPos, 0.5f, 10.0f, false, true);
+        
+            int numBubbles = ((int)abs((vel.y/60.0f) * 8)) + 18;
+            for (int i = 0; i < numBubbles; i++)
+            {
+                float xOff = (7*(Maths::random() - 0.5f));
+                float zOff = (7*(Maths::random() - 0.5f));
 
-            Vector3f bubPos(
-                position.x + xOff,
-                waterHeight + 2,
-                position.z + zOff);
+                Vector3f bubPos(
+                    position.x + xOff,
+                    waterHeight + 2,
+                    position.z + zOff);
 
-            Vector3f bubVel(
-                Maths::random() - 0.5f + (vel.x/60.0f)*0.4f,
-                Maths::random()*0.3f + 0.2f + (vel.y/60.0f)*0.3f,
-                Maths::random() - 0.5f + (vel.z/60.0f)*0.4f);
+                Vector3f bubVel(
+                    Maths::random() - 0.5f + (vel.x/60.0f)*0.4f,
+                    Maths::random()*0.3f + 0.2f + (vel.y/60.0f)*0.3f,
+                    Maths::random() - 0.5f + (vel.z/60.0f)*0.4f);
 
-            bubVel.scale(60.0f);
-            ParticleMaster::createParticle(ParticleResources::textureBubble, &bubPos, &bubVel, 60*60*0.25f, 1.0f, 4.0f, 0.0f, false, false, 1.0f, true);
+                bubVel.scale(60.0f);
+                ParticleMaster::createParticle(ParticleResources::textureBubble, &bubPos, &bubVel, 60*60*0.25f, 1.0f, 4.0f, 0.0f, false, false, 1.0f, true);
+            }
         }
     }
 
     if (inWater && !inWaterPrevious)
     {
         AudioPlayer::play(5, &position);
-        Vector3f partPos(&position);
-        partPos.y = waterHeight + 5;
-        ParticleMaster::createParticle(ParticleResources::textureSplash, &partPos, 0.5f, 10.0f, false, true);
 
-        int numBubbles = ((int)abs((vel.y/60.0f) * 8)) + 18;
-        for (int i = 0; i < numBubbles; i++)
+        if (Global::levelId != LVL_SWEET_MOUNTAIN)
         {
-            float xOff = (7*(Maths::random() - 0.5f));
-            float zOff = (7*(Maths::random() - 0.5f));
+            Vector3f partPos(&position);
+            partPos.y = waterHeight + 5;
+            ParticleMaster::createParticle(ParticleResources::textureSplash, &partPos, 0.5f, 10.0f, false, true);
 
-            Vector3f bubPos(
-                position.x + xOff,
-                waterHeight + 2,
-                position.z + zOff);
+            int numBubbles = ((int)abs((vel.y/60.0f) * 8)) + 18;
+            for (int i = 0; i < numBubbles; i++)
+            {
+                float xOff = (7*(Maths::random() - 0.5f));
+                float zOff = (7*(Maths::random() - 0.5f));
 
-            Vector3f bubVel(
-                Maths::random() - 0.5f + (vel.x/60.0f)*0.4f,
-                Maths::random()*0.3f + 0.2f - (vel.y/60.0f)*0.3f,
-                Maths::random() - 0.5f + (vel.z/60.0f)*0.4f);
+                Vector3f bubPos(
+                    position.x + xOff,
+                    waterHeight + 2,
+                    position.z + zOff);
 
-            bubVel.scale(60.0f);
-            ParticleMaster::createParticle(ParticleResources::textureBubble, &bubPos, &bubVel, 60*60*0.05f, 1.0f, 4.0f, 0.0f, false, false, 1.0f, true);
+                Vector3f bubVel(
+                    Maths::random() - 0.5f + (vel.x/60.0f)*0.4f,
+                    Maths::random()*0.3f + 0.2f - (vel.y/60.0f)*0.3f,
+                    Maths::random() - 0.5f + (vel.z/60.0f)*0.4f);
+
+                bubVel.scale(60.0f);
+                ParticleMaster::createParticle(ParticleResources::textureBubble, &bubPos, &bubVel, 60*60*0.05f, 1.0f, 4.0f, 0.0f, false, false, 1.0f, true);
+            }
         }
 
         vel.y = fmaxf(vel.y, -200.0f); //waterEntryMaxYVel

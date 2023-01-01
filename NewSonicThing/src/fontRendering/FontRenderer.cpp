@@ -1,5 +1,8 @@
 #include <glad/glad.h>
+
 #include <list>
+#include <unordered_map>
+
 #include "fontrenderer.hpp"
 #include "../fontMeshCreator/fonttype.hpp"
 #include "../fontMeshCreator/guitext.hpp"
@@ -17,22 +20,24 @@ void FontRenderer::render(
     std::unordered_map<FontType*, std::list<GUINumber*>>* numbers)
 {
     prepare();
-    for (auto kv : (*texts))
+    for (auto it = texts->cbegin(); it != texts->cend(); it++)
     {
+        auto kv = it._Ptr->_Myval;
         FontType* font = kv.first;
         std::list<GUIText*> listOfTexts = kv.second;
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, font->getTextureAtlas());
         for (GUIText* text : listOfTexts)
         {
-            if (text->isVisible())
+            if (text->visible)
             {
                 renderText(text);
             }
         }
     }
-    for (auto kv : (*numbers))
+    for (auto it = numbers->cbegin(); it != numbers->cend(); it++)
     {
+        auto kv = it._Ptr->_Myval;
         FontType* font = kv.first;
         std::list<GUINumber*> listOfNumbers = kv.second;
         glActiveTexture(GL_TEXTURE0);

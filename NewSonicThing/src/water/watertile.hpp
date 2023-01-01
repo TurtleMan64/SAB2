@@ -3,17 +3,12 @@
 
 class WaterTile
 {
-private:
-    float x;
-    float z;
-
 public:
+    float centerX;
+    float centerZ;
+
     static constexpr float TILE_SIZE = 3000.0f*2;
 
     WaterTile(float centerX, float centerZ);
-
-    float getX();
-
-    float getZ();
 };
 #endif

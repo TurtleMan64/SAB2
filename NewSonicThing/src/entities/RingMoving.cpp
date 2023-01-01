@@ -61,7 +61,7 @@ void RingMoving::step()
     {
         if (Global::gameMainPlayer->getShieldMagnet() != nullptr)
         {
-            Vector3f diff = (*getPosition()) - Global::gameMainPlayer->getCenterPosition();
+            Vector3f diff = position - Global::gameMainPlayer->getCenterPosition();
         
             if (diff.lengthSquared() < 60*60)
             {

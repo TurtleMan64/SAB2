@@ -156,7 +156,7 @@ void ManiaSonicModel::animate(int animIndex, float time)
 
         case 1: //run
         {
-            setScale(0.27f);
+            scale = (0.27f);
             int index = (int)(time/8.3333333f);
             switch (index % 12)
             {
@@ -182,7 +182,7 @@ void ManiaSonicModel::animate(int animIndex, float time)
 
         case 3: //stomp
         {
-            setScale(0.27f);
+            scale = (0.27f);
             models = &ManiaSonicModel::modelStomp;
             updateTransformationMatrix();
             setLimbsVisibility(false);
@@ -192,7 +192,7 @@ void ManiaSonicModel::animate(int animIndex, float time)
 
         case 8: //skid
         {
-            setScale(0.27f);
+            scale = (0.27f);
             models = &ManiaSonicModel::modelSkid;
             updateTransformationMatrix();
             setLimbsVisibility(false);
@@ -211,7 +211,7 @@ void ManiaSonicModel::animate(int animIndex, float time)
 
         case 12: //jump
         {
-            setScale(0.32f);
+            scale = (0.32f);
             models = &ManiaSonicModel::modelJump;
             updateTransformationMatrix();
             setLimbsVisibility(false);
@@ -233,7 +233,7 @@ void ManiaSonicModel::animate(int animIndex, float time)
 
         case 15: //jog
         {
-            setScale(0.27f);
+            scale = (0.27f);
             int index = (int)(time / 5.55555555f);
             switch (index % 18)
             {
@@ -265,7 +265,7 @@ void ManiaSonicModel::animate(int animIndex, float time)
 
         case 18: //lightdash
         {
-            setScale(0.27f);
+            scale = (0.27f);
             models = &ManiaSonicModel::modelLightdash;
             updateTransformationMatrix();
             setLimbsVisibility(false);
@@ -284,7 +284,7 @@ void ManiaSonicModel::animate(int animIndex, float time)
 
         case 21: //freefall
         {
-            setScale(0.27f);
+            scale = (0.27f);
             models = &ManiaSonicModel::modelFreefall;
             updateTransformationMatrix();
             setLimbsVisibility(false);
@@ -294,7 +294,7 @@ void ManiaSonicModel::animate(int animIndex, float time)
 
         case 25: //grab
         {
-            setScale(0.27f);
+            scale = (0.27f);
             models = &ManiaSonicModel::modelGrab;
             updateTransformationMatrix();
             setLimbsVisibility(false);
@@ -304,7 +304,7 @@ void ManiaSonicModel::animate(int animIndex, float time)
 
         case 26: //grind
         {
-            setScale(0.27f);
+            scale = (0.27f);
             models = &ManiaSonicModel::modelGrind;
             updateTransformationMatrix();
             setLimbsVisibility(false);
@@ -314,7 +314,7 @@ void ManiaSonicModel::animate(int animIndex, float time)
 
         case 27: //drive
         {
-            setScale(1.0f);
+            scale = (1.0f);
             models = &ManiaSonicModel::modelDrive;
             updateTransformationMatrixYXZY();
             setLimbsVisibility(false);
@@ -474,20 +474,20 @@ void ManiaSonicModel::loadStaticModels()
 
 void ManiaSonicModel::setLimbsVisibility(bool newVisible)
 {
-    myBody->setVisible(newVisible);
-    myHead->setVisible(newVisible);
-    myLeftHumerus->setVisible(newVisible);
-    myLeftForearm->setVisible(newVisible);
-    myLeftHand->setVisible(newVisible);
-    myLeftThigh->setVisible(newVisible);
-    myLeftShin->setVisible(newVisible);
-    myLeftFoot->setVisible(newVisible);
-    myRightHumerus->setVisible(newVisible);
-    myRightForearm->setVisible(newVisible);
-    myRightHand->setVisible(newVisible);
-    myRightThigh->setVisible(newVisible);
-    myRightShin->setVisible(newVisible);
-    myRightFoot->setVisible(newVisible);
+    myBody->visible = (newVisible);
+    myHead->visible = (newVisible);
+    myLeftHumerus->visible = (newVisible);
+    myLeftForearm->visible = (newVisible);
+    myLeftHand->visible = (newVisible);
+    myLeftThigh->visible = (newVisible);
+    myLeftShin->visible = (newVisible);
+    myLeftFoot->visible = (newVisible);
+    myRightHumerus->visible = (newVisible);
+    myRightForearm->visible = (newVisible);
+    myRightHand->visible = (newVisible);
+    myRightThigh->visible = (newVisible);
+    myRightShin->visible = (newVisible);
+    myRightFoot->visible = (newVisible);
 }
 
 void ManiaSonicModel::updateLimbs(int animIndex, float time)

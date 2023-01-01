@@ -60,7 +60,7 @@ Rocket::Rocket(Vector3f* point1, Vector3f* point2)
 
     rotY = calculateRocketYRotation();
     rotZ = calculateRocketZRotation();
-    base->setRotY(rotY);
+    base->rotY = (rotY);
 
     rocketPathPositionDifferenceNormalized = rocketPathPositionDifference;
     rocketPathPositionDifferenceNormalized.normalize();
@@ -189,7 +189,7 @@ void Rocket::deleteStaticModels()
 void Rocket::setupRocketBase()
 {
     base = new Dummy(&Rocket::modelsBase); INCR_NEW("Entity");
-    base->setVisible(true);
+    base->visible = (true);
     Global::addEntity(base);
     base->setPosition(&position);
 

@@ -80,9 +80,9 @@ void EmeraldPiece::step()
             for (int i = 0; i < 10; i++)
             {
                 Vector3f pos(
-                    getX() + Maths::random() * 8 - 4,
-                    getY() + Maths::random() * 8 - 4,
-                    getZ() + Maths::random() * 8 - 4);
+                    position.x + Maths::random() * 8 - 4,
+                    position.y + Maths::random() * 8 - 4,
+                    position.z + Maths::random() * 8 - 4);
             
                 Vector3f vel(Maths::random()-0.5f, 0.4f, Maths::random()-0.5f);
                 vel.scale(60);

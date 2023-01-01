@@ -16,7 +16,7 @@ private:
 public:
     static void init();
     
-    static void render(std::list<GuiImage*>* guis);
+    static void render(std::vector<GuiImage*>* guis);
     
     static void cleanUp();
 };

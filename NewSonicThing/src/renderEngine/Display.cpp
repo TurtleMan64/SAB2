@@ -171,6 +171,14 @@ int Display::createDisplay()
         //printf("extensions:   %s\n", glGetStringi(GL_EXTENSIONS, i));
     }
 
+    int maxTextureSize;
+    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
+    printf("GL_MAX_TEXTURE_SIZE = %d\n", maxTextureSize);
+
+    int maxArrayTextureArrays;
+    glGetIntegerv(GL_MAX_ARRAY_TEXTURE_LAYERS, &maxArrayTextureArrays);
+    printf("GL_MAX_ARRAY_TEXTURE_LAYERS = %d\n", maxArrayTextureArrays);
+
     //Master_makeProjectionMatrix();
 
     Display::ASPECT_RATIO = ((float)Display::WINDOW_WIDTH)/Display::WINDOW_HEIGHT;

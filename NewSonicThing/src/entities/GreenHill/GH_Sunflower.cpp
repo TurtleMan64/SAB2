@@ -34,10 +34,10 @@ GH_Sunflower::GH_Sunflower(float x, float y, float z, float rotY, float scale, s
     updateTransformationMatrix();
 
     petals = new Dummy(&GH_Sunflower::modelsTop); INCR_NEW("Entity");
-    petals->setVisible(true);
+    petals->visible = (true);
     petals->setPosition(&position);
     petals->increasePosition(0, 16.6666666f, 0);
-    petals->setRotY(rotY);
+    petals->rotY = (rotY);
     petals->updateTransformationMatrix();
     entityListToAdd->push_back(petals);
 }

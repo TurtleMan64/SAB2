@@ -188,7 +188,7 @@ void MotoBug::step()
                                 xVel+=colXNormal*0.05f*60*60*dt;
                                 zVel+=colZNormal*0.05f*60*60*dt;
                             }
-                            else
+                            else //turn around if we run into a wall
                             {
                                 position.x = (triColPosition.x+colXNormal*0.5f);
                                 position.y = (triColPosition.y+colYNormal*0.5f);
@@ -201,6 +201,7 @@ void MotoBug::step()
                     }
                     else //turn around if we are abound to drive off a cliff
                     {
+                        //TODO this doesnt work properly when on slopes
                         rotY = (rotY+180);
                     }
                 }
@@ -249,7 +250,7 @@ void MotoBug::step()
                         xVel+=colXNormal*0.05f*60*60*dt;
                         zVel+=colZNormal*0.05f*60*60*dt;
                     }
-                    else
+                    else //turn around if we run into a wall
                     {
                         position.x = (triColPosition->x+colXNormal*0.5f);
                         position.y = (triColPosition->y+colYNormal*0.5f);

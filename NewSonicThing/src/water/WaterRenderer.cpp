@@ -97,10 +97,12 @@ void WaterRenderer::render(std::vector<WaterTile*>* water, Camera* camera, Light
     prepareRender(camera, sun);
     float xOff = camera->eye.x;
     float zOff = camera->eye.z;
-    for (WaterTile* tile : (*water))
+    const int waterTileCount = (int)water->size();
+    for (int i = 0; i < waterTileCount; i++)
     {
+        WaterTile* tile = water->at(i);
         Matrix4f modelMatrix;
-        Vector3f tilePosition(tile->getX() + xOff, Global::waterHeight, tile->getZ() + zOff);
+        Vector3f tilePosition(tile->centerX + xOff, Global::waterHeight, tile->centerZ + zOff);
         Maths::createTransformationMatrix(&modelMatrix, &tilePosition, 0, 0, 0, 0, WaterTile::TILE_SIZE);
         shader->loadModelMatrix(&modelMatrix);
         glDrawArrays(GL_TRIANGLES, 0, quad->getVertexCount());

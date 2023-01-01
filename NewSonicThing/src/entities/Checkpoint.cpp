@@ -81,22 +81,22 @@ Checkpoint::Checkpoint(float x, float y, float z, float yRot)
 
     ball1 = new Dummy(&Checkpoint::modelsBall); INCR_NEW("Entity")
     Global::addChunkedEntity(ball1);
-    ball1->setVisible(true);
+    ball1->visible = (true);
     ball1->setPosition(&ball1Pos);
-    ball1->setRotY(rotY+90);
+    ball1->rotY = (rotY+90);
     ball1->updateTransformationMatrix();
 
     ball2 = new Dummy(&Checkpoint::modelsBall); INCR_NEW("Entity")
     Global::addChunkedEntity(ball2);
-    ball2->setVisible(true);
+    ball2->visible = (true);
     ball2->setPosition(&ball2Pos);
-    ball2->setRotY(rotY-90);
+    ball2->rotY = (rotY-90);
     ball2->updateTransformationMatrix();
 
     if (isHit)
     {
-        ball1->setRotZ(90);
-        ball2->setRotZ(90);
+        ball1->rotZ = (90);
+        ball2->rotZ = (90);
         ball1->updateTransformationMatrix();
         ball2->updateTransformationMatrix();
         ball1->baseColor.set(1, 0, 0);
@@ -122,9 +122,9 @@ void Checkpoint::step()
         std::abs(position.x - Global::gameMainPlayer->position.x) < 40)
     {
         if (!isHit &&
-            Global::gameMainPlayer->getX() > position.x - colHorizontal - playerColH && Global::gameMainPlayer->getX() < position.x + colHorizontal + playerColH &&
-            Global::gameMainPlayer->getZ() > position.z - colHorizontal - playerColH && Global::gameMainPlayer->getZ() < position.z + colHorizontal + playerColH &&
-            Global::gameMainPlayer->getY() > position.y - colVertical   - playerColV && Global::gameMainPlayer->getY() < position.y + colVertical   + playerColV)
+            Global::gameMainPlayer->position.x > position.x - colHorizontal - playerColH && Global::gameMainPlayer->position.x < position.x + colHorizontal + playerColH &&
+            Global::gameMainPlayer->position.z > position.z - colHorizontal - playerColH && Global::gameMainPlayer->position.z < position.z + colHorizontal + playerColH &&
+            Global::gameMainPlayer->position.y > position.y - colVertical   - playerColV && Global::gameMainPlayer->position.y < position.y + colVertical   + playerColV)
         {
             AudioPlayer::play(45, &position);
 
@@ -155,8 +155,8 @@ void Checkpoint::step()
                 Global::checkpointPlayerPos.y += 5;
             }
 
-            ball1->setRotZ(90);
-            ball2->setRotZ(90);
+            ball1->rotZ = (90);
+            ball2->rotZ = (90);
             ball1->updateTransformationMatrix();
             ball2->updateTransformationMatrix();
             ball1->baseColor.set(1, 0, 0);
