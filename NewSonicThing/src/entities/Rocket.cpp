@@ -26,8 +26,8 @@
 
 extern float dt;
 
-std::list<TexturedModel*> Rocket::modelsRocket;
-std::list<TexturedModel*> Rocket::modelsBase;
+std::vector<TexturedModel*> Rocket::modelsRocket;
+std::vector<TexturedModel*> Rocket::modelsBase;
 CollisionModel* Rocket::cmBase;
 
 Rocket::Rocket()
@@ -147,7 +147,7 @@ void Rocket::step()
     updateTransformationMatrix();
 }
 
-std::list<TexturedModel*>* Rocket::getModels()
+std::vector<TexturedModel*>* Rocket::getModels()
 {
     return &Rocket::modelsRocket;
 }

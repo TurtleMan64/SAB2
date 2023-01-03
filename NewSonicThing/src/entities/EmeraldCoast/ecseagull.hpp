@@ -9,7 +9,7 @@ class TexturedModel;
 class EC_Seagull : public Entity
 {
 private:
-    static std::list<TexturedModel*> models;
+    static std::vector<TexturedModel*> models;
 
     float modelX = 0.0f;
     float modelY = 0.0f;
@@ -40,7 +40,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

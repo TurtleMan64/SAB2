@@ -16,7 +16,7 @@
 #include <iostream>
 #include <algorithm>
 
-std::list<TexturedModel*> RH_Ramp::models;
+std::vector<TexturedModel*> RH_Ramp::models;
 CollisionModel* RH_Ramp::cmOriginal = nullptr;
 
 RH_Ramp::RH_Ramp()
@@ -48,7 +48,7 @@ void RH_Ramp::step()
 
 }
 
-std::list<TexturedModel*>* RH_Ramp::getModels()
+std::vector<TexturedModel*>* RH_Ramp::getModels()
 {
     return &RH_Ramp::models;
 }

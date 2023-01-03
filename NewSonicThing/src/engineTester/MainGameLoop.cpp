@@ -440,7 +440,7 @@ int main(int argc, char** argv)
     //extern GLuint transparentDepthTexture;
     //GuiImage* debugDepth = new GuiImage(transparentDepthTexture, 0.2f, 0.8f, 0.3f, 0.3f, 0); INCR_NEW("GuiImage");
 
-    std::list<std::unordered_set<Entity*>*> entityChunkedList;
+    std::vector<std::unordered_set<Entity*>*> entityChunkedList;
 
     //GUIText* debugNumber = new GUIText("a", 0.04f, Global::fontVipnagorgialla, 0, 0, 0, true);
 
@@ -1777,7 +1777,7 @@ int Global::getChunkIndex(float x, float z)
     return realIndex;
 }
 
-void Global::getNearbyEntities(float x, float z, int renderDistance, std::list<std::unordered_set<Entity*>*>* list)
+void Global::getNearbyEntities(float x, float z, int renderDistance, std::vector<std::unordered_set<Entity*>*>* list)
 {
     list->clear();
 
@@ -1791,36 +1791,86 @@ void Global::getNearbyEntities(float x, float z, int renderDistance, std::list<s
 
         case 1:
         {
-            std::unordered_set<int> chunkIdxs;
             float w = chunkedEntitiesChunkSize/2;
-            chunkIdxs.insert(Global::getChunkIndex(x-w, z-w));
-            chunkIdxs.insert(Global::getChunkIndex(x+w, z-w));
-            chunkIdxs.insert(Global::getChunkIndex(x-w, z+w));
-            chunkIdxs.insert(Global::getChunkIndex(x+w, z+w));
-            for (int i : chunkIdxs)
+            int c1 = Global::getChunkIndex(x-w, z-w);
+            int c2 = Global::getChunkIndex(x+w, z-w);
+            int c3 = Global::getChunkIndex(x-w, z+w);
+            int c4 = Global::getChunkIndex(x+w, z+w);
+
+            list->push_back(&gameChunkedEntities[c1]);
+
+            if (c2 != c1)
             {
-                list->push_back(&gameChunkedEntities[i]);
+                list->push_back(&gameChunkedEntities[c2]);
+            }
+
+            if (c3 != c1 && c3 != c2)
+            {
+                list->push_back(&gameChunkedEntities[c3]);
+            }
+
+            if (c4 != c1 && c4 != c2 && c4 != c3)
+            {
+                list->push_back(&gameChunkedEntities[c4]);
             }
             break;
         }
 
         case 2:
         {
-            std::unordered_set<int> chunkIdxs;
             float w = chunkedEntitiesChunkSize;
-            chunkIdxs.insert(Global::getChunkIndex(x-w, z-w));
-            chunkIdxs.insert(Global::getChunkIndex(x+0, z-w));
-            chunkIdxs.insert(Global::getChunkIndex(x+w, z-w));
-            chunkIdxs.insert(Global::getChunkIndex(x-w, z+0));
-            chunkIdxs.insert(Global::getChunkIndex(x+0, z+0));
-            chunkIdxs.insert(Global::getChunkIndex(x+w, z+0));
-            chunkIdxs.insert(Global::getChunkIndex(x-w, z+w));
-            chunkIdxs.insert(Global::getChunkIndex(x+0, z+w));
-            chunkIdxs.insert(Global::getChunkIndex(x+w, z+w));
-            for (int i : chunkIdxs)
+            int c1 = Global::getChunkIndex(x-w, z-w);
+            int c2 = Global::getChunkIndex(x+0, z-w);
+            int c3 = Global::getChunkIndex(x+w, z-w);
+            int c4 = Global::getChunkIndex(x-w, z+0);
+            int c5 = Global::getChunkIndex(x+0, z+0);
+            int c6 = Global::getChunkIndex(x+w, z+0);
+            int c7 = Global::getChunkIndex(x-w, z+w);
+            int c8 = Global::getChunkIndex(x+0, z+w);
+            int c9 = Global::getChunkIndex(x+w, z+w);
+
+            list->push_back(&gameChunkedEntities[c1]);
+
+            if (c2 != c1)
             {
-                list->push_back(&gameChunkedEntities[i]);
+                list->push_back(&gameChunkedEntities[c2]);
             }
+
+            if (c3 != c1 && c3 != c2)
+            {
+                list->push_back(&gameChunkedEntities[c3]);
+            }
+
+            if (c4 != c1 && c4 != c2 && c4 != c3)
+            {
+                list->push_back(&gameChunkedEntities[c4]);
+            }
+
+            if (c5 != c1 && c5 != c2 && c5 != c3 && c5 != c4)
+            {
+                list->push_back(&gameChunkedEntities[c5]);
+            }
+
+            if (c6!= c1 && c6 != c2 && c6 != c3 && c6 != c4 && c6 != c5)
+            {
+                list->push_back(&gameChunkedEntities[c6]);
+            }
+
+            if (c7 != c1 && c7 != c2 && c7 != c3 && c7 != c4 && c7 != c5 && c7 != c6)
+            {
+                list->push_back(&gameChunkedEntities[c7]);
+            }
+
+            if (c8 != c1 && c8 != c2 && c8 != c3 && c8 != c4 && c8 != c5 && c8 != c6 && c8 != c7)
+            {
+                list->push_back(&gameChunkedEntities[c8]);
+            }
+
+            if (c9 != c1 && c9 != c2 && c9 != c3 && c9 != c4 && c9 != c5 && c9 != c6 && c9 != c7 && c9 != c8)
+            {
+                list->push_back(&gameChunkedEntities[c9]);
+            }
+
             break;
         }
 
@@ -1834,19 +1884,43 @@ void Global::getNearbyEntities(float x, float z, int renderDistance, std::list<s
 
 //Return a list of nearby entity sets. Returns either 1 chunk, 2 chunks, or 4 chunks,
 // depending on the minDistance value.
-void Global::getNearbyEntities(float x, float z, std::list<std::unordered_set<Entity*>*>* list, float minDistance)
+void Global::getNearbyEntities(float x, float z, std::vector<std::unordered_set<Entity*>*>* list, float minDistance)
 {
     list->clear();
 
-    std::unordered_set<int> chunkIdxs;
+    // cleaner code but uses heap
+    //std::unordered_set<int> chunkIdxs;
+    //float w = minDistance;
+    //chunkIdxs.insert(Global::getChunkIndex(x-w, z-w));
+    //chunkIdxs.insert(Global::getChunkIndex(x+w, z-w));
+    //chunkIdxs.insert(Global::getChunkIndex(x-w, z+w));
+    //chunkIdxs.insert(Global::getChunkIndex(x+w, z+w));
+    //for (int i : chunkIdxs)
+    //{
+    //    list->push_back(&gameChunkedEntities[i]);
+    //}
+
     float w = minDistance;
-    chunkIdxs.insert(Global::getChunkIndex(x-w, z-w));
-    chunkIdxs.insert(Global::getChunkIndex(x+w, z-w));
-    chunkIdxs.insert(Global::getChunkIndex(x-w, z+w));
-    chunkIdxs.insert(Global::getChunkIndex(x+w, z+w));
-    for (int i : chunkIdxs)
+    int c1 = Global::getChunkIndex(x-w, z-w);
+    int c2 = Global::getChunkIndex(x+w, z-w);
+    int c3 = Global::getChunkIndex(x-w, z+w);
+    int c4 = Global::getChunkIndex(x+w, z+w);
+
+    list->push_back(&gameChunkedEntities[c1]);
+
+    if (c2 != c1)
     {
-        list->push_back(&gameChunkedEntities[i]);
+        list->push_back(&gameChunkedEntities[c2]);
+    }
+
+    if (c3 != c1 && c3 != c2)
+    {
+        list->push_back(&gameChunkedEntities[c3]);
+    }
+
+    if (c4 != c1 && c4 != c2 && c4 != c3)
+    {
+        list->push_back(&gameChunkedEntities[c4]);
     }
 }
 

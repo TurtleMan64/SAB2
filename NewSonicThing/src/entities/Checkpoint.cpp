@@ -21,8 +21,8 @@
 #include <iostream>
 #include <cmath>
 
-std::list<TexturedModel*> Checkpoint::modelsBase;
-std::list<TexturedModel*> Checkpoint::modelsBall;
+std::vector<TexturedModel*> Checkpoint::modelsBase;
+std::vector<TexturedModel*> Checkpoint::modelsBall;
 
 float Checkpoint::colHorizontal = 13;
 float Checkpoint::colVertical   = 9;
@@ -165,7 +165,7 @@ void Checkpoint::step()
     }
 }
 
-std::list<TexturedModel*>* Checkpoint::getModels()
+std::vector<TexturedModel*>* Checkpoint::getModels()
 {
     return &Checkpoint::modelsBase;
 }

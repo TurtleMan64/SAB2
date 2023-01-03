@@ -11,7 +11,7 @@ class Triangle3D;
 class RhinoSpike : public Entity
 {
 private:
-    static std::list<TexturedModel*> models;
+    static std::vector<TexturedModel*> models;
 
     const float activationRange = 64.0f; //range where they can see sonic
     const float moveRange = 500.0f; //range where they can see sonic
@@ -51,7 +51,7 @@ public:
 
     void die();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

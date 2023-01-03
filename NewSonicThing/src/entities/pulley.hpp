@@ -13,11 +13,11 @@ class Pulley : public CollideableObject
 {
 private:
     //Visual model of the handle.
-    static std::list<TexturedModel*> modelsHandle;
+    static std::vector<TexturedModel*> modelsHandle;
     //Visual model of the rope.
-    static std::list<TexturedModel*> modelsRope;
+    static std::vector<TexturedModel*> modelsRope;
     //Visual model of the top of the pulley.    
-    static std::list<TexturedModel*> modelsTop;
+    static std::vector<TexturedModel*> modelsTop;
     //Collision model of the top of the pulley.
     static CollisionModel* cmTop;
 
@@ -112,7 +112,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     bool canHomingAttackOn() const;
 

@@ -4,7 +4,7 @@
 #include "../../models/models.hpp"
 #include "../../loading/modelloader.hpp"
 
-std::list<TexturedModel*> DL_Tree::models;
+std::vector<TexturedModel*> DL_Tree::models;
 
 DL_Tree::DL_Tree()
 {
@@ -29,7 +29,7 @@ void DL_Tree::step()
    
 }
 
-std::list<TexturedModel*>* DL_Tree::getModels()
+std::vector<TexturedModel*>* DL_Tree::getModels()
 {
     return &DL_Tree::models;
 }

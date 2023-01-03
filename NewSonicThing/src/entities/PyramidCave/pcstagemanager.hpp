@@ -9,14 +9,14 @@ class TexturedModel;
 class PC_StageManager : public Entity
 {
 private:
-    static std::list<TexturedModel*> modelsSkydome;
+    static std::vector<TexturedModel*> modelsSkydome;
 
 public:
     PC_StageManager();
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

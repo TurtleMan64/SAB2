@@ -10,7 +10,7 @@ class TexturedModel;
 class LowQualityWater : public Entity
 {
 private:
-    static std::list<TexturedModel*> models;
+    static std::vector<TexturedModel*> models;
 
     int x = 0;
     int z = 0;
@@ -24,7 +24,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

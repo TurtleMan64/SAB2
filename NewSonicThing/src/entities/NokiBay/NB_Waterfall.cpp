@@ -10,7 +10,7 @@
 #include <list>
 #include <iostream>
 
-std::list<TexturedModel*> NB_Waterfall::models;
+std::vector<TexturedModel*> NB_Waterfall::models;
 
 NB_Waterfall::NB_Waterfall()
 {
@@ -33,7 +33,7 @@ void NB_Waterfall::step()
     //todo waterfall noise
 }
 
-std::list<TexturedModel*>* NB_Waterfall::getModels()
+std::vector<TexturedModel*>* NB_Waterfall::getModels()
 {
     return &NB_Waterfall::models;
 }

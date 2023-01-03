@@ -4,7 +4,7 @@
 #include "../../models/models.hpp"
 #include "../../loading/modelloader.hpp"
 
-std::list<TexturedModel*> RH_Nights::models;
+std::vector<TexturedModel*> RH_Nights::models;
 
 RH_Nights::RH_Nights()
 {
@@ -34,7 +34,7 @@ void RH_Nights::step()
     baseColor.scale(1.0f + timer*5);
 }
 
-std::list<TexturedModel*>* RH_Nights::getModels()
+std::vector<TexturedModel*>* RH_Nights::getModels()
 {
     return &RH_Nights::models;
 }

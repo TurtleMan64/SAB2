@@ -12,8 +12,8 @@
 #include <iostream>
 #include <cmath>
 
-std::list<TexturedModel*> GH_Flower::modelsBase;
-std::list<TexturedModel*> GH_Flower::modelsTop;
+std::vector<TexturedModel*> GH_Flower::modelsBase;
+std::vector<TexturedModel*> GH_Flower::modelsTop;
 
 GH_Flower::GH_Flower()
 {
@@ -68,7 +68,7 @@ void GH_Flower::step()
     }
 }
 
-std::list<TexturedModel*>* GH_Flower::getModels()
+std::vector<TexturedModel*>* GH_Flower::getModels()
 {
     return &GH_Flower::modelsBase;
 }

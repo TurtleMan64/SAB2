@@ -8,9 +8,9 @@
 #include "../../loading/modelloader.hpp"
 #include "../../toolbox/maths.hpp"
 
-std::list<TexturedModel*> T_StageManager::modelsSkyPass1;
-std::list<TexturedModel*> T_StageManager::modelsSkyPass2;
-std::list<TexturedModel*> T_StageManager::modelsSkyTransparent;
+std::vector<TexturedModel*> T_StageManager::modelsSkyPass1;
+std::vector<TexturedModel*> T_StageManager::modelsSkyPass2;
+std::vector<TexturedModel*> T_StageManager::modelsSkyTransparent;
 
 T_StageManager::T_StageManager()
 {
@@ -43,7 +43,7 @@ void T_StageManager::step()
     skyTransparent->updateTransformationMatrix();
 }
 
-std::list<TexturedModel*>* T_StageManager::getModels()
+std::vector<TexturedModel*>* T_StageManager::getModels()
 {
     return &T_StageManager::modelsSkyPass1;
 }

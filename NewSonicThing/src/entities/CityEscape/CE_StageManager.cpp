@@ -8,7 +8,7 @@
 #include "../camera.hpp"
 #include "../../audio/audioplayer.hpp"
 
-std::list<TexturedModel*> CE_StageManager::modelsSkydome;
+std::vector<TexturedModel*> CE_StageManager::modelsSkydome;
 
 CE_StageManager::CE_StageManager()
 {
@@ -34,7 +34,7 @@ void CE_StageManager::step()
     }
 }
 
-std::list<TexturedModel*>* CE_StageManager::getModels()
+std::vector<TexturedModel*>* CE_StageManager::getModels()
 {
     return &CE_StageManager::modelsSkydome;
 }

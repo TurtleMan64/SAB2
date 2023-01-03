@@ -297,7 +297,7 @@ void RaceGhost::step()
     }
 }
 
-std::list<TexturedModel*>* RaceGhost::getModels()
+std::vector<TexturedModel*>* RaceGhost::getModels()
 {
     return nullptr;
 }

@@ -9,7 +9,7 @@ class TexturedModel;
 class EmeraldPiece : public Entity
 {
 private:
-    static std::list<TexturedModel*> models;
+    static std::vector<TexturedModel*> models;
 
     static float baseScale;
 
@@ -37,7 +37,7 @@ public:
 
     bool isEmeraldPiece() const;
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

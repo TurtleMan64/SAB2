@@ -12,7 +12,7 @@
 #include "../../particles/particle.hpp"
 #include "../../particles/particlemaster.hpp"
 
-std::list<TexturedModel*> DL_BlueBox::models;
+std::vector<TexturedModel*> DL_BlueBox::models;
 CollisionModel* DL_BlueBox::cmOriginal = nullptr;
 
 DL_BlueBox::DL_BlueBox(float x, float y, float z, float rot)
@@ -79,7 +79,7 @@ void DL_BlueBox::step()
     }
 }
 
-std::list<TexturedModel*>* DL_BlueBox::getModels()
+std::vector<TexturedModel*>* DL_BlueBox::getModels()
 {
     return &DL_BlueBox::models;
 }

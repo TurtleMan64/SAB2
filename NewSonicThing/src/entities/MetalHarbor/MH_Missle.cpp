@@ -9,7 +9,7 @@
 
 extern float dt;
 
-std::list<TexturedModel*> MH_Missle::models;
+std::vector<TexturedModel*> MH_Missle::models;
 
 MH_Missle::MH_Missle() {}
 
@@ -95,7 +95,7 @@ void MH_Missle::putPlayerAtHandle()
     Global::gameMainPlayer->animate();
 }
 
-std::list<TexturedModel*>* MH_Missle::getModels()
+std::vector<TexturedModel*>* MH_Missle::getModels()
 {
     return &MH_Missle::models;
 }

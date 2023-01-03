@@ -7,7 +7,7 @@
 #include "../../toolbox/maths.hpp"
 #include "../controllableplayer.hpp"
 
-std::list<TexturedModel*> GF_Vine::models;
+std::vector<TexturedModel*> GF_Vine::models;
 
 GF_Vine::GF_Vine()
 {
@@ -116,7 +116,7 @@ Vector3f GF_Vine::calcForwardDirection()
     return forward;
 }
 
-std::list<TexturedModel*>* GF_Vine::getModels()
+std::vector<TexturedModel*>* GF_Vine::getModels()
 {
     return &GF_Vine::models;
 }

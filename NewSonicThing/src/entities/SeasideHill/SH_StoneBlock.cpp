@@ -14,19 +14,19 @@
 #include "../dummy.hpp"
 #include "../../audio/audioplayer.hpp"
 
-std::list<TexturedModel*> SH_StoneBlock::models;
-std::list<TexturedModel*> SH_StoneBlock::modelsP1;
-std::list<TexturedModel*> SH_StoneBlock::modelsP2;
-std::list<TexturedModel*> SH_StoneBlock::modelsP3;
-std::list<TexturedModel*> SH_StoneBlock::modelsP4;
-std::list<TexturedModel*> SH_StoneBlock::modelsP5;
-std::list<TexturedModel*> SH_StoneBlock::modelsP6;
-std::list<TexturedModel*> SH_StoneBlock::modelsP7;
-std::list<TexturedModel*> SH_StoneBlock::modelsP8;
-std::list<TexturedModel*> SH_StoneBlock::modelsP9;
-std::list<TexturedModel*> SH_StoneBlock::modelsP10;
-std::list<TexturedModel*> SH_StoneBlock::modelsP11;
-std::list<TexturedModel*> SH_StoneBlock::modelsP12;
+std::vector<TexturedModel*> SH_StoneBlock::models;
+std::vector<TexturedModel*> SH_StoneBlock::modelsP1;
+std::vector<TexturedModel*> SH_StoneBlock::modelsP2;
+std::vector<TexturedModel*> SH_StoneBlock::modelsP3;
+std::vector<TexturedModel*> SH_StoneBlock::modelsP4;
+std::vector<TexturedModel*> SH_StoneBlock::modelsP5;
+std::vector<TexturedModel*> SH_StoneBlock::modelsP6;
+std::vector<TexturedModel*> SH_StoneBlock::modelsP7;
+std::vector<TexturedModel*> SH_StoneBlock::modelsP8;
+std::vector<TexturedModel*> SH_StoneBlock::modelsP9;
+std::vector<TexturedModel*> SH_StoneBlock::modelsP10;
+std::vector<TexturedModel*> SH_StoneBlock::modelsP11;
+std::vector<TexturedModel*> SH_StoneBlock::modelsP12;
 
 CollisionModel* SH_StoneBlock::cmOriginal = nullptr;
 
@@ -136,7 +136,7 @@ void SH_StoneBlock::step()
     }
 }
 
-std::list<TexturedModel*>* SH_StoneBlock::getModels()
+std::vector<TexturedModel*>* SH_StoneBlock::getModels()
 {
     return &SH_StoneBlock::models;
 }

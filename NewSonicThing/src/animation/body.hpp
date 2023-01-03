@@ -23,7 +23,7 @@ private:
     float baseScale;
     float prevTime;
 
-    std::list<TexturedModel*>* myModels;
+    std::vector<TexturedModel*>* myModels;
 
 public:
     int animationIndex;
@@ -32,7 +32,7 @@ public:
 
     std::vector<Animation>* animations;
 
-    Body(std::list<TexturedModel*>* models);
+    Body(std::vector<TexturedModel*>* models);
 
     void step();
 
@@ -42,8 +42,8 @@ public:
 
     void setBaseOrientation(float baseX, float baseY, float baseZ, float rotX, float rotY, float rotZ, float rotS, float scale);
 
-    inline std::list<TexturedModel*>* getModels();
+    inline std::vector<TexturedModel*>* getModels();
 
-    inline void setModels(std::list<TexturedModel*>* newModels);
+    inline void setModels(std::vector<TexturedModel*>* newModels);
 };
 #endif

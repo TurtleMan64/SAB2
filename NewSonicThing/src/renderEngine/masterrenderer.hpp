@@ -12,6 +12,7 @@ class TexturedModel;
 #include <glad/glad.h>
 #include <unordered_map>
 #include <vector>
+#include <list>
 
 class MasterRenderer
 {
@@ -54,6 +55,13 @@ public:
     static void processEntity(Entity* entity);
 
     static void clearAllEntities();
+
+    // Add the models to the model->entities map and reserves 1000 entities per model.
+    static void addTexturedModels(std::vector<TexturedModel*>* models);
+
+    static void removeTexturedModels(std::vector<TexturedModel*>* models);
+
+    static void clearAllTexturedModels();
 
     static void enableCulling();
 

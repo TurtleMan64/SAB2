@@ -15,7 +15,7 @@
 #include <algorithm>
 #include <cmath>
 
-std::list<TexturedModel*> Spikeball::models;
+std::vector<TexturedModel*> Spikeball::models;
 
 Spikeball::Spikeball()
 {
@@ -52,7 +52,7 @@ void Spikeball::step()
 	updateTransformationMatrix();
 }
 
-std::list<TexturedModel*>* Spikeball::getModels()
+std::vector<TexturedModel*>* Spikeball::getModels()
 {
 	return &Spikeball::models;
 }

@@ -20,8 +20,8 @@
 #include <algorithm>
 #include <cmath>
 
-std::list<TexturedModel*> Spinner::modelsBody;
-std::list<TexturedModel*> Spinner::modelsBlades;
+std::vector<TexturedModel*> Spinner::modelsBody;
+std::vector<TexturedModel*> Spinner::modelsBlades;
 
 Spinner::Spinner()
 {
@@ -131,7 +131,7 @@ void Spinner::die()
     Global::gameScore += 100;
 }
 
-std::list<TexturedModel*>* Spinner::getModels()
+std::vector<TexturedModel*>* Spinner::getModels()
 {
     return &Spinner::modelsBody;
 }

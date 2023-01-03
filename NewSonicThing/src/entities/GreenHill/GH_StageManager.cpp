@@ -7,10 +7,10 @@
 #include "../dummy.hpp"
 #include "../../loading/modelloader.hpp"
 
-std::list<TexturedModel*> GH_StageManager::modelsSkyCylinder;
-std::list<TexturedModel*> GH_StageManager::modelsSkyClouds;
-std::list<TexturedModel*> GH_StageManager::modelsWaterFlat;
-std::list<TexturedModel*> GH_StageManager::modelsWaterVertical;
+std::vector<TexturedModel*> GH_StageManager::modelsSkyCylinder;
+std::vector<TexturedModel*> GH_StageManager::modelsSkyClouds;
+std::vector<TexturedModel*> GH_StageManager::modelsWaterFlat;
+std::vector<TexturedModel*> GH_StageManager::modelsWaterVertical;
 
 GH_StageManager::GH_StageManager()
 {
@@ -52,7 +52,7 @@ void GH_StageManager::step()
     skyClouds->updateTransformationMatrix();
 }
 
-std::list<TexturedModel*>* GH_StageManager::getModels()
+std::vector<TexturedModel*>* GH_StageManager::getModels()
 {
     return &GH_StageManager::modelsSkyCylinder;
 }

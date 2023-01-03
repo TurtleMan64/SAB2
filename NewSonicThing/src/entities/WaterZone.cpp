@@ -44,7 +44,7 @@ void WaterZone::step()
     }
 }
 
-std::list<TexturedModel*>* WaterZone::getModels()
+std::vector<TexturedModel*>* WaterZone::getModels()
 {
     return nullptr;
 }

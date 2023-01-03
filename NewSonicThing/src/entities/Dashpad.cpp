@@ -19,7 +19,7 @@
 #include <iostream>
 #include <cmath>
 
-std::list<TexturedModel*> Dashpad::models;
+std::vector<TexturedModel*> Dashpad::models;
 
 Dashpad::Dashpad()
 {
@@ -103,7 +103,7 @@ void Dashpad::step()
     }
 }
 
-std::list<TexturedModel*>* Dashpad::getModels()
+std::vector<TexturedModel*>* Dashpad::getModels()
 {
     return &Dashpad::models;
 }

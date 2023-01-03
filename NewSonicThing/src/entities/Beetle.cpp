@@ -20,8 +20,8 @@
 #include <algorithm>
 #include <cmath>
 
-std::list<TexturedModel*> Beetle::modelsBody;
-std::list<TexturedModel*> Beetle::modelsBlades;
+std::vector<TexturedModel*> Beetle::modelsBody;
+std::vector<TexturedModel*> Beetle::modelsBlades;
 
 Beetle::Beetle()
 {
@@ -153,7 +153,7 @@ void Beetle::die()
     Global::gameScore += 100;
 }
 
-std::list<TexturedModel*>* Beetle::getModels()
+std::vector<TexturedModel*>* Beetle::getModels()
 {
     return &Beetle::modelsBody;
 }

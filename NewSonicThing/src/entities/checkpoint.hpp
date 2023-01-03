@@ -12,8 +12,8 @@ class Dummy;
 class Checkpoint : public Entity
 {
 private:
-    static std::list<TexturedModel*> modelsBase;
-    static std::list<TexturedModel*> modelsBall;
+    static std::vector<TexturedModel*> modelsBase;
+    static std::vector<TexturedModel*> modelsBall;
 
     Dummy* ball1 = nullptr;
     Dummy* ball2 = nullptr;
@@ -31,7 +31,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

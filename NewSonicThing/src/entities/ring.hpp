@@ -9,7 +9,7 @@ class TexturedModel;
 class Ring : public Entity
 {
 public:
-    static std::list<TexturedModel*> models;
+    static std::vector<TexturedModel*> models;
 
 private:
     float xVel;
@@ -26,7 +26,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

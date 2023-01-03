@@ -6,7 +6,7 @@
 #include "../controllableplayer.hpp"
 #include "../../loading/modelloader.hpp"
 
-std::list<TexturedModel*> FF_StageManager::modelsSkydome;
+std::vector<TexturedModel*> FF_StageManager::modelsSkydome;
 
 FF_StageManager::FF_StageManager()
 {
@@ -22,7 +22,7 @@ void FF_StageManager::step()
     updateTransformationMatrix();
 }
 
-std::list<TexturedModel*>* FF_StageManager::getModels()
+std::vector<TexturedModel*>* FF_StageManager::getModels()
 {
     return &FF_StageManager::modelsSkydome;
 }

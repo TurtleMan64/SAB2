@@ -9,8 +9,8 @@
 #include "../camera.hpp"
 #include "../../toolbox/maths.hpp"
 
-std::list<TexturedModel*> SH_StageManager::modelsSkyPass1;
-std::list<TexturedModel*> SH_StageManager::modelsSkyPass2;
+std::vector<TexturedModel*> SH_StageManager::modelsSkyPass1;
+std::vector<TexturedModel*> SH_StageManager::modelsSkyPass2;
 
 SH_StageManager::SH_StageManager()
 {
@@ -49,7 +49,7 @@ void SH_StageManager::step()
     skyPass2->updateTransformationMatrix();
 }
 
-std::list<TexturedModel*>* SH_StageManager::getModels()
+std::vector<TexturedModel*>* SH_StageManager::getModels()
 {
     return &SH_StageManager::modelsSkyPass1;
 }

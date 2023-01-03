@@ -12,7 +12,7 @@
 #include <list>
 #include <iostream>
 
-std::list<TexturedModel*> GH_FloatingPlatform::models;
+std::vector<TexturedModel*> GH_FloatingPlatform::models;
 CollisionModel* GH_FloatingPlatform::cmOriginal = nullptr;
 
 GH_FloatingPlatform::GH_FloatingPlatform()
@@ -45,7 +45,7 @@ void GH_FloatingPlatform::step()
 
 }
 
-std::list<TexturedModel*>* GH_FloatingPlatform::getModels()
+std::vector<TexturedModel*>* GH_FloatingPlatform::getModels()
 {
     return &GH_FloatingPlatform::models;
 }

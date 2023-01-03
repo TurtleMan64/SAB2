@@ -19,7 +19,7 @@
 #include <iostream>
 #include <cmath>
 
-std::list<TexturedModel*> GoalRing::models;
+std::vector<TexturedModel*> GoalRing::models;
 
 GoalRing::GoalRing()
 {
@@ -119,7 +119,7 @@ void GoalRing::step()
     updateTransformationMatrix();
 }
 
-std::list<TexturedModel*>* GoalRing::getModels()
+std::vector<TexturedModel*>* GoalRing::getModels()
 {
     return &GoalRing::models;
 }

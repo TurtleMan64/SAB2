@@ -4,7 +4,7 @@
 #include "keyframe.hpp"
 #include "../toolbox/maths.hpp"
 
-Body::Body(std::list<TexturedModel*>* models)
+Body::Body(std::vector<TexturedModel*>* models)
 {
     myModels = models;
     baseX = 0;
@@ -168,12 +168,12 @@ void Body::setBaseOrientation(float newBaseX, float newBaseY, float newBaseZ, fl
     baseScale = newBaseScale;
 }
 
-inline std::list<TexturedModel*>* Body::getModels()
+inline std::vector<TexturedModel*>* Body::getModels()
 {
     return myModels;
 }
 
-inline void Body::setModels(std::list<TexturedModel*>* newModels)
+inline void Body::setModels(std::vector<TexturedModel*>* newModels)
 {
     myModels = newModels;
 }

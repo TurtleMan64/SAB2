@@ -21,8 +21,8 @@
 #include <iostream>
 #include <cmath>
 
-std::list<TexturedModel*> E1000::modelsBody;
-std::list<TexturedModel*> E1000::modelsGun;
+std::vector<TexturedModel*> E1000::modelsBody;
+std::vector<TexturedModel*> E1000::modelsGun;
 
 E1000::E1000()
 {
@@ -258,7 +258,7 @@ void E1000::die()
     Global::gameScore += 100;
 }
 
-std::list<TexturedModel*>* E1000::getModels()
+std::vector<TexturedModel*>* E1000::getModels()
 {
     return &E1000::modelsBody;
 }

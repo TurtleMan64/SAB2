@@ -12,7 +12,7 @@
 #include <list>
 #include <iostream>
 
-std::list<TexturedModel*> NB_WaterPlatform::models;
+std::vector<TexturedModel*> NB_WaterPlatform::models;
 CollisionModel* NB_WaterPlatform::cmOriginal = nullptr;
 
 NB_WaterPlatform::NB_WaterPlatform()
@@ -45,7 +45,7 @@ void NB_WaterPlatform::step()
 
 }
 
-std::list<TexturedModel*>* NB_WaterPlatform::getModels()
+std::vector<TexturedModel*>* NB_WaterPlatform::getModels()
 {
     return &NB_WaterPlatform::models;
 }

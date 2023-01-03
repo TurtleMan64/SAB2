@@ -10,8 +10,8 @@ class Dummy;
 class GH_Flower : public Entity
 {
 private:
-    static std::list<TexturedModel*> modelsTop;
-    static std::list<TexturedModel*> modelsBase;
+    static std::vector<TexturedModel*> modelsTop;
+    static std::vector<TexturedModel*> modelsBase;
 
     Dummy* petals = nullptr;
 
@@ -23,7 +23,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

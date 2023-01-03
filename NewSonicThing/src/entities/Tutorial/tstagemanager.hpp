@@ -10,9 +10,9 @@ class Dummy;
 class T_StageManager : public Entity
 {
 private:
-    static std::list<TexturedModel*> modelsSkyPass1;
-    static std::list<TexturedModel*> modelsSkyPass2;
-    static std::list<TexturedModel*> modelsSkyTransparent;
+    static std::vector<TexturedModel*> modelsSkyPass1;
+    static std::vector<TexturedModel*> modelsSkyPass2;
+    static std::vector<TexturedModel*> modelsSkyTransparent;
 
     Dummy* skyPass2 = nullptr;
     Dummy* skyTransparent = nullptr;
@@ -22,7 +22,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

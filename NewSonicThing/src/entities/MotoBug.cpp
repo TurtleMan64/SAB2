@@ -20,7 +20,7 @@
 #include <iostream>
 #include <cmath>
 
-std::list<TexturedModel*> MotoBug::models;
+std::vector<TexturedModel*> MotoBug::models;
 
 MotoBug::MotoBug()
 {
@@ -338,7 +338,7 @@ void MotoBug::applyFriction(float /*frictionToApply*/)
     zVel = 0;
 }
 
-std::list<TexturedModel*>* MotoBug::getModels()
+std::vector<TexturedModel*>* MotoBug::getModels()
 {
     return &MotoBug::models;
 }

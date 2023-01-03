@@ -12,7 +12,7 @@
 #include "../../particles/particle.hpp"
 #include "../../particles/particlemaster.hpp"
 
-std::list<TexturedModel*> DL_Pot::models;
+std::vector<TexturedModel*> DL_Pot::models;
 CollisionModel* DL_Pot::cmOriginal = nullptr;
 
 DL_Pot::DL_Pot(float x, float y, float z, float rot)
@@ -79,7 +79,7 @@ void DL_Pot::step()
     }
 }
 
-std::list<TexturedModel*>* DL_Pot::getModels()
+std::vector<TexturedModel*>* DL_Pot::getModels()
 {
     return &DL_Pot::models;
 }

@@ -9,9 +9,9 @@
 #include "../controllableplayer.hpp"
 #include "../../audio/audioplayer.hpp"
 
-std::list<TexturedModel*> SH_RisingPlatform::modelsSmall;
-std::list<TexturedModel*> SH_RisingPlatform::modelsMedium;
-std::list<TexturedModel*> SH_RisingPlatform::modelsLarge;
+std::vector<TexturedModel*> SH_RisingPlatform::modelsSmall;
+std::vector<TexturedModel*> SH_RisingPlatform::modelsMedium;
+std::vector<TexturedModel*> SH_RisingPlatform::modelsLarge;
 CollisionModel* SH_RisingPlatform::cmSmallOriginal = nullptr;
 CollisionModel* SH_RisingPlatform::cmMediumOriginal = nullptr;
 CollisionModel* SH_RisingPlatform::cmLargeOriginal = nullptr;
@@ -84,7 +84,7 @@ void SH_RisingPlatform::step()
     }
 }
 
-std::list<TexturedModel*>* SH_RisingPlatform::getModels()
+std::vector<TexturedModel*>* SH_RisingPlatform::getModels()
 {
     switch (type)
     {

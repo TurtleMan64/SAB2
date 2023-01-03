@@ -16,7 +16,7 @@ class Dummy;
 class ManiaMightyModel : public PlayerModel
 {
 private:
-    std::list<TexturedModel*>* models;
+    std::vector<TexturedModel*>* models;
 
     const float displayHeightOffset = 0.63f;
     const float displayBallOffset = 3.0f;
@@ -38,61 +38,61 @@ private:
 
     Dummy* flyPropeller = nullptr;
 
-    static std::list<TexturedModel*> modelBody;
-    static std::list<TexturedModel*> modelHead;
-    static std::list<TexturedModel*> modelLeftHumerus;
-    static std::list<TexturedModel*> modelLeftForearm;
-    static std::list<TexturedModel*> modelLeftHand;
-    static std::list<TexturedModel*> modelLeftThigh;
-    static std::list<TexturedModel*> modelLeftShin;
-    static std::list<TexturedModel*> modelLeftFoot;
-    static std::list<TexturedModel*> modelRightHumerus;
-    static std::list<TexturedModel*> modelRightForearm;
-    static std::list<TexturedModel*> modelRightHand;
-    static std::list<TexturedModel*> modelRightThigh;
-    static std::list<TexturedModel*> modelRightShin;
-    static std::list<TexturedModel*> modelRightFoot;
+    static std::vector<TexturedModel*> modelBody;
+    static std::vector<TexturedModel*> modelHead;
+    static std::vector<TexturedModel*> modelLeftHumerus;
+    static std::vector<TexturedModel*> modelLeftForearm;
+    static std::vector<TexturedModel*> modelLeftHand;
+    static std::vector<TexturedModel*> modelLeftThigh;
+    static std::vector<TexturedModel*> modelLeftShin;
+    static std::vector<TexturedModel*> modelLeftFoot;
+    static std::vector<TexturedModel*> modelRightHumerus;
+    static std::vector<TexturedModel*> modelRightForearm;
+    static std::vector<TexturedModel*> modelRightHand;
+    static std::vector<TexturedModel*> modelRightThigh;
+    static std::vector<TexturedModel*> modelRightShin;
+    static std::vector<TexturedModel*> modelRightFoot;
 
-    static std::list<TexturedModel*> modelDash0;
-    static std::list<TexturedModel*> modelDash1;
-    static std::list<TexturedModel*> modelDash2;
-    static std::list<TexturedModel*> modelDash3;
-    static std::list<TexturedModel*> modelDash4;
-    static std::list<TexturedModel*> modelDash5;
-    static std::list<TexturedModel*> modelDash6;
-    static std::list<TexturedModel*> modelDash7;
-    static std::list<TexturedModel*> modelDash8;
-    static std::list<TexturedModel*> modelDash9;
-    static std::list<TexturedModel*> modelDash10;
-    static std::list<TexturedModel*> modelDash11;
-    static std::list<TexturedModel*> modelJump;
-    static std::list<TexturedModel*> modelJog0;
-    static std::list<TexturedModel*> modelJog1;
-    static std::list<TexturedModel*> modelJog2;
-    static std::list<TexturedModel*> modelJog3;
-    static std::list<TexturedModel*> modelJog4;
-    static std::list<TexturedModel*> modelJog5;
-    static std::list<TexturedModel*> modelJog6;
-    static std::list<TexturedModel*> modelJog7;
-    static std::list<TexturedModel*> modelJog8;
-    static std::list<TexturedModel*> modelJog9;
-    static std::list<TexturedModel*> modelJog10;
-    static std::list<TexturedModel*> modelJog11;
-    static std::list<TexturedModel*> modelJog12;
-    static std::list<TexturedModel*> modelJog13;
-    static std::list<TexturedModel*> modelJog14;
-    static std::list<TexturedModel*> modelJog15;
-    static std::list<TexturedModel*> modelJog16;
-    static std::list<TexturedModel*> modelJog17;
-    static std::list<TexturedModel*> modelGrind;
-    static std::list<TexturedModel*> modelSkid;
-    static std::list<TexturedModel*> modelLightdash;
-    static std::list<TexturedModel*> modelFreefall;
-    static std::list<TexturedModel*> modelStomp;
-    static std::list<TexturedModel*> modelGrab;
-    static std::list<TexturedModel*> modelFlyBody;
-    static std::list<TexturedModel*> modelFlyBodyTired;
-    static std::list<TexturedModel*> modelFlyPropeller;
+    static std::vector<TexturedModel*> modelDash0;
+    static std::vector<TexturedModel*> modelDash1;
+    static std::vector<TexturedModel*> modelDash2;
+    static std::vector<TexturedModel*> modelDash3;
+    static std::vector<TexturedModel*> modelDash4;
+    static std::vector<TexturedModel*> modelDash5;
+    static std::vector<TexturedModel*> modelDash6;
+    static std::vector<TexturedModel*> modelDash7;
+    static std::vector<TexturedModel*> modelDash8;
+    static std::vector<TexturedModel*> modelDash9;
+    static std::vector<TexturedModel*> modelDash10;
+    static std::vector<TexturedModel*> modelDash11;
+    static std::vector<TexturedModel*> modelJump;
+    static std::vector<TexturedModel*> modelJog0;
+    static std::vector<TexturedModel*> modelJog1;
+    static std::vector<TexturedModel*> modelJog2;
+    static std::vector<TexturedModel*> modelJog3;
+    static std::vector<TexturedModel*> modelJog4;
+    static std::vector<TexturedModel*> modelJog5;
+    static std::vector<TexturedModel*> modelJog6;
+    static std::vector<TexturedModel*> modelJog7;
+    static std::vector<TexturedModel*> modelJog8;
+    static std::vector<TexturedModel*> modelJog9;
+    static std::vector<TexturedModel*> modelJog10;
+    static std::vector<TexturedModel*> modelJog11;
+    static std::vector<TexturedModel*> modelJog12;
+    static std::vector<TexturedModel*> modelJog13;
+    static std::vector<TexturedModel*> modelJog14;
+    static std::vector<TexturedModel*> modelJog15;
+    static std::vector<TexturedModel*> modelJog16;
+    static std::vector<TexturedModel*> modelJog17;
+    static std::vector<TexturedModel*> modelGrind;
+    static std::vector<TexturedModel*> modelSkid;
+    static std::vector<TexturedModel*> modelLightdash;
+    static std::vector<TexturedModel*> modelFreefall;
+    static std::vector<TexturedModel*> modelStomp;
+    static std::vector<TexturedModel*> modelGrab;
+    static std::vector<TexturedModel*> modelFlyBody;
+    static std::vector<TexturedModel*> modelFlyBodyTired;
+    static std::vector<TexturedModel*> modelFlyPropeller;
 
     void setLimbsVisibility(bool newVisible);
 
@@ -125,7 +125,7 @@ public:
 
     ParticleTexture* getBallTexture();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

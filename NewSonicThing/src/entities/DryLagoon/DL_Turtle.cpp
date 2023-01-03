@@ -19,7 +19,7 @@
 #include <list>
 #include <iostream>
 
-std::list<TexturedModel*> DL_Turtle::models;
+std::vector<TexturedModel*> DL_Turtle::models;
 CollisionModel* DL_Turtle::cmOriginal;
 
 DL_Turtle::DL_Turtle()
@@ -88,7 +88,7 @@ void DL_Turtle::step()
     }
 }
 
-std::list<TexturedModel*>* DL_Turtle::getModels()
+std::vector<TexturedModel*>* DL_Turtle::getModels()
 {
     return &DL_Turtle::models;
 }

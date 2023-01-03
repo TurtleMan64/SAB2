@@ -10,9 +10,9 @@ class Dummy;
 class E1000 : public Entity
 {
 private:
-    static std::list<TexturedModel*> modelsBody;
-    static std::list<TexturedModel*> modelsGun;
-    static std::list<TexturedModel*> modelsBullet;
+    static std::vector<TexturedModel*> modelsBody;
+    static std::vector<TexturedModel*> modelsGun;
+    static std::vector<TexturedModel*> modelsBullet;
     
     const float activationRange = 220.0f;
     const float lookSpeed = 5.0f;
@@ -50,7 +50,7 @@ public:
 
     void die();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

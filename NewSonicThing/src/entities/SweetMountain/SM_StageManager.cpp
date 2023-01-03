@@ -7,13 +7,13 @@
 #include "../../loading/modelloader.hpp"
 #include "../camera.hpp"
 
-std::list<TexturedModel*> SM_StageManager::modelsSky0;
-std::list<TexturedModel*> SM_StageManager::modelsSky1;
-std::list<TexturedModel*> SM_StageManager::modelsSky2;
-std::list<TexturedModel*> SM_StageManager::modelsSky3;
-std::list<TexturedModel*> SM_StageManager::modelsSky4;
-std::list<TexturedModel*> SM_StageManager::modelsSky5;
-std::list<TexturedModel*> SM_StageManager::modelsSky6;
+std::vector<TexturedModel*> SM_StageManager::modelsSky0;
+std::vector<TexturedModel*> SM_StageManager::modelsSky1;
+std::vector<TexturedModel*> SM_StageManager::modelsSky2;
+std::vector<TexturedModel*> SM_StageManager::modelsSky3;
+std::vector<TexturedModel*> SM_StageManager::modelsSky4;
+std::vector<TexturedModel*> SM_StageManager::modelsSky5;
+std::vector<TexturedModel*> SM_StageManager::modelsSky6;
 
 SM_StageManager::SM_StageManager()
 {
@@ -71,7 +71,7 @@ void SM_StageManager::step()
     sky5->updateTransformationMatrix();
 }
 
-std::list<TexturedModel*>* SM_StageManager::getModels()
+std::vector<TexturedModel*>* SM_StageManager::getModels()
 {
     return &SM_StageManager::modelsSky0;
 }

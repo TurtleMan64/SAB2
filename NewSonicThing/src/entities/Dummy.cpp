@@ -3,7 +3,7 @@
 #include "../toolbox/vector.hpp"
 #include "dummy.hpp"
 
-Dummy::Dummy(std::list<TexturedModel*>* models)
+Dummy::Dummy(std::vector<TexturedModel*>* models)
 {
     myModels = models;
     scale = 1;
@@ -23,12 +23,12 @@ void Dummy::setRotation(float xr, float yr, float zr, float sr)
     rotRoll = sr;
 }
 
-std::list<TexturedModel*>* Dummy::getModels()
+std::vector<TexturedModel*>* Dummy::getModels()
 {
     return myModels;
 }
 
-void Dummy::setModels(std::list<TexturedModel*>* newModels)
+void Dummy::setModels(std::vector<TexturedModel*>* newModels)
 {
     myModels = newModels;
 }

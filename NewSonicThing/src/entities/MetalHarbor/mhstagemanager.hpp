@@ -9,7 +9,7 @@ class TexturedModel;
 class MH_StageManager : public Entity
 {
 private:
-    static std::list<TexturedModel*> modelsSkydome;
+    static std::vector<TexturedModel*> modelsSkydome;
     float timer;
     bool playedBGM;
 
@@ -18,7 +18,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

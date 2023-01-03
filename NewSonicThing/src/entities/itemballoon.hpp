@@ -10,7 +10,7 @@ class TexturedModel;
 class ItemBalloon : public Entity
 {
 private:
-    static std::list<TexturedModel*> models;
+    static std::vector<TexturedModel*> models;
 
     static constexpr float BOMB_RADIUS = 400.0f;
 
@@ -24,7 +24,7 @@ public:
 
     void die();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

@@ -167,7 +167,7 @@ void RingMoving::step()
     }
 }
 
-std::list<TexturedModel*>* RingMoving::getModels()
+std::vector<TexturedModel*>* RingMoving::getModels()
 {
     return &Ring::models;
 }

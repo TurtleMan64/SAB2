@@ -21,8 +21,8 @@
 #include <iostream>
 #include <cmath>
 
-std::list<TexturedModel*> Hunter::modelsBody;
-std::list<TexturedModel*> Hunter::modelsGun;
+std::vector<TexturedModel*> Hunter::modelsBody;
+std::vector<TexturedModel*> Hunter::modelsGun;
 
 Hunter::Hunter()
 {
@@ -202,7 +202,7 @@ void Hunter::die()
     Global::gameScore += 100;
 }
 
-std::list<TexturedModel*>* Hunter::getModels()
+std::vector<TexturedModel*>* Hunter::getModels()
 {
     return &Hunter::modelsBody;
 }

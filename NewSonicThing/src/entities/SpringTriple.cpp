@@ -15,7 +15,7 @@
 #include <iostream>
 #include <cmath>
 
-std::list<TexturedModel*> SpringTriple::models;
+std::vector<TexturedModel*> SpringTriple::models;
 
 SpringTriple::SpringTriple()
 {
@@ -84,7 +84,7 @@ void SpringTriple::step()
     }
 }
 
-std::list<TexturedModel*>* SpringTriple::getModels()
+std::vector<TexturedModel*>* SpringTriple::getModels()
 {
     return &SpringTriple::models;
 }

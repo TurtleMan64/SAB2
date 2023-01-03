@@ -11,7 +11,7 @@ class ShieldGreen;
 class ShieldMagnet;
 class GuiImage;
 
-#include <list>
+#include <unordered_set>
 #include <vector>
 #include "entity.hpp"
 #include "controllableplayer.hpp"
@@ -172,6 +172,9 @@ private:
 
     int combo = 0;
 
+    // Entities that are nearby
+    std::vector<std::unordered_set<Entity*>*> nearbyEntities;
+
     //animation variables
     float animationTime = 0.0f;
     Vector3f centerPosPrev;
@@ -293,7 +296,7 @@ public:
 
     void setRelativeUp(Vector3f* newUp);
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     void loadVehicleInfo();
 

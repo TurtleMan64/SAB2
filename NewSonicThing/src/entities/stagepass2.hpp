@@ -10,7 +10,7 @@ class TexturedModel;
 class StagePass2 : public Entity
 {
 private:
-    static std::list<TexturedModel*> models;
+    static std::vector<TexturedModel*> models;
 
 public:
     StagePass2();
@@ -18,7 +18,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void deleteStaticModels();
 };

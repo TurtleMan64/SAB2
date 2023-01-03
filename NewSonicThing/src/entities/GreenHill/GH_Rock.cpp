@@ -12,7 +12,7 @@
 #include <list>
 #include <iostream>
 
-std::list<TexturedModel*> GH_Rock::models;
+std::vector<TexturedModel*> GH_Rock::models;
 CollisionModel* GH_Rock::cmOriginal = nullptr;
 
 GH_Rock::GH_Rock()
@@ -45,7 +45,7 @@ void GH_Rock::step()
 
 }
 
-std::list<TexturedModel*>* GH_Rock::getModels()
+std::vector<TexturedModel*>* GH_Rock::getModels()
 {
     return &GH_Rock::models;
 }

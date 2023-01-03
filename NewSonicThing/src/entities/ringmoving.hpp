@@ -23,7 +23,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     inline bool canLightdashOn() const;
 };

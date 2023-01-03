@@ -18,7 +18,7 @@
 #include <iostream>
 #include <cmath>
 
-std::list<TexturedModel*> EC_Orca::models;
+std::vector<TexturedModel*> EC_Orca::models;
 
 EC_Orca::EC_Orca()
 {
@@ -186,7 +186,7 @@ void EC_Orca::step()
     }
 }
 
-std::list<TexturedModel*>* EC_Orca::getModels()
+std::vector<TexturedModel*>* EC_Orca::getModels()
 {
     return &EC_Orca::models;
 }

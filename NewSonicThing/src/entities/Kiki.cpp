@@ -20,8 +20,8 @@
 #include <iostream>
 #include <cmath>
 
-std::list<TexturedModel*> Kiki::models;
-std::list<TexturedModel*> Kiki::modelsArm;
+std::vector<TexturedModel*> Kiki::models;
+std::vector<TexturedModel*> Kiki::modelsArm;
 
 Kiki::Kiki()
 {
@@ -188,7 +188,7 @@ void Kiki::die()
     Global::gameScore += 100;
 }
 
-std::list<TexturedModel*>* Kiki::getModels()
+std::vector<TexturedModel*>* Kiki::getModels()
 {
     return &Kiki::models;
 }

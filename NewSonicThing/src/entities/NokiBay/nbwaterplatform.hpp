@@ -10,7 +10,7 @@ class TexturedModel;
 class NB_WaterPlatform : public CollideableObject
 {
 private:
-    static std::list<TexturedModel*> models;
+    static std::vector<TexturedModel*> models;
     static CollisionModel* cmOriginal;
 
 public:
@@ -19,7 +19,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

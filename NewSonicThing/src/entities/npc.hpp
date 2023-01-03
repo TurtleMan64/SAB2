@@ -12,8 +12,8 @@ class Dummy;
 class NPC : public Entity
 {
 private:
-    static std::list<TexturedModel*> models;
-    static std::list<TexturedModel*> modelsGlasses;
+    static std::vector<TexturedModel*> models;
+    static std::vector<TexturedModel*> modelsGlasses;
     static GUIText* messageGUI1;
     static GUIText* messageGUI2;
 
@@ -30,7 +30,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

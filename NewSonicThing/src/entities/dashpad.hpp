@@ -10,7 +10,7 @@ class TexturedModel;
 class Dashpad : public Entity
 {
 private:
-    static std::list<TexturedModel*> models;
+    static std::vector<TexturedModel*> models;
     bool playerIsIn = false;
     float power = 100.0f;
     float controlLockTime = 1.0f;
@@ -28,7 +28,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

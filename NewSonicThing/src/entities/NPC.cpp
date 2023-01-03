@@ -20,8 +20,8 @@
 #include <cstring>
 #include <string>
 
-std::list<TexturedModel*> NPC::models;
-std::list<TexturedModel*> NPC::modelsGlasses;
+std::vector<TexturedModel*> NPC::models;
+std::vector<TexturedModel*> NPC::modelsGlasses;
 GUIText* NPC::messageGUI1 = nullptr;
 GUIText* NPC::messageGUI2 = nullptr;
 
@@ -167,7 +167,7 @@ void NPC::step()
     }
 }
 
-std::list<TexturedModel*>* NPC::getModels()
+std::vector<TexturedModel*>* NPC::getModels()
 {
     return &NPC::models;
 }

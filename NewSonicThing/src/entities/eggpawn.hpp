@@ -9,8 +9,8 @@ class TexturedModel;
 class EggPawn : public Entity
 {
 private:
-    static std::list<TexturedModel*> modelsStand;
-    static std::vector<std::list<TexturedModel*>> modelsWalk;
+    static std::vector<TexturedModel*> modelsStand;
+    static std::vector<std::vector<TexturedModel*>> modelsWalk;
     
     static constexpr float centerHeight = 12.7f;
     static constexpr float collisionRadiusPawn = 24.0f;
@@ -34,7 +34,7 @@ public:
 
     void die();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

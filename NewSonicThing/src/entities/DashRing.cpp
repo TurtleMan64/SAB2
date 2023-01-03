@@ -16,8 +16,8 @@
 #include <iostream>
 #include <cmath>
 
-std::list<TexturedModel*> DashRing::modelsDash;
-std::list<TexturedModel*> DashRing::modelsRainbow;
+std::vector<TexturedModel*> DashRing::modelsDash;
+std::vector<TexturedModel*> DashRing::modelsRainbow;
 
 DashRing::DashRing()
 {
@@ -123,7 +123,7 @@ void DashRing::step()
     }
 }
 
-std::list<TexturedModel*>* DashRing::getModels()
+std::vector<TexturedModel*>* DashRing::getModels()
 {
     if (isRainbow)
     {

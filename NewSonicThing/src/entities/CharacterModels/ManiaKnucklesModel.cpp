@@ -18,55 +18,55 @@
 #include <iostream>
 #include <cmath>
 
-std::list<TexturedModel*> ManiaKnucklesModel::modelBody;
-std::list<TexturedModel*> ManiaKnucklesModel::modelHead;
-std::list<TexturedModel*> ManiaKnucklesModel::modelLeftHumerus;
-std::list<TexturedModel*> ManiaKnucklesModel::modelLeftForearm;
-std::list<TexturedModel*> ManiaKnucklesModel::modelLeftHand;
-std::list<TexturedModel*> ManiaKnucklesModel::modelLeftThigh;
-std::list<TexturedModel*> ManiaKnucklesModel::modelLeftShin;
-std::list<TexturedModel*> ManiaKnucklesModel::modelLeftFoot;
-std::list<TexturedModel*> ManiaKnucklesModel::modelRightHumerus;
-std::list<TexturedModel*> ManiaKnucklesModel::modelRightForearm;
-std::list<TexturedModel*> ManiaKnucklesModel::modelRightHand;
-std::list<TexturedModel*> ManiaKnucklesModel::modelRightThigh;
-std::list<TexturedModel*> ManiaKnucklesModel::modelRightShin;
-std::list<TexturedModel*> ManiaKnucklesModel::modelRightFoot;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelBody;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelHead;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelLeftHumerus;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelLeftForearm;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelLeftHand;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelLeftThigh;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelLeftShin;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelLeftFoot;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelRightHumerus;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelRightForearm;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelRightHand;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelRightThigh;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelRightShin;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelRightFoot;
 
-std::list<TexturedModel*> ManiaKnucklesModel::modelDash0;
-std::list<TexturedModel*> ManiaKnucklesModel::modelDash1;
-std::list<TexturedModel*> ManiaKnucklesModel::modelDash2;
-std::list<TexturedModel*> ManiaKnucklesModel::modelDash3;
-std::list<TexturedModel*> ManiaKnucklesModel::modelDash4;
-std::list<TexturedModel*> ManiaKnucklesModel::modelDash5;
-std::list<TexturedModel*> ManiaKnucklesModel::modelDash6;
-std::list<TexturedModel*> ManiaKnucklesModel::modelDash7;
-std::list<TexturedModel*> ManiaKnucklesModel::modelDash8;
-std::list<TexturedModel*> ManiaKnucklesModel::modelDash9;
-std::list<TexturedModel*> ManiaKnucklesModel::modelDash10;
-std::list<TexturedModel*> ManiaKnucklesModel::modelDash11;
-std::list<TexturedModel*> ManiaKnucklesModel::modelJump;
-std::list<TexturedModel*> ManiaKnucklesModel::modelJog0;
-std::list<TexturedModel*> ManiaKnucklesModel::modelJog1;
-std::list<TexturedModel*> ManiaKnucklesModel::modelJog2;
-std::list<TexturedModel*> ManiaKnucklesModel::modelJog3;
-std::list<TexturedModel*> ManiaKnucklesModel::modelJog4;
-std::list<TexturedModel*> ManiaKnucklesModel::modelJog5;
-std::list<TexturedModel*> ManiaKnucklesModel::modelJog6;
-std::list<TexturedModel*> ManiaKnucklesModel::modelJog7;
-std::list<TexturedModel*> ManiaKnucklesModel::modelJog8;
-std::list<TexturedModel*> ManiaKnucklesModel::modelJog9;
-std::list<TexturedModel*> ManiaKnucklesModel::modelJog10;
-std::list<TexturedModel*> ManiaKnucklesModel::modelJog11;
-std::list<TexturedModel*> ManiaKnucklesModel::modelJog12;
-std::list<TexturedModel*> ManiaKnucklesModel::modelJog13;
-std::list<TexturedModel*> ManiaKnucklesModel::modelJog14;
-std::list<TexturedModel*> ManiaKnucklesModel::modelJog15;
-std::list<TexturedModel*> ManiaKnucklesModel::modelJog16;
-std::list<TexturedModel*> ManiaKnucklesModel::modelJog17;
-std::list<TexturedModel*> ManiaKnucklesModel::modelGrind;
-std::list<TexturedModel*> ManiaKnucklesModel::modelStomp;
-std::list<TexturedModel*> ManiaKnucklesModel::modelGrab;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelDash0;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelDash1;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelDash2;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelDash3;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelDash4;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelDash5;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelDash6;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelDash7;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelDash8;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelDash9;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelDash10;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelDash11;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelJump;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelJog0;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelJog1;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelJog2;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelJog3;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelJog4;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelJog5;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelJog6;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelJog7;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelJog8;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelJog9;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelJog10;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelJog11;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelJog12;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelJog13;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelJog14;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelJog15;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelJog16;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelJog17;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelGrind;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelStomp;
+std::vector<TexturedModel*> ManiaKnucklesModel::modelGrab;
 
 ManiaKnucklesModel::ManiaKnucklesModel()
 {
@@ -449,7 +449,7 @@ void ManiaKnucklesModel::setBaseVisibility(bool newVisible)
     baseVisible = newVisible;
 }
 
-std::list<TexturedModel*>* ManiaKnucklesModel::getModels()
+std::vector<TexturedModel*>* ManiaKnucklesModel::getModels()
 {
     return models;
 }

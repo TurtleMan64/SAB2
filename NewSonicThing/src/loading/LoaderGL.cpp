@@ -328,7 +328,7 @@ void LoaderGL::deleteTexture(GLuint texId)
     }
 }
 
-void LoaderGL::deleteTexturedModels(std::list<TexturedModel*>* tm)
+void LoaderGL::deleteTexturedModels(std::vector<TexturedModel*>* tm)
 {
     for (auto model : (*tm))
     {

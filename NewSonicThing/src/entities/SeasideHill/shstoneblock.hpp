@@ -12,19 +12,19 @@ class Dummy;
 class SH_StoneBlock : public CollideableObject
 {
 private:
-    static std::list<TexturedModel*> models;
-    static std::list<TexturedModel*> modelsP1;
-    static std::list<TexturedModel*> modelsP2;
-    static std::list<TexturedModel*> modelsP3;
-    static std::list<TexturedModel*> modelsP4;
-    static std::list<TexturedModel*> modelsP5;
-    static std::list<TexturedModel*> modelsP6;
-    static std::list<TexturedModel*> modelsP7;
-    static std::list<TexturedModel*> modelsP8;
-    static std::list<TexturedModel*> modelsP9;
-    static std::list<TexturedModel*> modelsP10;
-    static std::list<TexturedModel*> modelsP11;
-    static std::list<TexturedModel*> modelsP12;
+    static std::vector<TexturedModel*> models;
+    static std::vector<TexturedModel*> modelsP1;
+    static std::vector<TexturedModel*> modelsP2;
+    static std::vector<TexturedModel*> modelsP3;
+    static std::vector<TexturedModel*> modelsP4;
+    static std::vector<TexturedModel*> modelsP5;
+    static std::vector<TexturedModel*> modelsP6;
+    static std::vector<TexturedModel*> modelsP7;
+    static std::vector<TexturedModel*> modelsP8;
+    static std::vector<TexturedModel*> modelsP9;
+    static std::vector<TexturedModel*> modelsP10;
+    static std::vector<TexturedModel*> modelsP11;
+    static std::vector<TexturedModel*> modelsP12;
 
     static CollisionModel* cmOriginal;
 
@@ -37,7 +37,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

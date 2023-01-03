@@ -43,7 +43,7 @@ void ShieldGreen::step()
     }
 }
 
-std::list<TexturedModel*>* ShieldGreen::getModels()
+std::vector<TexturedModel*>* ShieldGreen::getModels()
 {
     return nullptr;
 }

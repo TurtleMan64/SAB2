@@ -10,7 +10,7 @@ class Source;
 class GoalRing : public Entity
 {
 private:
-    static std::list<TexturedModel*> models;
+    static std::vector<TexturedModel*> models;
 
     Source* sourceRing = nullptr;
 
@@ -21,7 +21,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

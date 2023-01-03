@@ -29,16 +29,23 @@ void EntityRenderer::renderNEW(std::unordered_map<TexturedModel*, std::vector<En
 
     for (auto it = entitiesMap->cbegin(); it != entitiesMap->cend(); it++)
     {
-        prepareTexturedModel(it->first);
-        std::vector<Entity*>* entityList = &(it._Ptr->_Myval.second);
+        std::vector<Entity*>* entitiesToRender = &(it._Ptr->_Myval.second);
+        const int numEntitiesToRender = (int)entitiesToRender->size();
 
-        const int size = (int)entityList->size();
-        for (int i = 0; i < size; i++)
+        if (numEntitiesToRender == 0)
         {
-            Entity* entity = entityList->at(i);
+            continue;
+        }
+
+        prepareTexturedModel(it->first);
+
+        for (int i = 0; i < numEntitiesToRender; i++)
+        {
+            Entity* entity = entitiesToRender->at(i);
             prepareInstance(entity);
             glDrawElements(GL_TRIANGLES, (it->first)->getRawModel()->getVertexCount(), GL_UNSIGNED_INT, 0);
         }
+
         unbindTexturedModel();
     }
 }
@@ -103,17 +110,18 @@ void EntityRenderer::render(Entity* entity)
 
     prepareInstance(entity);
 
-    std::list<TexturedModel*>* models = entity->getModels();
+    std::vector<TexturedModel*>* models = entity->getModels();
 
-    for (auto it = models->cbegin(); it != models->cend(); it++)
+    const int numModels = (int)models->size();
+    for (int i = 0; i < numModels; i++)
     {
-        TexturedModel* texturedModel = it._Ptr->_Myval;
+        TexturedModel* modelTextured = models->at(i);
 
-        RawModel* model = texturedModel->getRawModel();
+        RawModel* modelRaw = modelTextured->getRawModel();
 
-        prepareTexturedModel(texturedModel);
+        prepareTexturedModel(modelTextured);
 
-        glDrawElements(GL_TRIANGLES, model->getVertexCount(), GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, modelRaw->getVertexCount(), GL_UNSIGNED_INT, 0);
 
         unbindTexturedModel();
     }

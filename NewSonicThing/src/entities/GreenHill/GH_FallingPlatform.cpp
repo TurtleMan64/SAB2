@@ -13,7 +13,7 @@
 #include <list>
 #include <iostream>
 
-std::list<TexturedModel*> GH_FallingPlatform::models;
+std::vector<TexturedModel*> GH_FallingPlatform::models;
 CollisionModel* GH_FallingPlatform::cmOriginal = nullptr;
 
 GH_FallingPlatform::GH_FallingPlatform()
@@ -78,7 +78,7 @@ void GH_FallingPlatform::step()
     }
 }
 
-std::list<TexturedModel*>* GH_FallingPlatform::getModels()
+std::vector<TexturedModel*>* GH_FallingPlatform::getModels()
 {
     return &GH_FallingPlatform::models;
 }

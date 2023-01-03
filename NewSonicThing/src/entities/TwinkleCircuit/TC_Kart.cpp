@@ -29,11 +29,11 @@
 #include "../controllableplayer.hpp"
 #include "../dummy.hpp"
 
-std::list<TexturedModel*> TC_Kart::models;
+std::vector<TexturedModel*> TC_Kart::models;
 std::list<EngineExhaust> TC_Kart::exhausts;
 MachineStats TC_Kart::machineBaseStats;
 
-std::list<TexturedModel*> TC_Kart::modelsEngine;
+std::vector<TexturedModel*> TC_Kart::modelsEngine;
 
 extern float dt;
 
@@ -1576,7 +1576,7 @@ void TC_Kart::setInputs()
     }
 }
 
-std::list<TexturedModel*>* TC_Kart::getModels()
+std::vector<TexturedModel*>* TC_Kart::getModels()
 {
     return &TC_Kart::models;
 }

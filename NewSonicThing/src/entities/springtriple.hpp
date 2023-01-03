@@ -11,7 +11,7 @@ class TexturedModel;
 class SpringTriple : public Entity
 {
 public:
-    static std::list<TexturedModel*> models;
+    static std::vector<TexturedModel*> models;
 
     float springPower;
     float cooldownTimer;
@@ -31,7 +31,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

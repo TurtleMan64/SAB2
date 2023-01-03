@@ -20,7 +20,7 @@
 #include <list>
 #include <iostream>
 
-std::list<TexturedModel*> HintMonitor::models;
+std::vector<TexturedModel*> HintMonitor::models;
 
 HintMonitor::HintMonitor()
 {
@@ -143,7 +143,7 @@ void HintMonitor::step()
     }
 }
 
-std::list<TexturedModel*>* HintMonitor::getModels()
+std::vector<TexturedModel*>* HintMonitor::getModels()
 {
     return &HintMonitor::models;
 }

@@ -8,7 +8,7 @@
 #include "../collision/collisionmodel.hpp"
 #include "../models/models.hpp"
 
-#include <list>
+#include <vector>
 #include <iostream>
 #include <string>
 
@@ -94,7 +94,7 @@ void Entity::increaseRotation(float dx, float dy, float dz)
     rotZ += dz;
 }
 
-std::list<TexturedModel*>* Entity::getModels()
+std::vector<TexturedModel*>* Entity::getModels()
 {
     return nullptr;
 }
@@ -126,7 +126,7 @@ void Entity::setBaseColor(float red, float green, float blue)
     baseColor.set(red, green, blue);
 }
 
-void Entity::setModelsRenderOrder(std::list<TexturedModel*>* models, char newOrder)
+void Entity::setModelsRenderOrder(std::vector<TexturedModel*>* models, char newOrder)
 {
     for (TexturedModel* model : (*models))
     {
@@ -169,11 +169,12 @@ Vector3f Entity::getHomingCenter() const
     return Vector3f(0,0,0);
 }
 
-void Entity::deleteModels(std::list<TexturedModel*>* modelsToDelete)
+void Entity::deleteModels(std::vector<TexturedModel*>* modelsToDelete)
 {
-    for (auto it = modelsToDelete->begin(); it != modelsToDelete->end(); it++)
+    const int numModels = (int)modelsToDelete->size();
+    for (int i = 0; i < numModels; i++)
     {
-        TexturedModel* model = it._Ptr->_Myval;
+        TexturedModel* model = modelsToDelete->at(i);
         model->deleteMe();
         delete model; INCR_DEL("TexturedModel");
     }

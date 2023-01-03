@@ -11,7 +11,7 @@
 #include "../controllableplayer.hpp"
 #include "tckart.hpp"
 
-std::list<TexturedModel*> TC_Dash::models;
+std::vector<TexturedModel*> TC_Dash::models;
 
 TC_Dash::TC_Dash()
 {
@@ -73,7 +73,7 @@ void TC_Dash::step()
     }
 }
 
-std::list<TexturedModel*>* TC_Dash::getModels()
+std::vector<TexturedModel*>* TC_Dash::getModels()
 {
     return &TC_Dash::models;
 }

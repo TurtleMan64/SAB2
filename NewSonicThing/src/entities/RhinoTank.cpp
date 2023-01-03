@@ -20,7 +20,7 @@
 #include <iostream>
 #include <cmath>
 
-std::list<TexturedModel*> RhinoTank::models;
+std::vector<TexturedModel*> RhinoTank::models;
 
 RhinoTank::RhinoTank()
 {
@@ -337,7 +337,7 @@ void RhinoTank::applyFriction(float /*frictionToApply*/)
     zVel = 0;
 }
 
-std::list<TexturedModel*>* RhinoTank::getModels()
+std::vector<TexturedModel*>* RhinoTank::getModels()
 {
     return &RhinoTank::models;
 }

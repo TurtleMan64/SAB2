@@ -9,9 +9,9 @@
 #include "../../collision/collisionchecker.hpp"
 #include "../../animation/body.hpp"
 
-std::list<TexturedModel*> PC_StaticObjects::models;
-std::list<TexturedModel*> PC_StaticObjects::modelsVertexColors;
-std::list<TexturedModel*> PC_StaticObjects::modelsTransparent;
+std::vector<TexturedModel*> PC_StaticObjects::models;
+std::vector<TexturedModel*> PC_StaticObjects::modelsVertexColors;
+std::vector<TexturedModel*> PC_StaticObjects::modelsTransparent;
 CollisionModel* PC_StaticObjects::cmOriginal;
 
 PC_StaticObjects::PC_StaticObjects()
@@ -41,7 +41,7 @@ PC_StaticObjects::PC_StaticObjects()
 
 void PC_StaticObjects::step() {}
 
-std::list<TexturedModel*>* PC_StaticObjects::getModels()
+std::vector<TexturedModel*>* PC_StaticObjects::getModels()
 {
     return &PC_StaticObjects::models;
 }

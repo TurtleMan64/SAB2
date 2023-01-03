@@ -10,8 +10,8 @@ class Dummy;
 class Kiki : public Entity
 {
 private:
-    static std::list<TexturedModel*> models;
-    static std::list<TexturedModel*> modelsArm;
+    static std::vector<TexturedModel*> models;
+    static std::vector<TexturedModel*> modelsArm;
     
     const float activationRange = 140.0f;
     const float lookSpeed = 2.0f;
@@ -37,7 +37,7 @@ public:
 
     void die();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

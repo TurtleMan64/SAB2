@@ -13,7 +13,7 @@ class CollisionModel;
 class DL_DigTeleport : public CollideableObject
 {
 private:
-    static std::list<TexturedModel*> models;
+    static std::vector<TexturedModel*> models;
     static CollisionModel* cmOriginal;
 
     float prevDiggTimer = 0.0f;
@@ -30,7 +30,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

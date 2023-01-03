@@ -13,7 +13,7 @@
 #include <iostream>
 #include <string>
 
-std::list<TexturedModel*> SkySphere::models;
+std::vector<TexturedModel*> SkySphere::models;
 
 SkySphere::SkySphere()
 {
@@ -47,7 +47,7 @@ bool SkySphere::getFollowsY()
     return followsY;
 }
 
-std::list<TexturedModel*>* SkySphere::getModels()
+std::vector<TexturedModel*>* SkySphere::getModels()
 {
     return &SkySphere::models;
 }

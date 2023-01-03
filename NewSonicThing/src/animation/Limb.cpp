@@ -7,7 +7,7 @@
 
 
 
-Limb::Limb(std::list<TexturedModel*>* models, float pivotX, float pivotY, float pivotZ, Body* body, Limb* limb)
+Limb::Limb(std::vector<TexturedModel*>* models, float pivotX, float pivotY, float pivotZ, Body* body, Limb* limb)
 {
     myModels = models;
     this->pivotX = pivotX;
@@ -159,7 +159,7 @@ void Limb::update(float time)
     }
 }
 
-std::list<TexturedModel*>* Limb::getModels()
+std::vector<TexturedModel*>* Limb::getModels()
 {
     return myModels;
 }

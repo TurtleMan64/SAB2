@@ -11,7 +11,7 @@ class GUIText;
 class Help : public Entity
 {
 private:
-    static std::list<TexturedModel*> models;
+    static std::vector<TexturedModel*> models;
     static GUIText* messageGUI1;
     static GUIText* messageGUI2;
 
@@ -25,7 +25,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

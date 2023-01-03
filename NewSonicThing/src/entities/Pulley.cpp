@@ -15,9 +15,9 @@
 
 extern float dt;
 
-std::list<TexturedModel*> Pulley::modelsHandle;
-std::list<TexturedModel*> Pulley::modelsRope;
-std::list<TexturedModel*> Pulley::modelsTop;
+std::vector<TexturedModel*> Pulley::modelsHandle;
+std::vector<TexturedModel*> Pulley::modelsRope;
+std::vector<TexturedModel*> Pulley::modelsTop;
 CollisionModel* Pulley::cmTop = nullptr;
 
 Pulley::Pulley() {}
@@ -143,7 +143,7 @@ void Pulley::step()
     Global::gameMainPlayer->refreshCamera();
 }
 
-std::list<TexturedModel*>* Pulley::getModels()
+std::vector<TexturedModel*>* Pulley::getModels()
 {
     return &Pulley::modelsHandle;
 }

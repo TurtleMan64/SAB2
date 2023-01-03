@@ -107,29 +107,29 @@ public:
     //Checks for binary file first, then tries OBJ.
     //Each TexturedModel contained within 'models' must be deleted later.
     //Returns 0 if successful, 1 if model is already loaded, -1 if file couldn't be loaded
-    static int loadModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName);
+    static int loadModel(std::vector<TexturedModel*>* models, std::string filePath, std::string fileName);
 
 private:
     //Each TexturedModel contained within 'models' must be deleted later.
     //Returns 0 if successful, 1 if model is already loaded, -1 if file couldn't be loaded
-    static int loadObjModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName);
+    static int loadObjModel(std::vector<TexturedModel*>* models, std::string filePath, std::string fileName);
 
     //Each TexturedModel contained within 'models' must be deleted later.
     //Returns 0 if successful, 1 if model is already loaded, -1 if file couldn't be loaded
-    static int loadBinaryModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName);
+    static int loadBinaryModel(std::vector<TexturedModel*>* models, std::string filePath, std::string fileName);
 
     //Each TexturedModel contained within 'models' must be deleted later.
     //Returns 0 if successful, 1 if model is already loaded, -1 if file couldn't be loaded
-    static int loadVclModel(std::list<TexturedModel*>* models, std::string filePath, std::string fileName);
+    static int loadVclModel(std::vector<TexturedModel*>* models, std::string filePath, std::string fileName);
 
 public:
     //Each TexturedModel contained within 'models' must be deleted later.
     //Returns 0 if successful, 1 if model is already loaded, -1 if file couldn't be loaded
-    static int loadObjModelWithMTL(std::list<TexturedModel*>* models, std::string filePath, std::string fileNameOBJ, std::string fileNameMTL);
+    static int loadObjModelWithMTL(std::vector<TexturedModel*>* models, std::string filePath, std::string fileNameOBJ, std::string fileNameMTL);
 
     //Each TexturedModel contained within 'models' must be deleted later.
     //Returns 0 if successful, 1 if model is already loaded, -1 if file couldn't be loaded
-    static int loadBinaryModelWithMTL(std::list<TexturedModel*>* models, std::string filePath, std::string fileNameBin, std::string fileNameMTL);
+    static int loadBinaryModelWithMTL(std::vector<TexturedModel*>* models, std::string filePath, std::string fileNameBin, std::string fileNameMTL);
 
     //The CollisionModel returned must be deleted later.
     static CollisionModel* loadCollisionModel(std::string filePath, std::string fileName);

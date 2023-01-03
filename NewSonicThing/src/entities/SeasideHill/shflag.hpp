@@ -10,12 +10,12 @@ class TexturedModel;
 class SH_Flag : public Entity
 {
 private:
-    static std::list<TexturedModel*> models0;
-    static std::list<TexturedModel*> models1;
-    static std::list<TexturedModel*> models2;
-    static std::list<TexturedModel*> models3;
-    static std::list<TexturedModel*> models4;
-    static std::list<TexturedModel*> models5;
+    static std::vector<TexturedModel*> models0;
+    static std::vector<TexturedModel*> models1;
+    static std::vector<TexturedModel*> models2;
+    static std::vector<TexturedModel*> models3;
+    static std::vector<TexturedModel*> models4;
+    static std::vector<TexturedModel*> models5;
 
     float timer = 0.0f;
 
@@ -24,7 +24,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

@@ -11,20 +11,20 @@ class Dummy;
 class ItemCapsule : public Entity
 {
 private:
-    static std::list<TexturedModel*> modelsAnchoredBase;
-    static std::list<TexturedModel*> modelsAnchoredGlass;
-    static std::list<TexturedModel*> modelsFloatingBase;
-    static std::list<TexturedModel*> modelsFloatingGlass;
+    static std::vector<TexturedModel*> modelsAnchoredBase;
+    static std::vector<TexturedModel*> modelsAnchoredGlass;
+    static std::vector<TexturedModel*> modelsFloatingBase;
+    static std::vector<TexturedModel*> modelsFloatingGlass;
 
-    static std::list<TexturedModel*> modelsItem1Up;
-    static std::list<TexturedModel*> modelsItemBomb;
-    static std::list<TexturedModel*> modelsItemInvincible;
-    static std::list<TexturedModel*> modelsItemBarrierG;
-    static std::list<TexturedModel*> modelsItemRing5;
-    static std::list<TexturedModel*> modelsItemRing10;
-    static std::list<TexturedModel*> modelsItemRing20;
-    static std::list<TexturedModel*> modelsItemSpeedUp;
-    static std::list<TexturedModel*> modelsItemBarrierB;
+    static std::vector<TexturedModel*> modelsItem1Up;
+    static std::vector<TexturedModel*> modelsItemBomb;
+    static std::vector<TexturedModel*> modelsItemInvincible;
+    static std::vector<TexturedModel*> modelsItemBarrierG;
+    static std::vector<TexturedModel*> modelsItemRing5;
+    static std::vector<TexturedModel*> modelsItemRing10;
+    static std::vector<TexturedModel*> modelsItemRing20;
+    static std::vector<TexturedModel*> modelsItemSpeedUp;
+    static std::vector<TexturedModel*> modelsItemBarrierB;
 
     static constexpr float BOMB_RADIUS = 400.0f;
 
@@ -44,7 +44,7 @@ public:
 
     void die();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

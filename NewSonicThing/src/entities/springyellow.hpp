@@ -9,7 +9,7 @@ class TexturedModel;
 class SpringYellow : public Entity
 {
 public:
-    static std::list<TexturedModel*> models;
+    static std::vector<TexturedModel*> models;
 
     float springPower = 500.0f;
     float springRadius = 5.0f;
@@ -28,7 +28,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

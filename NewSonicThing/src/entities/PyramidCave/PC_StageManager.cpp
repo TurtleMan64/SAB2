@@ -7,7 +7,7 @@
 #include "../../loading/modelloader.hpp"
 #include "../camera.hpp"
 
-std::list<TexturedModel*> PC_StageManager::modelsSkydome;
+std::vector<TexturedModel*> PC_StageManager::modelsSkydome;
 
 PC_StageManager::PC_StageManager()
 {
@@ -29,7 +29,7 @@ void PC_StageManager::step()
     }
 }
 
-std::list<TexturedModel*>* PC_StageManager::getModels()
+std::vector<TexturedModel*>* PC_StageManager::getModels()
 {
     return &PC_StageManager::modelsSkydome;
 }

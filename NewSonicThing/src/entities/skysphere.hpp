@@ -11,7 +11,7 @@ class TexturedModel;
 class SkySphere : public Entity
 {
 private:
-    static std::list<TexturedModel*> models;
+    static std::vector<TexturedModel*> models;
 
     bool followsY = false;
 
@@ -20,7 +20,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadModels(char* folder, char* objname, char* mtlname);
 

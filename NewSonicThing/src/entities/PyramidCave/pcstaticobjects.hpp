@@ -13,11 +13,11 @@ class PC_StaticObjects : public CollideableObject
 {
 private:
     //The visual model that doesn't use vertex colors
-    static std::list<TexturedModel*> models;
+    static std::vector<TexturedModel*> models;
     //The visual model that uses vertex colors
-    static std::list<TexturedModel*> modelsVertexColors;
+    static std::vector<TexturedModel*> modelsVertexColors;
     //The visual model that is for textures with transparency
-    static std::list<TexturedModel*> modelsTransparent;
+    static std::vector<TexturedModel*> modelsTransparent;
     //The collision model
     static CollisionModel* cmOriginal;
 
@@ -38,7 +38,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

@@ -75,6 +75,8 @@ PlayerTails::PlayerTails(float x, float y, float z)
         homingAttackReticle = new GuiImage(LoaderGL::loadTexture("res/Images/HomingReticleSmooth.png"), 0.5f, 0.5f, 0.1f/aspectRatio, 0.1f, 0); INCR_NEW("GuiImage");
         homingAttackReticle->visible = true;
     }
+
+    nearbyEntities.reserve(10);
 }
 
 PlayerTails::~PlayerTails()
@@ -149,8 +151,7 @@ void PlayerTails::step()
             lightdashTrailProgress = -1.0f;
 
             //search through close entities to find rings
-            std::list<std::unordered_set<Entity*>*> entities;
-            Global::getNearbyEntities(position.x, position.z, &entities, lightdashStartRingMinDist);
+            Global::getNearbyEntities(position.x, position.z, &nearbyEntities, lightdashStartRingMinDist);
 
             //keep track of rings we've already used, to not use them again
             std::unordered_set<Entity*> alreadyUsedRings;
@@ -159,10 +160,12 @@ void PlayerTails::step()
             Vector3f* closestPoint = nullptr;
             Entity* closestEntity = nullptr;
 
-            for (std::unordered_set<Entity*>* set : entities)
+            for (std::unordered_set<Entity*>* set : nearbyEntities)
             {
-                for (Entity* e : (*set))
+                for (auto it = set->cbegin(); it != set->cend(); it++)
                 {
+                    Entity* e = it._Ptr->_Myval;
+
                     if (!e->canLightdashOn())
                     {
                         continue;
@@ -200,16 +203,18 @@ void PlayerTails::step()
                 {
                     Vector3f center = lightdashTrail.back();
                     //search through close entities to find rings
-                    Global::getNearbyEntities(center.x, center.z, &entities, lightdashContinueRingMinDist);
+                    Global::getNearbyEntities(center.x, center.z, &nearbyEntities, lightdashContinueRingMinDist);
 
                     float bestScore = -100000000000.0f;
                     Vector3f* bestPoint = nullptr;
                     Entity* bestEntity = nullptr;
 
-                    for (std::unordered_set<Entity*>* set : entities)
+                    for (std::unordered_set<Entity*>* set : nearbyEntities)
                     {
-                        for (Entity* e : (*set))
+                        for (auto it = set->cbegin(); it != set->cend(); it++)
                         {
+                            Entity* e = it._Ptr->_Myval;
+
                             if (!e->canLightdashOn() || alreadyUsedRings.find(e) != alreadyUsedRings.end())
                             {
                                 continue;
@@ -2133,8 +2138,7 @@ bool PlayerTails::findHomingTarget(Vector3f* target)
     bool lookingForClosest = (stickRadius < 0.1f);
     
     //search through close entities to find rings
-    std::list<std::unordered_set<Entity*>*> entities;
-    Global::getNearbyEntities(position.x, position.z, &entities, homingAttackRangeMax);
+    Global::getNearbyEntities(position.x, position.z, &nearbyEntities, homingAttackRangeMax);
 
     float closestDist = homingAttackRangeMax*homingAttackRangeMax;
     float bestDotProduct = -1.0f;
@@ -2144,10 +2148,12 @@ bool PlayerTails::findHomingTarget(Vector3f* target)
 
         if (lookingForClosest)
     {
-        for (std::unordered_set<Entity*>* set : entities)
+        for (std::unordered_set<Entity*>* set : nearbyEntities)
         {
-            for (Entity* e : (*set))
+            for (auto it = set->cbegin(); it != set->cend(); it++)
             {
+                Entity* e = it._Ptr->_Myval;
+
                 if (!e->canHomingAttackOn())
                 {
                     continue;
@@ -2173,10 +2179,12 @@ bool PlayerTails::findHomingTarget(Vector3f* target)
     }
     else 
     {
-        for (std::unordered_set<Entity*>* set : entities)
+        for (std::unordered_set<Entity*>* set : nearbyEntities)
         {
-            for (Entity* e : (*set))
+            for (auto it = set->cbegin(); it != set->cend(); it++)
             {
+                Entity* e = it._Ptr->_Myval;
+
                 if (!e->canHomingAttackOn())
                 {
                     continue;
@@ -2728,7 +2736,7 @@ void PlayerTails::setInputs()
     }
 }
 
-std::list<TexturedModel*>* PlayerTails::getModels()
+std::vector<TexturedModel*>* PlayerTails::getModels()
 {
     return nullptr;
 }

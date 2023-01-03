@@ -8,12 +8,12 @@
 #include <list>
 #include <cmath>
 
-std::list<TexturedModel*> SH_Flag::models0;
-std::list<TexturedModel*> SH_Flag::models1;
-std::list<TexturedModel*> SH_Flag::models2;
-std::list<TexturedModel*> SH_Flag::models3;
-std::list<TexturedModel*> SH_Flag::models4;
-std::list<TexturedModel*> SH_Flag::models5;
+std::vector<TexturedModel*> SH_Flag::models0;
+std::vector<TexturedModel*> SH_Flag::models1;
+std::vector<TexturedModel*> SH_Flag::models2;
+std::vector<TexturedModel*> SH_Flag::models3;
+std::vector<TexturedModel*> SH_Flag::models4;
+std::vector<TexturedModel*> SH_Flag::models5;
 
 SH_Flag::SH_Flag(float x, float y, float z, float scale)
 {
@@ -31,7 +31,7 @@ void SH_Flag::step()
     timer = fmodf(timer, 5.99999f);
 }
 
-std::list<TexturedModel*>* SH_Flag::getModels()
+std::vector<TexturedModel*>* SH_Flag::getModels()
 {
     switch ((int)timer)
     {

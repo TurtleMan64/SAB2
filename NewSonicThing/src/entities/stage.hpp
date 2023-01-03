@@ -13,7 +13,7 @@ class TexturedModel;
 class Stage : public Entity
 {
 private:
-    static std::vector<std::list<TexturedModel*>> chunkModels;
+    static std::vector<std::vector<TexturedModel*>> chunkModels;
     static std::vector<Dummy*> chunkDummies;
     static std::vector<std::vector<Vector3f>> chunkMin;
     static std::vector<std::vector<Vector3f>> chunkMax;
@@ -28,7 +28,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadModels(
         const char* folder, 

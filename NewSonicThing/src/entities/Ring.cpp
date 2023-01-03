@@ -22,7 +22,7 @@
 #include <list>
 #include <iostream>
 
-std::list<TexturedModel*> Ring::models;
+std::vector<TexturedModel*> Ring::models;
 
 
 Ring::Ring()
@@ -133,7 +133,7 @@ void Ring::step()
     }
 }
 
-std::list<TexturedModel*>* Ring::getModels()
+std::vector<TexturedModel*>* Ring::getModels()
 {
     return &Ring::models;
 }

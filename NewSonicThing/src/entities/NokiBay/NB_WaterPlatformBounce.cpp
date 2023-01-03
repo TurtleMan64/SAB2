@@ -13,7 +13,7 @@
 #include <list>
 #include <iostream>
 
-std::list<TexturedModel*> NB_WaterPlatformBounce::models;
+std::vector<TexturedModel*> NB_WaterPlatformBounce::models;
 CollisionModel* NB_WaterPlatformBounce::cmOriginal = nullptr;
 
 NB_WaterPlatformBounce::NB_WaterPlatformBounce()
@@ -46,7 +46,7 @@ void NB_WaterPlatformBounce::step()
 
 }
 
-std::list<TexturedModel*>* NB_WaterPlatformBounce::getModels()
+std::vector<TexturedModel*>* NB_WaterPlatformBounce::getModels()
 {
     return &NB_WaterPlatformBounce::models;
 }

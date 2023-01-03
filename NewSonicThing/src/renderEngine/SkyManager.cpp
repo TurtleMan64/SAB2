@@ -34,8 +34,7 @@ float SkyManager::nightFactor;
 Entity* SkyManager::entitySun = nullptr;
 Entity* SkyManager::centerObject = nullptr;
 
-
-void SkyManager::initSkyManager(Entity* mySun, Entity *center)
+void SkyManager::initSkyManager(Entity* mySun, Entity* center)
 {
     sunAngle = 0.0f;
     timeOfDay = 0.0f;

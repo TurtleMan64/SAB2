@@ -84,6 +84,8 @@ PlayerSonic::PlayerSonic(float x, float y, float z)
         homingAttackReticle = new GuiImage(LoaderGL::loadTexture("res/Images/HomingReticleSmooth.png"), 0.5f, 0.5f, 0.1f/aspectRatio, 0.1f, 0); INCR_NEW("GuiImage");
         homingAttackReticle->visible = true;
     }
+
+    nearbyEntities.reserve(10);
 }
 
 PlayerSonic::~PlayerSonic()
@@ -149,8 +151,7 @@ void PlayerSonic::step()
             lightdashTrailProgress = -1.0f;
 
             //search through close entities to find rings
-            std::list<std::unordered_set<Entity*>*> entities;
-            Global::getNearbyEntities(position.x, position.z, &entities, lightdashStartRingMinDist);
+            Global::getNearbyEntities(position.x, position.z, &nearbyEntities, lightdashStartRingMinDist);
 
             //keep track of rings we've already used, to not use them again
             std::unordered_set<Entity*> alreadyUsedRings;
@@ -159,10 +160,12 @@ void PlayerSonic::step()
             Vector3f* closestPoint = nullptr;
             Entity* closestEntity = nullptr;
 
-            for (std::unordered_set<Entity*>* set : entities)
+            for (std::unordered_set<Entity*>* set : nearbyEntities)
             {
-                for (Entity* e : (*set))
+                for (auto it = set->cbegin(); it != set->cend(); it++)
                 {
+                    Entity* e = it._Ptr->_Myval;
+
                     if (!e->canLightdashOn())
                     {
                         continue;
@@ -200,16 +203,18 @@ void PlayerSonic::step()
                 {
                     Vector3f center = lightdashTrail.back();
                     //search through close entities to find rings
-                    Global::getNearbyEntities(center.x, center.z, &entities, lightdashContinueRingMinDist);
+                    Global::getNearbyEntities(center.x, center.z, &nearbyEntities, lightdashContinueRingMinDist);
 
                     float bestScore = -100000000000.0f;
                     Vector3f* bestPoint = nullptr;
                     Entity* bestEntity = nullptr;
 
-                    for (std::unordered_set<Entity*>* set : entities)
+                    for (std::unordered_set<Entity*>* set : nearbyEntities)
                     {
-                        for (Entity* e : (*set))
+                        for (auto it = set->cbegin(); it != set->cend(); it++)
                         {
+                            Entity* e = it._Ptr->_Myval;
+
                             if (!e->canLightdashOn() || alreadyUsedRings.find(e) != alreadyUsedRings.end())
                             {
                                 continue;
@@ -893,7 +898,7 @@ void PlayerSonic::step()
         CollisionChecker::setCheckPlayer(true);
         //CollisionChecker::debug = false;
         //CollisionChecker::debugFilename = "1.obj";
-        std::vector<std::string> collisionPath;
+        //std::vector<std::string> collisionPath;
         if (CollisionChecker::checkCollision(position.x, position.y, position.z, position.x+vel.x*dt, position.y+vel.y*dt, position.z+vel.z*dt))
         {
             Vector3f* colNormal = &CollisionChecker::getCollideTriangle()->normal;
@@ -2078,8 +2083,7 @@ bool PlayerSonic::findHomingTarget(Vector3f* target)
     bool lookingForClosest = (stickRadius < 0.1f);
     
     //search through close entities to find rings
-    std::list<std::unordered_set<Entity*>*> entities;
-    Global::getNearbyEntities(position.x, position.z, &entities, homingAttackRangeMax);
+    Global::getNearbyEntities(position.x, position.z, &nearbyEntities, homingAttackRangeMax);
 
     float closestDist = homingAttackRangeMax*homingAttackRangeMax;
     float bestDotProduct = -1.0f;
@@ -2089,10 +2093,12 @@ bool PlayerSonic::findHomingTarget(Vector3f* target)
 
     if (lookingForClosest)
     {
-        for (std::unordered_set<Entity*>* set : entities)
+        for (std::unordered_set<Entity*>* set : nearbyEntities)
         {
-            for (Entity* e : (*set))
+            for (auto it = set->cbegin(); it != set->cend(); it++)
             {
+                Entity* e = it._Ptr->_Myval;
+
                 if (!e->canHomingAttackOn())
                 {
                     continue;
@@ -2118,10 +2124,12 @@ bool PlayerSonic::findHomingTarget(Vector3f* target)
     }
     else 
     {
-        for (std::unordered_set<Entity*>* set : entities)
+        for (std::unordered_set<Entity*>* set : nearbyEntities)
         {
-            for (Entity* e : (*set))
+            for (auto it = set->cbegin(); it != set->cend(); it++)
             {
+                Entity* e = it._Ptr->_Myval;
+
                 if (!e->canHomingAttackOn())
                 {
                     continue;
@@ -2665,7 +2673,7 @@ void PlayerSonic::setInputs()
     }
 }
 
-std::list<TexturedModel*>* PlayerSonic::getModels()
+std::vector<TexturedModel*>* PlayerSonic::getModels()
 {
     return nullptr;
 }

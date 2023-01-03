@@ -12,7 +12,7 @@
 #include <list>
 #include <iostream>
 
-std::list<TexturedModel*> NB_Palmtree::models;
+std::vector<TexturedModel*> NB_Palmtree::models;
 CollisionModel* NB_Palmtree::cmOriginal = nullptr;
 
 NB_Palmtree::NB_Palmtree()
@@ -45,7 +45,7 @@ void NB_Palmtree::step()
 
 }
 
-std::list<TexturedModel*>* NB_Palmtree::getModels()
+std::vector<TexturedModel*>* NB_Palmtree::getModels()
 {
     return &NB_Palmtree::models;
 }

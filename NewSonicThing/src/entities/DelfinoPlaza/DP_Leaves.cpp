@@ -12,7 +12,7 @@
 #include <list>
 #include <iostream>
 
-std::list<TexturedModel*> DP_Leaves::models;
+std::vector<TexturedModel*> DP_Leaves::models;
 CollisionModel* DP_Leaves::cmOriginal = nullptr;
 
 DP_Leaves::DP_Leaves()
@@ -45,7 +45,7 @@ void DP_Leaves::step()
     
 }
 
-std::list<TexturedModel*>* DP_Leaves::getModels()
+std::vector<TexturedModel*>* DP_Leaves::getModels()
 {
     return &DP_Leaves::models;
 }

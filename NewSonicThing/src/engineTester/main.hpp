@@ -25,11 +25,11 @@ class ResultsScreen;
 
 #include <string>
 #include <random>
-#include <list>
 #include <vector>
 #include <unordered_map>
 #include <unordered_set>
 #include <utility>
+
 #include "../toolbox/level.hpp"
 #include "../menu/menumanager.hpp"
 #include "../toolbox/vector.hpp"
@@ -66,7 +66,7 @@ class ResultsScreen;
 #define LVL_FREEZEEZY_PEAK  21
 #define LVL_SWEET_MOUNTAIN  22
 
-#define DEV_MODE
+//#define DEV_MODE
 //#define PERFORMANCE_ANALYSIS
 
 #ifdef DEV_MODE
@@ -249,11 +249,11 @@ public:
     //0 = only the exact chunk.
     //1 = 4 chunks
     //2 = 9 chunks
-    static void getNearbyEntities(float x, float z, int renderDistance, std::list<std::unordered_set<Entity*>*>* list);
+    static void getNearbyEntities(float x, float z, int renderDistance, std::vector<std::unordered_set<Entity*>*>* list);
 
     //Return a list of nearby entity sets. Returns either 1 chunk, 2 chunks, or 4 chunks,
     // depending on the minDistance value.
-    static void getNearbyEntities(float x, float z, std::list<std::unordered_set<Entity*>*>* list, float minDistance);
+    static void getNearbyEntities(float x, float z, std::vector<std::unordered_set<Entity*>*>* list, float minDistance);
 
     //Returns the index of 'gameChunkedEntities' for the (x, z) location
     static int getChunkIndex(float x, float z);

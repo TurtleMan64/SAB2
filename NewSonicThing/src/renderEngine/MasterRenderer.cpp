@@ -17,7 +17,7 @@
 #include "../particles/particlemaster.hpp"
 
 #include <iostream>
-#include <list>
+#include <vector>
 #include <unordered_map>
 
 EntityShader* MasterRenderer::entityShader = nullptr;
@@ -240,20 +240,21 @@ void MasterRenderer::processEntity(Entity* entity)
             default: break;
         }
 
-        std::list<TexturedModel*>* modellist = entity->getModels();
+        std::vector<TexturedModel*>* models = entity->getModels();
 
-        for (auto it = modellist->cbegin(); it != modellist->cend(); it++)
+        const int numModels = (int)models->size();
+        for (int i = 0; i < numModels; i++)
         {
-            TexturedModel* entityModel = it._Ptr->_Myval;
+            TexturedModel* model = models->at(i);
 
-            auto location = mapToUse->find(entityModel);
+            auto location = mapToUse->find(model);
             if (location == mapToUse->end())
             {
                 std::vector<Entity*> newEntityList;
 
                 newEntityList.push_back(entity);
 
-                mapToUse->insert({entityModel, newEntityList}); //this might break iterators...
+                mapToUse->insert({model, newEntityList}); //this might break iterators...
             }
             else
             {
@@ -268,15 +269,16 @@ void MasterRenderer::processEntity(Entity* entity)
     }
     else
     {
-        std::list<TexturedModel*>* modellist = entity->getModels();
+        std::vector<TexturedModel*>* models = entity->getModels();
 
-        for (std::list<TexturedModel*>::const_iterator it = modellist->cbegin(); it != modellist->cend(); it++)
+        const int numModels = (int)models->size();
+        for (int i = 0; i < numModels; i++)
         {
-            TexturedModel* entityModel = it._Ptr->_Myval;
+            TexturedModel* model = models->at(i);
 
             std::unordered_map<TexturedModel*, std::vector<Entity*>>* mapToUse = nullptr;
 
-            switch (entityModel->renderOrder)
+            switch (model->renderOrder)
             {
                 case 0: mapToUse = &MasterRenderer::entitiesMap;            break;
                 case 1: mapToUse = &MasterRenderer::entitiesMapPass2;       break;
@@ -287,14 +289,14 @@ void MasterRenderer::processEntity(Entity* entity)
                 default: break;
             }
 
-            auto location = mapToUse->find(entityModel);
+            auto location = mapToUse->find(model);
             if (location == mapToUse->end())
             {
                 std::vector<Entity*> newEntityList;
 
                 newEntityList.push_back(entity);
 
-                mapToUse->insert({entityModel, newEntityList}); //this might break iterators...
+                mapToUse->insert({model, newEntityList}); //this might break iterators...
             }
             else
             {
@@ -312,12 +314,69 @@ void MasterRenderer::processEntity(Entity* entity)
 
 void MasterRenderer::clearAllEntities()
 {
-    MasterRenderer::entitiesMap.clear();
-    MasterRenderer::entitiesMapPass2.clear();
-    MasterRenderer::entitiesMapPass3.clear();
-    MasterRenderer::entitiesMapTransparent.clear();
-    MasterRenderer::entitiesMapNoDepth.clear();
-    MasterRenderer::entitiesMapPass6.clear();
+    // Clear the entities from the TexturedModel maps, but don't erase the map entries themselves.
+    // This should make it so that there isn't new heap allocations happening every frame to re-create
+    // the TexturedModel->std::vector entries, as well as having to rebuild the std::vector with more
+    // allocations. std::vector.clear() should not actually reduce the capacity
+    for (int i = 0; i < 6; i++)
+    {
+        std::unordered_map<TexturedModel*, std::vector<Entity*>>* mapToUse = nullptr;
+
+        switch (i)
+        {
+            case 0: mapToUse = &MasterRenderer::entitiesMap;            break;
+            case 1: mapToUse = &MasterRenderer::entitiesMapPass2;       break;
+            case 2: mapToUse = &MasterRenderer::entitiesMapPass3;       break;
+            case 3: mapToUse = &MasterRenderer::entitiesMapTransparent; break;
+            case 4: mapToUse = &MasterRenderer::entitiesMapNoDepth;     break;
+            case 5: mapToUse = &MasterRenderer::entitiesMapPass6;       break;
+            default: break;
+        }
+        
+        for (auto it = mapToUse->cbegin(); it != mapToUse->cend(); it++)
+        {
+            std::vector<Entity*>* entities = &(it._Ptr->_Myval.second);
+            entities->clear();
+            entities->reserve(1000);
+        }
+    }
+
+    //MasterRenderer::entitiesMap.clear();
+    //MasterRenderer::entitiesMapPass2.clear();
+    //MasterRenderer::entitiesMapPass3.clear();
+    //MasterRenderer::entitiesMapTransparent.clear();
+    //MasterRenderer::entitiesMapNoDepth.clear();
+    //MasterRenderer::entitiesMapPass6.clear();
+}
+
+void MasterRenderer::addTexturedModels(std::vector<TexturedModel*>* models)
+{
+    std::vector<Entity*> emptyEntityList;
+
+    const int numModels = (int)models->size();
+    for (int i = 0; i < numModels; i++)
+    {
+        TexturedModel* model = models->at(i);
+
+        MasterRenderer::entitiesMap            .insert({model, emptyEntityList});
+        MasterRenderer::entitiesMapPass2       .insert({model, emptyEntityList});
+        MasterRenderer::entitiesMapPass3       .insert({model, emptyEntityList});
+        MasterRenderer::entitiesMapTransparent .insert({model, emptyEntityList});
+        MasterRenderer::entitiesMapNoDepth     .insert({model, emptyEntityList});
+        MasterRenderer::entitiesMapPass6       .insert({model, emptyEntityList});
+
+        MasterRenderer::entitiesMap            [model].reserve(1000);
+        MasterRenderer::entitiesMapPass2       [model].reserve(1000);
+        MasterRenderer::entitiesMapPass3       [model].reserve(1000);
+        MasterRenderer::entitiesMapTransparent [model].reserve(1000);
+        MasterRenderer::entitiesMapNoDepth     [model].reserve(1000);
+        MasterRenderer::entitiesMapPass6       [model].reserve(1000);
+    }
+}
+
+void MasterRenderer::removeTexturedModels(std::vector<TexturedModel*>*)
+{
+    
 }
 
 void MasterRenderer::prepareNormalRender()

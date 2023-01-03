@@ -17,7 +17,7 @@
 #include <iostream>
 #include <cmath>
 
-std::list<TexturedModel*> SpeedRamp::models;
+std::vector<TexturedModel*> SpeedRamp::models;
 CollisionModel* SpeedRamp::cmOriginal;
 
 SpeedRamp::SpeedRamp()
@@ -69,7 +69,7 @@ void SpeedRamp::step()
     }
 }
 
-std::list<TexturedModel*>* SpeedRamp::getModels()
+std::vector<TexturedModel*>* SpeedRamp::getModels()
 {
     return &SpeedRamp::models;
 }

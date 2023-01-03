@@ -13,7 +13,7 @@
 #include "../../particles/particlemaster.hpp"
 #include "gfparticle.hpp"
 
-std::list<TexturedModel*> GF_StageManager::modelsSkydome;
+std::vector<TexturedModel*> GF_StageManager::modelsSkydome;
 
 GF_StageManager::GF_StageManager()
 {
@@ -91,7 +91,7 @@ void GF_StageManager::step()
     GF_Particle::centerSpawnPos.set(basex, basey, basez);
 }
 
-std::list<TexturedModel*>* GF_StageManager::getModels()
+std::vector<TexturedModel*>* GF_StageManager::getModels()
 {
     return &GF_StageManager::modelsSkydome;
 }

@@ -10,7 +10,7 @@
 #include <list>
 #include <iostream>
 
-std::list<TexturedModel*> DP_BigShine::models;
+std::vector<TexturedModel*> DP_BigShine::models;
 
 DP_BigShine::DP_BigShine()
 {
@@ -39,7 +39,7 @@ void DP_BigShine::step()
     updateTransformationMatrix();
 }
 
-std::list<TexturedModel*>* DP_BigShine::getModels()
+std::vector<TexturedModel*>* DP_BigShine::getModels()
 {
     return &DP_BigShine::models;
 }

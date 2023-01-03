@@ -17,7 +17,7 @@
 
 #include <list>
 
-std::list<TexturedModel*> DL_DigTeleport::models;
+std::vector<TexturedModel*> DL_DigTeleport::models;
 CollisionModel* DL_DigTeleport::cmOriginal = nullptr;
 
 DL_DigTeleport::DL_DigTeleport(
@@ -86,7 +86,7 @@ void DL_DigTeleport::step()
     prevDiggTimer = currDiggTimer;
 }
 
-std::list<TexturedModel*>* DL_DigTeleport::getModels()
+std::vector<TexturedModel*>* DL_DigTeleport::getModels()
 {
     return &DL_DigTeleport::models;
 }

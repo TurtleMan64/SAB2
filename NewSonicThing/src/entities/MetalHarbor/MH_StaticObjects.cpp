@@ -9,9 +9,9 @@
 #include "../../collision/collisionchecker.hpp"
 #include "../dummy.hpp"
 
-std::list<TexturedModel*> MH_StaticObjects::models;
-std::list<TexturedModel*> MH_StaticObjects::modelsVertexColors;
-std::list<TexturedModel*> MH_StaticObjects::modelsTransparent;
+std::vector<TexturedModel*> MH_StaticObjects::models;
+std::vector<TexturedModel*> MH_StaticObjects::modelsVertexColors;
+std::vector<TexturedModel*> MH_StaticObjects::modelsTransparent;
 CollisionModel* MH_StaticObjects::cmOriginal;
 
 MH_StaticObjects::MH_StaticObjects()
@@ -41,7 +41,7 @@ MH_StaticObjects::MH_StaticObjects()
 
 void MH_StaticObjects::step() {}
 
-std::list<TexturedModel*>* MH_StaticObjects::getModels()
+std::vector<TexturedModel*>* MH_StaticObjects::getModels()
 {
     return &MH_StaticObjects::models;
 }

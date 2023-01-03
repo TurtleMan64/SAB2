@@ -9,8 +9,8 @@ class TexturedModel;
 class DashRing : public Entity
 {
 private:
-    static std::list<TexturedModel*> modelsDash;
-    static std::list<TexturedModel*> modelsRainbow;
+    static std::vector<TexturedModel*> modelsDash;
+    static std::vector<TexturedModel*> modelsRainbow;
 
     bool isRainbow = false;
     bool playerIsIn = false;
@@ -33,7 +33,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

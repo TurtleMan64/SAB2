@@ -16,7 +16,7 @@
 #include <list>
 #include <iostream>
 
-std::list<TexturedModel*> ChaosEmerald::models;
+std::vector<TexturedModel*> ChaosEmerald::models;
 
 ChaosEmerald::ChaosEmerald()
 {
@@ -105,7 +105,7 @@ void ChaosEmerald::step()
     Maths::createTransformationMatrix(&transformationMatrix, &posBob, 0, rotY, 0, 0, 2.5f);
 }
 
-std::list<TexturedModel*>* ChaosEmerald::getModels()
+std::vector<TexturedModel*>* ChaosEmerald::getModels()
 {
     return &ChaosEmerald::models;
 }

@@ -12,10 +12,10 @@
 
 extern float dt;
 
-std::list<TexturedModel*> MH_AircraftCarrierCart::models;
-std::list<TexturedModel*> MH_AircraftCarrierCart::modelsWheelFront;
-std::list<TexturedModel*> MH_AircraftCarrierCart::modelsWheelBack;
-std::list<TexturedModel*> MH_AircraftCarrierCart::modelsTransparent;
+std::vector<TexturedModel*> MH_AircraftCarrierCart::models;
+std::vector<TexturedModel*> MH_AircraftCarrierCart::modelsWheelFront;
+std::vector<TexturedModel*> MH_AircraftCarrierCart::modelsWheelBack;
+std::vector<TexturedModel*> MH_AircraftCarrierCart::modelsTransparent;
 CollisionModel* MH_AircraftCarrierCart::cmOriginal;
 
 MH_AircraftCarrierCart::MH_AircraftCarrierCart() {}
@@ -175,7 +175,7 @@ void MH_AircraftCarrierCart::step()
     }
 }
 
-std::list<TexturedModel*>* MH_AircraftCarrierCart::getModels()
+std::vector<TexturedModel*>* MH_AircraftCarrierCart::getModels()
 {
     return &MH_AircraftCarrierCart::models;
 }

@@ -8,7 +8,7 @@
 
 #include <list>
 
-std::list<TexturedModel*> StageTransparent::models;
+std::vector<TexturedModel*> StageTransparent::models;
 
 StageTransparent::StageTransparent()
 {
@@ -45,7 +45,7 @@ void StageTransparent::step()
 
 }
 
-std::list<TexturedModel*>* StageTransparent::getModels()
+std::vector<TexturedModel*>* StageTransparent::getModels()
 {
     return &StageTransparent::models;
 }

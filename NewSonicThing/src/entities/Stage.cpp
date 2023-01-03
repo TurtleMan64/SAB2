@@ -13,7 +13,7 @@
 #include <iostream>
 #include <string>
 
-std::vector<std::list<TexturedModel*>> Stage::chunkModels;
+std::vector<std::vector<TexturedModel*>> Stage::chunkModels;
 std::vector<Dummy*> Stage::chunkDummies;
 std::vector<std::vector<Vector3f>> Stage::chunkMin;
 std::vector<std::vector<Vector3f>> Stage::chunkMax;
@@ -77,7 +77,7 @@ void Stage::step()
     
 }
 
-std::list<TexturedModel*>* Stage::getModels()
+std::vector<TexturedModel*>* Stage::getModels()
 {
     return nullptr;
 }
@@ -102,7 +102,7 @@ void Stage::loadModels(
 
     for (int i = 0; i < (int)fnames->size(); i++)
     {
-        std::list<TexturedModel*> model;
+        std::vector<TexturedModel*> model;
         Stage::chunkModels.push_back(model);
 
         ModelLoader::loadModel(&Stage::chunkModels[i], path, fnames->at(i));
@@ -119,7 +119,7 @@ void Stage::deleteModels()
 
     for (int i = 0; i < (int)Stage::chunkModels.size(); i++)
     {
-        std::list<TexturedModel*>* models = &Stage::chunkModels[i];
+        std::vector<TexturedModel*>* models = &Stage::chunkModels[i];
         Entity::deleteModels(models);
     }
 

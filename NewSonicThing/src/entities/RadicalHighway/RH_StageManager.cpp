@@ -7,7 +7,7 @@
 #include "../../loading/modelloader.hpp"
 #include "../camera.hpp"
 
-std::list<TexturedModel*> RH_StageManager::modelsSkydome;
+std::vector<TexturedModel*> RH_StageManager::modelsSkydome;
 
 RH_StageManager::RH_StageManager()
 {
@@ -21,7 +21,7 @@ void RH_StageManager::step()
     updateTransformationMatrix();
 }
 
-std::list<TexturedModel*>* RH_StageManager::getModels()
+std::vector<TexturedModel*>* RH_StageManager::getModels()
 {
     return &RH_StageManager::modelsSkydome;
 }

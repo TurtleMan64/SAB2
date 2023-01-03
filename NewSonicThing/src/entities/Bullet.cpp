@@ -17,7 +17,7 @@
 #include <iostream>
 #include <cmath>
 
-std::list<TexturedModel*> Bullet::models;
+std::vector<TexturedModel*> Bullet::models;
 
 Bullet::Bullet()
 {
@@ -89,7 +89,7 @@ void Bullet::step()
     }
 }
 
-std::list<TexturedModel*>* Bullet::getModels()
+std::vector<TexturedModel*>* Bullet::getModels()
 {
     return &Bullet::models;
 }

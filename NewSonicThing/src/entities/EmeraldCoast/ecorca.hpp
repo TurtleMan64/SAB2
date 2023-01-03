@@ -9,7 +9,7 @@ class TexturedModel;
 class EC_Orca : public Entity
 {
 private:
-    static std::list<TexturedModel*> models;
+    static std::vector<TexturedModel*> models;
 
     float initX = 0.0f;
     float initY = 0.0f;
@@ -28,7 +28,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

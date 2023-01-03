@@ -19,7 +19,7 @@
 #include <iostream>
 #include <cmath>
 
-std::list<TexturedModel*> LostChao::models;
+std::vector<TexturedModel*> LostChao::models;
 
 LostChao::LostChao()
 {
@@ -99,7 +99,7 @@ void LostChao::step()
     }
 }
 
-std::list<TexturedModel*>* LostChao::getModels()
+std::vector<TexturedModel*>* LostChao::getModels()
 {
     return &LostChao::models;
 }

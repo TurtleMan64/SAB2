@@ -221,41 +221,31 @@ void ParticleMaster::deleteAllParticles()
 {
     //Standard particles
     {
-        std::vector<ParticleStandard*> particlesToDelete;
-
-        for (auto particlesMap : ParticleMaster::particlesStandard)
+        for (auto particlesMapEntry : ParticleMaster::particlesStandard)
         {
-            for (auto particle : *particlesMap.second)
+            std::list<ParticleStandard*>* particles = particlesMapEntry.second;
+
+            for (auto it = particles->cbegin(); it != particles->cend(); it++)
             {
-                particlesToDelete.push_back(particle);
+                delete it._Ptr->_Myval; INCR_DEL("ParticleStandard");
             }
-        }
 
-        for (ParticleStandard* particle : particlesToDelete)
-        {
-            delete particle; INCR_DEL("ParticleStandard");
+            particles->clear(); // clear the list, but dont clear the texture->list entry.
         }
-
-        ParticleMaster::particlesStandard.clear();
     }
 
     //GF
     {
-        std::vector<GF_Particle*> particlesToDelete;
-
-        for (auto particlesMap : ParticleMaster::particlesGF)
+        for (auto particlesMapEntry : ParticleMaster::particlesGF)
         {
-            for (auto particle : *particlesMap.second)
+            std::list<GF_Particle*>* particles = particlesMapEntry.second;
+
+            for (auto it = particles->cbegin(); it != particles->cend(); it++)
             {
-                particlesToDelete.push_back(particle);
+                delete it._Ptr->_Myval; INCR_DEL("GF_Particle");
             }
-        }
 
-        for (GF_Particle* particle : particlesToDelete)
-        {
-            delete particle; INCR_DEL("GF_Particle");
+            particles->clear(); // clear the list, but dont clear the texture->list entry.
         }
-
-        ParticleMaster::particlesGF.clear();
     }
 }

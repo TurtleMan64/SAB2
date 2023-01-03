@@ -10,10 +10,10 @@ class Dummy;
 class GH_StageManager : public Entity
 {
 private:
-    static std::list<TexturedModel*> modelsSkyCylinder;
-    static std::list<TexturedModel*> modelsSkyClouds;
-    static std::list<TexturedModel*> modelsWaterFlat;
-    static std::list<TexturedModel*> modelsWaterVertical;
+    static std::vector<TexturedModel*> modelsSkyCylinder;
+    static std::vector<TexturedModel*> modelsSkyClouds;
+    static std::vector<TexturedModel*> modelsWaterFlat;
+    static std::vector<TexturedModel*> modelsWaterVertical;
 
     Dummy* skyClouds = nullptr;
     Dummy* waterFlat = nullptr;
@@ -24,7 +24,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

@@ -19,7 +19,7 @@
 #include <list>
 #include <iostream>
 
-std::list<TexturedModel*> Bomb::models;
+std::vector<TexturedModel*> Bomb::models;
 
 Bomb::Bomb()
 {
@@ -108,7 +108,7 @@ void Bomb::step()
                 }
             }
 
-            std::list<std::unordered_set<Entity*>*> nearbyChunkedEntities;
+            std::vector<std::unordered_set<Entity*>*> nearbyChunkedEntities;
             Global::getNearbyEntities(position.x, position.z, &nearbyChunkedEntities, bombRange);
             for (auto set : nearbyChunkedEntities)
             {
@@ -189,7 +189,7 @@ void Bomb::step()
     //}
 }
 
-std::list<TexturedModel*>* Bomb::getModels()
+std::vector<TexturedModel*>* Bomb::getModels()
 {
     return &Bomb::models;
 }

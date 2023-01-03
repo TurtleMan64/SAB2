@@ -18,59 +18,59 @@
 #include <iostream>
 #include <cmath>
 
-std::list<TexturedModel*> ManiaSonicModel::modelBody;
-std::list<TexturedModel*> ManiaSonicModel::modelHead;
-std::list<TexturedModel*> ManiaSonicModel::modelLeftHumerus;
-std::list<TexturedModel*> ManiaSonicModel::modelLeftForearm;
-std::list<TexturedModel*> ManiaSonicModel::modelLeftHand;
-std::list<TexturedModel*> ManiaSonicModel::modelLeftThigh;
-std::list<TexturedModel*> ManiaSonicModel::modelLeftShin;
-std::list<TexturedModel*> ManiaSonicModel::modelLeftFoot;
-std::list<TexturedModel*> ManiaSonicModel::modelRightHumerus;
-std::list<TexturedModel*> ManiaSonicModel::modelRightForearm;
-std::list<TexturedModel*> ManiaSonicModel::modelRightHand;
-std::list<TexturedModel*> ManiaSonicModel::modelRightThigh;
-std::list<TexturedModel*> ManiaSonicModel::modelRightShin;
-std::list<TexturedModel*> ManiaSonicModel::modelRightFoot;
+std::vector<TexturedModel*> ManiaSonicModel::modelBody;
+std::vector<TexturedModel*> ManiaSonicModel::modelHead;
+std::vector<TexturedModel*> ManiaSonicModel::modelLeftHumerus;
+std::vector<TexturedModel*> ManiaSonicModel::modelLeftForearm;
+std::vector<TexturedModel*> ManiaSonicModel::modelLeftHand;
+std::vector<TexturedModel*> ManiaSonicModel::modelLeftThigh;
+std::vector<TexturedModel*> ManiaSonicModel::modelLeftShin;
+std::vector<TexturedModel*> ManiaSonicModel::modelLeftFoot;
+std::vector<TexturedModel*> ManiaSonicModel::modelRightHumerus;
+std::vector<TexturedModel*> ManiaSonicModel::modelRightForearm;
+std::vector<TexturedModel*> ManiaSonicModel::modelRightHand;
+std::vector<TexturedModel*> ManiaSonicModel::modelRightThigh;
+std::vector<TexturedModel*> ManiaSonicModel::modelRightShin;
+std::vector<TexturedModel*> ManiaSonicModel::modelRightFoot;
 
-std::list<TexturedModel*> ManiaSonicModel::modelDash0;
-std::list<TexturedModel*> ManiaSonicModel::modelDash1;
-std::list<TexturedModel*> ManiaSonicModel::modelDash2;
-std::list<TexturedModel*> ManiaSonicModel::modelDash3;
-std::list<TexturedModel*> ManiaSonicModel::modelDash4;
-std::list<TexturedModel*> ManiaSonicModel::modelDash5;
-std::list<TexturedModel*> ManiaSonicModel::modelDash6;
-std::list<TexturedModel*> ManiaSonicModel::modelDash7;
-std::list<TexturedModel*> ManiaSonicModel::modelDash8;
-std::list<TexturedModel*> ManiaSonicModel::modelDash9;
-std::list<TexturedModel*> ManiaSonicModel::modelDash10;
-std::list<TexturedModel*> ManiaSonicModel::modelDash11;
-std::list<TexturedModel*> ManiaSonicModel::modelJump;
-std::list<TexturedModel*> ManiaSonicModel::modelJog0;
-std::list<TexturedModel*> ManiaSonicModel::modelJog1;
-std::list<TexturedModel*> ManiaSonicModel::modelJog2;
-std::list<TexturedModel*> ManiaSonicModel::modelJog3;
-std::list<TexturedModel*> ManiaSonicModel::modelJog4;
-std::list<TexturedModel*> ManiaSonicModel::modelJog5;
-std::list<TexturedModel*> ManiaSonicModel::modelJog6;
-std::list<TexturedModel*> ManiaSonicModel::modelJog7;
-std::list<TexturedModel*> ManiaSonicModel::modelJog8;
-std::list<TexturedModel*> ManiaSonicModel::modelJog9;
-std::list<TexturedModel*> ManiaSonicModel::modelJog10;
-std::list<TexturedModel*> ManiaSonicModel::modelJog11;
-std::list<TexturedModel*> ManiaSonicModel::modelJog12;
-std::list<TexturedModel*> ManiaSonicModel::modelJog13;
-std::list<TexturedModel*> ManiaSonicModel::modelJog14;
-std::list<TexturedModel*> ManiaSonicModel::modelJog15;
-std::list<TexturedModel*> ManiaSonicModel::modelJog16;
-std::list<TexturedModel*> ManiaSonicModel::modelJog17;
-std::list<TexturedModel*> ManiaSonicModel::modelGrind;
-std::list<TexturedModel*> ManiaSonicModel::modelSkid;
-std::list<TexturedModel*> ManiaSonicModel::modelLightdash;
-std::list<TexturedModel*> ManiaSonicModel::modelFreefall;
-std::list<TexturedModel*> ManiaSonicModel::modelStomp;
-std::list<TexturedModel*> ManiaSonicModel::modelGrab;
-std::list<TexturedModel*> ManiaSonicModel::modelDrive;
+std::vector<TexturedModel*> ManiaSonicModel::modelDash0;
+std::vector<TexturedModel*> ManiaSonicModel::modelDash1;
+std::vector<TexturedModel*> ManiaSonicModel::modelDash2;
+std::vector<TexturedModel*> ManiaSonicModel::modelDash3;
+std::vector<TexturedModel*> ManiaSonicModel::modelDash4;
+std::vector<TexturedModel*> ManiaSonicModel::modelDash5;
+std::vector<TexturedModel*> ManiaSonicModel::modelDash6;
+std::vector<TexturedModel*> ManiaSonicModel::modelDash7;
+std::vector<TexturedModel*> ManiaSonicModel::modelDash8;
+std::vector<TexturedModel*> ManiaSonicModel::modelDash9;
+std::vector<TexturedModel*> ManiaSonicModel::modelDash10;
+std::vector<TexturedModel*> ManiaSonicModel::modelDash11;
+std::vector<TexturedModel*> ManiaSonicModel::modelJump;
+std::vector<TexturedModel*> ManiaSonicModel::modelJog0;
+std::vector<TexturedModel*> ManiaSonicModel::modelJog1;
+std::vector<TexturedModel*> ManiaSonicModel::modelJog2;
+std::vector<TexturedModel*> ManiaSonicModel::modelJog3;
+std::vector<TexturedModel*> ManiaSonicModel::modelJog4;
+std::vector<TexturedModel*> ManiaSonicModel::modelJog5;
+std::vector<TexturedModel*> ManiaSonicModel::modelJog6;
+std::vector<TexturedModel*> ManiaSonicModel::modelJog7;
+std::vector<TexturedModel*> ManiaSonicModel::modelJog8;
+std::vector<TexturedModel*> ManiaSonicModel::modelJog9;
+std::vector<TexturedModel*> ManiaSonicModel::modelJog10;
+std::vector<TexturedModel*> ManiaSonicModel::modelJog11;
+std::vector<TexturedModel*> ManiaSonicModel::modelJog12;
+std::vector<TexturedModel*> ManiaSonicModel::modelJog13;
+std::vector<TexturedModel*> ManiaSonicModel::modelJog14;
+std::vector<TexturedModel*> ManiaSonicModel::modelJog15;
+std::vector<TexturedModel*> ManiaSonicModel::modelJog16;
+std::vector<TexturedModel*> ManiaSonicModel::modelJog17;
+std::vector<TexturedModel*> ManiaSonicModel::modelGrind;
+std::vector<TexturedModel*> ManiaSonicModel::modelSkid;
+std::vector<TexturedModel*> ManiaSonicModel::modelLightdash;
+std::vector<TexturedModel*> ManiaSonicModel::modelFreefall;
+std::vector<TexturedModel*> ManiaSonicModel::modelStomp;
+std::vector<TexturedModel*> ManiaSonicModel::modelGrab;
+std::vector<TexturedModel*> ManiaSonicModel::modelDrive;
 
 ManiaSonicModel::ManiaSonicModel()
 {
@@ -402,7 +402,7 @@ void ManiaSonicModel::setBaseVisibility(bool newVisible)
     baseVisible = newVisible;
 }
 
-std::list<TexturedModel*>* ManiaSonicModel::getModels()
+std::vector<TexturedModel*>* ManiaSonicModel::getModels()
 {
     return models;
 }

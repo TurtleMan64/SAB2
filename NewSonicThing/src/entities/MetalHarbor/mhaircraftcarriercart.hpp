@@ -20,13 +20,13 @@ private:
     int stateCurrent;
 
     //The visual model that doesn't use vertex colors
-    static std::list<TexturedModel*> models;
+    static std::vector<TexturedModel*> models;
     //The visual model for the front wheels
-    static std::list<TexturedModel*> modelsWheelFront;
+    static std::vector<TexturedModel*> modelsWheelFront;
     //The visual model for the back wheels
-    static std::list<TexturedModel*> modelsWheelBack;
+    static std::vector<TexturedModel*> modelsWheelBack;
     //The visual model that is for textures with transparency
-    static std::list<TexturedModel*> modelsTransparent;
+    static std::vector<TexturedModel*> modelsTransparent;
     //The collision model
     static CollisionModel* cmOriginal;
 
@@ -130,7 +130,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

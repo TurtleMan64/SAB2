@@ -12,7 +12,7 @@
 #include <list>
 #include <iostream>
 
-std::list<TexturedModel*> GH_Totem::models;
+std::vector<TexturedModel*> GH_Totem::models;
 CollisionModel* GH_Totem::cmOriginal = nullptr;
 
 GH_Totem::GH_Totem()
@@ -45,7 +45,7 @@ void GH_Totem::step()
 
 }
 
-std::list<TexturedModel*>* GH_Totem::getModels()
+std::vector<TexturedModel*>* GH_Totem::getModels()
 {
     return &GH_Totem::models;
 }

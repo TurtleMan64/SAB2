@@ -12,9 +12,9 @@
 #include <iostream>
 #include <cmath>
 
-std::list<TexturedModel*> GH_Sunflower::modelsBase;
-std::list<TexturedModel*> GH_Sunflower::modelsTop;
-std::list<TexturedModel*> GH_Sunflower::modelsTop2;
+std::vector<TexturedModel*> GH_Sunflower::modelsBase;
+std::vector<TexturedModel*> GH_Sunflower::modelsTop;
+std::vector<TexturedModel*> GH_Sunflower::modelsTop2;
 
 GH_Sunflower::GH_Sunflower()
 {
@@ -66,7 +66,7 @@ void GH_Sunflower::step()
     }
 }
 
-std::list<TexturedModel*>* GH_Sunflower::getModels()
+std::vector<TexturedModel*>* GH_Sunflower::getModels()
 {
     return &GH_Sunflower::modelsBase;
 }

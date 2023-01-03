@@ -44,7 +44,7 @@ void ShieldMagnet::step()
     }
 }
 
-std::list<TexturedModel*>* ShieldMagnet::getModels()
+std::vector<TexturedModel*>* ShieldMagnet::getModels()
 {
     return nullptr;
 }

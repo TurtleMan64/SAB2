@@ -14,9 +14,9 @@ class Rocket : public CollideableObject
 {
 private:
     //Visual model of the rocket
-    static std::list<TexturedModel*> modelsRocket;
+    static std::vector<TexturedModel*> modelsRocket;
     //Visual model of the base
-    static std::list<TexturedModel*> modelsBase;
+    static std::vector<TexturedModel*> modelsBase;
     //Collision model of the base
     static CollisionModel* cmBase;
 
@@ -119,7 +119,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

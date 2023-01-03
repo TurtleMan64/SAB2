@@ -19,61 +19,61 @@
 #include <iostream>
 #include <cmath>
 
-std::list<TexturedModel*> ManiaMightyModel::modelBody;
-std::list<TexturedModel*> ManiaMightyModel::modelHead;
-std::list<TexturedModel*> ManiaMightyModel::modelLeftHumerus;
-std::list<TexturedModel*> ManiaMightyModel::modelLeftForearm;
-std::list<TexturedModel*> ManiaMightyModel::modelLeftHand;
-std::list<TexturedModel*> ManiaMightyModel::modelLeftThigh;
-std::list<TexturedModel*> ManiaMightyModel::modelLeftShin;
-std::list<TexturedModel*> ManiaMightyModel::modelLeftFoot;
-std::list<TexturedModel*> ManiaMightyModel::modelRightHumerus;
-std::list<TexturedModel*> ManiaMightyModel::modelRightForearm;
-std::list<TexturedModel*> ManiaMightyModel::modelRightHand;
-std::list<TexturedModel*> ManiaMightyModel::modelRightThigh;
-std::list<TexturedModel*> ManiaMightyModel::modelRightShin;
-std::list<TexturedModel*> ManiaMightyModel::modelRightFoot;
+std::vector<TexturedModel*> ManiaMightyModel::modelBody;
+std::vector<TexturedModel*> ManiaMightyModel::modelHead;
+std::vector<TexturedModel*> ManiaMightyModel::modelLeftHumerus;
+std::vector<TexturedModel*> ManiaMightyModel::modelLeftForearm;
+std::vector<TexturedModel*> ManiaMightyModel::modelLeftHand;
+std::vector<TexturedModel*> ManiaMightyModel::modelLeftThigh;
+std::vector<TexturedModel*> ManiaMightyModel::modelLeftShin;
+std::vector<TexturedModel*> ManiaMightyModel::modelLeftFoot;
+std::vector<TexturedModel*> ManiaMightyModel::modelRightHumerus;
+std::vector<TexturedModel*> ManiaMightyModel::modelRightForearm;
+std::vector<TexturedModel*> ManiaMightyModel::modelRightHand;
+std::vector<TexturedModel*> ManiaMightyModel::modelRightThigh;
+std::vector<TexturedModel*> ManiaMightyModel::modelRightShin;
+std::vector<TexturedModel*> ManiaMightyModel::modelRightFoot;
 
-std::list<TexturedModel*> ManiaMightyModel::modelDash0;
-std::list<TexturedModel*> ManiaMightyModel::modelDash1;
-std::list<TexturedModel*> ManiaMightyModel::modelDash2;
-std::list<TexturedModel*> ManiaMightyModel::modelDash3;
-std::list<TexturedModel*> ManiaMightyModel::modelDash4;
-std::list<TexturedModel*> ManiaMightyModel::modelDash5;
-std::list<TexturedModel*> ManiaMightyModel::modelDash6;
-std::list<TexturedModel*> ManiaMightyModel::modelDash7;
-std::list<TexturedModel*> ManiaMightyModel::modelDash8;
-std::list<TexturedModel*> ManiaMightyModel::modelDash9;
-std::list<TexturedModel*> ManiaMightyModel::modelDash10;
-std::list<TexturedModel*> ManiaMightyModel::modelDash11;
-std::list<TexturedModel*> ManiaMightyModel::modelJump;
-std::list<TexturedModel*> ManiaMightyModel::modelJog0;
-std::list<TexturedModel*> ManiaMightyModel::modelJog1;
-std::list<TexturedModel*> ManiaMightyModel::modelJog2;
-std::list<TexturedModel*> ManiaMightyModel::modelJog3;
-std::list<TexturedModel*> ManiaMightyModel::modelJog4;
-std::list<TexturedModel*> ManiaMightyModel::modelJog5;
-std::list<TexturedModel*> ManiaMightyModel::modelJog6;
-std::list<TexturedModel*> ManiaMightyModel::modelJog7;
-std::list<TexturedModel*> ManiaMightyModel::modelJog8;
-std::list<TexturedModel*> ManiaMightyModel::modelJog9;
-std::list<TexturedModel*> ManiaMightyModel::modelJog10;
-std::list<TexturedModel*> ManiaMightyModel::modelJog11;
-std::list<TexturedModel*> ManiaMightyModel::modelJog12;
-std::list<TexturedModel*> ManiaMightyModel::modelJog13;
-std::list<TexturedModel*> ManiaMightyModel::modelJog14;
-std::list<TexturedModel*> ManiaMightyModel::modelJog15;
-std::list<TexturedModel*> ManiaMightyModel::modelJog16;
-std::list<TexturedModel*> ManiaMightyModel::modelJog17;
-std::list<TexturedModel*> ManiaMightyModel::modelGrind;
-std::list<TexturedModel*> ManiaMightyModel::modelSkid;
-std::list<TexturedModel*> ManiaMightyModel::modelLightdash;
-std::list<TexturedModel*> ManiaMightyModel::modelFreefall;
-std::list<TexturedModel*> ManiaMightyModel::modelStomp;
-std::list<TexturedModel*> ManiaMightyModel::modelGrab;
-std::list<TexturedModel*> ManiaMightyModel::modelFlyBody;
-std::list<TexturedModel*> ManiaMightyModel::modelFlyBodyTired;
-std::list<TexturedModel*> ManiaMightyModel::modelFlyPropeller;
+std::vector<TexturedModel*> ManiaMightyModel::modelDash0;
+std::vector<TexturedModel*> ManiaMightyModel::modelDash1;
+std::vector<TexturedModel*> ManiaMightyModel::modelDash2;
+std::vector<TexturedModel*> ManiaMightyModel::modelDash3;
+std::vector<TexturedModel*> ManiaMightyModel::modelDash4;
+std::vector<TexturedModel*> ManiaMightyModel::modelDash5;
+std::vector<TexturedModel*> ManiaMightyModel::modelDash6;
+std::vector<TexturedModel*> ManiaMightyModel::modelDash7;
+std::vector<TexturedModel*> ManiaMightyModel::modelDash8;
+std::vector<TexturedModel*> ManiaMightyModel::modelDash9;
+std::vector<TexturedModel*> ManiaMightyModel::modelDash10;
+std::vector<TexturedModel*> ManiaMightyModel::modelDash11;
+std::vector<TexturedModel*> ManiaMightyModel::modelJump;
+std::vector<TexturedModel*> ManiaMightyModel::modelJog0;
+std::vector<TexturedModel*> ManiaMightyModel::modelJog1;
+std::vector<TexturedModel*> ManiaMightyModel::modelJog2;
+std::vector<TexturedModel*> ManiaMightyModel::modelJog3;
+std::vector<TexturedModel*> ManiaMightyModel::modelJog4;
+std::vector<TexturedModel*> ManiaMightyModel::modelJog5;
+std::vector<TexturedModel*> ManiaMightyModel::modelJog6;
+std::vector<TexturedModel*> ManiaMightyModel::modelJog7;
+std::vector<TexturedModel*> ManiaMightyModel::modelJog8;
+std::vector<TexturedModel*> ManiaMightyModel::modelJog9;
+std::vector<TexturedModel*> ManiaMightyModel::modelJog10;
+std::vector<TexturedModel*> ManiaMightyModel::modelJog11;
+std::vector<TexturedModel*> ManiaMightyModel::modelJog12;
+std::vector<TexturedModel*> ManiaMightyModel::modelJog13;
+std::vector<TexturedModel*> ManiaMightyModel::modelJog14;
+std::vector<TexturedModel*> ManiaMightyModel::modelJog15;
+std::vector<TexturedModel*> ManiaMightyModel::modelJog16;
+std::vector<TexturedModel*> ManiaMightyModel::modelJog17;
+std::vector<TexturedModel*> ManiaMightyModel::modelGrind;
+std::vector<TexturedModel*> ManiaMightyModel::modelSkid;
+std::vector<TexturedModel*> ManiaMightyModel::modelLightdash;
+std::vector<TexturedModel*> ManiaMightyModel::modelFreefall;
+std::vector<TexturedModel*> ManiaMightyModel::modelStomp;
+std::vector<TexturedModel*> ManiaMightyModel::modelGrab;
+std::vector<TexturedModel*> ManiaMightyModel::modelFlyBody;
+std::vector<TexturedModel*> ManiaMightyModel::modelFlyBodyTired;
+std::vector<TexturedModel*> ManiaMightyModel::modelFlyPropeller;
 
 ManiaMightyModel::ManiaMightyModel()
 {
@@ -449,7 +449,7 @@ void ManiaMightyModel::setBaseVisibility(bool newVisible)
     baseVisible = newVisible;
 }
 
-std::list<TexturedModel*>* ManiaMightyModel::getModels()
+std::vector<TexturedModel*>* ManiaMightyModel::getModels()
 {
     return models;
 }

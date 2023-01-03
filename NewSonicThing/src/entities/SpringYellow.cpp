@@ -15,7 +15,7 @@
 #include <iostream>
 #include <cmath>
 
-std::list<TexturedModel*> SpringYellow::models;
+std::vector<TexturedModel*> SpringYellow::models;
 
 SpringYellow::SpringYellow()
 {
@@ -73,7 +73,7 @@ void SpringYellow::step()
     }
 }
 
-std::list<TexturedModel*>* SpringYellow::getModels()
+std::vector<TexturedModel*>* SpringYellow::getModels()
 {
     return &SpringYellow::models;
 }

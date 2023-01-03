@@ -12,7 +12,7 @@
 #include "../particles/particle.hpp"
 #include "../particles/particlemaster.hpp"
 
-std::list<TexturedModel*> WoodBox::models;
+std::vector<TexturedModel*> WoodBox::models;
 CollisionModel* WoodBox::cmOriginal = nullptr;
 
 WoodBox::WoodBox(float x, float y, float z, float /*rot*/)
@@ -79,7 +79,7 @@ void WoodBox::step()
     }
 }
 
-std::list<TexturedModel*>* WoodBox::getModels()
+std::vector<TexturedModel*>* WoodBox::getModels()
 {
     return &WoodBox::models;
 }

@@ -6,8 +6,8 @@
 #include "../dummy.hpp"
 #include "../../toolbox/maths.hpp"
 
-std::list<TexturedModel*> RH_Blimp::modelsBlimp;
-std::list<TexturedModel*> RH_Blimp::modelsSpotlight;
+std::vector<TexturedModel*> RH_Blimp::modelsBlimp;
+std::vector<TexturedModel*> RH_Blimp::modelsSpotlight;
 
 RH_Blimp::RH_Blimp()
 {
@@ -61,7 +61,7 @@ void RH_Blimp::step()
     spotlight->updateTransformationMatrix();
 }
 
-std::list<TexturedModel*>* RH_Blimp::getModels()
+std::vector<TexturedModel*>* RH_Blimp::getModels()
 {
     return &RH_Blimp::modelsBlimp;
 }

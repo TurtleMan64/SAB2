@@ -21,8 +21,8 @@
 #include <algorithm>
 #include <cmath>
 
-std::vector<std::list<TexturedModel*>> EggPawn::modelsWalk;
-std::list<TexturedModel*> EggPawn::modelsStand;
+std::vector<std::vector<TexturedModel*>> EggPawn::modelsWalk;
+std::vector<TexturedModel*> EggPawn::modelsStand;
 std::vector<EggPawn*> EggPawn::pawns;
 
 EggPawn::EggPawn()
@@ -188,7 +188,7 @@ void EggPawn::die()
     Global::gameScore += 100;
 }
 
-std::list<TexturedModel*>* EggPawn::getModels()
+std::vector<TexturedModel*>* EggPawn::getModels()
 {
     if (isWalking)
     {
@@ -214,7 +214,7 @@ void EggPawn::loadStaticModels()
 
     for (int i = 0; i < 31; i++)
     {
-        std::list<TexturedModel*> models;
+        std::vector<TexturedModel*> models;
         EggPawn::modelsWalk.push_back(models);
     }
 

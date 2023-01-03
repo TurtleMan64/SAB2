@@ -9,7 +9,7 @@ class TexturedModel;
 class DL_Plant2 : public Entity
 {
 private:
-    static std::list<TexturedModel*> models;
+    static std::vector<TexturedModel*> models;
 
 public:
     DL_Plant2();
@@ -21,7 +21,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

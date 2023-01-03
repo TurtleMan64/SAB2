@@ -9,7 +9,7 @@ class TexturedModel;
 class DP_BigShine : public Entity
 {
 private:
-    static std::list<TexturedModel*> models;
+    static std::vector<TexturedModel*> models;
 
 public:
     DP_BigShine();
@@ -17,7 +17,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

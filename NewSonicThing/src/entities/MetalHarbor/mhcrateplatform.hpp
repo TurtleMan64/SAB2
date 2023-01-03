@@ -28,9 +28,9 @@ private:
     int platformType;
 
     //The visual model of the long crate platform
-    static std::list<TexturedModel*> modelsCratePlatformLong;
-    static std::list<TexturedModel*> modelsCratePlatformCrate;
-    static std::list<TexturedModel*> modelsCratePlatformNoCrate;
+    static std::vector<TexturedModel*> modelsCratePlatformLong;
+    static std::vector<TexturedModel*> modelsCratePlatformCrate;
+    static std::vector<TexturedModel*> modelsCratePlatformNoCrate;
 
     //The collision model
     static CollisionModel* cmCratePlatformLong;
@@ -104,7 +104,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

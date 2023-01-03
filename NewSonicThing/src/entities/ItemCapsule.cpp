@@ -23,20 +23,20 @@
 #include <iostream>
 #include <cmath>
 
-std::list<TexturedModel*> ItemCapsule::modelsAnchoredBase;
-std::list<TexturedModel*> ItemCapsule::modelsAnchoredGlass;
-std::list<TexturedModel*> ItemCapsule::modelsFloatingBase;
-std::list<TexturedModel*> ItemCapsule::modelsFloatingGlass;
+std::vector<TexturedModel*> ItemCapsule::modelsAnchoredBase;
+std::vector<TexturedModel*> ItemCapsule::modelsAnchoredGlass;
+std::vector<TexturedModel*> ItemCapsule::modelsFloatingBase;
+std::vector<TexturedModel*> ItemCapsule::modelsFloatingGlass;
 
-std::list<TexturedModel*> ItemCapsule::modelsItem1Up;
-std::list<TexturedModel*> ItemCapsule::modelsItemBomb;
-std::list<TexturedModel*> ItemCapsule::modelsItemInvincible;
-std::list<TexturedModel*> ItemCapsule::modelsItemBarrierG;
-std::list<TexturedModel*> ItemCapsule::modelsItemRing5;
-std::list<TexturedModel*> ItemCapsule::modelsItemRing10;
-std::list<TexturedModel*> ItemCapsule::modelsItemRing20;
-std::list<TexturedModel*> ItemCapsule::modelsItemSpeedUp;
-std::list<TexturedModel*> ItemCapsule::modelsItemBarrierB;
+std::vector<TexturedModel*> ItemCapsule::modelsItem1Up;
+std::vector<TexturedModel*> ItemCapsule::modelsItemBomb;
+std::vector<TexturedModel*> ItemCapsule::modelsItemInvincible;
+std::vector<TexturedModel*> ItemCapsule::modelsItemBarrierG;
+std::vector<TexturedModel*> ItemCapsule::modelsItemRing5;
+std::vector<TexturedModel*> ItemCapsule::modelsItemRing10;
+std::vector<TexturedModel*> ItemCapsule::modelsItemRing20;
+std::vector<TexturedModel*> ItemCapsule::modelsItemSpeedUp;
+std::vector<TexturedModel*> ItemCapsule::modelsItemBarrierB;
 
 ItemCapsule::ItemCapsule()
 {
@@ -252,7 +252,7 @@ void ItemCapsule::die()
                 }
             }
 
-            std::list<std::unordered_set<Entity*>*> nearbyChunkedEntities;
+            std::vector<std::unordered_set<Entity*>*> nearbyChunkedEntities;
             Global::getNearbyEntities(position.x, position.z, &nearbyChunkedEntities, BOMB_RADIUS);
             for (auto set : nearbyChunkedEntities)
             {
@@ -298,7 +298,7 @@ void ItemCapsule::die()
     HUD::displayItem(itemType);
 }
 
-std::list<TexturedModel*>* ItemCapsule::getModels()
+std::vector<TexturedModel*>* ItemCapsule::getModels()
 {
     switch (boxType)
     {

@@ -70,10 +70,10 @@ struct MachineStats
 class TC_Kart : public Entity
 {
 private:
-    static std::list<TexturedModel*> models;
+    static std::vector<TexturedModel*> models;
     static std::list<EngineExhaust> exhausts;
     static MachineStats machineBaseStats;
-    static std::list<TexturedModel*> modelsEngine;
+    static std::vector<TexturedModel*> modelsEngine;
 
     const float VEL_SLOWEST = 0.0006f; //Slowest that the car can move
     const float FLOOR_OFFSET = 0.1f; //How much you stay away from the floor
@@ -237,7 +237,7 @@ public:
 
     void setCanMoveTimer(float newTimer);
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     void loadVehicleInfo();
 

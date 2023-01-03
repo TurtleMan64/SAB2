@@ -24,7 +24,7 @@ void FontRenderer::render(
     {
         auto kv = it._Ptr->_Myval;
         FontType* font = kv.first;
-        std::list<GUIText*> listOfTexts = kv.second;
+        std::list<GUIText*> listOfTexts = kv.second; //todo is this creating a local copy of the list?
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, font->getTextureAtlas());
         for (GUIText* text : listOfTexts)

@@ -11,8 +11,8 @@ class Dummy;
 class Spinner : public Entity
 {
 private:
-    static std::list<TexturedModel*> modelsBody;
-    static std::list<TexturedModel*> modelsBlades;
+    static std::vector<TexturedModel*> modelsBody;
+    static std::vector<TexturedModel*> modelsBlades;
     
     constexpr static float activationRange = 140.0f;
     constexpr static float hitRadius = 12.0f;
@@ -35,7 +35,7 @@ public:
 
     void die();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

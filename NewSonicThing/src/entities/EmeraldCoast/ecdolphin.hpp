@@ -9,7 +9,7 @@ class TexturedModel;
 class EC_Dolphin : public Entity
 {
 private:
-    static std::list<TexturedModel*> models;
+    static std::vector<TexturedModel*> models;
 
     float triggerX = 0.0f;
     float triggerY = 0.0f;
@@ -34,7 +34,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

@@ -21,7 +21,7 @@
 #include <iostream>
 #include <cmath>
 
-std::list<TexturedModel*> ItemBalloon::models;
+std::vector<TexturedModel*> ItemBalloon::models;
 
 ItemBalloon::ItemBalloon()
 {
@@ -155,7 +155,7 @@ void ItemBalloon::die()
                 }
             }
 
-            std::list<std::unordered_set<Entity*>*> nearbyChunkedEntities;
+            std::vector<std::unordered_set<Entity*>*> nearbyChunkedEntities;
             Global::getNearbyEntities(position.x, position.z, &nearbyChunkedEntities, BOMB_RADIUS);
             for (auto set : nearbyChunkedEntities)
             {
@@ -201,7 +201,7 @@ void ItemBalloon::die()
     HUD::displayItem(itemType);
 }
 
-std::list<TexturedModel*>* ItemBalloon::getModels()
+std::vector<TexturedModel*>* ItemBalloon::getModels()
 {
     return &ItemBalloon::models;
 }

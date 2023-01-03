@@ -14,7 +14,7 @@
 #include <iostream>
 #include <cmath>
 
-std::list<TexturedModel*> EC_Seagull::models;
+std::vector<TexturedModel*> EC_Seagull::models;
 
 EC_Seagull::EC_Seagull()
 {
@@ -98,7 +98,7 @@ void EC_Seagull::step()
     }
 }
 
-std::list<TexturedModel*>* EC_Seagull::getModels()
+std::vector<TexturedModel*>* EC_Seagull::getModels()
 {
     return &EC_Seagull::models;
 }

@@ -74,6 +74,8 @@ PlayerKnuckles::PlayerKnuckles(float x, float y, float z)
         homingAttackReticle = new GuiImage(LoaderGL::loadTexture("res/Images/HomingReticleSmooth.png"), 0.5f, 0.5f, 0.1f/aspectRatio, 0.1f, 0); INCR_NEW("GuiImage")
         homingAttackReticle->visible = true;
     }
+
+    nearbyEntities.reserve(10);
 }
 
 PlayerKnuckles::~PlayerKnuckles()
@@ -165,8 +167,7 @@ void PlayerKnuckles::step()
             lightdashTrailProgress = -1.0f;
 
             //search through close entities to find rings
-            std::list<std::unordered_set<Entity*>*> entities;
-            Global::getNearbyEntities(position.x, position.z, &entities, lightdashStartRingMinDist);
+            Global::getNearbyEntities(position.x, position.z, &nearbyEntities, lightdashStartRingMinDist);
 
             //keep track of rings we've already used, to not use them again
             std::unordered_set<Entity*> alreadyUsedRings;
@@ -175,10 +176,12 @@ void PlayerKnuckles::step()
             Vector3f* closestPoint = nullptr;
             Entity* closestEntity = nullptr;
 
-            for (std::unordered_set<Entity*>* set : entities)
+            for (std::unordered_set<Entity*>* set : nearbyEntities)
             {
-                for (Entity* e : (*set))
+                for (auto it = set->cbegin(); it != set->cend(); it++)
                 {
+                    Entity* e = it._Ptr->_Myval;
+
                     if (!e->canLightdashOn())
                     {
                         continue;
@@ -216,16 +219,18 @@ void PlayerKnuckles::step()
                 {
                     Vector3f center = lightdashTrail.back();
                     //search through close entities to find rings
-                    Global::getNearbyEntities(center.x, center.z, &entities, lightdashContinueRingMinDist);
+                    Global::getNearbyEntities(center.x, center.z, &nearbyEntities, lightdashContinueRingMinDist);
 
                     float bestScore = -100000000000.0f;
                     Vector3f* bestPoint = nullptr;
                     Entity* bestEntity = nullptr;
 
-                    for (std::unordered_set<Entity*>* set : entities)
+                    for (std::unordered_set<Entity*>* set : nearbyEntities)
                     {
-                        for (Entity* e : (*set))
+                        for (auto it = set->cbegin(); it != set->cend(); it++)
                         {
+                            Entity* e = it._Ptr->_Myval;
+
                             if (!e->canLightdashOn() || alreadyUsedRings.find(e) != alreadyUsedRings.end())
                             {
                                 continue;
@@ -340,35 +345,6 @@ void PlayerKnuckles::step()
             lightdashTrailProgress = -1.0f;
         }
     }
-
-    //Homing attack
-    //homingAttackReticle->visible = (false);
-    //GuiManager::addGuiToRender(homingAttackReticle);
-    //if (onGround)
-    //{
-    //    homingAttackTimer = -1.0f;
-    //    justHomingAttacked = false;
-    //    isHomingOnPoint = false;
-    //}
-    //else
-    //{
-    //    if ((isBall || isJumping) && !justHomingAttacked && !isLightdashing)
-    //    {
-    //        Vector3f homeTar(0,0,0);
-    //        bool foundTarget = findHomingTarget(&homeTar);
-    //        if (foundTarget && !(canMoveTimer > 0.0f || Global::finishStageTimer >= 0.0f || hitTimer > 0.0f || deadTimer > -1.0f || hitFlashingTimer > 0.0f))
-    //        {
-    //            Vector2f pos = Maths::calcScreenCoordsOfWorldPoint(&homeTar);
-    //            homingAttackReticle->getPosition()->set(&pos);
-    //            homingAttackReticle->visible = (true);
-    //        }
-    //
-    //        if (inputJump && !inputJumpPrevious)
-    //        {
-    //            homingAttack(&homeTar, foundTarget);
-    //        }
-    //    }
-    //}
 
     //gliding
     if (onGround)
@@ -2360,8 +2336,7 @@ bool PlayerKnuckles::findHomingTarget(Vector3f* target)
     bool lookingForClosest = (stickRadius < 0.1f);
     
     //search through close entities to find rings
-    std::list<std::unordered_set<Entity*>*> entities;
-    Global::getNearbyEntities(position.x, position.z, &entities, homingAttackRangeMax);
+    Global::getNearbyEntities(position.x, position.z, &nearbyEntities, homingAttackRangeMax);
 
     float closestDist = homingAttackRangeMax*homingAttackRangeMax;
     float bestDotProduct = -1.0f;
@@ -2371,10 +2346,12 @@ bool PlayerKnuckles::findHomingTarget(Vector3f* target)
 
     if (lookingForClosest)
     {
-        for (std::unordered_set<Entity*>* set : entities)
+        for (std::unordered_set<Entity*>* set : nearbyEntities)
         {
-            for (Entity* e : (*set))
+            for (auto it = set->cbegin(); it != set->cend(); it++)
             {
+                Entity* e = it._Ptr->_Myval;
+
                 if (!e->canHomingAttackOn())
                 {
                     continue;
@@ -2398,10 +2375,12 @@ bool PlayerKnuckles::findHomingTarget(Vector3f* target)
     }
     else 
     {
-        for (std::unordered_set<Entity*>* set : entities)
+        for (std::unordered_set<Entity*>* set : nearbyEntities)
         {
-            for (Entity* e : (*set))
+            for (auto it = set->cbegin(); it != set->cend(); it++)
             {
+                Entity* e = it._Ptr->_Myval;
+
                 if (!e->canHomingAttackOn())
                 {
                     continue;
@@ -3043,7 +3022,7 @@ void PlayerKnuckles::setInputs()
     }
 }
 
-std::list<TexturedModel*>* PlayerKnuckles::getModels()
+std::vector<TexturedModel*>* PlayerKnuckles::getModels()
 {
     return nullptr;
 }

@@ -8,7 +8,7 @@
 
 #include <list>
 
-std::list<TexturedModel*> StagePass3::models;
+std::vector<TexturedModel*> StagePass3::models;
 
 StagePass3::StagePass3()
 {
@@ -45,7 +45,7 @@ void StagePass3::step()
 
 }
 
-std::list<TexturedModel*>* StagePass3::getModels()
+std::vector<TexturedModel*>* StagePass3::getModels()
 {
     return &StagePass3::models;
 }

@@ -10,7 +10,7 @@ class Source;
 class LostChao : public Entity
 {
 private:
-    static std::list<TexturedModel*> models;
+    static std::vector<TexturedModel*> models;
 
     Source* sourceCry = nullptr;
 
@@ -21,7 +21,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

@@ -8,10 +8,10 @@
 #include "../../loading/modelloader.hpp"
 #include "../../toolbox/maths.hpp"
 
-std::list<TexturedModel*> SR_StageManager::modelsSkyPass1;
-std::list<TexturedModel*> SR_StageManager::modelsSkyPass2;
-std::list<TexturedModel*> SR_StageManager::modelsSkyPass3;
-std::list<TexturedModel*> SR_StageManager::modelsSkyTransparent;
+std::vector<TexturedModel*> SR_StageManager::modelsSkyPass1;
+std::vector<TexturedModel*> SR_StageManager::modelsSkyPass2;
+std::vector<TexturedModel*> SR_StageManager::modelsSkyPass3;
+std::vector<TexturedModel*> SR_StageManager::modelsSkyTransparent;
 
 SR_StageManager::SR_StageManager()
 {
@@ -45,7 +45,7 @@ void SR_StageManager::step()
     skyTransparent->updateTransformationMatrix();
 }
 
-std::list<TexturedModel*>* SR_StageManager::getModels()
+std::vector<TexturedModel*>* SR_StageManager::getModels()
 {
     return &SR_StageManager::modelsSkyPass1;
 }

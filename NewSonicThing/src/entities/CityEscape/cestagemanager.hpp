@@ -9,7 +9,7 @@ class TexturedModel;
 class CE_StageManager : public Entity
 {
 private:
-    static std::list<TexturedModel*> modelsSkydome;
+    static std::vector<TexturedModel*> modelsSkydome;
     bool playedBGM;
 
 public:
@@ -17,7 +17,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

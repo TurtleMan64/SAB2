@@ -21,8 +21,8 @@
 #include <iostream>
 #include <cmath>
 
-std::list<TexturedModel*> EggPawnGun::modelsBody;
-std::list<TexturedModel*> EggPawnGun::modelsGun;
+std::vector<TexturedModel*> EggPawnGun::modelsBody;
+std::vector<TexturedModel*> EggPawnGun::modelsGun;
 
 EggPawnGun::EggPawnGun()
 {
@@ -202,7 +202,7 @@ void EggPawnGun::die()
     Global::gameScore += 100;
 }
 
-std::list<TexturedModel*>* EggPawnGun::getModels()
+std::vector<TexturedModel*>* EggPawnGun::getModels()
 {
     return &EggPawnGun::modelsBody;
 }

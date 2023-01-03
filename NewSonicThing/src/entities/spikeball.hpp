@@ -10,7 +10,7 @@ class TexturedModel;
 class Spikeball : public Entity
 {
 private:
-	static std::list<TexturedModel*> models;
+	static std::vector<TexturedModel*> models;
 
     Vector3f center;
 
@@ -23,7 +23,7 @@ public:
 
 	void step();
 
-	std::list<TexturedModel*>* getModels();
+	std::vector<TexturedModel*>* getModels();
 
 	static void loadStaticModels();
 

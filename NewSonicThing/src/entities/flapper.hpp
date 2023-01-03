@@ -11,13 +11,13 @@ class Dummy;
 class Flapper : public Entity
 {
 private:
-    static std::list<TexturedModel*> modelsRedBody;
-    static std::list<TexturedModel*> modelsRedWingRight;
-    static std::list<TexturedModel*> modelsRedWingLeft;
-    static std::list<TexturedModel*> modelsGreenBody;
-    static std::list<TexturedModel*> modelsGreenWingRight;
-    static std::list<TexturedModel*> modelsGreenWingLeft;
-    static std::list<TexturedModel*> modelsGun;
+    static std::vector<TexturedModel*> modelsRedBody;
+    static std::vector<TexturedModel*> modelsRedWingRight;
+    static std::vector<TexturedModel*> modelsRedWingLeft;
+    static std::vector<TexturedModel*> modelsGreenBody;
+    static std::vector<TexturedModel*> modelsGreenWingRight;
+    static std::vector<TexturedModel*> modelsGreenWingLeft;
+    static std::vector<TexturedModel*> modelsGun;
     
     static constexpr float activationRange = 220.0f;
     static constexpr float lookSpeed = 5.0f;
@@ -53,7 +53,7 @@ public:
 
     void die();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

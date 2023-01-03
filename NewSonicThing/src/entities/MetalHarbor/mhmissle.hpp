@@ -9,7 +9,7 @@ class TexturedModel;
 class MH_Missle : public Entity
 {
 private:
-    static std::list<TexturedModel*> models;
+    static std::vector<TexturedModel*> models;
 
     float timer = 0.0f;
 
@@ -22,7 +22,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

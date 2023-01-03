@@ -18,7 +18,7 @@
 #include <iostream>
 #include <cmath>
 
-std::list<TexturedModel*> EC_Dolphin::models;
+std::vector<TexturedModel*> EC_Dolphin::models;
 
 EC_Dolphin::EC_Dolphin()
 {
@@ -131,7 +131,7 @@ void EC_Dolphin::step()
     }
 }
 
-std::list<TexturedModel*>* EC_Dolphin::getModels()
+std::vector<TexturedModel*>* EC_Dolphin::getModels()
 {
     return &EC_Dolphin::models;
 }

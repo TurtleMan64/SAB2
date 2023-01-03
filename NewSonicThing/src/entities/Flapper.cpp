@@ -22,13 +22,13 @@
 #include <iostream>
 #include <cmath>
 
-std::list<TexturedModel*> Flapper::modelsRedBody;
-std::list<TexturedModel*> Flapper::modelsRedWingRight;
-std::list<TexturedModel*> Flapper::modelsRedWingLeft;
-std::list<TexturedModel*> Flapper::modelsGreenBody;
-std::list<TexturedModel*> Flapper::modelsGreenWingRight;
-std::list<TexturedModel*> Flapper::modelsGreenWingLeft;
-std::list<TexturedModel*> Flapper::modelsGun;
+std::vector<TexturedModel*> Flapper::modelsRedBody;
+std::vector<TexturedModel*> Flapper::modelsRedWingRight;
+std::vector<TexturedModel*> Flapper::modelsRedWingLeft;
+std::vector<TexturedModel*> Flapper::modelsGreenBody;
+std::vector<TexturedModel*> Flapper::modelsGreenWingRight;
+std::vector<TexturedModel*> Flapper::modelsGreenWingLeft;
+std::vector<TexturedModel*> Flapper::modelsGun;
 
 Flapper::Flapper()
 {
@@ -241,7 +241,7 @@ void Flapper::die()
     Global::gameScore += 100;
 }
 
-std::list<TexturedModel*>* Flapper::getModels()
+std::vector<TexturedModel*>* Flapper::getModels()
 {
     if (type == 0)
     {

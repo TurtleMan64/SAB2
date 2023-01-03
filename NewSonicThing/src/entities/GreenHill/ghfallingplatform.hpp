@@ -11,7 +11,7 @@ class CollisionModel;
 class GH_FallingPlatform : public CollideableObject
 {
 private:
-    static std::list<TexturedModel*> models;
+    static std::vector<TexturedModel*> models;
     static CollisionModel* cmOriginal;
     float timer = 0;
 
@@ -21,7 +21,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

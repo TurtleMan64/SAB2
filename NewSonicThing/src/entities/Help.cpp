@@ -20,7 +20,7 @@
 #include <cstring>
 #include <string>
 
-std::list<TexturedModel*> Help::models;
+std::vector<TexturedModel*> Help::models;
 GUIText* Help::messageGUI1 = nullptr;
 GUIText* Help::messageGUI2 = nullptr;
 
@@ -125,7 +125,7 @@ void Help::step()
     }
 }
 
-std::list<TexturedModel*>* Help::getModels()
+std::vector<TexturedModel*>* Help::getModels()
 {
     return &Help::models;
 }

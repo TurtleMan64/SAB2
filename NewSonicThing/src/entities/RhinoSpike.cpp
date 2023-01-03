@@ -20,7 +20,7 @@
 #include <iostream>
 #include <cmath>
 
-std::list<TexturedModel*> RhinoSpike::models;
+std::vector<TexturedModel*> RhinoSpike::models;
 
 RhinoSpike::RhinoSpike()
 {
@@ -376,7 +376,7 @@ void RhinoSpike::applyFriction(float /*frictionToApply*/)
     zVel = 0;
 }
 
-std::list<TexturedModel*>* RhinoSpike::getModels()
+std::vector<TexturedModel*>* RhinoSpike::getModels()
 {
     return &RhinoSpike::models;
 }

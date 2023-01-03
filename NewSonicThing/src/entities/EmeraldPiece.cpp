@@ -19,7 +19,7 @@
 #include <list>
 #include <iostream>
 
-std::list<TexturedModel*> EmeraldPiece::models;
+std::vector<TexturedModel*> EmeraldPiece::models;
 
 float EmeraldPiece::baseScale = 1.0f;
 float EmeraldPiece::lastPieceCollectedTimestamp = 0.0f;
@@ -282,7 +282,7 @@ bool EmeraldPiece::isHardModePiece()
     return hardModePiece;
 }
 
-std::list<TexturedModel*>* EmeraldPiece::getModels()
+std::vector<TexturedModel*>* EmeraldPiece::getModels()
 {
     return &EmeraldPiece::models;
 }

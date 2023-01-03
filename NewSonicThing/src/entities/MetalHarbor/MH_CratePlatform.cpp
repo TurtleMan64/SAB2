@@ -13,9 +13,9 @@
 
 extern float dt;
 
-std::list<TexturedModel*> MH_CratePlatform::modelsCratePlatformLong;
-std::list<TexturedModel*> MH_CratePlatform::modelsCratePlatformCrate;
-std::list<TexturedModel*> MH_CratePlatform::modelsCratePlatformNoCrate;
+std::vector<TexturedModel*> MH_CratePlatform::modelsCratePlatformLong;
+std::vector<TexturedModel*> MH_CratePlatform::modelsCratePlatformCrate;
+std::vector<TexturedModel*> MH_CratePlatform::modelsCratePlatformNoCrate;
 CollisionModel* MH_CratePlatform::cmCratePlatformLong;
 CollisionModel* MH_CratePlatform::cmCratePlatformCrate;
 CollisionModel* MH_CratePlatform::cmCratePlatformNoCrate;
@@ -172,7 +172,7 @@ void MH_CratePlatform::step()
     }
 }
 
-std::list<TexturedModel*>* MH_CratePlatform::getModels()
+std::vector<TexturedModel*>* MH_CratePlatform::getModels()
 {
     //Load the correct model for the platform type
     switch (platformType)

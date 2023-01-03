@@ -10,10 +10,10 @@ class Dummy;
 class SR_StageManager : public Entity
 {
 private:
-    static std::list<TexturedModel*> modelsSkyPass1;
-    static std::list<TexturedModel*> modelsSkyPass2;
-    static std::list<TexturedModel*> modelsSkyPass3;
-    static std::list<TexturedModel*> modelsSkyTransparent;
+    static std::vector<TexturedModel*> modelsSkyPass1;
+    static std::vector<TexturedModel*> modelsSkyPass2;
+    static std::vector<TexturedModel*> modelsSkyPass3;
+    static std::vector<TexturedModel*> modelsSkyTransparent;
 
     Dummy* skyPass2;
     Dummy* skyPass3;
@@ -24,7 +24,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

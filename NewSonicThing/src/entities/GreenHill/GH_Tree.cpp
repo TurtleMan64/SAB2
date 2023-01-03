@@ -10,7 +10,7 @@
 #include <list>
 #include <iostream>
 
-std::list<TexturedModel*> GH_Tree::models;
+std::vector<TexturedModel*> GH_Tree::models;
 
 GH_Tree::GH_Tree()
 {
@@ -35,7 +35,7 @@ void GH_Tree::step()
     
 }
 
-std::list<TexturedModel*>* GH_Tree::getModels()
+std::vector<TexturedModel*>* GH_Tree::getModels()
 {
     return &GH_Tree::models;
 }

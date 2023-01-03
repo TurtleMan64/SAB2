@@ -12,7 +12,7 @@
 #include <list>
 #include <iostream>
 
-std::list<TexturedModel*> DP_Palmtree::models;
+std::vector<TexturedModel*> DP_Palmtree::models;
 CollisionModel* DP_Palmtree::cmOriginal = nullptr;
 
 DP_Palmtree::DP_Palmtree()
@@ -45,7 +45,7 @@ void DP_Palmtree::step()
 
 }
 
-std::list<TexturedModel*>* DP_Palmtree::getModels()
+std::vector<TexturedModel*>* DP_Palmtree::getModels()
 {
     return &DP_Palmtree::models;
 }

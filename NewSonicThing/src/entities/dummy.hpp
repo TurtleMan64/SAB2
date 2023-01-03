@@ -11,17 +11,17 @@ class TexturedModel;
 class Dummy : public Entity
 {
 private:
-    std::list<TexturedModel*>* myModels;
+    std::vector<TexturedModel*>* myModels;
 
 public:
-    Dummy(std::list<TexturedModel*>* models);
+    Dummy(std::vector<TexturedModel*>* models);
 
     void step();
 
     void setRotation(float xr, float yr, float zr, float sr);
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
-    void setModels(std::list<TexturedModel*>* newModels);
+    void setModels(std::vector<TexturedModel*>* newModels);
 };
 #endif

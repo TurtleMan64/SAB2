@@ -10,9 +10,9 @@
 #include "../../particles/particlemaster.hpp"
 #include "../../particles/particleresources.hpp"
 
-std::list<TexturedModel*> DP_StageManager::modelsSkyPass1;
-std::list<TexturedModel*> DP_StageManager::modelsSkyPass2;
-std::list<TexturedModel*> DP_StageManager::modelsSkyTransparent;
+std::vector<TexturedModel*> DP_StageManager::modelsSkyPass1;
+std::vector<TexturedModel*> DP_StageManager::modelsSkyPass2;
+std::vector<TexturedModel*> DP_StageManager::modelsSkyTransparent;
 
 DP_StageManager::DP_StageManager()
 {
@@ -77,7 +77,7 @@ void DP_StageManager::step()
     }
 }
 
-std::list<TexturedModel*>* DP_StageManager::getModels()
+std::vector<TexturedModel*>* DP_StageManager::getModels()
 {
     return &DP_StageManager::modelsSkyPass1;
 }

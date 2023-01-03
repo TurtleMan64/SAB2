@@ -10,8 +10,8 @@ class Dummy;
 class EggPawnGun : public Entity
 {
 private:
-    static std::list<TexturedModel*> modelsBody;
-    static std::list<TexturedModel*> modelsGun;
+    static std::vector<TexturedModel*> modelsBody;
+    static std::vector<TexturedModel*> modelsGun;
     
     static constexpr float activationRange = 140.0f;
     static constexpr float lookSpeed = 5.0f;
@@ -42,7 +42,7 @@ public:
 
     void die();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

@@ -11,7 +11,7 @@ class Triangle3D;
 class TC_Dash : public Entity
 {
 private:
-    static std::list<TexturedModel*> models;
+    static std::vector<TexturedModel*> models;
 
     bool playerIsIn = false;
 
@@ -24,7 +24,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

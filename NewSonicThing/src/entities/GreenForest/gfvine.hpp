@@ -9,7 +9,7 @@ class TexturedModel;
 class GF_Vine : public Entity
 {
 private:
-    static std::list<TexturedModel*> models;
+    static std::vector<TexturedModel*> models;
 
     Vector3f initialDirection; //so you can reset after vine is used
     Vector3f launchDirection; //once you finish, what direction do you go
@@ -50,7 +50,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

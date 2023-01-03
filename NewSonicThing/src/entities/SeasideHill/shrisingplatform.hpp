@@ -10,9 +10,9 @@ class TexturedModel;
 class SH_RisingPlatform : public CollideableObject
 {
 private:
-    static std::list<TexturedModel*> modelsSmall;
-    static std::list<TexturedModel*> modelsMedium;
-    static std::list<TexturedModel*> modelsLarge;
+    static std::vector<TexturedModel*> modelsSmall;
+    static std::vector<TexturedModel*> modelsMedium;
+    static std::vector<TexturedModel*> modelsLarge;
     static CollisionModel* cmSmallOriginal;
     static CollisionModel* cmMediumOriginal;
     static CollisionModel* cmLargeOriginal;
@@ -30,7 +30,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

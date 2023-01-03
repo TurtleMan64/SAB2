@@ -10,8 +10,8 @@ class Dummy;
 class RH_Blimp : public Entity
 {
 private:
-    static std::list<TexturedModel*> modelsBlimp;
-    static std::list<TexturedModel*> modelsSpotlight;
+    static std::vector<TexturedModel*> modelsBlimp;
+    static std::vector<TexturedModel*> modelsSpotlight;
 
     Dummy* spotlight = nullptr;
 
@@ -28,7 +28,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 

@@ -12,7 +12,7 @@
 #include <list>
 #include <iostream>
 
-std::list<TexturedModel*> LowQualityWater::models;
+std::vector<TexturedModel*> LowQualityWater::models;
 
 LowQualityWater::LowQualityWater()
 {
@@ -57,7 +57,7 @@ void LowQualityWater::step()
     }
 }
 
-std::list<TexturedModel*>* LowQualityWater::getModels()
+std::vector<TexturedModel*>* LowQualityWater::getModels()
 {
     return &LowQualityWater::models;
 }

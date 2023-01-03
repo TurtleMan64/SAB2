@@ -11,7 +11,7 @@ class Triangle3D;
 class RhinoTank : public Entity
 {
 private:
-	static std::list<TexturedModel*> models;
+	static std::vector<TexturedModel*> models;
 
     constexpr static float activationRange = 73.0f; //range where they can see sonic
     constexpr static float moveRange = 550.0f; //range where they start wandering around
@@ -48,7 +48,7 @@ public:
 
 	void die();
 
-	std::list<TexturedModel*>* getModels();
+	std::vector<TexturedModel*>* getModels();
 
 	static void loadStaticModels();
 

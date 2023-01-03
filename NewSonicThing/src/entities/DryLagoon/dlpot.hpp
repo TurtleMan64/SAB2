@@ -10,7 +10,7 @@ class TexturedModel;
 class DL_Pot : public CollideableObject
 {
 private:
-    static std::list<TexturedModel*> models;
+    static std::vector<TexturedModel*> models;
 
     static CollisionModel* cmOriginal;
 
@@ -19,7 +19,7 @@ public:
 
     void step();
 
-    std::list<TexturedModel*>* getModels();
+    std::vector<TexturedModel*>* getModels();
 
     static void loadStaticModels();
 
