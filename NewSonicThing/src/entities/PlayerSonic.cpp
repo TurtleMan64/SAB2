@@ -142,6 +142,22 @@ void PlayerSonic::step()
     //Vector3f relativeUpBefore = relativeUp;
     bool onGroundBefore = onGround;
 
+    // Dropdash
+    if (!onGround && inputAction4 && !isStomping && !isLightdashing && !isBouncing && !isHomingOnPoint && !justHomingAttacked && !isGrinding && !isGrabbing)
+    {
+        dropdashTimer += dt;
+
+        if (dropdashTimer >= dropdashTimerMax && !isDropdashing)
+        {
+            isDropdashing = true;
+            AudioPlayer::play(78, &position);
+        }
+    }
+    else
+    {
+        dropdashTimer = 0.0f;
+    }
+
     //Start Lightdash
     if (!isLightdashing)
     {
@@ -365,7 +381,7 @@ void PlayerSonic::step()
     }
     else
     {
-        if ((isBall || isJumping) && !justHomingAttacked && !isLightdashing)
+        if ((isBall || isJumping) && !justHomingAttacked && !isLightdashing && !isDropdashing)
         {
             Vector3f homeTar(0,0,0);
             bool foundTarget = findHomingTarget(&homeTar);
@@ -559,7 +575,7 @@ void PlayerSonic::step()
     }
     else
     {
-        if (inputAction && !inputActionPrevious && (isJumping || isBall) && !isBouncing && !justHomingAttacked && !isStomping && !isLightdashing)
+        if (inputAction && !inputActionPrevious && (isJumping || isBall) && !isBouncing && !justHomingAttacked && !isStomping && !isLightdashing && !isDropdashing)
         {
             vel.y = bounceVel;
             isBouncing = true;
@@ -573,7 +589,7 @@ void PlayerSonic::step()
     }
     else
     {
-        if (inputAction2 && !inputAction2Previous && isJumping && !isBouncing && !justHomingAttacked && !isStomping && !isLightdashing)
+        if (inputAction2 && !inputAction2Previous && isJumping && !isBouncing && !justHomingAttacked && !isStomping && !isLightdashing && !isDropdashing)
         {
             if (sourceStomp != nullptr)
             {
@@ -600,6 +616,7 @@ void PlayerSonic::step()
         isSkidding = false;
         isSpindashing = false;
         isStomping = false;
+        isDropdashing = false;
 
         //sparks
         if (vel.lengthSquared() > 140.0f*140.0f)
@@ -910,7 +927,7 @@ void PlayerSonic::step()
             }
             else if (onGround  == false) //Air to ground
             {
-                if (isBouncing)
+                if (isBouncing) //dont stick to the ground, bounce off it
                 {
                     vel = Maths::bounceVector(&vel, colNormal, bounceFactor);
                     isBall = true;
@@ -927,6 +944,7 @@ void PlayerSonic::step()
                 }
                 else
                 {
+                    //check to see if it is a wall. if so then we cant stick to it
                     if ((CollisionChecker::getCollideTriangle()->isWall() || colNormal->y < wallStickThreshold) && hitSpringTimer == 0.0f) //When you get launched off a spring, we can stick on walls
                     {
                         if (justBounced)
@@ -1005,7 +1023,7 @@ void PlayerSonic::step()
                             //velToAddFromGravity.setLength(-gravityForce*dt);
                         }
                     }
-                    else
+                    else // stick to the ground and start running on it
                     {
                         currentTriangle = CollisionChecker::getCollideTriangle();
                         Vector3f newDirection = Maths::projectOntoPlane(&vel, colNormal);
@@ -1016,7 +1034,20 @@ void PlayerSonic::step()
 
                         relativeUp.set(colNormal);
                         onGround = true;
-                        isBall = false;
+
+                        if (isDropdashing)
+                        {
+                            isDropdashing = false;
+                            isBall = true;
+
+                            AudioPlayer::play(15, &position);
+
+                            vel.setLength(fmaxf(dropdashSpeed, originalSpeed));
+                        }
+                        else
+                        {
+                            isBall = false;
+                        }
                     }
                 }
             }
@@ -1247,7 +1278,7 @@ void PlayerSonic::step()
                     velToAddFromGravity.setLength(-gravityForce*dt);
                     //vel = vel + velToAddFromGravity;
                     #ifdef DEV_MODE
-                    if (Input::inputs.INPUT_RB)
+                    if (Input::inputs.INPUT_LB)
                     {
                        vel = vel - velToAddFromGravity.scaleCopy(4);
                     }
@@ -2065,6 +2096,7 @@ bool PlayerSonic::isVulnerable()
         isBall                  ||
         isSpindashing           ||
         isStomping              ||
+        isDropdashing           ||
         hitTimer > 0.0f         ||
         hitFlashingTimer > 0.0f ||
         invincibleTimer > 0.0f);
@@ -2228,6 +2260,10 @@ void PlayerSonic::updateAnimationValues()
     else if (isLightdashing)
     {
         animationTime = 0;
+    }
+    else if (isDropdashing)
+    {
+        animationTime -= 4000 * dt;
     }
     else if (isDriving)
     {
@@ -2473,6 +2509,11 @@ void PlayerSonic::animate()
         playerModel->setOrientation(dspX, dspY, dspZ, 0, airYaw, 90, airPitch, &relativeUpAnim);
         playerModel->animate(18, 0);
     }
+    else if (isDropdashing)
+    {
+        playerModel->setOrientation(dspX, dspY, dspZ, diffAir, yawAngleAir, pitchAngleAir, animationTime, &relativeUpAnim);
+        playerModel->animate(12, 0);
+    }
     else if (isDriving)
     {
         playerModel->setOrientation(dspX, dspY, dspZ, rotX, rotY, rotZ, rotRoll, &relativeUp);
@@ -2619,6 +2660,7 @@ void PlayerSonic::animate()
         isLightdashing = false;
         isGrabbing = false;
         isGrinding = false;
+        isDropdashing = false;
 
         groundSpeeds = Maths::calculatePlaneSpeed(vel.x, vel.y, vel.z, &relativeUp);
         twistAngleGround = Maths::toDegrees(atan2f(-groundSpeeds.z, groundSpeeds.x));
@@ -2643,6 +2685,7 @@ void PlayerSonic::setInputs()
     inputAction  = Input::inputs.INPUT_ACTION2;
     inputAction2 = Input::inputs.INPUT_ACTION3;
     inputAction3 = Input::inputs.INPUT_ACTION4;
+    inputAction4 = Input::inputs.INPUT_RB;
     inputX       = Input::inputs.INPUT_X;
     inputY       = Input::inputs.INPUT_Y;
     inputX2      = Input::inputs.INPUT_X2;
@@ -2653,6 +2696,7 @@ void PlayerSonic::setInputs()
     inputActionPrevious  = Input::inputs.INPUT_PREVIOUS_ACTION2;
     inputAction2Previous = Input::inputs.INPUT_PREVIOUS_ACTION3;
     inputAction3Previous = Input::inputs.INPUT_PREVIOUS_ACTION4;
+    inputAction4Previous = Input::inputs.INPUT_PREVIOUS_RB;
 
     if (canMoveTimer > 0.0f || Global::finishStageTimer >= 0.0f || hitTimer > 0.0f || deadTimer > -1.0f)
     {
@@ -2660,6 +2704,7 @@ void PlayerSonic::setInputs()
         inputAction  = false;
         inputAction2 = false;
         inputAction3 = false;
+        inputAction4 = false;
         inputX    = 0;
         inputY    = 0;
         inputX2   = 0;
@@ -2670,6 +2715,7 @@ void PlayerSonic::setInputs()
         inputActionPrevious  = false;
         inputAction2Previous = false;
         inputAction3Previous = false;
+        inputAction4Previous = false;
     }
 }
 
@@ -2922,12 +2968,12 @@ bool PlayerSonic::isDying()
 bool PlayerSonic::canDealDamage()
 {
     //return (hitTimer == 0.0f && hitFlashingTimer == 0.0f);
-    return (isBouncing || isBall || isJumping || isSpindashing || isStomping || (invincibleTimer > 0.0f));
+    return (isBouncing || isBall || isJumping || isSpindashing || isStomping || isDropdashing || (invincibleTimer > 0.0f));
 }
 
 bool PlayerSonic::canBreakObjects()
 {
-    return (isBouncing || isBall || isSpindashing) && (vel.lengthSquared() > breakObjectsSpeed*breakObjectsSpeed);
+    return (isBouncing || isBall || isSpindashing || isDropdashing) && (vel.lengthSquared() > breakObjectsSpeed*breakObjectsSpeed);
 }
 
 void PlayerSonic::hitSpring(Vector3f* direction, float power, float lockInputTime, bool resetsCamera)

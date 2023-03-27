@@ -41,6 +41,7 @@ struct InputStruct
     volatile bool INPUT_PREVIOUS_RB;
     volatile bool INPUT_PREVIOUS_LB;
     volatile bool INPUT_PREVIOUS_START;
+    volatile bool INPUT_PREVIOUS_SELECT;
     volatile bool INPUT_PREVIOUS_ESC;
 
     volatile int MENU_X;

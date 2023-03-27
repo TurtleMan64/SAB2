@@ -102,6 +102,7 @@ void Input::pollInputs()
     Input::inputs.INPUT_PREVIOUS_LB      = Input::inputs.INPUT_LB;
     Input::inputs.INPUT_PREVIOUS_RB      = Input::inputs.INPUT_RB;
     Input::inputs.INPUT_PREVIOUS_START   = Input::inputs.INPUT_START;
+    Input::inputs.INPUT_PREVIOUS_SELECT  = Input::inputs.INPUT_SELECT;
     Input::inputs.INPUT_PREVIOUS_ESC     = Input::inputs.INPUT_ESC;
 
     Input::inputs.INPUT_PREVIOUS_X  = Input::inputs.INPUT_X;
@@ -372,7 +373,7 @@ void Input::pollInputs()
 
 
     #ifdef DEV_MODE
-    if (Input::inputs.INPUT_LB && !Input::inputs.INPUT_PREVIOUS_LB)
+    if (Input::inputs.INPUT_SELECT && !Input::inputs.INPUT_PREVIOUS_SELECT)
     {
         if (Global::gameMainPlayer != nullptr)
         {
@@ -420,9 +421,13 @@ void Input::pollInputs()
             //Global::raceLogSize = 0;
         }
     }
-    if (Input::inputs.INPUT_RB && !Input::inputs.INPUT_PREVIOUS_RB)
+    if (glfwGetKey(Display::window, GLFW_KEY_O) == GLFW_PRESS)
     {
-        Global::shouldLogRace = !Global::shouldLogRace;
+        Global::shouldLogRace = false;
+    }
+    if (glfwGetKey(Display::window, GLFW_KEY_P) == GLFW_PRESS)
+    {
+        Global::shouldLogRace = true;
     }
     #endif
 

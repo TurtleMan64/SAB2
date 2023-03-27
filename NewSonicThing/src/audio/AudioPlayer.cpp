@@ -100,6 +100,7 @@ void AudioPlayer::loadSoundEffects()
     AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/Bazooka.ogg"));              //75
     AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/Hint.ogg"));                 //76
     AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/General/RainbowRing.ogg"));          //77
+    AudioPlayer::buffersSFX.push_back(AudioMaster::loadOGG("res/Audio/SFX/Player/DropDash.ogg"));              //78
 }
 
 void AudioPlayer::loadBGM(char* fileName)

@@ -93,6 +93,11 @@ private:
     const float spindashRestartDelayMax = 25.0f/60.0f; // 3.0f/60.0f
     float storedSpindashSpeed = 0;
 
+    bool isDropdashing = false;
+    float dropdashTimer = 0.0f;
+    const float dropdashTimerMax = 0.5f;
+    const float dropdashSpeed = 550.0f;
+
     bool isRunningOnWater = false;
     const float runningOnWaterSpeedThreshold = 480.0f;
     const float runOnWaterTransitionThreshold = 0.75f; //Dot product threshold for running between floor and water
@@ -183,6 +188,8 @@ private:
     bool  inputAction2Previous;
     bool  inputAction3;
     bool  inputAction3Previous;
+    bool  inputAction4;
+    bool  inputAction4Previous;
     float inputX;
     float inputY;
     float inputX2;

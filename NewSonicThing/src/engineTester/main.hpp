@@ -66,7 +66,7 @@ class ResultsScreen;
 #define LVL_FREEZEEZY_PEAK  21
 #define LVL_SWEET_MOUNTAIN  22
 
-//#define DEV_MODE
+#define DEV_MODE
 //#define PERFORMANCE_ANALYSIS
 
 #ifdef DEV_MODE

@@ -142,6 +142,27 @@ void PlayerTails::step()
     //Vector3f relativeUpBefore = relativeUp;
     bool onGroundBefore = onGround;
 
+    // Dropdash
+    if (!onGround && inputAction4 && !isStomping && !isLightdashing && !isBouncing && !isHomingOnPoint && !justHomingAttacked && !isGrinding && !isGrabbing)
+    {
+        dropdashTimer += dt;
+
+        if (dropdashTimer >= dropdashTimerMax && !isDropdashing)
+        {
+            isDropdashing = true;
+            AudioPlayer::play(78, &position);
+        }
+    }
+    else
+    {
+        dropdashTimer = 0.0f;
+    }
+
+    if (isDropdashing)
+    {
+        isFlying = false;
+    }
+
     //Start Lightdash
     if (!isLightdashing)
     {
@@ -368,7 +389,7 @@ void PlayerTails::step()
     }
     else
     {
-        if ((isBall || isJumping) && !justHomingAttacked && !isLightdashing)
+        if ((isBall || isJumping) && !justHomingAttacked && !isLightdashing && !isDropdashing)
         {
             Vector3f homeTar(0,0,0);
             bool foundTarget = findHomingTarget(&homeTar);
@@ -562,7 +583,7 @@ void PlayerTails::step()
     }
     else
     {
-        if (inputAction && !inputActionPrevious && (isJumping || isBall) && !isBouncing && !justHomingAttacked && !isStomping && !isLightdashing)
+        if (inputAction && !inputActionPrevious && (isJumping || isBall) && !isBouncing && !justHomingAttacked && !isStomping && !isLightdashing && !isDropdashing)
         {
             vel.y = bounceVel;
             isBouncing = true;
@@ -603,7 +624,7 @@ void PlayerTails::step()
         {
             if (!isFlying)
             {
-                if ((isJumping || isBall) && !isBouncing && !justHomingAttacked && !isStomping && !isLightdashing)
+                if ((isJumping || isBall) && !isBouncing && !justHomingAttacked && !isStomping && !isLightdashing && !isDropdashing)
                 {
                     isFlying = true;
                     isJumping = false;
@@ -667,6 +688,7 @@ void PlayerTails::step()
         isSkidding = false;
         isSpindashing = false;
         isStomping = false;
+        isDropdashing = false;
 
         //sparks
         if (vel.lengthSquared() > 140.0f*140.0f)
@@ -1082,7 +1104,20 @@ void PlayerTails::step()
 
                         relativeUp.set(colNormal);
                         onGround = true;
-                        isBall = false;
+
+                        if (isDropdashing)
+                        {
+                            isDropdashing = false;
+                            isBall = true;
+
+                            AudioPlayer::play(15, &position);
+
+                            vel.setLength(fmaxf(dropdashSpeed, originalSpeed));
+                        }
+                        else
+                        {
+                            isBall = false;
+                        }
                     }
                 }
             }
@@ -1310,7 +1345,7 @@ void PlayerTails::step()
                     velToAddFromGravity.setLength(-gravityForce*dt);
                     //vel = vel + velToAddFromGravity;
                     #ifdef DEV_MODE
-                    if (Input::inputs.INPUT_RB)
+                    if (Input::inputs.INPUT_LB)
                     {
                        vel = vel - velToAddFromGravity.scaleCopy(4);
                     }
@@ -2120,6 +2155,7 @@ bool PlayerTails::isVulnerable()
         isBall                  ||
         isSpindashing           ||
         isStomping              ||
+        isDropdashing           ||
         hitTimer > 0.0f         ||
         hitFlashingTimer > 0.0f ||
         invincibleTimer > 0.0f);
@@ -2283,6 +2319,10 @@ void PlayerTails::updateAnimationValues()
     else if (isLightdashing)
     {
         animationTime = 0;
+    }
+    else if (isDropdashing)
+    {
+        animationTime -= 4000 * dt;
     }
     else if (isGrabbing)
     {
@@ -2528,6 +2568,11 @@ void PlayerTails::animate()
         playerModel->setOrientation(dspX, dspY, dspZ, 0, airYaw, 90, airPitch, &relativeUpAnim);
         playerModel->animate(18, 0);
     }
+    else if (isDropdashing)
+    {
+        playerModel->setOrientation(dspX, dspY, dspZ, diffAir, yawAngleAir, pitchAngleAir, animationTime, &relativeUpAnim);
+        playerModel->animate(12, 0);
+    }
     else if (isGrabbing)
     {
         playerModel->setOrientation(dspX, dspY, dspZ, diffGround, yawAngleGround, pitchAngleGround, 0, &relativeUpAnim);
@@ -2682,6 +2727,7 @@ void PlayerTails::animate()
         isLightdashing = false;
         isGrabbing = false;
         isGrinding = false;
+        isDropdashing = false;
 
         groundSpeeds = Maths::calculatePlaneSpeed(vel.x, vel.y, vel.z, &relativeUp);
         twistAngleGround = Maths::toDegrees(atan2f(-groundSpeeds.z, groundSpeeds.x));
@@ -2706,6 +2752,7 @@ void PlayerTails::setInputs()
     inputAction  = Input::inputs.INPUT_ACTION2;
     inputAction2 = Input::inputs.INPUT_ACTION3;
     inputAction3 = Input::inputs.INPUT_ACTION4;
+    inputAction4 = Input::inputs.INPUT_RB;
     inputX       = Input::inputs.INPUT_X;
     inputY       = Input::inputs.INPUT_Y;
     inputX2      = Input::inputs.INPUT_X2;
@@ -2716,6 +2763,7 @@ void PlayerTails::setInputs()
     inputActionPrevious  = Input::inputs.INPUT_PREVIOUS_ACTION2;
     inputAction2Previous = Input::inputs.INPUT_PREVIOUS_ACTION3;
     inputAction3Previous = Input::inputs.INPUT_PREVIOUS_ACTION4;
+    inputAction4Previous = Input::inputs.INPUT_PREVIOUS_RB;
 
     if (canMoveTimer > 0.0f || Global::finishStageTimer >= 0.0f || hitTimer > 0.0f || deadTimer > -1.0f)
     {
@@ -2723,6 +2771,7 @@ void PlayerTails::setInputs()
         inputAction  = false;
         inputAction2 = false;
         inputAction3 = false;
+        inputAction4 = false;
         inputX    = 0;
         inputY    = 0;
         inputX2   = 0;
@@ -2733,6 +2782,7 @@ void PlayerTails::setInputs()
         inputActionPrevious  = false;
         inputAction2Previous = false;
         inputAction3Previous = false;
+        inputAction4Previous = false;
     }
 }
 
@@ -2973,12 +3023,12 @@ bool PlayerTails::isDying()
 bool PlayerTails::canDealDamage()
 {
     //return (hitTimer == 0.0f && hitFlashingTimer == 0.0f);
-    return (isBouncing || isBall || isJumping || isSpindashing || isStomping || (invincibleTimer > 0.0f));
+    return (isBouncing || isBall || isJumping || isSpindashing || isStomping || isDropdashing || (invincibleTimer > 0.0f));
 }
 
 bool PlayerTails::canBreakObjects()
 {
-    return (isBouncing || isBall || isSpindashing) && (vel.lengthSquared() > breakObjectsSpeed*breakObjectsSpeed);
+    return (isBouncing || isBall || isSpindashing || isDropdashing) && (vel.lengthSquared() > breakObjectsSpeed*breakObjectsSpeed);
 }
 
 void PlayerTails::hitSpring(Vector3f* direction, float power, float lockInputTime, bool resetsCamera)
