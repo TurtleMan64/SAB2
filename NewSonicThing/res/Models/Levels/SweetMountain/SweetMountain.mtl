@@ -1,0 +1,99 @@
+# Material Count: 16
+
+newmtl mat1.024
+Ns 20
+Ni 0.02
+d 1
+map_Kd fct_o_cw1_huafu01.png
+
+newmtl mat31.016
+Ns 20
+Ni 0.02
+d 1
+map_Kd fct_o_ty1_sweet01.png
+
+newmtl mat10.017
+Ns 20
+Ni 0.02
+d 1
+map_Kd fct_o_jh1_lollipopc01.png
+
+newmtl mat18.015
+Ns 20
+Ni 0.02
+d 1
+map_Kd fct_o_kt3_biscuitb.png
+
+newmtl mat1.026
+Ns 20
+Ni 0.02
+d 1
+map_Kd fct_o_jh1_lollipopa01.png
+
+newmtl mat32.013
+Ns 20
+Ni 0.02
+d 1
+map_Kd fct_o_ym2_oreo.png
+
+newmtl None_fct_o_jh1_criff01.png
+Ns 20
+Ni 0.02
+d 1
+map_Kd fct_o_jh1_criff01.png
+
+newmtl None
+Ns 20
+Ni 0.02
+d 1
+scrollY -1
+map_Kd afct_i_tb1_chocolate.png
+
+newmtl mat20.018
+Ns 20
+Ni 0.02
+d 1
+map_Kd fct_o_kt3_chocobar01.png
+
+newmtl mat21.018
+Ns 20
+Ni 0.02
+d 1
+map_Kd fct_o_kt3_chocobar02.png
+
+newmtl mat32.016
+Ns 20
+Ni 0.02
+d 1
+map_Kd fct_o_ty1_sweet02.png
+
+newmtl mat10.004
+Ns 20
+Ni 0.02
+d 1
+map_Kd fct_o_jh1_criff02.png
+
+newmtl mat2.014
+Ns 20
+Ni 0.02
+d 1
+map_Kd fct_o_cw1_huafu02.png
+
+newmtl mat17.015
+Ns 20
+Ni 0.02
+d 1
+map_Kd fct_o_kt3_biscuita.png
+
+newmtl None_fct_o_jh1_cream01.png
+Ns 20
+Ni 0.02
+d 1
+map_Kd fct_o_jh1_cream01.png
+
+newmtl candystick
+Ns 20
+Ni 0.02
+d 1
+map_Kd cane.png
+

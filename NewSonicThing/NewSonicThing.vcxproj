@@ -286,6 +286,7 @@
     <ClCompile Include="src\entities\StagePass2.cpp" />
     <ClCompile Include="src\entities\StagePass3.cpp" />
     <ClCompile Include="src\entities\StageTransparent.cpp" />
+    <ClCompile Include="src\entities\SweetMountain\Gumdrop.cpp" />
     <ClCompile Include="src\entities\SweetMountain\SM_StageManager.cpp" />
     <ClCompile Include="src\entities\Tutorial\T_StageManager.cpp" />
     <ClCompile Include="src\entities\TwinkleCircuit\TC_Dash.cpp" />
@@ -492,6 +493,7 @@
     <ClInclude Include="src\entities\stagepass2.hpp" />
     <ClInclude Include="src\entities\stagepass3.hpp" />
     <ClInclude Include="src\entities\stagetransparent.hpp" />
+    <ClInclude Include="src\entities\SweetMountain\gumdrop.hpp" />
     <ClInclude Include="src\entities\SweetMountain\smstagemanager.hpp" />
     <ClInclude Include="src\entities\Tutorial\tstagemanager.hpp" />
     <ClInclude Include="src\entities\TwinkleCircuit\tcdash.hpp" />

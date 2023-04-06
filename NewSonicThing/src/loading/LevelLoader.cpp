@@ -138,6 +138,7 @@
 #include "../entities/spinner.hpp"
 #include "../entities/SweetMountain/smstagemanager.hpp"
 #include "../entities/eggpawngun.hpp"
+#include "../entities/SweetMountain/gumdrop.hpp"
 
 int LevelLoader::numLevels = 0;
 
@@ -2282,6 +2283,27 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             return;
         }
 
+        case 125: //Sweet Mountain specific
+        {
+            switch (toInt(dat[1]))
+            {
+            case 0: //Gumdrop
+            {
+                Gumdrop::loadStaticModels();
+                Gumdrop* gumdrop = new Gumdrop(
+                    toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]),  //position
+                    toFloat(dat[5]), toFloat(dat[6]), toFloat(dat[7]),  //rotation direction
+                    toFloat(dat[8]));                                   //power
+                INCR_NEW("Entity");
+                chunkedEntities->push_back(gumdrop);
+                return;
+            }
+
+            default:
+                return;
+            }
+        }
+
         default: return;
     }
 }
@@ -2468,6 +2490,7 @@ void LevelLoader::freeAllStaticModels()
     Spinner::deleteStaticModels();
     SM_StageManager::deleteStaticModels();
     EggPawnGun::deleteStaticModels();
+    Gumdrop::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()

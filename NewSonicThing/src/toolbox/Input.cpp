@@ -381,15 +381,16 @@ void Input::pollInputs()
             float zrot = 0;
             Maths::sphereAnglesFromPosition(&Global::gameMainPlayer->vel, &yrot, &zrot);
             //printf("Time of day: %f\n", SkyManager::getTimeOfDay());
-            printf("position = %f %f %f\n", Global::gameMainPlayer->position.x, Global::gameMainPlayer->position.y, Global::gameMainPlayer->position.z);
-            //printf("%f %f %f\n", Global::gameMainPlayer->position.x, Global::gameMainPlayer->position.y, Global::gameMainPlayer->position.z);
-            printf("velocity = %f %f %f\n", Global::gameMainPlayer->vel.x, Global::gameMainPlayer->vel.y, Global::gameMainPlayer->vel.z);
-            printf("normal   = %f %f %f\n", Global::gameMainPlayer->relativeUp.x, Global::gameMainPlayer->relativeUp.y, Global::gameMainPlayer->relativeUp.z);
-            printf("yrot     = %f\n", yrot);
+            Vector3f p = Global::gameMainPlayer->position + Global::gameMainPlayer->relativeUp.scaleCopy(0.0f);
+            //printf("position = %f %f %f %f %f %f\n", p.x, p.y, p.z, Global::gameMainPlayer->relativeUp.x, Global::gameMainPlayer->relativeUp.y, Global::gameMainPlayer->relativeUp.z);
+            printf("%f %f %f %f\n", Global::gameMainPlayer->position.x, Global::gameMainPlayer->position.y+25, Global::gameMainPlayer->position.z, yrot);
+            //printf("velocity = %f %f %f\n", Global::gameMainPlayer->vel.x, Global::gameMainPlayer->vel.y, Global::gameMainPlayer->vel.z);
+            //printf("normal   = %f %f %f\n", Global::gameMainPlayer->relativeUp.x, Global::gameMainPlayer->relativeUp.y, Global::gameMainPlayer->relativeUp.z);
+            //printf("yrot     = %f\n", yrot);
             //printf("cam yaw = %f   cam pitch: %f\n", Global::gameCamera->getYaw(), Global::gameCamera->getPitch());
-            printf("cam pos  = %f %f %f\n", Global::gameCamera->eye.x, Global::gameCamera->eye.y, Global::gameCamera->eye.z);
-            printf("cam dir  = %f %f %f\n", Global::gameMainPlayer->camDir.x, Global::gameMainPlayer->camDir.y, Global::gameMainPlayer->camDir.z);
-            printf("\n");
+            //printf("cam pos  = %f %f %f\n", Global::gameCamera->eye.x, Global::gameCamera->eye.y, Global::gameCamera->eye.z);
+            //printf("cam dir  = %f %f %f\n", Global::gameMainPlayer->camDir.x, Global::gameMainPlayer->camDir.y, Global::gameMainPlayer->camDir.z);
+            //printf("\n");
 
             //printf("106 1  %f %f %f  %f %f %f   %f %f %f\n", 
             //    Global::gameKart->position.x, Global::gameKart->position.y, Global::gameKart->position.z,

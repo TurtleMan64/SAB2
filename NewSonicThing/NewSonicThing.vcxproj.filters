@@ -744,6 +744,9 @@
     <ClCompile Include="src\entities\EggPawnGun.cpp">
       <Filter>Source Files\entities</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\SweetMountain\Gumdrop.cpp">
+      <Filter>Source Files\entities\SweetMountain</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.hpp">
@@ -1351,6 +1354,9 @@
     </ClInclude>
     <ClInclude Include="src\entities\eggpawngun.hpp">
       <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\SweetMountain\gumdrop.hpp">
+      <Filter>Source Files\entities\SweetMountain</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

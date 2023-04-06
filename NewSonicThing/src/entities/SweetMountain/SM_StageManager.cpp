@@ -87,12 +87,12 @@ void SM_StageManager::loadStaticModels()
     printf("Loading SM_StageManager static models...\n");
     #endif
 
-    ModelLoader::loadModel(&SM_StageManager::modelsSky0, "res/Models/Levels/Candy/Sky/", "0");
-    ModelLoader::loadModel(&SM_StageManager::modelsSky1, "res/Models/Levels/Candy/Sky/", "1");
-    ModelLoader::loadModel(&SM_StageManager::modelsSky2, "res/Models/Levels/Candy/Sky/", "2");
-    ModelLoader::loadModel(&SM_StageManager::modelsSky3, "res/Models/Levels/Candy/Sky/", "3");
-    ModelLoader::loadModel(&SM_StageManager::modelsSky4, "res/Models/Levels/Candy/Sky/", "4");
-    ModelLoader::loadModel(&SM_StageManager::modelsSky5, "res/Models/Levels/Candy/Sky/", "5");
+    ModelLoader::loadModel(&SM_StageManager::modelsSky0, "res/Models/Levels/SweetMountain/Sky/", "0");
+    ModelLoader::loadModel(&SM_StageManager::modelsSky1, "res/Models/Levels/SweetMountain/Sky/", "1");
+    ModelLoader::loadModel(&SM_StageManager::modelsSky2, "res/Models/Levels/SweetMountain/Sky/", "2");
+    ModelLoader::loadModel(&SM_StageManager::modelsSky3, "res/Models/Levels/SweetMountain/Sky/", "3");
+    ModelLoader::loadModel(&SM_StageManager::modelsSky4, "res/Models/Levels/SweetMountain/Sky/", "4");
+    ModelLoader::loadModel(&SM_StageManager::modelsSky5, "res/Models/Levels/SweetMountain/Sky/", "5");
 }
 
 void SM_StageManager::deleteStaticModels()

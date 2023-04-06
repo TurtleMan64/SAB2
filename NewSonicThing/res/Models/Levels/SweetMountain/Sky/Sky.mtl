@@ -1,0 +1,20 @@
+# Material Count: 3
+
+newmtl mat3.028
+Ns 10.000000
+Ni 0.000000
+d 1.000000
+map_Kd fct_z_kt1_cloudunderplane02.png
+
+newmtl mat1.045
+Ns 10.000000
+Ni 0.000000
+d 1.000000
+map_Kd fct_z_kt1_cloudcyl.png
+
+newmtl mat5.023
+Ns 10.000000
+Ni 0.000000
+d 1.000000
+map_Kd fct_z_kt1_cloudupperplane.png
+
