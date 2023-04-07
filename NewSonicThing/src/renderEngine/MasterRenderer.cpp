@@ -258,7 +258,7 @@ void MasterRenderer::processEntity(Entity* entity)
             }
             else
             {
-                std::vector<Entity*>* entityList = &location._Ptr->_Myval.second;
+                std::vector<Entity*>* entityList = &(location->second);
 
                 entityList->push_back(entity);
             }
@@ -300,7 +300,7 @@ void MasterRenderer::processEntity(Entity* entity)
             }
             else
             {
-                std::vector<Entity*>* entityList = &location._Ptr->_Myval.second;
+                std::vector<Entity*>* entityList = &(location->second);
 
                 entityList->push_back(entity);
             }
@@ -333,9 +333,9 @@ void MasterRenderer::clearAllEntities()
             default: break;
         }
         
-        for (auto it = mapToUse->cbegin(); it != mapToUse->cend(); it++)
+        for (auto it = mapToUse->begin(); it != mapToUse->end(); it++)
         {
-            std::vector<Entity*>* entities = &(it._Ptr->_Myval.second);
+            std::vector<Entity*>* entities = &(it->second);
             entities->clear();
             entities->reserve(1000);
         }

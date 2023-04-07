@@ -22,9 +22,9 @@ void FontRenderer::render(
     prepare();
     for (auto it = texts->cbegin(); it != texts->cend(); it++)
     {
-        auto kv = it._Ptr->_Myval;
-        FontType* font = kv.first;
-        std::list<GUIText*> listOfTexts = kv.second; //todo is this creating a local copy of the list?
+        //auto kv = it._Ptr->_Myval;
+        FontType* font = it->first;
+        std::list<GUIText*> listOfTexts = it->second; //todo is this creating a local copy of the list?
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, font->getTextureAtlas());
         for (GUIText* text : listOfTexts)
@@ -37,9 +37,9 @@ void FontRenderer::render(
     }
     for (auto it = numbers->cbegin(); it != numbers->cend(); it++)
     {
-        auto kv = it._Ptr->_Myval;
-        FontType* font = kv.first;
-        std::list<GUINumber*> listOfNumbers = kv.second;
+        //auto kv = it._Ptr->_Myval;
+        FontType* font = it->first;
+        std::list<GUINumber*> listOfNumbers = it->second;
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, font->getTextureAtlas());
         for (GUINumber* number : listOfNumbers)

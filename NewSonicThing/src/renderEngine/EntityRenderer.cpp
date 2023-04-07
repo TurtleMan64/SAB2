@@ -29,7 +29,11 @@ void EntityRenderer::renderNEW(std::unordered_map<TexturedModel*, std::vector<En
 
     for (auto it = entitiesMap->cbegin(); it != entitiesMap->cend(); it++)
     {
-        std::vector<Entity*>* entitiesToRender = &(it._Ptr->_Myval.second);
+        //auto asd = it->second;
+
+
+
+        const std::vector<Entity*>* entitiesToRender = &(it->second);
         const int numEntitiesToRender = (int)entitiesToRender->size();
 
         if (numEntitiesToRender == 0)

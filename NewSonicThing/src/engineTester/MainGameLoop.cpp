@@ -677,7 +677,7 @@ int main(int argc, char** argv)
                     {
                         for (auto it = entitySet->cbegin(); it != entitySet->cend(); it++)
                         {
-                            Entity* e = it._Ptr->_Myval;
+                            Entity* e = *it;
                             e->step();
                             //chunkCt++;
                         }
@@ -786,7 +786,7 @@ int main(int argc, char** argv)
             {
                 for (auto it = entitySet->cbegin(); it != entitySet->cend(); it++)
                 {
-                    Entity* e = it._Ptr->_Myval;
+                    Entity* e = *it;
                     MasterRenderer::processEntity(e);
                 }
             }

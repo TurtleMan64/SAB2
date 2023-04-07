@@ -185,7 +185,7 @@ void PlayerTails::step()
             {
                 for (auto it = set->cbegin(); it != set->cend(); it++)
                 {
-                    Entity* e = it._Ptr->_Myval;
+                    Entity* e = *it;
 
                     if (!e->canLightdashOn())
                     {
@@ -234,7 +234,7 @@ void PlayerTails::step()
                     {
                         for (auto it = set->cbegin(); it != set->cend(); it++)
                         {
-                            Entity* e = it._Ptr->_Myval;
+                            Entity* e = *it;
 
                             if (!e->canLightdashOn() || alreadyUsedRings.find(e) != alreadyUsedRings.end())
                             {
@@ -2188,7 +2188,7 @@ bool PlayerTails::findHomingTarget(Vector3f* target)
         {
             for (auto it = set->cbegin(); it != set->cend(); it++)
             {
-                Entity* e = it._Ptr->_Myval;
+                Entity* e = *it;
 
                 if (!e->canHomingAttackOn())
                 {
@@ -2219,7 +2219,7 @@ bool PlayerTails::findHomingTarget(Vector3f* target)
         {
             for (auto it = set->cbegin(); it != set->cend(); it++)
             {
-                Entity* e = it._Ptr->_Myval;
+                Entity* e = *it;
 
                 if (!e->canHomingAttackOn())
                 {

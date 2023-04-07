@@ -39,7 +39,7 @@ void ParticleMaster::update(Camera* /*cam*/)
 
             while (it != list->end())
             {
-                ParticleStandard* p = it._Ptr->_Myval;
+                ParticleStandard* p = *it;
 
                 bool stillAlive = p->update();
                 if (stillAlive == false)
@@ -82,7 +82,7 @@ void ParticleMaster::update(Camera* /*cam*/)
 
             while (it != list->end())
             {
-                GF_Particle* p = it._Ptr->_Myval;
+                GF_Particle* p = *it;
 
                 bool stillAlive = p->update();
                 if (stillAlive == false)
@@ -225,9 +225,9 @@ void ParticleMaster::deleteAllParticles()
         {
             std::list<ParticleStandard*>* particles = particlesMapEntry.second;
 
-            for (auto it = particles->cbegin(); it != particles->cend(); it++)
+            for (auto it = particles->begin(); it != particles->end(); it++)
             {
-                delete it._Ptr->_Myval; INCR_DEL("ParticleStandard");
+                delete *it; INCR_DEL("ParticleStandard");
             }
 
             particles->clear(); // clear the list, but dont clear the texture->list entry.
@@ -240,9 +240,9 @@ void ParticleMaster::deleteAllParticles()
         {
             std::list<GF_Particle*>* particles = particlesMapEntry.second;
 
-            for (auto it = particles->cbegin(); it != particles->cend(); it++)
+            for (auto it = particles->begin(); it != particles->end(); it++)
             {
-                delete it._Ptr->_Myval; INCR_DEL("GF_Particle");
+                delete *it; INCR_DEL("GF_Particle");
             }
 
             particles->clear(); // clear the list, but dont clear the texture->list entry.

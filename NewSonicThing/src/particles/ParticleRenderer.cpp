@@ -69,7 +69,7 @@ void ParticleRenderer::render(
                 int numParticlesToRender = 0;
                 for (auto particlesIterator = particlesList->cbegin(); particlesIterator != particlesList->cend(); particlesIterator++)
                 {
-                    ParticleStandard* particle = particlesIterator._Ptr->_Myval;
+                    ParticleStandard* particle = *particlesIterator;
                     if (particle->positionRef->y < Global::waterHeight)
                     {
                         updateModelViewMatrix(particle, &viewMatrix);
@@ -214,7 +214,7 @@ void ParticleRenderer::render(
                 int numParticlesToRender = 0;
                 for (auto particlesIterator = particlesList->cbegin(); particlesIterator != particlesList->cend(); particlesIterator++)
                 {
-                    ParticleStandard* particle = particlesIterator._Ptr->_Myval;
+                    ParticleStandard* particle = *particlesIterator;
 
                     updateModelViewMatrix(particle, &viewMatrix);
                     updateTexCoordInfo(particle);
@@ -242,7 +242,7 @@ void ParticleRenderer::render(
                 int numParticlesToRender = 0;
                 for (auto particlesIterator = particlesList->cbegin(); particlesIterator != particlesList->cend(); particlesIterator++)
                 {
-                    GF_Particle* particle = particlesIterator._Ptr->_Myval;
+                    GF_Particle* particle = *particlesIterator;
 
                     updateModelViewMatrix(particle, &viewMatrix);
                     updateTexCoordInfo(particle);
@@ -274,7 +274,7 @@ void ParticleRenderer::render(
                 int numParticlesToRender = 0;
                 for (auto particlesIterator = particlesList->cbegin(); particlesIterator != particlesList->cend(); particlesIterator++)
                 {
-                    ParticleStandard* particle = particlesIterator._Ptr->_Myval;
+                    ParticleStandard* particle = *particlesIterator;
                     if (particle->positionRef->y >= Global::waterHeight)
                     {
                         updateModelViewMatrix(particle, &viewMatrix);

@@ -180,7 +180,7 @@ void PlayerKnuckles::step()
             {
                 for (auto it = set->cbegin(); it != set->cend(); it++)
                 {
-                    Entity* e = it._Ptr->_Myval;
+                    Entity* e = *it;
 
                     if (!e->canLightdashOn())
                     {
@@ -229,7 +229,7 @@ void PlayerKnuckles::step()
                     {
                         for (auto it = set->cbegin(); it != set->cend(); it++)
                         {
-                            Entity* e = it._Ptr->_Myval;
+                            Entity* e = *it;
 
                             if (!e->canLightdashOn() || alreadyUsedRings.find(e) != alreadyUsedRings.end())
                             {
@@ -2350,7 +2350,7 @@ bool PlayerKnuckles::findHomingTarget(Vector3f* target)
         {
             for (auto it = set->cbegin(); it != set->cend(); it++)
             {
-                Entity* e = it._Ptr->_Myval;
+                Entity* e = *it;
 
                 if (!e->canHomingAttackOn())
                 {
@@ -2379,7 +2379,7 @@ bool PlayerKnuckles::findHomingTarget(Vector3f* target)
         {
             for (auto it = set->cbegin(); it != set->cend(); it++)
             {
-                Entity* e = it._Ptr->_Myval;
+                Entity* e = *it;
 
                 if (!e->canHomingAttackOn())
                 {
