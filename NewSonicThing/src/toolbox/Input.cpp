@@ -36,7 +36,7 @@
 
 SDL_GameController* Input::controller = nullptr;
 
-InputStruct Input::inputs{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+InputStruct Input::inputs{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 double Input::mousePreviousX = 0.0;
 double Input::mousePreviousY = 0.0;
@@ -381,7 +381,7 @@ void Input::pollInputs()
             float zrot = 0;
             Maths::sphereAnglesFromPosition(&Global::gameMainPlayer->vel, &yrot, &zrot);
             //printf("Time of day: %f\n", SkyManager::getTimeOfDay());
-            Vector3f p = Global::gameMainPlayer->position + Global::gameMainPlayer->relativeUp.scaleCopy(0.0f);
+            //Vector3f p = Global::gameMainPlayer->position + Global::gameMainPlayer->relativeUp.scaleCopy(0.0f);
             //printf("position = %f %f %f %f %f %f\n", p.x, p.y, p.z, Global::gameMainPlayer->relativeUp.x, Global::gameMainPlayer->relativeUp.y, Global::gameMainPlayer->relativeUp.z);
             printf("%f %f %f %f\n", Global::gameMainPlayer->position.x, Global::gameMainPlayer->position.y+25, Global::gameMainPlayer->position.z, yrot);
             //printf("velocity = %f %f %f\n", Global::gameMainPlayer->vel.x, Global::gameMainPlayer->vel.y, Global::gameMainPlayer->vel.z);

@@ -108,13 +108,20 @@ int ModelLoader::loadBinaryModel(std::vector<TexturedModel*>* models, std::strin
     }
 
     FILE* file = nullptr;
+
+    #ifdef _WIN32
     int err = fopen_s(&file, (Global::pathToEXE+filePath+fileName).c_str(), "rb");
     if (file == nullptr || err != 0)
     {
-        //std::fprintf(stderr, "Error: Cannot load file '%s'\n", (filePath + fileName).c_str());
-        //std::fprintf(stderr, "fopen_s error code: '%d'\n", err);
         return -1;
     }
+    #else
+    file = fopen((Global::pathToEXE+filePath+fileName).c_str(), "rb");
+    if (file == nullptr)
+    {
+        return -1;
+    }
+    #endif
 
     char fileType[4];
     ModelLoader::read(fileType, 4, file);
@@ -278,13 +285,20 @@ int ModelLoader::loadVclModel(std::vector<TexturedModel*>* models, std::string f
     }
 
     FILE* file = nullptr;
+
+    #ifdef _WIN32
     int err = fopen_s(&file, (Global::pathToEXE+filePath+fileName).c_str(), "rb");
     if (file == nullptr || err != 0)
     {
-        //std::fprintf(stderr, "Error: Cannot load file '%s'\n", (filePath + fileName).c_str());
-        //std::fprintf(stderr, "fopen_s error code: '%d'\n", err);
         return -1;
     }
+    #else
+    file = fopen((Global::pathToEXE+filePath+fileName).c_str(), "rb");
+    if (file == nullptr)
+    {
+        return -1;
+    }
+    #endif
 
     char fileType[4];
     ModelLoader::read(fileType, 4, file);
@@ -1130,13 +1144,22 @@ int ModelLoader::loadBinaryModelWithMTL(std::vector<TexturedModel*>* models, std
     }
 
     FILE* file = nullptr;
+
+    #ifdef _WIN32
     int err = fopen_s(&file, (Global::pathToEXE+filePath+fileNameBin).c_str(), "rb");
     if (file == nullptr || err != 0)
     {
-        std::fprintf(stderr, "Error: Cannot load file '%s'\n", (filePath + fileNameBin).c_str());
-        //std::fprintf(stderr, "fopen_s error code: '%d'\n", err);
+        printf("Error: Cannot load file '%s'\n", (filePath + fileNameBin).c_str());
         return -1;
     }
+    #else
+    file = fopen((Global::pathToEXE+filePath+fileNameBin).c_str(), "rb");
+    if (file == nullptr)
+    {
+        printf("Error: Cannot load file '%s'\n", (filePath + fileNameBin).c_str());
+        return -1;
+    }
+    #endif
 
     char fileType[4];
     ModelLoader::read(fileType, 4, file);
@@ -1652,12 +1675,22 @@ inline void ModelLoader::read(void* buf, int numBytesToRead, FILE* file)
 CollisionModel* ModelLoader::loadBinaryQuadTree(std::string filePath, std::string fileName)
 {
     FILE* file = nullptr;
+
+    #ifdef _WIN32
     int err = fopen_s(&file, (Global::pathToEXE + "res/" + filePath+fileName+".qtree").c_str(), "rb");
     if (file == nullptr || err != 0)
     {
-        //printf("Error: Cannot load file '%s'\n", (Global::pathToEXE + "res/" + filePath+fileName+".qtree").c_str());
+        printf("Error: Cannot load file '%s'\n", (Global::pathToEXE + "res/" + filePath+fileName+".qtree").c_str());
         return nullptr;
     }
+    #else
+    file = fopen((Global::pathToEXE + "res/" + filePath+fileName+".qtree").c_str(), "rb");
+    if (file == nullptr)
+    {
+        printf("Error: Cannot load file '%s'\n", (Global::pathToEXE + "res/" + filePath+fileName+".qtree").c_str());
+        return nullptr;
+    }
+    #endif
 
     CollisionModel* collisionModel = new CollisionModel; INCR_NEW("CollisionModel");
 
@@ -1708,12 +1741,22 @@ CollisionModel* ModelLoader::loadBinaryCollisionModel(std::string filePath, std:
     char currParticle = 0;
 
     FILE* file = nullptr;
+
+    #ifdef _WIN32
     int err = fopen_s(&file, (Global::pathToEXE + "res/" + filePath+fileName+".bincol").c_str(), "rb");
     if (file == nullptr || err != 0)
     {
         printf("Error: Cannot load file '%s'\n", (Global::pathToEXE + "res/" + filePath+fileName+".bincol").c_str());
         return nullptr;
     }
+    #else
+    file = fopen((Global::pathToEXE + "res/" + filePath+fileName+".bincol").c_str(), "rb");
+    if (file == nullptr)
+    {
+        printf("Error: Cannot load file '%s'\n", (Global::pathToEXE + "res/" + filePath+fileName+".bincol").c_str());
+        return nullptr;
+    }
+    #endif
 
     CollisionModel* collisionModel = new CollisionModel; INCR_NEW("CollisionModel");
 

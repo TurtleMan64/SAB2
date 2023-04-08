@@ -14,10 +14,12 @@ ifeq ($(UNAME_S),Darwin)
 	CPPFLAGS += -D'fopen_s(pFile,filename,mode)=((*(pFile))=fopen((filename),(mode)))==NULL'
 	CXXFLAGS ?= -O3 -Wall -Wextra -MMD -MP -std=c++17
 else
-	INC_FLAGS := `pkg-config --cflags glfw3 ogg vorbis vorbisfile openal gl` $(shell find $(SRC_DIRS) -type d) -I./Libraries/Include/
+	INC_FLAGS := `pkg-config --cflags glfw3 ogg vorbis vorbisfile openal gl`
+	#INC_FLAGS += $(shell find $(SRC_DIRS) -type d)
+	INC_FLAGS += -I./Libraries/Include/
 	CPPFLAGS ?= -O2 -Wall -Wextra $(INC_FLAGS) -MMD -MP # -D_GLIBCXX_USE_CXX11_ABI=0
 	ALL_LDFLAGS := -lSOIL -lSDL2 -lm -lpthread -ldl `pkg-config --static --libs glfw3 ogg vorbis vorbisfile openal gl` $(LDFLAGS)
-	CPPFLAGS += -D'fopen_s(pFile,filename,mode)=((*(pFile))=fopen((filename),(mode)))==NULL'
+	#CPPFLAGS += -D'fopen_s(pFile,filename,mode)=((*(pFile))=fopen((filename),(mode)))==NULL'
 endif
 
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)

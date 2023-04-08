@@ -1177,7 +1177,7 @@ void PlayerSonic::step()
         }
         else //No initial collision
         {
-            Vector3f before = position;
+            //Vector3f before = position;
             increasePosition(vel.x*dt, vel.y*dt, vel.z*dt);
 
             bool checkPassed = false;

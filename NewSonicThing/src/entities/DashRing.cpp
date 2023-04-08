@@ -74,7 +74,6 @@ void DashRing::step()
         std::abs(position.z - Global::gameMainPlayer->position.z) < 50 && 
         std::abs(position.y - Global::gameMainPlayer->position.y) < 50)
     {
-        Vector3f diff = Global::gameMainPlayer->position - position;
         if (Maths::pointIsInCylinder(&Global::gameMainPlayer->position, &top, &bottom, ringRadius))
         {
             if (!playerIsIn)
