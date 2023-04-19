@@ -247,7 +247,7 @@ public:
 
     void hitSpringTriple(Vector3f* direction, float power, float lockInputTime);
 
-    void hitSpringYellow(Vector3f* direction, float power, float lockInputTime);
+    void hitSpringYellow(const Vector3f* direction, float power, float lockInputTime);
 
     void hitSpeedRamp(Vector3f* direction, float speed, float lockInputTime);
 

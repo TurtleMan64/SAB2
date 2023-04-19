@@ -38,8 +38,7 @@ SpeedRamp::SpeedRamp(float x, float y, float z, float dirX, float dirY, float di
     Vector3f forward(dirX, dirY, dirZ);
     forward.normalize();
 
-    Vector3f up(0, 1, 0);
-    Vector3f perpen = forward.cross(&up);
+    Vector3f perpen = forward.cross(&Y_AXIS);
     launchDirection = Maths::rotatePoint(&forward, &perpen, Maths::toRadians(20.0f));
     launchDirection.normalize();
 

@@ -67,8 +67,7 @@ void DL_DigTeleport::step()
         doTeleport = false;
 
         Vector3f newCamDir(1, 0, 0);
-        Vector3f yAxis(0, 1, 0);
-        newCamDir = Maths::rotatePoint(&newCamDir, &yAxis, Maths::toRadians(rotY)); //todo: make new variabel for this
+        newCamDir = Maths::rotatePoint(&newCamDir, &Y_AXIS, Maths::toRadians(rotY)); //todo: make new variabel for this
         newCamDir.normalize();
         Global::gameMainPlayer->position = teleportLocation;
         Global::gameMainPlayer->camDir = newCamDir;

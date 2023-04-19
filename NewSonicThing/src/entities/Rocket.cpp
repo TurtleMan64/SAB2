@@ -240,8 +240,7 @@ void Rocket::makeExhaustParticles(float rocketSpeed)
     int dirtToMake = 5;
     while (dirtToMake > 0)
     {
-        Vector3f down(0, -1, 0);
-        Vector3f rotAxis = rocketPathPositionDifferenceNormalized.cross(&down);
+        Vector3f rotAxis = rocketPathPositionDifferenceNormalized.cross(&Y_AXIS_N);
         Vector3f up = Maths::rotatePoint(&rocketPathPositionDifferenceNormalized, &rotAxis, -Maths::PI/2);
         up.normalize();
 

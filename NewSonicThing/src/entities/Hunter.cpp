@@ -73,11 +73,10 @@ Hunter::Hunter(float x, float y, float z, float dx, float dz, std::list<Entity*>
 void Hunter::updateGun()
 {
     //calc position of shoulder
-    Vector3f yAxis(0, 1, 0);
-    Vector3f right = forward.cross(&yAxis);
+    Vector3f right = forward.cross(&Y_AXIS);
     float upOffset = 23.31378f*scale;
     float rightOffset = 8.265114f*scale;
-    Vector3f gunPos = position + yAxis.scaleCopy(upOffset) + right.scaleCopy(rightOffset);
+    Vector3f gunPos = position + Y_AXIS.scaleCopy(upOffset) + right.scaleCopy(rightOffset);
     gun->position = gunPos;
 
     float hitInThisSec = 0.5f;

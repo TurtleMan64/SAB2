@@ -6,7 +6,6 @@ class Vector2f;
 class Camera;
 
 #include <random>
-#include <chrono>
 #include "matrix.hpp"
 
 class Maths
@@ -22,12 +21,12 @@ public:
     static constexpr float PI = 3.14159265358979323846f;
     static constexpr float E  = 2.71828182845904523536f;
 
-    static inline float toRadians(float deg)
+    static inline float toRadians(const float deg)
     {
         return deg*0.01745329251f;
     }
 
-    static inline float toDegrees(float rad)
+    static inline float toDegrees(const float rad)
     {
         return rad*57.2957795131f;
     }
@@ -76,28 +75,34 @@ public:
     //result needs to be array of 3 doubles
     //theta is in radians
     static void rotatePoint(float result[],
-        float a, float b, float c,
-        float u, float v, float w,
-        float x, float y, float z,
-        float theta);
+        const float a, const float b, const float c,
+        const float u, const float v, const float w,
+        const float x, const float y, const float z,
+        const float theta);
+
+    //theta is in radians
+    static void rotatePoint(float result[],
+        const float u, const float v, const float w,
+        const float x, const float y, const float z,
+        const float theta);
 
     //Point that axis goes through,
     //direction of axis,
     //point to rotate, 
     //angle of rotation, in radians
     static Vector3f rotatePoint(
-        Vector3f* pointToRotate,
+        const Vector3f* pointToRotate,
         const Vector3f* axisOfRotation,
-        float theta);
+        const float theta);
 
     //Given two vectors, linear rotate from the A to B by percent and return that new vector.
     //If the two vectors are too small or are too similar already, a copy of A is retured.
-    static Vector3f interpolateVector(Vector3f* A, Vector3f* B, float percent);
+    static Vector3f interpolateVector(const Vector3f* A, const Vector3f* B, const float percent);
 
     static Vector3f interpolateVectorDebug(Vector3f* A, Vector3f* B, float percent);
 
     //calculates the angle in radians between two vectors
-    static float angleBetweenVectors(Vector3f* A, Vector3f* B);
+    static float angleBetweenVectors(const Vector3f* A, const Vector3f* B);
 
     //given two points A and B, returns which one is closer to a point Test
     static Vector3f getCloserPoint(Vector3f* A, Vector3f* B, Vector3f* testPoint);
@@ -138,13 +143,13 @@ public:
     //Generates a uniformly distributed random position on a sphere of radius 1
     static Vector3f randomPointOnSphere();
 
-    static Vector3f projectOntoPlane(Vector3f* A, Vector3f* normal);
+    static Vector3f projectOntoPlane(const Vector3f* A, const Vector3f* normal);
 
     //projects a vector along a line
-    static Vector3f projectAlongLine(Vector3f* A, Vector3f* line);
+    static Vector3f projectAlongLine(const Vector3f* A, const Vector3f* line);
 
     //calculates an arbitrary vector that is perpendicular to the given vector vec
-    static Vector3f calculatePerpendicular(Vector3f* vec);
+    static Vector3f calculatePerpendicular(const Vector3f* vec);
 
     //returns uniform random float >= 0 and < 1
     static float random();

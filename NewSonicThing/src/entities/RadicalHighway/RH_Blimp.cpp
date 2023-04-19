@@ -21,19 +21,18 @@ RH_Blimp::RH_Blimp(float x, float y, float z, float newRotY)
     updateTransformationMatrix();
 
     Vector3f spotlightPos(-173.67f, -70.358f, 0.0f);
-    Vector3f yAxis(0, 1, 0);
-    spotlightPos = Maths::rotatePoint(&spotlightPos, &yAxis, Maths::toRadians(rotY));
+    spotlightPos = Maths::rotatePoint(&spotlightPos, &Y_AXIS, Maths::toRadians(rotY));
 
     spotlightRotAxis.set(-92, -254, 0);
     spotlightRotAxis.normalize();
-    spotlightRotAxis = Maths::rotatePoint(&spotlightRotAxis, &yAxis, Maths::toRadians(rotY));
+    spotlightRotAxis = Maths::rotatePoint(&spotlightRotAxis, &Y_AXIS, Maths::toRadians(rotY));
 
     spotlight = new Dummy(&RH_Blimp::modelsSpotlight); INCR_NEW("Entity");
     spotlight->position = position + spotlightPos;
     Global::addEntity(spotlight);
 
     Vector3f perpen(0, 0, 1);
-    perpen = Maths::rotatePoint(&perpen, &yAxis, Maths::toRadians(rotY));
+    perpen = Maths::rotatePoint(&perpen, &Y_AXIS, Maths::toRadians(rotY));
 
     spotlightDirectionTarget = Maths::rotatePoint(&spotlightRotAxis, &perpen, Maths::toRadians(30.0f));
     spotlightDirectionCurrent = spotlightDirectionTarget;

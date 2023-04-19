@@ -73,11 +73,10 @@ EggPawnGun::EggPawnGun(float x, float y, float z, float dx, float dz, std::list<
 void EggPawnGun::updateGun()
 {
     //calc position of shoulder
-    Vector3f yAxis(0, 1, 0);
-    Vector3f right = forward.cross(&yAxis);
+    Vector3f right = forward.cross(&Y_AXIS);
     float upOffset = 13.15f*scale;
     float rightOffset = 7.54f*scale;
-    Vector3f gunPos = position + yAxis.scaleCopy(upOffset) + right.scaleCopy(rightOffset);
+    Vector3f gunPos = position + Y_AXIS.scaleCopy(upOffset) + right.scaleCopy(rightOffset);
     gun->position = gunPos;
 
     float hitInThisSec = 1.25f;

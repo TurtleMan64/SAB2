@@ -9,7 +9,7 @@ void Vector3f::set(float newX, float newY, float newZ)
     z = newZ;
 }
 
-void Vector3f::set(Vector3f* other)
+void Vector3f::set(const Vector3f* other)
 {
     x = other->x;
     y = other->y;
@@ -214,7 +214,7 @@ Vector3f::Vector3f(float x, float y, float z)
     this->z = z;
 }
 
-Vector3f::Vector3f(Vector3f* base)
+Vector3f::Vector3f(const Vector3f* base)
 {
     this->x = base->x;
     this->y = base->y;

@@ -38,9 +38,8 @@ RhinoSpike::RhinoSpike(float x, float y, float z)
     scale = 1;
     visible = true;
 
-    Vector3f yAxis(0, 1, 0);
     lookDir.set(1, 0, 0);
-    lookDir = Maths::rotatePoint(&lookDir, &yAxis, Maths::random()*Maths::PI*2);
+    lookDir = Maths::rotatePoint(&lookDir, &Y_AXIS, Maths::random()*Maths::PI*2);
     rotY = Maths::toDegrees(atan2f(-lookDir.z, lookDir.x));
 
     updateTransformationMatrix();

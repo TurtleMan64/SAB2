@@ -80,14 +80,13 @@ E1000::E1000(float x, float y, float z, float dx, float dz, std::list<Entity*>* 
 void E1000::updateGun1()
 {
     //calc position of shoulder
-    Vector3f yAxis(0, 1, 0);
-    Vector3f right = forward.cross(&yAxis);
+    Vector3f right = forward.cross(&Y_AXIS);
 
     float upOffset = 12.6444f*scale;
     float rightOffset = 6.39557f*scale;
     float forwardOffset = 1.77027f*scale;
 
-    Vector3f gunPos = position + yAxis.scaleCopy(upOffset) + right.scaleCopy(rightOffset) + forward.scaleCopy(forwardOffset);
+    Vector3f gunPos = position + Y_AXIS.scaleCopy(upOffset) + right.scaleCopy(rightOffset) + forward.scaleCopy(forwardOffset);
     gun1->position = gunPos;
 
     float hitInThisSec = 0.8f;
@@ -120,14 +119,13 @@ void E1000::updateGun1()
 void E1000::updateGun2()
 {
     //calc position of shoulder
-    Vector3f yAxis(0, 1, 0);
-    Vector3f right = forward.cross(&yAxis);
+    Vector3f right = forward.cross(&Y_AXIS);
 
     float upOffset = 12.6444f*scale;
     float rightOffset = -6.39557f*scale;
     float forwardOffset = 1.77027f*scale;
 
-    Vector3f gunPos = position + yAxis.scaleCopy(upOffset) + right.scaleCopy(rightOffset) + forward.scaleCopy(forwardOffset);
+    Vector3f gunPos = position + Y_AXIS.scaleCopy(upOffset) + right.scaleCopy(rightOffset) + forward.scaleCopy(forwardOffset);
     gun2->position = gunPos;
 
     float hitInThisSec = 0.75f;

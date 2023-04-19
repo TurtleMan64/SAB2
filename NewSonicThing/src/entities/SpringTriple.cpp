@@ -41,9 +41,8 @@ SpringTriple::SpringTriple(float x, float y, float z, float dirX, float dirZ, fl
     rotZ = 0;
     rotRoll = 0;
 
-    Vector3f yAxis(0, 1, 0);
     Vector3f side(0, 0, 1);
-    side = Maths::rotatePoint(&side, &yAxis, atan2f(-dir.z, dir.x));
+    side = Maths::rotatePoint(&side, &Y_AXIS, atan2f(-dir.z, dir.x));
 
     hitCenter1 = position + dir.scaleCopy(5.88928f) + side.scaleCopy(15.0f);
     hitCenter2 = position + dir.scaleCopy(5.88928f);
@@ -54,8 +53,8 @@ SpringTriple::SpringTriple(float x, float y, float z, float dirX, float dirZ, fl
 
     const float playerRadius = 4.0f;
 
-    end1 = position + dir.scaleCopy(4.6f) + yAxis.scaleCopy(2.65f) + side.scaleCopy(23.5f + playerRadius);
-    end2 = position + dir.scaleCopy(4.6f) + yAxis.scaleCopy(2.65f) + side.scaleCopy(-23.5f - playerRadius);
+    end1 = position + dir.scaleCopy(4.6f) + Y_AXIS.scaleCopy(2.65f) + side.scaleCopy(23.5f + playerRadius);
+    end2 = position + dir.scaleCopy(4.6f) + Y_AXIS.scaleCopy(2.65f) + side.scaleCopy(-23.5f - playerRadius);
 
     updateTransformationMatrix();
 }

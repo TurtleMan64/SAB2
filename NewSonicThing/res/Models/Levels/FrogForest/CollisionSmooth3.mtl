@@ -1,0 +1,98 @@
+# Material Count: 16
+
+newmtl unnamed.081
+Ns 1.000000
+Ni 0.000000
+d 0.000000
+map_Kd n1_3012.png
+
+newmtl unnamed.020
+Ns 1.000000
+Ni 0.000000
+d 0.000000
+map_Kd n1_3023.png
+
+newmtl unnamed.074
+Ns 1.000000
+Ni 0.000000
+d 0.000000
+map_Kd d_topb2.png
+
+newmtl None
+Ns 11.000000
+Ni 0.000000
+d 1.000000
+map_Kd n1_3004.png
+
+newmtl unnamed.2
+Ns 1.000000
+Ni 0.000000
+d 0.000000
+map_Kd d_stona1.png
+
+newmtl unnamed.001
+Ns 1.000000
+Ni 0.000000
+d 0.000000
+map_Kd n1_3014.png
+
+newmtl unnamed.076
+Ns 1.000000
+Ni 0.000000
+d 0.000000
+map_Kd n1_3008.png
+
+newmtl unnamed.298
+Ns 1.000000
+Ni 0.000000
+d 0.000000
+map_Kd n1_3021.png
+
+newmtl unnamed.1
+Ns 1.000000
+Ni 0.000000
+d 0.000000
+map_Kd d_stonc1.png
+
+newmtl unnamed.077
+Ns 1.000000
+Ni 0.000000
+d 0.000000
+map_Kd d_treeb1.png
+
+newmtl unnamed.0
+Ns 1.000000
+Ni 0.000000
+d 0.000000
+map_Kd d_nkai2.png
+
+newmtl unnamed.000
+Ns 1.000000
+Ni 0.000000
+d 0.000000
+map_Kd n1_3011.png
+
+newmtl unnamed.075
+Ns 1.000000
+Ni 0.000000
+d 0.000000
+map_Kd d_palma6.png
+
+newmtl unnamed.086
+Ns 1.000000
+Ni 0.000000
+d 0.000000
+map_Kd n2_1009.png
+
+newmtl unnamed.022
+Ns 1.000000
+Ni 0.000000
+d 0.000000
+map_Kd n1_3020.png
+
+newmtl unnamed.083
+Ns 1.000000
+Ni 0.000000
+d 0.000000
+map_Kd n1_3009.png
+

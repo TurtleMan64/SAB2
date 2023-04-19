@@ -126,7 +126,6 @@ Vector3f EmeraldPiece::getHintLocation()
     if (!isDiggable)
     {
         Vector3f dir(1000, 0, 0);
-        Vector3f yAxis(0, 1, 0);
         Vector3f shortestDir(&dir);
 
         for (int i = 0; i < 8; i++)
@@ -141,7 +140,7 @@ Vector3f EmeraldPiece::getHintLocation()
                     shortestDir = thisDir;
                 }
             }
-            dir = Maths::rotatePoint(&dir, &yAxis, (2*Maths::PI)/8);
+            dir = Maths::rotatePoint(&dir, &Y_AXIS, (2*Maths::PI)/8);
         }
 
         if (shortestDir.lengthSquared() >= 999*999) //no walls were found, make a completely random point
@@ -155,14 +154,13 @@ Vector3f EmeraldPiece::getHintLocation()
         {
             float range = Maths::PI*0.9f;
             shortestDir.setLength(5.0f);
-            shortestDir = Maths::rotatePoint(&shortestDir, &yAxis, Maths::random()*range - range/2);
+            shortestDir = Maths::rotatePoint(&shortestDir, &Y_AXIS, Maths::random()*range - range/2);
 
             return position + shortestDir;
         }
     }
     else
     {
-        Vector3f yAxis(0, 1, 0);
         Vector3f shortestDir(2000, 0, 0);
 
         Vector3f dir(1000, -1000, 0);
@@ -178,7 +176,7 @@ Vector3f EmeraldPiece::getHintLocation()
                     shortestDir = thisDir;
                 }
             }
-            dir = Maths::rotatePoint(&dir, &yAxis, (2*Maths::PI)/8);
+            dir = Maths::rotatePoint(&dir, &Y_AXIS, (2*Maths::PI)/8);
         }
 
         dir.set(1000, 0, 0);
@@ -194,7 +192,7 @@ Vector3f EmeraldPiece::getHintLocation()
                     shortestDir = thisDir;
                 }
             }
-            dir = Maths::rotatePoint(&dir, &yAxis, (2*Maths::PI)/8);
+            dir = Maths::rotatePoint(&dir, &Y_AXIS, (2*Maths::PI)/8);
         }
 
         dir.set(1000, 1000, 0);
@@ -210,7 +208,7 @@ Vector3f EmeraldPiece::getHintLocation()
                     shortestDir = thisDir;
                 }
             }
-            dir = Maths::rotatePoint(&dir, &yAxis, (2*Maths::PI)/8);
+            dir = Maths::rotatePoint(&dir, &Y_AXIS, (2*Maths::PI)/8);
         }
 
         dir.set(0, -1000, 0);

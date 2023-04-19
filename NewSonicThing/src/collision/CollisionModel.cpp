@@ -123,25 +123,22 @@ void CollisionModel::transformModel(CollisionModel* targetModel, Vector3f* trans
     float angleRadY = Maths::toRadians(yRot);
     float angleRadZ = Maths::toRadians(zRot);
 
-    Vector3f yAxis(0, 1, 0);
-    Vector3f zAxis(0, 0, 1);
-
     int i = 0;
     for (Triangle3D* tri : triangles)
     {
         Vector3f newPoint1(tri->p1X, tri->p1Y, tri->p1Z);
-        newPoint1 = Maths::rotatePoint(&newPoint1, &zAxis, angleRadZ);
-        newPoint1 = Maths::rotatePoint(&newPoint1, &yAxis, angleRadY);
+        newPoint1 = Maths::rotatePoint(&newPoint1, &Z_AXIS, angleRadZ);
+        newPoint1 = Maths::rotatePoint(&newPoint1, &Y_AXIS, angleRadY);
         newPoint1 = newPoint1 + translate;
 
         Vector3f newPoint2(tri->p2X, tri->p2Y, tri->p2Z);
-        newPoint2 = Maths::rotatePoint(&newPoint2, &zAxis, angleRadZ);
-        newPoint2 = Maths::rotatePoint(&newPoint2, &yAxis, angleRadY);
+        newPoint2 = Maths::rotatePoint(&newPoint2, &Z_AXIS, angleRadZ);
+        newPoint2 = Maths::rotatePoint(&newPoint2, &Y_AXIS, angleRadY);
         newPoint2 = newPoint2 + translate;
 
         Vector3f newPoint3(tri->p3X, tri->p3Y, tri->p3Z);
-        newPoint3 = Maths::rotatePoint(&newPoint3, &zAxis, angleRadZ);
-        newPoint3 = Maths::rotatePoint(&newPoint3, &yAxis, angleRadY);
+        newPoint3 = Maths::rotatePoint(&newPoint3, &Z_AXIS, angleRadZ);
+        newPoint3 = Maths::rotatePoint(&newPoint3, &Y_AXIS, angleRadY);
         newPoint3 = newPoint3 + translate;
 
         //new, keep already allocated triangles and change their values
@@ -178,29 +175,25 @@ void CollisionModel::transformModel(CollisionModel* targetModel, Vector3f* trans
     float angleRadY = Maths::toRadians(yRot);
     float angleRadZ = Maths::toRadians(zRot);
 
-    Vector3f xAxis(1, 0, 0);
-    Vector3f yAxis(0, 1, 0);
-    Vector3f zAxis(0, 0, 1);
-
     int i = 0;
     for (Triangle3D* tri : triangles)
     {
         Vector3f newPoint1(tri->p1X, tri->p1Y, tri->p1Z);
-        newPoint1 = Maths::rotatePoint(&newPoint1, &xAxis, angleRadX);
-        newPoint1 = Maths::rotatePoint(&newPoint1, &yAxis, angleRadY);
-        newPoint1 = Maths::rotatePoint(&newPoint1, &zAxis, angleRadZ);
+        newPoint1 = Maths::rotatePoint(&newPoint1, &X_AXIS, angleRadX);
+        newPoint1 = Maths::rotatePoint(&newPoint1, &Y_AXIS, angleRadY);
+        newPoint1 = Maths::rotatePoint(&newPoint1, &Z_AXIS, angleRadZ);
         newPoint1 = newPoint1 + translate;
 
         Vector3f newPoint2(tri->p2X, tri->p2Y, tri->p2Z);
-        newPoint2 = Maths::rotatePoint(&newPoint2, &xAxis, angleRadX);
-        newPoint2 = Maths::rotatePoint(&newPoint2, &yAxis, angleRadY);
-        newPoint2 = Maths::rotatePoint(&newPoint2, &zAxis, angleRadZ);
+        newPoint2 = Maths::rotatePoint(&newPoint2, &X_AXIS, angleRadX);
+        newPoint2 = Maths::rotatePoint(&newPoint2, &Y_AXIS, angleRadY);
+        newPoint2 = Maths::rotatePoint(&newPoint2, &Z_AXIS, angleRadZ);
         newPoint2 = newPoint2 + translate;
 
         Vector3f newPoint3(tri->p3X, tri->p3Y, tri->p3Z);
-        newPoint3 = Maths::rotatePoint(&newPoint3, &xAxis, angleRadX);
-        newPoint3 = Maths::rotatePoint(&newPoint3, &yAxis, angleRadY);
-        newPoint3 = Maths::rotatePoint(&newPoint3, &zAxis, angleRadZ);
+        newPoint3 = Maths::rotatePoint(&newPoint3, &X_AXIS, angleRadX);
+        newPoint3 = Maths::rotatePoint(&newPoint3, &Y_AXIS, angleRadY);
+        newPoint3 = Maths::rotatePoint(&newPoint3, &Z_AXIS, angleRadZ);
         newPoint3 = newPoint3 + translate;
 
         //keep already allocated triangles and change their values
@@ -235,21 +228,19 @@ void CollisionModel::transformModel(CollisionModel* targetModel, Vector3f* trans
 
     float angleRadY = Maths::toRadians(yRot);
 
-    Vector3f yAxis(0, 1, 0);
-
     int i = 0;
     for (Triangle3D* tri : triangles)
     {
         Vector3f newPoint1(tri->p1X, tri->p1Y, tri->p1Z);
-        newPoint1 = Maths::rotatePoint(&newPoint1, &yAxis, angleRadY);
+        newPoint1 = Maths::rotatePoint(&newPoint1, &Y_AXIS, angleRadY);
         newPoint1 = newPoint1 + translate;
 
         Vector3f newPoint2(tri->p2X, tri->p2Y, tri->p2Z);
-        newPoint2 = Maths::rotatePoint(&newPoint2, &yAxis, angleRadY);
+        newPoint2 = Maths::rotatePoint(&newPoint2, &Y_AXIS, angleRadY);
         newPoint2 = newPoint2 + translate;
 
         Vector3f newPoint3(tri->p3X, tri->p3Y, tri->p3Z);
-        newPoint3 = Maths::rotatePoint(&newPoint3, &yAxis, angleRadY);
+        newPoint3 = Maths::rotatePoint(&newPoint3, &Y_AXIS, angleRadY);
         newPoint3 = newPoint3 + translate;
 
         Triangle3D* newTri = targetModel->triangles[i];
@@ -282,24 +273,22 @@ void CollisionModel::transformModelWithScale(CollisionModel* targetModel, Vector
 
     float angleRadY = Maths::toRadians(yRot);
 
-    Vector3f yAxis(0, 1, 0);
-
     int i = 0;
     for (Triangle3D* tri : triangles)
     {
         Vector3f newPoint1(tri->p1X, tri->p1Y, tri->p1Z);
         newPoint1.scale(scale);
-        newPoint1 = Maths::rotatePoint(&newPoint1, &yAxis, angleRadY);
+        newPoint1 = Maths::rotatePoint(&newPoint1, &Y_AXIS, angleRadY);
         newPoint1 = newPoint1 + translate;
 
         Vector3f newPoint2(tri->p2X, tri->p2Y, tri->p2Z);
         newPoint2.scale(scale);
-        newPoint2 = Maths::rotatePoint(&newPoint2, &yAxis, angleRadY);
+        newPoint2 = Maths::rotatePoint(&newPoint2, &Y_AXIS, angleRadY);
         newPoint2 = newPoint2 + translate;
 
         Vector3f newPoint3(tri->p3X, tri->p3Y, tri->p3Z);
         newPoint3.scale(scale);
-        newPoint3 = Maths::rotatePoint(&newPoint3, &yAxis, angleRadY);
+        newPoint3 = Maths::rotatePoint(&newPoint3, &Y_AXIS, angleRadY);
         newPoint3 = newPoint3 + translate;
 
         Triangle3D* newTri = targetModel->triangles[i];

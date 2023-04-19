@@ -662,9 +662,8 @@ void PlayerKnuckles::step()
         }
         else
         {
-            Vector3f yAxis(0, 1, 0);
             Vector3f out = relativeUp;
-            Vector3f right = yAxis.cross(&out);
+            Vector3f right = Y_AXIS.cross(&out);
             Vector3f up = right.cross(&out);
             right.normalize();
             up.normalize();
@@ -1010,11 +1009,10 @@ void PlayerKnuckles::step()
     }
     else //climbing
     {
-        Vector3f yAxis(0, 1, 0);
         //Twisting camera from user input
-        camDir = Maths::rotatePoint(&camDir, &yAxis, -0.5f*inputX2*dt);
+        camDir = Maths::rotatePoint(&camDir, &Y_AXIS, -0.5f*inputX2*dt);
 
-        Vector3f perpen = camDir.cross(&yAxis);
+        Vector3f perpen = camDir.cross(&Y_AXIS);
         camDir = Maths::rotatePoint(&camDir, &perpen, -0.5f*inputY2*dt);
 
         if (Global::isAutoCam)
@@ -1047,8 +1045,7 @@ void PlayerKnuckles::step()
     }
     else
     {
-        Vector3f yAxis(0, 1, 0);
-        camUpSmooth = Maths::interpolateVector(&camUpSmooth, &yAxis, 3*dt);
+        camUpSmooth = Maths::interpolateVector(&camUpSmooth, &Y_AXIS, 3*dt);
     }
 
     if (velocityMovesPlayer && !isGrinding && !isGrabbing && !isLightdashing)
@@ -2850,8 +2847,7 @@ void PlayerKnuckles::animate()
     }
     else if (hitTimer > 0.0f)
     {
-        Vector3f yAxis(0, 1, 0);
-        playerModel->setOrientation(dspX, dspY, dspZ, 0, airYaw, 90, airPitch/8.0f, &yAxis);
+        playerModel->setOrientation(dspX, dspY, dspZ, 0, airYaw, 90, airPitch/8.0f, &Y_AXIS);
         playerModel->animate(11, hitTimer);
     }
     else if (isSpindashing)
@@ -3160,11 +3156,9 @@ void PlayerKnuckles::refreshCamera()
 
         Vector3f target = getCenterPosition();
 
-        Vector3f yAxis(0, 1, 0);
-
         Vector3f diff = cam->eye - target;
 
-        Vector3f perpen = diff.cross(&yAxis);
+        Vector3f perpen = diff.cross(&Y_AXIS);
         Vector3f up = Maths::rotatePoint(&diff, &perpen, Maths::PI/2);
 
         Global::gameCamera->setViewMatrixValues(&Global::gameCamera->eye, &target, &up);
@@ -3295,7 +3289,7 @@ void PlayerKnuckles::hitSpring(Vector3f* direction, float power, float lockInput
     }
 }
 
-void PlayerKnuckles::hitSpringYellow(Vector3f* direction, float power, float lockInputTime)
+void PlayerKnuckles::hitSpringYellow(const Vector3f* direction, float power, float lockInputTime)
 {
     float speedInDir = Maths::projectAlongLine(&vel, direction).length();
     float newLineSpeed = fmaxf(speedInDir, power);

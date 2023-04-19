@@ -282,7 +282,7 @@ void TC_Kart::step()
     float y2 = vel.y;
     float z2 = vel.z;
     float result2[3];
-    Maths::rotatePoint(result2, 0, 0, 0, u2, v2, w2, x2, y2, z2, xIn2);
+    Maths::rotatePoint(result2, u2, v2, w2, x2, y2, z2, xIn2);
     vel.x = result2[0];
     vel.y = result2[1];
     vel.z = result2[2];
@@ -303,7 +303,7 @@ void TC_Kart::step()
     float y5 = atDir5.y;
     float z5 = atDir5.z;
     float buf5[3];
-    Maths::rotatePoint(buf5, 0, 0, 0, u5, v5, w5, x5, y5, z5, Maths::toRadians(-slipAngle));
+    Maths::rotatePoint(buf5, u5, v5, w5, x5, y5, z5, Maths::toRadians(-slipAngle));
     atDir5.set(buf5[0], buf5[1], buf5[2]);
 
     u5 = atDir5.x;
@@ -312,7 +312,7 @@ void TC_Kart::step()
     x5 = rightDir5.x;
     y5 = rightDir5.y;
     z5 = rightDir5.z;
-    Maths::rotatePoint(buf5, 0, 0, 0, u5, v5, w5, x5, y5, z5, Maths::toRadians(0));
+    Maths::rotatePoint(buf5, u5, v5, w5, x5, y5, z5, Maths::toRadians(0));
     Vector3f strafeDir(buf5[0], buf5[1], buf5[2]);
     strafeDir.normalize();
 
@@ -472,7 +472,7 @@ void TC_Kart::step()
     float y = vel.y;
     float z = vel.z;
     float result[3];
-    Maths::rotatePoint(result, 0, 0, 0, u, v, w, x, y, z, xIn);
+    Maths::rotatePoint(result, u, v, w, x, y, z, xIn);
     vel.x = result[0];
     vel.y = result[1];
     vel.z = result[2];
@@ -505,7 +505,7 @@ void TC_Kart::step()
         float y3 = vel.y;
         float z3 = vel.z;
         float buf[3];
-        Maths::rotatePoint(buf, 0, 0, 0, u3, v3, w3, x3, y3, z3, yIn);
+        Maths::rotatePoint(buf, u3, v3, w3, x3, y3, z3, yIn);
 
         float oldAngle = Maths::toDegrees(atan2f(-vel.z,  vel.x));
         float newAngle = Maths::toDegrees(atan2f(-buf[2], buf[0]));
@@ -548,7 +548,7 @@ void TC_Kart::step()
                 float y3 = vel.y;
                 float z3 = vel.z;
                 float buf[3];
-                Maths::rotatePoint(buf, 0, 0, 0, u3, v3, w3, x3, y3, z3, -(angle+Maths::toRadians(70)));
+                Maths::rotatePoint(buf, u3, v3, w3, x3, y3, z3, -(angle+Maths::toRadians(70)));
                 vel.x = buf[0];
                 vel.y = buf[1];
                 vel.z = buf[2];
@@ -1004,27 +1004,24 @@ void TC_Kart::step()
 
     if (exhaustLength > 0.002f)
     {
-        Vector3f xAxis(1, 0, 0);
-        Vector3f yAxis(0, 1, 0);
-        Vector3f zAxis(0, 0, 1);
         Vector3f upDir(1, 0, 0);
         Vector3f atDir(0, -1, 0);
         Vector3f rightDir(0, 0, 1);
         //order = YXZY
-        upDir  = Maths::rotatePoint(&upDir,  &yAxis, Maths::toRadians(rotRoll));
-        upDir  = Maths::rotatePoint(&upDir,  &xAxis, Maths::toRadians(rotX));
-        upDir  = Maths::rotatePoint(&upDir,  &zAxis, Maths::toRadians(rotZ));
-        upDir  = Maths::rotatePoint(&upDir,  &yAxis, Maths::toRadians(rotY));
+        upDir  = Maths::rotatePoint(&upDir,  &Y_AXIS, Maths::toRadians(rotRoll));
+        upDir  = Maths::rotatePoint(&upDir,  &X_AXIS, Maths::toRadians(rotX));
+        upDir  = Maths::rotatePoint(&upDir,  &Z_AXIS, Maths::toRadians(rotZ));
+        upDir  = Maths::rotatePoint(&upDir,  &Y_AXIS, Maths::toRadians(rotY));
 
-        atDir  = Maths::rotatePoint(&atDir,  &yAxis, Maths::toRadians(rotRoll));
-        atDir  = Maths::rotatePoint(&atDir,  &xAxis, Maths::toRadians(rotX));
-        atDir  = Maths::rotatePoint(&atDir,  &zAxis, Maths::toRadians(rotZ));
-        atDir  = Maths::rotatePoint(&atDir,  &yAxis, Maths::toRadians(rotY));
+        atDir  = Maths::rotatePoint(&atDir,  &Y_AXIS, Maths::toRadians(rotRoll));
+        atDir  = Maths::rotatePoint(&atDir,  &X_AXIS, Maths::toRadians(rotX));
+        atDir  = Maths::rotatePoint(&atDir,  &Z_AXIS, Maths::toRadians(rotZ));
+        atDir  = Maths::rotatePoint(&atDir,  &Y_AXIS, Maths::toRadians(rotY));
 
-        rightDir  = Maths::rotatePoint(&rightDir,  &yAxis, Maths::toRadians(rotRoll));
-        rightDir  = Maths::rotatePoint(&rightDir,  &xAxis, Maths::toRadians(rotX));
-        rightDir  = Maths::rotatePoint(&rightDir,  &zAxis, Maths::toRadians(rotZ));
-        rightDir  = Maths::rotatePoint(&rightDir,  &yAxis, Maths::toRadians(rotY));
+        rightDir  = Maths::rotatePoint(&rightDir,  &Y_AXIS, Maths::toRadians(rotRoll));
+        rightDir  = Maths::rotatePoint(&rightDir,  &X_AXIS, Maths::toRadians(rotX));
+        rightDir  = Maths::rotatePoint(&rightDir,  &Z_AXIS, Maths::toRadians(rotZ));
+        rightDir  = Maths::rotatePoint(&rightDir,  &Y_AXIS, Maths::toRadians(rotY));
 
         upDir.normalize();
         atDir.normalize();
@@ -1093,21 +1090,18 @@ void TC_Kart::step()
     }
 
     //updating the engine fans
-    Vector3f xAxis(1, 0, 0);
-    Vector3f yAxis(0, 1, 0);
-    Vector3f zAxis(0, 0, 1);
     Vector3f leftPos(6.90675f,  3.37778f, -5.2851f);
     Vector3f rightPos(6.90675f, 3.37778f,  5.2851f);
     //order = YXZY
-    leftPos  = Maths::rotatePoint(&leftPos,  &yAxis, Maths::toRadians(rotRoll));
-    leftPos  = Maths::rotatePoint(&leftPos,  &xAxis, Maths::toRadians(rotX));
-    leftPos  = Maths::rotatePoint(&leftPos,  &zAxis, Maths::toRadians(rotZ));
-    leftPos  = Maths::rotatePoint(&leftPos,  &yAxis, Maths::toRadians(rotY));
+    leftPos  = Maths::rotatePoint(&leftPos,  &Y_AXIS, Maths::toRadians(rotRoll));
+    leftPos  = Maths::rotatePoint(&leftPos,  &X_AXIS, Maths::toRadians(rotX));
+    leftPos  = Maths::rotatePoint(&leftPos,  &Z_AXIS, Maths::toRadians(rotZ));
+    leftPos  = Maths::rotatePoint(&leftPos,  &Y_AXIS, Maths::toRadians(rotY));
 
-    rightPos = Maths::rotatePoint(&rightPos, &yAxis, Maths::toRadians(rotRoll));
-    rightPos = Maths::rotatePoint(&rightPos, &xAxis, Maths::toRadians(rotX));
-    rightPos = Maths::rotatePoint(&rightPos, &zAxis, Maths::toRadians(rotZ));
-    rightPos = Maths::rotatePoint(&rightPos, &yAxis, Maths::toRadians(rotY));
+    rightPos = Maths::rotatePoint(&rightPos, &Y_AXIS, Maths::toRadians(rotRoll));
+    rightPos = Maths::rotatePoint(&rightPos, &X_AXIS, Maths::toRadians(rotX));
+    rightPos = Maths::rotatePoint(&rightPos, &Z_AXIS, Maths::toRadians(rotZ));
+    rightPos = Maths::rotatePoint(&rightPos, &Y_AXIS, Maths::toRadians(rotY));
 
     float toAddSpin = 2*vel.length()*dt;
     engineLeftSpin  +=  inputWheel*toAddSpin + toAddSpin;
@@ -1137,7 +1131,7 @@ void TC_Kart::step()
     perpen.neg();
 
     float newCameraOffset[3];
-    Maths::rotatePoint(newCameraOffset, 0, 0, 0, perpen.x, perpen.y, perpen.z, camOffset.x, camOffset.y, camOffset.z, camAngleLookdown+camAngleAdditionalLookdown);
+    Maths::rotatePoint(newCameraOffset, perpen.x, perpen.y, perpen.z, camOffset.x, camOffset.y, camOffset.z, camAngleLookdown+camAngleAdditionalLookdown);
     camOffset.set(newCameraOffset[0], newCameraOffset[1], newCameraOffset[2]);
 
     Vector3f camHeight(&currNormSmooth);
@@ -1155,7 +1149,7 @@ void TC_Kart::step()
     up.normalize();
 
     float newUp[3];
-    Maths::rotatePoint(newUp, 0, 0, 0, perpen.x, perpen.y, perpen.z, up.x, up.y, up.z, camAngleLookdown+camAngleAdditionalLookdown);
+    Maths::rotatePoint(newUp, perpen.x, perpen.y, perpen.z, up.x, up.y, up.z, camAngleLookdown+camAngleAdditionalLookdown);
     up.set(newUp[0], newUp[1], newUp[2]);
 
     if (playerIsDrivingMe)

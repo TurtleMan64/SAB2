@@ -17,7 +17,7 @@ protected:
 public:
     virtual void animate(int animIndex, float time);
     
-    virtual void setOrientation(float x, float y, float z, float xRot, float yRot, float zRot, float spinRot, Vector3f* up);
+    virtual void setOrientation(float x, float y, float z, float xRot, float yRot, float zRot, float spinRot, const Vector3f* up);
 
     virtual void setBaseColor(float r, float g, float b);
 

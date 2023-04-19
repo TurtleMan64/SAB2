@@ -10,11 +10,11 @@ public:
 
     Vector3f();
     Vector3f(float x, float y, float z);
-    Vector3f(Vector3f* other);
+    Vector3f(const Vector3f* other);
 
     void set(float x, float y, float z);
 
-    void set(Vector3f* other);
+    void set(const Vector3f* other);
 
     float length() const;
 

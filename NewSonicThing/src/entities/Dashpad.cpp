@@ -46,15 +46,12 @@ Dashpad::Dashpad(
 
     forward = Vector3f(1, 0, 0);
     up = Vector3f(0, 1, 0);
-    Vector3f xAxis(1, 0, 0);
-    Vector3f yAxis(0, 1, 0);
-    Vector3f zAxis(0, 0, 1);
-    forward = Maths::rotatePoint(&forward, &xAxis, Maths::toRadians(rotX));
-    forward = Maths::rotatePoint(&forward, &zAxis, Maths::toRadians(rotZ));
-    forward = Maths::rotatePoint(&forward, &yAxis, Maths::toRadians(rotY));
-    up = Maths::rotatePoint(&up, &xAxis, Maths::toRadians(rotX));
-    up = Maths::rotatePoint(&up, &zAxis, Maths::toRadians(rotZ));
-    up = Maths::rotatePoint(&up, &yAxis, Maths::toRadians(rotY));
+    forward = Maths::rotatePoint(&forward, &X_AXIS, Maths::toRadians(rotX));
+    forward = Maths::rotatePoint(&forward, &Z_AXIS, Maths::toRadians(rotZ));
+    forward = Maths::rotatePoint(&forward, &Y_AXIS, Maths::toRadians(rotY));
+    up = Maths::rotatePoint(&up, &X_AXIS, Maths::toRadians(rotX));
+    up = Maths::rotatePoint(&up, &Z_AXIS, Maths::toRadians(rotZ));
+    up = Maths::rotatePoint(&up, &Y_AXIS, Maths::toRadians(rotY));
 }
 
 void Dashpad::step()

@@ -140,14 +140,13 @@ void Kiki::step()
 void Kiki::updateArm()
 {
     //calc position of shoulder
-    Vector3f yAxis(0, 1, 0);
-    Vector3f right = forward.cross(&yAxis);
+    Vector3f right = forward.cross(&Y_AXIS);
 
     float upOffset = 3.72936f*scale;
     float rightOffset = 0.800129f*scale;
     float forwardOffset = 0.364575f*scale;
 
-    Vector3f armPos = position + yAxis.scaleCopy(upOffset) + right.scaleCopy(rightOffset) + forward.scaleCopy(forwardOffset);
+    Vector3f armPos = position + Y_AXIS.scaleCopy(upOffset) + right.scaleCopy(rightOffset) + forward.scaleCopy(forwardOffset);
     arm->position = armPos;
 
     arm->rotY = rotY;

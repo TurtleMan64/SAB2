@@ -299,8 +299,7 @@ inline void MH_AircraftCarrierCart::pushSonicAway(bool /*frontHitboxes*/, bool /
     //first check if sonic is even close to the platform
     if (collisionCheckCylinder(position, 100, 100))
     {
-        Vector3f rotateAround = Vector3f(0, 1, 0);
-        Vector3f sidewaysVector = Maths::rotatePoint(&directionVector, &rotateAround, Maths::toRadians(90));
+        Vector3f sidewaysVector = Maths::rotatePoint(&directionVector, &Y_AXIS, Maths::toRadians(90));
         Vector3f collisionCenterPos1;
         Vector3f collisionCenterPos2;
         Vector3f collisionCenterPos3;

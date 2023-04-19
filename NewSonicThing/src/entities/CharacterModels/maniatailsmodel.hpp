@@ -119,7 +119,7 @@ public:
 
     void animate(int animIndex, float time);
 
-    void setOrientation(float x, float y, float z, float xRot, float yRot, float zRot, float spinRot, Vector3f* up);
+    void setOrientation(float x, float y, float z, float xRot, float yRot, float zRot, float spinRot, const Vector3f* up);
 
     void setBaseColor(float r, float g, float b);
 

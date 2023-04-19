@@ -12,7 +12,7 @@
 
 void PlayerModel::animate(int, float) {}
 
-void PlayerModel::setOrientation(float, float, float, float, float, float, float, Vector3f*) {}
+void PlayerModel::setOrientation(float, float, float, float, float, float, float, const Vector3f*) {}
 
 void PlayerModel::setBaseColor(float, float, float) {}
 

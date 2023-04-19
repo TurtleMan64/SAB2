@@ -106,7 +106,7 @@ void AudioMaster::updateListenerData(Vector3f* eye, Vector3f* target, Vector3f* 
     float y3 = at.y;
     float z3 = at.z;
     float buf[3];
-    Maths::rotatePoint(buf, 0, 0, 0, u3, v3, w3, x3, y3, z3, Maths::toRadians(90));
+    Maths::rotatePoint(buf, u3, v3, w3, x3, y3, z3, Maths::toRadians(90));
 
     Vector3f up2(buf[0], buf[1], buf[2]);
     up2.normalize();

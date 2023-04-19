@@ -747,6 +747,9 @@
     <ClCompile Include="src\entities\SweetMountain\Gumdrop.cpp">
       <Filter>Source Files\entities\SweetMountain</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\FrogForest\FF_Mushroom.cpp">
+      <Filter>Source Files\entities\FrogForest</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.hpp">
@@ -1357,6 +1360,9 @@
     </ClInclude>
     <ClInclude Include="src\entities\SweetMountain\gumdrop.hpp">
       <Filter>Source Files\entities\SweetMountain</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\FrogForest\ffmushroom.hpp">
+      <Filter>Source Files\entities\FrogForest</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

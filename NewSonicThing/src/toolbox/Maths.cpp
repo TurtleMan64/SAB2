@@ -332,7 +332,7 @@ Vector3f Maths::calculatePlaneSpeed(float xspd, float yspd, float zspd, Vector3f
     float CPitch = ((Maths::PI / 2) + atan2f(-normal->y, CDist));
 
     float result[3] = { 0, 0, 0 }; //storage for the answer
-    rotatePoint(result, 0, 0, 0, Cx, 0, Cz, Blue.x, Blue.y, Blue.z, -CPitch);
+    rotatePoint(result, Cx, 0, Cz, Blue.x, Blue.y, Blue.z, -CPitch);
 
     return Vector3f(result[0], result[1], result[2]);
 }
@@ -343,12 +343,13 @@ Vector3f Maths::calculatePlaneSpeed(float xspd, float yspd, float zspd, Vector3f
 //point to rotate, 
 //angle of rotation
 void Maths::rotatePoint(float result[],
-    float a, float b, float c,
-    float u, float v, float w,
-    float x, float y, float z,
-    float theta)
+    const float a, const float b, const float c,
+    const float u, const float v, const float w,
+    const float x, const float y, const float z,
+    const float theta)
 {
-    if (sqrtf(u*u + v*v + w*w) < 0.000000001f)
+    //if (sqrtf(u*u + v*v + w*w) < 0.000000001f)
+    if (u*u + v*v + w*w < 1e-18f)
     {
         //printf("Warning: trying to rotate by a very small axis [%f %f %f]\n", u, v, w);
         result[0] = x;
@@ -357,15 +358,15 @@ void Maths::rotatePoint(float result[],
         return;
     }
 
-    float u2 = u*u;
-    float v2 = v*v;
-    float w2 = w*w;
-    float l2 = u2 + v2 + w2;
-    float l = sqrtf(l2);
+    const float u2 = u*u;
+    const float v2 = v*v;
+    const float w2 = w*w;
+    const float l2 = u2 + v2 + w2;
+    const float l = sqrtf(l2);
 
-    float cosT = cosf(theta);
-    float oneMinusCosT = 1 - cosT;
-    float sinT = sinf(theta);
+    const float cosT = cosf(theta);
+    const float oneMinusCosT = 1 - cosT;
+    const float sinT = sinf(theta);
 
     result[0] = ((a*(v2 + w2) - u*(b*v + c*w - u*x - v*y - w*z)) * oneMinusCosT
         + l2*x*cosT
@@ -380,16 +381,56 @@ void Maths::rotatePoint(float result[],
         + l*(-b*u + a*v - v*x + u*y)*sinT) / l2;
 }
 
+//Equation from https://sites.google.com/site/glennmurray/Home/rotation-matrices-and-formulas
+//direction of axis,
+//point to rotate, 
+//angle of rotation
+void Maths::rotatePoint(float result[],
+    const float u, const float v, const float w,
+    const float x, const float y, const float z,
+    const float theta)
+{
+    if (u * u + v * v + w * w < 1e-18f)
+    {
+        result[0] = x;
+        result[1] = y;
+        result[2] = z;
+        return;
+    }
+
+    const float u2 = u * u;
+    const float v2 = v * v;
+    const float w2 = w * w;
+    const float l2 = u2 + v2 + w2;
+    const float l = sqrtf(l2);
+
+    const float cosT = cosf(theta);
+    const float oneMinusCosT = 1 - cosT;
+    const float sinT = sinf(theta);
+
+    result[0] = ((- u * (- u * x - v * y - w * z)) * oneMinusCosT
+        + l2 * x * cosT
+        + l * (- w * y + v * z) * sinT) / l2;
+
+    result[1] = ((- v * (- u * x - v * y - w * z)) * oneMinusCosT
+        + l2 * y * cosT
+        + l * (  w * x - u * z) * sinT) / l2;
+
+    result[2] = ((- w * (- u * x - v * y - w * z)) * oneMinusCosT
+        + l2 * z * cosT
+        + l * (- v * x + u * y) * sinT) / l2;
+}
+
 //Point to rotate
 //direction of axis,
 //angle of rotation, in radians
 Vector3f Maths::rotatePoint(
-    Vector3f* pointToRotate,
+    const Vector3f* pointToRotate,
     const Vector3f* axisOfRotation,
-    float theta)
+    const float theta)
 {
     float result[3];
-    Maths::rotatePoint(result, 0, 0, 0, 
+    Maths::rotatePoint(result,
         axisOfRotation->x, 
         axisOfRotation->y, 
         axisOfRotation->z, 
@@ -401,7 +442,7 @@ Vector3f Maths::rotatePoint(
     return Vector3f(result[0], result[1], result[2]);
 }
 
-Vector3f Maths::interpolateVector(Vector3f* A, Vector3f* B, float percent)
+Vector3f Maths::interpolateVector(const Vector3f* A, const Vector3f* B, const float percent)
 {
     Vector3f perpen = A->cross(B);
     float dotProduct = A->dot(B);
@@ -421,8 +462,8 @@ Vector3f Maths::interpolateVector(Vector3f* A, Vector3f* B, float percent)
     }
 
     float angle = acos(similatiry);
-    percent = fminf(1.0f, fmaxf(0.0f, percent));
-    return Maths::rotatePoint(A, &perpen, angle*percent);
+    float perc = fminf(1.0f, fmaxf(0.0f, percent));
+    return Maths::rotatePoint(A, &perpen, angle*perc);
 }
 
 Vector3f Maths::interpolateVectorDebug(Vector3f* A, Vector3f* B, float percent)
@@ -449,7 +490,7 @@ Vector3f Maths::interpolateVectorDebug(Vector3f* A, Vector3f* B, float percent)
     return Maths::rotatePoint(A, &perpen, angle*percent);
 }
 
-float Maths::angleBetweenVectors(Vector3f* A, Vector3f* B)
+float Maths::angleBetweenVectors(const Vector3f* A, const Vector3f* B)
 {
     float mag = A->length()*B->length();
 
@@ -493,7 +534,7 @@ Vector3f Maths::getCloserPoint(Vector3f* A, Vector3f* B, Vector3f* testPoint)
 }
 
 //https://stackoverflow.com/questions/11132681/what-is-a-formula-to-get-a-vector-perpendicular-to-another-vector
-Vector3f Maths::calculatePerpendicular(Vector3f* vec)
+Vector3f Maths::calculatePerpendicular(const Vector3f* vec)
 {
     bool b0 = (vec->x <  vec->y) && (vec->x <  vec->z);
     bool b1 = (vec->y <= vec->x) && (vec->y <  vec->z);
@@ -505,7 +546,7 @@ Vector3f Maths::calculatePerpendicular(Vector3f* vec)
     return perpen;
 }
 
-Vector3f Maths::projectAlongLine(Vector3f* A, Vector3f* line)
+Vector3f Maths::projectAlongLine(const Vector3f* A, const Vector3f* line)
 {
     Vector3f master(A);
     //printf("master = %f %f %f\n", master.x, master.y, master.z);
@@ -540,7 +581,7 @@ Vector3f Maths::bounceVector(Vector3f* initialVelocity, Vector3f* surfaceNormal,
 
 
 //Projects vector A to be perpendicular to vector normal
-Vector3f Maths::projectOntoPlane(Vector3f* A, Vector3f* normal)
+Vector3f Maths::projectOntoPlane(const Vector3f* A, const Vector3f* normal)
 {
     Vector3f B(0, 0, 0);
     Vector3f C(A);
@@ -644,12 +685,11 @@ Vector4f Maths::calcPlaneValues(Vector3f* point, Vector3f* normal)
 
 bool Maths::pointIsInCylinder(Vector3f* point, Vector3f* c1, Vector3f* c2, float cRadius)
 {
-    Vector3f xAxis(1, 0, 0);
     Vector3f cDiff(c2);
     cDiff = cDiff - c1;
 
     float cLength = cDiff.length();
-    float angDiff = Maths::angleBetweenVectors(&cDiff, &xAxis);
+    float angDiff = Maths::angleBetweenVectors(&cDiff, &X_AXIS);
 
     Vector3f p(point);
     p = p - c1; //move c1 to origin
@@ -661,13 +701,12 @@ bool Maths::pointIsInCylinder(Vector3f* point, Vector3f* c1, Vector3f* c2, float
     else if (std::abs(angDiff) > Maths::PI - 0.0001f)
     {
         //rotate 180 degrees
-        Vector3f yAxis(0, 1, 0);
-        p = Maths::rotatePoint(&p, &yAxis, Maths::toRadians(180));
+        p = Maths::rotatePoint(&p, &Y_AXIS, Maths::toRadians(180));
     }
     else
     {
-        Vector3f perpen = xAxis.cross(&cDiff);
-        p = Maths::rotatePoint(&p, &perpen, -angDiff); //rotate so cylinder faces xAxis
+        Vector3f perpen = X_AXIS.cross(&cDiff);
+        p = Maths::rotatePoint(&p, &perpen, -angDiff); //rotate so cylinder faces x axis
     }
 
     return (p.x >= 0 &&

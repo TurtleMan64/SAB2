@@ -375,7 +375,7 @@ void ManiaKnucklesModel::animate(int animIndex, float time)
     }
 }
 
-void ManiaKnucklesModel::setOrientation(float x, float y, float z, float xRot, float yRot, float zRot, float spinRot, Vector3f* newUp)
+void ManiaKnucklesModel::setOrientation(float x, float y, float z, float xRot, float yRot, float zRot, float spinRot, const Vector3f* newUp)
 {
     position.x = x;
     position.y = y;

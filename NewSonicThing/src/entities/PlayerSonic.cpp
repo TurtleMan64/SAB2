@@ -617,6 +617,7 @@ void PlayerSonic::step()
         isSpindashing = false;
         isStomping = false;
         isDropdashing = false;
+        justHomingAttacked = false;
 
         //sparks
         if (vel.lengthSquared() > 140.0f*140.0f)
@@ -1378,13 +1379,12 @@ void PlayerSonic::step()
                 }
                 else //the ground is right below us, ignore any speed changes from it
                 {
-                    Vector3f yAxis(0, 1, 0);
                     float stickAngle = -atan2f(inputY, inputX) - Maths::PI/2; //angle you are holding on the stick, with 0 being up
                     float stickRadius = sqrtf(inputX*inputX + inputY*inputY);
-                    Vector3f dirForward = Maths::projectOntoPlane(&camDir, &yAxis);
+                    Vector3f dirForward = Maths::projectOntoPlane(&camDir, &Y_AXIS);
                     dirForward.setLength(stickRadius);
 
-                    Vector3f stickDirection = Maths::rotatePoint(&dirForward, &yAxis, stickAngle);
+                    Vector3f stickDirection = Maths::rotatePoint(&dirForward, &Y_AXIS, stickAngle);
                     vel.y = 0;
 
                     if (stickRadius > 0.1f)
@@ -2558,8 +2558,7 @@ void PlayerSonic::animate()
     }
     else if (hitTimer > 0.0f)
     {
-        Vector3f yAxis(0, 1, 0);
-        playerModel->setOrientation(dspX, dspY, dspZ, 0, airYaw, 90, airPitch/8.0f, &yAxis);
+        playerModel->setOrientation(dspX, dspY, dspZ, 0, airYaw, 90, airPitch/8.0f, &Y_AXIS);
         playerModel->animate(11, hitTimer);
     }
     else if (isSpindashing)
@@ -2870,11 +2869,9 @@ void PlayerSonic::refreshCamera()
 
         Vector3f target = getCenterPosition();
 
-        Vector3f yAxis(0, 1, 0);
-
         Vector3f diff = cam->eye - target;
 
-        Vector3f perpen = diff.cross(&yAxis);
+        Vector3f perpen = diff.cross(&Y_AXIS);
         Vector3f up = Maths::rotatePoint(&diff, &perpen, Maths::PI/2);
 
         Global::gameCamera->setViewMatrixValues(&Global::gameCamera->eye, &target, &up);
@@ -2999,7 +2996,7 @@ void PlayerSonic::hitSpring(Vector3f* direction, float power, float lockInputTim
     }
 }
 
-void PlayerSonic::hitSpringYellow(Vector3f* direction, float power, float lockInputTime)
+void PlayerSonic::hitSpringYellow(const Vector3f* direction, float power, float lockInputTime)
 {
     float speedInDir = Maths::projectAlongLine(&vel, direction).length();
     float newLineSpeed = fmaxf(speedInDir, power);

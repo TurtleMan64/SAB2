@@ -139,6 +139,7 @@
 #include "../entities/SweetMountain/smstagemanager.hpp"
 #include "../entities/eggpawngun.hpp"
 #include "../entities/SweetMountain/gumdrop.hpp"
+#include "../entities/FrogForest/ffmushroom.hpp"
 
 int LevelLoader::numLevels = 0;
 
@@ -2304,6 +2305,26 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             }
         }
 
+        case 126: //Frog Forest specific
+        {
+            switch (toInt(dat[1]))
+            {
+            case 0: //Mushroom
+            {
+                FF_Mushroom::loadStaticModels();
+                FF_Mushroom* mush = new FF_Mushroom(
+                    toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]),  //position
+                    toFloat(dat[5]));                                   //yrot
+                INCR_NEW("Entity");
+                chunkedEntities->push_back(mush);
+                return;
+            }
+
+            default:
+                return;
+            }
+        }
+
         default: return;
     }
 }
@@ -2491,6 +2512,7 @@ void LevelLoader::freeAllStaticModels()
     SM_StageManager::deleteStaticModels();
     EggPawnGun::deleteStaticModels();
     Gumdrop::deleteStaticModels();
+    FF_Mushroom::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()

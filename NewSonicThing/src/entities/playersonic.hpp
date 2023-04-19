@@ -238,7 +238,7 @@ public:
 
     void hitSpring(Vector3f* direction, float power, float lockInputTime, bool resetsCamera);
 
-    void hitSpringYellow(Vector3f* direction, float power, float lockInputTime);
+    void hitSpringYellow(const Vector3f* direction, float power, float lockInputTime);
 
     void hitSpringTriple(Vector3f* direction, float power, float lockInputTime);
 
