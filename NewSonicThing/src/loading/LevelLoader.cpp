@@ -140,6 +140,7 @@
 #include "../entities/eggpawngun.hpp"
 #include "../entities/SweetMountain/gumdrop.hpp"
 #include "../entities/FrogForest/ffmushroom.hpp"
+#include "../entities/CharacterModels/maniatailsmodel.hpp"
 
 int LevelLoader::numLevels = 0;
 
@@ -227,9 +228,11 @@ void LevelLoader::loadTitle()
     Global::gameCamera->target.set(1, 20, 0);
     Global::gameCamera->up.set(0, 1, 0);
 
-    Global::gameLightSun->direction.set(0, -1, 0);
+    Global::gameLightSun->direction.set(-0.2f, -0.4f, 0.2f);
+    Global::gameLightSun->direction.normalize();
 
-    Vector3f sunColorDay(1.0f, 0.92f, 0.84f);
+    //Vector3f sunColorDay(1.0f, 0.92f, 0.84f);
+    Vector3f sunColorDay(1.0f, 0.98f, 0.93f);
     SkyManager::setSunColorDay(&sunColorDay);
     SkyManager::setTimeOfDay(155.0f);
     SkyManager::fogBottomPosition = -1000.0f;
@@ -253,7 +256,7 @@ void LevelLoader::loadTitle()
         std::vector<std::vector<Vector3f>> mins;
         std::vector<std::vector<Vector3f>> maxs;
 
-        fnames.push_back("MainMenu6");
+        fnames.push_back("MainMenu7");
 
         std::vector<Vector3f> minList;
         std::vector<Vector3f> maxList;
@@ -272,6 +275,16 @@ void LevelLoader::loadTitle()
         Global::gameCamera->eye.set(-42.3515f, 18.4405f, -245.31f);
         Global::gameCamera->target.set(-146.867f, 15.56817f, -261.094f);
         Global::gameCamera->up.set(0, 1, 0);
+    }
+
+    // Spawn a tails
+    if (Global::mainMenuTails == nullptr)
+    {
+        Global::mainMenuTails = new ManiaTailsModel; INCR_NEW("ManiaTailsModel");
+        //Global::mainMenuTails->position.x = -37.97f;
+        //Global::mainMenuTails->position.z = -228.63f;
+        //Global::mainMenuTails->rotY = 90;
+        //Global::mainMenuTails->setOrientation(-37.97f, 15.0f, -228.63f, 0, 90, 0, 0, &Y_AXIS);
     }
 
     AudioPlayer::loadBGM((char*)"res/Audio/BGM/AmbientWaves_intro.ogg");
@@ -377,6 +390,12 @@ void LevelLoader::loadLevel(std::string levelFilename)
     {
         delete Global::gameStageManager; INCR_DEL("Entity");
         Global::gameStageManager = nullptr;
+    }
+
+    if (Global::mainMenuTails != nullptr)
+    {
+        delete Global::mainMenuTails; INCR_DEL("ManiaTailsModel");
+        Global::mainMenuTails = nullptr;
     }
 
     Global::deleteAllEntites();

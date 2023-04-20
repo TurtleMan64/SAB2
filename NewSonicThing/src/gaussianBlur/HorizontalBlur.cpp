@@ -17,8 +17,7 @@ HorizontalBlur::HorizontalBlur(int targetFboWidth, int targetFboHeight)
 void HorizontalBlur::render(GLuint texture)
 {
     shader->start();
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture);
+    shader->loadOriginalTexture(texture);
     renderer->renderQuad();
     shader->stop();
 }

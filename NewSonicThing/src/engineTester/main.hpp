@@ -22,6 +22,7 @@ class MissionMenu;
 class ConfigMenu;
 class Extras;
 class ResultsScreen;
+class PlayerModel;
 
 #include <string>
 #include <random>
@@ -162,6 +163,8 @@ public:
     static float fpsLimit; //experiment to try to busy wait to maintain a target fps
     static bool useFullscreen;
     static int displaySizeChanged; //This will be 1 for a single frame after the size of the window changes (set in callback)
+    static PlayerModel* mainMenuTails;
+    //static PlayerModel* mainMenuKnuckles
 
     //the different types of character movements
     enum PlayableCharacter

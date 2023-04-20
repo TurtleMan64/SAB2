@@ -30,8 +30,17 @@ CharacterSelect::CharacterSelect()
     fontSize = 0.05f;
     loadResources();
     setVisible(true);
-    offsetCurr = 0.0f;
-    offsetTarget = 0.0f;
+
+    switch (Global::currentCharacterType)
+    {
+        case Global::PlayableCharacter::Sonic:    currentButtonIndex = 0; break;
+        case Global::PlayableCharacter::Tails:    currentButtonIndex = 1; break;
+        case Global::PlayableCharacter::Knuckles: currentButtonIndex = 2; break;
+        default: break;
+    }
+
+    offsetTarget = -currentButtonIndex * separation;
+    offsetCurr = offsetTarget;
 }
 
 CharacterSelect::~CharacterSelect()
@@ -290,18 +299,18 @@ Menu* CharacterSelect::step()
         }
     }
 
+    switch (currentButtonIndex)
+    {
+        case 0: Global::currentCharacterType = Global::PlayableCharacter::Sonic;    break;
+        case 1: Global::currentCharacterType = Global::PlayableCharacter::Tails;    break;
+        case 2: Global::currentCharacterType = Global::PlayableCharacter::Knuckles; break;
+        default: break;
+    }
+
     if (pressedSelect)
     {
         AudioPlayer::play(38, Global::gameCamera->getFadePosition1());
         setVisible(false);
-
-        switch (currentButtonIndex)
-        {
-            case 0: Global::currentCharacterType = Global::PlayableCharacter::Sonic;    break;
-            case 1: Global::currentCharacterType = Global::PlayableCharacter::Tails;    break;
-            case 2: Global::currentCharacterType = Global::PlayableCharacter::Knuckles; break;
-            default: break;
-        }
 
         if (Global::gameIsArcadeMode)
         {

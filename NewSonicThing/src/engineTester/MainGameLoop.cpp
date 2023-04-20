@@ -79,6 +79,8 @@
 #include "../entities/TwinkleCircuit/tckart.hpp"
 #include "../toolbox/maths.hpp"
 #include "../entities/eggpawn.hpp"
+#include "../entities/CharacterModels/playermodel.hpp"
+#include "../entities/CharacterModels/maniatailsmodel.hpp"
 #ifdef _WIN32
 #include <windows.h>
 #include <tchar.h>
@@ -197,6 +199,7 @@ float Global::fpsLimit = 60.0f;
 int Global::currentCalculatedFPS = 0;
 int Global::renderCount = 0;
 int Global::displaySizeChanged = 0;
+PlayerModel* Global::mainMenuTails = nullptr;
 
 Global::PlayableCharacter Global::currentCharacterType = Global::PlayableCharacter::Sonic;
 std::unordered_map<Global::PlayableCharacter, std::string> Global::characterNames;
@@ -430,6 +433,8 @@ int main(int argc, char** argv)
     Global::gameState = STATE_TITLE;
 
     GuiImage* rankDisplay = nullptr;
+
+    ManiaTailsModel::loadStaticModels();
 
     LevelLoader::loadTitle();
 
@@ -736,6 +741,28 @@ int main(int argc, char** argv)
                 ParticleMaster::update(Global::gameCamera);
                 Global::gameClock+=dt;
 
+                if (Global::mainMenuTails != nullptr)
+                {
+                    Global::mainMenuTails->setBaseVisibility(true);
+                    Global::mainMenuTails->setOrientation(-37.97f, 21.0f + 1*sinf(Global::gameClock*2), -228.63f, 0, 60, 0, 0, &Y_AXIS);
+                    Global::mainMenuTails->animate(20, -Global::gameClock*4000);
+                    
+
+                    Vector3f camEyeDesired = Vector3f();
+
+                    switch (Global::currentCharacterType)
+                    {
+                        case Global::Sonic:    camEyeDesired = Vector3f(-42.3515f, 18.4405f, -245.31f); break;
+                        case Global::Tails:    camEyeDesired = Vector3f(-15.7100f, 18.4405f, -241.42f); break;
+                        case Global::Knuckles: camEyeDesired = Vector3f( 15.1799f,  8.1105f, -243.69f); break;
+                    }
+
+                    Vector3f diff = Global::gameCamera->eye - camEyeDesired;
+                    diff.scale(4*dt);
+
+                    Global::gameCamera->eye = Global::gameCamera->eye - diff;
+                }
+
                 break;
             }
 
@@ -790,6 +817,11 @@ int main(int argc, char** argv)
                     MasterRenderer::processEntity(e);
                 }
             }
+        }
+
+        if (Global::mainMenuTails != nullptr)
+        {
+            MasterRenderer::processEntity(Global::mainMenuTails);
         }
 
         if (Global::gameStageManager != nullptr)

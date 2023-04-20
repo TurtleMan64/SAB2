@@ -11,6 +11,7 @@ private:
     GLuint fragmentShaderId;
 
     int location_targetWidth;
+    int location_originalTexture;
 
 public:
     HorizontalBlurShader(const char* vFile, const char* fFile);
@@ -22,6 +23,8 @@ public:
     void cleanUp();
 
     void loadTargetWidth(float width);
+
+    void loadOriginalTexture(GLuint texId);
 
 protected:
     void bindAttributes();

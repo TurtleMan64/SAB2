@@ -41,6 +41,13 @@ void VerticalBlurShader::loadTargetHeight(float height)
     loadFloat(location_targetHeight, height);
 }
 
+void VerticalBlurShader::loadOriginalTexture(GLuint texId)
+{
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texId);
+    glUniform1i(location_originalTexture, 0); // might be able to do this just once at the beginning
+}
+
 void VerticalBlurShader::bindAttributes()
 {
     bindAttribute(0, "position");
@@ -53,7 +60,8 @@ void VerticalBlurShader::bindAttribute(int attribute, const char* variableName)
 
 void VerticalBlurShader::getAllUniformLocations()
 {
-    location_targetHeight = getUniformLocation("targetHeight");
+    location_targetHeight    = getUniformLocation("targetHeight");
+    location_originalTexture = getUniformLocation("originalTexture");
 }
 
 int VerticalBlurShader::getUniformLocation(const char* uniformName)

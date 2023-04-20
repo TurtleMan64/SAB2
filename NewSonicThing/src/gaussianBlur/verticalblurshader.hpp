@@ -11,6 +11,7 @@ private:
     GLuint fragmentShaderId;
 
     int location_targetHeight;
+    int location_originalTexture;
 
 public:
     VerticalBlurShader(const char* vFile, const char* fFile);
@@ -22,6 +23,8 @@ public:
     void cleanUp();
 
     void loadTargetHeight(float height);
+
+    void loadOriginalTexture(GLuint texId);
 
 protected:
     void bindAttributes();

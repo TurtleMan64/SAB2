@@ -129,8 +129,41 @@ map_Kd d_pepea1.png
 newmtl unnamed.064
 Ns 20.000000
 Ni 0.000000
-d 1.000000
+Tr 0.2
+renderOrder 1
+mixLinear
+animSpeed 36
+numImages 30
 map_Kd w1_a1.1.png
+w1_a1.2.png
+w1_a1.3.png
+w1_a1.4.png
+w1_a1.5.png
+w1_a1.6.png
+w1_a1.7.png
+w1_a1.8.png
+w1_a1.9.png
+w1_a1.10.png
+w1_a1.11.png
+w1_a1.12.png
+w1_a1.13.png
+w1_a1.14.png
+w1_a1.15.png
+w1_a1.16.png
+w1_a1.17.png
+w1_a1.18.png
+w1_a1.19.png
+w1_a1.20.png
+w1_a1.21.png
+w1_a1.22.png
+w1_a1.23.png
+w1_a1.24.png
+w1_a1.25.png
+w1_a1.26.png
+w1_a1.27.png
+w1_a1.28.png
+w1_a1.29.png
+w1_a1.30.png
 
 newmtl n1_3020.png
 Ns 20.000000

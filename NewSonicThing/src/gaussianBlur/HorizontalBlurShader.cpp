@@ -41,6 +41,13 @@ void HorizontalBlurShader::loadTargetWidth(float width)
     loadFloat(location_targetWidth, width);
 }
 
+void HorizontalBlurShader::loadOriginalTexture(GLuint texId)
+{
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texId);
+    glUniform1i(location_originalTexture, 0); // might be able to do this just once at the beginning
+}
+
 void HorizontalBlurShader::bindAttributes()
 {
     bindAttribute(0, "position");
@@ -53,7 +60,8 @@ void HorizontalBlurShader::bindAttribute(int attribute, const char* variableName
 
 void HorizontalBlurShader::getAllUniformLocations()
 {
-    location_targetWidth = getUniformLocation("targetWidth");
+    location_targetWidth     = getUniformLocation("targetWidth");
+    location_originalTexture = getUniformLocation("originalTexture");
 }
 
 int HorizontalBlurShader::getUniformLocation(const char* uniformName)
