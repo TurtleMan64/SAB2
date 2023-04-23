@@ -92,6 +92,18 @@ PlayerTails::~PlayerTails()
         sourceFly->stop();
         sourceFly = nullptr;
     }
+
+    if (sourceGrind != nullptr)
+    {
+        sourceGrind->stop();
+        sourceGrind = nullptr;
+    }
+
+    if (sourceStomp != nullptr)
+    {
+        sourceStomp->stop();
+        sourceStomp = nullptr;
+    }
 }
 
 void PlayerTails::step()
@@ -614,7 +626,7 @@ void PlayerTails::step()
     //}
 
     //Fly
-    if (onGround)
+    if (onGround || Global::finishStageTimer >= 1.0f)
     {
         isFlying = false;
     }
@@ -2071,6 +2083,37 @@ void PlayerTails::rebound(Vector3f* source)
     }
 }
 
+void PlayerTails::goThroughDashRing(Vector3f* center, Vector3f* dir, float power, float lockTime, bool changeCamera)
+{
+    vel = dir->scaleCopy(power);
+
+    if (changeCamera)
+    {
+        camDir.set(dir);
+        camDir.y = 0;
+        camDir.normalize();
+    }
+    canMoveTimer = lockTime;
+    position.set(center);
+
+    isGrinding = false;
+    isBouncing = false;
+    isBall = false;
+    isLightdashing = false;
+    isSkidding = false;
+    isSpindashing = false;
+    isStomping = false;
+    justBounced = false;
+    isDropdashing = false;
+    onGround = false;
+    isJumping = true;
+    homingAttackTimer = -1.0f;
+    justHomingAttacked = false;
+    isHomingOnPoint = false;
+    hoverTimer = 0;
+    isFlying = false;
+}
+
 void PlayerTails::takeDamage(Vector3f* source)
 {
     if (hitTimer == 0.0f && invincibleTimer == 0.0f && hitFlashingTimer == 0.0f)
@@ -2820,6 +2863,12 @@ void PlayerTails::startGrabbing()
     isBall = false;
     isJumping = false;
     isFlying = false;
+    isDropdashing = false;
+    isHomingOnPoint = false;
+    isStomping = false;
+    isBouncing = false;
+    justBounced = false;
+    justHomingAttacked = false;
     velocityMovesPlayer = false;
 }
 

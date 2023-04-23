@@ -85,6 +85,18 @@ PlayerKnuckles::~PlayerKnuckles()
         LoaderGL::deleteTexture(homingAttackReticle->textureId);
         delete homingAttackReticle; homingAttackReticle = nullptr; INCR_DEL("GuiImage")
     }
+
+    if (sourceGrind != nullptr)
+    {
+        sourceGrind->stop();
+        sourceGrind = nullptr;
+    }
+
+    if (sourceGlide != nullptr)
+    {
+        sourceGlide->stop();
+        sourceGlide = nullptr;
+    }
 }
 
 void PlayerKnuckles::step()
@@ -1529,12 +1541,6 @@ void PlayerKnuckles::step()
 
     if (isStomping && onGround)
     {
-        if (sourceStomp != nullptr)
-        {
-            sourceStomp->stop();
-            sourceStomp = nullptr;
-        }
-
         AudioPlayer::play(17, &position);
 
         int numBubbles = ((int)abs((vel.y/60.0f) * 10)) + 18;
@@ -3052,6 +3058,13 @@ void PlayerKnuckles::startGrabbing()
     onGround = false;
     isBall = false;
     isJumping = false;
+    isHomingOnPoint = false;
+    isStomping = false;
+    isBouncing = false;
+    justBounced = false;
+    justHomingAttacked = false;
+    isGliding = false;
+    isDrillDiving = false;
     velocityMovesPlayer = false;
 }
 

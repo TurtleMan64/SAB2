@@ -99,8 +99,8 @@ private:
 
 public:
     MH_CratePlatform();
-
     MH_CratePlatform(float x, float y, float z, float dirX, float dirZ, float displacementMax, float speed, int type);
+    ~MH_CratePlatform();
 
     void step();
 

@@ -100,7 +100,6 @@ private:
 
     bool isStomping = false;
     const float stompSpeed = -350.0f;
-    Source* sourceStomp = nullptr;
 
     bool isSkidding = false;
     const float skidAudioThreshold = 150.0f;

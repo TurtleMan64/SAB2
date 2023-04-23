@@ -34,6 +34,11 @@ Pulley::Pulley(float x, float y, float z, float newRotY, float handleVerticalDis
     scale = 1;
     visible = true;
 
+    if (Global::levelId == LVL_FROG_FOREST)
+    {
+        PULLEY_SPEED = 400.0f;
+    }
+
     this->handleVerticalDisplacement = handleVerticalDisplacement;
     handleVerticalDisplacementBottom = handleVerticalDisplacement;
 
@@ -56,10 +61,17 @@ Pulley::Pulley(float x, float y, float z, float newRotY, float handleVerticalDis
     cmTop->transformModel(collideModelTransformed, top->getPosition());
 }
 
+Pulley::~Pulley()
+{
+    if (pulleyAudioSource != nullptr)
+    {
+        pulleyAudioSource->stop();
+        pulleyAudioSource = nullptr;
+    }
+}
+
 void Pulley::step() 
 {
-    //Idea: make pulley bob when it hits the top? like SA2
-
     //Change all of this so the start moving is separate from the actual moving, isMoving variable required
     if (playerIsOnPulley)
     {
@@ -230,9 +242,10 @@ inline void Pulley::playPulleySound()
 {
     if (pulleyAudioSource == nullptr)
     {
-        pulleyAudioSource = AudioPlayer::play(62, top->getPosition(), 1, false);
+        pulleyAudioSource = AudioPlayer::play(62, &position, 1, false);
     }
     pulleyAudioSource->setLooping(true);
+    pulleyAudioSource->setPosition(position.x, position.y, position.z);
 }
 
 inline void Pulley::stopPulleySound()
@@ -282,7 +295,7 @@ inline void Pulley::bobPulley()
         handleVerticalDisplacement = HANDLE_VERTICAL_DISPLACEMENT_MINIMUM;
         return;
     }
-    //Check out the curve of this in a graphing calculator, it's a sine wave that slows down, pretty cool
+
     handleVerticalDisplacement = HANDLE_VERTICAL_DISPLACEMENT_MINIMUM - (sin(bobTimer) / bobTimer) * 10;
 
     bobTimer += dt * 20;

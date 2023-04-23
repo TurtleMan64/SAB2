@@ -281,10 +281,6 @@ void LevelLoader::loadTitle()
     if (Global::mainMenuTails == nullptr)
     {
         Global::mainMenuTails = new ManiaTailsModel; INCR_NEW("ManiaTailsModel");
-        //Global::mainMenuTails->position.x = -37.97f;
-        //Global::mainMenuTails->position.z = -228.63f;
-        //Global::mainMenuTails->rotY = 90;
-        //Global::mainMenuTails->setOrientation(-37.97f, 15.0f, -228.63f, 0, 90, 0, 0, &Y_AXIS);
     }
 
     AudioPlayer::loadBGM((char*)"res/Audio/BGM/AmbientWaves_intro.ogg");

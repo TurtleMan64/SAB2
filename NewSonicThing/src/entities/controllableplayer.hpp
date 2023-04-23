@@ -50,6 +50,8 @@ public:
 
     virtual void rebound(Vector3f* source);
 
+    virtual void goThroughDashRing(Vector3f* center, Vector3f* dir, float power, float lockTime, bool changeCamera);
+
     virtual bool isVulnerable();
 
     virtual bool canDealDamage();

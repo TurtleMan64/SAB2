@@ -73,6 +73,15 @@ Rocket::Rocket(Vector3f* point1, Vector3f* point2)
     base->updateTransformationMatrix();
 }
 
+Rocket::~Rocket()
+{
+    if (rocketAudioSource != nullptr)
+    {
+        rocketAudioSource->stop();
+        rocketAudioSource = nullptr;
+    }
+}
+
 void Rocket::step()
 {
     //The players current position as of this frame

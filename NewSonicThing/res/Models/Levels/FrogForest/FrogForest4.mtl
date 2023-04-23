@@ -129,9 +129,10 @@ map_Kd d_pepea1.png
 newmtl unnamed.064
 Ns 20.000000
 Ni 0.000000
-Tr 0.2
+Tr 0
 renderOrder 1
 mixLinear
+glow 1
 animSpeed 36
 numImages 30
 map_Kd w1_a1.1.png

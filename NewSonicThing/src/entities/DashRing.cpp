@@ -94,19 +94,7 @@ void DashRing::step()
                     AudioPlayer::play(74, &position, 1.0f);
                 }
 
-                Global::gameMainPlayer->vel = forward.scaleCopy(power);
-                //Global::gameMainPlayer->vel = Maths::projectOntoPlane(&Global::gameMainPlayer->vel, &Global::gameMainPlayer->relativeUp);
-                //Global::gameMainPlayer->vel.setLength(power);
-                if (changeCamera)
-                {
-                    Global::gameMainPlayer->camDir = forward;
-                    Global::gameMainPlayer->camDir.y = 0;
-                    Global::gameMainPlayer->camDir.normalize();
-                }
-                Global::gameMainPlayer->canMoveTimer = controlLockTime;
-                //Global::gameMainPlayer->hitDashpad();
-                Global::gameMainPlayer->onGround = false;
-                Global::gameMainPlayer->position = position;
+                Global::gameMainPlayer->goThroughDashRing(&position, &forward, power, controlLockTime, changeCamera);
             }
 
             playerIsIn = true;

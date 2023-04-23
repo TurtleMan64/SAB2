@@ -75,6 +75,15 @@ MH_CratePlatform::MH_CratePlatform(float x, float y, float z, float dirX, float 
     updateCollisionModel();
 }
 
+MH_CratePlatform::~MH_CratePlatform()
+{
+    if (platformAudioSource != nullptr)
+    {
+        platformAudioSource->stop();
+        platformAudioSource = nullptr;
+    }
+}
+
 void MH_CratePlatform::step() 
 {
     if (platformMoves == true)

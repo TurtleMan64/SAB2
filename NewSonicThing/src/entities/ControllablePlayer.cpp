@@ -14,6 +14,7 @@ float         ControllablePlayer::getHoverTimer()                          {retu
 void          ControllablePlayer::setInWater(float)                        {}
 void          ControllablePlayer::takeDamage(Vector3f*)                    {}
 void          ControllablePlayer::rebound(Vector3f*)                       {}
+void          ControllablePlayer::goThroughDashRing(Vector3f*, Vector3f*, float, float, bool) {}
 bool          ControllablePlayer::isVulnerable()                           {return false;}
 bool          ControllablePlayer::canDealDamage()                          {return false;}
 bool          ControllablePlayer::canBreakObjects()                        {return false;}

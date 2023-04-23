@@ -95,6 +95,18 @@ PlayerSonic::~PlayerSonic()
         LoaderGL::deleteTexture(homingAttackReticle->textureId);
         delete homingAttackReticle; homingAttackReticle = nullptr; INCR_DEL("GuiImage");
     }
+
+    if (sourceGrind != nullptr)
+    {
+        sourceGrind->stop();
+        sourceGrind = nullptr;
+    }
+
+    if (sourceStomp != nullptr)
+    {
+        sourceStomp->stop();
+        sourceStomp = nullptr;
+    }
 }
 
 void PlayerSonic::step()
@@ -143,13 +155,14 @@ void PlayerSonic::step()
     bool onGroundBefore = onGround;
 
     // Dropdash
-    if (!onGround && inputAction4 && !isStomping && !isLightdashing && !isBouncing && !isHomingOnPoint && !justHomingAttacked && !isGrinding && !isGrabbing)
+    if (!onGround && inputAction4 && !isLightdashing && !isBouncing && !isHomingOnPoint && !justHomingAttacked && !isGrinding && !isGrabbing)
     {
         dropdashTimer += dt;
 
         if (dropdashTimer >= dropdashTimerMax && !isDropdashing)
         {
             isDropdashing = true;
+            isStomping = false;
             AudioPlayer::play(78, &position);
         }
     }
@@ -2013,6 +2026,36 @@ void PlayerSonic::rebound(Vector3f* source)
     }
 }
 
+void PlayerSonic::goThroughDashRing(Vector3f* center, Vector3f* dir, float power, float lockTime, bool changeCamera)
+{
+    vel = dir->scaleCopy(power);
+
+    if (changeCamera)
+    {
+        camDir.set(dir);
+        camDir.y = 0;
+        camDir.normalize();
+    }
+    canMoveTimer = lockTime;
+    position.set(center);
+
+    isGrinding = false;
+    isBouncing = false;
+    isBall = false;
+    isLightdashing = false;
+    isSkidding = false;
+    isSpindashing = false;
+    isStomping = false;
+    justBounced = false;
+    isDropdashing = false;
+    onGround = false;
+    isJumping = true;
+    homingAttackTimer = -1.0f;
+    justHomingAttacked = false;
+    isHomingOnPoint = false;
+    hoverTimer = 0;
+}
+
 void PlayerSonic::takeDamage(Vector3f* source)
 {
     if (hitTimer == 0.0f && invincibleTimer == 0.0f && hitFlashingTimer == 0.0f)
@@ -2756,6 +2799,12 @@ void PlayerSonic::startGrabbing()
     onGround = false;
     isBall = false;
     isJumping = false;
+    isDropdashing = false;
+    isHomingOnPoint = false;
+    isStomping = false;
+    isBouncing = false;
+    justBounced = false;
+    justHomingAttacked = false;
     velocityMovesPlayer = false;
 }
 

@@ -263,6 +263,8 @@ public:
 
     void rebound(Vector3f* source);
 
+    void goThroughDashRing(Vector3f* center, Vector3f* dir, float power, float lockTime, bool changeCamera);
+
     void setCanMoveTimer(float newTimer);
 
     void startGrinding();

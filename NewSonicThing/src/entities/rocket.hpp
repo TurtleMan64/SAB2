@@ -116,6 +116,7 @@ private:
 public:
     Rocket();
     Rocket(Vector3f* point1, Vector3f* point2);
+    ~Rocket();
 
     void step();
 
