@@ -42,6 +42,8 @@ public:
     // So 0 if the sound just started, 0.5 if the sound is halfway done, 1 if sound is finished.
     float getSoundCompletion();
 
+    void setSoundCompletion(float percentage);
+
     ALuint getSourceId();
 
     ALuint getLastPlayedBufferId();

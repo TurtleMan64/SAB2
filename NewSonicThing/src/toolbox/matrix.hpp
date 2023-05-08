@@ -67,6 +67,8 @@ public:
 
     void scale(Vector2f*);
 
+    void scale(float);
+
     void set(Matrix4f* other);
 
     //angle in radians

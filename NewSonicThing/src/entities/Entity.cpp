@@ -80,6 +80,11 @@ void Entity::die()
     
 }
 
+void Entity::activateFromSwitch(int)
+{
+
+}
+
 void Entity::increasePosition(float dx, float dy, float dz)
 {
     position.x += dx;

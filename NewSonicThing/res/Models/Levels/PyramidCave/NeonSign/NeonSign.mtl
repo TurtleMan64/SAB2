@@ -1,0 +1,35 @@
+# Blender MTL File: 'None'
+# Material Count: 3
+
+newmtl attach_006B9394_material_0
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 0.000000
+Tr 0
+glow 1
+renderOrder 1
+illum 1
+map_Kd ../kd_pc_neon1.png
+
+newmtl attach_006B9394_material_0_kd_pc_mon2.png
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 0
+illum 1
+map_Kd ../kd_pc_mon2.png
+
+newmtl attach_006B9394_material_1
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 0.000000
+illum 1
+map_Kd ../kd_pc_mon2.png

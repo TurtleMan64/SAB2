@@ -142,3 +142,22 @@ float Source::getSoundCompletion()
 
     return normalizedPos;
 }
+
+void Source::setSoundCompletion(float percentage)
+{
+    if (!isPlaying())
+    {
+        return;
+    }
+
+    ALint sizeInBytes;
+    alGetBufferi(bufferId, AL_SIZE, &sizeInBytes);
+    if (sizeInBytes == 0)
+    {
+        return;
+    }
+
+    ALint startingByte = (ALint)(sizeInBytes * percentage) % sizeInBytes;
+
+    alSourcei(sourceId, AL_BYTE_OFFSET, startingByte);
+}

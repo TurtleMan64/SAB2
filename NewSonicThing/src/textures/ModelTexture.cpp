@@ -89,7 +89,25 @@ GLuint ModelTexture::getId()
 
 GLuint ModelTexture::getId2()
 {
-    return texIds[(currentImageIndex+1)%texIds.size()];
+    return texIds[(currentImageIndex + 1) % texIds.size()];
+}
+
+GLuint ModelTexture::getId(float totalAnimationProgress)
+{
+    float t = fmodf(totalAnimationProgress, 1.0f);
+
+    int idx = (int)(t*texIds.size());
+
+    return texIds[idx];
+}
+
+GLuint ModelTexture::getId2(float totalAnimationProgress)
+{
+    float t = fmodf(totalAnimationProgress, 1.0f);
+
+    int idx = (int)(t*texIds.size());
+
+    return texIds[(idx + 1) % texIds.size()];
 }
 
 bool ModelTexture::hasMultipleImages()
@@ -124,6 +142,27 @@ float ModelTexture::mixFactor()
     return 0.0f;
 }
 
+float ModelTexture::mixFactor(float totalAnimationProgress)
+{
+    float total = texIds.size()*fmodf(totalAnimationProgress, 1.0f);
+    
+    float progress = fmodf(total, 1.0f);
+
+    switch (mixingType)
+    {
+        case 1:
+            return 0.0f;
+
+        case 2:
+            return progress;
+
+        case 3:
+            return 0.5f * (sinf(Maths::PI * (progress - 0.5f)) + 1);
+    }
+
+    return 0.0f;
+}
+
 std::vector<GLuint>* ModelTexture::getIds()
 {
     return &texIds;
@@ -147,6 +186,15 @@ void ModelTexture::updateAnimations(float dt)
             tex->currentImageIndex = (tex->currentImageIndex+1)%tex->texIds.size();
             tex->animatedProgress-=1.0f;
         }
+    }
+}
+
+void ModelTexture::resetAnimationProgress()
+{
+    if (isAnimated)
+    {
+        currentImageIndex = 0;
+        animatedProgress = 0.0f;
     }
 }
 

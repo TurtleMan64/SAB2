@@ -254,6 +254,11 @@
     <ClCompile Include="src\entities\MetalHarbor\MH_StageManager.cpp" />
     <ClCompile Include="src\entities\PlayerTails.cpp" />
     <ClCompile Include="src\entities\Point.cpp" />
+    <ClCompile Include="src\entities\PyramidCave\PC_Door.cpp" />
+    <ClCompile Include="src\entities\PyramidCave\PC_Flame.cpp" />
+    <ClCompile Include="src\entities\PyramidCave\PC_FlameChimney.cpp" />
+    <ClCompile Include="src\entities\PyramidCave\PC_NeonSign.cpp" />
+    <ClCompile Include="src\entities\PyramidCave\PC_Ship.cpp" />
     <ClCompile Include="src\entities\PyramidCave\PC_StageManager.cpp" />
     <ClCompile Include="src\entities\PyramidCave\PC_StaticObjects.cpp" />
     <ClCompile Include="src\entities\RaceGhost.cpp" />
@@ -289,6 +294,7 @@
     <ClCompile Include="src\entities\StageTransparent.cpp" />
     <ClCompile Include="src\entities\SweetMountain\Gumdrop.cpp" />
     <ClCompile Include="src\entities\SweetMountain\SM_StageManager.cpp" />
+    <ClCompile Include="src\entities\Switch.cpp" />
     <ClCompile Include="src\entities\Tutorial\T_StageManager.cpp" />
     <ClCompile Include="src\entities\TwinkleCircuit\TC_Dash.cpp" />
     <ClCompile Include="src\entities\TwinkleCircuit\TC_Kart.cpp" />
@@ -463,6 +469,11 @@
     <ClInclude Include="src\entities\playertails.hpp" />
     <ClInclude Include="src\entities\point.hpp" />
     <ClInclude Include="src\entities\pulley.hpp" />
+    <ClInclude Include="src\entities\PyramidCave\pcdoor.hpp" />
+    <ClInclude Include="src\entities\PyramidCave\pcflame.hpp" />
+    <ClInclude Include="src\entities\PyramidCave\pcflamechimney.hpp" />
+    <ClInclude Include="src\entities\PyramidCave\pcneonsign.hpp" />
+    <ClInclude Include="src\entities\PyramidCave\pcship.hpp" />
     <ClInclude Include="src\entities\PyramidCave\pcstagemanager.hpp" />
     <ClInclude Include="src\entities\PyramidCave\pcstaticobjects.hpp" />
     <ClInclude Include="src\entities\raceghost.hpp" />
@@ -497,6 +508,7 @@
     <ClInclude Include="src\entities\stagetransparent.hpp" />
     <ClInclude Include="src\entities\SweetMountain\gumdrop.hpp" />
     <ClInclude Include="src\entities\SweetMountain\smstagemanager.hpp" />
+    <ClInclude Include="src\entities\switch.hpp" />
     <ClInclude Include="src\entities\Tutorial\tstagemanager.hpp" />
     <ClInclude Include="src\entities\TwinkleCircuit\tcdash.hpp" />
     <ClInclude Include="src\entities\TwinkleCircuit\tckart.hpp" />

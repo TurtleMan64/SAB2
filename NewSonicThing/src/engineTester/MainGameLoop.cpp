@@ -954,6 +954,12 @@ int main(int argc, char** argv)
         //    }
         //}
 
+        //if (Global::renderCount % 2 == 0)
+        //{
+        //    glClearColor(0, 0, 0, 1);
+        //    glClear(GL_COLOR_BUFFER_BIT);
+        //}
+
         Display::updateDisplay();
 
         ANALYSIS_DONE("Screen Refresh");

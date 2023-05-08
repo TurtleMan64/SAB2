@@ -38,8 +38,9 @@ void WaterRenderer::prepareRender(Camera* camera, Light* sun)
     Vector4f plane = Maths::calcPlaneValues(&startPos, &camDir);
     shader->loadClipPlaneBehind(&plane);
 
-    extern float dt;
-    moveFactor += WaterRenderer::WAVE_SPEED*dt;
+    //extern float dt;
+    //moveFactor += WaterRenderer::WAVE_SPEED*dt;
+    moveFactor = WaterRenderer::WAVE_SPEED*Global::gameClock;
     moveFactor = fmodf(moveFactor, 1);
     shader->loadMoveFactor(moveFactor);
     shader->loadSun(sun);

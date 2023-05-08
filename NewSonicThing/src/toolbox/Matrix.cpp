@@ -230,6 +230,22 @@ void Matrix4f::scale(Vector2f* vec)
     m13 = m13 * vec->y;
 }
 
+void Matrix4f::scale(float scale)
+{
+    m00 = m00 * scale;
+    m01 = m01 * scale;
+    m02 = m02 * scale;
+    m03 = m03 * scale;
+    m10 = m10 * scale;
+    m11 = m11 * scale;
+    m12 = m12 * scale;
+    m13 = m13 * scale;
+    m20 = m20 * scale;
+    m21 = m21 * scale;
+    m22 = m22 * scale;
+    m23 = m23 * scale;
+}
+
 //angle in radians
 void Matrix4f::rotate(float radians, const Vector3f* axis)
 {

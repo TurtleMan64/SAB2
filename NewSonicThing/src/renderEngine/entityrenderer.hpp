@@ -20,7 +20,7 @@ private:
 
     void unbindTexturedModel();
 
-    void prepareInstance(Entity* entity);
+    void prepareInstance(Entity* entity, TexturedModel* texturedModel);
 
 public:
     EntityRenderer(EntityShader* shader, Matrix4f* projectionMatrix);

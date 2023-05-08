@@ -1,0 +1,24 @@
+# Material Count: 1
+
+newmtl None
+Ns 20
+Ni 0
+d 0
+Tr 0
+renderOrder 4
+glow 1
+mixLinear
+animSpeed 12
+numImages 12
+map_Kd 0.png
+1.png
+2.png
+3.png
+4.png
+5.png
+6.png
+7.png
+8.png
+9.png
+10.png
+11.png

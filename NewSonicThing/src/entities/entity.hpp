@@ -22,6 +22,8 @@ public:
     Matrix4f transformationMatrix;
     //render order is normally set in each TexturedModel, but can be overrided by using this
     char renderOrderOverride = 69;
+    // texture animation is normally set in each ModelTexture.
+    float renderTextureAnimationOverride = -1.0f;
 
     static void deleteModels(std::vector<TexturedModel*>* modelsToDelete);
     static void deleteCollisionModel(CollisionModel** colModelToDelete);
@@ -74,5 +76,7 @@ public:
     virtual Vector3f getHomingCenter() const;
 
     virtual void die();
+
+    virtual void activateFromSwitch(int switchId);
 };
 #endif

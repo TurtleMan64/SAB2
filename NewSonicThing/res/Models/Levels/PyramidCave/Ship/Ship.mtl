@@ -1,0 +1,76 @@
+# Material Count: 12
+
+newmtl attach_0069A46C_material_12
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+Tr 0
+renderOrder 4
+map_Kd ../dz_pc_chain8.png
+
+newmtl attach_0069A46C_material_0
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd ../dz_pc_skin64.png
+
+newmtl attach_0069A46C_material_5
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd ../dz_pc_hasira128.png
+
+newmtl attach_0069A46C_material_1
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd ../kd_pc_hebi2.png
+
+newmtl attach_0069A46C_material_11
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd ../dz_pc_shiprust64.png
+
+newmtl attach_0069A46C_material_9
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd ../kd_pc_hasira1.png
+
+newmtl attach_0069A46C_material_3
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd ../kd_pc_yuka1.png
+
+newmtl attach_0069A46C_material_6
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd ../dz_pc_ship128.png
+
+newmtl attach_0069A46C_material_4
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd ../kd_pc_yuka3.png
+
+newmtl attach_0069A46C_material_7
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd ../dc_pc_crouchwall64.png
+
+newmtl attach_0069A46C_material_2
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd ../kd_pc_hasira4.png
+
+newmtl attach_0069A46C_material_10
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd ../dz_pc_pot_wall128.png
+

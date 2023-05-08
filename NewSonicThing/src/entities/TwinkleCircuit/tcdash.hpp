@@ -4,7 +4,7 @@
 class TexturedModel;
 class Triangle3D;
 
-#include <list>
+#include <vector>
 #include "../entity.hpp"
 #include "../../toolbox/vector.hpp"
 

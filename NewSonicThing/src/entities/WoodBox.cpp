@@ -15,11 +15,11 @@
 std::vector<TexturedModel*> WoodBox::models;
 CollisionModel* WoodBox::cmOriginal = nullptr;
 
-WoodBox::WoodBox(float x, float y, float z, float /*rot*/)
+WoodBox::WoodBox(float x, float y, float z, float rot)
 {
     position.set(x, y, z);
     rotX = 0;
-    rotY = 0;
+    rotY = rot;
     rotZ = 0;
 
     scale = 1;
@@ -44,10 +44,10 @@ void WoodBox::step()
         const float hitPad = 5.0f;
 
         Vector3f diff = Global::gameMainPlayer->getCenterPosition() - position;
-        if (std::abs(diff.x) <= 10 + hitPad &&
+        if (std::abs(diff.x) <= 10 + hitPad && //TODO adjust this to work with rotated boxes
             std::abs(diff.z) <= 10 + hitPad &&
-                  diff.y  <= 20 + hitPad &&
-                  diff.y  >=  0 - hitPad)
+                     diff.y  <= 20 + hitPad &&
+                     diff.y  >=  0 - hitPad)
         {
             //explode and die
 

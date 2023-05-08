@@ -28,8 +28,7 @@ void Maths::createTransformationMatrix(Matrix4f* matrix, Vector3f* translation, 
     matrix->rotate(toRadians(rx), &X_AXIS);
     matrix->rotate(toRadians(rs), &Z_AXIS);
 
-    Vector3f vec(scale, scale, scale);
-    matrix->scale(&vec);
+    matrix->scale(scale);
 }
 
 void Maths::createTransformationMatrix(Matrix4f* matrix, Vector3f* translation, float rx, float ry, float rz, float rs, float scaleX, float scaleY, float scaleZ)
@@ -56,8 +55,7 @@ void Maths::createTransformationMatrixYXZY(Matrix4f* matrix, Vector3f* translati
     matrix->rotate(toRadians(rx), &X_AXIS);
     matrix->rotate(toRadians(rs), &Y_AXIS);
 
-    Vector3f vec(scale, scale, scale);
-    matrix->scale(&vec);
+    matrix->scale(scale);
 }
 
 void Maths::createTransformationMatrix(Matrix4f* result, Vector2f* translation, float rotation, Vector2f* scale)
@@ -79,8 +77,7 @@ void Maths::createTransformationMatrixYXZ(Matrix4f* matrix, Vector3f* translatio
     matrix->rotate(toRadians(rx), &X_AXIS);
     matrix->rotate(toRadians(ry), &Y_AXIS);
 
-    Vector3f vec(scale, scale, scale);
-    matrix->scale(&vec);
+    matrix->scale(scale);
 }
 
 

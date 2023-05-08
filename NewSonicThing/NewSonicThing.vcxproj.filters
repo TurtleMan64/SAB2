@@ -750,6 +750,24 @@
     <ClCompile Include="src\entities\FrogForest\FF_Mushroom.cpp">
       <Filter>Source Files\entities\FrogForest</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\PyramidCave\PC_NeonSign.cpp">
+      <Filter>Source Files\entities\PyramidCave</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\PyramidCave\PC_Ship.cpp">
+      <Filter>Source Files\entities\PyramidCave</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\PyramidCave\PC_Flame.cpp">
+      <Filter>Source Files\entities\PyramidCave</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\Switch.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\PyramidCave\PC_Door.cpp">
+      <Filter>Source Files\entities\PyramidCave</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\PyramidCave\PC_FlameChimney.cpp">
+      <Filter>Source Files\entities\PyramidCave</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.hpp">
@@ -1363,6 +1381,24 @@
     </ClInclude>
     <ClInclude Include="src\entities\FrogForest\ffmushroom.hpp">
       <Filter>Source Files\entities\FrogForest</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\PyramidCave\pcneonsign.hpp">
+      <Filter>Source Files\entities\PyramidCave</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\PyramidCave\pcship.hpp">
+      <Filter>Source Files\entities\PyramidCave</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\PyramidCave\pcflame.hpp">
+      <Filter>Source Files\entities\PyramidCave</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\switch.hpp">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\PyramidCave\pcdoor.hpp">
+      <Filter>Source Files\entities\PyramidCave</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\PyramidCave\pcflamechimney.hpp">
+      <Filter>Source Files\entities\PyramidCave</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

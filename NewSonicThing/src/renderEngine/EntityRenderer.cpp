@@ -29,10 +29,6 @@ void EntityRenderer::renderNEW(std::unordered_map<TexturedModel*, std::vector<En
 
     for (auto it = entitiesMap->cbegin(); it != entitiesMap->cend(); it++)
     {
-        //auto asd = it->second;
-
-
-
         const std::vector<Entity*>* entitiesToRender = &(it->second);
         const int numEntitiesToRender = (int)entitiesToRender->size();
 
@@ -46,7 +42,7 @@ void EntityRenderer::renderNEW(std::unordered_map<TexturedModel*, std::vector<En
         for (int i = 0; i < numEntitiesToRender; i++)
         {
             Entity* entity = entitiesToRender->at(i);
-            prepareInstance(entity);
+            prepareInstance(entity, it->first);
             glDrawElements(GL_TRIANGLES, (it->first)->getRawModel()->getVertexCount(), GL_UNSIGNED_INT, 0);
         }
 
@@ -98,11 +94,20 @@ void EntityRenderer::unbindTexturedModel()
     glBindVertexArray(0);
 }
 
-void EntityRenderer::prepareInstance(Entity* entity)
+void EntityRenderer::prepareInstance(Entity* entity, TexturedModel* texturedModel)
 {
     shader->loadTransformationMatrix(&entity->transformationMatrix);
     shader->loadBaseColor(&entity->baseColor);
     shader->loadBaseAlpha(entity->baseAlpha);
+
+    if (entity->renderTextureAnimationOverride >= 0.0f)
+    {
+        shader->loadMixFactor(texturedModel->getTexture()->mixFactor(entity->renderTextureAnimationOverride));
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texturedModel->getTexture()->getId(entity->renderTextureAnimationOverride));
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, texturedModel->getTexture()->getId2(entity->renderTextureAnimationOverride));
+    }
 }
 
 void EntityRenderer::render(Entity* entity)
@@ -112,7 +117,7 @@ void EntityRenderer::render(Entity* entity)
         return;
     }
 
-    prepareInstance(entity);
+    prepareInstance(entity, nullptr);
 
     std::vector<TexturedModel*>* models = entity->getModels();
 

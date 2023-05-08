@@ -141,6 +141,12 @@
 #include "../entities/SweetMountain/gumdrop.hpp"
 #include "../entities/FrogForest/ffmushroom.hpp"
 #include "../entities/CharacterModels/maniatailsmodel.hpp"
+#include "../entities/PyramidCave/pcneonsign.hpp"
+#include "../entities/PyramidCave/pcship.hpp"
+#include "../entities/PyramidCave/pcflame.hpp"
+#include "../entities/switch.hpp"
+#include "../entities/PyramidCave/pcdoor.hpp"
+#include "../entities/PyramidCave/pcflamechimney.hpp"
 
 int LevelLoader::numLevels = 0;
 
@@ -1211,7 +1217,7 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             return;
         }
 
-        case 8: //Boostpad
+        case 8: //Dashpad
         {
             Dashpad::loadStaticModels();
             float camScale = 1.0f;
@@ -1221,9 +1227,10 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             }
 
             Dashpad* pad = new Dashpad(
-                toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]),
-                toFloat(dat[4]), toFloat(dat[5]),
-                toFloat(dat[6]), toFloat(dat[7]), toFloat(dat[8]), camScale); INCR_NEW("Entity");
+                toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), // Position
+                toFloat(dat[4]), toFloat(dat[5]),                  // Power, Lock Time
+                toFloat(dat[6]), toFloat(dat[7]), toFloat(dat[8]), camScale); // Rot XYZ, Cam Direction
+            INCR_NEW("Entity");
             chunkedEntities->push_back(pad);
             return;
         }
@@ -1846,6 +1853,50 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                     return;
                 }
 
+                case 1: // NeonSign
+                {
+                    PC_NeonSign::loadStaticModels();
+                    PC_NeonSign* sign = new PC_NeonSign(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4])); INCR_NEW("Entity");
+                    chunkedEntities->push_back(sign);
+                    return;
+                }
+
+                case 2: // Ship
+                {
+                    PC_Ship::loadStaticModels();
+                    PC_Ship* ship = new PC_Ship(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]), toFloat(dat[5])); INCR_NEW("Entity");
+                    Global::addEntity(ship);
+                    return;
+                }
+
+                case 3: // Flame
+                {
+                    PC_Flame::loadStaticModels();
+                    PC_Flame* flame = new PC_Flame(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]), toFloat(dat[5])); INCR_NEW("Entity");
+                    chunkedEntities->push_back(flame);
+                    return;
+                }
+
+                case 4: // Door
+                {
+                    PC_Door::loadStaticModels();
+                    PC_Door* door = new PC_Door(
+                        toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]), //position
+                        toFloat(dat[5]), toInt(dat[6])); //rotY, id
+                    INCR_NEW("Entity");
+                    Global::addEntity(door);
+                    return;
+                }
+
+                case 5: // Flame Chimney
+                {
+                    PC_FlameChimney::loadStaticModels();
+                    PC_FlameChimney* flame = new PC_FlameChimney(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]));
+                    INCR_NEW("Entity");
+                    chunkedEntities->push_back(flame);
+                    return;
+                }
+
                 default:
                     return;
             }
@@ -2340,6 +2391,17 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             }
         }
 
+        case 127: // Switch
+        {
+            Switch::loadStaticModels();
+            Switch* swi = new Switch(
+                toFloat(dat[1]), toFloat(dat[2]), toFloat(dat[3]), //position
+                toInt(dat[4])); //id
+            INCR_NEW("Entity");
+            chunkedEntities->push_back(swi);
+            return;
+        }
+
         default: return;
     }
 }
@@ -2528,6 +2590,12 @@ void LevelLoader::freeAllStaticModels()
     EggPawnGun::deleteStaticModels();
     Gumdrop::deleteStaticModels();
     FF_Mushroom::deleteStaticModels();
+    PC_NeonSign::deleteStaticModels();
+    PC_Ship::deleteStaticModels();
+    PC_Flame::deleteStaticModels();
+    Switch::deleteStaticModels();
+    PC_Door::deleteStaticModels();
+    PC_FlameChimney::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()

@@ -46,8 +46,16 @@ public:
     //returns image 2 (next image in the animation)
     GLuint getId2();
 
+    //returns image 1
+    GLuint getId(float totalAnimationProgress);
+
+    //returns image 2 (next image in the animation)
+    GLuint getId2(float totalAnimationProgress);
+
     //how much the 2nd image should be mixed with the first (for animations)
     float mixFactor();
+
+    float mixFactor(float totalAnimationProgress);
 
     std::vector<GLuint>* getIds();
 
@@ -58,6 +66,8 @@ public:
 
     //updates all of the textures animation progress by dt
     static void updateAnimations(float dt);
+
+    void resetAnimationProgress();
 
     bool equalTo(ModelTexture* other);
 };
