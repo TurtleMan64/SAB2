@@ -107,6 +107,22 @@ void WaterShader::loadModelMatrix(Matrix4f* modelMatrix)
     loadMatrix(location_modelMatrix, modelMatrix);
 }
 
+void WaterShader::loadSkyColor(float r, float g, float b)
+{
+    Vector3f newColor(r, g, b);
+    loadVector(location_skyColor, &newColor);
+}
+
+void WaterShader::loadFogDensity(float density)
+{
+    loadFloat(location_fogDensity, density);
+}
+
+void WaterShader::loadFogGradient(float gradient)
+{
+    loadFloat(location_fogGradient, gradient);
+}
+
 void WaterShader::bindAttributes()
 {
     bindFragOutput(0, "out_Color");
@@ -143,6 +159,9 @@ void WaterShader::getAllUniformLocations()
     location_clipPlaneBehind   = getUniformLocation("clipPlaneBehind");
     location_murkiness         = getUniformLocation("murkiness");
     location_waterColor        = getUniformLocation("waterColor");
+    location_skyColor          = getUniformLocation("skyColor");
+    location_fogDensity        = getUniformLocation("fogDensity");
+    location_fogGradient       = getUniformLocation("fogGradient");
 }
 
 int WaterShader::getUniformLocation(const char* uniformName)

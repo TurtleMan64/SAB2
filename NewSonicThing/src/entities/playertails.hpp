@@ -275,6 +275,8 @@ public:
 
     void setInWater(float newWaterHeight);
 
+    bool getIsRunningOnWater();
+
     void increaseCombo();
 
     void startGrabbing();

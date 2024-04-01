@@ -323,6 +323,10 @@ void Input::pollInputs()
     {
         Input::inputs.INPUT_ESC = true;
     }
+    if (glfwGetKey(Display::window, GLFW_KEY_G) == GLFW_PRESS)
+    {
+        Input::inputs.INPUT_SELECT = true;
+    }
 
     if (glfwGetKey(Display::window, GLFW_KEY_W) == GLFW_PRESS)
     {
@@ -381,9 +385,18 @@ void Input::pollInputs()
             float zrot = 0;
             Maths::sphereAnglesFromPosition(&Global::gameMainPlayer->vel, &yrot, &zrot);
             //printf("Time of day: %f\n", SkyManager::getTimeOfDay());
-            //Vector3f p = Global::gameMainPlayer->position + Global::gameMainPlayer->relativeUp.scaleCopy(0.0f);
-            //printf("position = %f %f %f %f %f %f\n", p.x, p.y, p.z, Global::gameMainPlayer->relativeUp.x, Global::gameMainPlayer->relativeUp.y, Global::gameMainPlayer->relativeUp.z);
-            printf("%f %f %f %f\n", Global::gameMainPlayer->position.x, Global::gameMainPlayer->position.y, Global::gameMainPlayer->position.z, yrot);
+            Vector3f p = Global::gameMainPlayer->position + Global::gameMainPlayer->relativeUp.scaleCopy(0.0f);
+            Vector3f n = Global::gameMainPlayer->relativeUp;
+            Vector3f c = Global::gameMainPlayer->getCenterPosition();
+            Vector3f v = Global::gameMainPlayer->vel;
+            //printf("center position = %f %f %f\n", center.x, center.y, center.z);
+            //printf("monitor = %f %f %f %f\n", center.x, center.y + 16, center.z, yrot);
+            //printf("pos and normal = %f %f %f %f %f %f\n", p.x, p.y, p.z, Global::gameMainPlayer->relativeUp.x, Global::gameMainPlayer->relativeUp.y, Global::gameMainPlayer->relativeUp.z);
+            //printf("itembox = %f %f %f %f %f %f 0 0\n", p.x, p.y, p.z, n.x, n.y, n.z);
+            //printf("spring = %f %f %f %f %f %f 300 0.1 0\n", p.x, p.y, p.z, n.x, n.y, n.z);
+            printf("egg pawn = %f %f %f %f %f\n", p.x, p.y, p.z, v.x, v.z);
+            //printf("ring circle = %f %f %f 8 8\n", c.x, c.y + 16, c.z);
+            //printf("%f %f %f %f\n", Global::gameMainPlayer->position.x, Global::gameMainPlayer->position.y, Global::gameMainPlayer->position.z, yrot);
             //printf("velocity = %f %f %f\n", Global::gameMainPlayer->vel.x, Global::gameMainPlayer->vel.y, Global::gameMainPlayer->vel.z);
             //printf("normal   = %f %f %f\n", Global::gameMainPlayer->relativeUp.x, Global::gameMainPlayer->relativeUp.y, Global::gameMainPlayer->relativeUp.z);
             //printf("yrot     = %f\n", yrot);

@@ -7,6 +7,8 @@ class Vector3f;
 class ParticleTexture;
 class ParticleStandard;
 class GF_Particle;
+class IC_Particle;
+class CA_Particle;
 class ParticleRenderer;
 
 #include <unordered_map>
@@ -17,6 +19,8 @@ class ParticleMaster
 private:
     static std::unordered_map<ParticleTexture*, std::list<ParticleStandard*>*> particlesStandard;
     static std::unordered_map<ParticleTexture*, std::list<GF_Particle*>*> particlesGF;
+    static std::unordered_map<ParticleTexture*, std::list<IC_Particle*>*> particlesIC;
+    static std::unordered_map<ParticleTexture*, std::list<CA_Particle*>*> particlesCA;
     static ParticleRenderer* renderer;
 
 public:
@@ -43,6 +47,10 @@ public:
     static void addParticleStandard(ParticleStandard* particle);
 
     static void addParticleGF(GF_Particle* particle);
+
+    static void addParticleIC(IC_Particle* particle);
+
+    static void addParticleCA(CA_Particle* particle);
 
     static void updateProjectionMatrix(Matrix4f* projectionMatrix);
 

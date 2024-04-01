@@ -40,6 +40,7 @@ ParticleTexture* ParticleResources::textureInWater           = nullptr;
 ParticleTexture* ParticleResources::textureBlueLine          = nullptr;
 ParticleTexture* ParticleResources::texturePollen            = nullptr;
 ParticleTexture* ParticleResources::textureExhaust           = nullptr;
+ParticleTexture* ParticleResources::textureRain              = nullptr;
 
 void ParticleResources::loadParticles()
 {
@@ -76,6 +77,7 @@ void ParticleResources::loadParticles()
     INCR_NEW("ParticleTexture") textureInWater           = new ParticleTexture(LoaderGL::loadTexture("res/Images/Particles/InWater.png"),                1, 0.1f,  1);
     INCR_NEW("ParticleTexture") textureBlueLine          = new ParticleTexture(LoaderGL::loadTexture("res/Images/Particles/BlueLine.png"),               1, 1.0f,  1);
     INCR_NEW("ParticleTexture") texturePollen            = new ParticleTexture(LoaderGL::loadTexture("res/Images/Particles/Pollen.png"),                 1, 0.9f,  0);
+    INCR_NEW("ParticleTexture") textureRain              = new ParticleTexture(LoaderGL::loadTexture("res/Images/Particles/Rain.png"),                   1, 0.9f,  0);
     INCR_NEW("ParticleTexture") textureSplash            = new ParticleTexture(LoaderGL::loadTextureNoInterpolation("res/Images/Particles/SplashAtlas.png"),        4, 0.6f, 0);
     INCR_NEW("ParticleTexture") textureBubble            = new ParticleTexture(LoaderGL::loadTextureNoInterpolation("res/Images/Particles/BubbleInverseAtlas.png"), 4, 0.6f, 0);
     INCR_NEW("ParticleTexture") textureExplosion1        = new ParticleTexture(LoaderGL::loadTextureNoInterpolation("res/Images/Particles/Explosion1Atlas.png"),    4, 0.8f, 0);

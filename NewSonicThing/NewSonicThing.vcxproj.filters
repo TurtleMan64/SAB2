@@ -133,6 +133,12 @@
     <Filter Include="Source Files\entities\SweetMountain">
       <UniqueIdentifier>{ae4cd14a-1cfd-4fd7-954f-266108e7717d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\entities\IceCap">
+      <UniqueIdentifier>{0f4f60a1-7e01-4aa2-8d49-5cfbc80f5714}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entities\CastleTown">
+      <UniqueIdentifier>{77cee04a-0f9c-416f-aad7-a7fd6e9f4711}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\glad.c">
@@ -768,6 +774,21 @@
     <ClCompile Include="src\entities\PyramidCave\PC_FlameChimney.cpp">
       <Filter>Source Files\entities\PyramidCave</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\IceCap\IC_Particle.cpp">
+      <Filter>Source Files\entities\IceCap</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\IceCap\IC_StageManager.cpp">
+      <Filter>Source Files\entities\IceCap</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\EmeraldCoast\EC_Orca2.cpp">
+      <Filter>Source Files\entities\EmeraldCoast</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\CastleTown\CA_Particle.cpp">
+      <Filter>Source Files\entities\CastleTown</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\CastleTown\CA_StageManager.cpp">
+      <Filter>Source Files\entities\CastleTown</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.hpp">
@@ -1399,6 +1420,21 @@
     </ClInclude>
     <ClInclude Include="src\entities\PyramidCave\pcflamechimney.hpp">
       <Filter>Source Files\entities\PyramidCave</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\IceCap\icparticle.hpp">
+      <Filter>Source Files\entities\IceCap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\IceCap\icstagemanager.hpp">
+      <Filter>Source Files\entities\IceCap</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\EmeraldCoast\ecorca2.hpp">
+      <Filter>Source Files\entities\EmeraldCoast</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\CastleTown\caparticle.hpp">
+      <Filter>Source Files\entities\CastleTown</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\CastleTown\castagemanager.hpp">
+      <Filter>Source Files\entities\CastleTown</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

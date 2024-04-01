@@ -94,6 +94,8 @@ void MasterRenderer::render(Camera* camera, float clipX, float clipY, float clip
     float fogGreen = SkyManager::getFogGreen();
     float fogBlue  = SkyManager::getFogBlue();
 
+    //glEnable(GL_SAMPLE_ALPHA_TO_COVERAGE);
+
     MasterRenderer::prepareNormalRender();
     glClearColor(fogRed, fogGreen, fogBlue, 1.0f);
     MasterRenderer::entityShader->start();

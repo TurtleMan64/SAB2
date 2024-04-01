@@ -295,6 +295,7 @@ int main(int argc, char** argv)
     Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_SACRED_SKY,      Global::PlayableCharacter::Sonic));
 
     Global::gameLevelIdsSonic.push_back(LVL_TUTORIAL);
+    Global::gameLevelIdsSonic.push_back(LVL_ICE_CAP);
     Global::gameLevelIdsSonic.push_back(LVL_DRAGON_ROAD);
     Global::gameLevelIdsSonic.push_back(LVL_GREEN_FOREST);
     Global::gameLevelIdsSonic.push_back(LVL_METAL_HARBOR);
@@ -328,6 +329,7 @@ int main(int argc, char** argv)
     Global::gameLevelIdsTails.push_back(LVL_CLOUD_TEMPLE);
     Global::gameLevelIdsTails.push_back(LVL_EMERALD_COAST);
 
+    Global::gameLevelIdsKnuckles.push_back(LVL_CASTLE_TOWN);
     Global::gameLevelIdsKnuckles.push_back(LVL_DRY_LAGOON);
     Global::gameLevelIdsKnuckles.push_back(LVL_DELFINO_PLAZA);
     Global::gameLevelIdsKnuckles.push_back(LVL_NOKI_BAY);

@@ -9,6 +9,8 @@ class Particle;
 class ParticleTexture;
 class Camera;
 class GF_Particle;
+class IC_Particle;
+class CA_Particle;
 
 #include <list>
 #include <vector>
@@ -21,7 +23,7 @@ private:
     RawModel* quad = nullptr;
     ParticleShader* shader = nullptr;
 
-    static constexpr int MAX_INSTANCES = 4100;
+    static constexpr int MAX_INSTANCES = 4200;
     static constexpr int INSTANCED_DATA_LENGTH = 21;
 
     std::vector<float> vboDataBuffer;
@@ -46,6 +48,8 @@ public:
 
     void render(std::unordered_map<ParticleTexture*, std::list<ParticleStandard*>*>* particlesStandard, 
                 std::unordered_map<ParticleTexture*, std::list<GF_Particle*>*>* particlesGF,
+                std::unordered_map<ParticleTexture*, std::list<IC_Particle*>*>* particlesIC,
+                std::unordered_map<ParticleTexture*, std::list<CA_Particle*>*>* particlesCA,
                 Camera* camera, float brightness, int clipSide);
 
     void updateProjectionMatrix(Matrix4f* projectionMatrix);

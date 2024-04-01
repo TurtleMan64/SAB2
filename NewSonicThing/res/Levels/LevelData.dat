@@ -1,4 +1,4 @@
-23
+25
 
 Tutorial.lvl
 Tutorial
@@ -89,7 +89,7 @@ Normal;100;Venture through the jungle!
 Ring;100;100;Collect 100 Rings!
 Chao;100;Find the lost chao!
 
-Curve.lvl
+SpeedHighway.lvl
 Epic Test Level
 100
 2
@@ -188,6 +188,22 @@ Hard;15000;Complete hard mode!
 SweetMountain.lvl
 Sweet Mountain
 256
+4
+Normal;15000;Find all the pieces of the master emerald!
+Ring;75;100;Collect 100 Rings!
+Chao;15;Find the lost chao!
+Hard;15000;Complete hard mode!
+
+IceCap.lvl
+Ice Cap
+100
+2
+Normal;100;Complete as Blue Falcon
+Ring;100;100;Collect 100 Rings!
+
+CastleTown.lvl
+Castle Town
+308
 4
 Normal;15000;Find all the pieces of the master emerald!
 Ring;75;100;Collect 100 Rings!

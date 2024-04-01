@@ -306,7 +306,7 @@ void ManiaSonicModel::animate(int animIndex, float time)
         {
             scale = (0.27f);
             models = &ManiaSonicModel::modelGrind;
-            updateTransformationMatrix();
+            updateTransformationMatrixYXZY();
             setLimbsVisibility(false);
             visible = baseVisible;
             break;

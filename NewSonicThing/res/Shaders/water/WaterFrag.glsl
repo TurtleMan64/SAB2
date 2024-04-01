@@ -22,6 +22,9 @@ uniform float waterHeight;
 uniform float moveFactor;
 uniform float murkiness;
 uniform vec3 waterColor;
+uniform vec3 skyColor;
+uniform float fogDensity;
+uniform float fogGradient;
 
 const float NEAR = 1.5;
 uniform float FAR;
@@ -47,6 +50,18 @@ void main(void)
     float waterDistance = (2.0*NEAR*FAR)/((FAR + NEAR) - ((2.0*depth) - 1.0)*(FAR - NEAR));
     //float waterDepth = floorDistance - waterDistance;
     float waterDepthFactor = clamp((floorDistance - waterDistance)/25.0, 0.0, 1.0);
+    
+    //float waterDepth = floorDistance - waterDistance;
+    ////float fogDepthDensity = 6;
+    ////float fogDepthGradient = 0.09;
+    //float fogDepthDensity = 0.0035;
+    //float fogDepthGradient = 0.75;
+    //float val = exp(-pow((waterDepth*fogDepthDensity), fogDepthGradient));
+    //val = val*0.55 + 0.45;
+    //val = clamp(val, 0, 1);
+    
+    //out_Color = vec4(val, val, val, 1);
+    //return;
     
     //old
     //vec2 distortion1 = (texture(dudvMap, vec2(textureCoords.x + moveFactor, textureCoords.y)).rg * 2.0 -1.0) * waveStrength;
@@ -117,7 +132,10 @@ void main(void)
     
     out_Color = mix(reflectColor, refractColor, refractiveFactor);
     
-
+    //idea: only apply depth favtor to refract color
+    //out_Color.r = out_Color.r * val;
+    //out_Color.g = out_Color.g * val;
+    //out_Color.b = out_Color.b * val;
 
     
     //out_Color = mix(out_Color, vec4(0.0, 0.3, 0.5, 1.0), 0.2);
@@ -152,6 +170,9 @@ void main(void)
         //default:
         //    break;
     //}
+    
+    // fog
+    //out_Color = mix(vec4(skyColor, 1.0), out_Color, (1 - (1 - clamp(exp(-pow((length(toCameraVector)*fogDensity), fogGradient)), 0.0, 1.0))));
     
     float brightness = (out_Color.r * 0.2126) + (out_Color.g * 0.7152) + (out_Color.b * 0.0722);
     out_BrightColor = vec4((out_Color * brightness * brightness * brightness * brightness).rgb, 1.0);

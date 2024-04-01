@@ -15,7 +15,8 @@
 #include "../entities/camera.hpp"
 #include "../engineTester/main.hpp"
 #include "../entities/GreenForest/gfparticle.hpp"
-
+#include "../entities/IceCap/icparticle.hpp"
+#include "../entities/CastleTown/caparticle.hpp"
 
 ParticleRenderer::ParticleRenderer(Matrix4f* projectionMatrix)
 {
@@ -50,6 +51,8 @@ ParticleRenderer::ParticleRenderer(Matrix4f* projectionMatrix)
 void ParticleRenderer::render(
     std::unordered_map<ParticleTexture*, std::list<ParticleStandard*>*>* particlesStandard,
     std::unordered_map<ParticleTexture*, std::list<GF_Particle*>*>* particlesGF,
+    std::unordered_map<ParticleTexture*, std::list<IC_Particle*>*>* particlesIC,
+    std::unordered_map<ParticleTexture*, std::list<CA_Particle*>*>* particlesCA,
     Camera* camera, float brightness, int clipSide)
 {
     Matrix4f viewMatrix;
@@ -261,6 +264,64 @@ void ParticleRenderer::render(
                 }
             }
             ANALYSIS_DONE("GF Particle Render");
+
+            ANALYSIS_START("IC Particle Render");
+            for (auto it = particlesIC->cbegin(); it != particlesIC->cend(); it++)
+            {
+                std::list<IC_Particle*>* particlesList = it->second;
+
+                vboBufferIdx = 0;
+                int numParticlesToRender = 0;
+                for (auto particlesIterator = particlesList->cbegin(); particlesIterator != particlesList->cend(); particlesIterator++)
+                {
+                    IC_Particle* particle = *particlesIterator;
+
+                    updateModelViewMatrix(particle, &viewMatrix);
+                    updateTexCoordInfo(particle);
+                    numParticlesToRender++;
+                }
+
+                if (numParticlesToRender > 0)
+                {
+                    bindTexture(it->first);
+
+                    float combinedOpacity = it->first->opacity * particlesList->front()->opacity;
+                    shader->loadOpacity(combinedOpacity);
+
+                    LoaderGL::updateVBO(vbo, numParticlesToRender * INSTANCED_DATA_LENGTH, &vboDataBuffer);
+                    glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, quad->getVertexCount(), numParticlesToRender);
+                }
+            }
+            ANALYSIS_DONE("IC Particle Render");
+
+            ANALYSIS_START("CA Particle Render");
+            for (auto it = particlesCA->cbegin(); it != particlesCA->cend(); it++)
+            {
+                std::list<CA_Particle*>* particlesList = it->second;
+
+                vboBufferIdx = 0;
+                int numParticlesToRender = 0;
+                for (auto particlesIterator = particlesList->cbegin(); particlesIterator != particlesList->cend(); particlesIterator++)
+                {
+                    CA_Particle* particle = *particlesIterator;
+
+                    updateModelViewMatrix(particle, &viewMatrix);
+                    updateTexCoordInfo(particle);
+                    numParticlesToRender++;
+                }
+
+                if (numParticlesToRender > 0)
+                {
+                    bindTexture(it->first);
+
+                    float combinedOpacity = it->first->opacity * particlesList->front()->opacity;
+                    shader->loadOpacity(combinedOpacity);
+
+                    LoaderGL::updateVBO(vbo, numParticlesToRender * INSTANCED_DATA_LENGTH, &vboDataBuffer);
+                    glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, quad->getVertexCount(), numParticlesToRender);
+                }
+            }
+            ANALYSIS_DONE("CA Particle Render");
             break;
         }
 

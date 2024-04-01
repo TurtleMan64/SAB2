@@ -39,6 +39,10 @@ private:
 
     static GLuint storeDataInAttributeList(int attributeNumber, int coordinateSize, float* data, int dataSize);
 
+    static GLuint storeNormalsInAttributeList(int attributeNumber, float* data, int dataSize);
+
+    static GLuint storeColorsInAttributeList(int attributeNumber, float* data, int dataSize);
+
     static void unbindVAO();
 
     static GLuint bindIndiciesBuffer(std::vector<int>* indicies);
@@ -65,6 +69,7 @@ public:
 
     static void addInstancedAttribute(GLuint vao, GLuint vbo, int attribute, int dataSize, int instancedDataLength, long long offset);
 
+    // for particle instancing
     static void updateVBO(GLuint vbo, int bufferNumFloats, std::vector<float>* buffer);
 
     //Loads a texture into GPU memory, returns the GLuint id

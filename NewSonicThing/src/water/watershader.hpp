@@ -33,6 +33,9 @@ private:
     int location_clipPlaneBehind;
     int location_murkiness;
     int location_waterColor;
+    int location_skyColor;
+    int location_fogDensity;
+    int location_fogGradient;
 
 public:
     WaterShader();
@@ -62,6 +65,12 @@ public:
     void loadModelMatrix(Matrix4f* modelMatrix);
 
     void loadClipPlaneBehind(Vector4f* plane);
+
+    void loadSkyColor(float r, float g, float b);
+
+    void loadFogDensity(float density);
+
+    void loadFogGradient(float gradient);
 
 protected:
     void bindAttributes();

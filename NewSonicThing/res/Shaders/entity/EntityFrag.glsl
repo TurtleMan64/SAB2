@@ -38,6 +38,11 @@ uniform float fogScale; //per material
 uniform float fogBottomPosition;
 uniform float fogBottomThickness;
 
+float CalcMipLevel(sampler2D tex, vec2 uv)
+{
+    return textureQueryLod(tex, uv).x;
+}
+
 void main(void)
 {
     if (isRenderingDepth != 0)
@@ -93,14 +98,29 @@ void main(void)
         }
     }
     
-    vec4 rawTextureColor = mix(texture(textureSampler, pass_textureCoords), texture(textureSampler2, pass_textureCoords), mixFactor);
+    vec4 rawTextureColor = texture(textureSampler, pass_textureCoords);
+    if (mixFactor != 0.0)
+    {
+        rawTextureColor = mix(rawTextureColor, texture(textureSampler2, pass_textureCoords), mixFactor);
+    }
     rawTextureColor.rgb *= baseColor*pass_vertexColor.rgb;
+    
+    const float ALPHA_CUTOFF = 0.2;
+    //const float MipScale = 0.25;
+    //
+    //ivec2 tsize = textureSize(textureSampler, 0);
+    //
+    //vec2 TexelSize = vec2(float(tsize.x), float(tsize.y));
+    //
+    //rawTextureColor.a = (rawTextureColor.a - ALPHA_CUTOFF) / max(fwidth(rawTextureColor.a), 0.0001) + 0.5;
+    //rawTextureColor.a *= 1 + CalcMipLevel(textureSampler, pass_textureCoords*TexelSize)*MipScale;
+    
     rawTextureColor.a   *= baseAlpha*pass_vertexColor.a*0.5; //for some bizarre reason, 0.5 alpha is seen as full opaque...
 
     
     if (hasTransparency == 0)
     {
-        if (rawTextureColor.a < 0.45)
+        if (rawTextureColor.a < ALPHA_CUTOFF) //0.45
         {
             discard;
         }

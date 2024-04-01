@@ -46,6 +46,8 @@ public:
 
     virtual void setInWater(float newWaterHeight);
 
+    virtual bool getIsRunningOnWater();
+
     virtual void takeDamage(Vector3f* damageSource);
 
     virtual void rebound(Vector3f* source);

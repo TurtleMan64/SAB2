@@ -2596,7 +2596,7 @@ void PlayerSonic::animate()
     }
     else if (isGrinding)
     {
-        playerModel->setOrientation(dspX-nXAir, dspY-nYAir, dspZ-nZAir, diffGround, yawAngleGround, pitchAngleGround, 0, &relativeUpAnim);
+        playerModel->setOrientation(dspX-nXAir, dspY-nYAir, dspZ-nZAir, diffGround, yawAngleGround, pitchAngleGround, -Input::inputs.INPUT_X*15, &relativeUpAnim);
         playerModel->animate(26, 0);
     }
     else if (hitTimer > 0.0f)
@@ -2853,6 +2853,11 @@ void PlayerSonic::setInWater(float newWaterHeight)
 {
     inWater = true;
     waterHeight = newWaterHeight;
+}
+
+bool PlayerSonic::getIsRunningOnWater()
+{
+    return isRunningOnWater;
 }
 
 void PlayerSonic::refreshCamera()

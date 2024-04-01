@@ -147,6 +147,9 @@
 #include "../entities/switch.hpp"
 #include "../entities/PyramidCave/pcdoor.hpp"
 #include "../entities/PyramidCave/pcflamechimney.hpp"
+#include "../entities/IceCap/icstagemanager.hpp"
+#include "../entities/EmeraldCoast/ecorca2.hpp"
+#include "../entities/CastleTown/castagemanager.hpp"
 
 int LevelLoader::numLevels = 0;
 
@@ -367,6 +370,8 @@ void LevelLoader::loadLevel(std::string levelFilename)
             else if (currLvl->displayName == "Emerald Coast")   Global::levelId = LVL_EMERALD_COAST;
             else if (currLvl->displayName == "Freezeezy Peak")  Global::levelId = LVL_FREEZEEZY_PEAK;
             else if (currLvl->displayName == "Sweet Mountain")  Global::levelId = LVL_SWEET_MOUNTAIN;
+            else if (currLvl->displayName == "Ice Cap")         Global::levelId = LVL_ICE_CAP;
+            else if (currLvl->displayName == "Castle Town")     Global::levelId = LVL_CASTLE_TOWN;
         }
 
         Global::spawnAtCheckpoint  = false;
@@ -1699,6 +1704,16 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                     Global::gameStageManager = new SM_StageManager; INCR_NEW("Entity");
                     break;
 
+                case 17:
+                    IC_StageManager::loadStaticModels();
+                    Global::gameStageManager = new IC_StageManager; INCR_NEW("Entity");
+                    break;
+
+                case 18:
+                    CA_StageManager::loadStaticModels();
+                    Global::gameStageManager = new CA_StageManager; INCR_NEW("Entity");
+                    break;
+
                 default: break;
             }
             return;
@@ -2180,6 +2195,14 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                     return;
                 }
 
+                case 1: //Orca2
+                {
+                    EC_Orca2::loadStaticModels();
+                    EC_Orca2* orca2 = new EC_Orca2; INCR_NEW("Entity");
+                    Global::addEntity(orca2);
+                    return;
+                }
+
                 default:
                     return;
             }
@@ -2596,6 +2619,9 @@ void LevelLoader::freeAllStaticModels()
     Switch::deleteStaticModels();
     PC_Door::deleteStaticModels();
     PC_FlameChimney::deleteStaticModels();
+    IC_StageManager::deleteStaticModels();
+    EC_Orca2::deleteStaticModels();
+    CA_StageManager::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()

@@ -176,6 +176,8 @@
     <ClCompile Include="src\entities\Beetle.cpp" />
     <ClCompile Include="src\entities\Bomb.cpp" />
     <ClCompile Include="src\entities\Bullet.cpp" />
+    <ClCompile Include="src\entities\CastleTown\CA_Particle.cpp" />
+    <ClCompile Include="src\entities\CastleTown\CA_StageManager.cpp" />
     <ClCompile Include="src\entities\ChaosEmerald.cpp" />
     <ClCompile Include="src\entities\CharacterModels\ManiaKnucklesModel.cpp" />
     <ClCompile Include="src\entities\CharacterModels\ManiaMightyModel.cpp" />
@@ -204,6 +206,7 @@
     <ClCompile Include="src\entities\EggPawn.cpp" />
     <ClCompile Include="src\entities\EggPawnGun.cpp" />
     <ClCompile Include="src\entities\EmeraldCoast\EC_Dolphin.cpp" />
+    <ClCompile Include="src\entities\EmeraldCoast\EC_Orca2.cpp" />
     <ClCompile Include="src\entities\EmeraldCoast\EC_Seagull.cpp" />
     <ClCompile Include="src\entities\EmeraldCoast\EC_Orca.cpp" />
     <ClCompile Include="src\entities\EmeraldManager.cpp" />
@@ -225,6 +228,8 @@
     <ClCompile Include="src\entities\Help.cpp" />
     <ClCompile Include="src\entities\HintMonitor.cpp" />
     <ClCompile Include="src\entities\Hunter.cpp" />
+    <ClCompile Include="src\entities\IceCap\IC_Particle.cpp" />
+    <ClCompile Include="src\entities\IceCap\IC_StageManager.cpp" />
     <ClCompile Include="src\entities\ItemBalloon.cpp" />
     <ClCompile Include="src\entities\ItemCapsule.cpp" />
     <ClCompile Include="src\entities\Kiki.cpp" />
@@ -390,6 +395,8 @@
     <ClInclude Include="src\entities\beetle.hpp" />
     <ClInclude Include="src\entities\bomb.hpp" />
     <ClInclude Include="src\entities\bullet.hpp" />
+    <ClInclude Include="src\entities\CastleTown\caparticle.hpp" />
+    <ClInclude Include="src\entities\CastleTown\castagemanager.hpp" />
     <ClInclude Include="src\entities\chaosemerald.hpp" />
     <ClInclude Include="src\entities\CharacterModels\maniaknucklesmodel.hpp" />
     <ClInclude Include="src\entities\CharacterModels\maniamightymodel.hpp" />
@@ -418,6 +425,7 @@
     <ClInclude Include="src\entities\eggpawn.hpp" />
     <ClInclude Include="src\entities\eggpawngun.hpp" />
     <ClInclude Include="src\entities\EmeraldCoast\ecdolphin.hpp" />
+    <ClInclude Include="src\entities\EmeraldCoast\ecorca2.hpp" />
     <ClInclude Include="src\entities\EmeraldCoast\ecseagull.hpp" />
     <ClInclude Include="src\entities\EmeraldCoast\ecorca.hpp" />
     <ClInclude Include="src\entities\emeraldmanager.hpp" />
@@ -439,6 +447,8 @@
     <ClInclude Include="src\entities\help.hpp" />
     <ClInclude Include="src\entities\hintmonitor.hpp" />
     <ClInclude Include="src\entities\hunter.hpp" />
+    <ClInclude Include="src\entities\IceCap\icparticle.hpp" />
+    <ClInclude Include="src\entities\IceCap\icstagemanager.hpp" />
     <ClInclude Include="src\entities\itemballoon.hpp" />
     <ClInclude Include="src\entities\itemcapsule.hpp" />
     <ClInclude Include="src\entities\kiki.hpp" />

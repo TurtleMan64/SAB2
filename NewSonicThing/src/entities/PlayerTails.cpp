@@ -2910,6 +2910,11 @@ void PlayerTails::setInWater(float newWaterHeight)
     waterHeight = newWaterHeight;
 }
 
+bool PlayerTails::getIsRunningOnWater()
+{
+    return isRunningOnWater;
+}
+
 void PlayerTails::refreshCamera()
 {
     //Animating the camera

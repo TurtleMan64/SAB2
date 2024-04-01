@@ -56,6 +56,7 @@ int Display::createDisplay()
 
     glfwWindowHint(GLFW_SAMPLES, Display::AA_SAMPLES);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+    glfwWindowHint(GLFW_AUTO_ICONIFY, GL_FALSE);
 
     if (Global::useFullscreen)
     {

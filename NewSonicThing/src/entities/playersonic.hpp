@@ -110,6 +110,7 @@ private:
     const float skidAudioThreshold = 150.0f;
 
     bool isGrinding = false;
+    //float grindTilt = 0.0f;
     Source* sourceGrind = nullptr;
 
     bool isGrabbing = false;
@@ -265,6 +266,8 @@ public:
     void stopGrinding();
 
     void setInWater(float newWaterHeight);
+
+    bool getIsRunningOnWater();
 
     void increaseCombo();
 

@@ -12,6 +12,7 @@ void          ControllablePlayer::setCanMoveTimer(int)                     {}
 void          ControllablePlayer::setHoverTimer(float)                     {}
 float         ControllablePlayer::getHoverTimer()                          {return 0;}
 void          ControllablePlayer::setInWater(float)                        {}
+bool          ControllablePlayer::getIsRunningOnWater()                    { return false; }
 void          ControllablePlayer::takeDamage(Vector3f*)                    {}
 void          ControllablePlayer::rebound(Vector3f*)                       {}
 void          ControllablePlayer::goThroughDashRing(Vector3f*, Vector3f*, float, float, bool) {}

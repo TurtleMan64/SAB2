@@ -26,6 +26,14 @@ RailSegment::RailSegment(Vector3f* begin, Vector3f* end, Vector3f* beginNormal, 
         printf("Warning: Very small rail segment.\n");
     }
 
+    Vector3f segmentDirection = pointsDiff;
+    segmentDirection.normalize();
+
+    normalBegin = Maths::projectOntoPlane(&normalBegin, &segmentDirection);
+    normalBegin.normalize();
+    normalEnd = Maths::projectOntoPlane(&normalEnd, &segmentDirection);
+    normalEnd.normalize();
+
     //Ring* ring1 = new Ring(pointBegin.x, pointBegin.y, pointBegin.z); INCR_NEW
     //Global::addEntity(ring1);
     //Ring* ring2 = new Ring(pointEnd.x, pointEnd.y, pointEnd.z); INCR_NEW
@@ -293,10 +301,63 @@ void Rail::step()
                         currentSegment->playerIsOn = false;
                         currentSegment->playerProgress = 0;
 
+                        RailSegment* prevSegment = currentSegment;
+
                         currentSegmentIndex--;
                         currentSegment = &rails[currentSegmentIndex];
                         currentSegment->playerIsOn = true;
                         currentSegment->playerProgress = 1.0f;
+
+                        Vector3f curr1 = prevSegment->pointsDiff;
+                        curr1.normalize();
+                        Vector3f curr2 = currentSegment->pointsDiff;
+                        curr2.normalize();
+
+                        Vector3f bend = curr2 - curr1;
+
+                        if (bend.lengthSquared() > 0.002f * 0.002f)
+                        {
+                            float playerStickDir = 0.0f;
+                            if (Input::inputs.INPUT_X > 0.1f)
+                            {
+                                playerStickDir = 0.5f * Maths::PI;
+                            }
+                            else if (Input::inputs.INPUT_X < -0.1f)
+                            {
+                                playerStickDir = -0.5f * Maths::PI;
+                            }
+
+                            Vector3f playerTiltDir = prevSegment->normalBegin;
+                            playerTiltDir = Maths::rotatePoint(&playerTiltDir, &curr1, playerStickDir);
+
+                            Vector3f bendDir = bend;
+                            bendDir.normalize();
+
+                            float dot = bendDir.dot(&playerTiltDir);
+
+                            if (playerStickDir != 0.0f)
+                            {
+                                float speedChange = bend.length() * dot;
+
+                                //printf("seg1 dir %f %f %f\n", curr1.x, curr1.y, curr1.z);
+                                //printf("seg2 dir %f %f %f\n", curr2.x, curr2.y, curr2.z);
+                                //printf("seg1 norm %f %f %f\n", prevSegment->normalBegin.x, prevSegment->normalBegin.y, prevSegment->normalBegin.z);
+                                //printf("playerTiltDir %f %f %f\n", playerTiltDir.x, playerTiltDir.y, playerTiltDir.z);
+                                //printf("bendDir %f %f %f\n", bendDir.x, bendDir.y, bendDir.z);
+                                //printf("bend amount %f\n", dot);
+                                //printf("speedChange %f\n", 30 * speedChange);
+                                //printf("\n");
+
+                                if (playerSpeed > 100)
+                                {
+                                    playerSpeed += 30 * speedChange;
+                                }
+                            }
+
+                            //printf("%f %f %f\n", dot);
+                            //printf("bend amount %f\n", dot);
+                            //printf("\n");
+                        }
                     }
                     else
                     {
@@ -341,10 +402,65 @@ void Rail::step()
                         currentSegment->playerIsOn = false;
                         currentSegment->playerProgress = 0;
 
+                        RailSegment* prevSegment = currentSegment;
+
                         currentSegmentIndex++;
                         currentSegment = &rails[currentSegmentIndex];
                         currentSegment->playerIsOn = true;
                         currentSegment->playerProgress = 0.0f;
+
+                        Vector3f curr1 = prevSegment->pointsDiff;
+                        curr1.normalize();
+                        Vector3f curr2 = currentSegment->pointsDiff;
+                        curr2.normalize();
+
+                        Vector3f bend = curr2 - curr1;
+
+                        if (bend.lengthSquared() > 0.002f * 0.002f)
+                        {
+                            float playerStickDir = 0.0f;
+                            if (Input::inputs.INPUT_X > 0.1f)
+                            {
+                                playerStickDir = 0.5f * Maths::PI;
+                            }
+                            else if (Input::inputs.INPUT_X < -0.1f)
+                            {
+                                playerStickDir = -0.5f * Maths::PI;
+                            }
+
+                            Vector3f playerTiltDir = prevSegment->normalBegin;
+                            playerTiltDir = Maths::rotatePoint(&playerTiltDir, &curr1, playerStickDir);
+
+                            Vector3f bendDir = bend;
+                            bendDir.normalize();
+
+                            float dot = bendDir.dot(&playerTiltDir);
+
+                            if (playerStickDir != 0.0f)
+                            {
+                                float speedChange = bend.length() * dot;
+
+                                //printf("seg1 dir %f %f %f\n", curr1.x, curr1.y, curr1.z);
+                                //printf("seg2 dir %f %f %f\n", curr2.x, curr2.y, curr2.z);
+                                //printf("seg1 norm %f %f %f\n", prevSegment->normalBegin.x, prevSegment->normalBegin.y, prevSegment->normalBegin.z);
+                                //printf("playerTiltDir %f %f %f\n", playerTiltDir.x, playerTiltDir.y, playerTiltDir.z);
+                                //printf("bendDir %f %f %f\n", bendDir.x, bendDir.y, bendDir.z);
+                                //printf("bend amount %f\n", dot);
+                                printf("speedChange %f\n", 30 * speedChange);
+                                printf("\n");
+
+                                if (playerSpeed > 100)
+                                {
+                                    playerSpeed += 30 * speedChange;
+                                }
+                            }
+
+                            //printf("%f %f %f\n", dot);
+                            //printf("bend amount %f\n", dot);
+                            //printf("\n");
+                        }
+
+                        //printf("%f\n", bend.length());
                     }
                     else
                     {

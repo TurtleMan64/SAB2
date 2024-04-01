@@ -51,10 +51,10 @@ RawModel LoaderGL::loadToVAO(std::vector<float>* positions,
     std::vector<GLuint> vboIds;
 
     vboIds.push_back(bindIndiciesBuffer(indicies));
-    vboIds.push_back(storeDataInAttributeList(0, 3, &(positions->at(0)),     (int)positions->size()));
-    vboIds.push_back(storeDataInAttributeList(1, 2, &(textureCoords->at(0)), (int)textureCoords->size()));
-    vboIds.push_back(storeDataInAttributeList(2, 3, &(normals->at(0)),       (int)normals->size()));
-    vboIds.push_back(storeDataInAttributeList(3, 4, &(vertexColors->at(0)),  (int)vertexColors->size()));
+    vboIds.push_back(storeDataInAttributeList   (0, 3, &(positions->at(0)),     (int)positions->size()));
+    vboIds.push_back(storeDataInAttributeList   (1, 2, &(textureCoords->at(0)), (int)textureCoords->size()));
+    vboIds.push_back(storeNormalsInAttributeList(2,    &(normals->at(0)),       (int)normals->size()));
+    vboIds.push_back(storeColorsInAttributeList (3,    &(vertexColors->at(0)),  (int)vertexColors->size()));
 
     unbindVAO();
 
@@ -250,6 +250,70 @@ GLuint LoaderGL::storeDataInAttributeList(int attributeNumber, int coordinateSiz
 
     glBufferData(GL_ARRAY_BUFFER, dataSize*sizeof(float), (GLvoid*)data, GL_STATIC_DRAW); 
     glVertexAttribPointer(attributeNumber, coordinateSize, GL_FLOAT, GL_FALSE, 0, 0); 
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    return vboId;
+}
+
+GLuint LoaderGL::storeNormalsInAttributeList(int attributeNumber, float* data, int dataSize)
+{
+    GLuint vboId = 0;
+    glGenBuffers(1, &vboId);
+    vboNumber++;
+    vbos.push_back(vboId);
+    glBindBuffer(GL_ARRAY_BUFFER, vboId);
+
+    // pack the 3 float normals into a single 32 bit int
+    std::vector<unsigned int> normals;
+    for (int i = 0; i < dataSize; i+=3)
+    {
+        // https://copyprogramming.com/howto/how-to-pack-normals-into-gl-int-2-10-10-10-rev
+
+        const float x = data[i + 0];
+        const float y = data[i + 1];
+        const float z = data[i + 2];
+        const float w = 0;
+
+        const unsigned int xs = x < 0;
+        const unsigned int ys = y < 0;
+        const unsigned int zs = z < 0;
+        const unsigned int ws = w < 0;
+
+        unsigned int norm =
+            ws << 31 | ((unsigned int)(w       + (ws << 1)) &   1) << 30 |
+            zs << 29 | ((unsigned int)(z * 511 + (zs << 9)) & 511) << 20 |
+            ys << 19 | ((unsigned int)(y * 511 + (ys << 9)) & 511) << 10 |
+            xs <<  9 | ((unsigned int)(x * 511 + (xs << 9)) & 511);
+
+        normals.push_back(norm);
+    }
+
+    glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(unsigned int), (GLvoid*)(&(normals[0])), GL_STATIC_DRAW);
+    glVertexAttribPointer(attributeNumber, 4, GL_INT_2_10_10_10_REV, GL_TRUE, 0, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    return vboId;
+}
+
+GLuint LoaderGL::storeColorsInAttributeList(int attributeNumber, float* data, int dataSize)
+{
+    GLuint vboId = 0;
+    glGenBuffers(1, &vboId);
+    vboNumber++;
+    vbos.push_back(vboId);
+    glBindBuffer(GL_ARRAY_BUFFER, vboId);
+
+    // pack the float colors into single byte colors
+    std::vector<unsigned char> colors;
+    for (int i = 0; i < dataSize; i ++)
+    {
+        const float c = data[i + 0];
+
+        colors.push_back((unsigned char)std::round(c*255.0f));
+    }
+
+    glBufferData(GL_ARRAY_BUFFER, colors.size() * sizeof(unsigned char), (GLvoid*)(&(colors[0])), GL_STATIC_DRAW);
+    glVertexAttribPointer(attributeNumber, 4, GL_UNSIGNED_BYTE, GL_TRUE, 0, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     return vboId;

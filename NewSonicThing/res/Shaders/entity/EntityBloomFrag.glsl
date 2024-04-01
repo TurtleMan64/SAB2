@@ -63,14 +63,19 @@ void main(void)
         }
     }
     
-    vec4 rawTextureColor = mix(texture(textureSampler, pass_textureCoords), texture(textureSampler2, pass_textureCoords), mixFactor);
+    vec4 rawTextureColor = texture(textureSampler, pass_textureCoords);
+    if (mixFactor != 0.0)
+    {
+        rawTextureColor = mix(rawTextureColor, texture(textureSampler2, pass_textureCoords), mixFactor);
+    }
+    
     rawTextureColor.rgb *= baseColor*pass_vertexColor.rgb;
     rawTextureColor.a   *= baseAlpha*pass_vertexColor.a*0.5; //for some bizarre reason, 0.5 alpha is seen as full opaque...
     
     float ogTransparency = rawTextureColor.a;
     if (hasTransparency == 0)
     {
-        if (ogTransparency < 0.45)
+        if (ogTransparency < 0.2) //0.45
         {
             discard;
         }

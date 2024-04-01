@@ -10,6 +10,7 @@
 #include "../toolbox/vector.hpp"
 #include "../toolbox/matrix.hpp"
 #include "../entities/camera.hpp"
+#include "../renderEngine/skymanager.hpp"
 
 WaterRenderer::WaterRenderer(WaterShader* shader, Matrix4f* projectionMatrix, WaterFrameBuffers* fbos)
 {
@@ -47,6 +48,14 @@ void WaterRenderer::prepareRender(Camera* camera, Light* sun)
     shader->loadWaterHeight(Global::waterHeight);
     shader->loadWaterMurkyAmount(Global::stageWaterMurkyAmount);
     shader->loadWaterColor(&Global::stageWaterColor);
+
+    float fogRed   = SkyManager::getFogRed();
+    float fogGreen = SkyManager::getFogGreen();
+    float fogBlue  = SkyManager::getFogBlue();
+    shader->loadSkyColor(fogRed, fogBlue, fogGreen);
+    shader->loadFogGradient(SkyManager::getFogGradient());
+    shader->loadFogDensity(SkyManager::getFogDensity());
+
     glBindVertexArray(quad->getVaoId());
     glEnableVertexAttribArray(0);
     glActiveTexture(GL_TEXTURE0);
