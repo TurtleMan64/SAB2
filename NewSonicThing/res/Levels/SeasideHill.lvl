@@ -59,6 +59,12 @@ true
 # Lost Chao
 81 -4584.515625 444.009583 -14732.746094 -82.345200
 
+# Mighty Race
+70 res/Models/Levels/SeasideHill/MightyRace.ghost 3
+
+# Chaos Emerald
+107 1833.627441 130.306198 -19010.552734 2
+
 # Small Island things
 103   -4809.329102 39.934090 -16101.637695 0
 116 0 -4809.329102 39.934090 -16101.637695 0

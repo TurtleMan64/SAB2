@@ -63,14 +63,13 @@ PlayerSonic::PlayerSonic(float x, float y, float z)
     camDir.set(0, 0, -1);
     camDirSmooth.set(0, 0, -1);
 
-    //temp code for testing
-    if (Global::currentCharacterType == Global::PlayableCharacter::Sonic)
+    if (Global::gameSaveData.find("PLAY_AS") != Global::gameSaveData.end() && Global::gameSaveData["PLAY_AS"] == "Mighty")
     {
-        playerModel = new ManiaSonicModel; INCR_NEW("Entity");
+        playerModel = new ManiaMightyModel; INCR_NEW("Entity");
     }
     else
     {
-        playerModel = new ManiaKnucklesModel; INCR_NEW("Entity");
+        playerModel = new ManiaSonicModel; INCR_NEW("Entity");
     }
     Global::addEntity(playerModel);
 
@@ -635,13 +634,18 @@ void PlayerSonic::step()
         //sparks
         if (vel.lengthSquared() > 140.0f*140.0f)
         {
-            Vector3f partVel(&vel);
-            partVel.scale(0.75f);
-            partVel = partVel + relativeUp.scaleCopy(5.0f);
-            Vector3f rand(Maths::nextUniform()-0.5f, Maths::nextUniform()-0.5f, Maths::nextUniform()-0.5f);
-            rand.scale(30.0f);
-            partVel = partVel + rand;
-            ParticleMaster::createParticle(ParticleResources::textureSparkleYellow, &position, &partVel, 0.2f, 1.0f, false, true);
+            float chanceToSpawn = dt*60.0f;
+
+            if (Maths::nextUniform() < chanceToSpawn) //on higher than 60fps, dont spawn every frame
+            {
+                Vector3f partVel(&vel);
+                partVel.scale(0.75f);
+                partVel = partVel + relativeUp.scaleCopy(5.0f);
+                Vector3f rand(Maths::nextUniform() - 0.5f, Maths::nextUniform() - 0.5f, Maths::nextUniform() - 0.5f);
+                rand.scale(30.0f);
+                partVel = partVel + rand;
+                ParticleMaster::createParticle(ParticleResources::textureSparkleYellow, &position, &partVel, 0.2f, 1.0f, false, true);
+            }
         }
 
         float grindAudioPitch = 0.65f + vel.length()/1000.0f;
@@ -922,14 +926,16 @@ void PlayerSonic::step()
         //    }
         //}
 
-        //bool result = CollisionChecker::checkCollision(78.440208f, 2096.371826f, 63.406719f, 65.663223f, 2093.205566f, 63.012226f);
+        //CollisionChecker::checkCollision(-2568.486816f, -4019.688477f, -19681.607422f, -2571.251953f, -4011.733887f, -19681.025391f);
 
         //speed before adjusting
         float originalSpeed = vel.length();
         CollisionChecker::setCheckPlayer(true);
         //CollisionChecker::debug = false;
         //CollisionChecker::debugFilename = "1.obj";
-        //std::vector<std::string> collisionPath;
+        //std::vector<Vector3f> debugCollisionPath;
+        //bool debugOnGroundBefore = onGround;
+        //debugCollisionPath.push_back(position);
         if (CollisionChecker::checkCollision(position.x, position.y, position.z, position.x+vel.x*dt, position.y+vel.y*dt, position.z+vel.z*dt))
         {
             Vector3f* colNormal = &CollisionChecker::getCollideTriangle()->normal;
@@ -1191,8 +1197,10 @@ void PlayerSonic::step()
         }
         else //No initial collision
         {
-            //Vector3f before = position;
-            increasePosition(vel.x*dt, vel.y*dt, vel.z*dt);
+            //Vector3f debugBefore = position;
+            increasePosition(vel.x * dt, vel.y * dt, vel.z * dt);
+
+            //debugCollisionPath.push_back(position);
 
             bool checkPassed = false;
             if (onGround)
@@ -1200,10 +1208,10 @@ void PlayerSonic::step()
                 //CollisionChecker::debug = true;
                 CollisionChecker::setCheckPlayer(true);
                 //CollisionChecker::debugFilename = "4.obj";
-                checkPassed = CollisionChecker::checkCollision(position.x, position.y, position.z, position.x - relativeUp.x*surfaceTension, position.y - relativeUp.y*surfaceTension, position.z - relativeUp.z*surfaceTension);
+                checkPassed = CollisionChecker::checkCollision(position.x, position.y, position.z, position.x - relativeUp.x * surfaceTension, position.y - relativeUp.y * surfaceTension, position.z - relativeUp.z * surfaceTension);
                 //if (CollisionChecker::debug == false)
                 //{
-                //    printf("v %f %f %f\n", before.x, before.y, before.z);
+                //    printf("v %f %f %f\n", debugBefore.x, debugBefore.y, debugBefore.z);
                 //    printf("v %f %f %f\n\n", position.x, position.y, position.z);
                 //}
             }
@@ -1222,7 +1230,7 @@ void PlayerSonic::step()
                     }
                 }
             }
-            
+
             if (checkPassed)
             {
                 Vector3f* colNormal = &CollisionChecker::getCollideTriangle()->normal;
@@ -1233,21 +1241,21 @@ void PlayerSonic::step()
                     CollisionChecker::falseAlarm();
 
                     float len = vel.length();
-                    float dot = std::abs(vel.dot(colNormal)/len);
-                    float fact = sqrtf(1 - dot*dot);
-                    Vector3f bounce   = Maths::bounceVector(&vel, colNormal, 1.0f);
+                    float dot = std::abs(vel.dot(colNormal) / len);
+                    float fact = sqrtf(1 - dot * dot);
+                    Vector3f bounce = Maths::bounceVector(&vel, colNormal, 1.0f);
                     Vector3f parallel = Maths::projectOntoPlane(&vel, colNormal);
-                    bounce   = Maths::projectOntoPlane(&bounce,   &relativeUp);
+                    bounce = Maths::projectOntoPlane(&bounce, &relativeUp);
                     parallel = Maths::projectOntoPlane(&parallel, &relativeUp);
                     Vector3f rotate1 = Maths::rotatePoint(&parallel, &relativeUp, 0.1f);
                     Vector3f rotate2 = Maths::rotatePoint(&parallel, &relativeUp, -0.1f);
                     vel = Maths::getCloserPoint(&rotate1, &rotate2, &bounce);
-                    vel.setLength(len*fact);
+                    vel.setLength(len * fact);
 
                     canMoveTimer = hitWallTimePunish;
                     //AudioPlayer::play(4, getPosition());
 
-                    increasePosition(colNormal->x*FLOOR_OFFSET*2, colNormal->y*FLOOR_OFFSET*2, colNormal->z*FLOOR_OFFSET*2);
+                    increasePosition(colNormal->x * FLOOR_OFFSET * 2, colNormal->y * FLOOR_OFFSET * 2, colNormal->z * FLOOR_OFFSET * 2);
                 }
                 else
                 {
@@ -1255,19 +1263,19 @@ void PlayerSonic::step()
                     Vector3f* normal = &CollisionChecker::getCollideTriangle()->normal;
 
                     setPosition(CollisionChecker::getCollidePosition());
-                    increasePosition(normal->x*FLOOR_OFFSET, normal->y*FLOOR_OFFSET, normal->z*FLOOR_OFFSET);
-                
+                    increasePosition(normal->x * FLOOR_OFFSET, normal->y * FLOOR_OFFSET, normal->z * FLOOR_OFFSET);
+
                     //speed before adjusting
                     float speed = vel.length();
-                
+
                     Vector3f newDirection = Maths::projectOntoPlane(&vel, normal);
 
                     newDirection.normalize();
-                    newDirection.x*=speed;
-                    newDirection.y*=speed;
-                    newDirection.z*=speed;
+                    newDirection.x *= speed;
+                    newDirection.y *= speed;
+                    newDirection.z *= speed;
                     vel.set(&newDirection);
-                
+
                     relativeUp.set(normal);
                     onGround = true;
                 }
@@ -1282,21 +1290,21 @@ void PlayerSonic::step()
 
                 if (isHomingOnPoint && homingAttackTimer > 0)
                 {
-                    
+
                 }
                 else
                 {
                     vel.y = Maths::approach(vel.y, gravityTerminal, gravityApproach, dt);
-                
+
                     Vector3f velToAddFromGravity(relativeUp);
-                    velToAddFromGravity.setLength(-gravityForce*dt);
+                    velToAddFromGravity.setLength(-gravityForce * dt);
                     //vel = vel + velToAddFromGravity;
-                    #ifdef DEV_MODE
+#ifdef DEV_MODE
                     if (Input::inputs.INPUT_LB)
                     {
-                       vel = vel - velToAddFromGravity.scaleCopy(4);
+                        vel = vel - velToAddFromGravity.scaleCopy(4);
                     }
-                    #endif
+#endif
                 }
             }
             //CollisionChecker::debug = false;
@@ -2142,7 +2150,8 @@ bool PlayerSonic::isVulnerable()
         isDropdashing           ||
         hitTimer > 0.0f         ||
         hitFlashingTimer > 0.0f ||
-        invincibleTimer > 0.0f);
+        invincibleTimer > 0.0f  ||
+        Global::finishStageTimer >= 0);
 }
 
 bool PlayerSonic::findHomingTarget(Vector3f* target)
@@ -2774,7 +2783,7 @@ void PlayerSonic::loadVehicleInfo()
     
     ManiaSonicModel::loadStaticModels();
     ManiaMightyModel::loadStaticModels();
-    ManiaKnucklesModel::loadStaticModels();
+    //ManiaKnucklesModel::loadStaticModels();
 }
 
 void PlayerSonic::deleteStaticModels()
@@ -2785,7 +2794,7 @@ void PlayerSonic::deleteStaticModels()
     
     ManiaSonicModel::deleteStaticModels();
     ManiaMightyModel::deleteStaticModels();
-    ManiaKnucklesModel::deleteStaticModels();
+    //ManiaKnucklesModel::deleteStaticModels();
 }
 
 bool PlayerSonic::isVehicle() const

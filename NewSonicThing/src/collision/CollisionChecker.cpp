@@ -17,10 +17,9 @@ std::list<CollisionModel*> CollisionChecker::collideModels;
 bool CollisionChecker::checkPlayer = false;
 bool CollisionChecker::checkCamera = false;
 
-//bool CollisionChecker::debug = false;
+//bool CollisionChecker::debug = true;
 //std::string CollisionChecker::debugFilename = "curve.obj";
 //int debugCount = 1;
-
 //std::vector<std::string> out;
 
 void CollisionChecker::initChecker()
@@ -88,11 +87,11 @@ float CollisionChecker::dotToThrehold(float dot)
 
     if (val < 0.02f) // the direction is very close to being flat
     {
-        return 0.008f*0.008f; //use the biggset threshold in this case
+        return 0.02f*0.02f; //use the biggset threshold in this case
     }
     else if (val < 0.04f)
     {
-        return 0.004f*0.004f; //use a big threshold in this case
+        return 0.006f*0.006f; //use a big threshold in this case
     }
 
     return 0.0004f*0.0004f; //can get away with a smaller threshold
@@ -191,12 +190,18 @@ bool CollisionChecker::checkCollision(
                             //    out.push_back("f " + std::to_string(debugCount) + "/1/1 " + std::to_string(debugCount+1) + "/1/1 " + std::to_string(debugCount+2) + "/1/1");
                             //    debugCount+=3;
                             //}
+
+                            //if (std::abs(currTriangle->maxX - (-2561.15f)) < 0.1f &&
+                            //    std::abs(currTriangle->minX - (-2588.51f)) < 0.1f)
+                            //{
+                            //    printf("asdad\n");
+                            //}
                             
                             //Bounds check on individual triangle
                             //if any of these are true, we can skip the triangle
-                            if (!((px1 < currTriangle->minX && px2 < currTriangle->minX) || (px1 > currTriangle->maxX && px2 > currTriangle->maxX) ||
-                                  (pz1 < currTriangle->minZ && pz2 < currTriangle->minZ) || (pz1 > currTriangle->maxZ && pz2 > currTriangle->maxZ) ||
-                                  (py1 < currTriangle->minY && py2 < currTriangle->minY) || (py1 > currTriangle->maxY && py2 > currTriangle->maxY)))
+                            //if (!((px1 < currTriangle->minX && px2 < currTriangle->minX) || (px1 > currTriangle->maxX && px2 > currTriangle->maxX) ||
+                            //      (pz1 < currTriangle->minZ && pz2 < currTriangle->minZ) || (pz1 > currTriangle->maxZ && pz2 > currTriangle->maxZ) ||
+                            //      (py1 < currTriangle->minY && py2 < currTriangle->minY) || (py1 > currTriangle->maxY && py2 > currTriangle->maxY)))
                             {
                                 //deepCount++;
                                 float A = currTriangle->A;
@@ -314,12 +319,18 @@ bool CollisionChecker::checkCollision(
                             //    out.push_back("f " + std::to_string(debugCount) + "/1/1 " + std::to_string(debugCount+1) + "/1/1 " + std::to_string(debugCount+2) + "/1/1");
                             //    debugCount+=3;
                             //}
+
+                            //if (std::abs(currTriangle->maxX - (-2561.15f)) < 0.1f &&
+                            //    std::abs(currTriangle->minX - (-2588.51f)) < 0.1f)
+                            //{
+                            //    printf("asdad\n");
+                            //}
                             
                             //Bounds check on individual triangle
                             //if any of these are true, we can skip the triangle
-                            if (!((px1 < currTriangle->minX && px2 < currTriangle->minX) || (px1 > currTriangle->maxX && px2 > currTriangle->maxX) ||
-                                  (pz1 < currTriangle->minZ && pz2 < currTriangle->minZ) || (pz1 > currTriangle->maxZ && pz2 > currTriangle->maxZ) ||
-                                  (py1 < currTriangle->minY && py2 < currTriangle->minY) || (py1 > currTriangle->maxY && py2 > currTriangle->maxY)))
+                            //if (!((px1 < currTriangle->minX && px2 < currTriangle->minX) || (px1 > currTriangle->maxX && px2 > currTriangle->maxX) ||
+                            //      (pz1 < currTriangle->minZ && pz2 < currTriangle->minZ) || (pz1 > currTriangle->maxZ && pz2 > currTriangle->maxZ) ||
+                            //      (py1 < currTriangle->minY && py2 < currTriangle->minY) || (py1 > currTriangle->maxY && py2 > currTriangle->maxY)))
                             {
                                 //deepCount++;
                                 float A = currTriangle->A;

@@ -2323,7 +2323,8 @@ bool PlayerKnuckles::isVulnerable()
         isDrillDiving           ||
         isGliding               ||
         punchingTimer > 0.0f    ||
-        isReadingHint);
+        isReadingHint           ||
+        Global::finishStageTimer >= 0);
 }
 
 bool PlayerKnuckles::findHomingTarget(Vector3f* target)

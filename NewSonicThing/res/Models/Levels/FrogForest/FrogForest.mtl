@@ -1,232 +1,294 @@
-# Blender MTL File: 'None'
-# Material Count: 23
-
-newmtl n1_3001.png
-Ns 20.000000
-Ka 0.000000 0.000000 0.000000
-Kd 0.640000 0.640000 0.640000
-Ks 0.000000 0.000000 0.000000
-Ni 0.000000
-d 1.000000
-illum 1
-map_Kd n1_3001.png
-
-newmtl n1_3003.png
-Ns 20.000000
-Ka 0.000000 0.000000 0.000000
-Kd 0.640000 0.640000 0.640000
-Ks 0.000000 0.000000 0.000000
-Ni 0.000000
-d 1.000000
-illum 1
-map_Kd n1_3003.png
-
-newmtl n1_3004.png
-Ns 20.000000
-Ka 0.000000 0.000000 0.000000
-Kd 0.640000 0.640000 0.640000
-Ks 0.000000 0.000000 0.000000
-Ni 0.000000
-d 1.000000
-illum 1
-map_Kd n1_3004.png
-
-newmtl n1_3005.png
-Ns 20.000000
-Ka 0.000000 0.000000 0.000000
-Kd 0.640000 0.640000 0.640000
-Ks 0.000000 0.000000 0.000000
-Ni 0.000000
-d 1.000000
-illum 1
-map_Kd n1_3005.png
-
-newmtl n1_3008.png
-Ns 20.000000
-Ka 0.000000 0.000000 0.000000
-Kd 0.640000 0.640000 0.640000
-Ks 0.000000 0.000000 0.000000
-Ni 0.000000
-d 1.000000
-illum 1
-map_Kd n1_3008.png
-
-newmtl n1_3009.png
-Ns 20.000000
-Ka 0.000000 0.000000 0.000000
-Kd 0.640000 0.640000 0.640000
-Ks 0.000000 0.000000 0.000000
-Ni 0.000000
-d 1.000000
-illum 1
-map_Kd n1_3009.png
-
-newmtl n1_3010.png
-Ns 20.000000
-Ka 0.000000 0.000000 0.000000
-Kd 0.640000 0.640000 0.640000
-Ks 0.000000 0.000000 0.000000
-Ni 0.000000
-d 1.000000
-illum 1
-map_Kd n1_3010.png
-
-newmtl n1_3011.png
-Ns 20.000000
-Ka 0.000000 0.000000 0.000000
-Kd 0.640000 0.640000 0.640000
-Ks 0.000000 0.000000 0.000000
-Ni 0.000000
-d 1.000000
-illum 1
-map_Kd n1_3011.png
-
-newmtl n1_3012.png
-Ns 20.000000
-Ka 0.000000 0.000000 0.000000
-Kd 0.640000 0.640000 0.640000
-Ks 0.000000 0.000000 0.000000
-Ni 0.000000
-d 1.000000
-illum 1
-map_Kd n1_3012.png
-
-newmtl n1_3013.png
-Ns 20.000000
-Ka 0.000000 0.000000 0.000000
-Kd 0.640000 0.640000 0.640000
-Ks 0.000000 0.000000 0.000000
-Ni 0.000000
-d 1.000000
-illum 1
-map_Kd n1_3013.png
-
-newmtl n1_3014.png
-Ns 20.000000
-Ka 0.000000 0.000000 0.000000
-Kd 0.640000 0.640000 0.640000
-Ks 0.000000 0.000000 0.000000
-Ni 0.000000
-d 1.000000
-illum 1
-map_Kd n1_3014.png
-
-newmtl n1_3015.png
-Ns 20.000000
-Ka 0.000000 0.000000 0.000000
-Kd 0.640000 0.640000 0.640000
-Ks 0.000000 0.000000 0.000000
-Ni 0.000000
-d 1.000000
-illum 1
-map_Kd n1_3015.png
-
-newmtl n1_3016.png
-Ns 20.000000
-Ka 0.000000 0.000000 0.000000
-Kd 0.640000 0.640000 0.640000
-Ks 0.000000 0.000000 0.000000
-Ni 0.000000
-d 1.000000
-illum 1
-map_Kd n1_3016.png
+# Material Count: 43
 
 newmtl n1_3017.png
 Ns 20.000000
-Ka 0.000000 0.000000 0.000000
-Kd 0.640000 0.640000 0.640000
-Ks 0.000000 0.000000 0.000000
 Ni 0.000000
 d 1.000000
-illum 1
 map_Kd n1_3017.png
 
-newmtl n1_3018.png
+newmtl n1_3012.png
 Ns 20.000000
-Ka 0.000000 0.000000 0.000000
-Kd 0.640000 0.640000 0.640000
-Ks 0.000000 0.000000 0.000000
 Ni 0.000000
 d 1.000000
-illum 1
-map_Kd n1_3018.png
+map_Kd n1_3012.png
 
-newmtl n1_3019.png
+newmtl unnamed.074
 Ns 20.000000
-Ka 0.000000 0.000000 0.000000
-Kd 0.640000 0.640000 0.640000
-Ks 0.000000 0.000000 0.000000
 Ni 0.000000
 d 1.000000
-illum 1
-map_Kd n1_3019.png
+map_Kd d_topb2.png
 
-newmtl n1_3020.png
+newmtl n1_3004.png
 Ns 20.000000
-Ka 0.000000 0.000000 0.000000
-Kd 0.640000 0.640000 0.640000
-Ks 0.000000 0.000000 0.000000
 Ni 0.000000
 d 1.000000
-illum 1
-map_Kd n1_3020.png
-
-newmtl n1_3021.png
-Ns 20.000000
-Ka 0.000000 0.000000 0.000000
-Kd 0.640000 0.640000 0.640000
-Ks 0.000000 0.000000 0.000000
-Ni 0.000000
-d 1.000000
-illum 1
-map_Kd n1_3021.png
-
-newmtl n1_3022.png
-Ns 20.000000
-Ka 0.000000 0.000000 0.000000
-Kd 0.640000 0.640000 0.640000
-Ks 0.000000 0.000000 0.000000
-Ni 0.000000
-d 1.000000
-illum 1
-map_Kd n1_3022.png
-
-newmtl n1_3023.png
-Ns 20.000000
-Ka 0.000000 0.000000 0.000000
-Kd 0.640000 0.640000 0.640000
-Ks 0.000000 0.000000 0.000000
-Ni 0.000000
-d 1.000000
-illum 1
-map_Kd n1_3023.png
-
-newmtl n1_3024.png
-Ns 20.000000
-Ka 0.000000 0.000000 0.000000
-Kd 0.640000 0.640000 0.640000
-Ks 0.000000 0.000000 0.000000
-Ni 0.000000
-d 1.000000
-illum 1
-map_Kd n1_3024.png
+map_Kd n1_3004.png
 
 newmtl n1_3025.png
 Ns 20.000000
-Ka 0.000000 0.000000 0.000000
-Kd 0.640000 0.640000 0.640000
-Ks 0.000000 0.000000 0.000000
 Ni 0.000000
 d 1.000000
-illum 1
 map_Kd n1_3025.png
+
+newmtl unnamed.790
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd d_stona1.png
+
+newmtl n1_3008.png
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd n1_3008.png
+
+newmtl n1_3021.png
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd n1_3021.png
+
+newmtl unnamed.005
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd d_leafc6.png
+
+newmtl unnamed.138
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd d_frowb6.png
+
+newmtl unnamed.077
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd d_treeb1.png
+
+newmtl unnamed.125
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd d_leafh1.png
+
+newmtl unnamed.788
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd d_nkai2.png
+
+newmtl n1_3011.png
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd n1_3011.png
+
+newmtl n1_3024.png
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd n1_3024.png
+
+newmtl n1_3016.png
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd n1_3016.png
+
+newmtl unnamed.086
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd n2_1009.png
+
+newmtl unnamed.004
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd d_leafd1.png
+
+newmtl n1_3003.png
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd n1_3003.png
+
+newmtl unnamed.762
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd d_fruta1.png
+
+newmtl unnamed.100
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd d_pepea1.png
+
+newmtl unnamed.064
+Ns 20.000000
+Ni 0.000000
+Tr 0
+renderOrder 1
+mixLinear
+glow 1
+animSpeed 36
+numImages 30
+map_Kd w1_a1.1.png
+w1_a1.2.png
+w1_a1.3.png
+w1_a1.4.png
+w1_a1.5.png
+w1_a1.6.png
+w1_a1.7.png
+w1_a1.8.png
+w1_a1.9.png
+w1_a1.10.png
+w1_a1.11.png
+w1_a1.12.png
+w1_a1.13.png
+w1_a1.14.png
+w1_a1.15.png
+w1_a1.16.png
+w1_a1.17.png
+w1_a1.18.png
+w1_a1.19.png
+w1_a1.20.png
+w1_a1.21.png
+w1_a1.22.png
+w1_a1.23.png
+w1_a1.24.png
+w1_a1.25.png
+w1_a1.26.png
+w1_a1.27.png
+w1_a1.28.png
+w1_a1.29.png
+w1_a1.30.png
+
+newmtl n1_3020.png
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd n1_3020.png
+
+newmtl n1_3023.png
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd n1_3023.png
+
+newmtl n1_3001.png
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd n1_3001.png
+
+newmtl n1_3015.png
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd n1_3015.png
+
+newmtl unnamed.003
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd d_leafg1.png
+
+newmtl n1_3014.png
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd n1_3014.png
+
+newmtl unnamed.006
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd d_ferna1.png
+
+newmtl n1_3010.png
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd n1_3010.png
+
+newmtl n1_3019.png
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd n1_3019.png
+
+newmtl unnamed.2
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd d_frutc6.png
+
+newmtl unnamed.789
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd d_stonc1.png
+
+newmtl n1_3005.png
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd n1_3005.png
+
+newmtl n1_3018.png
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd n1_3018.png
+
+newmtl unnamed.002
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd d_palma6.png
+
+newmtl unnamed.040
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd d_leafb1.png
+
+newmtl unnamed.764
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd d_frutb6.png
+
+newmtl n1_3013.png
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd n1_3013.png
 
 newmtl n1_3026.png
 Ns 20.000000
-Ka 0.000000 0.000000 0.000000
-Kd 0.640000 0.640000 0.640000
-Ks 0.000000 0.000000 0.000000
 Ni 0.000000
 d 1.000000
-illum 1
 map_Kd n1_3026.png
+
+newmtl unnamed.547
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd d_leaff1.png
+
+newmtl unnamed.0
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd d_leafi1.png
+
+newmtl n1_3009.png
+Ns 20.000000
+Ni 0.000000
+d 1.000000
+map_Kd n1_3009.png
+

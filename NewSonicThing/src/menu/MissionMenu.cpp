@@ -84,6 +84,13 @@ void MissionMenu::loadResources()
     textureNpcFound    = LoaderGL::loadTexture("res/Images/MainMenu/NpcFound.png");
     textureNpcLost     = LoaderGL::loadTexture("res/Images/MainMenu/NpcMissing.png");
     textureEmeraldLost = LoaderGL::loadTexture("res/Images/MainMenu/EmeraldMissing.png");
+    textureEmerald0    = LoaderGL::loadTextureNoInterpolation("res/Images/MainMenu/Emerald0.png");
+    textureEmerald1    = LoaderGL::loadTextureNoInterpolation("res/Images/MainMenu/Emerald1.png");
+    textureEmerald2    = LoaderGL::loadTextureNoInterpolation("res/Images/MainMenu/Emerald2.png");
+    textureEmerald3    = LoaderGL::loadTextureNoInterpolation("res/Images/MainMenu/Emerald3.png");
+    textureEmerald4    = LoaderGL::loadTextureNoInterpolation("res/Images/MainMenu/Emerald4.png");
+    textureEmerald5    = LoaderGL::loadTextureNoInterpolation("res/Images/MainMenu/Emerald5.png");
+    textureEmerald6    = LoaderGL::loadTextureNoInterpolation("res/Images/MainMenu/Emerald6.png");
 
     const float rankWidth = 0.07f/aspectRatio;
     missionButton = new Button("_____", Global::fontVipnagorgialla, textureParallelogram, textureParallelogramBackdrop, 0.69f, 0.5f, 0.56f / aspectRatio, 0.07f, true); INCR_NEW("Button");
@@ -149,9 +156,23 @@ void MissionMenu::unloadResources()
     LoaderGL::deleteTexture(textureNpcFound);
     LoaderGL::deleteTexture(textureNpcLost);
     LoaderGL::deleteTexture(textureEmeraldLost);
+    LoaderGL::deleteTexture(textureEmerald0);
+    LoaderGL::deleteTexture(textureEmerald1);
+    LoaderGL::deleteTexture(textureEmerald2);
+    LoaderGL::deleteTexture(textureEmerald3);
+    LoaderGL::deleteTexture(textureEmerald4);
+    LoaderGL::deleteTexture(textureEmerald5);
+    LoaderGL::deleteTexture(textureEmerald6);
     textureNpcFound    = GL_NONE;
     textureNpcLost     = GL_NONE;
     textureEmeraldLost = GL_NONE;
+    textureEmerald0    = GL_NONE;
+    textureEmerald1    = GL_NONE;
+    textureEmerald2    = GL_NONE;
+    textureEmerald3    = GL_NONE;
+    textureEmerald4    = GL_NONE;
+    textureEmerald5    = GL_NONE;
+    textureEmerald6    = GL_NONE;
 
     delete rankM1;        rankM1        = nullptr; INCR_DEL("GuiImage");
     delete rankM2;        rankM2        = nullptr; INCR_DEL("GuiImage");
@@ -348,33 +369,78 @@ void MissionMenu::draw()
         }
 
         //update npc and emerald
-        GuiManager::addImageToRender(emerald);
         if (Global::stageNpcCounts.find(buttLvlId) != Global::stageNpcCounts.end())
         {
-            int numNpcs = Global::stageNpcCounts[buttLvlId];
-            int foundNpcs = 0;
-            for (int i = 0; i < numNpcs; i++)
+            if (Global::currentCharacterType != Global::PlayableCharacter::Tails ||
+                buttLvlId == LVL_CLOUD_TEMPLE)
             {
-                std::string key = level.displayName + "_NPC_" + std::to_string(i);
-                if (Global::gameSaveData.find(key) != Global::gameSaveData.end())
+                int numNpcs = Global::stageNpcCounts[buttLvlId];
+                int foundNpcs = 0;
+                for (int i = 0; i < numNpcs; i++)
                 {
-                    if (Global::gameSaveData[key] == "true")
+                    std::string key = level.displayName + "_NPC_" + std::to_string(i);
+                    if (Global::gameSaveData.find(key) != Global::gameSaveData.end())
                     {
-                        foundNpcs++;
+                        if (Global::gameSaveData[key] == "true")
+                        {
+                            foundNpcs++;
+                        }
                     }
                 }
-            }
 
-            if (foundNpcs == numNpcs)
-            {
-                npc->textureId = textureNpcFound;
-            }
-            else
-            {
-                npc->textureId = textureNpcLost;
-            }
+                if (foundNpcs == numNpcs)
+                {
+                    npc->textureId = textureNpcFound;
+                }
+                else
+                {
+                    npc->textureId = textureNpcLost;
+                }
 
-            GuiManager::addImageToRender(npc);
+                GuiManager::addImageToRender(npc);
+            }
+        }
+
+        if (Global::stageChaosEmeraldId.find(buttLvlId) != Global::stageChaosEmeraldId.end())
+        {
+            //if (Global::currentCharacterType != Global::PlayableCharacter::Tails ||
+            //    buttLvlId == LVL_CLOUD_TEMPLE)
+            {
+                int emeraldId = Global::stageChaosEmeraldId[buttLvlId];
+
+                std::string lookup = "ChaosEmerald_" + std::to_string(emeraldId);
+
+                bool found = false;
+                if (Global::gameSaveData.find(lookup) != Global::gameSaveData.end())
+                {
+                    std::string isFound = Global::gameSaveData[lookup];
+                    if (isFound == "true")
+                    {
+                        found = true;
+                    }
+                }
+
+                if (found)
+                {
+                    switch (emeraldId)
+                    {
+                        case 0: emerald->textureId = textureEmerald0; break;
+                        case 1: emerald->textureId = textureEmerald1; break;
+                        case 2: emerald->textureId = textureEmerald2; break;
+                        case 3: emerald->textureId = textureEmerald3; break;
+                        case 4: emerald->textureId = textureEmerald4; break;
+                        case 5: emerald->textureId = textureEmerald5; break;
+                        case 6: emerald->textureId = textureEmerald6; break;
+                        default: break;
+                    }
+                }
+                else
+                {
+                    emerald->textureId = textureEmeraldLost;
+                }
+
+                GuiManager::addImageToRender(emerald);
+            }
         }
     }
 }

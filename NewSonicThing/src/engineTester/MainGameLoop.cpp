@@ -229,6 +229,10 @@ GUIText* Global::titleCardMissionDescription = nullptr;
 
 std::unordered_map<int, int> Global::stageNpcCounts;
 
+std::unordered_map<int, int> Global::stageChaosEmeraldId;
+
+std::vector<bool> Global::arcadeModeEmeraldFound;
+
 void increaseProcessPriority();
 
 void doListenThread();
@@ -250,18 +254,18 @@ int main(int argc, char** argv)
     {
         Global::pathToEXE = argv[0];
 
-        #ifdef _WIN32
+#ifdef _WIN32
         int idx = (int)Global::pathToEXE.find_last_of('\\', Global::pathToEXE.size());
-        Global::pathToEXE = Global::pathToEXE.substr(0, idx+1);
-        #else
+        Global::pathToEXE = Global::pathToEXE.substr(0, idx + 1);
+#else
         int idx = (int)Global::pathToEXE.find_last_of('/', Global::pathToEXE.size());
-        Global::pathToEXE = Global::pathToEXE.substr(0, idx+1);
-        #endif
+        Global::pathToEXE = Global::pathToEXE.substr(0, idx + 1);
+#endif
     }
 
-    #ifdef DEV_MODE
+#ifdef DEV_MODE
     std::thread listenThread(doListenThread);
-    #endif
+#endif
 
     increaseProcessPriority();
 
@@ -281,70 +285,93 @@ int main(int argc, char** argv)
     //The levels you play in arcade mode, in order
     Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_TUTORIAL,        Global::PlayableCharacter::Sonic));
     Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_DRY_LAGOON,      Global::PlayableCharacter::Knuckles));
-    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_CLOUD_TEMPLE,    Global::PlayableCharacter::Tails));
-    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_GREEN_FOREST,    Global::PlayableCharacter::Sonic));
-    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_METAL_HARBOR,    Global::PlayableCharacter::Sonic));
-    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_NOKI_BAY,        Global::PlayableCharacter::Knuckles));
-    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_FROG_FOREST,     Global::PlayableCharacter::Tails));
-    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_DRAGON_ROAD,     Global::PlayableCharacter::Sonic));
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_CLOUD_TEMPLE,    Global::PlayableCharacter::Tails)); //
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_EMERALD_COAST,   Global::PlayableCharacter::Sonic)); //
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_GREEN_FOREST,    Global::PlayableCharacter::Tails));
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_CASTLE_TOWN,     Global::PlayableCharacter::Knuckles)); //
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_DRAGON_ROAD,     Global::PlayableCharacter::Sonic)); //
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_METAL_HARBOR,    Global::PlayableCharacter::Tails));
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_PYRAMID_CAVE,    Global::PlayableCharacter::Sonic)); //
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_SWEET_MOUNTAIN,  Global::PlayableCharacter::Knuckles));
     Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_GREEN_HILL_ZONE, Global::PlayableCharacter::Sonic));
-    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_TWINKLE_CIRCUIT, Global::PlayableCharacter::Sonic));
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_FROG_FOREST,     Global::PlayableCharacter::Tails)); //
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_CITY_ESCAPE,     Global::PlayableCharacter::Sonic));
     Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_DELFINO_PLAZA,   Global::PlayableCharacter::Knuckles));
-    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_SKY_RAIL,        Global::PlayableCharacter::Sonic));
-    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_RADICAL_HIGHWAY, Global::PlayableCharacter::Sonic));
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_SKY_RAIL,        Global::PlayableCharacter::Tails));
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_SEASIDE_HILL,    Global::PlayableCharacter::Sonic)); //
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_RADICAL_HIGHWAY, Global::PlayableCharacter::Tails));
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_NOKI_BAY,        Global::PlayableCharacter::Knuckles));
     Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_SACRED_SKY,      Global::PlayableCharacter::Sonic));
 
     Global::gameLevelIdsSonic.push_back(LVL_TUTORIAL);
-    Global::gameLevelIdsSonic.push_back(LVL_ICE_CAP);
-    Global::gameLevelIdsSonic.push_back(LVL_DRAGON_ROAD);
+    Global::gameLevelIdsSonic.push_back(LVL_EMERALD_COAST);
     Global::gameLevelIdsSonic.push_back(LVL_GREEN_FOREST);
+    Global::gameLevelIdsSonic.push_back(LVL_DRAGON_ROAD);
     Global::gameLevelIdsSonic.push_back(LVL_METAL_HARBOR);
-    Global::gameLevelIdsSonic.push_back(LVL_SKY_RAIL);
     Global::gameLevelIdsSonic.push_back(LVL_PYRAMID_CAVE);
-    Global::gameLevelIdsSonic.push_back(LVL_RADICAL_HIGHWAY);
     Global::gameLevelIdsSonic.push_back(LVL_GREEN_HILL_ZONE);
-    Global::gameLevelIdsSonic.push_back(LVL_CITY_ESCAPE);
-    Global::gameLevelIdsSonic.push_back(LVL_WINDY_VALLEY);
-    Global::gameLevelIdsSonic.push_back(LVL_SEASIDE_HILL);
     Global::gameLevelIdsSonic.push_back(LVL_FROG_FOREST);
-    Global::gameLevelIdsSonic.push_back(LVL_TEST);
-    Global::gameLevelIdsSonic.push_back(LVL_SPEED_HIGHWAY);
+    Global::gameLevelIdsSonic.push_back(LVL_CITY_ESCAPE);
+    Global::gameLevelIdsSonic.push_back(LVL_SKY_RAIL);
+    Global::gameLevelIdsSonic.push_back(LVL_SEASIDE_HILL);
+    Global::gameLevelIdsSonic.push_back(LVL_RADICAL_HIGHWAY);
     Global::gameLevelIdsSonic.push_back(LVL_SACRED_SKY);
     Global::gameLevelIdsSonic.push_back(LVL_TWINKLE_CIRCUIT);
-    Global::gameLevelIdsSonic.push_back(LVL_EMERALD_COAST);
+    Global::gameLevelIdsSonic.push_back(LVL_ICE_CAP);
+    Global::gameLevelIdsSonic.push_back(LVL_WINDY_VALLEY);
+    Global::gameLevelIdsSonic.push_back(LVL_TEST);
+    Global::gameLevelIdsSonic.push_back(LVL_SPEED_HIGHWAY);
 
     Global::gameLevelIdsTails.push_back(LVL_TUTORIAL);
-    Global::gameLevelIdsTails.push_back(LVL_GREEN_FOREST);
-    Global::gameLevelIdsTails.push_back(LVL_METAL_HARBOR);
-    Global::gameLevelIdsTails.push_back(LVL_PYRAMID_CAVE);
-    Global::gameLevelIdsTails.push_back(LVL_RADICAL_HIGHWAY);
-    Global::gameLevelIdsTails.push_back(LVL_GREEN_HILL_ZONE);
-    Global::gameLevelIdsTails.push_back(LVL_CITY_ESCAPE);
-    Global::gameLevelIdsTails.push_back(LVL_WINDY_VALLEY);
-    Global::gameLevelIdsTails.push_back(LVL_SEASIDE_HILL);
-    Global::gameLevelIdsTails.push_back(LVL_FROG_FOREST);
-    Global::gameLevelIdsTails.push_back(LVL_TEST);
-    Global::gameLevelIdsTails.push_back(LVL_SPEED_HIGHWAY);
-    Global::gameLevelIdsTails.push_back(LVL_SACRED_SKY);
     Global::gameLevelIdsTails.push_back(LVL_CLOUD_TEMPLE);
     Global::gameLevelIdsTails.push_back(LVL_EMERALD_COAST);
+    Global::gameLevelIdsTails.push_back(LVL_GREEN_FOREST);
+    Global::gameLevelIdsTails.push_back(LVL_DRAGON_ROAD);
+    Global::gameLevelIdsTails.push_back(LVL_METAL_HARBOR);
+    Global::gameLevelIdsTails.push_back(LVL_PYRAMID_CAVE);
+    Global::gameLevelIdsTails.push_back(LVL_GREEN_HILL_ZONE);
+    Global::gameLevelIdsTails.push_back(LVL_FROG_FOREST);
+    Global::gameLevelIdsTails.push_back(LVL_CITY_ESCAPE);
+    Global::gameLevelIdsTails.push_back(LVL_SKY_RAIL);
+    Global::gameLevelIdsTails.push_back(LVL_SEASIDE_HILL);
+    Global::gameLevelIdsTails.push_back(LVL_RADICAL_HIGHWAY);
+    Global::gameLevelIdsTails.push_back(LVL_SACRED_SKY);
 
-    Global::gameLevelIdsKnuckles.push_back(LVL_CASTLE_TOWN);
     Global::gameLevelIdsKnuckles.push_back(LVL_DRY_LAGOON);
+    Global::gameLevelIdsKnuckles.push_back(LVL_CASTLE_TOWN);
+    Global::gameLevelIdsKnuckles.push_back(LVL_SWEET_MOUNTAIN);
     Global::gameLevelIdsKnuckles.push_back(LVL_DELFINO_PLAZA);
     Global::gameLevelIdsKnuckles.push_back(LVL_NOKI_BAY);
-    Global::gameLevelIdsKnuckles.push_back(LVL_FREEZEEZY_PEAK);
-    Global::gameLevelIdsKnuckles.push_back(LVL_SWEET_MOUNTAIN);
 
-    //create NPC list
+    // Create NPC list
     Global::stageNpcCounts[LVL_SKY_RAIL]        = 3;
+    Global::stageNpcCounts[LVL_SEASIDE_HILL]    = 7;
+    Global::stageNpcCounts[LVL_CASTLE_TOWN]     = 1;
     Global::stageNpcCounts[LVL_DRY_LAGOON]      = 1;
     Global::stageNpcCounts[LVL_METAL_HARBOR]    = 4;
     Global::stageNpcCounts[LVL_RADICAL_HIGHWAY] = 5;
-    Global::stageNpcCounts[LVL_DRAGON_ROAD]     = 7;
+    Global::stageNpcCounts[LVL_DRAGON_ROAD]     = 8;
     Global::stageNpcCounts[LVL_GREEN_HILL_ZONE] = 1;
+    Global::stageNpcCounts[LVL_GREEN_FOREST]    = 2;
     Global::stageNpcCounts[LVL_DELFINO_PLAZA]   = 3;
     Global::stageNpcCounts[LVL_EMERALD_COAST]   = 5;
+    Global::stageNpcCounts[LVL_CLOUD_TEMPLE]    = 2;
+    Global::stageNpcCounts[LVL_CITY_ESCAPE]     = 3;
+    Global::stageNpcCounts[LVL_PYRAMID_CAVE]    = 3;
+
+    // Create Chaos Emerald list
+    Global::stageChaosEmeraldId[LVL_CLOUD_TEMPLE]  = 0;
+    Global::stageChaosEmeraldId[LVL_EMERALD_COAST] = 5;
+    Global::stageChaosEmeraldId[LVL_DRAGON_ROAD]   = 3;
+    Global::stageChaosEmeraldId[LVL_PYRAMID_CAVE]  = 1;
+    Global::stageChaosEmeraldId[LVL_FROG_FOREST]   = 6;
+    Global::stageChaosEmeraldId[LVL_SEASIDE_HILL]  = 2;
+    Global::stageChaosEmeraldId[LVL_CASTLE_TOWN]   = 4;
+
+    for (int i = 0; i < 7; i++)
+    {
+        Global::arcadeModeEmeraldFound.push_back(false);
+    }
 
     #if !defined(DEV_MODE) && defined(_WIN32)
     //FreeConsole(); //dont do this anymore, just change the subsystem to Windows instead of Console

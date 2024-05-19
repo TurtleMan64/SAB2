@@ -28,7 +28,7 @@ private:
 
     //The y position of the top of the pulley, this is useful to have so the position of the handle can
     //be saved as a displacement from this rather than a separate vector3f
-    float pulleyTopYPosition;
+    float pulleyTopYPosition = 0.0f;
 
     //The players velocity is set to this to make the autocam point towards the direction the pulley is pointing
     //Also ends up rotating the player to face the correct direction as well
@@ -37,9 +37,9 @@ private:
     //How far down the handle is from the top of the rocket.
     //Used for both the position of the handle and the length of the rope.
     //This gets moved dependi
-    float handleVerticalDisplacement;
+    float handleVerticalDisplacement = 0.0f;
     //The very bottom point of how far
-    float handleVerticalDisplacementBottom;
+    float handleVerticalDisplacementBottom = 0.0f;
     //The closest the handle can get to the top of the pulley
     static constexpr float HANDLE_VERTICAL_DISPLACEMENT_MINIMUM = 10;
 

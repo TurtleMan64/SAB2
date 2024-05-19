@@ -227,6 +227,11 @@ public:
     //how many npcs are in each level
     static std::unordered_map<int, int> stageNpcCounts;
 
+    // Id for chaos emerald per level
+    static std::unordered_map<int, int> stageChaosEmeraldId;
+
+    static std::vector<bool> arcadeModeEmeraldFound;
+
     static void checkErrorAL(const char* description);
 
     static void loadSaveData();

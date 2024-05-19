@@ -347,7 +347,7 @@ void ManiaMightyModel::animate(int animIndex, float time)
         {
             scale = (0.84f);
             models = &ManiaMightyModel::modelGrind;
-            updateTransformationMatrix();
+            updateTransformationMatrixYXZY();
             setLimbsVisibility(false);
             setFlyVisibility(false);
             visible = baseVisible;

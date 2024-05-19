@@ -8,6 +8,7 @@ class QuadTreeNode;
 #include <math.h>
 #include <list>
 #include <unordered_set>
+#include <string>
 #include "../toolbox/vector.hpp"
 
 class CollisionChecker

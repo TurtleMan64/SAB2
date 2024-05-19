@@ -125,6 +125,10 @@ RaceGhost::RaceGhost(const char* filePath, int missionNumber)
         }
         
         //some missions, dont spawn ghost (like treasure hunting (todo))
+        if (Global::gameIsArcadeMode)
+        {
+            deleteMe = true;
+        }
 
         if (deleteMe)
         {
@@ -311,6 +315,7 @@ void RaceGhost::loadStaticModels()
     ManiaMightyModel::loadStaticModels();
     ManiaSonicModel::loadStaticModels();
     ManiaTailsModel::loadStaticModels();
+    ManiaKnucklesModel::loadStaticModels();
 }
 
 void RaceGhost::deleteStaticModels()
@@ -322,4 +327,5 @@ void RaceGhost::deleteStaticModels()
     ManiaMightyModel::deleteStaticModels();
     ManiaSonicModel::deleteStaticModels();
     ManiaTailsModel::deleteStaticModels();
+    ManiaKnucklesModel::deleteStaticModels();
 }

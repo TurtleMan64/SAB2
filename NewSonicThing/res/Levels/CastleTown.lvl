@@ -15,10 +15,9 @@ Collision 12
 90.0
 0.856350 -6 -0.476094
 -0.980958 -0.194192 0.003192
+0
 1
-2
-res/Audio/BGM/ecoast1_intro.ogg
-res/Audio/BGM/ecoast1_loop.ogg
+res/Audio/BGM/CastleTown.ogg
 -730.706787 379.326630 695.186523
 -0.002939 0.000000 0.000161
 0 1 0

@@ -40,6 +40,7 @@ void PC_Flame::step()
 
     // Face the camera
     Maths::sphereAnglesFromPosition(&diff, &rotY, &rotZ);
+    rotZ = Maths::clamp(-45.0f, rotZ, 45.0f);
     transformationMatrix.setIdentity();
     transformationMatrix.translate(&position);
     transformationMatrix.rotate(Maths::toRadians(rotY), &Y_AXIS);

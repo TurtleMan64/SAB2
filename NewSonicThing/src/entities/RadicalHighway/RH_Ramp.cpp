@@ -68,7 +68,7 @@ void RH_Ramp::loadStaticModels()
 
     if (RH_Ramp::cmOriginal == nullptr)
     {
-        RH_Ramp::cmOriginal = ModelLoader::loadCollisionModel("Models/Levels/RadicalHighway/Objects/", "Ramp");
+        RH_Ramp::cmOriginal = ModelLoader::loadCollisionModel("Models/Levels/RadicalHighway/Objects/", "RampCollision");
     }
 }
 

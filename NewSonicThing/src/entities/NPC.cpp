@@ -109,12 +109,13 @@ NPC::NPC(float x, float y, float z, float dirX, float dirZ, int id, std::string 
         glasses->renderOrderOverride = 3;
     }
 
-    if (Global::currentCharacterType != Global::PlayableCharacter::Sonic &&
-        Global::currentCharacterType != Global::PlayableCharacter::Knuckles)
+    // Don't let Tails collect NPC in levels other than cloud temple
+    if (Global::currentCharacterType == Global::PlayableCharacter::Tails &&
+        Global::levelId != LVL_CLOUD_TEMPLE)
     {
-        //Global::deleteEntity(this);
-        //Global::deleteEntity(glasses);
-        //return;
+        Global::deleteEntity(this);
+        Global::deleteEntity(glasses);
+        return;
     }
 }
 

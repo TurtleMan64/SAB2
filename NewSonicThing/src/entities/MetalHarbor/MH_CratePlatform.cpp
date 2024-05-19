@@ -39,6 +39,9 @@ MH_CratePlatform::MH_CratePlatform(float x, float y, float z, float dirX, float 
     displacementCurrent = 0;
     positionInitial = &position;
 
+    shakeTimer = SHAKE_TIMER_MIN;
+    stoppedTimer = 0;
+
     directionVector.set(dirX, 0.0f, dirZ);
     directionVector.normalize();
 
@@ -53,7 +56,7 @@ MH_CratePlatform::MH_CratePlatform(float x, float y, float z, float dirX, float 
 
     updateTransformationMatrix();
 
-    platformType = type;
+    platformType = (MH_CratePlatform::types)type;
     //Load the correct collision model for the platform type
     switch (platformType)
     {

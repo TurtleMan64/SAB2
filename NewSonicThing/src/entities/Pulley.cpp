@@ -72,6 +72,10 @@ Pulley::~Pulley()
 
 void Pulley::step() 
 {
+    Vector3f diffToCam = Global::gameCamera->eye - position;
+    diffToCam.y = 0;
+    float distToCameraFlatSq = diffToCam.lengthSquared();
+
     //Change all of this so the start moving is separate from the actual moving, isMoving variable required
     if (playerIsOnPulley)
     {
@@ -119,6 +123,11 @@ void Pulley::step()
 
             isBobbing = false;
         }
+
+        updateTransformationMatrix();
+        rope->updateTransformationMatrix(1, handleVerticalDisplacement, 1);
+        Global::gameMainPlayer->animate();
+        Global::gameMainPlayer->refreshCamera();
     }
     else if (playerWithinHandleHitbox() && handleAtBottom()) //Player gets on the handle
     {
@@ -130,14 +139,24 @@ void Pulley::step()
 
         //Make player face the right direction
         Global::gameMainPlayer->rotY = (rotY);
+
+        updateTransformationMatrix();
+        rope->updateTransformationMatrix(1, handleVerticalDisplacement, 1);
+        Global::gameMainPlayer->animate();
+        Global::gameMainPlayer->refreshCamera();
     }
     else if (!handleAtBottom())
     {
         //Pulley not yet at bottom and player not on, move towards bottom
-
-        playPulleySound();
+        if (distToCameraFlatSq < 800*800)
+        {
+            playPulleySound();
+        }
 
         movePulley(MOVE_DOWN);
+
+        updateTransformationMatrix();
+        rope->updateTransformationMatrix(1, handleVerticalDisplacement, 1);
     }
     else
     {
@@ -148,11 +167,10 @@ void Pulley::step()
 
     position.y = pulleyTopYPosition - handleVerticalDisplacement;
 
-    updateTransformationMatrix();
-    //stretch the rope out to where the pulley is
-    rope->updateTransformationMatrix(1, handleVerticalDisplacement, 1);
-    Global::gameMainPlayer->animate();
-    Global::gameMainPlayer->refreshCamera();
+    if (distToCameraFlatSq > 800*800)
+    {
+        stopPulleySound();
+    }
 }
 
 std::vector<TexturedModel*>* Pulley::getModels()

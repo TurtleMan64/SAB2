@@ -349,7 +349,7 @@ void ManiaTailsModel::animate(int animIndex, float time)
         {
             scale = 1.0f;
             models = &ManiaTailsModel::modelGrind;
-            updateTransformationMatrix();
+            updateTransformationMatrixYXZY();
             setLimbsVisibility(false);
             setFlyVisibility(false);
             visible = baseVisible;

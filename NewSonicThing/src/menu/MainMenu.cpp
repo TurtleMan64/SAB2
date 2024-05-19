@@ -53,19 +53,20 @@ void MainMenu::loadResources()
 
     textureParallelogram         = LoaderGL::loadTexture("res/Images/MainMenu/Parallelogram.png");
     textureParallelogramBackdrop = LoaderGL::loadTexture("res/Images/MainMenu/ParallelogramBackdrop.png");
-    textureLogo                  = LoaderGL::loadTexture("res/Images/MainMenu/Logo.png");
-    logo = new GuiImage(textureLogo, 0.72f, 0.4f, 0.6f * (767.0f / 784.0f) / aspectRatio, 0.6f, 0.0f); INCR_NEW("GuiImage");
+    textureLogo                  = LoaderGL::loadTexture("res/Images/MainMenu/Logo2.png");
+    logo = new GuiImage(textureLogo, 0.75f, 0.3f, 0.45f * (3000.0f / 1500.0f) / aspectRatio, 0.45f, 0.0f); INCR_NEW("GuiImage");
 
     float fontScale = 0.08f;
 
     // Adding a string here *should* add a button.
-    std::vector<std::string> buttonNames(
+    std::vector<std::string> buttonNames
+    (
         {
-        "ARCADE",
-        "MISSION",
-        "EXTRA",
-        "SETTINGS",
-        "EXIT"
+            "ARCADE",
+            "MISSION",
+            "EXTRA",
+            "SETTINGS",
+            "EXIT"
         }
     );
 
@@ -221,6 +222,11 @@ Menu* MainMenu::step()
 
                 Global::gameMissionNumber = 0;
                 Global::gameArcadeIndex = 0;
+
+                for (int i = 0; i < 7; i++)
+                {
+                    Global::arcadeModeEmeraldFound[i] = false;
+                }
 
                 Global::levelId = (Global::gameArcadeLevelIds[Global::gameArcadeIndex]).first;
                 Global::currentCharacterType = (Global::gameArcadeLevelIds[Global::gameArcadeIndex]).second;

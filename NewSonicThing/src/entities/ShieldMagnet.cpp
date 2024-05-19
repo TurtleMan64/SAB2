@@ -28,19 +28,25 @@ void ShieldMagnet::step()
 
     for (int i = 0; i < 10; i++)
     {
-        Vector3f off = Maths::randomPointOnSphere();
-        off.scale(8);
+        extern float dt;
+        float chanceToSpawn = dt * 60.0f;
 
-        Vector3f pos1 = center + off;
-        Vector3f pos2 = center - off;
+        if (Maths::nextUniform() < chanceToSpawn) //on higher than 60fps, dont spawn every frame
+        {
+            Vector3f off = Maths::randomPointOnSphere();
+            off.scale(8);
 
-        off.scale((1/16.0f)*60);
-    
-        ParticleMaster::createParticle(ParticleResources::textureSparkleLightBlue, &pos1, &off, 0, 0.0833f, 3.0f, -(3.0f / 0.0833f), false, false, 1.0f, true);
+            Vector3f pos1 = center + off;
+            Vector3f pos2 = center - off;
 
-        off.scale(-1);
+            off.scale((1 / 16.0f) * 60);
 
-        ParticleMaster::createParticle(ParticleResources::textureSparkleWhite, &pos2, &off, 0, 0.0833f, 3.0f, -(3.0f / 0.0833f), false, false, 1.0f, true);
+            ParticleMaster::createParticle(ParticleResources::textureSparkleLightBlue, &pos1, &off, 0, 0.0833f, 3.0f, -(3.0f / 0.0833f), false, false, 1.0f, true);
+
+            off.scale(-1);
+
+            ParticleMaster::createParticle(ParticleResources::textureSparkleWhite, &pos2, &off, 0, 0.0833f, 3.0f, -(3.0f / 0.0833f), false, false, 1.0f, true);
+        }
     }
 }
 

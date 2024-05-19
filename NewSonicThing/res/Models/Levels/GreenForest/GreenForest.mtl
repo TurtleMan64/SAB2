@@ -103,6 +103,8 @@ map_Kd jungle256_5.png
 newmtl jungle64_1.png
 Ns 20
 Ni 0.0
+Tr 0
+renderOrder 1
 map_Kd jungle64_1.png
 
 newmtl jungle128_13.png

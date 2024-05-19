@@ -13,11 +13,11 @@ class MH_AircraftCarrierCart : public CollideableObject
 private:
     enum states
     {
-        MOVING_FORWARD,
-        MOVING_BACKWARDS,
-        STOPPED
+        MOVING_FORWARD = 0,
+        MOVING_BACKWARDS = 1,
+        STOPPED = 2
     };
-    int stateCurrent;
+    states stateCurrent = STOPPED;
 
     //The visual model that doesn't use vertex colors
     static std::vector<TexturedModel*> models;
@@ -67,27 +67,27 @@ private:
 
     //if false, the platform doesn't need to update at all after being initialized since it doesn't move
     //set by having a displacementMax of 0
-    bool platformMoves;
+    bool platformMoves = false;
     //initial position of the platform
     Vector3f positionInitial;
     //determines the directions the wheels are rotated
     //in step, changing the direction is a multiplation with -1, so to flip between forwards or backwards at the start, set to -1
-    int wheelMovementDirectionMultiplier;
+    int wheelMovementDirectionMultiplier = 1;
     //the max displacement from the starting position
-    float displacementMax;
+    float displacementMax = 0.0f;
     //current displacement, used for keeping track of how far the pulley has moved, so you can stop it at the destination
-    float displacementCurrent;
+    float displacementCurrent = 0.0f;
     //speed at which the platform moves
-    float speed;
+    float speed = 0.0f;
     //the direction the platform moves in, used for making movement possible, value calculated
     //in calculateDirectionVector(), called from the constructor
     Vector3f directionVector;
     //keeps track of how long the platform has been stopped for, so it can start moving again
-    float stoppedTimer;
+    float stoppedTimer = 0.0f;
     //position the platform stopped at, used for the shaking
     Vector3f positionStopped;
     //used for the shaking of the platform, dt * 20 is added to it to speed up the shaking animation
-    float shakeTimer;
+    float shakeTimer = SHAKE_TIMER_MIN;
 
     //Functions for the constructor start here
 

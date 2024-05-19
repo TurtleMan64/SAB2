@@ -1526,9 +1526,9 @@ void TC_Kart::setLapDistance(int newDistance)
 void TC_Kart::setInputs()
 {
     inputGas        = Input::inputs.INPUT_ACTION1;
-    inputBrake      = Input::inputs.INPUT_ACTION2;
+    inputBrake      = Input::inputs.INPUT_ACTION4;
     inputAttackSide = Input::inputs.INPUT_ACTION3;
-    inputBoost      = Input::inputs.INPUT_ACTION4;
+    inputBoost      = Input::inputs.INPUT_ACTION2;
     inputAttackSpin = Input::inputs.INPUT_RB;
     inputWheel      = Input::inputs.INPUT_X;
     inputDive       = Input::inputs.INPUT_Y;
@@ -1538,9 +1538,9 @@ void TC_Kart::setInputs()
     inputWheelJerk = Input::inputs.INPUT_X - Input::inputs.INPUT_PREVIOUS_X;
 
     inputGasPrevious        = Input::inputs.INPUT_PREVIOUS_ACTION1;
-    inputBrakePrevious      = Input::inputs.INPUT_PREVIOUS_ACTION2;
+    inputBrakePrevious      = Input::inputs.INPUT_PREVIOUS_ACTION4;
     inputAttackSidePrevious = Input::inputs.INPUT_PREVIOUS_ACTION3;
-    inputBoostPrevious      = Input::inputs.INPUT_PREVIOUS_ACTION4;
+    inputBoostPrevious      = Input::inputs.INPUT_PREVIOUS_ACTION2;
     inputAttackSpinPrevious = Input::inputs.INPUT_PREVIOUS_RB;
 
     if (canMoveTimer > 0.0f || deadTimer >= 0.0f || fallOutTimer >= 0.0f || !playerIsDrivingMe)
@@ -1642,34 +1642,34 @@ void TC_Kart::loadVehicleInfo()
 
             terminalSpeed        = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
             terminalAccelGas     = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
-            terminalAccelBrake     = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
-            terminalAccelCoast     = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
-            turnSpeed             = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
-            turnPunish             = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
-            diveSpeed             = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
-            divePunish             = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
+            terminalAccelBrake   = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
+            terminalAccelCoast   = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
+            turnSpeed            = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
+            turnPunish           = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
+            diveSpeed            = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
+            divePunish           = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
             strafePercentage     = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
             strafeTerminalPunish = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
             slipTimerMax         = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
-            slipThreshold         = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
-            slipAngleAccel         = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
+            slipThreshold        = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
+            slipAngleAccel       = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
             slipAngleMax         = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
-            slipPower             = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
-            slipNegativePower     = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
-            slipPositivePower     = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
-            slipTimerThreshold     = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
-            spinTimeMax             = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
-            spinTimeDelay         = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
-            sideAttackTimeMax     = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
-            sideAttackSpeed         = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
-            boostSpeed             = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
-            boostKick             = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
-            boostDuration         = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
-            boostDelayMax         = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
-            boostHealthPunish     = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
+            slipPower            = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
+            slipNegativePower    = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
+            slipPositivePower    = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
+            slipTimerThreshold   = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
+            spinTimeMax          = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
+            spinTimeDelay        = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
+            sideAttackTimeMax    = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
+            sideAttackSpeed      = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
+            boostSpeed           = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
+            boostKick            = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
+            boostDuration        = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
+            boostDelayMax        = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
+            boostHealthPunish    = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
             healRate             = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
-            hitWallHealthPunish     = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
-            weight                 = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
+            hitWallHealthPunish  = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
+            weight               = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
             gravityForce         = std::stof(lineSplit[1], nullptr); free(lineSplit); getline(file, line); memcpy(lineBuf, line.c_str(), line.size()+1); lineSplit = split(lineBuf, ';', &splitLength);
             boostIndex           = std::stoi(lineSplit[1], nullptr, 10); free(lineSplit);
 

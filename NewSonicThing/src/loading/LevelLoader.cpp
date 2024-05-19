@@ -47,7 +47,6 @@
 #include "../entities/SkyRail/srstagemanager.hpp"
 #include "../entities/goalring.hpp"
 #include "../entities/point.hpp"
-#include "../entities/rocket.hpp"
 #include "../entities/MetalHarbor/mhstagemanager.hpp"
 #include "../entities/GreenHill/ghstagemanager.hpp"
 #include "../entities/beetle.hpp"
@@ -944,7 +943,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
 
 
 
-
+    Global::gameDebugRingCount = 0;
 
 
     //Now read through all the objects defined in the file

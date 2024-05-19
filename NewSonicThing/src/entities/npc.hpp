@@ -20,8 +20,8 @@ private:
     Dummy* glasses = nullptr;
     std::string myMessage1;
     std::string myMessage2;
-    bool found;
-    int id;
+    bool found = false;
+    int id = 0;
 
 public:
     NPC();

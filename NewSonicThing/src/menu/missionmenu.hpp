@@ -26,7 +26,15 @@ private:
     GLuint textureSelect      = GL_NONE;
     GLuint textureNpcFound    = GL_NONE;
     GLuint textureNpcLost     = GL_NONE;
+    GLuint textureEmerald0    = GL_NONE;
+    GLuint textureEmerald1    = GL_NONE;
+    GLuint textureEmerald2    = GL_NONE;
+    GLuint textureEmerald3    = GL_NONE;
+    GLuint textureEmerald4    = GL_NONE;
+    GLuint textureEmerald5    = GL_NONE;
+    GLuint textureEmerald6    = GL_NONE;
     GLuint textureEmeraldLost = GL_NONE;
+
 
     int moveXPrevious = 0;
     int moveYPrevious = 0;

@@ -43,11 +43,17 @@ false
 # Goal Ring
 69 -1967.988403 -1349.240601 -7029.854004
 
+# Mighty Race
+70 res/Models/Levels/GreenHillZone/MightyRace.ghost 3
+
 # Lost Chao
 81 -772.159668 -529.903076 -5067.035645 45
 
 # NPC
 33 995.497803 40.102791 -4008.904297 -0.919433 0.338590 0 What a view!
+
+# Chaos Emerald
+#107 -1486.530884 -635.734863 -5116.878418 2
 
 # Secret Platform
 24 648.249268 -1246.676392 -4804.425293 0

@@ -62,7 +62,14 @@ PlayerTails::PlayerTails(float x, float y, float z)
     camDir.set(0, 0, -1);
     camDirSmooth.set(0, 0, -1);
 
-    playerModel = new ManiaTailsModel; INCR_NEW("Entity");
+    if (Global::gameSaveData.find("PLAY_AS") != Global::gameSaveData.end() && Global::gameSaveData["PLAY_AS"] == "Mighty")
+    {
+        playerModel = new ManiaMightyModel; INCR_NEW("Entity");
+    }
+    else
+    {
+        playerModel = new ManiaTailsModel; INCR_NEW("Entity");
+    }
     Global::addEntity(playerModel);
 
     visible = false;
@@ -706,13 +713,18 @@ void PlayerTails::step()
         //sparks
         if (vel.lengthSquared() > 140.0f*140.0f)
         {
-            Vector3f partVel(&vel);
-            partVel.scale(0.75f);
-            partVel = partVel + relativeUp.scaleCopy(5.0f);
-            Vector3f rand(Maths::nextUniform()-0.5f, Maths::nextUniform()-0.5f, Maths::nextUniform()-0.5f);
-            rand.scale(30.0f);
-            partVel = partVel + rand;
-            ParticleMaster::createParticle(ParticleResources::textureSparkleYellow, &position, &partVel, 0.2f, 1.0f, false, true);
+            float chanceToSpawn = dt * 60.0f;
+
+            if (Maths::nextUniform() < chanceToSpawn) //on higher than 60fps, dont spawn every frame
+            {
+                Vector3f partVel(&vel);
+                partVel.scale(0.75f);
+                partVel = partVel + relativeUp.scaleCopy(5.0f);
+                Vector3f rand(Maths::nextUniform() - 0.5f, Maths::nextUniform() - 0.5f, Maths::nextUniform() - 0.5f);
+                rand.scale(30.0f);
+                partVel = partVel + rand;
+                ParticleMaster::createParticle(ParticleResources::textureSparkleYellow, &position, &partVel, 0.2f, 1.0f, false, true);
+            }
         }
 
         float grindAudioPitch = 0.65f + vel.length()/1000.0f;
@@ -2201,7 +2213,8 @@ bool PlayerTails::isVulnerable()
         isDropdashing           ||
         hitTimer > 0.0f         ||
         hitFlashingTimer > 0.0f ||
-        invincibleTimer > 0.0f);
+        invincibleTimer > 0.0f  ||
+        Global::finishStageTimer >= 0);
 }
 
 bool PlayerTails::findHomingTarget(Vector3f* target)
@@ -2663,7 +2676,7 @@ void PlayerTails::animate()
     }
     else if (isGrinding)
     {
-        playerModel->setOrientation(dspX-nXAir, dspY-nYAir, dspZ-nZAir, diffGround, yawAngleGround, pitchAngleGround, 0, &relativeUpAnim);
+        playerModel->setOrientation(dspX-nXAir, dspY-nYAir, dspZ-nZAir, diffGround, yawAngleGround, pitchAngleGround, -Input::inputs.INPUT_X*15, &relativeUpAnim);
         playerModel->animate(26, 0);
     }
     else if (hitTimer > 0.0f)
@@ -2840,6 +2853,7 @@ void PlayerTails::loadVehicleInfo()
     #endif
     
     ManiaTailsModel::loadStaticModels();
+    ManiaMightyModel::loadStaticModels();
 }
 
 void PlayerTails::deleteStaticModels()
@@ -2849,6 +2863,7 @@ void PlayerTails::deleteStaticModels()
     #endif
     
     ManiaTailsModel::deleteStaticModels();
+    ManiaMightyModel::deleteStaticModels();
 }
 
 bool PlayerTails::isVehicle() const

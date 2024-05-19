@@ -10,10 +10,21 @@ class Extras : public Menu
 {
 private:
     GUIText* textTime = nullptr;
+    GUIText* textRingsAccum = nullptr;
+    GUIText* textRingsComp = nullptr;
+    GUIText* textNPC = nullptr;
+    GUIText* textEmeralds = nullptr;
+    GUIText* textRank = nullptr;
+    GUIText* textArcadeClear = nullptr;
     GUIText* textCompletion = nullptr;
-    GUIText* textRings = nullptr;
+    GUIText* textCharSelect = nullptr;
     bool selectInputPrevious = false;
     bool backInputPrevious = false;
+
+    int getRingsComp(int lvlId);
+    int getNPCComp(int lvlId);
+    int getTotalEmeralds();
+    int getTotalRankA();
 
 public:
     Extras();

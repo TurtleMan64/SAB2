@@ -394,7 +394,9 @@ void Input::pollInputs()
             //printf("pos and normal = %f %f %f %f %f %f\n", p.x, p.y, p.z, Global::gameMainPlayer->relativeUp.x, Global::gameMainPlayer->relativeUp.y, Global::gameMainPlayer->relativeUp.z);
             //printf("itembox = %f %f %f %f %f %f 0 0\n", p.x, p.y, p.z, n.x, n.y, n.z);
             //printf("spring = %f %f %f %f %f %f 300 0.1 0\n", p.x, p.y, p.z, n.x, n.y, n.z);
-            printf("egg pawn = %f %f %f %f %f\n", p.x, p.y, p.z, v.x, v.z);
+            //printf("egg pawn = %f %f %f %f %f\n", p.x, p.y, p.z, v.x, v.z);
+            printf("NPC = %f %f %f %f %f 0 Test;Message\n", p.x, p.y, p.z, v.x, v.z);
+            printf("lost chao = %f %f %f %f\n", p.x, p.y, p.z, yrot);
             //printf("ring circle = %f %f %f 8 8\n", c.x, c.y + 16, c.z);
             //printf("%f %f %f %f\n", Global::gameMainPlayer->position.x, Global::gameMainPlayer->position.y, Global::gameMainPlayer->position.z, yrot);
             //printf("velocity = %f %f %f\n", Global::gameMainPlayer->vel.x, Global::gameMainPlayer->vel.y, Global::gameMainPlayer->vel.z);

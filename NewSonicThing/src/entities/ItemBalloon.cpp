@@ -128,7 +128,7 @@ void ItemBalloon::die()
             //green shield
             Global::gameScore += 100;
             if (Global::gameMainPlayer->getShieldGreen()  == nullptr &&
-                Global::gameMainPlayer->getShieldMagnet() != nullptr)
+                Global::gameMainPlayer->getShieldMagnet() == nullptr)
             {
                 ShieldGreen* shield = new ShieldGreen; INCR_NEW("Entity");
                 Global::addEntity(shield);

@@ -57,6 +57,9 @@ MH_AircraftCarrierCart::MH_AircraftCarrierCart(float x, float y, float z, float 
     syncBodyPositionsAbsolute();
 
     updateTransformationMatrix();
+    wheelFront->updateTransformationMatrix();
+    wheelBack->updateTransformationMatrix();
+    bodyTransparent->updateTransformationMatrix();
 
     collideModelOriginal = MH_AircraftCarrierCart::cmOriginal;
     collideModelTransformed = collideModelOriginal->duplicateMe();
