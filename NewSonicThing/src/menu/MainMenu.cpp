@@ -25,6 +25,7 @@
 #include "configmenu.hpp"
 #include "extras.hpp"
 #include "characterselect.hpp"
+#include "resultsscreen.hpp"
 
 MainMenu::MainMenu()
 {
@@ -36,11 +37,20 @@ MainMenu::MainMenu()
     textureLogo = GL_NONE;
     loadResources();
     setVisible(false);
+
+    if (Global::menuMain != nullptr)
+    {
+        printf("Warning: Main Menu should be null but is not.\n");
+    }
+
+    Global::menuMain = this;
 }
 
 MainMenu::~MainMenu()
 {
     unloadResources();
+
+    Global::menuMain = nullptr;
 }
 
 void MainMenu::loadResources()
@@ -217,6 +227,9 @@ Menu* MainMenu::step()
             case arcade:
             {
                 Global::gameIsArcadeMode = true;
+                MenuManager::arcadeModeIsDoneBadEnding = false;
+                MenuManager::arcadeModeIsDoneGoodEnding = false;
+                MenuManager::playerFailedArcadeMode = false;
                 AudioPlayer::play(38, Global::gameCamera->getFadePosition1());
                 setVisible(false);
 
@@ -265,6 +278,10 @@ Menu* MainMenu::step()
                 AudioPlayer::play(38, Global::gameCamera->getFadePosition1());
                 Global::menuExtras = new Extras; INCR_NEW("Menu");
                 retVal = Global::menuExtras;
+
+                //Global::menuResults = new ResultsScreen; INCR_NEW("Menu");
+                //retVal = Global::menuResults;
+
                 setVisible(false);
                 Global::menuExtras->draw();
                 animationTime = 0.00f;

@@ -27,6 +27,7 @@
 #include "CharacterModels/maniamightymodel.hpp"
 #include "CharacterModels/maniatailsmodel.hpp"
 #include "CharacterModels/maniaknucklesmodel.hpp"
+#include "CharacterModels/supersonicmodel.hpp"
 #include "ringmoving.hpp"
 #include "../menu/timer.hpp"
 #include "stage.hpp"
@@ -2783,6 +2784,7 @@ void PlayerSonic::loadVehicleInfo()
     
     ManiaSonicModel::loadStaticModels();
     ManiaMightyModel::loadStaticModels();
+    SuperSonicModel::loadStaticModels();
     //ManiaKnucklesModel::loadStaticModels();
 }
 
@@ -2794,6 +2796,7 @@ void PlayerSonic::deleteStaticModels()
     
     ManiaSonicModel::deleteStaticModels();
     ManiaMightyModel::deleteStaticModels();
+    SuperSonicModel::deleteStaticModels();
     //ManiaKnucklesModel::deleteStaticModels();
 }
 

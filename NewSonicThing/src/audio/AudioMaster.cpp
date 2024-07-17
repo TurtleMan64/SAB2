@@ -148,7 +148,7 @@ ALuint AudioMaster::loadOGG(const char* fileName)
     int endian = 0; //0 = little
     int bitStream;
     long bytes;
-    char array[32768];
+    char* array = new char[32768]; INCR_NEW("char[]");
 
     std::vector<char> buf;
 
@@ -188,6 +188,8 @@ ALuint AudioMaster::loadOGG(const char* fileName)
 
     buf.clear();
     buf.shrink_to_fit();
+
+    delete[] array; INCR_DEL("char[]");
 
     return buffer;
 }

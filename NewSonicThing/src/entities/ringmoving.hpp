@@ -15,6 +15,7 @@ private:
     bool moves;
     float ageTimer;
     bool trackingPlayer;
+    float trackingPlayerTimer;
 
 public:
     RingMoving();

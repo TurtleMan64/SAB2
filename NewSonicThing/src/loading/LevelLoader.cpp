@@ -149,6 +149,11 @@
 #include "../entities/IceCap/icstagemanager.hpp"
 #include "../entities/EmeraldCoast/ecorca2.hpp"
 #include "../entities/CastleTown/castagemanager.hpp"
+#include "../entities/Boss/bossstagemanager.hpp"
+#include "../entities/Boss/bosscapsule.hpp"
+#include "../entities/playersupersonic.hpp"
+#include "../entities/Boss/bossbomb.hpp"
+#include "../entities/Boss/bosslaser.hpp"
 
 int LevelLoader::numLevels = 0;
 
@@ -317,9 +322,32 @@ void LevelLoader::loadLevel(std::string levelFilename)
             Global::gameLives--;
             if (Global::gameLives < 0)
             {
+                if (Global::levelId == LVL_BOSS && !Boss_StageManager::foundAllEmeralds)
+                {
+                    MenuManager::arcadeModeIsDoneBadEnding = true;
+                    MenuManager::justFinishedArcadeMode = true;
+
+                    if (Global::gameSaveData.find("BestBadEndingClearTime") == Global::gameSaveData.end())
+                    {
+                        Global::gameSaveData["BestBadEndingClearTime"] = std::to_string(Global::gameArcadePlaytime);
+                        Global::saveSaveData();
+                    }
+                    else
+                    {
+                        float currentPB = std::stof(Global::gameSaveData["BestBadEndingClearTime"]);
+                        if (Global::gameArcadePlaytime < currentPB)
+                        {
+                            Global::gameSaveData["BestBadEndingClearTime"] = std::to_string(Global::gameArcadePlaytime);
+                            Global::saveSaveData();
+                        }
+                    }
+                }
+                else
+                {
+                    MenuManager::playerFailedArcadeMode = true;
+                }
+
                 LevelLoader::loadTitle();
-                printf("playerFailedArcadeMode = true\n");
-                MenuManager::playerFailedArcadeMode = true;
                 return;
             }
         }
@@ -371,6 +399,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
             else if (currLvl->displayName == "Sweet Mountain")  Global::levelId = LVL_SWEET_MOUNTAIN;
             else if (currLvl->displayName == "Ice Cap")         Global::levelId = LVL_ICE_CAP;
             else if (currLvl->displayName == "Castle Town")     Global::levelId = LVL_CASTLE_TOWN;
+            else if (currLvl->displayName == "Boss")            Global::levelId = LVL_BOSS;
         }
 
         Global::spawnAtCheckpoint  = false;
@@ -973,15 +1002,18 @@ void LevelLoader::loadLevel(std::string levelFilename)
     file.close();
 
     //Add the player's ghost
-    RaceGhost::loadStaticModels();
-    RaceGhost* playerGhost = new RaceGhost(
-        ("res/SaveData/" + 
-        Global::characterNames[Global::currentCharacterType] + "_" +
-        std::to_string(Global::levelId) + "_" +
-        std::to_string(Global::gameMissionNumber) +
-        ".ghost").c_str(),
-        -1); INCR_NEW("Entity");
-    Global::addEntity(playerGhost);
+    if (Global::levelId != LVL_BOSS)
+    {
+        RaceGhost::loadStaticModels();
+        RaceGhost* playerGhost = new RaceGhost(
+            ("res/SaveData/" + 
+            Global::characterNames[Global::currentCharacterType] + "_" +
+            std::to_string(Global::levelId) + "_" +
+            std::to_string(Global::gameMissionNumber) +
+            ".ghost").c_str(),
+            -1); INCR_NEW("Entity");
+        Global::addEntity(playerGhost);
+    }
 
     //sort the chunked entity stuff
     if (chunkedEntities.size() > 0)
@@ -1713,6 +1745,11 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
                     Global::gameStageManager = new CA_StageManager; INCR_NEW("Entity");
                     break;
 
+                case 19:
+                    Boss_StageManager::loadStaticModels();
+                    Global::gameStageManager = new Boss_StageManager; INCR_NEW("Entity");
+                    break;
+
                 default: break;
             }
             return;
@@ -2424,6 +2461,39 @@ void LevelLoader::processLine(char** dat, int datLength, std::list<Entity*>* chu
             return;
         }
 
+        case 128: // Boss specific
+        {
+            switch (toInt(dat[1]))
+            {
+                case 0: // Boss Capsule
+                {
+                    Boss_Capsule::loadStaticModels();
+                    Boss_Capsule* cap = new Boss_Capsule(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4])); INCR_NEW("Entity");
+                    Global::addEntity(cap);
+                    return;
+                }
+
+                case 1: // Boss Bomb
+                {
+                    Boss_Bomb::loadStaticModels();
+                    Boss_Bomb* bomb = new Boss_Bomb(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4]), toFloat(dat[5])); INCR_NEW("Entity");
+                    Global::addEntity(bomb);
+                    return;
+                }
+
+                case 2: // Boss Laser
+                {
+                    Boss_Laser::loadStaticModels();
+                    Boss_Laser* laser = new Boss_Laser(toFloat(dat[2]), toFloat(dat[3]), toFloat(dat[4])); INCR_NEW("Entity");
+                    Global::addEntity(laser);
+                    return;
+                }
+
+                default:
+                    return;
+            }
+        }
+
         default: return;
     }
 }
@@ -2621,6 +2691,11 @@ void LevelLoader::freeAllStaticModels()
     IC_StageManager::deleteStaticModels();
     EC_Orca2::deleteStaticModels();
     CA_StageManager::deleteStaticModels();
+    Boss_StageManager::deleteStaticModels();
+    Boss_Capsule::deleteStaticModels();
+    PlayerSuperSonic::deleteStaticModels();
+    Boss_Bomb::deleteStaticModels();
+    Boss_Laser::deleteStaticModels();
 }
 
 int LevelLoader::getNumLevels()

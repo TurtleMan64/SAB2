@@ -20,6 +20,7 @@ private:
     bool backInputPrevious = false;
 
     GUIText* textArcadeModeClear = nullptr;
+    GUIText* textArcadeModeClear2 = nullptr;
     GUIText* textClearTime = nullptr;
 
 public:

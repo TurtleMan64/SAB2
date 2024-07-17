@@ -41,11 +41,20 @@ CharacterSelect::CharacterSelect()
 
     offsetTarget = -currentButtonIndex * separation;
     offsetCurr = offsetTarget;
+
+    if (Global::menuCharacterSelect != nullptr)
+    {
+        printf("Warning: Character Select should be null but is not.\n");
+    }
+
+    Global::menuCharacterSelect = this;
 }
 
 CharacterSelect::~CharacterSelect()
 {
     unloadResources();
+
+    Global::menuCharacterSelect = nullptr;
 }
 
 void CharacterSelect::loadResources()

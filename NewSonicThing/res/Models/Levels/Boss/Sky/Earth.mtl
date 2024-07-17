@@ -1,0 +1,14 @@
+# Blender MTL File: 'None'
+# Material Count: 1
+
+newmtl Mesh_0157.rip
+Ns 92.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+glow 1
+fogScale 0
+d 1.000000
+illum 1
+map_Kd Tex_0033_0.png

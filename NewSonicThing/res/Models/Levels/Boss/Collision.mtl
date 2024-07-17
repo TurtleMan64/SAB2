@@ -1,0 +1,22 @@
+# Blender MTL File: 'None'
+# Material Count: 2
+
+newmtl Tex_0039_0_png
+Ns 9.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.588000 0.588000 0.588000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+map_Kd D:\CWorkspace\SAB2\NewSonicThing\res\Models\Objects\ARK\Tex_0039_0.png
+
+newmtl Tex_0040_0_png
+Ns 9.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.588000 0.588000 0.588000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 1
+map_Kd D:\CWorkspace\SAB2\NewSonicThing\res\Models\Objects\ARK\Tex_0040_0.png

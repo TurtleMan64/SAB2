@@ -246,7 +246,7 @@ MissionMenu*     Global::menuMission         = nullptr;
 ConfigMenu*      Global::menuConfig          = nullptr;
 Extras*          Global::menuExtras          = nullptr;
 ResultsScreen*   Global::menuResults         = nullptr;
-Timer* Global::mainHudTimer = nullptr;
+Timer*           Global::mainHudTimer        = nullptr;
 
 int main(int argc, char** argv)
 {
@@ -302,8 +302,10 @@ int main(int argc, char** argv)
     Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_RADICAL_HIGHWAY, Global::PlayableCharacter::Tails));
     Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_NOKI_BAY,        Global::PlayableCharacter::Knuckles));
     Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_SACRED_SKY,      Global::PlayableCharacter::Sonic));
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_BOSS,            Global::PlayableCharacter::Sonic));
 
     Global::gameLevelIdsSonic.push_back(LVL_TUTORIAL);
+    //Global::gameLevelIdsSonic.push_back(LVL_BOSS);
     Global::gameLevelIdsSonic.push_back(LVL_EMERALD_COAST);
     Global::gameLevelIdsSonic.push_back(LVL_GREEN_FOREST);
     Global::gameLevelIdsSonic.push_back(LVL_DRAGON_ROAD);
@@ -317,10 +319,10 @@ int main(int argc, char** argv)
     Global::gameLevelIdsSonic.push_back(LVL_RADICAL_HIGHWAY);
     Global::gameLevelIdsSonic.push_back(LVL_SACRED_SKY);
     Global::gameLevelIdsSonic.push_back(LVL_TWINKLE_CIRCUIT);
-    Global::gameLevelIdsSonic.push_back(LVL_ICE_CAP);
-    Global::gameLevelIdsSonic.push_back(LVL_WINDY_VALLEY);
-    Global::gameLevelIdsSonic.push_back(LVL_TEST);
-    Global::gameLevelIdsSonic.push_back(LVL_SPEED_HIGHWAY);
+    //Global::gameLevelIdsSonic.push_back(LVL_ICE_CAP);
+    //Global::gameLevelIdsSonic.push_back(LVL_WINDY_VALLEY);
+    //Global::gameLevelIdsSonic.push_back(LVL_TEST);
+    //Global::gameLevelIdsSonic.push_back(LVL_SPEED_HIGHWAY);
 
     Global::gameLevelIdsTails.push_back(LVL_TUTORIAL);
     Global::gameLevelIdsTails.push_back(LVL_CLOUD_TEMPLE);
@@ -1075,20 +1077,23 @@ int main(int argc, char** argv)
                     }
                     else
                     {
-                        if (Global::gameSaveData.find("BestArcadeClearTime_"+Global::characterNames[Global::currentCharacterType]) == Global::gameSaveData.end())
+                        if (Global::gameSaveData.find("BestTrueEndingClearTime") == Global::gameSaveData.end())
                         {
-                            Global::gameSaveData["BestArcadeClearTime_"+Global::characterNames[Global::currentCharacterType]] = std::to_string(Global::gameArcadePlaytime);
+                            Global::gameSaveData["BestTrueEndingClearTime"] = std::to_string(Global::gameArcadePlaytime);
                             Global::saveSaveData();
                         }
                         else
                         {
-                            float currentPB = std::stof(Global::gameSaveData["BestArcadeClearTime_"+Global::characterNames[Global::currentCharacterType]]);
+                            float currentPB = std::stof(Global::gameSaveData["BestTrueEndingClearTime"]);
                             if (Global::gameArcadePlaytime < currentPB)
                             {
-                                Global::gameSaveData["BestArcadeClearTime_"+Global::characterNames[Global::currentCharacterType]] = std::to_string(Global::gameArcadePlaytime);
+                                Global::gameSaveData["BestTrueEndingClearTime"] = std::to_string(Global::gameArcadePlaytime);
                                 Global::saveSaveData();
                             }
                         }
+
+                        MenuManager::arcadeModeIsDoneGoodEnding = true;
+                        MenuManager::justFinishedArcadeMode = true;
 
                         AudioPlayer::play(7, Global::gameCamera->getFadePosition1());
 
@@ -1116,11 +1121,6 @@ int main(int argc, char** argv)
 
             if (finishTimerBefore < 6.166f && Global::finishStageTimer >= 6.166f)
             {
-                if (Global::gameIsArcadeMode && Global::gameArcadeIndex+1 >= (int)Global::gameArcadeLevelIds.size())
-                {
-                    printf("setting MenuManager::arcadeModeIsDone to true\n");
-                    MenuManager::arcadeModeIsDone = true;
-                }
                 int rank = Global::calculateRankAndUpdate();
                 rankDisplay = nullptr;
                 switch (rank)

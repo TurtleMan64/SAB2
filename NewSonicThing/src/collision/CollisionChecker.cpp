@@ -87,11 +87,11 @@ float CollisionChecker::dotToThrehold(float dot)
 
     if (val < 0.02f) // the direction is very close to being flat
     {
-        return 0.02f*0.02f; //use the biggset threshold in this case
+        return 0.03f*0.03f; //use the biggset threshold in this case
     }
     else if (val < 0.04f)
     {
-        return 0.006f*0.006f; //use a big threshold in this case
+        return 0.009f*0.009f; //use a big threshold in this case
     }
 
     return 0.0004f*0.0004f; //can get away with a smaller threshold

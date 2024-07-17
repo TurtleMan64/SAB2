@@ -3,6 +3,8 @@
 
 class GUIText;
 
+#include <string>
+
 #include <glad/glad.h>
 #include "menu.hpp"
 
@@ -15,7 +17,8 @@ private:
     GUIText* textNPC = nullptr;
     GUIText* textEmeralds = nullptr;
     GUIText* textRank = nullptr;
-    GUIText* textArcadeClear = nullptr;
+    GUIText* textArcadeBadClear = nullptr;
+    GUIText* textArcadeGoodClear = nullptr;
     GUIText* textCompletion = nullptr;
     GUIText* textCharSelect = nullptr;
     bool selectInputPrevious = false;
@@ -25,6 +28,7 @@ private:
     int getNPCComp(int lvlId);
     int getTotalEmeralds();
     int getTotalRankA();
+    std::string timeToString(float time);
 
 public:
     Extras();

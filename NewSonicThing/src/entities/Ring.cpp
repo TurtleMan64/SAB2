@@ -85,10 +85,27 @@ void Ring::step()
     transformationMatrix.translate(&position);
     transformationMatrix.rotate(Maths::toRadians(Global::gameClock*300), &Y_AXIS);
 
-    if (std::abs(position.y - Global::gameMainPlayer->position.y) < 40 &&
-        std::abs(position.z - Global::gameMainPlayer->position.z) < 40 &&
-        std::abs(position.x - Global::gameMainPlayer->position.x) < 40 &&
-        grabTimer == 0)
+    if (Global::levelId == LVL_BOSS)
+    {
+        if (std::abs(position.y - Global::gameMainPlayer->position.y) < 120 &&
+            std::abs(position.z - Global::gameMainPlayer->position.z) < 120 &&
+            std::abs(position.x - Global::gameMainPlayer->position.x) < 120 &&
+             grabTimer == 0)
+        {
+            float toPlayerDistSquared = (Global::gameMainPlayer->getCenterPosition() - position).lengthSquared();
+
+            if (toPlayerDistSquared < 120.0f*120.0f) //attract ring range
+            {
+                Global::deleteChunkedEntity(this);
+                RingMoving* newRing = new RingMoving(position.x, position.y, position.z); INCR_NEW("RingMoving")
+                Global::addEntity(newRing);
+            }
+        }
+    }
+    else if (std::abs(position.y - Global::gameMainPlayer->position.y) < 40 &&
+             std::abs(position.z - Global::gameMainPlayer->position.z) < 40 &&
+             std::abs(position.x - Global::gameMainPlayer->position.x) < 40 &&
+             grabTimer == 0)
     {
         float toPlayerDistSquared = (Global::gameMainPlayer->getCenterPosition() - position).lengthSquared();
         if (toPlayerDistSquared < (11.0f*11.0f)) //collect ring range

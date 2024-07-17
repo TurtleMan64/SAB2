@@ -1,0 +1,24 @@
+# Blender MTL File: 'None'
+# Material Count: 2
+
+newmtl Tex_0065_0_png
+Ns 9.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.588000 0.588000 0.588000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 2
+map_Kd Tex_0065_0.png
+map_Ka Tex_0065_0.png
+
+newmtl Tex_0066_0_png
+Ns 9.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.588000 0.588000 0.588000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 2
+map_Kd Tex_0066_0.png
+map_Ka Tex_0066_0.png

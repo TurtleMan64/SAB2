@@ -36,6 +36,7 @@ RingMoving::RingMoving(float x, float y, float z)
     visible = true;
     ageTimer = -1.0f;
     trackingPlayer = false;
+    trackingPlayerTimer = 0.0f;
     updateTransformationMatrix();
 }
 
@@ -49,6 +50,7 @@ RingMoving::RingMoving(float x, float y, float z, float xVel, float yVel, float 
     ageTimer = 0.0f;
     visible = true;
     trackingPlayer = false;
+    trackingPlayerTimer = 0.0f;
     updateTransformationMatrix();
 }
 
@@ -110,11 +112,13 @@ void RingMoving::step()
         }
     }
 
-    if (trackingPlayer)
+    if (trackingPlayer || Global::levelId == LVL_BOSS)
     {
         Vector3f diff = Global::gameMainPlayer->getCenterPosition() - position;
-        diff.scale(0.35f*60*dt);
+        diff.scale((0.35f + 1.9f*trackingPlayerTimer)*60*dt);
         position = position + diff;
+
+        trackingPlayerTimer += dt;
     }
 
     updateTransformationMatrix();

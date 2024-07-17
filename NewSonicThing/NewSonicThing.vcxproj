@@ -104,6 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <AdditionalDependencies>opengl32.lib;glfw3_mt.lib;OpenAL32.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;SDL2.lib;SDL2main.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -144,7 +145,7 @@
       <OmitFramePointers>true</OmitFramePointers>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <WholeProgramOptimization>true</WholeProgramOptimization>
     </ClCompile>
     <Link>
@@ -175,6 +176,10 @@
     <ClCompile Include="src\engineTester\MainGameLoop.cpp" />
     <ClCompile Include="src\entities\Beetle.cpp" />
     <ClCompile Include="src\entities\Bomb.cpp" />
+    <ClCompile Include="src\entities\Boss\Boss_Bomb.cpp" />
+    <ClCompile Include="src\entities\Boss\Boss_Capsule.cpp" />
+    <ClCompile Include="src\entities\Boss\Boss_Laser.cpp" />
+    <ClCompile Include="src\entities\Boss\Boss_StageManager.cpp" />
     <ClCompile Include="src\entities\Bullet.cpp" />
     <ClCompile Include="src\entities\CastleTown\CA_Particle.cpp" />
     <ClCompile Include="src\entities\CastleTown\CA_StageManager.cpp" />
@@ -184,6 +189,7 @@
     <ClCompile Include="src\entities\CharacterModels\ManiaSonicModel.cpp" />
     <ClCompile Include="src\entities\CharacterModels\ManiaTailsModel.cpp" />
     <ClCompile Include="src\entities\CharacterModels\PlayerModel.cpp" />
+    <ClCompile Include="src\entities\CharacterModels\SuperSonicModel.cpp" />
     <ClCompile Include="src\entities\CloudTemple\CT_StageManager.cpp" />
     <ClCompile Include="src\entities\Dashpad.cpp" />
     <ClCompile Include="src\entities\Camera.cpp" />
@@ -257,6 +263,7 @@
     <ClCompile Include="src\entities\GreenHill\GH_StageManager.cpp" />
     <ClCompile Include="src\entities\Light.cpp" />
     <ClCompile Include="src\entities\MetalHarbor\MH_StageManager.cpp" />
+    <ClCompile Include="src\entities\PlayerSuperSonic.cpp" />
     <ClCompile Include="src\entities\PlayerTails.cpp" />
     <ClCompile Include="src\entities\Point.cpp" />
     <ClCompile Include="src\entities\PyramidCave\PC_Door.cpp" />
@@ -394,6 +401,10 @@
     <ClInclude Include="src\engineTester\main.hpp" />
     <ClInclude Include="src\entities\beetle.hpp" />
     <ClInclude Include="src\entities\bomb.hpp" />
+    <ClInclude Include="src\entities\Boss\bossbomb.hpp" />
+    <ClInclude Include="src\entities\Boss\bosscapsule.hpp" />
+    <ClInclude Include="src\entities\Boss\bosslaser.hpp" />
+    <ClInclude Include="src\entities\Boss\bossstagemanager.hpp" />
     <ClInclude Include="src\entities\bullet.hpp" />
     <ClInclude Include="src\entities\CastleTown\caparticle.hpp" />
     <ClInclude Include="src\entities\CastleTown\castagemanager.hpp" />
@@ -403,6 +414,7 @@
     <ClInclude Include="src\entities\CharacterModels\maniasonicmodel.hpp" />
     <ClInclude Include="src\entities\CharacterModels\maniatailsmodel.hpp" />
     <ClInclude Include="src\entities\CharacterModels\playermodel.hpp" />
+    <ClInclude Include="src\entities\CharacterModels\supersonicmodel.hpp" />
     <ClInclude Include="src\entities\CloudTemple\ctstagemanager.hpp" />
     <ClInclude Include="src\entities\dashpad.hpp" />
     <ClInclude Include="src\entities\camera.hpp" />
@@ -476,6 +488,7 @@
     <ClInclude Include="src\entities\GreenHill\ghstagemanager.hpp" />
     <ClInclude Include="src\entities\light.hpp" />
     <ClInclude Include="src\entities\MetalHarbor\mhstagemanager.hpp" />
+    <ClInclude Include="src\entities\playersupersonic.hpp" />
     <ClInclude Include="src\entities\playertails.hpp" />
     <ClInclude Include="src\entities\point.hpp" />
     <ClInclude Include="src\entities\pulley.hpp" />

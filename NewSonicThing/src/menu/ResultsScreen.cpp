@@ -29,11 +29,20 @@ ResultsScreen::ResultsScreen()
     selectInputPrevious = false;
     backInputPrevious = false;
     loadResources();
+
+    if (Global::menuResults != nullptr)
+    {
+        printf("Warning: Results Menu should be null but is not.\n");
+    }
+
+    Global::menuResults = this;
 }
 
 ResultsScreen::~ResultsScreen()
 {
     unloadResources();
+
+    Global::menuResults = nullptr;
 }
 
 void ResultsScreen::loadResources()
@@ -43,16 +52,45 @@ void ResultsScreen::loadResources()
         printf("Warning: ResultsScreen loading resources when they are already loaded.\n");
     }
 
-    textArcadeModeClear = new GUIText("Congrats bro", 0.2f, Global::fontVipnagorgialla, 0.5f, 0.5f, 4, false); INCR_NEW("GUIText")
+    if (MenuManager::arcadeModeIsDoneBadEnding)
+    {
+        textArcadeModeClear  = new GUIText("The world is doomed...", 0.1f, Global::fontVipnagorgialla, 0.5f, 0.35f, 4, false); INCR_NEW("GUIText");
+        textArcadeModeClear2 = new GUIText("Try collecting all the Chaos Emeralds next time!", 0.06f, Global::fontVipnagorgialla, 0.5f, 0.5f, 4, false); INCR_NEW("GUIText");
+    }
+    else
+    {
+        textArcadeModeClear  = new GUIText("The world is saved!", 0.1f, Global::fontVipnagorgialla, 0.5f, 0.35f, 4, false); INCR_NEW("GUIText");
+        textArcadeModeClear2 = new GUIText("You collected all the Chaos Emeralds!", 0.06f, Global::fontVipnagorgialla, 0.5f, -0.5f, 4, false); INCR_NEW("GUIText");
+    }
 
-    int totalTime = (int)Global::gameArcadePlaytime;
-    int hours = totalTime/3600;
-    int minutes = (totalTime%3600)/60;
-    int seconds = totalTime%60;
-    int decimal = (int)(100*fmodf(Global::gameArcadePlaytime, 1.0f));
-    std::string playtime = "Clear time: "+std::to_string(hours)+":"+std::to_string(minutes)+":"+std::to_string(seconds)+"."+std::to_string(decimal);
+    int totalTimeSeconds = (int)Global::gameArcadePlaytime;
+    int hours = totalTimeSeconds/3600;
+    int minutes = (totalTimeSeconds%3600)/60;
+    int seconds = totalTimeSeconds%60;
+    std::string sMin = std::to_string(minutes);
+    std::string sSec = std::to_string(seconds);
+    if (sMin.length() == 1)
+    {
+        sMin = "0" + sMin;
+    }
+    if (sSec.length() == 1)
+    {
+        sSec = "0" + sSec;
+    }
 
-    textClearTime = new GUIText(playtime, 0.2f, Global::fontVipnagorgialla, 0.5f, 0.25f, 4, false); INCR_NEW("GUIText")
+    std::string clearType = "True Ending Clear Time: ";
+    if (MenuManager::arcadeModeIsDoneBadEnding)
+    {
+        clearType = "Arcade Mode Clear Time: ";
+    }
+
+    std::string playtimeText = clearType+std::to_string(hours)+":"+sMin+":"+sSec;
+    if (hours == 0)
+    {
+        playtimeText = clearType+sMin+":"+sSec;
+    }
+
+    textClearTime = new GUIText(playtimeText, 0.085f, Global::fontVipnagorgialla, 0.5f, 0.65f, 4, false); INCR_NEW("GUIText");
 }
 
 void ResultsScreen::unloadResources()
@@ -62,8 +100,9 @@ void ResultsScreen::unloadResources()
         printf("Warning: ResultsScreen unloading resources when they are empty.\n");
     }
 
-    textArcadeModeClear->deleteMe(); delete textArcadeModeClear; textArcadeModeClear = nullptr; INCR_DEL("GUIText")
-    textClearTime->deleteMe(); delete textClearTime; textClearTime = nullptr; INCR_DEL("GUIText")
+    textArcadeModeClear ->deleteMe(); delete textArcadeModeClear;  textArcadeModeClear  = nullptr; INCR_DEL("GUIText");
+    textArcadeModeClear2->deleteMe(); delete textArcadeModeClear2; textArcadeModeClear2 = nullptr; INCR_DEL("GUIText");
+    textClearTime->deleteMe(); delete textClearTime; textClearTime = nullptr; INCR_DEL("GUIText");
 }
 
 Menu* ResultsScreen::step()
@@ -84,13 +123,13 @@ Menu* ResultsScreen::step()
         pressedBack = true;
     }
 
-    if ((pressedSelect && !selectInputPrevious) ||
-        (pressedBack && !backInputPrevious))
+    if (pressedBack && !backInputPrevious)
     {
         retVal = PopMenu::get();
         Global::menuResults = nullptr;
 
         textArcadeModeClear->visible = false;
+        textArcadeModeClear2->visible = false;
         textClearTime->visible = false;
 
         Global::menuMain->setVisible(true);
@@ -99,6 +138,7 @@ Menu* ResultsScreen::step()
     else
     {
         textArcadeModeClear->visible = true;
+        textArcadeModeClear2->visible = true;
         textClearTime->visible = true;
     }
 

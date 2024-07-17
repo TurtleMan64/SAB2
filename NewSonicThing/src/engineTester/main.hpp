@@ -68,8 +68,9 @@ class PlayerModel;
 #define LVL_SWEET_MOUNTAIN  22
 #define LVL_ICE_CAP         23
 #define LVL_CASTLE_TOWN     24
+#define LVL_BOSS            25
 
-#define DEV_MODE
+//#define DEV_MODE
 //#define PERFORMANCE_ANALYSIS
 
 #ifdef DEV_MODE

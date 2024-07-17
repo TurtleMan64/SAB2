@@ -1,0 +1,182 @@
+# Material Count: 22
+
+newmtl Mesh_0263.rip
+Ns 20
+Ni 0.000000
+d 1.000000
+glow 1
+type nocam
+map_Kd Tex_0058_0.dds
+
+newmtl Mesh_0241.rip
+Ns 20
+Ni 0.000000
+d 1.000000
+type nocam
+glow 1
+map_Kd Tex_0052_0.dds
+
+newmtl Mesh_0266.rip
+Ns 20
+Ni 0.000000
+d 1.000000
+type nocam
+glow 1
+map_Kd Tex_0061_0.dds
+
+newmtl Mesh_0239.rip
+Ns 20
+Ni 0.000000
+d 1.000000
+type nocam
+glow 1
+map_Kd Tex_0051_0.dds
+
+newmtl Mesh_0262.rip
+Ns 20
+Ni 0.000000
+type nocam
+d 1.000000
+glow 1
+map_Kd Tex_0057_0.dds
+
+newmtl Mesh_0273.rip
+Ns 20
+Ni 0.000000
+d 1.000000
+type nocam
+glow 1
+map_Kd Tex_0013_0.dds
+
+newmtl Mesh_0271.rip
+Ns 20
+Ni 0.000000
+glow 1
+type nocam
+d 1.000000
+map_Kd Tex_0034_0.dds
+
+newmtl Mesh_0279.rip
+Ns 20
+Ni 0.000000
+d 1.000000
+type nocam
+glow 1
+map_Kd Tex_0018_0.dds
+
+newmtl Mesh_0255.rip
+Ns 20
+Ni 0.000000
+d 1.000000
+type nocam
+glow 1
+map_Kd Tex_0053_0.dds
+
+newmtl Mesh_0281.rip
+Ns 20
+Ni 0.000000
+d 1.000000
+type nocam
+glow 1
+map_Kd Tex_0063_0.dds
+
+newmtl Mesh_0264.rip
+Ns 20
+Ni 0.000000
+type nocam
+glow 1
+d 1.000000
+map_Kd Tex_0059_0.dds
+
+newmtl Mesh_0240.rip
+Ns 20
+Ni 0.000000
+type nocam
+glow 1
+d 1.000000
+map_Kd Tex_0040_0.dds
+
+newmtl Mesh_0265.rip
+Ns 20
+Ni 0.000000
+renderOrder 3
+glow 1
+Tr 0
+type nocam
+d 1.000000
+map_Kd Tex_0060_0.dds
+
+newmtl Mesh_0272.rip
+Ns 20
+Ni 0.000000
+type nocam
+glow 1
+d 1.000000
+map_Kd Tex_0009_0.dds
+
+newmtl Mesh_0256.rip
+Ns 20
+Ni 0.000000
+glow 1
+type nocam
+d 1.000000
+map_Kd Tex_0054_0.dds
+
+newmtl Mesh_0267.rip
+Ns 20
+Ni 0.000000
+glow 1
+type nocam
+d 1.000000
+map_Kd Tex_0000_0.dds
+
+newmtl Mesh_0242.rip
+Ns 20
+Ni 0.000000
+glow 1
+d 1.000000
+type nocam
+map_Kd Tex_0026_0.dds
+
+newmtl Mesh_0287.rip
+Ns 20
+glow 1
+Ni 0.000000
+d 1.000000
+type nocam
+map_Kd Tex_0017_0.dds
+
+newmtl Mesh_0260.rip
+Ns 20
+Ni 0.000000
+glow 1
+d 1.000000
+type nocam
+map_Kd Tex_0055_0.dds
+
+newmtl Mesh_0280.rip
+Ns 20
+Ni 0.000000
+Tr 0
+glow 1
+renderOrder 1
+type nocam
+d 1.000000
+map_Kd Tex_0062_0.dds
+
+newmtl Mesh_0268.rip
+Ns 20
+Ni 0.000000
+glow 1
+type nocam
+d 1.000000
+map_Kd Tex_0016_0.dds
+
+newmtl Mesh_0261.rip
+Ns 20
+Ni 0.000000
+glow 1
+type nocam
+d 1.000000
+map_Kd Tex_0056_0.dds
+

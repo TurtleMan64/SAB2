@@ -5,25 +5,14 @@
 #include "../fontMeshCreator/guitext.hpp"
 #include "../toolbox/input.hpp"
 
+#include <string>
+
 Extras::Extras()
 {
     selectInputPrevious = false;
     backInputPrevious = false;
 
-    int hours = Global::gameTotalPlaytime/3600;
-    int minutes = (Global::gameTotalPlaytime%3600)/60;
-    int seconds = Global::gameTotalPlaytime%60;
-    std::string sMin = std::to_string(minutes);
-    std::string sSec = std::to_string(seconds);
-    if (sMin.length() == 1)
-    {
-        sMin = "0" + sMin;
-    }
-    if (sSec.length() == 1)
-    {
-        sSec = "0" + sSec;
-    }
-    std::string playtime = "Total Playtime: "+std::to_string(hours)+":"+sMin+":"+sSec;
+    std::string playtime = "Total Playtime: "+timeToString((float)Global::gameTotalPlaytime);
 
     int totalRingsCompleted = 0;
     totalRingsCompleted += getRingsComp(LVL_TUTORIAL);
@@ -73,31 +62,52 @@ Extras::Extras()
 
     int totalRankACollected = getTotalRankA();
 
+    std::string badEndClear = "Not Cleared";
+    std::string goodEndClear = "Not Cleared";
+
+    int arcadeModeTrueEnding = 0;
+
+    if (Global::gameSaveData.find("BestBadEndingClearTime") != Global::gameSaveData.end())
+    {
+        badEndClear = timeToString(std::stof(Global::gameSaveData["BestBadEndingClearTime"]));
+    }
+
+    if (Global::gameSaveData.find("BestTrueEndingClearTime") != Global::gameSaveData.end())
+    {
+        goodEndClear = timeToString(std::stof(Global::gameSaveData["BestTrueEndingClearTime"]));
+        arcadeModeTrueEnding = 1;
+    }
+
     int ringPerc = (25*totalRingsCompleted)/5858;
     int npcPerc = (25*totalNPCCollected)/48;
     int emeraldPerc = (24*totalEmeraldsCollected)/7;
     int rankPerc = (25*totalRankACollected)/131;
-    int arcadeModeFullClear = 1;
-    int totalPerc = ringPerc + npcPerc + emeraldPerc + rankPerc + arcadeModeFullClear;
+    int totalPerc = ringPerc + npcPerc + emeraldPerc + rankPerc + arcadeModeTrueEnding;
 
     bool unlockedMighty = (totalPerc == 100);
     float offset = 0.0f;
+
+    //unlockedMighty = true;
 
     if (unlockedMighty)
     {
         offset = -0.05f;
 
-        Global::gameSaveData["UNLOCKED_MIGHTY"] = "true";
+        if (Global::gameSaveData.find("UNLOCKED_MIGHTY") == Global::gameSaveData.end())
+        {
+            Global::gameSaveData["UNLOCKED_MIGHTY"] = "true";
+        }
     }
 
-    textTime        = new GUIText(playtime,                                                              0.075f, Global::fontVipnagorgialla, 0.5f, 0.15f + offset, 4, true); INCR_NEW("GUIText");
-    textRingsAccum  = new GUIText("Total Rings: " + std::to_string(Global::gameAccumulatedRings),        0.075f, Global::fontVipnagorgialla, 0.5f, 0.25f + offset, 4, true); INCR_NEW("GUIText");
-    textRingsComp   = new GUIText("Ring Completion: " + std::to_string(totalRingsCompleted) + " / 5858", 0.075f, Global::fontVipnagorgialla, 0.5f, 0.35f + offset, 4, true); INCR_NEW("GUIText");
-    textNPC         = new GUIText("NPC: " + std::to_string(totalNPCCollected) + " / 48",                 0.075f, Global::fontVipnagorgialla, 0.5f, 0.45f + offset, 4, true); INCR_NEW("GUIText");
-    textEmeralds    = new GUIText("Chaos Emeralds: " + std::to_string(totalEmeraldsCollected) + " / 7",  0.075f, Global::fontVipnagorgialla, 0.5f, 0.55f + offset, 4, true); INCR_NEW("GUIText");
-    textRank        = new GUIText("A Ranks: " + std::to_string(totalRankACollected) + " / 131",          0.075f, Global::fontVipnagorgialla, 0.5f, 0.65f + offset, 4, true); INCR_NEW("GUIText");
-    textArcadeClear = new GUIText("Arcade Mode True Ending",                                             0.075f, Global::fontVipnagorgialla, 0.5f, 0.75f + offset, 4, true); INCR_NEW("GUIText");
-    textCompletion  = new GUIText("Game Completion: " + std::to_string(totalPerc)+ "%",                  0.075f, Global::fontVipnagorgialla, 0.5f, 0.85f + offset, 4, true); INCR_NEW("GUIText");
+    textTime            = new GUIText(playtime,                                                              0.075f, Global::fontVipnagorgialla, 0.5f, 0.1f + offset, 4, true); INCR_NEW("GUIText");
+    textRingsAccum      = new GUIText("Total Rings: " + std::to_string(Global::gameAccumulatedRings),        0.075f, Global::fontVipnagorgialla, 0.5f, 0.2f + offset, 4, true); INCR_NEW("GUIText");
+    textRingsComp       = new GUIText("Ring Completion: " + std::to_string(totalRingsCompleted) + " / 5858", 0.075f, Global::fontVipnagorgialla, 0.5f, 0.3f + offset, 4, true); INCR_NEW("GUIText");
+    textNPC             = new GUIText("NPC Completion: " + std::to_string(totalNPCCollected) + " / 48",      0.075f, Global::fontVipnagorgialla, 0.5f, 0.4f + offset, 4, true); INCR_NEW("GUIText");
+    textEmeralds        = new GUIText("Chaos Emeralds: " + std::to_string(totalEmeraldsCollected) + " / 7",  0.075f, Global::fontVipnagorgialla, 0.5f, 0.5f + offset, 4, true); INCR_NEW("GUIText");
+    textRank            = new GUIText("A Ranks: " + std::to_string(totalRankACollected) + " / 131",          0.075f, Global::fontVipnagorgialla, 0.5f, 0.6f + offset, 4, true); INCR_NEW("GUIText");
+    textArcadeBadClear  = new GUIText("Arcade Mode Time: " + badEndClear,                                    0.075f, Global::fontVipnagorgialla, 0.5f, 0.7f + offset, 4, true); INCR_NEW("GUIText");
+    textArcadeGoodClear = new GUIText("True Ending Time: " + goodEndClear,                                   0.075f, Global::fontVipnagorgialla, 0.5f, 0.8f + offset, 4, true); INCR_NEW("GUIText");
+    textCompletion      = new GUIText("Game Completion: " + std::to_string(totalPerc)+ "%",                  0.075f, Global::fontVipnagorgialla, 0.5f, 0.9f + offset, 4, true); INCR_NEW("GUIText");
 
     if (unlockedMighty)
     {
@@ -106,27 +116,37 @@ Extras::Extras()
             Global::gameSaveData["PLAY_AS"] = "Sonic";
         }
 
-        textCharSelect = new GUIText("Play as: " + Global::gameSaveData["PLAY_AS"], 0.075f, Global::fontVipnagorgialla, 0.5f, 0.9f, 4, true); INCR_NEW("GUIText");
+        textCharSelect = new GUIText("Play as: " + Global::gameSaveData["PLAY_AS"], 0.075f, Global::fontVipnagorgialla, 0.5f, 0.95f, 4, true); INCR_NEW("GUIText");
     }
 
     Global::saveSaveData();
+
+    if (Global::menuExtras != nullptr)
+    {
+        printf("Warning: Extras Menu should be null but is not.\n");
+    }
+
+    Global::menuExtras = this;
 }
 
 Extras::~Extras()
 {
-    textTime       ->deleteMe(); delete textTime       ; INCR_DEL("GUIText");
-    textRingsAccum ->deleteMe(); delete textRingsAccum ; INCR_DEL("GUIText");
-    textRingsComp  ->deleteMe(); delete textRingsComp  ; INCR_DEL("GUIText");
-    textNPC        ->deleteMe(); delete textNPC        ; INCR_DEL("GUIText");
-    textEmeralds   ->deleteMe(); delete textEmeralds   ; INCR_DEL("GUIText");
-    textRank       ->deleteMe(); delete textRank       ; INCR_DEL("GUIText");
-    textArcadeClear->deleteMe(); delete textArcadeClear; INCR_DEL("GUIText");
-    textCompletion ->deleteMe(); delete textCompletion ; INCR_DEL("GUIText");
+    textTime           ->deleteMe(); delete textTime           ; INCR_DEL("GUIText");
+    textRingsAccum     ->deleteMe(); delete textRingsAccum     ; INCR_DEL("GUIText");
+    textRingsComp      ->deleteMe(); delete textRingsComp      ; INCR_DEL("GUIText");
+    textNPC            ->deleteMe(); delete textNPC            ; INCR_DEL("GUIText");
+    textEmeralds       ->deleteMe(); delete textEmeralds       ; INCR_DEL("GUIText");
+    textRank           ->deleteMe(); delete textRank           ; INCR_DEL("GUIText");
+    textArcadeBadClear ->deleteMe(); delete textArcadeBadClear ; INCR_DEL("GUIText");
+    textArcadeGoodClear->deleteMe(); delete textArcadeGoodClear; INCR_DEL("GUIText");
+    textCompletion     ->deleteMe(); delete textCompletion     ; INCR_DEL("GUIText");
 
     if (textCharSelect != nullptr)
     {
         textCharSelect ->deleteMe(); delete textCharSelect ; INCR_DEL("GUIText");
     }
+
+    Global::menuExtras = nullptr;
 }
 
 Menu* Extras::step()
@@ -161,7 +181,7 @@ Menu* Extras::step()
 
     if (pressedRight || pressedLeft)
     {
-        if (Global::gameSaveData.find("UNLOCKED_MIGHTY") != Global::gameSaveData.end())
+        if (textCharSelect != nullptr)
         {
             if (Global::gameSaveData.find("PLAY_AS") != Global::gameSaveData.end())
             {
@@ -182,21 +202,22 @@ Menu* Extras::step()
                 textCharSelect->deleteMe(); delete textCharSelect; textCharSelect = nullptr; INCR_DEL("GUIText");
             }
 
-            textCharSelect = new GUIText("Play as: " + Global::gameSaveData["PLAY_AS"], 0.075f, Global::fontVipnagorgialla, 0.5f, 0.9f, 4, true); INCR_NEW("GUIText");
+            textCharSelect = new GUIText("Play as: " + Global::gameSaveData["PLAY_AS"], 0.075f, Global::fontVipnagorgialla, 0.5f, 0.95f, 4, true); INCR_NEW("GUIText");
         }
     }
 
     if ((pressedSelect && !selectInputPrevious) ||
         (pressedBack && !backInputPrevious))
     {
-        textTime       ->visible = false;
-        textRingsAccum ->visible = false;
-        textRingsComp  ->visible = false;
-        textNPC        ->visible = false;
-        textEmeralds   ->visible = false;
-        textRank       ->visible = false;
-        textArcadeClear->visible = false;
-        textCompletion ->visible = false;
+        textTime           ->visible = false;
+        textRingsAccum     ->visible = false;
+        textRingsComp      ->visible = false;
+        textNPC            ->visible = false;
+        textEmeralds       ->visible = false;
+        textRank           ->visible = false;
+        textArcadeBadClear ->visible = false;
+        textArcadeGoodClear->visible = false;
+        textCompletion     ->visible = false;
 
         if (textCharSelect != nullptr)
         {
@@ -212,14 +233,15 @@ Menu* Extras::step()
     else
     {
         //draw
-        textTime       ->visible = true;
-        textRingsAccum ->visible = true;
-        textRingsComp  ->visible = true;
-        textNPC        ->visible = true;
-        textEmeralds   ->visible = true;
-        textRank       ->visible = true;
-        textArcadeClear->visible = true;
-        textCompletion ->visible = true;
+        textTime           ->visible = true;
+        textRingsAccum     ->visible = true;
+        textRingsComp      ->visible = true;
+        textNPC            ->visible = true;
+        textEmeralds       ->visible = true;
+        textRank           ->visible = true;
+        textArcadeBadClear ->visible = true;
+        textArcadeGoodClear->visible = true;
+        textCompletion     ->visible = true;
 
         if (textCharSelect != nullptr)
         {
@@ -419,4 +441,29 @@ int Extras::getTotalRankA()
     }
 
     return totalRankA;
+}
+
+std::string Extras::timeToString(float time)
+{
+    int timeInt = (int)time;
+    int hours = timeInt/3600;
+    int minutes = (timeInt%3600)/60;
+    int seconds = timeInt%60;
+    std::string sMin = std::to_string(minutes);
+    std::string sSec = std::to_string(seconds);
+    if (sMin.length() == 1)
+    {
+        sMin = "0" + sMin;
+    }
+    if (sSec.length() == 1)
+    {
+        sSec = "0" + sSec;
+    }
+
+    if (hours == 0)
+    {
+        return sMin + ":" + sSec;
+    }
+
+    return std::to_string(hours) + ":" + sMin + ":" + sSec;
 }

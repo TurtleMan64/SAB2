@@ -9,14 +9,22 @@ map_Kd 170_21_21.png
 newmtl 21_128_224
 Ns 20
 Ni 0.02
-Tr 0
-map_Kd 21_128_224.png
+glow 0.99
+mixSinusoidal
+animSpeed 1
+numImages 2
+map_Kd 21_128_224_dark.png
+21_128_224_light.png
 
 newmtl 21_87_203
 Ns 20
 Ni 0.02
-Tr 0
-map_Kd 21_87_203.png
+glow 0.99
+mixSinusoidal
+animSpeed 1
+numImages 2
+map_Kd 21_87_203_dark.png
+21_87_203_light.png
 
 newmtl 250_21_21
 Ns 20

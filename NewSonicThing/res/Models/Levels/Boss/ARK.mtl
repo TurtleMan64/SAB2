@@ -1,0 +1,39 @@
+# Blender MTL File: 'None'
+# Material Count: 3
+
+newmtl Tex_0039_0_png
+Ns 20
+Ka 0.000000 0.000000 0.000000
+Kd 0.588000 0.588000 0.588000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 2
+map_Kd Tex_0039_0.png
+
+newmtl Tex_0039_0_png_Tex_0039_A.png
+Ns 20
+Ka 0.000000 0.000000 0.000000
+Kd 0.588000 0.588000 0.588000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+Tr 0
+renderOrder 1
+numImages 2
+glow 1
+mixSinusoidal
+animSpeed 1
+illum 2
+map_Kd Tex_0039_A.png
+Tex_0039_A2.png
+
+newmtl Tex_0040_0_png
+Ns 20
+Ka 0.000000 0.000000 0.000000
+Kd 0.588000 0.588000 0.588000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 2
+map_Kd Tex_0040_0.png

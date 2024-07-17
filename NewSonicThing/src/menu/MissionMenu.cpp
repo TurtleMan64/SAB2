@@ -31,11 +31,20 @@ MissionMenu::MissionMenu()
     offsetTarget = 0.0f;
     currButtonId = 0;
     setVisible(true);
+
+    if (Global::menuMission != nullptr)
+    {
+        printf("Warning: Mission Menu should be null but is not.\n");
+    }
+
+    Global::menuMission = this;
 }
 
 MissionMenu::~MissionMenu()
 {
     unloadResources();
+
+    Global::menuMission = nullptr;
 }
 
 void MissionMenu::loadResources()

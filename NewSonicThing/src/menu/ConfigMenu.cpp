@@ -29,11 +29,20 @@ ConfigMenu::ConfigMenu()
 {
     loadResources();
     setVisible(true);
+
+    if (Global::menuConfig != nullptr)
+    {
+        printf("Warning: Config Menu should be null but is not.\n");
+    }
+
+    Global::menuConfig = this;
 }
 
 ConfigMenu::~ConfigMenu()
 {
     unloadResources();
+
+    Global::menuConfig = nullptr;
 }
 
 void ConfigMenu::loadResources()

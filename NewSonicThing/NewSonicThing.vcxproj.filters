@@ -139,6 +139,9 @@
     <Filter Include="Source Files\entities\CastleTown">
       <UniqueIdentifier>{77cee04a-0f9c-416f-aad7-a7fd6e9f4711}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\entities\Boss">
+      <UniqueIdentifier>{9e86483f-4714-4537-964a-65840b8969a6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\glad.c">
@@ -789,6 +792,24 @@
     <ClCompile Include="src\entities\CastleTown\CA_StageManager.cpp">
       <Filter>Source Files\entities\CastleTown</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\CharacterModels\SuperSonicModel.cpp">
+      <Filter>Source Files\entities\CharacterModels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\Boss\Boss_StageManager.cpp">
+      <Filter>Source Files\entities\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\Boss\Boss_Capsule.cpp">
+      <Filter>Source Files\entities\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\PlayerSuperSonic.cpp">
+      <Filter>Source Files\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\Boss\Boss_Bomb.cpp">
+      <Filter>Source Files\entities\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\Boss\Boss_Laser.cpp">
+      <Filter>Source Files\entities\Boss</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.hpp">
@@ -1435,6 +1456,24 @@
     </ClInclude>
     <ClInclude Include="src\entities\CastleTown\castagemanager.hpp">
       <Filter>Source Files\entities\CastleTown</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\CharacterModels\supersonicmodel.hpp">
+      <Filter>Source Files\entities\CharacterModels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\Boss\bossstagemanager.hpp">
+      <Filter>Source Files\entities\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\Boss\bosscapsule.hpp">
+      <Filter>Source Files\entities\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\playersupersonic.hpp">
+      <Filter>Source Files\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\Boss\bossbomb.hpp">
+      <Filter>Source Files\entities\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\Boss\bosslaser.hpp">
+      <Filter>Source Files\entities\Boss</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

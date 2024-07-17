@@ -1,4 +1,4 @@
-25
+26
 
 Tutorial.lvl
 Tutorial
@@ -218,3 +218,10 @@ Normal;15000;Find all the pieces of the master emerald!
 Ring;75;100;Collect 100 rings!
 Chao;15;Find the lost Chao!
 Hard;15000;Complete hard mode!
+
+Boss.lvl
+Boss
+308
+1
+Normal;100;Destroy the ARK!
+

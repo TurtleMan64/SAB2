@@ -1,0 +1,52 @@
+# Blender MTL File: 'None'
+# Material Count: 5
+
+newmtl Mesh_0265.rip
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+type nocam
+illum 1
+map_Kd Tex_0060_0.dds
+
+newmtl Mesh_0267.rip
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+type nocam
+illum 1
+map_Kd Tex_0000_0.dds
+
+newmtl Mesh_0268.rip
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+type nocam
+illum 1
+map_Kd Tex_0016_0.dds
+
+newmtl Mesh_0273.rip
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+type nocam
+illum 1
+map_Kd Tex_0013_0.dds
+
+newmtl Mesh_0279.rip
+Ns 20.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 0.000000
+type nocam
+illum 1
+map_Kd Tex_0018_0.dds

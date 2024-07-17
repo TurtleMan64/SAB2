@@ -9,8 +9,10 @@
 #include "../engineTester/main.hpp"
 #include "resultsscreen.hpp"
 
-bool MenuManager::arcadeModeIsDone = false;
+bool MenuManager::arcadeModeIsDoneBadEnding = false;
+bool MenuManager::arcadeModeIsDoneGoodEnding = false;
 bool MenuManager::playerFailedArcadeMode = false;
+bool MenuManager::justFinishedArcadeMode = false;
 
 MenuManager::MenuManager()
 {
@@ -90,15 +92,17 @@ void MenuManager::step()
             clearGameStack();
             currentStack = &menuStack;
         }
-        else if (MenuManager::arcadeModeIsDone) //end of arcade mode, return to main menu and show results screen
-        {
-            MenuManager::arcadeModeIsDone = false;
-            clearMenuStack();
-            clearGameStack();
-            currentStack = &menuStack;
-            currentStack->push(new MainMenu); INCR_NEW("Menu");
-            currentStack->push(new ResultsScreen); INCR_NEW("Menu");
-        }
+    }
+    
+    // End of arcade mode, return to main menu and show results screen
+    if (MenuManager::justFinishedArcadeMode)
+    {
+        MenuManager::justFinishedArcadeMode = false;
+        clearMenuStack();
+        clearGameStack();
+        currentStack = &menuStack;
+        currentStack->push(new MainMenu); INCR_NEW("Menu");
+        currentStack->push(new ResultsScreen); INCR_NEW("Menu");
     }
 
     // Only run if there's a menu in the working stack
