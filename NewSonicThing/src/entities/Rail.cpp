@@ -446,8 +446,8 @@ void Rail::step()
                                 //printf("playerTiltDir %f %f %f\n", playerTiltDir.x, playerTiltDir.y, playerTiltDir.z);
                                 //printf("bendDir %f %f %f\n", bendDir.x, bendDir.y, bendDir.z);
                                 //printf("bend amount %f\n", dot);
-                                printf("speedChange %f\n", 30 * speedChange);
-                                printf("\n");
+                                //printf("speedChange %f\n", 30 * speedChange);
+                                //printf("\n");
 
                                 if (playerSpeed > 100)
                                 {

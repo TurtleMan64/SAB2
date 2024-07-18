@@ -1,7 +1,3 @@
-#ifdef _WIN32
-#define _CRT_SECURE_NO_DEPRECATE
-#endif
-
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -285,20 +281,20 @@ int main(int argc, char** argv)
     //The levels you play in arcade mode, in order
     Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_TUTORIAL,        Global::PlayableCharacter::Sonic));
     Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_DRY_LAGOON,      Global::PlayableCharacter::Knuckles));
-    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_CLOUD_TEMPLE,    Global::PlayableCharacter::Tails)); //
-    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_EMERALD_COAST,   Global::PlayableCharacter::Sonic)); //
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_CLOUD_TEMPLE,    Global::PlayableCharacter::Tails));
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_EMERALD_COAST,   Global::PlayableCharacter::Sonic));
     Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_GREEN_FOREST,    Global::PlayableCharacter::Tails));
-    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_CASTLE_TOWN,     Global::PlayableCharacter::Knuckles)); //
-    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_DRAGON_ROAD,     Global::PlayableCharacter::Sonic)); //
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_CASTLE_TOWN,     Global::PlayableCharacter::Knuckles));
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_DRAGON_ROAD,     Global::PlayableCharacter::Sonic));
     Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_METAL_HARBOR,    Global::PlayableCharacter::Tails));
-    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_PYRAMID_CAVE,    Global::PlayableCharacter::Sonic)); //
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_PYRAMID_CAVE,    Global::PlayableCharacter::Sonic));
     Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_SWEET_MOUNTAIN,  Global::PlayableCharacter::Knuckles));
     Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_GREEN_HILL_ZONE, Global::PlayableCharacter::Sonic));
-    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_FROG_FOREST,     Global::PlayableCharacter::Tails)); //
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_FROG_FOREST,     Global::PlayableCharacter::Tails));
     Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_CITY_ESCAPE,     Global::PlayableCharacter::Sonic));
     Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_DELFINO_PLAZA,   Global::PlayableCharacter::Knuckles));
     Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_SKY_RAIL,        Global::PlayableCharacter::Tails));
-    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_SEASIDE_HILL,    Global::PlayableCharacter::Sonic)); //
+    Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_SEASIDE_HILL,    Global::PlayableCharacter::Sonic));
     Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_RADICAL_HIGHWAY, Global::PlayableCharacter::Tails));
     Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_NOKI_BAY,        Global::PlayableCharacter::Knuckles));
     Global::gameArcadeLevelIds.push_back(std::make_pair(LVL_SACRED_SKY,      Global::PlayableCharacter::Sonic));

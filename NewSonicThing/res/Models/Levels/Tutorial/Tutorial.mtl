@@ -1,52 +1,80 @@
-# Blender MTL File: 'None'
-# Material Count: 5
-
-newmtl Bark
-Ns 19.607843
-Ka 0.000000 0.000000 0.000000
-Kd 0.640000 0.640000 0.640000
-Ks 0.500000 0.500000 0.500000
-Ni 0.02
-d 1.000000
-illum 2
-map_Kd Bark.png
-
-newmtl Shingles
-Ns 19.607843
-Ka 0.000000 0.000000 0.000000
-Kd 0.640000 0.640000 0.640000
-Ks 0.500000 0.500000 0.500000
-Ni 0.02
-d 1.000000
-illum 2
-map_Kd Shingles.png
-
-newmtl Tile
-Ns 19.607843
-Ka 0.000000 0.000000 0.000000
-Kd 0.640000 0.640000 0.640000
-Ks 0.500000 0.500000 0.500000
-Ni 0.02
-d 1.000000
-illum 2
-map_Kd Tile.png
-
-newmtl Wire
-Ns 19.607843
-Ka 0.000000 0.000000 0.000000
-Kd 0.640000 0.640000 0.640000
-Ks 0.500000 0.500000 0.500000
-Ni 0.02
-d 1.000000
-illum 2
-map_Kd Wire.png
+# Material Count: 13
 
 newmtl WoodInside
-Ns 19.607843
-Ka 0.000000 0.000000 0.000000
-Kd 0.640000 0.640000 0.640000
-Ks 0.500000 0.500000 0.500000
-Ni 0.02
+Ns 50.000000
+Ni 0.000000
 d 1.000000
-illum 2
 map_Kd WoodInside.png
+
+newmtl Pipe
+Ns 50.000000
+Ni 0.000000
+d 1.000000
+map_Kd Wire.png
+
+newmtl None_k1_kab12.png
+Ns 20
+Ni 0.02
+d 1
+map_Kd k1_kab12.png
+
+newmtl None_k1_kuj11.png
+Ns 20
+Ni 0.02
+d 1
+map_Kd k1_kuj11.png
+
+newmtl None_k1_kab01.png
+Ns 20
+Ni 0.02
+d 1
+map_Kd k1_kab01.png
+
+newmtl Tile_k1_sna02.png
+Ns 244.000000
+Ni 0.000000
+d 1.000000
+map_Kd k1_sna02.png
+
+newmtl Tile_Tile.png
+Ns 244.000000
+Ni 0.000000
+d 1.000000
+map_Kd Tile.png
+
+newmtl Shingles
+Ns 50.000000
+Ni 0.000000
+d 1.000000
+map_Kd Shingles.png
+
+newmtl None_k1_mit01.png
+Ns 20
+Ni 0.02
+d 1
+map_Kd k1_mit01.png
+
+newmtl None
+Ns 20
+Ni 0.02
+d 1
+map_Kd k1_kuj12.png
+
+newmtl None_k1_m_k01.png
+Ns 20
+Ni 0.02
+d 1
+map_Kd k1_m_k01.png
+
+newmtl Tile
+Ns 244.000000
+Ni 0.000000
+d 1.000000
+map_Kd m1_1001.png
+
+newmtl Bark
+Ns 50.000000
+Ni 0.000000
+d 1.000000
+map_Kd Bark.png
+

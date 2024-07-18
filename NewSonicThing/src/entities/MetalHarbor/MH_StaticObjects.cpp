@@ -65,7 +65,7 @@ void MH_StaticObjects::loadStaticModels()
 
     if (MH_StaticObjects::cmOriginal == nullptr)
     {
-        MH_StaticObjects::cmOriginal = ModelLoader::loadCollisionModel("Models/Objects/MetalHarbor/StaticObjects/", "StaticObjectsCollision");
+        MH_StaticObjects::cmOriginal = ModelLoader::loadBinaryCollisionModel("Models/Objects/MetalHarbor/StaticObjects/", "StaticObjectsCollision");
     }
 }
 

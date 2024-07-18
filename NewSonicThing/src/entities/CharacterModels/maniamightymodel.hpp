@@ -90,6 +90,7 @@ private:
     static std::vector<TexturedModel*> modelFreefall;
     static std::vector<TexturedModel*> modelStomp;
     static std::vector<TexturedModel*> modelGrab;
+    static std::vector<TexturedModel*> modelDrive;
     static std::vector<TexturedModel*> modelFlyBody;
     static std::vector<TexturedModel*> modelFlyBodyTired;
     static std::vector<TexturedModel*> modelFlyPropeller;

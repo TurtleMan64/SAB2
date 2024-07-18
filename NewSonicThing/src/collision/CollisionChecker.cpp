@@ -670,21 +670,21 @@ bool CollisionChecker::checkPointInTriangle2D(
     distToEdgeSquared = pointToSegmentDistanceSquared(x, y, x1, y1, x2, y2);
     if (distToEdgeSquared <= EPSILON_SQUARED)
     {
-        printf("Edge case detected with distance to edge %f\n", sqrtf(distToEdgeSquared));
+        //printf("Edge case detected with distance to edge %f\n", sqrtf(distToEdgeSquared));
         return true;
     }
 
     distToEdgeSquared = pointToSegmentDistanceSquared(x, y, x2, y2, x3, y3);
     if (distToEdgeSquared <= EPSILON_SQUARED)
     {
-        printf("Edge case detected with distance to edge %f\n", sqrtf(distToEdgeSquared));
+        //printf("Edge case detected with distance to edge %f\n", sqrtf(distToEdgeSquared));
         return true;
     }
 
     distToEdgeSquared = pointToSegmentDistanceSquared(x, y, x3, y3, x1, y1);
     if (distToEdgeSquared <= EPSILON_SQUARED)
     {
-        printf("Edge case detected with distance to edge %f\n", sqrtf(distToEdgeSquared));
+        //printf("Edge case detected with distance to edge %f\n", sqrtf(distToEdgeSquared));
         return true;
     }
     

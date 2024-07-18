@@ -1,9 +1,9 @@
 Levels/Tutorial
 1
-Tutorial13 -100000 -100000 -100000 100000 100000 100000
+Tutorial -100000 -100000 -100000 100000 100000 100000
 Levels/Tutorial
 1
-Tutorial13 8
+Tutorial 8
 1.0 1.0 1.0                    # Sun Color (Day)
 0.0 0.0 0.0                    # Sun Color (Night)
 0.0 0.0 0.0                    # Moon Color (Day)

@@ -1,7 +1,0 @@
-# Material Count: 1
-
-newmtl Shape
-Ns 20
-Ni 0
-map_Kd collisionsmooth.png
-

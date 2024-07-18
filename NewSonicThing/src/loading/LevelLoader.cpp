@@ -269,7 +269,7 @@ void LevelLoader::loadTitle()
         std::vector<std::vector<Vector3f>> mins;
         std::vector<std::vector<Vector3f>> maxs;
 
-        fnames.push_back("MainMenu7");
+        fnames.push_back("MainMenu");
 
         std::vector<Vector3f> minList;
         std::vector<Vector3f> maxList;
@@ -1170,7 +1170,7 @@ void LevelLoader::loadLevel(std::string levelFilename)
         glfwSwapInterval(0);
     }
 
-    printf("This level has %d rings\n", Global::gameDebugRingCount);
+    //printf("This level has %d rings\n", Global::gameDebugRingCount);
 }
 
 

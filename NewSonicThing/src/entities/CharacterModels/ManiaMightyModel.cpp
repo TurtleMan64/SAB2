@@ -71,6 +71,7 @@ std::vector<TexturedModel*> ManiaMightyModel::modelLightdash;
 std::vector<TexturedModel*> ManiaMightyModel::modelFreefall;
 std::vector<TexturedModel*> ManiaMightyModel::modelStomp;
 std::vector<TexturedModel*> ManiaMightyModel::modelGrab;
+std::vector<TexturedModel*> ManiaMightyModel::modelDrive;
 std::vector<TexturedModel*> ManiaMightyModel::modelFlyBody;
 std::vector<TexturedModel*> ManiaMightyModel::modelFlyBodyTired;
 std::vector<TexturedModel*> ManiaMightyModel::modelFlyPropeller;
@@ -356,15 +357,45 @@ void ManiaMightyModel::animate(int animIndex, float time)
 
         case 27: //fly tired
         {
-            scale = 0.84f;
-            setLimbsVisibility(false);
-            setFlyVisibility(true);
-            visible = baseVisible;
-            setFlyVisibility(baseVisible);
-            models = &ManiaMightyModel::modelFlyBodyTired;
-            flyPropeller->rotY += time*0.2f;
-            updateFlyMatrix();
-            updateTransformationMatrix();
+            if (Global::levelId == LVL_TWINKLE_CIRCUIT)
+            {
+                //scale = (3.84f);
+                //models = &ManiaMightyModel::modelLightdash;
+                //Vector3f pos = position + currentUpDirection.scaleCopy(20.0f);
+                //Maths::createTransformationMatrixYXZY(&transformationMatrix, &pos, scale, rotX, rotY, rotZ, rotRoll);
+                //setLimbsVisibility(false);
+                //setFlyVisibility(false);
+                //visible = true;
+
+                scale = (1.0f);
+                models = &ManiaMightyModel::modelDrive;
+                updateTransformationMatrixYXZY();
+                setLimbsVisibility(false);
+                visible = baseVisible;
+                break;
+
+                //scale = 0.84f;
+                //setLimbsVisibility(false);
+                //setFlyVisibility(true);
+                //visible = baseVisible;
+                //setFlyVisibility(baseVisible);
+                //models = &ManiaMightyModel::modelDrive;
+                //flyPropeller->rotY += time*0.2f;
+                //updateFlyMatrix();
+                //updateTransformationMatrix();
+            }
+            else
+            {
+                scale = 0.84f;
+                setLimbsVisibility(false);
+                setFlyVisibility(true);
+                visible = baseVisible;
+                setFlyVisibility(baseVisible);
+                models = &ManiaMightyModel::modelFlyBodyTired;
+                flyPropeller->rotY += time*0.2f;
+                updateFlyMatrix();
+                updateTransformationMatrix();
+            }
             break;
         }
 
@@ -517,6 +548,7 @@ void ManiaMightyModel::loadStaticModels()
     ModelLoader::loadModel(&ManiaMightyModel::modelFreefall    , "res/Models/Characters/ManiaMighty/", "MightyFreefall");
     ModelLoader::loadModel(&ManiaMightyModel::modelStomp       , "res/Models/Characters/ManiaMighty/", "MightyStomp");
     ModelLoader::loadModel(&ManiaMightyModel::modelGrab        , "res/Models/Characters/ManiaMighty/", "MightyGrab");
+    ModelLoader::loadModel(&ManiaMightyModel::modelDrive       , "res/Models/Characters/ManiaMighty/", "MightyDrive");
     ModelLoader::loadModel(&ManiaMightyModel::modelFlyBody     , "res/Models/Characters/ManiaMighty/", "MightyFlyBody");
     ModelLoader::loadModel(&ManiaMightyModel::modelFlyBodyTired, "res/Models/Characters/ManiaMighty/", "MightyFlyBodyTired");
     ModelLoader::loadModel(&ManiaMightyModel::modelFlyPropeller, "res/Models/Characters/ManiaMighty/", "MightyFlyPropeller");
@@ -658,6 +690,7 @@ void ManiaMightyModel::deleteStaticModels()
     Entity::deleteModels(&ManiaMightyModel::modelFreefall);
     Entity::deleteModels(&ManiaMightyModel::modelStomp);
     Entity::deleteModels(&ManiaMightyModel::modelGrab);
+    Entity::deleteModels(&ManiaMightyModel::modelDrive);
     Entity::deleteModels(&ManiaMightyModel::modelFlyBody);
     Entity::deleteModels(&ManiaMightyModel::modelFlyBodyTired);
     Entity::deleteModels(&ManiaMightyModel::modelFlyPropeller);
