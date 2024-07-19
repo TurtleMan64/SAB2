@@ -317,7 +317,7 @@ int Extras::getTotalRankA()
 {
     int totalRankA = 0;
 
-    for (int i = 0; i < Global::gameLevelIdsSonic.size(); i++)
+    for (int i = 0; i < (int)Global::gameLevelIdsSonic.size(); i++)
     {
         Level level = Global::gameLevelData[i];
 
@@ -358,7 +358,7 @@ int Extras::getTotalRankA()
         }
     }
 
-    for (int i = 0; i < Global::gameLevelIdsTails.size(); i++)
+    for (int i = 0; i < (int)Global::gameLevelIdsTails.size(); i++)
     {
         Level level = Global::gameLevelData[i];
 
@@ -399,7 +399,7 @@ int Extras::getTotalRankA()
         }
     }
 
-    for (int i = 0; i < Global::gameLevelIdsKnuckles.size(); i++)
+    for (int i = 0; i < (int)Global::gameLevelIdsKnuckles.size(); i++)
     {
         Level level = Global::gameLevelData[i];
 

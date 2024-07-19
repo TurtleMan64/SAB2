@@ -157,8 +157,8 @@ void PlayerSuperSonic::step()
     setInputs();
 
     //to use later when doing running on water stuff
-    Vector3f posBefore = position;
-    Vector3f velBefore = vel;
+    //Vector3f posBefore = position;
+    //Vector3f velBefore = vel;
     //Vector3f relativeUpBefore = relativeUp;
     //bool onGroundBefore = onGround;
 

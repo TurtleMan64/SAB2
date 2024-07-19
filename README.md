@@ -1,19 +1,27 @@
 # Sonic Adventure Blast 2
 
-A sequel to [Sonic Adventure Blast](https://github.com/TurtleMan64/Sonic3DGamev3), my older 3D Sonic fangame. SAB2 will have many improvements and other new features. 
+Sonic Adventure Blast 2 allows you to play as Sonic, Tails, and Knuckles in adventure style gameplay.
 
-**Currently still a work in progress.**
+The game contains 20 levels, each with 4 different missions.
+
+A sequel to [Sonic Adventure Blast](https://github.com/TurtleMan64/Sonic3DGamev3), my older Sonic fangame.
 
 ## Screenshots
 
 <p align="center">
-  <img src="https://cdn.discordapp.com/attachments/480149390758248448/847292405686206514/pic6.png?raw=true">
-  <img src="https://cdn.discordapp.com/attachments/480149390758248448/847292443522760734/pic1.png?raw=true">
-  <img src="https://cdn.discordapp.com/attachments/480149390758248448/847292464083763210/pic3.png?raw=true">
-  <img src="https://cdn.discordapp.com/attachments/480149390758248448/847292501710864404/pic4.png?raw=true">
-  <img src="https://cdn.discordapp.com/attachments/480149390758248448/847292520970059796/pic2.png?raw=true">
-  <img src="https://cdn.discordapp.com/attachments/480149390758248448/847292551823753216/pic5.png?raw=true">
-  <img src="https://cdn.discordapp.com/attachments/480149390758248448/847292563336462415/pic7.png?raw=true">
+  <img src="Preview/Title.png">
+  <img src="Preview/SacredSky.png">
+  <img src="Preview/CastleTown.png">
+  <img src="Preview/SeasideHill.png">
+  <img src="Preview/SweetMountain.png">
+  <img src="Preview/TwinkleCircuit.png">
+  <img src="Preview/SkyRail.png">
+  <img src="Preview/DragonRoad.png">
+  <img src="Preview/NokiBay.png">
+  <img src="Preview/DryLagoon.png">
+  <img src="Preview/FrogForest.png">
+  <img src="Preview/GreenHill.png">
+  <img src="Preview/CloudTemple.png">
 </p>
 
 # How to compile
@@ -22,10 +30,9 @@ A sequel to [Sonic Adventure Blast](https://github.com/TurtleMan64/Sonic3DGamev3
 
 1. [Download](https://github.com/TurtleMan64/SAB2/archive/refs/heads/master.zip) source code as zip.
 2. Extract zip.
-3. Open the `NewSonicThing.sln` in MicrosoftVisualStudio
+3. Open the `NewSonicThing.sln` in Microsoft Visual Studio 2022
 4. Hit `Build->Build NewSonicThing`. This will generate the final exe.
    * Make sure to be in `Release` and `x64` mode
-   * You might need to be in a similar version of Visual Studio to what I have generated the dependencies on (Visual Studio Community 2017, Version 15.6.7)
 
 ## Linux
 
