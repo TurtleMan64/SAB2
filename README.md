@@ -9,19 +9,19 @@ A sequel to [Sonic Adventure Blast](https://github.com/TurtleMan64/Sonic3DGamev3
 ## Screenshots
 
 <p align="center">
-  <img src="Preview/Title.png">
-  <img src="Preview/SacredSky.png">
-  <img src="Preview/CastleTown.png">
-  <img src="Preview/SeasideHill.png">
-  <img src="Preview/SweetMountain.png">
-  <img src="Preview/TwinkleCircuit.png">
-  <img src="Preview/SkyRail.png">
-  <img src="Preview/DragonRoad.png">
-  <img src="Preview/NokiBay.png">
-  <img src="Preview/DryLagoon.png">
-  <img src="Preview/FrogForest.png">
-  <img src="Preview/GreenHill.png">
-  <img src="Preview/CloudTemple.png">
+  <img src="Preview/Title.jpg">
+  <img src="Preview/SacredSky.jpg">
+  <img src="Preview/CastleTown.jpg">
+  <img src="Preview/SeasideHill.jpg">
+  <img src="Preview/SweetMountain.jpg">
+  <img src="Preview/TwinkleCircuit.jpg">
+  <img src="Preview/SkyRail.jpg">
+  <img src="Preview/DragonRoad.jpg">
+  <img src="Preview/NokiBay.jpg">
+  <img src="Preview/DryLagoon.jpg">
+  <img src="Preview/FrogForest.jpg">
+  <img src="Preview/GreenHill.jpg">
+  <img src="Preview/CloudTemple.jpg">
 </p>
 
 # How to compile
