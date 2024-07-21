@@ -2788,6 +2788,8 @@ void PlayerSuperSonic::setIsDriving(bool newIsDriving)
     onGround = false;
     isBall = false;
     isJumping = false;
+    isStomping = false;
+    isDropdashing = false;
     velocityMovesPlayer = !newIsDriving;
 }
 

@@ -155,7 +155,7 @@ void PlayerSonic::step()
     bool onGroundBefore = onGround;
 
     // Dropdash
-    if (!onGround && inputAction4 && !isLightdashing && !isBouncing && !isHomingOnPoint && !justHomingAttacked && !isGrinding && !isGrabbing)
+    if (!onGround && inputAction4 && !isLightdashing && !isBouncing && !isHomingOnPoint && !justHomingAttacked && !isGrinding && !isGrabbing && !isDriving)
     {
         dropdashTimer += dt;
 
@@ -602,7 +602,7 @@ void PlayerSonic::step()
     }
     else
     {
-        if (inputAction2 && !inputAction2Previous && isJumping && !isBouncing && !justHomingAttacked && !isStomping && !isLightdashing && !isDropdashing)
+        if (inputAction2 && !inputAction2Previous && isJumping && !isBouncing && !justHomingAttacked && !isStomping && !isLightdashing && !isDropdashing && !isDriving)
         {
             if (sourceStomp != nullptr)
             {
@@ -2832,6 +2832,8 @@ void PlayerSonic::setIsDriving(bool newIsDriving)
     onGround = false;
     isBall = false;
     isJumping = false;
+    isStomping = false;
+    isDropdashing = false;
     velocityMovesPlayer = !newIsDriving;
 }
 

@@ -20,6 +20,8 @@ void GuiImageResources::loadGuiImages()
     float px = 1.0f/(Display::WINDOW_WIDTH);  //1 pixel in x dimension
     float py = 1.0f/(Display::WINDOW_HEIGHT); //1 pixel in y dimension
 
+    float r = px/py; //resolution ratio
+
     const float w = 0.02f;   //width of a single text character
     const float o = 0.0008f; //horizontal offset to adjust for centered vs non centered
 
@@ -28,9 +30,9 @@ void GuiImageResources::loadGuiImages()
     INCR_NEW("GuiImage") textureLineBlue    = new GuiImage(LoaderGL::loadTexture("res/Images/LineBlue.png"),   0.5f, 0.5f, 10*16*px, 20*128*py, 29.5f);
     INCR_NEW("GuiImage") textureLineYellow  = new GuiImage(LoaderGL::loadTexture("res/Images/LineYellow.png"), 0.5f, 0.5f, 10*16*px, 20*128*py, 29.5f);
     INCR_NEW("GuiImage") textureLineRed     = new GuiImage(LoaderGL::loadTexture("res/Images/LineRed.png"),    0.5f, 0.5f, 10*16*px, 20*128*py, 29.5f);
-    INCR_NEW("GuiImage") textureRankA       = new GuiImage(LoaderGL::loadTexture("res/Images/MainMenu/RankA.png"), 0.5f, 0.8f, 128*px, 128*py, 0);
-    INCR_NEW("GuiImage") textureRankB       = new GuiImage(LoaderGL::loadTexture("res/Images/MainMenu/RankB.png"), 0.5f, 0.8f, 128*px, 128*py, 0);
-    INCR_NEW("GuiImage") textureRankC       = new GuiImage(LoaderGL::loadTexture("res/Images/MainMenu/RankC.png"), 0.5f, 0.8f, 128*px, 128*py, 0);
-    INCR_NEW("GuiImage") textureRankD       = new GuiImage(LoaderGL::loadTexture("res/Images/MainMenu/RankD.png"), 0.5f, 0.8f, 128*px, 128*py, 0);
-    INCR_NEW("GuiImage") textureRankE       = new GuiImage(LoaderGL::loadTexture("res/Images/MainMenu/RankE.png"), 0.5f, 0.8f, 128*px, 128*py, 0);
+    INCR_NEW("GuiImage") textureRankA       = new GuiImage(LoaderGL::loadTexture("res/Images/MainMenu/RankA.png"), 0.5f, 0.8f, 0.2f*r, 0.2f, 0);
+    INCR_NEW("GuiImage") textureRankB       = new GuiImage(LoaderGL::loadTexture("res/Images/MainMenu/RankB.png"), 0.5f, 0.8f, 0.2f*r, 0.2f, 0);
+    INCR_NEW("GuiImage") textureRankC       = new GuiImage(LoaderGL::loadTexture("res/Images/MainMenu/RankC.png"), 0.5f, 0.8f, 0.2f*r, 0.2f, 0);
+    INCR_NEW("GuiImage") textureRankD       = new GuiImage(LoaderGL::loadTexture("res/Images/MainMenu/RankD.png"), 0.5f, 0.8f, 0.2f*r, 0.2f, 0);
+    INCR_NEW("GuiImage") textureRankE       = new GuiImage(LoaderGL::loadTexture("res/Images/MainMenu/RankE.png"), 0.5f, 0.8f, 0.2f*r, 0.2f, 0);
 }
