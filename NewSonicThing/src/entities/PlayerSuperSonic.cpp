@@ -1638,7 +1638,7 @@ void PlayerSuperSonic::calcSpindashDirection()
     dirForward.setLength(stickRadius);
     Vector3f newDir = Maths::rotatePoint(&dirForward, &relativeUp, stickAngle);
 
-    if (stickRadius >= 0.8f)
+    if (stickRadius >= 0.6f)
     {
         spindashDirection.set(&newDir);
     }

@@ -42,8 +42,8 @@ false
 
 # Help
 32 -789.712708 0.100141 -38.771187 Hold A to accelerate
-32 -724.141174 0.100103  39.425114 Hold L or R to strafe
-32 -556.775757 0.099978 -81.276192 Hold L and R simultaneously to drift
+32 -724.141174 0.100103  39.425114 Hold LT or RT to strafe
+32 -556.775757 0.099978 -81.276192 Hold LT and RT simultaneously to drift
 32 -555.451599 0.099900  78.402397 Colect 15 rings to enable boost.;Press X while flashing to boost.
 
 # Dash
