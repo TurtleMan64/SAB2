@@ -78,7 +78,7 @@ Extras::Extras()
         arcadeModeTrueEnding = 1;
     }
 
-    int ringPerc = (25*totalRingsCompleted)/5858;
+    int ringPerc = (25*totalRingsCompleted)/5850;
     int npcPerc = (25*totalNPCCollected)/48;
     int emeraldPerc = (24*totalEmeraldsCollected)/7;
     int rankPerc = (25*totalRankACollected)/131;
@@ -319,7 +319,7 @@ int Extras::getTotalRankA()
 
     for (int i = 0; i < (int)Global::gameLevelIdsSonic.size(); i++)
     {
-        Level level = Global::gameLevelData[i];
+        Level level = Global::gameLevelData[Global::gameLevelIdsSonic[i]];
 
         if (Global::gameSaveData.find(level.displayName+"_Sonic_M1_RANK") != Global::gameSaveData.end())
         {
@@ -360,7 +360,7 @@ int Extras::getTotalRankA()
 
     for (int i = 0; i < (int)Global::gameLevelIdsTails.size(); i++)
     {
-        Level level = Global::gameLevelData[i];
+        Level level = Global::gameLevelData[Global::gameLevelIdsTails[i]];
 
         if (Global::gameSaveData.find(level.displayName+"_Tails_M1_RANK") != Global::gameSaveData.end())
         {
@@ -401,7 +401,7 @@ int Extras::getTotalRankA()
 
     for (int i = 0; i < (int)Global::gameLevelIdsKnuckles.size(); i++)
     {
-        Level level = Global::gameLevelData[i];
+        Level level = Global::gameLevelData[Global::gameLevelIdsKnuckles[i]];
 
         if (Global::gameSaveData.find(level.displayName+"_Knuckles_M1_RANK") != Global::gameSaveData.end())
         {

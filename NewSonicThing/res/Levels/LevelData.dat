@@ -4,9 +4,9 @@ Tutorial.lvl
 Tutorial
 244
 4
-Normal;100;Learn the basics!
-Ring;100;100;Collect 100 rings!
-Chao;100;Find the lost Chao!
+Normal;1300;Learn the basics!
+Ring;50;100;Collect 100 rings!
+Chao;60;Find the lost Chao!
 Race;100;62.215027;Race against Mighty!
 
 GreenForest.lvl
@@ -23,54 +23,54 @@ Metal Harbor
 156
 4
 Normal;14000;Escape from the military base!
-Ring;80;150;Collect 150 rings!
-Chao;45;Find the lost Chao!
+Ring;45;82;Collect 82 rings!
+Chao;35;Find the lost Chao!
 Race;100;76.952042;Race against Mighty!
 
 PyramidCave.lvl
 Pyramid Cave
 421
 4
-Normal;1400;Infiltrate Eggman's Hidden Base!
+Normal;12500;Infiltrate Eggman's Hidden Base!
 Ring;50;150;Collect 150 rings!
-Chao;85;Find the lost Chao!
+Chao;90;Find the lost Chao!
 Race;100;97.631744;Race against Mighty!
 
 SkyRail.lvl
 Sky Rail
-303
+300
 4
 Normal;13000;Chase the Tornado!
-Ring;100;100;Collect 100 rings!
-Chao;100;Find the lost Chao!
+Ring;40;100;Collect 100 rings!
+Chao;30;Find the lost Chao!
 Race;100;46.557262;Race against Mighty!
 
 RadicalHighway.lvl
 Radical Highway
 324
 4
-Normal;12500;Break through the besieging military!
-Ring;90;150;Collect 150 rings!
-Chao;90;Find the lost Chao!
-Race;100;115.261002;Race against Mighty!
+Normal;13000;Break through the besieging military!
+Ring;80;150;Collect 150 rings!
+Chao;55;Find the lost Chao!
+Race;120;115.261002;Race against Mighty!
 
 GreenHillZone.lvl
 Green Hill Zone
 271
 4
-Normal;14000;Pursue Eggman!
-Ring;60;150;Collect 150 rings!
-Chao;40;Find the lost Chao!
+Normal;13500;Pursue Eggman!
+Ring;65;150;Collect 150 rings!
+Chao;25;Find the lost Chao!
 Race;100;23.549925;Race against Mighty!
 
 CityEscape.lvl
 City Escape
 440
 4
-Normal;100;Escape from the military pursuit!
-Ring;100;100;Collect 100 rings!
-Chao;100;Find the lost Chao!
-Race;100;105.558220;Race against Mighty!
+Normal;13500;Escape from the military pursuit!
+Ring;45;100;Collect 100 rings!
+Chao;80;Find the lost Chao!
+Race;110;105.558220;Race against Mighty!
 
 WindyValley.lvl
 Windy Valley
@@ -84,18 +84,18 @@ SeasideHill.lvl
 Seaside Hill
 643
 4
-Normal;100;Head for whale island!
-Ring;200;200;Collect 200 rings!
-Chao;100;Find the lost Chao!
-Race;100;173.369019;Race against Mighty!
+Normal;1800;Head for whale island!
+Ring;120;200;Collect 200 rings!
+Chao;65;Find the lost Chao!
+Race;200;173.369019;Race against Mighty!
 
 FrogForest.lvl
 Frog Forest
 366
 4
-Normal;100;Venture through the jungle!
-Ring;100;100;Collect 100 rings!
-Chao;100;Find the lost Chao!
+Normal;13500;Venture through the jungle!
+Ring;50;100;Collect 100 rings!
+Chao;60;Find the lost Chao!
 Race;100;76.418716;Race against Mighty!
 
 SpeedHighway.lvl
@@ -120,32 +120,32 @@ Noki Bay
 4
 Normal;15000;Find all the pieces of the master emerald!
 Ring;80;100;Collect 100 rings!
-Chao;20;Find the lost Chao!
-Hard;15000;Clear hard mode!
+Chao;15;Find the lost Chao!
+Hard;14500;Clear hard mode!
 
 DelfinoPlaza.lvl
 Delfino Plaza
 208
 4
 Normal;15000;Find all the pieces of the master emerald!
-Ring;90;100;Collect 100 rings!
-Chao;40;Find the lost Chao!
+Ring;60;100;Collect 100 rings!
+Chao;30;Find the lost Chao!
 Hard;14000;Clear hard mode!
 
 SacredSky.lvl
 Sacred Sky
-211
+206
 4
 Normal;13000;Journey through the sky!
 Ring;60;100;Collect 100 rings!
-Chao;40;Find the lost Chao!
+Chao;35;Find the lost Chao!
 Race;100;54.755398;Race against Mighty!
 
 DryLagoon.lvl
 Dry Lagoon
 124
 4
-Normal;14000;Find all the pieces of the master emerald!
+Normal;15000;Find all the pieces of the master emerald!
 Ring;40;100;Collect 100 rings!
 Chao;25;Find the lost Chao!
 Hard;15000;Complete hard mode!
@@ -163,17 +163,17 @@ Cloud Temple
 148
 4
 Normal;11000;Navigate the ancient temple!
-Ring;45;110;Collect 110 rings!
-Chao;30;Find the lost Chao!
+Ring;40;110;Collect 110 rings!
+Chao;25;Find the lost Chao!
 Race;100;62.010754;Race against Mighty!
 
 DragonRoad.lvl
 Dragon Road
 332
 4
-Normal;15000;Race to the finish!
-Ring;90;200;Collect 200 rings!
-Chao;60;Find the lost Chao!
+Normal;16000;Race to the finish!
+Ring;80;200;Collect 200 rings!
+Chao;65;Find the lost Chao!
 Race;110;108.235413;Race against Mighty!
 
 EmeraldCoast.lvl
@@ -182,7 +182,7 @@ Emerald Coast
 4
 Normal;15000;Cruise this coast!
 Ring;90;200;Collect 200 rings!
-Chao;35;Find the lost Chao!
+Chao;30;Find the lost Chao!
 Race;110;71.632294;Race against Mighty!
 
 FreezeezyPeak.lvl
@@ -199,7 +199,7 @@ Sweet Mountain
 256
 4
 Normal;15000;Find all the pieces of the master emerald!
-Ring;75;100;Collect 100 rings!
+Ring;70;100;Collect 100 rings!
 Chao;15;Find the lost Chao!
 Hard;15000;Complete hard mode!
 
@@ -215,8 +215,8 @@ Castle Town
 308
 4
 Normal;15000;Find all the pieces of the master emerald!
-Ring;75;100;Collect 100 rings!
-Chao;15;Find the lost Chao!
+Ring;60;100;Collect 100 rings!
+Chao;10;Find the lost Chao!
 Hard;15000;Complete hard mode!
 
 Boss.lvl
