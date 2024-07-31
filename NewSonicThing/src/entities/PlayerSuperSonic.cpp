@@ -1585,7 +1585,7 @@ void PlayerSuperSonic::step()
     //Animating the camera
     refreshCamera();
 
-    Global::gameMainVehicleSpeed = (int)(vel.length());
+    Global::gameMainVehicleSpeed = vel.length();
 
     //Vector3f posDiffDelta = position - prevPos;
     //printf("delta pos = %f\n\n", posDiffDelta.length()/dt);

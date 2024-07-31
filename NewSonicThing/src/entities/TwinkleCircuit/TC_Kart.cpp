@@ -1164,7 +1164,7 @@ void TC_Kart::step()
             Global::gameCamera->setViewMatrixValues(&camDeathPosition, &target, &up);
         }
 
-        Global::gameMainVehicleSpeed = (int)(overallVel.length());
+        Global::gameMainVehicleSpeed = overallVel.length();
     }
 
     //Vector3f posDiffDelta = position - prevPos;

@@ -168,7 +168,7 @@ int Global::gameTotalPlaytime = 0;
 int Global::gameAccumulatedRings = 0;
 float Global::gameArcadePlaytime = 0;
 float Global::deathHeight = -100.0f;
-int Global::gameMainVehicleSpeed = 0;
+float Global::gameMainVehicleSpeed = 0;
 
 int Global::gameMissionNumber = 0;
 std::string Global::gameMissionDescription = "";
