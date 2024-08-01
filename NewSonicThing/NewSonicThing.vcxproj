@@ -349,6 +349,7 @@
     <ClCompile Include="src\menu\MissionMenu.cpp" />
     <ClCompile Include="src\menu\PauseScreen.cpp" />
     <ClCompile Include="src\menu\ResultsScreen.cpp" />
+    <ClCompile Include="src\menu\Speedometer.cpp" />
     <ClCompile Include="src\menu\Timer.cpp" />
     <ClCompile Include="src\models\RawModel.cpp" />
     <ClCompile Include="src\models\TexturedModel.cpp" />
@@ -573,6 +574,7 @@
     <ClInclude Include="src\menu\missionmenu.hpp" />
     <ClInclude Include="src\menu\pausescreen.hpp" />
     <ClInclude Include="src\menu\resultsscreen.hpp" />
+    <ClInclude Include="src\menu\speedometer.hpp" />
     <ClInclude Include="src\menu\timer.hpp" />
     <ClInclude Include="src\models\models.hpp" />
     <ClInclude Include="src\particles\insertionsort.hpp" />

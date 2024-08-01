@@ -1,7 +1,6 @@
 #include "speedometer.hpp"
 
 #include "../engineTester/main.hpp"
-//#include "../renderEngine/display.hpp"
 #include "../fontMeshCreator/fonttype.hpp"
 #include "../fontMeshCreator/guinumber.hpp"
 #include "../fontMeshCreator/guitext.hpp"
@@ -9,7 +8,7 @@
 Speedometer::Speedometer(float posX, float posY, float scale)
 {
     this->textSpeedUnits = new GUIText("km/h", scale, Global::fontVipnagorgialla, posX, posY, 8, false); INCR_NEW("GUIText");
-    this->numberSpeed = new GUINumber(Global::gameMainVehicleSpeed, posX - this->textSpeedUnits->maxLineWidth - 0.003f, posY, speedometerScale * scale, 8, false, 0, false); INCR_NEW("GUINumber");
+    this->numberSpeed = new GUINumber((int)Global::gameMainVehicleSpeed, posX - this->textSpeedUnits->maxLineWidth - 0.003f, posY, speedometerScale * scale, 8, false, 0, false); INCR_NEW("GUINumber");
     this->accelSmoothed = 0.0f;
     this->prevSpeed = Global::gameMainVehicleSpeed;
 }
@@ -37,10 +36,12 @@ void Speedometer::update(float newSpeed)
     this->accelSmoothed += (accel - this->accelSmoothed) * accelSmoothAlpha * dt;
     float clampedAccel = Maths::clamp(-1.0f, this->accelSmoothed * 0.05f, 1.0f);
 
-    if (this->accelSmoothed > 0.0f) {
+    if (this->accelSmoothed > 0.0f)
+    {
         this->numberSpeed->baseColor = this->colorNeutral.scaleCopy(1.0f - clampedAccel) + this->colorPos.scaleCopy(clampedAccel);
     }
-    else {
+    else
+    {
         this->numberSpeed->baseColor = this->colorNeutral.scaleCopy(1.0f - (-clampedAccel)) + this->colorNeg.scaleCopy(-clampedAccel);
     }
 
@@ -48,7 +49,7 @@ void Speedometer::update(float newSpeed)
     this->prevSpeed = newSpeed;
 
     // And display the number
-    this->numberSpeed->displayNumber = newSpeed;
+    this->numberSpeed->displayNumber = (int)newSpeed;
 }
 
 void Speedometer::refresh()

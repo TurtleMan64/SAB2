@@ -810,6 +810,9 @@
     <ClCompile Include="src\entities\Boss\Boss_Laser.cpp">
       <Filter>Source Files\entities\Boss</Filter>
     </ClCompile>
+    <ClCompile Include="src\menu\Speedometer.cpp">
+      <Filter>Source Files\menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\animation\animation.hpp">
@@ -1474,6 +1477,9 @@
     </ClInclude>
     <ClInclude Include="src\entities\Boss\bosslaser.hpp">
       <Filter>Source Files\entities\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="src\menu\speedometer.hpp">
+      <Filter>Source Files\menu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
