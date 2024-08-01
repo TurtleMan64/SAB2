@@ -105,7 +105,7 @@ void GUINumber::refresh()
         }
         for (int i = numChars; i < totalDigits; i++)
         {
-            colors.push_back(baseColor * Vector3f(0.5f, 0.5f, 0.5f));
+            colors.push_back(baseColor.scaleCopy(0.5f));
         }
     }
     else
