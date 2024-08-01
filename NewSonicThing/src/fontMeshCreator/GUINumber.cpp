@@ -74,6 +74,7 @@ void GUINumber::loadMeshData()
 //x and y are (0,0) being the top left of the screen, (1,1) being bottom right
 GUINumber::GUINumber(int number, float x, float y, float size, int alignment, bool visible, int totalDigits, bool darkenPaddedDigits)
 {
+    baseColor = Vector3f(1, 1, 1);
     colors.push_back(Vector3f(1, 1, 1));
     this->position.set(x-0.5f, y-0.5f);
     this->visible = visible;
@@ -100,11 +101,11 @@ void GUINumber::refresh()
     {
         for (int i = 0; i < numChars; i++)
         {
-            colors.push_back(Vector3f(1,1,1));
+            colors.push_back(baseColor);
         }
         for (int i = numChars; i < totalDigits; i++)
         {
-            colors.push_back(Vector3f(0.5f, 0.5f, 0.5f));
+            colors.push_back(baseColor.scaleCopy(0.5f));
         }
     }
     else
@@ -113,14 +114,14 @@ void GUINumber::refresh()
         {
             for (int i = 0; i < totalDigits; i++)
             {
-                colors.push_back(Vector3f(1,1,1));
+                colors.push_back(baseColor);
             }
         }
         else
         {
             for (int i = 0; i < numChars; i++)
             {
-                colors.push_back(Vector3f(1,1,1));
+                colors.push_back(baseColor);
             }
         }
     }

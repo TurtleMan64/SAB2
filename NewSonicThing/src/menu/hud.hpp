@@ -5,6 +5,7 @@ class GUINumber;
 class GUIText;
 class GuiImage;
 class Timer;
+class Speedometer;
 
 #include "menu.hpp"
 #include <glad/glad.h>
@@ -25,8 +26,7 @@ private:
     GUINumber* numberLives = nullptr;
     GUINumber* numberRings = nullptr;
     GUINumber* numberScore = nullptr;
-    GUINumber* numberSpeed = nullptr;
-    GUIText* textSpeedUnits = nullptr;
+    Speedometer *speedometer = nullptr;
     GUIText* textLivesMission = nullptr;
     Timer* timer = nullptr;
 

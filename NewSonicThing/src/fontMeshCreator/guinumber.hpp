@@ -38,6 +38,9 @@ public:
     //if you pad with 0's, set this to darken them
     bool darkenPaddedDigits;
 
+    //base color of the numbers. default is white
+    Vector3f baseColor;
+
     //colors of the numbers. default is white
     std::vector<Vector3f> colors;
 

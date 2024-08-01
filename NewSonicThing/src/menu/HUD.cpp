@@ -13,6 +13,7 @@
 #include "../entities/controllableplayer.hpp"
 #include "../loading/loadergl.hpp"
 #include "timer.hpp"
+#include "speedometer.hpp"
 
 float HUD::bonusTimer = 0.0f;
 GuiImage* HUD::pointBonus = nullptr;
@@ -43,8 +44,7 @@ HUD::HUD()
 
     //this->speedometerScale = 1.5f;
 
-    this->textSpeedUnits = new GUIText("km/h", s, Global::fontVipnagorgialla, 1 - safeAreaX, 1.0f - safeAreaY, 8, false); INCR_NEW("GUIText");
-    this->numberSpeed = new GUINumber(Global::gameMainVehicleSpeed, 1.0f - safeAreaX - this->textSpeedUnits->maxLineWidth - 0.003f, 1.0f - safeAreaY, speedometerScale * s, 8, false, 0, false); INCR_NEW("GUINumber");
+    this->speedometer = new Speedometer(1.0f - safeAreaX, 1.0f - safeAreaY, s); INCR_NEW("Speedometer");
 
     GuiImageResources::textureRing->setX(safeAreaX + w);
     GuiImageResources::textureRing->setY(safeAreaY + s*3);
@@ -88,8 +88,7 @@ HUD::~HUD()
     this->numberLives->deleteMe(); delete this->numberLives; INCR_DEL("GUINumber");
     this->numberScore->deleteMe(); delete this->numberScore; INCR_DEL("GUINumber");
     this->numberRings->deleteMe(); delete this->numberRings; INCR_DEL("GUINumber");
-    this->numberSpeed->deleteMe(); delete this->numberSpeed; INCR_DEL("GUINumber");
-    this->textSpeedUnits->deleteMe(); delete this->textSpeedUnits; INCR_DEL("GUIText");
+    delete this->speedometer; INCR_DEL("Speedometer");
     this->textLivesMission->deleteMe(); delete this->textLivesMission; INCR_DEL("GUIText");
     delete this->pointBonus; INCR_DEL("GuiImage");
     for (int i = 0; i < 10; i++)
@@ -117,8 +116,7 @@ void HUD::draw()
         this->numberLives->visible = false;
         this->numberScore->visible = false;
         this->numberRings->visible = false;
-        this->numberSpeed->visible = false;
-        this->textSpeedUnits->visible = false;
+        this->speedometer->setVisible(false);
         this->textLivesMission->visible = false;
     }
     else
@@ -128,8 +126,7 @@ void HUD::draw()
         this->numberLives->visible = true;
         this->numberScore->visible = true;
         this->numberRings->visible = true;
-        this->numberSpeed->visible = true;
-        this->textSpeedUnits->visible = true;
+        this->speedometer->setVisible(true);
         this->textLivesMission->visible = true;
 
         if (Global::displayFPS)
@@ -151,15 +148,13 @@ void HUD::draw()
 
         if (Global::displaySpeedometer)
         {
-            this->numberSpeed->visible = true;
-            this->textSpeedUnits->visible = true;
-            this->numberSpeed->displayNumber = Global::gameMainVehicleSpeed;
-            this->numberSpeed->refresh();
+            this->speedometer->setVisible(true);
+            this->speedometer->update(Global::gameMainVehicleSpeed);
+            this->speedometer->refresh();
         }
         else
         {
-            this->numberSpeed->visible = false;
-            this->textSpeedUnits->visible = false;
+            this->speedometer->setVisible(false);
         }
 
         if (Global::gameIsArcadeMode)
