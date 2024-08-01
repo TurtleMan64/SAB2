@@ -35,14 +35,13 @@ void Speedometer::update(float newSpeed)
 
     // Smooth accel with simple lowpass
     this->accelSmoothed += (accel - this->accelSmoothed) * accelSmoothAlpha * dt;
+    float clampedAccel = Maths::clamp(-1.0f, this->accelSmoothed * 0.05f, 1.0f);
 
     if (this->accelSmoothed > 0.0f) {
-        float compressedAccel = 2.0f * atanf(this->accelSmoothed * 0.1) / Maths::PI;
-        this->numberSpeed->baseColor = this->colorNeutral.scaleCopy(1.0f - compressedAccel) + this->colorPos.scaleCopy(compressedAccel);
+        this->numberSpeed->baseColor = this->colorNeutral.scaleCopy(1.0f - clampedAccel) + this->colorPos.scaleCopy(clampedAccel);
     }
     else {
-        float compressedAccel = 2.0f * atanf(-this->accelSmoothed * 0.1) / Maths::PI;
-        this->numberSpeed->baseColor = this->colorNeutral.scaleCopy(1.0f - compressedAccel) + this->colorNeg.scaleCopy(compressedAccel);
+        this->numberSpeed->baseColor = this->colorNeutral.scaleCopy(1.0f - (-clampedAccel)) + this->colorNeg.scaleCopy(-clampedAccel);
     }
 
     // Save speed for next tick
