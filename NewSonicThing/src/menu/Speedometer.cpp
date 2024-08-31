@@ -1,9 +1,14 @@
+#include <fstream>
+
 #include "speedometer.hpp"
 
 #include "../engineTester/main.hpp"
 #include "../fontMeshCreator/fonttype.hpp"
 #include "../fontMeshCreator/guinumber.hpp"
 #include "../fontMeshCreator/guitext.hpp"
+#include "../toolbox/getline.hpp"
+#include "../toolbox/split.hpp"
+#include "../toolbox/maths.hpp"
 
 Speedometer::Speedometer(float posX, float posY, float scale)
 {
@@ -11,6 +16,63 @@ Speedometer::Speedometer(float posX, float posY, float scale)
     this->numberSpeed = new GUINumber((int)Global::gameMainVehicleSpeed, posX - this->textSpeedUnits->maxLineWidth - 0.003f, posY, speedometerScale * scale, 8, false, 0, false); INCR_NEW("GUINumber");
     this->accelSmoothed = 0.0f;
     this->prevSpeed = Global::gameMainVehicleSpeed;
+
+    if (colorNeutral.x < 0.0f)
+    {
+        colorNeutral = Vector3f(1.0f, 1.0f, 1.0f);
+        colorPos     = Vector3f(1.0f, 1.0f, 1.0f);
+        colorNeg     = Vector3f(1.0f, 1.0f, 1.0f);
+
+        std::ifstream file(Global::pathToEXE + "Settings/SpeedometerSettings.ini");
+        if (!file.is_open())
+        {
+            std::fprintf(stderr, "Error: Cannot load file '%s'\n", (Global::pathToEXE + "Settings/SpeedometerSettings.ini").c_str());
+            file.close();
+        }
+        else
+        {
+            std::string line;
+
+            while (!file.eof())
+            {
+                getlineSafe(file, line);
+
+                char lineBuf[512];
+                memcpy(lineBuf, line.c_str(), line.size()+1);
+
+                int splitLength = 0;
+                char** lineSplit = split(lineBuf, ' ', &splitLength);
+
+                if (splitLength == 4)
+                {
+                    if (strcmp(lineSplit[0], "Color_Neutral") == 0)
+                    {
+                        float r = Maths::clamp(0.0f, std::stof(lineSplit[1], nullptr), 1.0f);
+                        float g = Maths::clamp(0.0f, std::stof(lineSplit[2], nullptr), 1.0f);
+                        float b = Maths::clamp(0.0f, std::stof(lineSplit[3], nullptr), 1.0f);
+                        colorNeutral = Vector3f(r, g, b);
+                    }
+                    else if (strcmp(lineSplit[0], "Color_Fast") == 0)
+                    {
+                        float r = Maths::clamp(0.0f, std::stof(lineSplit[1], nullptr), 1.0f);
+                        float g = Maths::clamp(0.0f, std::stof(lineSplit[2], nullptr), 1.0f);
+                        float b = Maths::clamp(0.0f, std::stof(lineSplit[3], nullptr), 1.0f);
+                        colorPos = Vector3f(r, g, b);
+                    }
+                    else if (strcmp(lineSplit[0], "Color_Slow") == 0)
+                    {
+                        float r = Maths::clamp(0.0f, std::stof(lineSplit[1], nullptr), 1.0f);
+                        float g = Maths::clamp(0.0f, std::stof(lineSplit[2], nullptr), 1.0f);
+                        float b = Maths::clamp(0.0f, std::stof(lineSplit[3], nullptr), 1.0f);
+                        colorNeg = Vector3f(r, g, b);
+                    }
+                }
+
+                free(lineSplit);
+            }
+            file.close();
+        }
+    }
 }
 
 Speedometer::~Speedometer()
