@@ -4,7 +4,7 @@ Sonic Adventure Blast 2 allows you to play as Sonic, Tails, and Knuckles in adve
 
 The game contains 20 levels, each with 4 different missions.
 
-A sequel to [Sonic Adventure Blast](https://github.com/TurtleMan64/Sonic3DGamev3), my older Sonic fangame.
+# [Download SAB2 Version 1.0](https://github.com/TurtleMan64/SAB2/releases/download/v1.0/SonicAdventureBlast2_1.0.zip)
 
 ## Screenshots
 
