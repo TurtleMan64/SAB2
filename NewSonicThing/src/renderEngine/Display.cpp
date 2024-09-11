@@ -87,6 +87,9 @@ int Display::createDisplay()
     int count;
 	GLFWmonitor** monitors = glfwGetMonitors(&count);
 	
+	// old config/dummy user protection
+	if((unsigned)Display::monitor_index >= (unsigned)count) Display::monitor_index = 0;
+	
 	auto findLeftmostMonitor = [](GLFWmonitor** monitors, int count) -> GLFWmonitor*
 	{
 		if(count < 1) return nullptr;
