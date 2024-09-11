@@ -3,6 +3,7 @@
 
 //#include <GLFW/glfw3.h>
 struct GLFWwindow;
+struct GLFWmonitor;
 
 class Display
 {
@@ -15,6 +16,8 @@ private:
 
 public:
     static GLFWwindow* window;
+    static GLFWmonitor* monitor;
+    static int monitor_index;
 
     static int WINDOW_WIDTH;
     static int WINDOW_HEIGHT;
@@ -26,6 +29,7 @@ public:
 
     static int AA_SAMPLES;
 
+    static void centerWindow();
     static int createDisplay();
 
     static void updateDisplay();

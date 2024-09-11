@@ -344,6 +344,44 @@ void Input::pollInputs()
     {
         Input::inputs.INPUT_X = 1;
     }
+    
+    auto moveWindowPos = [](int xoffset, int yoffset) 
+	{
+		int xpos, ypos;
+		glfwGetWindowPos(Display::window, &xpos, &ypos);
+		
+		xpos = xpos + xoffset;
+		ypos = ypos + yoffset; 
+		glfwSetWindowPos(Display::window, xpos, ypos);
+		//printf("Window coords:\t%d %d\n", xpos, ypos);
+	};
+
+	// hotkey binds to move the window if it happens to be offscreen
+	if (glfwGetKey(Display::window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
+		glfwGetKey(Display::window, GLFW_KEY_UP) == GLFW_PRESS)
+	{
+		moveWindowPos(0, -1);
+	}
+	if (glfwGetKey(Display::window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
+		glfwGetKey(Display::window, GLFW_KEY_DOWN) == GLFW_PRESS)
+	{
+		moveWindowPos(0, +1);
+	}
+	if (glfwGetKey(Display::window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
+		glfwGetKey(Display::window, GLFW_KEY_LEFT) == GLFW_PRESS)
+	{
+		moveWindowPos(-1, 0);
+	}
+	if (glfwGetKey(Display::window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
+		glfwGetKey(Display::window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+	{
+		moveWindowPos(+1, 0);
+	}
+	if (glfwGetKey(Display::window, GLFW_KEY_F3) == GLFW_PRESS)
+	{
+		Display::centerWindow();
+	}
+
 
     #ifdef DEV_MODE
     if (glfwGetKey(Display::window, GLFW_KEY_H) == GLFW_PRESS)
