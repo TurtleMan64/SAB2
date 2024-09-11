@@ -29,7 +29,7 @@ public:
 
     static int AA_SAMPLES;
 
-	static void centerWindow();
+    static void centerWindow();
     static int createDisplay();
 
     static void updateDisplay();

@@ -390,7 +390,7 @@ int main(int argc, char** argv)
 
     AudioMaster::init();
 
-    Global::fontVipnagorgialla = new FontType(LoaderGL::loadTexture("res/Fonts/vipnagorgialla.png"), "res/Fonts/vipnagorgialla.fnt");	 INCR_NEW("FontType");
+    Global::fontVipnagorgialla = new FontType(LoaderGL::loadTexture("res/Fonts/vipnagorgialla.png"), "res/Fonts/vipnagorgialla.fnt"); INCR_NEW("FontType");
 
     TextMaster::init();
 
@@ -476,7 +476,6 @@ int main(int argc, char** argv)
     std::vector<std::unordered_set<Entity*>*> entityChunkedList;
 
     //GUIText* debugNumber = new GUIText("a", 0.04f, Global::fontVipnagorgialla, 0, 0, 0, true);
-	
     while (Global::gameState != STATE_EXITING && Display::displayWantsToClose() == 0)
     {
         ANALYSIS_START("Frame Time");
