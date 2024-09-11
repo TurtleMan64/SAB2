@@ -1,5 +1,5 @@
 #include <fstream>
-
+#include <cstring>
 #include "speedometer.hpp"
 
 #include "../engineTester/main.hpp"

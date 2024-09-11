@@ -377,19 +377,20 @@ int main(int argc, char** argv)
 
     LoaderGL::init();
 
-    Input::init();
-
     //This camera is never deleted.
     Camera cam;
     Global::gameCamera = &cam;
 
     MasterRenderer::init();
+    // Input calls MasterRenderer::makeProjection matrix through callback in glfwPollEvents()
+    // To not blow your foot off with a segfault, Input::init() must be after MasterRenderer::init()
+    Input::init();
 
     LevelLoader::loadLevelData();
 
     AudioMaster::init();
 
-    Global::fontVipnagorgialla = new FontType(LoaderGL::loadTexture("res/Fonts/vipnagorgialla.png"), "res/Fonts/vipnagorgialla.fnt"); INCR_NEW("FontType");
+    Global::fontVipnagorgialla = new FontType(LoaderGL::loadTexture("res/Fonts/vipnagorgialla.png"), "res/Fonts/vipnagorgialla.fnt");	 INCR_NEW("FontType");
 
     TextMaster::init();
 
@@ -475,7 +476,7 @@ int main(int argc, char** argv)
     std::vector<std::unordered_set<Entity*>*> entityChunkedList;
 
     //GUIText* debugNumber = new GUIText("a", 0.04f, Global::fontVipnagorgialla, 0, 0, 0, true);
-
+	
     while (Global::gameState != STATE_EXITING && Display::displayWantsToClose() == 0)
     {
         ANALYSIS_START("Frame Time");
