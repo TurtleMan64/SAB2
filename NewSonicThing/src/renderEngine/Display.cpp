@@ -7,6 +7,7 @@
 #include <fstream>
 #include <string>
 #include <cstring>
+#include <algorithm>
 
 #include "display.hpp"
 #include "masterrenderer.hpp"
@@ -15,9 +16,10 @@
 #include "../toolbox/split.hpp"
 #include "../toolbox/getline.hpp"
 
-GLFWwindow* Display::window = nullptr;
-
+GLFWwindow* 	Display::window 	= nullptr;
+GLFWmonitor* 	Display::monitor 	= nullptr;
 // default settings
+int Display::monitor_index = 0;
 int Display::WINDOW_WIDTH = 1280;
 int Display::WINDOW_HEIGHT = 720;
 float Display::ASPECT_RATIO = 1.7777777777f;
@@ -29,6 +31,36 @@ int Display::F_HZ = 60;
 int Display::AA_SAMPLES = 4;
 
 extern float input_zoom_buffer;
+
+void Display::centerWindow()
+{
+	if(Global::useFullscreen) return;
+	
+	auto* monitor = Display::monitor;
+	
+	// get monitor origin on virtual desktop
+	int xpos, ypos;
+	glfwGetMonitorPos(monitor, &xpos, &ypos);
+	
+	//printf("Monitor coords:\t%d %d\n", xpos, ypos);
+	
+	const GLFWvidmode* mode = glfwGetVideoMode(Display::monitor);
+	int monitorWidth  = mode->width;
+	int monitorHeight = mode->height;
+
+	//printf("Monitor resolution:\t%d %d\n", mode->width, mode->height);
+
+	if (Display::WINDOW_WIDTH  <= monitorWidth && 
+		Display::WINDOW_HEIGHT <= monitorHeight)
+	{
+		xpos = xpos + monitorWidth  / 2  - (Display::WINDOW_WIDTH)  / 2;
+		ypos = ypos + monitorHeight / 2  - (Display::WINDOW_HEIGHT) / 2;
+
+		//printf("Window coords:\t%d %d\n", xpos, ypos);
+
+		glfwSetWindowPos(Display::window, xpos, ypos);
+	}
+}
 
 int Display::createDisplay()
 {
@@ -52,7 +84,38 @@ int Display::createDisplay()
     Display::loadDisplaySettings();
     Display::loadGraphicsSettings();
 
-    GLFWmonitor* monitor = nullptr;
+    int count;
+	GLFWmonitor** monitors = glfwGetMonitors(&count);
+	
+	// old config/dummy user protection
+	if((unsigned)Display::monitor_index >= (unsigned)count) Display::monitor_index = 0;
+	
+	auto findLeftmostMonitor = [](GLFWmonitor** monitors, int count) -> GLFWmonitor*
+	{
+		if(count < 1) return nullptr;
+		
+		auto begin = monitors;
+		auto end = monitors + count;
+		
+		auto monitor_it = std::find_if(begin, end, [](GLFWmonitor* monitor) {
+			int xpos, ypos;
+			glfwGetMonitorPos(monitor, &xpos, &ypos);
+			
+			if(xpos == 0) return true;
+			return false;
+		});
+		
+		return
+			monitor_it == end ?
+				monitors[0] :
+				*monitor_it; 
+	};
+	
+	// spawn window on the leftmost monitor to avoid issues with window being offscreen on multimonitor setups
+	GLFWmonitor* monitor = Display::monitor = 
+		Global::useFullscreen 				 ?
+			monitors[Display::monitor_index] :
+			findLeftmostMonitor(monitors, count);
 
     glfwWindowHint(GLFW_SAMPLES, Display::AA_SAMPLES);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
@@ -60,8 +123,6 @@ int Display::createDisplay()
 
     if (Global::useFullscreen)
     {
-        monitor = glfwGetPrimaryMonitor();
-
         Display::WINDOW_WIDTH  = Display::F_WIDTH;
         Display::WINDOW_HEIGHT = Display::F_HEIGHT;
 
@@ -87,7 +148,8 @@ int Display::createDisplay()
 
     // glfw window creation
     // --------------------
-    Display::window = glfwCreateWindow(screenWidth, screenHeight, "Sonic Adventure Blast 2", monitor, nullptr);
+    Display::window = glfwCreateWindow(screenWidth, screenHeight, "Sonic Adventure Blast 2", 
+		Global::useFullscreen ? monitor : nullptr, nullptr);
     if (Display::window == nullptr)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -142,19 +204,7 @@ int Display::createDisplay()
     //Center the window
     if (!Global::useFullscreen)
     {
-        const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-
-        int monitorWidth = mode->width;
-        int monitorHeight = mode->height;
-
-        if (Display::WINDOW_WIDTH  <= monitorWidth && 
-            Display::WINDOW_HEIGHT <= monitorHeight)
-        {
-            int xpos = monitorWidth/2  - (Display::WINDOW_WIDTH)/2;
-            int ypos = monitorHeight/2 - (Display::WINDOW_HEIGHT)/2;
-
-            glfwSetWindowPos(Display::window, xpos, ypos);
-        }
+		Display::centerWindow();
     }
 
     //glfwGetWindowAttrib(window, GLFW_SAMPLES);
@@ -272,6 +322,10 @@ void Display::loadDisplaySettings()
                 else if (strcmp(lineSplit[0], "Fullscreen") == 0)
                 {
                     Global::useFullscreen = (strcmp(lineSplit[1], "on") == 0);
+                }
+                else if (strcmp(lineSplit[0], "F_MonitorIndex") == 0)
+                {
+                    Display::monitor_index = std::stoi(lineSplit[1], nullptr, 10);
                 }
                 else if (strcmp(lineSplit[0], "F_Width") == 0)
                 {
