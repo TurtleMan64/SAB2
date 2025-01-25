@@ -17,7 +17,6 @@ private:
 public:
     static GLFWwindow* window;
     static GLFWmonitor* monitor;
-    static int monitor_index;
 
     static int WINDOW_WIDTH;
     static int WINDOW_HEIGHT;
@@ -26,10 +25,12 @@ public:
     static int F_WIDTH;
     static int F_HEIGHT;
     static int F_HZ;
+    static int F_MONITOR_INDEX;
 
     static int AA_SAMPLES;
 
     static void centerWindow();
+    static void moveWindow(int x, int y);
     static int createDisplay();
 
     static void updateDisplay();

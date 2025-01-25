@@ -196,6 +196,7 @@ int Global::currentCalculatedFPS = 0;
 int Global::renderCount = 0;
 int Global::displaySizeChanged = 0;
 PlayerModel* Global::mainMenuTails = nullptr;
+bool Global::restartAudioOnRestart = false;
 
 Global::PlayableCharacter Global::currentCharacterType = Global::PlayableCharacter::Sonic;
 std::unordered_map<Global::PlayableCharacter, std::string> Global::characterNames;
@@ -382,8 +383,7 @@ int main(int argc, char** argv)
     Global::gameCamera = &cam;
 
     MasterRenderer::init();
-    // Input calls MasterRenderer::makeProjection matrix through callback in glfwPollEvents()
-    // To not blow your foot off with a segfault, Input::init() must be after MasterRenderer::init()
+
     Input::init();
 
     LevelLoader::loadLevelData();

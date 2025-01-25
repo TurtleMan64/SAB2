@@ -54,13 +54,16 @@ Checkpoint::Checkpoint(float x, float y, float z, float yRot)
         if (diff.length() < 50)
         {
             isHit = true;
-            if (Checkpoint::savedBGMIntro != AL_NONE)
+            if (Global::restartAudioOnRestart)
             {
-                AudioPlayer::playBGMWithIntro(Checkpoint::savedBGMIntro, Checkpoint::savedBGMLoop);
-            }
-            else
-            {
-                AudioPlayer::playBGM(Checkpoint::savedBGMLoop);
+                if (Checkpoint::savedBGMIntro != AL_NONE)
+                {
+                    AudioPlayer::playBGMWithIntro(Checkpoint::savedBGMIntro, Checkpoint::savedBGMLoop);
+                }
+                else
+                {
+                    AudioPlayer::playBGM(Checkpoint::savedBGMLoop);
+                }
             }
         }
     }

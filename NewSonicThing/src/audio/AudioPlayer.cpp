@@ -378,6 +378,17 @@ void AudioPlayer::loadSettings()
                     AudioPlayer::soundLevelBGM = 0.01f*std::stof(lineSplit[1], nullptr);
                     AudioPlayer::soundLevelBGM = fmaxf(0.0f, fminf(AudioPlayer::soundLevelBGM, 1.0f));
                 }
+                else if (strcmp(lineSplit[0], "Music_Auto_Restart") == 0)
+                {
+                    if (strcmp(lineSplit[1], "on") == 0)
+                    {
+                        Global::restartAudioOnRestart = true;
+                    }
+                    else
+                    {
+                        Global::restartAudioOnRestart = false;
+                    }
+                }
             }
 
             free(lineSplit);

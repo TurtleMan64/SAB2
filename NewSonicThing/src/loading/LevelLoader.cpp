@@ -452,7 +452,10 @@ void LevelLoader::loadLevel(std::string levelFilename)
         return;
     }
 
-    AudioPlayer::stopBGM();
+    if (Global::restartAudioOnRestart || stageFault == 1)
+    {
+        AudioPlayer::stopBGM();
+    }
     //Delete existing bgm if loading a new stage
     if (stageFault == 1)
     {
@@ -1124,14 +1127,17 @@ void LevelLoader::loadLevel(std::string levelFilename)
             Global::mainHudTimer->freeze(true);
         }
 
-        if (bgmHasIntro != 0)
+        if (Global::restartAudioOnRestart || stageFault == 1)
         {
-            //By default, first 2 buffers are the intro and loop, respectively
-            AudioPlayer::playBGMWithIntro(0, 1);
-        }
-        else
-        {
-            AudioPlayer::playBGM(0);
+            if (bgmHasIntro != 0)
+            {
+                //By default, first 2 buffers are the intro and loop, respectively
+                AudioPlayer::playBGMWithIntro(0, 1);
+            }
+            else
+            {
+                AudioPlayer::playBGM(0);
+            }
         }
     }
 

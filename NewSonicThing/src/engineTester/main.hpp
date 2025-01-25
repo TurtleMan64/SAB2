@@ -168,6 +168,7 @@ public:
     static int displaySizeChanged; //This will be 1 for a single frame after the size of the window changes (set in callback)
     static PlayerModel* mainMenuTails;
     //static PlayerModel* mainMenuKnuckles
+    static bool restartAudioOnRestart;
 
     //the different types of character movements
     enum PlayableCharacter

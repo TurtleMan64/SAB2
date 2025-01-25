@@ -21,6 +21,7 @@ public:
     Vector3f relativeUp;
     bool onGround = false;
     float canMoveTimer = 0.0f;
+    float canMoveTimerPrevious = 0.0f;
 
     //Functions that every player must be able to handle in some way
 public:

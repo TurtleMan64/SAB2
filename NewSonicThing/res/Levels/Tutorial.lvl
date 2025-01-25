@@ -111,6 +111,7 @@ false                                  # Enable Backface Culling
 32 2707.058105 -1290.448486 3050.597656 Maintain a high speed to run on water
 32 3994.747070 -1272.937500 -5215.221191 Hold X to gain speed while grinding
 32 4623.996582 -1420.628052 -752.361816 Maintain a high speed to run on walls
+32 3615.471680 -1458.627563 44.272415 Hold RB after jumping to dropdash
 
 # Ring Circle
 99 4079.99 -1422.89 270.79   197 14

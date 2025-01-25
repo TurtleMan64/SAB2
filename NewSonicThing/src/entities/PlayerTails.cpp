@@ -115,6 +115,7 @@ PlayerTails::~PlayerTails()
 
 void PlayerTails::step()
 {
+    canMoveTimerPrevious = canMoveTimer;
     canMoveTimer      = std::fmaxf(0.0f,  canMoveTimer      - dt);
     hitSpringTimer    = std::fmaxf(0.0f,  hitSpringTimer    - dt);
     hoverTimer        = std::fmaxf(0.0f,  hoverTimer        - dt);
@@ -1981,6 +1982,7 @@ void PlayerTails::startGrinding()
     isSpindashing = false;
     isStomping = false;
     isFlying = false;
+    canMoveTimer = -1.0f;
 }
 
 void PlayerTails::stopGrinding()
@@ -2838,6 +2840,15 @@ void PlayerTails::setInputs()
         inputAction2Previous = false;
         inputAction3Previous = false;
         inputAction4Previous = false;
+    }
+
+    if (canMoveTimerPrevious > 0.0f && canMoveTimer <= 0.0f)
+    {
+        if (inputJump   ) { inputJumpPrevious    = false; }
+        if (inputAction ) { inputActionPrevious  = false; }
+        if (inputAction2) { inputAction2Previous = false; }
+        if (inputAction3) { inputAction3Previous = false; }
+        if (inputAction4) { inputAction4Previous = false; }
     }
 }
 

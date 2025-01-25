@@ -101,6 +101,7 @@ PlayerKnuckles::~PlayerKnuckles()
 
 void PlayerKnuckles::step()
 {
+    canMoveTimerPrevious = canMoveTimer;
     canMoveTimer        = std::fmaxf(0.0f,  canMoveTimer        - dt);
     hitSpringTimer      = std::fmaxf(0.0f,  hitSpringTimer      - dt);
     hoverTimer          = std::fmaxf(0.0f,  hoverTimer          - dt);
@@ -3023,6 +3024,14 @@ void PlayerKnuckles::setInputs()
         inputY2   = 0;
         inputZoom = 0;
     }
+
+    //if (canMoveTimerPrevious > 0.0f && canMoveTimer <= 0.0f)
+    //{
+    //    if (inputJump   ) { inputJumpPrevious    = false; }
+    //    if (inputAction ) { inputActionPrevious  = false; }
+    //    if (inputAction2) { inputAction2Previous = false; }
+    //    if (inputAction3) { inputAction3Previous = false; }
+    //}
 }
 
 std::vector<TexturedModel*>* PlayerKnuckles::getModels()
