@@ -34,9 +34,16 @@ The game contains 20 levels, each with 4 different missions.
 4. Hit `Build->Build NewSonicThing`. This will generate the final exe.
    * Make sure to be in `Release` and `x64` mode
 
-## Linux
+## Debian/Ubuntu
 
 1. Install Dependancies
    * `sudo apt install libglfw3-dev libogg-dev libvorbis-dev libopenal-dev libsoil-dev libsdl2-dev pkg-config`
+2. Build
+   * `make`
+
+## Fedora
+
+1. Install Dependancies
+   * `sudo dnf install glfw-devel libogg-devel libvorbis-devel openal-soft-devel SOIL-devel SDL2-devel pkgconf-pkg-config gcc-c++`
 2. Build
    * `make`
